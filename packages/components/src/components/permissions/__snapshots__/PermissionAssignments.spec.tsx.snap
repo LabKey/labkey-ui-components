@@ -1,0 +1,1039 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PermissionAssignments/> custom props 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-md-12 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Custom panel title
+      </div>
+      <div
+        className="permissions-assignment-panel panel-body"
+      >
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Editor
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      2
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Reader
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      5
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <button
+          className="pull-right btn btn-success"
+          disabled={true}
+          onClick={[Function]}
+          type="button"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PermissionAssignments/> default props 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-md-8 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Security roles and assignments
+      </div>
+      <div
+        className="permissions-assignment-panel panel-body"
+      >
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Project Administrator
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      1
+                       member
+                      
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Folder Administrator
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      2
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Editor
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      3
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Author
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      0
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Reader
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      5
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Restricted Reader
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      1
+                       member
+                      
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Submitter
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      1
+                       member
+                      
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Shared View Editor
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      0
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Restricted PHI Reader
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      0
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Full PHI Reader
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      0
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Limited PHI Reader
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      0
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Patient Record Reviewer
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      0
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Electronic Signer
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      0
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Assay Designer
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      1
+                       member
+                      
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row container-expandable"
+        >
+          <div
+            className="container-expandable-detail container-expandable-detail__inactive"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <i
+              className="container-expandable-child__img"
+            >
+              <i
+                className="fa fa-users fa-3x"
+                style={
+                  Object {
+                    "padding": "5px",
+                  }
+                }
+              />
+            </i>
+            <div
+              className="pull-right container-expandable-child__chevron"
+            >
+              <i
+                className="fa fa-chevron-right"
+              />
+            </div>
+            <div
+              className="container-expandable-heading"
+            >
+              <div
+                className="container-expandable-heading--clause"
+              >
+                <span
+                  className="permissions-title"
+                >
+                  Message Board Contributor
+                </span>
+              </div>
+              <div>
+                <span
+                  className="container-expandable-heading"
+                >
+                  <span>
+                    <a>
+                      0
+                       member
+                      s
+                    </a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <button
+          className="pull-right btn btn-success"
+          disabled={true}
+          onClick={[Function]}
+          type="button"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="col-md-4 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        User Details
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div>
+          No user selected.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

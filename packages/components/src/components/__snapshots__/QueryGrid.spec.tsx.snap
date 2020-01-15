@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QueryGrid render loading 1`] = `
+<div>
+  <span
+    className=""
+  >
+    <i
+      aria-hidden="true"
+      className="fa fa-spinner fa-pulse"
+    />
+     
+    Loading...
+  </span>
+</div>
+`;
+
+exports[`QueryGrid render query grid error 1`] = `
+<div
+  className="alert alert-danger"
+  role="alert"
+>
+  Something went wrong loading the QueryGridModel.
+</div>
+`;

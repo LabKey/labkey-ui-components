@@ -1,0 +1,620 @@
+
+.domain-form-panel {
+  min-width: 1000px;
+  margin-bottom: 0 !important;
+  margin-top: 25px;
+}
+
+.domain-form-panel input[type="checkbox"],
+.domain-form-panel input[type="radio"],
+.domain-modal input[type="checkbox"],
+.domain-modal input[type="radio"] {
+  width: 17px;
+  height: 17px;
+  position: relative !important;
+  margin-right: 7px;
+  vertical-align: text-bottom;
+  cursor: pointer;
+}
+
+.domain-form-hdr-row {
+  margin: 0 0 5px 40px !important;
+  color: $gray;
+};
+
+.domain-form-hdr-margins {
+  padding: 0 0 15px 0;
+};
+
+.domain-form-search {
+  margin-bottom: 20px;
+};
+
+.domain-search-text {
+  padding-top: 5px;
+}
+
+.domain-form-hdr-center {
+  text-align: center;
+}
+
+.domain-zero-padding {
+  padding: 0
+}
+
+.domain-row-base-fields {
+  padding: 0;
+  margin: 0;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.domain-field-row {
+  border: 1px solid;
+  border-radius: 2px;
+  margin: 0 0 20px 0;
+  background-color: white;
+  outline: none;
+};
+
+.domain-row-border-default {
+  border-color: $gray-border;
+  box-shadow: inset 0 1px 3px 2px $gray-shadow;
+}
+
+.domain-row-border-error {
+  border-color: $red-border;
+  box-shadow: inset 0 0 5px 0 $red-shadow, 0 0 5px 0 $red-shadow;
+}
+
+.domain-row-border-warning {
+  border-color: $yellow-border;
+  box-shadow: inset 0 0 5px 0 $yellow-shadow, 0 0 5px 0 $yellow-shadow;
+}
+
+.domain-row-border-dragging {
+  border-color: $blue-border;
+  box-shadow: inset 0 1px 3px 2px $gray-shadow, 0 0 0 1px $blue-border
+}
+
+.domain-field-row .row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.domain-field-checkbox {
+  height: 0;
+  margin-top: 3px !important;
+};
+
+.domain-field-checkbox-container {
+  margin: auto;
+  display: table;
+}
+
+.domain-field-details {
+  color: $gray-dark;
+  height: 40px;
+  width: 100%;
+  overflow: hidden;
+  padding-top: 15px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+};
+
+.domain-field-details-expanded {
+  color: $gray-dark;
+  display: table-cell;
+  padding-top: 1.5%;
+  width: 100%;
+};
+
+.domain-field-buttons-expanded {
+  float: right;
+  display: inline-flex;
+  height: min-content;
+  padding-top: 9px;
+};
+
+.domain-field-buttons {
+  float: right;
+  display: inline-flex;
+  height: min-content;
+  padding-top: 9px;
+};
+
+.domain-field-details-container {
+  display: flex;
+  top: 60%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  justify-content: space-between;
+  height: 50px;
+};
+
+.domain-field-icon {
+  color: $gray-light;
+  display: inline-block;
+  padding-left: 20px;
+
+  &:hover {
+    color: $gray-base;
+    cursor: pointer;
+  }
+}
+
+.domain-help-icon {
+  margin: 0 0 2px 0;
+  height: 10px;
+}
+
+.domain-help-icon:hover {
+  cursor: pointer;
+}
+
+.domain-form-add {
+  color: $gray-dark;
+  cursor: pointer;
+}
+
+.domain-form-add-btn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.domain-form-add-link {
+  color: $brand-primary;
+  cursor: pointer;
+
+  &:hover {
+    color: $brand-secondary;
+  }
+}
+
+.domain-form-expand-btn {
+  color: $gray-light;
+
+  &:hover {
+    color: $gray-base;
+    cursor: pointer;
+  }
+}
+
+.domain-form-collapse-btn {
+  color: white;
+
+  &:hover {
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.domain-form-no-field-panel {
+  height: 53px;
+  margin: 25px 0px 20px 0px;
+  padding: 15px 20px;
+  box-shadow: inset 0 1px 3px 2px $gray-shadow;
+  color: #777777;
+}
+
+.domain-row-expanded {
+  background-color: $gray-lighter;
+  margin-right: 0;
+}
+
+.domain-row-button {
+  font-size: 12px;
+  margin-left: 12px;
+  height: 28px;
+  height: min-content;  /* Not supported in older browsers so leave px height as well */
+}
+
+.domain-row-remove-button {
+  background-color: $brand-danger;
+  background-image: none;
+  color: white;
+}
+
+.domain-field-section-heading {
+  color: $gray-dark;
+  font-weight: bold;
+}
+
+.domain-field-padding-top {
+  padding-top: 20px;
+}
+
+.domain-field-padding-bottom {
+  padding-bottom: 20px;
+}
+
+.domain-field-no-side-padding {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.domain-field-section-hdr {
+  margin-top: 20px;
+}
+
+.domain-field-label {
+  color: $gray;
+  padding: 7px 0 5px 0;
+}
+
+/* Text Field Options */
+.domain-text-options-col {
+  margin-top: 3px;
+}
+
+.domain-text-options-radio1 {
+  margin: 0 15px 5px 5px !important;
+}
+
+.domain-text-options-radio2 {
+  margin: 6px 15px 5px 5px !important;
+}
+
+.domain-text-options-length {
+  margin: 6px 20px 0 0 !important;
+}
+
+.domain-text-length-field {
+  width: 80px;
+}
+
+.domain-text-label {
+  color: gray;
+}
+
+.domain-field-checkbox-label {
+  margin: 0 0 0 8px !important;
+  color: gray;
+}
+
+.domain-field-float-left {
+  float: left;
+}
+
+.domain-field-float-right {
+  float: right;
+}
+
+.domain-field-textarea {
+  resize: none;
+  padding-bottom: 2%;
+}
+
+.domain-help-table {
+  border: 1px solid black;
+}
+
+.domain-field-lookup-validator-row {
+  display: inline-flex;
+  transform: translateY(50%);
+  margin-left: 10px;
+}
+
+.domain-field-lookup-validator-label {
+  margin: 3% 0 0 10px;
+  white-space: nowrap;
+}
+
+.domain-lookup-validator-text {
+  margin-left: 10px;
+}
+
+.domain-validator-error-msg {
+  color: red;
+  margin-top: 3%;
+  margin-right: 20px;
+}
+
+.domain-field-checkbox-margin {
+  margin-top: 2px;
+}
+
+.domain-adv-footer {
+  font-size: 14px;
+}
+
+.domain-adv-link:hover {
+  cursor: pointer;
+}
+
+.domain-adv-apply-btn {
+   margin-left: 12px;
+}
+
+.domain-adv-cancel-btn {
+  float: left;
+}
+
+.domain-adv-display-options {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.domain-adv-misc-options {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 20px 0 14px 0;
+}
+
+.domain-adv-default-value {
+  width: 100px;
+}
+
+.domain-adv-thick-row {
+  padding-bottom: 10px;
+}
+
+.domain-adv-default-link {
+  padding-top: 2%;
+}
+
+.domain-adv-checkbox {
+  cursor: default
+}
+
+.domain-floating-hdr {
+  padding-top: 28px;
+  background-color: white;
+  height: 60px;
+}
+
+.domain-row-handle {
+  padding-left: 8px;
+  border-width: 0 1px 0 0;
+  border-style: solid;
+  border-color: $gray-border;
+  display: table-cell;
+  width: 30px;
+  vertical-align: middle;
+  background-color: $gray-shadow;
+}
+
+.domain-row-empty-handle {
+  width: 30px;
+  display: table-cell;
+  background-color: $gray-shadow;
+}
+
+.domain-row-name {
+  width: 90%
+}
+
+.domain-row-container {
+  display: table;
+  width: 100%;
+}
+
+.domain-row-container-expanded {
+  display: table-cell;
+  padding: 15px 2px 30px 0;
+}
+
+.domain-row-main {
+  height: 50px;
+}
+
+.domain-no-wrap {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.domain-validation-modal {
+  width: 550px;
+}
+
+.domain-validation-button {
+  font-size: 12px;
+  margin-right: 15px;
+}
+
+.domain-validation-group {
+  float: left;
+  margin-right: 80px;
+}
+
+.domain-validation-subtitle {
+  color: $gray;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.domain-validation-add-btn span {
+  font-size: 12px;
+}
+
+.domain-validation-btn-row {
+  padding-top: 50px;
+}
+
+.domain-validator-panel {
+  background-color: $gray-shadow;
+  margin-bottom: 5px;
+  padding: 10px;
+  border: 1px solid $gray-border;
+}
+
+.domain-validation-textarea {
+  resize: none;
+  width: 100%
+}
+
+.domain-validation-failOnMatch-row {
+  margin-top: -14px;
+}
+
+.domain-validation-checkbox {
+  float: left;
+  margin-top: 0;
+}
+
+.domain-validation-display-checkbox-row {
+  margin: 5px 0 -15px 0;
+}
+
+.domain-validation-delete {
+  font-size: 12px;
+  float: right;
+  margin-top: 20px;
+}
+
+.domain-validator-link {
+  cursor: pointer;
+}
+
+.domain-validator-filter-row {
+  margin-bottom: 10px;
+}
+
+.domain-validator-filter-type-row {
+  margin-bottom: 5px;
+}
+
+.domain-validator-filter-bottom {
+  margin-bottom: 20px;
+}
+
+.domain-validator-color-row {
+  margin-top: 20px;
+}
+
+.domain-validator-color-popover {
+  position: absolute;
+  z-index: 2;
+}
+
+.domain-validator-color-cover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.domain-validator-modal-apply {
+  display: inline-flex;
+  float: right;
+}
+
+.domain-color-preview {
+  height: 25px;
+  width: 25px;
+  border: 1px solid;
+  display: inline-flex;
+  vertical-align: bottom;
+  margin-bottom: 1px;
+}
+
+.domain-color-picker-btn {
+  display: inline-flex;
+  font-size: 12px;
+  margin-right: 20px;
+  width: 70%;
+}
+
+.domain-color-caret {
+  margin-left: 40%;
+  position: absolute;
+  float: left;
+}
+
+.domain-validator-collapse-icon {
+  float: right;
+  cursor: pointer;
+}
+
+.domain-heading-collapsible {
+  cursor: pointer;
+}
+
+.domain-remove-icon {
+  padding-top: 5px;
+}
+
+.domain-panel-header {
+  font-size: 16px;
+  font-weight: bold;
+  height: 45px;
+  // The rest of this is implementing part of panel-header from core.css, which is stripped off for background color
+  padding: 10px 15px;
+  border-bottom: 1px solid;
+  border-top-left-radius: 1px;
+  border-top-right-radius: 1px;
+  color: #333333;
+  border-color: #DDDDDD;
+}
+
+.domain-panel-header-fields-defined {
+  font-weight: normal;
+  font-size: 15px;
+  margin-left: 13px;
+  float: right;
+  margin-right: 20px;
+}
+
+.domain-panel-header-expanded {
+  color: white !important;
+}
+
+.domain-panel-header-no-theme {
+  background-color: $blue-border-solid !important;
+}
+
+.domain-panel-no-theme {
+  border-color: $blue-border-solid !important;
+}
+
+.domain-panel-header-collapsed {
+  background-color: #F5F5F5;
+}
+
+.domain-panel-status-icon {
+  margin-right: 10px;
+}
+
+.domain-panel-status-icon-green {
+  color: green;
+}
+
+.domain-panel-status-icon-blue {
+  color: $blue-border-solid;
+}
+
+.domain-bottom-alert div {
+  min-width: 1000px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-top: -4px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  height: 40px;
+  padding-top: .5%;
+  border-color: inherit;
+}
+
+.domain-bottom-alert-expanded div {
+   border-color: $blue-border-solid;
+ }
+
+.domain-bottom-alert-collapsed div {
+  border-color: #ddd;
+}
+
+.domain-bottom-alert-top div {
+  border-top-color: #ddd;
+}
+
+.domain-main-alert {
+  margin-top: 20px;
+}
+
+.domain-assay-buttons .btn {
+    width: 75px;
+}

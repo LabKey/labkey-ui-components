@@ -1,0 +1,314 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewGrid render PreviewGrid loading 1`] = `
+<div
+  className="preview-grid"
+>
+  <span
+    className=""
+  >
+    <i
+      aria-hidden="true"
+      className="fa fa-spinner fa-pulse"
+    />
+     
+    Loading...
+  </span>
+</div>
+`;
+
+exports[`PreviewGrid render PreviewGrid with data 1`] = `
+<div
+  className="preview-grid"
+>
+  <p>
+    Previewing first 3 rows and 4 of 5 columns.
+  </p>
+  <div
+    className="table-responsive"
+  >
+    <div
+      className="grid-messages"
+    />
+    <table
+      className="table table-striped table-bordered"
+    >
+      <thead>
+        <tr>
+          <th
+            className="grid-header-cell"
+            onClick={[Function]}
+            style={
+              Object {
+                "minWidth": undefined,
+              }
+            }
+          >
+            Name
+          </th>
+          <th
+            className="grid-header-cell"
+            onClick={[Function]}
+            style={
+              Object {
+                "minWidth": undefined,
+              }
+            }
+          >
+            Flag
+          </th>
+          <th
+            className="grid-header-cell"
+            onClick={[Function]}
+            style={
+              Object {
+                "minWidth": undefined,
+              }
+            }
+          >
+            Mixture Type
+          </th>
+          <th
+            className="grid-header-cell"
+            onClick={[Function]}
+            style={
+              Object {
+                "minWidth": undefined,
+              }
+            }
+          >
+            Expiration Time
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            <a
+              href="#/rd/expdata/41426"
+            >
+              DMEXP
+            </a>
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          />
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            <a
+              href="#/q/lists/mixturetypes/2"
+            >
+              Solution
+            </a>
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "right",
+              }
+            }
+          >
+            30
+          </td>
+        </tr>
+        <tr>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            <a
+              href="#/rd/expdata/41425"
+            >
+              TBS
+            </a>
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          />
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            <a
+              href="#/q/lists/mixturetypes/2"
+            >
+              Solution
+            </a>
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "right",
+              }
+            }
+          >
+            30
+          </td>
+        </tr>
+        <tr>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            <a
+              href="#/rd/expdata/41424"
+            >
+              PBS
+            </a>
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          />
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            <a
+              href="#/q/lists/mixturetypes/2"
+            >
+              Solution
+            </a>
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "right",
+              }
+            }
+          >
+            30
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] = `
+<div
+  className="preview-grid"
+>
+  <p>
+    Previewing first 2 rows and 2 of 5 columns.
+  </p>
+  <div
+    className="table-responsive"
+  >
+    <div
+      className="grid-messages"
+    />
+    <table
+      className="table table-striped table-bordered"
+    >
+      <thead>
+        <tr>
+          <th
+            className="grid-header-cell"
+            onClick={[Function]}
+            style={
+              Object {
+                "minWidth": undefined,
+              }
+            }
+          >
+            Name
+          </th>
+          <th
+            className="grid-header-cell"
+            onClick={[Function]}
+            style={
+              Object {
+                "minWidth": undefined,
+              }
+            }
+          >
+            Flag
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            <a
+              href="#/rd/expdata/41426"
+            >
+              DMEXP
+            </a>
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          />
+        </tr>
+        <tr>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            <a
+              href="#/rd/expdata/41425"
+            >
+              TBS
+            </a>
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          />
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

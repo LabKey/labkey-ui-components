@@ -1,0 +1,2533 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LookupFieldOptions Lookup field options 1`] = `
+<MockLookupProvider>
+  <LookupFieldOptions
+    index={1}
+    label="Lookup Field Options"
+    lockType="NotLocked"
+    lookupContainer="/StudyVerifyProject/My Study"
+    lookupQueryValue="Data"
+    lookupSchema="exp"
+    onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
+    original={
+      Immutable.Record {
+        "conceptURI": undefined,
+        "conditionalFormats": Immutable.List [],
+        "defaultScale": undefined,
+        "defaultValueType": undefined,
+        "defaultValue": undefined,
+        "defaultDisplayValue": undefined,
+        "description": undefined,
+        "dimension": undefined,
+        "excludeFromShifting": false,
+        "format": undefined,
+        "hidden": false,
+        "importAliases": undefined,
+        "label": undefined,
+        "lookupContainer": undefined,
+        "lookupQuery": undefined,
+        "lookupSchema": undefined,
+        "lookupValidator": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
+        "name": "key",
+        "PHI": undefined,
+        "primaryKey": undefined,
+        "propertyId": 1,
+        "propertyURI": "test",
+        "propertyValidators": Immutable.List [],
+        "rangeValidators": Immutable.List [],
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "regexValidators": Immutable.List [],
+        "recommendedVariable": false,
+        "required": false,
+        "scale": undefined,
+        "URL": undefined,
+        "shownInDetailsView": true,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "visible": true,
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Integer",
+          "name": "int",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "alternateRangeURI": "xsd:int",
+          "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
+        },
+        "lookupQueryValue": undefined,
+        "lookupType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Lookup",
+          "name": "lookup",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "alternateRangeURI": undefined,
+          "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
+        },
+        "original": Object {
+          "conceptURI": undefined,
+          "dataType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Integer",
+            "name": "int",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+            "alternateRangeURI": "xsd:int",
+            "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
+          },
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        },
+        "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
+      }
+    }
+  >
+    <div>
+      <Row
+        bsClass="row"
+        className="domain-row-expanded"
+        componentClass="div"
+      >
+        <div
+          className="domain-row-expanded row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={12}
+          >
+            <div
+              className="col-xs-12"
+            >
+              <div
+                className="domain-field-section-heading"
+              >
+                Lookup Field Options
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Row>
+      <Row
+        bsClass="row"
+        className="domain-row-expanded"
+        componentClass="div"
+      >
+        <div
+          className="domain-row-expanded row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Folder
+              </div>
+              <FolderSelect
+                disabled={false}
+                id="domainpropertiesrow-lookupContainer-1"
+                key="domainpropertiesrow-lookupContainer-1"
+                onChange={[Function]}
+                value="/StudyVerifyProject/My Study"
+              >
+                <FolderSelectImpl
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupContainer-1"
+                  name="domainpropertiesrow-lookupContainer"
+                  onChange={[Function]}
+                  value="/StudyVerifyProject/My Study"
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    context={
+                      Object {
+                        "activeContainer": Immutable.Record {
+                          "activeModules": Immutable.List [],
+                          "folderType": "",
+                          "hasRestrictedActiveModule": false,
+                          "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                          "isContainerTab": false,
+                          "isWorkbook": false,
+                          "name": "My Study",
+                          "parentId": "",
+                          "parentPath": "",
+                          "path": "/StudyVerifyProject/My Study",
+                          "sortOrder": 0,
+                          "title": "",
+                          "type": "",
+                        },
+                        "fetchContainers": [Function],
+                        "fetchQueries": [Function],
+                        "fetchSchemas": [Function],
+                      }
+                    }
+                    disabled={false}
+                    id="domainpropertiesrow-lookupContainer-1"
+                    name="domainpropertiesrow-lookupContainer"
+                    onChange={[Function]}
+                    value="/StudyVerifyProject/My Study"
+                  >
+                    <select
+                      className="form-control"
+                      context={
+                        Object {
+                          "activeContainer": Immutable.Record {
+                            "activeModules": Immutable.List [],
+                            "folderType": "",
+                            "hasRestrictedActiveModule": false,
+                            "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                            "isContainerTab": false,
+                            "isWorkbook": false,
+                            "name": "My Study",
+                            "parentId": "",
+                            "parentPath": "",
+                            "path": "/StudyVerifyProject/My Study",
+                            "sortOrder": 0,
+                            "title": "",
+                            "type": "",
+                          },
+                          "fetchContainers": [Function],
+                          "fetchQueries": [Function],
+                          "fetchSchemas": [Function],
+                        }
+                      }
+                      disabled={false}
+                      id="domainpropertiesrow-lookupContainer-1"
+                      name="domainpropertiesrow-lookupContainer"
+                      onChange={[Function]}
+                      value="/StudyVerifyProject/My Study"
+                    >
+                      <option
+                        key="_current"
+                        value=""
+                      >
+                        Current 
+                        Folder
+                      </option>
+                    </select>
+                  </FormControl>
+                </FolderSelectImpl>
+              </FolderSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Schema
+              </div>
+              <SchemaSelect
+                containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
+                id="domainpropertiesrow-lookupSchema-1"
+                key="domainpropertiesrow-lookupSchema-1"
+                onChange={[Function]}
+                value="exp"
+              >
+                <SchemaSelectImpl
+                  containerPath="/StudyVerifyProject/My Study"
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupSchema-1"
+                  name="domainpropertiesrow-lookupSchema"
+                  onChange={[Function]}
+                  value="exp"
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    disabled={false}
+                    id="domainpropertiesrow-lookupSchema-1"
+                    name="domainpropertiesrow-lookupSchema"
+                    onChange={[Function]}
+                    placeholder="Select Schema"
+                    value="exp"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={false}
+                      id="domainpropertiesrow-lookupSchema-1"
+                      name="domainpropertiesrow-lookupSchema"
+                      onChange={[Function]}
+                      placeholder="Select Schema"
+                      value="exp"
+                    >
+                      <option
+                        disabled={true}
+                        key="_loading"
+                        value="exp"
+                      >
+                        Loading...
+                      </option>
+                    </select>
+                  </FormControl>
+                </SchemaSelectImpl>
+              </SchemaSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Table
+              </div>
+              <TargetTableSelect
+                containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
+                id="domainpropertiesrow-lookupQueryValue-1"
+                key="domainpropertiesrow-lookupQueryValue-1"
+                lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                onChange={[Function]}
+                schemaName="exp"
+                value="Data"
+              >
+                <TargetTableSelectImpl
+                  containerPath="/StudyVerifyProject/My Study"
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupQueryValue-1"
+                  lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                  name="domainpropertiesrow-lookupQueryValue"
+                  onChange={[Function]}
+                  schemaName="exp"
+                  value="Data"
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    disabled={true}
+                    id="domainpropertiesrow-lookupQueryValue-1"
+                    name="domainpropertiesrow-lookupQueryValue"
+                    onChange={[Function]}
+                    value="Data"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="domainpropertiesrow-lookupQueryValue-1"
+                      name="domainpropertiesrow-lookupQueryValue"
+                      onChange={[Function]}
+                      value="Data"
+                    >
+                      <option
+                        disabled={true}
+                        key="_loading"
+                        value="Data"
+                      >
+                        Loading...
+                      </option>
+                    </select>
+                  </FormControl>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={6}
+          >
+            <div
+              className="col-xs-6"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Lookup Validator
+              </div>
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                className="domain-field-checkbox-margin"
+                disabled={false}
+                id="domainpropertiesrow-lookupValidator-1"
+                inline={false}
+                name="domainpropertiesrow-lookupValidator"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="domain-field-checkbox-margin checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-lookupValidator-1"
+                      name="domainpropertiesrow-lookupValidator"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
+                    <LabelHelpTip
+                      body={[Function]}
+                      customStyle={Object {}}
+                      id="tooltip"
+                      size="1x"
+                      title="Lookup Validator"
+                    >
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <FontAwesomeIcon
+                          border={false}
+                          className="label-help-icon"
+                          fixedWidth={false}
+                          flip={null}
+                          icon={
+                            Object {
+                              "icon": Array [
+                                512,
+                                512,
+                                Array [],
+                                "f059",
+                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                              ],
+                              "iconName": "question-circle",
+                              "prefix": "fas",
+                            }
+                          }
+                          inverse={false}
+                          listItem={false}
+                          mask={null}
+                          pull={null}
+                          pulse={false}
+                          rotation={null}
+                          size="1x"
+                          spin={false}
+                          style={Object {}}
+                          symbol={false}
+                          title=""
+                          transform={null}
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                            data-icon="question-circle"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </FontAwesomeIcon>
+                        <Overlay
+                          animation={[Function]}
+                          placement="right"
+                          rootClose={false}
+                          show={false}
+                          target={
+                            <span
+                              class="label-help-target"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                data-icon="question-circle"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          }
+                        >
+                          <Overlay
+                            placement="right"
+                            rootClose={false}
+                            show={false}
+                            target={
+                              <span
+                                class="label-help-target"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                  data-icon="question-circle"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                            transition={[Function]}
+                          />
+                        </Overlay>
+                      </span>
+                    </LabelHelpTip>
+                  </label>
+                </div>
+              </Checkbox>
+            </div>
+          </Col>
+        </div>
+      </Row>
+    </div>
+  </LookupFieldOptions>
+</MockLookupProvider>
+`;
+
+exports[`LookupFieldOptions Selected container changes queries 1`] = `
+<MockLookupProvider>
+  <LookupFieldOptions
+    index={1}
+    label="Lookup Field Options"
+    lockType="NotLocked"
+    lookupContainer="/StudyVerifyProject"
+    lookupQueryValue=""
+    lookupSchema=""
+    onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
+    original={
+      Immutable.Record {
+        "conceptURI": undefined,
+        "conditionalFormats": Immutable.List [],
+        "defaultScale": undefined,
+        "defaultValueType": undefined,
+        "defaultValue": undefined,
+        "defaultDisplayValue": undefined,
+        "description": undefined,
+        "dimension": undefined,
+        "excludeFromShifting": false,
+        "format": undefined,
+        "hidden": false,
+        "importAliases": undefined,
+        "label": undefined,
+        "lookupContainer": undefined,
+        "lookupQuery": undefined,
+        "lookupSchema": undefined,
+        "lookupValidator": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
+        "name": "key",
+        "PHI": undefined,
+        "primaryKey": undefined,
+        "propertyId": 1,
+        "propertyURI": "test",
+        "propertyValidators": Immutable.List [],
+        "rangeValidators": Immutable.List [],
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "regexValidators": Immutable.List [],
+        "recommendedVariable": false,
+        "required": false,
+        "scale": undefined,
+        "URL": undefined,
+        "shownInDetailsView": true,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "visible": true,
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Integer",
+          "name": "int",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "alternateRangeURI": "xsd:int",
+          "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
+        },
+        "lookupQueryValue": undefined,
+        "lookupType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Lookup",
+          "name": "lookup",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "alternateRangeURI": undefined,
+          "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
+        },
+        "original": Object {
+          "conceptURI": undefined,
+          "dataType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Integer",
+            "name": "int",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+            "alternateRangeURI": "xsd:int",
+            "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
+          },
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        },
+        "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
+      }
+    }
+  >
+    <div>
+      <Row
+        bsClass="row"
+        className="domain-row-expanded"
+        componentClass="div"
+      >
+        <div
+          className="domain-row-expanded row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={12}
+          >
+            <div
+              className="col-xs-12"
+            >
+              <div
+                className="domain-field-section-heading"
+              >
+                Lookup Field Options
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Row>
+      <Row
+        bsClass="row"
+        className="domain-row-expanded"
+        componentClass="div"
+      >
+        <div
+          className="domain-row-expanded row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Folder
+              </div>
+              <FolderSelect
+                disabled={false}
+                id="domainpropertiesrow-lookupContainer-1"
+                key="domainpropertiesrow-lookupContainer-1"
+                onChange={[Function]}
+                value="/StudyVerifyProject"
+              >
+                <FolderSelectImpl
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupContainer-1"
+                  name="domainpropertiesrow-lookupContainer"
+                  onChange={[Function]}
+                  value="/StudyVerifyProject"
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    context={
+                      Object {
+                        "activeContainer": Immutable.Record {
+                          "activeModules": Immutable.List [],
+                          "folderType": "",
+                          "hasRestrictedActiveModule": false,
+                          "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                          "isContainerTab": false,
+                          "isWorkbook": false,
+                          "name": "My Study",
+                          "parentId": "",
+                          "parentPath": "",
+                          "path": "/StudyVerifyProject/My Study",
+                          "sortOrder": 0,
+                          "title": "",
+                          "type": "",
+                        },
+                        "fetchContainers": [Function],
+                        "fetchQueries": [Function],
+                        "fetchSchemas": [Function],
+                      }
+                    }
+                    disabled={false}
+                    id="domainpropertiesrow-lookupContainer-1"
+                    name="domainpropertiesrow-lookupContainer"
+                    onChange={[Function]}
+                    value="/StudyVerifyProject"
+                  >
+                    <select
+                      className="form-control"
+                      context={
+                        Object {
+                          "activeContainer": Immutable.Record {
+                            "activeModules": Immutable.List [],
+                            "folderType": "",
+                            "hasRestrictedActiveModule": false,
+                            "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                            "isContainerTab": false,
+                            "isWorkbook": false,
+                            "name": "My Study",
+                            "parentId": "",
+                            "parentPath": "",
+                            "path": "/StudyVerifyProject/My Study",
+                            "sortOrder": 0,
+                            "title": "",
+                            "type": "",
+                          },
+                          "fetchContainers": [Function],
+                          "fetchQueries": [Function],
+                          "fetchSchemas": [Function],
+                        }
+                      }
+                      disabled={false}
+                      id="domainpropertiesrow-lookupContainer-1"
+                      name="domainpropertiesrow-lookupContainer"
+                      onChange={[Function]}
+                      value="/StudyVerifyProject"
+                    >
+                      <option
+                        key="_current"
+                        value=""
+                      >
+                        Current 
+                        Folder
+                      </option>
+                      <option
+                        key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
+                        value="/StudyVerifyProject"
+                      >
+                        /StudyVerifyProject
+                      </option>
+                      <option
+                        key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
+                        value="/StudyVerifyProject/My Study"
+                      >
+                        /StudyVerifyProject/My Study
+                      </option>
+                    </select>
+                  </FormControl>
+                </FolderSelectImpl>
+              </FolderSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Schema
+              </div>
+              <SchemaSelect
+                containerPath="/StudyVerifyProject"
+                disabled={false}
+                id="domainpropertiesrow-lookupSchema-1"
+                key="domainpropertiesrow-lookupSchema-1"
+                onChange={[Function]}
+                value=""
+              >
+                <SchemaSelectImpl
+                  containerPath="/StudyVerifyProject"
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupSchema-1"
+                  name="domainpropertiesrow-lookupSchema"
+                  onChange={[Function]}
+                  value=""
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    disabled={false}
+                    id="domainpropertiesrow-lookupSchema-1"
+                    name="domainpropertiesrow-lookupSchema"
+                    onChange={[Function]}
+                    placeholder="Select Schema"
+                    value=""
+                  >
+                    <select
+                      className="form-control"
+                      disabled={false}
+                      id="domainpropertiesrow-lookupSchema-1"
+                      name="domainpropertiesrow-lookupSchema"
+                      onChange={[Function]}
+                      placeholder="Select Schema"
+                      value=""
+                    >
+                      <option
+                        key="_default"
+                      />
+                      <option
+                        key="exp"
+                        value="exp"
+                      >
+                        exp
+                      </option>
+                      <option
+                        key="exp.data"
+                        value="exp.data"
+                      >
+                        exp.data
+                      </option>
+                      <option
+                        key="exp.materials"
+                        value="exp.materials"
+                      >
+                        exp.materials
+                      </option>
+                      <option
+                        key="lists"
+                        value="lists"
+                      >
+                        lists
+                      </option>
+                      <option
+                        key="study"
+                        value="study"
+                      >
+                        study
+                      </option>
+                    </select>
+                  </FormControl>
+                </SchemaSelectImpl>
+              </SchemaSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Table
+              </div>
+              <TargetTableSelect
+                containerPath="/StudyVerifyProject"
+                disabled={false}
+                id="domainpropertiesrow-lookupQueryValue-1"
+                key="domainpropertiesrow-lookupQueryValue-1"
+                lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                onChange={[Function]}
+                schemaName=""
+                value=""
+              >
+                <TargetTableSelectImpl
+                  containerPath="/StudyVerifyProject"
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupQueryValue-1"
+                  lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                  name="domainpropertiesrow-lookupQueryValue"
+                  onChange={[Function]}
+                  schemaName=""
+                  value=""
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    disabled={false}
+                    id="domainpropertiesrow-lookupQueryValue-1"
+                    name="domainpropertiesrow-lookupQueryValue"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <select
+                      className="form-control"
+                      disabled={false}
+                      id="domainpropertiesrow-lookupQueryValue-1"
+                      name="domainpropertiesrow-lookupQueryValue"
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        key="_default"
+                      />
+                      <option
+                        key="http://www.w3.org/2001/XMLSchema#int|Data"
+                        value="http://www.w3.org/2001/XMLSchema#int|Data"
+                      >
+                        Data
+                         (
+                        Integer
+                        )
+                      </option>
+                      <option
+                        key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                        value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                      >
+                        DataInputs
+                         (
+                        Integer
+                        )
+                      </option>
+                      <option
+                        key="http://www.w3.org/2001/XMLSchema#int|Runs"
+                        value="http://www.w3.org/2001/XMLSchema#int|Runs"
+                      >
+                        Runs
+                         (
+                        Integer
+                        )
+                      </option>
+                    </select>
+                  </FormControl>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={6}
+          >
+            <div
+              className="col-xs-6"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Lookup Validator
+              </div>
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                className="domain-field-checkbox-margin"
+                disabled={false}
+                id="domainpropertiesrow-lookupValidator-1"
+                inline={false}
+                name="domainpropertiesrow-lookupValidator"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="domain-field-checkbox-margin checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-lookupValidator-1"
+                      name="domainpropertiesrow-lookupValidator"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
+                    <LabelHelpTip
+                      body={[Function]}
+                      customStyle={Object {}}
+                      id="tooltip"
+                      size="1x"
+                      title="Lookup Validator"
+                    >
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <FontAwesomeIcon
+                          border={false}
+                          className="label-help-icon"
+                          fixedWidth={false}
+                          flip={null}
+                          icon={
+                            Object {
+                              "icon": Array [
+                                512,
+                                512,
+                                Array [],
+                                "f059",
+                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                              ],
+                              "iconName": "question-circle",
+                              "prefix": "fas",
+                            }
+                          }
+                          inverse={false}
+                          listItem={false}
+                          mask={null}
+                          pull={null}
+                          pulse={false}
+                          rotation={null}
+                          size="1x"
+                          spin={false}
+                          style={Object {}}
+                          symbol={false}
+                          title=""
+                          transform={null}
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                            data-icon="question-circle"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </FontAwesomeIcon>
+                        <Overlay
+                          animation={[Function]}
+                          placement="right"
+                          rootClose={false}
+                          show={false}
+                          target={
+                            <span
+                              class="label-help-target"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                data-icon="question-circle"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          }
+                        >
+                          <Overlay
+                            placement="right"
+                            rootClose={false}
+                            show={false}
+                            target={
+                              <span
+                                class="label-help-target"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                  data-icon="question-circle"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                            transition={[Function]}
+                          />
+                        </Overlay>
+                      </span>
+                    </LabelHelpTip>
+                  </label>
+                </div>
+              </Checkbox>
+            </div>
+          </Col>
+        </div>
+      </Row>
+    </div>
+  </LookupFieldOptions>
+</MockLookupProvider>
+`;
+
+exports[`LookupFieldOptions Selected container changes schemas 1`] = `
+<MockLookupProvider>
+  <LookupFieldOptions
+    index={1}
+    label="Lookup Field Options"
+    lockType="NotLocked"
+    lookupContainer="/StudyVerifyProject"
+    lookupQueryValue=""
+    lookupSchema=""
+    onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
+    original={
+      Immutable.Record {
+        "conceptURI": undefined,
+        "conditionalFormats": Immutable.List [],
+        "defaultScale": undefined,
+        "defaultValueType": undefined,
+        "defaultValue": undefined,
+        "defaultDisplayValue": undefined,
+        "description": undefined,
+        "dimension": undefined,
+        "excludeFromShifting": false,
+        "format": undefined,
+        "hidden": false,
+        "importAliases": undefined,
+        "label": undefined,
+        "lookupContainer": undefined,
+        "lookupQuery": undefined,
+        "lookupSchema": undefined,
+        "lookupValidator": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
+        "name": "key",
+        "PHI": undefined,
+        "primaryKey": undefined,
+        "propertyId": 1,
+        "propertyURI": "test",
+        "propertyValidators": Immutable.List [],
+        "rangeValidators": Immutable.List [],
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "regexValidators": Immutable.List [],
+        "recommendedVariable": false,
+        "required": false,
+        "scale": undefined,
+        "URL": undefined,
+        "shownInDetailsView": true,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "visible": true,
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Integer",
+          "name": "int",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "alternateRangeURI": "xsd:int",
+          "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
+        },
+        "lookupQueryValue": undefined,
+        "lookupType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Lookup",
+          "name": "lookup",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "alternateRangeURI": undefined,
+          "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
+        },
+        "original": Object {
+          "conceptURI": undefined,
+          "dataType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Integer",
+            "name": "int",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+            "alternateRangeURI": "xsd:int",
+            "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
+          },
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        },
+        "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
+      }
+    }
+  >
+    <div>
+      <Row
+        bsClass="row"
+        className="domain-row-expanded"
+        componentClass="div"
+      >
+        <div
+          className="domain-row-expanded row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={12}
+          >
+            <div
+              className="col-xs-12"
+            >
+              <div
+                className="domain-field-section-heading"
+              >
+                Lookup Field Options
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Row>
+      <Row
+        bsClass="row"
+        className="domain-row-expanded"
+        componentClass="div"
+      >
+        <div
+          className="domain-row-expanded row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Folder
+              </div>
+              <FolderSelect
+                disabled={false}
+                id="domainpropertiesrow-lookupContainer-1"
+                key="domainpropertiesrow-lookupContainer-1"
+                onChange={[Function]}
+                value="/StudyVerifyProject"
+              >
+                <FolderSelectImpl
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupContainer-1"
+                  name="domainpropertiesrow-lookupContainer"
+                  onChange={[Function]}
+                  value="/StudyVerifyProject"
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    context={
+                      Object {
+                        "activeContainer": Immutable.Record {
+                          "activeModules": Immutable.List [],
+                          "folderType": "",
+                          "hasRestrictedActiveModule": false,
+                          "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                          "isContainerTab": false,
+                          "isWorkbook": false,
+                          "name": "My Study",
+                          "parentId": "",
+                          "parentPath": "",
+                          "path": "/StudyVerifyProject/My Study",
+                          "sortOrder": 0,
+                          "title": "",
+                          "type": "",
+                        },
+                        "fetchContainers": [Function],
+                        "fetchQueries": [Function],
+                        "fetchSchemas": [Function],
+                      }
+                    }
+                    disabled={false}
+                    id="domainpropertiesrow-lookupContainer-1"
+                    name="domainpropertiesrow-lookupContainer"
+                    onChange={[Function]}
+                    value="/StudyVerifyProject"
+                  >
+                    <select
+                      className="form-control"
+                      context={
+                        Object {
+                          "activeContainer": Immutable.Record {
+                            "activeModules": Immutable.List [],
+                            "folderType": "",
+                            "hasRestrictedActiveModule": false,
+                            "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                            "isContainerTab": false,
+                            "isWorkbook": false,
+                            "name": "My Study",
+                            "parentId": "",
+                            "parentPath": "",
+                            "path": "/StudyVerifyProject/My Study",
+                            "sortOrder": 0,
+                            "title": "",
+                            "type": "",
+                          },
+                          "fetchContainers": [Function],
+                          "fetchQueries": [Function],
+                          "fetchSchemas": [Function],
+                        }
+                      }
+                      disabled={false}
+                      id="domainpropertiesrow-lookupContainer-1"
+                      name="domainpropertiesrow-lookupContainer"
+                      onChange={[Function]}
+                      value="/StudyVerifyProject"
+                    >
+                      <option
+                        key="_current"
+                        value=""
+                      >
+                        Current 
+                        Folder
+                      </option>
+                      <option
+                        key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
+                        value="/StudyVerifyProject"
+                      >
+                        /StudyVerifyProject
+                      </option>
+                      <option
+                        key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
+                        value="/StudyVerifyProject/My Study"
+                      >
+                        /StudyVerifyProject/My Study
+                      </option>
+                    </select>
+                  </FormControl>
+                </FolderSelectImpl>
+              </FolderSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Schema
+              </div>
+              <SchemaSelect
+                containerPath="/StudyVerifyProject"
+                disabled={false}
+                id="domainpropertiesrow-lookupSchema-1"
+                key="domainpropertiesrow-lookupSchema-1"
+                onChange={[Function]}
+                value=""
+              >
+                <SchemaSelectImpl
+                  containerPath="/StudyVerifyProject"
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupSchema-1"
+                  name="domainpropertiesrow-lookupSchema"
+                  onChange={[Function]}
+                  value=""
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    disabled={false}
+                    id="domainpropertiesrow-lookupSchema-1"
+                    name="domainpropertiesrow-lookupSchema"
+                    onChange={[Function]}
+                    placeholder="Select Schema"
+                    value=""
+                  >
+                    <select
+                      className="form-control"
+                      disabled={false}
+                      id="domainpropertiesrow-lookupSchema-1"
+                      name="domainpropertiesrow-lookupSchema"
+                      onChange={[Function]}
+                      placeholder="Select Schema"
+                      value=""
+                    >
+                      <option
+                        key="_default"
+                      />
+                      <option
+                        key="exp"
+                        value="exp"
+                      >
+                        exp
+                      </option>
+                      <option
+                        key="exp.data"
+                        value="exp.data"
+                      >
+                        exp.data
+                      </option>
+                      <option
+                        key="exp.materials"
+                        value="exp.materials"
+                      >
+                        exp.materials
+                      </option>
+                      <option
+                        key="lists"
+                        value="lists"
+                      >
+                        lists
+                      </option>
+                      <option
+                        key="study"
+                        value="study"
+                      >
+                        study
+                      </option>
+                    </select>
+                  </FormControl>
+                </SchemaSelectImpl>
+              </SchemaSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Table
+              </div>
+              <TargetTableSelect
+                containerPath="/StudyVerifyProject"
+                disabled={false}
+                id="domainpropertiesrow-lookupQueryValue-1"
+                key="domainpropertiesrow-lookupQueryValue-1"
+                lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                onChange={[Function]}
+                schemaName=""
+                value=""
+              >
+                <TargetTableSelectImpl
+                  containerPath="/StudyVerifyProject"
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupQueryValue-1"
+                  lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                  name="domainpropertiesrow-lookupQueryValue"
+                  onChange={[Function]}
+                  schemaName=""
+                  value=""
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    disabled={false}
+                    id="domainpropertiesrow-lookupQueryValue-1"
+                    name="domainpropertiesrow-lookupQueryValue"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <select
+                      className="form-control"
+                      disabled={false}
+                      id="domainpropertiesrow-lookupQueryValue-1"
+                      name="domainpropertiesrow-lookupQueryValue"
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        key="_default"
+                      />
+                      <option
+                        key="http://www.w3.org/2001/XMLSchema#int|Data"
+                        value="http://www.w3.org/2001/XMLSchema#int|Data"
+                      >
+                        Data
+                         (
+                        Integer
+                        )
+                      </option>
+                      <option
+                        key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                        value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                      >
+                        DataInputs
+                         (
+                        Integer
+                        )
+                      </option>
+                      <option
+                        key="http://www.w3.org/2001/XMLSchema#int|Runs"
+                        value="http://www.w3.org/2001/XMLSchema#int|Runs"
+                      >
+                        Runs
+                         (
+                        Integer
+                        )
+                      </option>
+                    </select>
+                  </FormControl>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={6}
+          >
+            <div
+              className="col-xs-6"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Lookup Validator
+              </div>
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                className="domain-field-checkbox-margin"
+                disabled={false}
+                id="domainpropertiesrow-lookupValidator-1"
+                inline={false}
+                name="domainpropertiesrow-lookupValidator"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="domain-field-checkbox-margin checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-lookupValidator-1"
+                      name="domainpropertiesrow-lookupValidator"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
+                    <LabelHelpTip
+                      body={[Function]}
+                      customStyle={Object {}}
+                      id="tooltip"
+                      size="1x"
+                      title="Lookup Validator"
+                    >
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <FontAwesomeIcon
+                          border={false}
+                          className="label-help-icon"
+                          fixedWidth={false}
+                          flip={null}
+                          icon={
+                            Object {
+                              "icon": Array [
+                                512,
+                                512,
+                                Array [],
+                                "f059",
+                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                              ],
+                              "iconName": "question-circle",
+                              "prefix": "fas",
+                            }
+                          }
+                          inverse={false}
+                          listItem={false}
+                          mask={null}
+                          pull={null}
+                          pulse={false}
+                          rotation={null}
+                          size="1x"
+                          spin={false}
+                          style={Object {}}
+                          symbol={false}
+                          title=""
+                          transform={null}
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                            data-icon="question-circle"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </FontAwesomeIcon>
+                        <Overlay
+                          animation={[Function]}
+                          placement="right"
+                          rootClose={false}
+                          show={false}
+                          target={
+                            <span
+                              class="label-help-target"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                data-icon="question-circle"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          }
+                        >
+                          <Overlay
+                            placement="right"
+                            rootClose={false}
+                            show={false}
+                            target={
+                              <span
+                                class="label-help-target"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                  data-icon="question-circle"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                            transition={[Function]}
+                          />
+                        </Overlay>
+                      </span>
+                    </LabelHelpTip>
+                  </label>
+                </div>
+              </Checkbox>
+            </div>
+          </Col>
+        </div>
+      </Row>
+    </div>
+  </LookupFieldOptions>
+</MockLookupProvider>
+`;
+
+exports[`LookupFieldOptions Selected schema changes queries 1`] = `
+<MockLookupProvider>
+  <LookupFieldOptions
+    index={1}
+    label="Lookup Field Options"
+    lockType="NotLocked"
+    lookupContainer="/StudyVerifyProject/My Study"
+    lookupQueryValue=""
+    lookupSchema="study"
+    onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
+    original={
+      Immutable.Record {
+        "conceptURI": undefined,
+        "conditionalFormats": Immutable.List [],
+        "defaultScale": undefined,
+        "defaultValueType": undefined,
+        "defaultValue": undefined,
+        "defaultDisplayValue": undefined,
+        "description": undefined,
+        "dimension": undefined,
+        "excludeFromShifting": false,
+        "format": undefined,
+        "hidden": false,
+        "importAliases": undefined,
+        "label": undefined,
+        "lookupContainer": undefined,
+        "lookupQuery": undefined,
+        "lookupSchema": undefined,
+        "lookupValidator": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
+        "name": "key",
+        "PHI": undefined,
+        "primaryKey": undefined,
+        "propertyId": 1,
+        "propertyURI": "test",
+        "propertyValidators": Immutable.List [],
+        "rangeValidators": Immutable.List [],
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "regexValidators": Immutable.List [],
+        "recommendedVariable": false,
+        "required": false,
+        "scale": undefined,
+        "URL": undefined,
+        "shownInDetailsView": true,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "visible": true,
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Integer",
+          "name": "int",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "alternateRangeURI": "xsd:int",
+          "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
+        },
+        "lookupQueryValue": undefined,
+        "lookupType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Lookup",
+          "name": "lookup",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "alternateRangeURI": undefined,
+          "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
+        },
+        "original": Object {
+          "conceptURI": undefined,
+          "dataType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Integer",
+            "name": "int",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+            "alternateRangeURI": "xsd:int",
+            "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
+          },
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        },
+        "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
+      }
+    }
+  >
+    <div>
+      <Row
+        bsClass="row"
+        className="domain-row-expanded"
+        componentClass="div"
+      >
+        <div
+          className="domain-row-expanded row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={12}
+          >
+            <div
+              className="col-xs-12"
+            >
+              <div
+                className="domain-field-section-heading"
+              >
+                Lookup Field Options
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Row>
+      <Row
+        bsClass="row"
+        className="domain-row-expanded"
+        componentClass="div"
+      >
+        <div
+          className="domain-row-expanded row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Folder
+              </div>
+              <FolderSelect
+                disabled={false}
+                id="domainpropertiesrow-lookupContainer-1"
+                key="domainpropertiesrow-lookupContainer-1"
+                onChange={[Function]}
+                value="/StudyVerifyProject/My Study"
+              >
+                <FolderSelectImpl
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupContainer-1"
+                  name="domainpropertiesrow-lookupContainer"
+                  onChange={[Function]}
+                  value="/StudyVerifyProject/My Study"
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    context={
+                      Object {
+                        "activeContainer": Immutable.Record {
+                          "activeModules": Immutable.List [],
+                          "folderType": "",
+                          "hasRestrictedActiveModule": false,
+                          "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                          "isContainerTab": false,
+                          "isWorkbook": false,
+                          "name": "My Study",
+                          "parentId": "",
+                          "parentPath": "",
+                          "path": "/StudyVerifyProject/My Study",
+                          "sortOrder": 0,
+                          "title": "",
+                          "type": "",
+                        },
+                        "fetchContainers": [Function],
+                        "fetchQueries": [Function],
+                        "fetchSchemas": [Function],
+                      }
+                    }
+                    disabled={false}
+                    id="domainpropertiesrow-lookupContainer-1"
+                    name="domainpropertiesrow-lookupContainer"
+                    onChange={[Function]}
+                    value="/StudyVerifyProject/My Study"
+                  >
+                    <select
+                      className="form-control"
+                      context={
+                        Object {
+                          "activeContainer": Immutable.Record {
+                            "activeModules": Immutable.List [],
+                            "folderType": "",
+                            "hasRestrictedActiveModule": false,
+                            "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                            "isContainerTab": false,
+                            "isWorkbook": false,
+                            "name": "My Study",
+                            "parentId": "",
+                            "parentPath": "",
+                            "path": "/StudyVerifyProject/My Study",
+                            "sortOrder": 0,
+                            "title": "",
+                            "type": "",
+                          },
+                          "fetchContainers": [Function],
+                          "fetchQueries": [Function],
+                          "fetchSchemas": [Function],
+                        }
+                      }
+                      disabled={false}
+                      id="domainpropertiesrow-lookupContainer-1"
+                      name="domainpropertiesrow-lookupContainer"
+                      onChange={[Function]}
+                      value="/StudyVerifyProject/My Study"
+                    >
+                      <option
+                        key="_current"
+                        value=""
+                      >
+                        Current 
+                        Folder
+                      </option>
+                      <option
+                        key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
+                        value="/StudyVerifyProject"
+                      >
+                        /StudyVerifyProject
+                      </option>
+                      <option
+                        key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
+                        value="/StudyVerifyProject/My Study"
+                      >
+                        /StudyVerifyProject/My Study
+                      </option>
+                    </select>
+                  </FormControl>
+                </FolderSelectImpl>
+              </FolderSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Schema
+              </div>
+              <SchemaSelect
+                containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
+                id="domainpropertiesrow-lookupSchema-1"
+                key="domainpropertiesrow-lookupSchema-1"
+                onChange={[Function]}
+                value="study"
+              >
+                <SchemaSelectImpl
+                  containerPath="/StudyVerifyProject/My Study"
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupSchema-1"
+                  name="domainpropertiesrow-lookupSchema"
+                  onChange={[Function]}
+                  value="study"
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    disabled={false}
+                    id="domainpropertiesrow-lookupSchema-1"
+                    name="domainpropertiesrow-lookupSchema"
+                    onChange={[Function]}
+                    placeholder="Select Schema"
+                    value="study"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={false}
+                      id="domainpropertiesrow-lookupSchema-1"
+                      name="domainpropertiesrow-lookupSchema"
+                      onChange={[Function]}
+                      placeholder="Select Schema"
+                      value="study"
+                    >
+                      <option
+                        key="exp"
+                        value="exp"
+                      >
+                        exp
+                      </option>
+                      <option
+                        key="exp.data"
+                        value="exp.data"
+                      >
+                        exp.data
+                      </option>
+                      <option
+                        key="exp.materials"
+                        value="exp.materials"
+                      >
+                        exp.materials
+                      </option>
+                      <option
+                        key="lists"
+                        value="lists"
+                      >
+                        lists
+                      </option>
+                      <option
+                        key="study"
+                        value="study"
+                      >
+                        study
+                      </option>
+                    </select>
+                  </FormControl>
+                </SchemaSelectImpl>
+              </SchemaSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={2}
+          >
+            <div
+              className="col-xs-2"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Target Table
+              </div>
+              <TargetTableSelect
+                containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
+                id="domainpropertiesrow-lookupQueryValue-1"
+                key="domainpropertiesrow-lookupQueryValue-1"
+                lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                onChange={[Function]}
+                schemaName="study"
+                value=""
+              >
+                <TargetTableSelectImpl
+                  containerPath="/StudyVerifyProject/My Study"
+                  context={
+                    Object {
+                      "activeContainer": Immutable.Record {
+                        "activeModules": Immutable.List [],
+                        "folderType": "",
+                        "hasRestrictedActiveModule": false,
+                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                        "isContainerTab": false,
+                        "isWorkbook": false,
+                        "name": "My Study",
+                        "parentId": "",
+                        "parentPath": "",
+                        "path": "/StudyVerifyProject/My Study",
+                        "sortOrder": 0,
+                        "title": "",
+                        "type": "",
+                      },
+                      "fetchContainers": [Function],
+                      "fetchQueries": [Function],
+                      "fetchSchemas": [Function],
+                    }
+                  }
+                  disabled={false}
+                  id="domainpropertiesrow-lookupQueryValue-1"
+                  lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                  name="domainpropertiesrow-lookupQueryValue"
+                  onChange={[Function]}
+                  schemaName="study"
+                  value=""
+                >
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    disabled={false}
+                    id="domainpropertiesrow-lookupQueryValue-1"
+                    name="domainpropertiesrow-lookupQueryValue"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <select
+                      className="form-control"
+                      disabled={false}
+                      id="domainpropertiesrow-lookupQueryValue-1"
+                      name="domainpropertiesrow-lookupQueryValue"
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        key="_default"
+                      />
+                      <option
+                        key="http://www.w3.org/2001/XMLSchema#int|Data"
+                        value="http://www.w3.org/2001/XMLSchema#int|Data"
+                      >
+                        Data
+                         (
+                        Integer
+                        )
+                      </option>
+                      <option
+                        key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                        value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                      >
+                        DataInputs
+                         (
+                        Integer
+                        )
+                      </option>
+                      <option
+                        key="http://www.w3.org/2001/XMLSchema#int|Runs"
+                        value="http://www.w3.org/2001/XMLSchema#int|Runs"
+                      >
+                        Runs
+                         (
+                        Integer
+                        )
+                      </option>
+                    </select>
+                  </FormControl>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={6}
+          >
+            <div
+              className="col-xs-6"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Lookup Validator
+              </div>
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                className="domain-field-checkbox-margin"
+                disabled={false}
+                id="domainpropertiesrow-lookupValidator-1"
+                inline={false}
+                name="domainpropertiesrow-lookupValidator"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="domain-field-checkbox-margin checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-lookupValidator-1"
+                      name="domainpropertiesrow-lookupValidator"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
+                    <LabelHelpTip
+                      body={[Function]}
+                      customStyle={Object {}}
+                      id="tooltip"
+                      size="1x"
+                      title="Lookup Validator"
+                    >
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <FontAwesomeIcon
+                          border={false}
+                          className="label-help-icon"
+                          fixedWidth={false}
+                          flip={null}
+                          icon={
+                            Object {
+                              "icon": Array [
+                                512,
+                                512,
+                                Array [],
+                                "f059",
+                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                              ],
+                              "iconName": "question-circle",
+                              "prefix": "fas",
+                            }
+                          }
+                          inverse={false}
+                          listItem={false}
+                          mask={null}
+                          pull={null}
+                          pulse={false}
+                          rotation={null}
+                          size="1x"
+                          spin={false}
+                          style={Object {}}
+                          symbol={false}
+                          title=""
+                          transform={null}
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                            data-icon="question-circle"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </FontAwesomeIcon>
+                        <Overlay
+                          animation={[Function]}
+                          placement="right"
+                          rootClose={false}
+                          show={false}
+                          target={
+                            <span
+                              class="label-help-target"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                data-icon="question-circle"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          }
+                        >
+                          <Overlay
+                            placement="right"
+                            rootClose={false}
+                            show={false}
+                            target={
+                              <span
+                                class="label-help-target"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                  data-icon="question-circle"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                            transition={[Function]}
+                          />
+                        </Overlay>
+                      </span>
+                    </LabelHelpTip>
+                  </label>
+                </div>
+              </Checkbox>
+            </div>
+          </Col>
+        </div>
+      </Row>
+    </div>
+  </LookupFieldOptions>
+</MockLookupProvider>
+`;

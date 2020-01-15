@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Section /> custom properties 1`] = `
+<div
+  className="g-section"
+>
+  <div
+    className="panel panel-default testing-class-name"
+  >
+    <div
+      className="panel-body"
+    >
+      <div
+        style={
+          Object {
+            "borderBottom": "2px solid #cccccc",
+            "marginBottom": "30px",
+          }
+        }
+      >
+        <div
+          style={
+            Object {
+              "display": "inline-block",
+              "fontSize": "200%",
+              "marginBottom": "8px",
+            }
+          }
+        >
+          Testing Title
+        </div>
+        <div
+          className="pull-right"
+        >
+          <div>
+            Testing Context
+          </div>
+        </div>
+        <div
+          style={
+            Object {
+              "fontWeight": 300,
+              "marginBottom": "8px",
+            }
+          }
+        >
+          <p>
+            Testing Caption
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Section /> default properties 1`] = `
+<div
+  className="g-section"
+>
+  <div
+    className="panel panel-default "
+  >
+    <div
+      className="panel-body"
+    >
+      <div
+        style={Object {}}
+      />
+    </div>
+  </div>
+</div>
+`;

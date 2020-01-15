@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavigationBar/> default props 1`] = `
+<nav
+  className="navbar navbar-container test-loc-nav-header"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="navbar-left col-sm-5 col-xs-7"
+      >
+        <span
+          className="navbar-item pull-left"
+        />
+        <span
+          className="navbar-item-padded"
+        />
+      </div>
+      <div
+        className="navbar-right col-sm-7 col-xs-5"
+      >
+        <div
+          className="navbar-item pull-right"
+        />
+        <div
+          className="navbar-item pull-right hidden-xs"
+        />
+        <div
+          className="navbar-item pull-right visible-xs"
+        >
+          <i
+            className="fa fa-search navbar__xs-search-icon"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`<NavigationBar/> with search box 1`] = `
+<nav
+  className="navbar navbar-container test-loc-nav-header"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="navbar-left col-sm-5 col-xs-7"
+      >
+        <span
+          className="navbar-item pull-left"
+        />
+        <span
+          className="navbar-item-padded"
+        />
+      </div>
+      <div
+        className="navbar-right col-sm-7 col-xs-5"
+      >
+        <div
+          className="navbar-item pull-right"
+        />
+        <div
+          className="navbar-item pull-right hidden-xs"
+        >
+          <form
+            className="navbar__search-form"
+            onSubmit={[Function]}
+          >
+            <div
+              className="form-group"
+            >
+              <i
+                className="fa fa-search navbar__search-icon"
+              />
+              <input
+                className="navbar__search-input"
+                onChange={[Function]}
+                placeholder="Enter Search Terms"
+                size={34}
+                type="text"
+                value=""
+              />
+            </div>
+          </form>
+        </div>
+        <div
+          className="navbar-item pull-right visible-xs"
+        >
+          <i
+            className="fa fa-search navbar__xs-search-icon"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;

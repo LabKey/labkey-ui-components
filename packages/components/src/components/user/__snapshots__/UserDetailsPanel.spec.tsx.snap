@@ -1,0 +1,462 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserDetailsPanel/> no principal 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    User Details
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div>
+      No user selected.
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    User Details
+  </div>
+  <div
+    className="panel-body"
+  >
+    <p
+      className="principal-title-primary"
+    >
+      ReaderDisplayName
+    </p>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Email
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        reader_email_address_might_be_long@localhost.test
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        First Name
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        test1
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Last Name
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        test2
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Description
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        This is my user description of what I do for the company. Isn't it really interesting?
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Created
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        2017-10-27 11:34
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Last Login
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        2019-11-18 09:15
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Reset Password
+    </button>
+    <button
+      className="pull-right btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        Object {
+          "marginLeft": "10px",
+        }
+      }
+      type="button"
+    >
+      Delete
+    </button>
+    <button
+      className="pull-right btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        Object {
+          "marginLeft": "10px",
+        }
+      }
+      type="button"
+    >
+      Deactivate
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<UserDetailsPanel/> with principal and buttons not allowDelete 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    User Details
+  </div>
+  <div
+    className="panel-body"
+  >
+    <p
+      className="principal-title-primary"
+    >
+      ReaderDisplayName
+    </p>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Email
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        reader_email_address_might_be_long@localhost.test
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        First Name
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        test1
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Last Name
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        test2
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Description
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        This is my user description of what I do for the company. Isn't it really interesting?
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Created
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        2017-10-27 11:34
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Last Login
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        2019-11-18 09:15
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Reset Password
+    </button>
+    <button
+      className="pull-right btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        Object {
+          "marginLeft": "10px",
+        }
+      }
+      type="button"
+    >
+      Deactivate
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    User Details
+  </div>
+  <div
+    className="panel-body"
+  >
+    <p
+      className="principal-title-primary"
+    >
+      ReaderDisplayName
+    </p>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Email
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        reader_email_address_might_be_long@localhost.test
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        First Name
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        test1
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Last Name
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        test2
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Description
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        This is my user description of what I do for the company. Isn't it really interesting?
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Created
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        2017-10-27 11:34
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Last Login
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        2019-11-18 09:15
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="principal-detail-label"
+    >
+      Effective Roles:
+    </div>
+    <ul
+      className="permissions-ul"
+    >
+      <li>
+        Editor
+      </li>
+      <li>
+        Folder Administrator
+      </li>
+      <li>
+        Project Administrator
+      </li>
+      <li>
+        Reader
+      </li>
+      <li>
+        Restricted Reader
+      </li>
+      <li>
+        Submitter
+      </li>
+    </ul>
+  </div>
+</div>
+`;

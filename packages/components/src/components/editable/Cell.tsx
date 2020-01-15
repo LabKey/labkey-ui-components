@@ -68,11 +68,11 @@ const CellHoC = withGlobal<OwnProps, StateProps, any>(
         const r = ownProps.rowIdx;
 
         return {
-            focused: model.isFocused(c, r),
-            message: model.getMessage(c, r),
-            selected: model.isSelected(c, r),
-            selection: model.inSelection(c, r),
-            values: model.getValue(c, r)
+            focused: model ? model.isFocused(c, r) : false,
+            message: model ? model.getMessage(c, r) : undefined,
+            selected: model ? model.isSelected(c, r): false,
+            selection: model ? model.inSelection(c, r) : false,
+            values: model ? model.getValue(c, r) : List<ValueDescriptor>()
         };
     }
 );

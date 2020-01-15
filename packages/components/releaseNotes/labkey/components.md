@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* EditableGrid cell render optimization - prevent unnecessary re-render of all cells when one is edited/selected/etc.
+
 ### version 0.13.0
 *Released*: 14 January 2020
 * Item 6571: User Details panel updates to allow single user delete / deactivate / reactivate / reset password

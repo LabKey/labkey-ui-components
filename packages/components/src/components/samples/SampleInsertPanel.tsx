@@ -978,7 +978,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                             <div className={'col-sm-7'}>
                                 <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
                             </div>
-                            {editSampleTypeDetailsLink ? <Link className={'pull-right sample-insert--link'} to={editSampleTypeDetailsLink.toString()}>Edit Sample Type Details</Link> : undefined}
+                            {editSampleTypeDetailsLink ? <div className={'col-sm-5'}><Link className={'pull-right sample-insert--link'} to={editSampleTypeDetailsLink.toString()}>Edit Sample Type Details</Link></div> : undefined}
                         </div>
                         <div className="row">
                             <div className="col-sm-12">

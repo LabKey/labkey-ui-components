@@ -347,7 +347,7 @@ export function getCommonDataValues(data: Map<any, any>) : any {
         if (rowData) {
             rowData.forEach((data, key) => {
                 if (!fieldsInConflict.has(key)) { // skip fields that are already in conflict
-                    const value = Iterable.isIterable(Map) ? data.get('value') : data;//TODO
+                    const value = Iterable.isIterable(data) ? data.get('value') : data;
                     const currentValueEmpty = valueIsEmpty(value);
                     const havePreviousValue = valueMap.has(key);
                     const arrayNotEqual = Array.isArray(value) && (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));

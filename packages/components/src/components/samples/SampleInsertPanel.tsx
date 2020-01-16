@@ -91,7 +91,7 @@ class SampleGridLoader implements IGridLoader {
 }
 
 interface OwnProps {
-    afterSampleCreation?: (sampleSetName, filter, sampleCount) => void
+    afterSampleCreation?: (sampleSetName, filter, sampleCount, actionStr) => void
     getFileTemplateUrl?: (queryInfo: QueryInfo) => string
     location?: Location
     onCancel?: () => void
@@ -635,7 +635,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
                 this.setSubmitting(false);
                 if (this.props.afterSampleCreation) {
-                    this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), response.getFilter(), response.rows.length);
+                    this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), response.getFilter(), response.rows.length, 'created');
                 }
             }
             else {
@@ -658,7 +658,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         insertModel.deriveSamples(count).then((result: GenerateSampleResponse) => {
             this.setSubmitting(false);
             if (this.props.afterSampleCreation) {
-                this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), result.getFilter(), result.data.materialOutputs.length);
+                this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), result.getFilter(), result.data.materialOutputs.length, 'created');
             }
         }).catch((reason) => {
             this.setSubmitting(false);
@@ -877,7 +877,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         handleFileImport(originalQueryInfo, file, isMerge).then((response) => {
             this.setSubmitting(false);
             if (this.props.afterSampleCreation) {
-                this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), null, response.rowCount);
+                this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), null, response.rowCount, 'imported');
             }
 
         }).catch((error) => {

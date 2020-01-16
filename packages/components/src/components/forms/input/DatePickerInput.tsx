@@ -123,11 +123,10 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             queryColumn,
             showLabel,
             addLabelAsterisk,
-            placeholderText,
-            formsy
+            placeholderText
         } = this.props;
 
-       const { isDisabled, selectedDate, selectedDateStr } = this.state;
+       const { isDisabled, selectedDate } = this.state;
 
        console.log(this.props.getValue());
        return (
@@ -137,8 +136,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                     labelOverlayProps={{
                         isFormsy: false,
                         inputId: queryColumn.name,
-                        addLabelAsterisk: addLabelAsterisk,
-                        labelClass: 'control-label text-left col-sm-3 col-xs-12'
+                        addLabelAsterisk: addLabelAsterisk
                     }}
                     showLabel={showLabel}
                     showToggle={allowDisable}
@@ -154,6 +152,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                         className={inputClassName}
                         isClearable={true}
                         name={name ? name : queryColumn.name}
+                        id={queryColumn.name}
                         disabled={isDisabled}
                         selected={selectedDate}
                         onChange={this.onChange}

@@ -544,6 +544,11 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
 
         let maxRows = parseInt(pageCount);
         if (!isNaN(maxRows)) {
+            // Issue 39420: pageCount param of negative number will result in all rows being shown in QueryGrid
+            if (maxRows < 0) {
+                maxRows = 0;
+            }
+
             props.maxRows = maxRows;
         }
     }

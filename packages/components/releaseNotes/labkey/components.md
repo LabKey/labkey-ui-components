@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Issue 38824: Allow users to go to the first and last page in a grid and see current page number and total page count
     * Issue 39367: Disabled button tool tip on grid doesn't hide for disabled button
     * Issue 39405: Paging too far can result in no data
+    * Issue 39420: Setting url pageSize to negative number results in all data being shown
 
 ### version 0.13.0
 *Released*: 14 January 2020

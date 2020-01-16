@@ -42,6 +42,10 @@ and add a tooltip for the AddControls with info on the data size limits.
     - Update to @labkey/api release version 0.0.29
     - Issue 39359: fix to prevent API call to study-reports-getReportInfos if we know study module isn't available
 
+### version TBD
+*Released*: 16 January 2020
+* Changes to include server side warnings while saving domain
+
 ### version 0.9.0
 *Released*: 8 January 2020
 * Add selectionKey getter to QueryGridModel

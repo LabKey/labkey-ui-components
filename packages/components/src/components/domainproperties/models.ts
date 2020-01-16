@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, Record } from 'immutable';
+import {fromJS, is, List, Map, Record} from 'immutable';
 import { Utils } from '@labkey/api';
 import {
     ATTACHMENT_RANGE_URI,
@@ -1159,6 +1159,13 @@ export class DomainException extends Record({
                 errors = DomainFieldError.fromJS(rawModel.errors, severityLevel);
             }
 
+            let severity = severityLevel;
+            let hasOnlyWarnings = errors.find(error => error.severity === SEVERITY_LEVEL_WARN);
+
+            if (hasOnlyWarnings) {
+                severity = SEVERITY_LEVEL_WARN;
+            }
+
             const domainName = this.getDomainNameFromException(rawModel.exception);
             let exception = rawModel.exception;
             if (domainName) {
@@ -1173,7 +1180,7 @@ export class DomainException extends Record({
             return new DomainException({
                 exception: exception,
                 success: rawModel.success,
-                severity: severityLevel,
+                severity: severity,
                 domainName: domainName,
                 errors: errors
             })
@@ -1285,26 +1292,29 @@ export class DomainFieldError extends Record({
     rowIndexes: List<number>;
     newRowIndexes?: List<number>;
 
-    static fromJS(rawFields: Array<any>, severityLevel: String): List<DomainFieldError> {
+    static fromJS(errors: Array<any>, severityLevel: String): List<DomainFieldError> {
 
         let fieldErrors = List<DomainFieldError>();
 
-        for (let i=0; i < rawFields.length; i++) {
+        let hasErrors = errors.find(error => error.severity === SEVERITY_LEVEL_ERROR);
+
+        for (let i=0; i < errors.length; i++) {
+
+            // stripping out server side warnings when there are errors
+            if (errors[i].id === SEVERITY_LEVEL_WARN && hasErrors)
+                continue;
 
             //empty field name and property id comes in as "form" string from the server, resetting it to undefined here
-            let fieldName = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].field);
-            let propertyId = ((rawFields[i].id === "form" && rawFields[i].field === "form") || rawFields[i].id < 1 ? undefined : rawFields[i].id);
+            let fieldName = (errors[i].id === "form" && errors[i].field === "form" ? undefined : errors[i].field);
+            let propertyId = ((errors[i].id === "form" && errors[i].field === "form") || errors[i].id < 1 ? undefined : errors[i].id);
+            let severity = (errors[i].id === "Warning" ? SEVERITY_LEVEL_WARN : severityLevel);
 
-            let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId,
-                severity: severityLevel, serverError: true, rowIndexes: (rawFields[i].rowIndexes ? rawFields[i].rowIndexes : List<number>())});
+            let domainFieldError = new DomainFieldError({message: errors[i].message, fieldName, propertyId,
+                severity: severity, serverError: true, rowIndexes: (errors[i].rowIndexes ? errors[i].rowIndexes : List<number>())});
             fieldErrors = fieldErrors.push(domainFieldError);
         }
 
         return fieldErrors;
-    }
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
     }
 }
 

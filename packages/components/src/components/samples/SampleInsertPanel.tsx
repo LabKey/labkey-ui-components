@@ -92,6 +92,7 @@ class SampleGridLoader implements IGridLoader {
 
 interface OwnProps {
     afterSampleCreation?: (sampleSetName, filter, sampleCount) => void
+    getFileTemplateUrl?: (queryInfo: QueryInfo) => string
     location?: Location
     onCancel?: () => void
     maxSamples?: number
@@ -562,7 +563,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                 {insertModel.isInit && (
                     <SelectInput
                         formsy={false}
-                        inputClass="col-md-6 col-sm-5 col-xs-12"
+                        inputClass="col-sm-5"
                         label="Sample Type"
                         labelClass="col-sm-3 col-xs-12 sample-insert--parent-label"
                         name="targetSampleSet"
@@ -904,7 +905,11 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     getTemplateUrl(): any {
+        const { getFileTemplateUrl } = this.props;
         const { originalQueryInfo } = this.state;
+        if (getFileTemplateUrl && originalQueryInfo)
+            return getFileTemplateUrl(originalQueryInfo);
+
         return originalQueryInfo && Utils.isArray(originalQueryInfo.importTemplates)  && originalQueryInfo.importTemplates[0]
             ? originalQueryInfo.importTemplates[0].url : undefined;
     }

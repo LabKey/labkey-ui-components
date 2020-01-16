@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update QueryInfoForms to use date picker for date fields
 * Add BulkAddUpdateForm
 * Add support for bulk update selected grid rows for SampleInsertPanel and AssayImportPanels
+* Update SampleInsertPanel to support tabbed grid and file based insert
 
 ### version 0.13.0
 *Released*: 14 January 2020

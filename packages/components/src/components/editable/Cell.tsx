@@ -25,6 +25,7 @@ import { CellMessage, EditorModel, ValueDescriptor } from '../../models';
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { QueryColumn } from '../base/models/model';
+import { State } from "reactn/default";
 
 interface OwnProps {
     col: QueryColumn
@@ -61,8 +62,8 @@ type Props = OwnProps & StateProps;
  * This mechanism is important for rendering performance of an EditableGrid containing
  * many instances of these Cells.
  */
-const CellHoC = withGlobal<OwnProps, StateProps, any>(
-    (global, ownProps: OwnProps) => {
+const CellHoC = withGlobal<State, any, OwnProps>(
+    (global: State, reducer: any, ownProps: OwnProps) => {
         const model: EditorModel = global.QueryGrid_editors.get(ownProps.modelId);
         const c = ownProps.colIdx;
         const r = ownProps.rowIdx;
@@ -84,6 +85,7 @@ class CellImpl extends React.PureComponent<Props, any> {
     private displayEl: React.RefObject<any>;
 
     constructor(props: Props) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.handleBlur = this.handleBlur.bind(this);
@@ -314,5 +316,4 @@ class CellImpl extends React.PureComponent<Props, any> {
     }
 }
 
-// reactn 1.0.0 do not support this mechanism as it does not export its interface types. Smash with "any". :-(
-export const Cell: any /*GlobalPureComponent<OwnProps, any>*/ = CellHoC(CellImpl);
+export const Cell = CellHoC(CellImpl);

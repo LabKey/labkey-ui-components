@@ -56,6 +56,7 @@ interface QueryGridState {
 export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
     constructor(props: QueryGridProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         // bind event handlers

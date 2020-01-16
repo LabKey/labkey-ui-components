@@ -154,6 +154,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     private readonly wrapper: React.RefObject<any>;
 
     constructor(props: EditableGridProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.onAddRows = this.onAddRows.bind(this);

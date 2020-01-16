@@ -39,6 +39,7 @@ export class ViewSelector extends React.Component<Props, any> {
     dropId: string;
 
     constructor(props: Props) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.dropId = generateId('viewselector-');

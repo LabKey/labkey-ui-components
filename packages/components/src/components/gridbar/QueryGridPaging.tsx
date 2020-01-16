@@ -32,13 +32,6 @@ export class QueryGridPaging extends React.Component<Props, any> {
         showCounts: true
     };
 
-    constructor(props: Props) {
-        super(props);
-
-        this.nextPage = this.nextPage.bind(this);
-        this.prevPage = this.prevPage.bind(this);
-    }
-
     shouldComponentUpdate(nextProps: Props) {
         const { model } = this.props;
         const nextModel = nextProps.model;
@@ -52,15 +45,15 @@ export class QueryGridPaging extends React.Component<Props, any> {
         );
     }
 
-    nextPage() {
+    nextPage = () => {
         const { model } = this.props;
         loadPage(model, model.pageNumber + 1);
-    }
+    };
 
-    prevPage() {
+    prevPage = () => {
         const { model } = this.props;
         loadPage(model, model.pageNumber - 1);
-    }
+    };
 
     render() {
         const { model, showCounts } = this.props;

@@ -27,11 +27,6 @@ interface Props {
 
 export class GridSelectionBanner extends React.Component<Props, any> {
 
-    constructor(props: Props) {
-        super(props);
-
-    }
-
     selectAll = () => {
         gridSelectAll(this.props.model, this.props.onSelectionChange);
     };

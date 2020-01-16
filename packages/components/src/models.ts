@@ -54,6 +54,7 @@ interface IStateModelProps {
     showViewSelector?: boolean
     containerPath?: string
     containerFilter?: string
+    queryParameters?: any
 }
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
@@ -157,6 +158,10 @@ export function getStateQueryGridModel(
 
             if (props.queryInfo !== undefined) {
                 modelProps.queryInfo = props.queryInfo;
+            }
+
+            if (props.queryParameters !== undefined) {
+                modelProps.queryParameters = props.queryParameters;
             }
 
             if (props.maxRows !== undefined) {

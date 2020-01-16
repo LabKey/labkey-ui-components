@@ -42,6 +42,7 @@ export class PageSizeSelector extends React.PureComponent<Props, any> {
 
     onClick(selectedVal: number) {
         setMaxRows(this.props.model, selectedVal);
+        (document.activeElement as HTMLElement).blur(); // Issue 39418
     }
 
     render() {

@@ -59,6 +59,7 @@ export class QueryGridPaging extends React.Component<Props, any> {
     goToPage = (pageNumber: number) => {
         const { model } = this.props;
         loadPage(model, pageNumber);
+        (document.activeElement as HTMLElement).blur(); // Issue 39418
     };
 
     render() {

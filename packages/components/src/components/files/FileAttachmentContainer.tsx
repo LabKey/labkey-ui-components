@@ -38,7 +38,7 @@ interface FileAttachmentContainerProps {
     labelLong?: string
     initialFileNames?: Array<string>
     initialFiles?: {[key:string]: File}
-    compact: boolean
+    compact?: boolean
 }
 
 interface FileAttachmentContainerState {
@@ -273,8 +273,11 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         if (errorMsg !== '' && errorMsg !== undefined) {
             return (
                 <Alert
-                    className={classNames({"file-upload--error-message--compact": this.props.compact})}
-                    bsStyle={'danger'}>{errorMsg}</Alert>
+                    className={this.props.compact ? "file-upload--error-message--compact" : null}
+                    bsStyle={'danger'}
+                >
+                    {errorMsg}
+                </Alert>
             )
         }
     }
@@ -307,20 +310,19 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 <div className={classNames("file-upload--container", (hideFileUpload ? "hidden" : "block"))}>
                     <label
                         className={classNames({
-                            "file-upload--label": !compact,
-                            "file-upload--label--compact": compact,
-                            'file-upload__is-hover': isHover
+                            'file-upload--label': !compact,
+                            'file-upload--label--compact': compact,
+                            'file-upload__is-hover': isHover,
                         })}
                         htmlFor={fileUploadText}
                         onDragEnter={this.handleDrag}
                         onDragLeave={this.handleLeave}
                         onDragOver={this.handleDrag}
-                        onDrop={this.handleDrop}
-                    >
+                        onDrop={this.handleDrop}>
                         <i
-                            className={classNames(  //to reviewer: not sure how to best indent this part
-                                "fa fa-cloud-upload",
-                                {"fa-2x cloud-logo": !compact, "file-upload__label__icon": compact}
+                            className={classNames(
+                                'fa fa-cloud-upload',
+                                { 'fa-2x cloud-logo': !compact, 'file-upload__label__icon': compact }
                             )}
                             aria-hidden="true"
                         />
@@ -334,7 +336,8 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                         name={fileUploadText}
                         onChange={this.handleChange}
                         ref={this.fileInput}
-                        type="file"/>
+                        type="file"
+                    />
                 </div>
 
                 {this.renderErrorDetails()}

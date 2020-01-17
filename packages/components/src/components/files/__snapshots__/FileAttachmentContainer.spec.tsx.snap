@@ -36,6 +36,7 @@ exports[`<FileAttachmentContainer/> error msg 1`] = `
     <Alert
       bsClass="alert"
       bsStyle="danger"
+      className={null}
       closeLabel="Close alert"
     >
       <div

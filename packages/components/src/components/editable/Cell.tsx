@@ -13,32 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as OrigReact from 'react';
-import React, { withGlobal } from 'reactn';
+import React from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
 import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from '../../actions';
-import { CellMessage, EditorModel, ValueDescriptor } from '../../models';
+import { CellMessage, ValueDescriptor } from '../../models';
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { QueryColumn } from '../base/models/model';
-import { State } from "reactn/default";
 
-interface OwnProps {
+interface Props {
     col: QueryColumn
     colIdx: number
     modelId: string
     name?: string
     placeholder?: string
     readOnly?: boolean
-    row: any
     rowIdx: number
-}
-
-interface StateProps {
     focused: boolean
     message: CellMessage
     selected: boolean
@@ -46,46 +40,13 @@ interface StateProps {
     values: List<ValueDescriptor>
 }
 
-type Props = OwnProps & StateProps;
-
-/**
- * withGlobal() creates a Higher-Order Component that passes the global
- * state to the wrapped Component as props. In this case the global state is
- * found on the EditorModel associated with this Cell. The advantage gained
- * is two-fold:
- * 1. Only updates to the properties in the global state that are relevant to the Cell
- *    cause a change to the Cell's component props.
- * 2. The Cell can take advantage of being React.PureComponent where only changes
- *    to the component's props cause a re-render. Conversely, if the props are unchanged
- *    (from a shallow equivalency check) then the component will not re-render.
- *
- * This mechanism is important for rendering performance of an EditableGrid containing
- * many instances of these Cells.
- */
-const CellHoC = withGlobal<State, any, OwnProps>(
-    (global: State, reducer: any, ownProps: OwnProps) => {
-        const model: EditorModel = global.QueryGrid_editors.get(ownProps.modelId);
-        const c = ownProps.colIdx;
-        const r = ownProps.rowIdx;
-
-        return {
-            focused: model ? model.isFocused(c, r) : false,
-            message: model ? model.getMessage(c, r) : undefined,
-            selected: model ? model.isSelected(c, r): false,
-            selection: model ? model.inSelection(c, r) : false,
-            values: model ? model.getValue(c, r) : List<ValueDescriptor>()
-        };
-    }
-);
-
-class CellImpl extends React.PureComponent<Props, any> {
+export class Cell extends React.PureComponent<Props, any> {
 
     private changeTO: number;
     private clickTO: number;
     private displayEl: React.RefObject<any>;
 
     constructor(props: Props) {
-        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.handleBlur = this.handleBlur.bind(this);
@@ -96,10 +57,8 @@ class CellImpl extends React.PureComponent<Props, any> {
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
 
-        this.displayEl = OrigReact.createRef();
+        this.displayEl = React.createRef();
     }
-
-    // shouldComponentUpdate -- don't ever use this
 
     componentDidUpdate() {
         if (!this.props.focused && this.props.selected) {
@@ -124,6 +83,8 @@ class CellImpl extends React.PureComponent<Props, any> {
 
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         event.persist();
+
+        clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
             const { colIdx, modelId, rowIdx } = this.props;
             modifyCell(modelId, colIdx, rowIdx, {
@@ -315,5 +276,3 @@ class CellImpl extends React.PureComponent<Props, any> {
         return <input {...inputProps}/>;
     }
 }
-
-export const Cell = CellHoC(CellImpl);

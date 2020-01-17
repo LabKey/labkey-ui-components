@@ -3,7 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* EditableGrid cell render optimization - prevent unnecessary re-render of all cells when one is edited/selected/etc.
+* EditableGrid cell render optimization
+    - prevent unnecessary re-render of all cells when one is edited/selected/etc.
+    - move reactn global state connection to EditableGrid and make Cell components PureComponents
+    - update to reactn version 2.2.4
 
 ### version 0.13.0
 *Released*: 14 January 2020

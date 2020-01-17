@@ -671,7 +671,6 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 allowFieldDisable={this.props.allowFieldDisable}
                 onSubmitForEdit={this.bulkAdd}
                 asModal={true}
-                useDatePicker={true}
                 checkRequiredFields={false}
                 showLabelAsterisk={true}
                 submitForEditText={`Add ${capitalizeFirstChar(this.props.addControlProps.nounPlural)} to Grid`}
@@ -708,17 +707,11 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         )
     }
 
-    editSelectionInGrid(updatedData: any) : Promise<any> {
-        const {bulkUpdateProps} = this.props;
+    editSelectionInGrid(updatedData: OrderedMap<string, any>) : Promise<any> {
         const model = this.getModel(this.props);
 
-        let data = updatedData;
-        if (bulkUpdateProps && bulkUpdateProps.columnFilter) {
-            data = this.restoreBulkInsertData(model, updatedData);
-        }
-
         return new Promise((resolve) => {
-            const updatedGrid = updateGridFromBulkForm(model, data, this.getSelectedRowIndexes());
+            const updatedGrid = updateGridFromBulkForm(model, updatedData, this.getSelectedRowIndexes());
             resolve({
                 success: true,
                 updatedGrid

@@ -109,7 +109,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         isSubmittingText: "Submitting...",
         maxCount: MAX_EDITABLE_GRID_ROWS,
         allowFieldDisable: false,
-        useDatePicker: false
+        useDatePicker: true
     };
 
 
@@ -402,7 +402,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         <QueryFormInputs
                             renderFileInputs={renderFileInputs}
                             allowFieldDisable={allowFieldDisable}
-                            userDatePicker={useDatePicker}
+                            useDatePicker={useDatePicker}
                             initiallyDisableFields={initiallyDisableFields}
                             disabledFields={disabledFields}
                             checkRequiredFields={checkRequiredFields}

@@ -49,12 +49,9 @@ export function isDateTimeCol(col: QueryColumn): boolean {
         if (rangeURI.indexOf('datetime') > -1) {
             return true;
         }
-        else if (rangeURI.indexOf('date') > -1) {
-            return false;
-        }
     }
 
-    return true;
+    return false;
 }
 
 // 30834: get look and feel display formats

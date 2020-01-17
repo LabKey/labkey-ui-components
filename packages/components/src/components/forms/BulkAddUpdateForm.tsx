@@ -62,10 +62,11 @@ export class BulkAddUpdateForm extends React.Component<Props, any> {
 
         return (
             <QueryInfoForm
+                allowFieldDisable={true}
+                initiallyDisableFields={true}
                 canSubmitForEdit={true}
                 fieldValues={fieldValues}
                 onSubmitForEdit={onSubmitForEdit}
-                useDatePicker={true}
                 onSuccess={onComplete}
                 asModal={true}
                 includeCountField={false}

@@ -107,7 +107,6 @@ interface StateProps {
     originalQueryInfo: QueryInfo
     isSubmitting: boolean
     error: string
-    tabIndx: number
     isMerge: boolean
     file: File
 }
@@ -129,7 +128,6 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             originalQueryInfo: undefined,
             isSubmitting: false,
             error: undefined,
-            tabIndx: 0,
             isMerge: false,
             file: undefined,
         };
@@ -177,7 +175,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             target: undefined
         };
 
-        const tab = props.location && props.location.query ? props.location.query.tab : SampleInsertPanelTabs.Grid;
+        const tab = props.location && props.location.query && props.location.query.tab ? props.location.query.tab : SampleInsertPanelTabs.Grid;
         if (selectTab && tab != SampleInsertPanelTabs.Grid)
             this.props.selectStep(parseInt(tab));
 
@@ -480,10 +478,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     renderParentSelections() {
-        const { insertModel, tabIndx} = this.state;
-
-        if (tabIndx > 0)
-            return null;
+        const { insertModel } = this.state;
 
         if (insertModel) {
             const {isInit, targetSampleSet, parentOptions, sampleParents} = insertModel;
@@ -537,7 +532,6 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         if (!insertModel)
             return null;
 
-        // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not split at CamelCase boundary.
         const name = insertModel.getTargetSampleSetName();
 
         return (

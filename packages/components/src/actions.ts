@@ -2330,22 +2330,20 @@ export function removeAllRows(model: QueryGridModel) : QueryGridModel {
     });
 }
 
-export function updateGridFromBulkForm(gridModel: QueryGridModel, rowData: List<any>, dataRowIndexes: List<number>, colMin: number = 0) : EditorModel {
+export function updateGridFromBulkForm(gridModel: QueryGridModel, rowData: OrderedMap<string, any>, dataRowIndexes: List<number>) : EditorModel {
     const editorModel = getEditorModel(gridModel.getId());
 
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
 
-    const preparedData = prepareInsertRowDataFromBulkForm(gridModel, rowData, colMin);
-    const { values, messages } = preparedData;
+    const preparedData = prepareUpdateRowDataFromBulkForm(gridModel, rowData);
+    const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 
     dataRowIndexes.forEach((rowIdx) => {
-        values.forEach((value, cn) => {
-
-            const colIdx = colMin + cn;
+        values.forEach((value, colIdx) => {
             const cellKey = genCellKey(colIdx, rowIdx);
-            cellMessages = cellMessages.set(cellKey, messages.get(cn));
-            cellValues = cellValues.set(cellKey, values.get(cn));
+            cellMessages = cellMessages.set(cellKey, messages.get(colIdx));
+            cellValues = cellValues.set(cellKey, value);
         });
     });
 
@@ -2354,6 +2352,58 @@ export function updateGridFromBulkForm(gridModel: QueryGridModel, rowData: List<
         cellMessages
     });
 }
+
+function prepareUpdateRowDataFromBulkForm(gridModel: QueryGridModel, rowData: OrderedMap<string, any>) {
+    const columns = gridModel.getInsertColumns();
+
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
+
+    let values = OrderedMap<number, List<ValueDescriptor>>();
+    let messages = OrderedMap<number, CellMessage>();
+
+    rowData.forEach((data, colKey) => {
+        let colIdx = -1;
+        columns.forEach((col, ind) => {
+            if (col.fieldKey === colKey) {
+                colIdx = ind;
+                return;
+            }
+        });
+
+        const col = columns.get(colIdx);
+
+        let cv : List<ValueDescriptor>;
+
+        if (data && col && col.isLookup()) {
+            cv =  List<ValueDescriptor>();
+            // value had better be the rowId here, but it may be several in a comma-separated list.
+            // If it's the display value, which happens to be a number, much confusion will arise.
+            const values = data.toString().split(",");
+            values.forEach((val) => {
+                const intVal = parseInt(val);
+                const {message, valueDescriptor} = getLookupDisplayValue(col, getLookup(col), isNaN(intVal) ? val : intVal);
+                cv = cv.push(valueDescriptor);
+                if (message) {
+                    messages = messages.set(colIdx, message);
+                }
+            });
+
+        } else {
+            cv = List([{
+                display: data,
+                raw: data
+            }]);
+        }
+
+        values = values.set(colIdx, cv);
+    });
+
+    return {
+        values,
+        messages
+    }
+}
+
 
 export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
     const editorModel = getEditorModel(model.getId());

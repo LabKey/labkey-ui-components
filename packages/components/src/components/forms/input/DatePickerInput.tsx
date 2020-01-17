@@ -70,18 +70,17 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
     constructor(props: DatePickerInputProps) {
         super(props);
 
-        this.onChange = this.onChange.bind(this);
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
         this.state = {
             isDisabled: props.initiallyDisabled,
-            selectedDate: props.value ? parseDate(props.value, this.getDateFormat()) : undefined,
+            selectedDate: props.value ? parseDate(props.value, this.getDateFormat(false)) : undefined,
             selectedDateStr: props.value
         }
     }
 
-    onChange(date) {
-        const selectedDateStr = date ? formatDate(date, null, this.getDateFormat()): undefined;
+    onChange = (date) => {
+        const selectedDateStr = date ? formatDate(date, null, this.getDateFormat(false)): undefined;
         this.setState(() => {
             return {
                 selectedDate: date,
@@ -94,17 +93,22 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
         if (this.props.formsy && Utils.isFunction(this.props.setValue))
             this.props.setValue(selectedDateStr);
-    }
+    };
 
-    getDateFormat() {
+    getDateFormat(isDatePicker: boolean) {
         const { dateFormat, queryColumn } = this.props;
         if (dateFormat)
-            return this.ensureDateFormat(dateFormat);
+            return this.ensureDateFormat(dateFormat, isDatePicker);
 
-        return this.ensureDateFormat(datePlaceholder(queryColumn));
+        return this.ensureDateFormat(datePlaceholder(queryColumn), isDatePicker);
     }
 
-    ensureDateFormat(rawFormat: string) {
+    ensureDateFormat(rawFormat: string, isDatePicker: boolean) {
+        if (!isDatePicker)
+            return rawFormat;
+
+        // Moment.js and react datepicker date format is different
+        // https://github.com/Hacker0x01/react-datepicker/issues/1609
         return rawFormat.replace('YYYY', 'yyyy').replace('DD', 'dd');
     }
 
@@ -123,12 +127,12 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             queryColumn,
             showLabel,
             addLabelAsterisk,
-            placeholderText
+            placeholderText,
+            isClearable
         } = this.props;
 
        const { isDisabled, selectedDate } = this.state;
 
-       console.log(this.props.getValue());
        return (
             <div className="form-group row">
                 <FieldLabel
@@ -150,7 +154,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                         autoComplete={'off'}
                         wrapperClassName={inputWrapperClassName}
                         className={inputClassName}
-                        isClearable={true}
+                        isClearable={isClearable}
                         name={name ? name : queryColumn.name}
                         id={queryColumn.name}
                         disabled={isDisabled}
@@ -158,7 +162,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                         onChange={this.onChange}
                         showTimeSelect={this.shouldShowTime()}
                         placeholderText={placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`}
-                        dateFormat={this.getDateFormat()}/>
+                        dateFormat={this.getDateFormat(true)}/>
                 </div>
             </div>
         );
@@ -167,7 +171,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
 
 /**
- * This class is a wrapper around ReactSelect to be able to bind formsy-react. It uses
+ * This class is a wrapper around DatePickerInput to be able to bind formsy-react. It uses
  * the Formsy.Decorator to bind formsy-react so the element can be validated, submitted, etc.
  */
 const DatePickerInputFormsy = withFormsy(DatePickerInputImpl);

@@ -58,7 +58,7 @@ interface QueryFormInputsProps {
     renderFileInputs?: boolean
     allowFieldDisable?: boolean
     initiallyDisableFields?: boolean
-    userDatePicker?: boolean
+    useDatePicker?: boolean
     disabledFields?: List<string>
 }
 
@@ -70,7 +70,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
 
     static defaultProps : Partial<QueryFormInputsProps> = {
         checkRequiredFields: true,
-        userDatePicker: false,
+        useDatePicker: true,
         includeLabelField: false,
         renderFileInputs: false,
         allowFieldDisable: false,
@@ -155,7 +155,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             renderFileInputs,
             allowFieldDisable,
             disabledFields,
-            userDatePicker
+            useDatePicker
         } = this.props;
 
         const filter = columnFilter ? columnFilter : insertColumnFilter;
@@ -257,7 +257,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
                     switch (col.jsonType) {
                         case 'date':
-                            return userDatePicker ?
+                            return useDatePicker ?
                                 <DatePickerInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>
                                 : <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;;
                         case 'boolean':

@@ -19,6 +19,7 @@ import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixtureTypesQueryInfo from '../test/data/mixtureTypes-getQueryDetails.json';
 import mixtureTypesQuery from '../test/data/mixtureTypes-getQuery.json';
 import mixturesQuery from '../test/data/mixtures-getQuery.json';
+import mixturesQueryPaging from '../test/data/mixtures-getQueryPaging.json';
 import mixturesSelected from '../test/data/mixtures-getSelected.json';
 import mixturesReportInfos from '../test/data/mixtures-getReportInfos.json';
 import samplesInsert from '../test/data/samples-insertRows.json';
@@ -104,6 +105,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     },
     'exp.data': {
         'mixtures': mixturesQueryInfo,
+        'mixturespaging': mixturesQueryInfo,
         'expressionsystem': expressionsystemQueryInfo,
     },
     'labbook': {
@@ -152,6 +154,7 @@ const QUERY_RESPONSES = fromJS({
     },
     'exp.data': {
         'mixtures': mixturesQuery,
+        'mixturespaging': mixturesQueryPaging,
         'expressionsystem': expSystemLineageQuery
     },
     'labbook': {
@@ -368,6 +371,13 @@ export function initQueryGridMocks() {
         if (schemaName === 'samples' && queryName === 'samples' && params.hasOwnProperty('query.rowId~in')) {
             // Used in lineage stories.
             responseBody = samplesLineageQuery;
+        }
+
+        let maxRows = params['query.maxRows'], offset = params['query.offset'] || 0;
+        if (maxRows !== undefined) {
+            maxRows = parseInt(maxRows);
+            offset = parseInt(offset);
+            responseBody = responseBody.set('rows', responseBody.get('rows').slice(offset, offset + maxRows));
         }
 
         return res

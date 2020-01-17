@@ -98,6 +98,7 @@ interface OwnProps {
     maxSamples?: number
     fileSizeLimits?: Map<string, FileSizeLimitProps>
     handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean) => Promise<any>
+    canEditSampleTypeDetails?: boolean
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -954,6 +955,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     render() {
+        const { canEditSampleTypeDetails } = this.props;
         const { insertModel, error } = this.state;
 
         if (!insertModel) {
@@ -972,7 +974,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                             <div className={'col-sm-7'}>
                                 <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
                             </div>
-                            {editSampleTypeDetailsLink ? <div className={'col-sm-5'}><Link className={'pull-right sample-insert--link'} to={editSampleTypeDetailsLink.toString()}>Edit Sample Type Details</Link></div> : undefined}
+                            {editSampleTypeDetailsLink && canEditSampleTypeDetails ? <div className={'col-sm-5'}><Link className={'pull-right sample-insert--link'} to={editSampleTypeDetailsLink.toString()}>Edit Sample Type Details</Link></div> : undefined}
                         </div>
                         <div className="row">
                             <div className="col-sm-12">

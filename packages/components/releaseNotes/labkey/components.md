@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.14.0
+*Released*: 17 January 2020
 * QueryGrid paging improvements / fixes
     * Issue 38823: Allow users to select the number of rows they want to display in a grid on a single page
     * Issue 38824: Allow users to go to the first and last page in a grid and see current page number and total page count

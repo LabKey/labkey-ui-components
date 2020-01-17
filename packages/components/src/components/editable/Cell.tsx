@@ -33,11 +33,11 @@ interface Props {
     placeholder?: string
     readOnly?: boolean
     rowIdx: number
-    focused: boolean
-    message: CellMessage
-    selected: boolean
-    selection: boolean
-    values: List<ValueDescriptor>
+    focused?: boolean
+    message?: CellMessage
+    selected?: boolean
+    selection?: boolean
+    values?: List<ValueDescriptor>
 }
 
 export class Cell extends React.PureComponent<Props, any> {
@@ -45,6 +45,14 @@ export class Cell extends React.PureComponent<Props, any> {
     private changeTO: number;
     private clickTO: number;
     private displayEl: React.RefObject<any>;
+
+    static defaultProps = {
+        focused: false,
+        message: undefined,
+        selected: false,
+        selection: false,
+        values: List<ValueDescriptor>()
+    };
 
     constructor(props: Props) {
         super(props);

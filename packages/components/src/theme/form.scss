@@ -77,6 +77,16 @@
   }
 }
 
+.disabled-button-in-group {
+    border-radius: 0;
+}
+
+.disabled-button-group-spacer {
+    border-width: 0 1px;
+    padding: 6px;
+    line-height: 12px;
+}
+
 .form-step {
   display: none;
 

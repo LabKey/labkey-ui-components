@@ -1160,6 +1160,7 @@ export class DomainException extends Record({
             }
 
             let severity = severityLevel;
+            // warnings will only be there if there are no errors, so looking only the first one
             let hasOnlyWarnings = errors.find(error => error.severity === SEVERITY_LEVEL_WARN);
 
             if (hasOnlyWarnings) {
@@ -1307,7 +1308,7 @@ export class DomainFieldError extends Record({
             //empty field name and property id comes in as "form" string from the server, resetting it to undefined here
             let fieldName = (errors[i].id === "form" && errors[i].field === "form" ? undefined : errors[i].field);
             let propertyId = ((errors[i].id === "form" && errors[i].field === "form") || errors[i].id < 1 ? undefined : errors[i].id);
-            let severity = (errors[i].id === "Warning" ? SEVERITY_LEVEL_WARN : severityLevel);
+            let severity = (errors[i].id === "FieldWarning" ? SEVERITY_LEVEL_WARN : severityLevel);
 
             let domainFieldError = new DomainFieldError({message: errors[i].message, fieldName, propertyId,
                 severity: severity, serverError: true, rowIndexes: (errors[i].rowIndexes ? errors[i].rowIndexes : List<number>())});
@@ -1315,6 +1316,10 @@ export class DomainFieldError extends Record({
         }
 
         return fieldErrors;
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
     }
 }
 

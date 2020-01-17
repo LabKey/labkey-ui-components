@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: 17 January 2020
+* Item 6654: Changes to include server side warnings while saving domain
+
 ### version 0.13.0
 *Released*: 14 January 2020
 * Item 6571: User Details panel updates to allow single user delete / deactivate / reactivate / reset password
@@ -41,10 +45,6 @@ and add a tooltip for the AddControls with info on the data size limits.
     - Add invalidateUsers to index.ts for use in Sample Manager app
     - Update to @labkey/api release version 0.0.29
     - Issue 39359: fix to prevent API call to study-reports-getReportInfos if we know study module isn't available
-
-### version TBD
-*Released*: 16 January 2020
-* Changes to include server side warnings while saving domain
 
 ### version 0.9.0
 *Released*: 8 January 2020

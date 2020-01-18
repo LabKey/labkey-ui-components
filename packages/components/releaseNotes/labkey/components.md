@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.15.0
+*Released*: 17 January 2020
+* Move add, bulk, edit, and delete controls to be together for SampleInsertPanel
+* Add DatePickerInput
+* Update QueryInfoForms to use date picker for date fields
+* Add BulkAddUpdateForm
+* Add support for bulk update selected grid rows for SampleInsertPanel and AssayImportPanels
+* Update SampleInsertPanel to support tabbed grid and file based insert
+
 ### version 0.14.0
 *Released*: 17 January 2020
 * QueryGrid paging improvements / fixes

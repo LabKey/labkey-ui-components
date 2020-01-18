@@ -1554,13 +1554,39 @@ function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: 
  * @param colMin the starting column
  */
 export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, rowCount: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
-    const columns = gridModel.getInsertColumns();
     const editorModel = getEditorModel(gridModel.getId());
 
-    const getLookup = (col: QueryColumn) => getLookupStore(col);
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
     let selectionCells = Set<string>();
+
+    const preparedData = prepareInsertRowDataFromBulkForm(gridModel, rowData, colMin);
+    const { values, messages } = preparedData;
+
+    for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
+        rowData.forEach((value, cn) => {
+
+            const colIdx = colMin + cn;
+            const cellKey = genCellKey(colIdx, rowIdx);
+
+            cellMessages = cellMessages.set(cellKey, messages.get(cn));
+            selectionCells = selectionCells.add(cellKey);
+            cellValues = cellValues.set(cellKey, values.get(cn));
+        });
+    }
+
+    return updateEditorModel(editorModel, {
+        cellValues,
+        cellMessages,
+        selectionCells,
+        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount)
+    });
+}
+
+function prepareInsertRowDataFromBulkForm(gridModel: QueryGridModel, rowData: List<any>, colMin: number = 0) {
+    const columns = gridModel.getInsertColumns();
+
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
 
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
@@ -1595,25 +1621,12 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
         values = values.push(cv);
     });
 
-    for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
-        rowData.forEach((value, cn) => {
-
-            const colIdx = colMin + cn;
-            const cellKey = genCellKey(colIdx, rowIdx);
-
-            cellMessages = cellMessages.set(cellKey, messages.get(cn));
-            selectionCells = selectionCells.add(cellKey);
-            cellValues = cellValues.set(cellKey, values.get(cn));
-        });
+    return {
+        values,
+        messages
     }
-
-    return updateEditorModel(editorModel, {
-        cellValues,
-        cellMessages,
-        selectionCells,
-        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount)
-    });
 }
+
 
 export function pasteEvent(modelId: string, event: any, onBefore?: any, onComplete?: any, columnMetadata?: Map<string, EditableColumnMetadata>) {
     const model = getEditorModel(modelId);
@@ -2341,6 +2354,80 @@ export function removeAllRows(model: QueryGridModel) : QueryGridModel {
         isError: false,
         message: undefined
     });
+}
+
+export function updateGridFromBulkForm(gridModel: QueryGridModel, rowData: OrderedMap<string, any>, dataRowIndexes: List<number>) : EditorModel {
+    const editorModel = getEditorModel(gridModel.getId());
+
+    let cellMessages = editorModel.cellMessages;
+    let cellValues = editorModel.cellValues;
+
+    const preparedData = prepareUpdateRowDataFromBulkForm(gridModel, rowData);
+    const { values, messages } = preparedData; // {3: 'x', 4: 'z}
+
+    dataRowIndexes.forEach((rowIdx) => {
+        values.forEach((value, colIdx) => {
+            const cellKey = genCellKey(colIdx, rowIdx);
+            cellMessages = cellMessages.set(cellKey, messages.get(colIdx));
+            cellValues = cellValues.set(cellKey, value);
+        });
+    });
+
+    return updateEditorModel(editorModel, {
+        cellValues,
+        cellMessages
+    });
+}
+
+function prepareUpdateRowDataFromBulkForm(gridModel: QueryGridModel, rowData: OrderedMap<string, any>) {
+    const columns = gridModel.getInsertColumns();
+
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
+
+    let values = OrderedMap<number, List<ValueDescriptor>>();
+    let messages = OrderedMap<number, CellMessage>();
+
+    rowData.forEach((data, colKey) => {
+        let colIdx = -1;
+        columns.forEach((col, ind) => {
+            if (col.fieldKey === colKey) {
+                colIdx = ind;
+                return;
+            }
+        });
+
+        const col = columns.get(colIdx);
+
+        let cv : List<ValueDescriptor>;
+
+        if (data && col && col.isLookup()) {
+            cv =  List<ValueDescriptor>();
+            // value had better be the rowId here, but it may be several in a comma-separated list.
+            // If it's the display value, which happens to be a number, much confusion will arise.
+            const values = data.toString().split(",");
+            values.forEach((val) => {
+                const intVal = parseInt(val);
+                const {message, valueDescriptor} = getLookupDisplayValue(col, getLookup(col), isNaN(intVal) ? val : intVal);
+                cv = cv.push(valueDescriptor);
+                if (message) {
+                    messages = messages.set(colIdx, message);
+                }
+            });
+
+        } else {
+            cv = List([{
+                display: data,
+                raw: data
+            }]);
+        }
+
+        values = values.set(colIdx, cv);
+    });
+
+    return {
+        values,
+        messages
+    }
 }
 
 

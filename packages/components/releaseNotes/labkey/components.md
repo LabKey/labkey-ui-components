@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.15.0
+*Released*: 17 January 2020
 * Move add, bulk, edit, and delete controls to be together for SampleInsertPanel
 * Add DatePickerInput
 * Update QueryInfoForms to use date picker for date fields

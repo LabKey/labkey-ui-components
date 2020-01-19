@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Misc button text updates for Sample Manager (prefer 'Save' and 'Import' over 'Finish')
+
 ### version 0.15.0
 *Released*: 17 January 2020
 * Move add, bulk, edit, and delete controls to be together for SampleInsertPanel

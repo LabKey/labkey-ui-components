@@ -59,7 +59,7 @@ describe("<SampleSetDetailsPanel/>", () => {
 
         const wrapper = mount(component);
         const cancelBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Cancel');
-        const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Finish');
+        const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Save');
         expect(onCancelFn).toHaveBeenCalledTimes(0);
         expect(onCompleteFn).toHaveBeenCalledTimes(0);
 
@@ -67,7 +67,7 @@ describe("<SampleSetDetailsPanel/>", () => {
         expect(onCancelFn).toHaveBeenCalledTimes(1);
         expect(onCompleteFn).toHaveBeenCalledTimes(0);
 
-        // try clicking Finish button, but it should be disabled because we haven't given the form a valid Name value yet
+        // try clicking Save button, but it should be disabled because we haven't given the form a valid Name value yet
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
         completeBtn.simulate('click');
         expect(onCancelFn).toHaveBeenCalledTimes(1);
@@ -86,7 +86,7 @@ describe("<SampleSetDetailsPanel/>", () => {
         // Name input should be visible for new sample set
         expect(wrapper.find('input#' + FORM_IDS.NAME)).toHaveLength(1);
 
-        const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Finish');
+        const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Save');
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
 
         // simulate Name input value change by updating the component state
@@ -120,8 +120,8 @@ describe("<SampleSetDetailsPanel/>", () => {
         // Name input should not be visible
         expect(wrapper.find('input#' + FORM_IDS.NAME)).toHaveLength(0);
 
-        // Finish button should start enabled for existing sample set
-        const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Finish');
+        // Save button should start enabled for existing sample set
+        const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Save');
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeFalsy();
 
         // Check initial input values

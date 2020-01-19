@@ -895,6 +895,8 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                 finish={true}
                 nextStep={this.submitFileHandler} // nextStep is the function that will get called when finish button clicked
                 isFinishing={isSubmitting}
+                finishText={"Import"}
+                isFinishingText={"Importing..."}
             />
         )
     }

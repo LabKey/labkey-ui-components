@@ -417,6 +417,8 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                     canFinish={this.isFormValid()}
                     isFinishing={submitting}
                     nextStep={this.onFinish}
+                    finishText={"Save"}
+                    isFinishingText={"Saving..."}
                 />
             </>
         )

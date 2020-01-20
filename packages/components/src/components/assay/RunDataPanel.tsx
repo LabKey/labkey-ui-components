@@ -48,6 +48,7 @@ interface Props {
     fullWidth?: boolean
     allowBulkRemove?: boolean
     allowBulkInsert?: boolean
+    allowBulkUpdate?: boolean
     title: string
     fileSizeLimits?: Map<string, FileSizeLimitProps>
     maxInsertRows?: number
@@ -73,6 +74,7 @@ export class RunDataPanel extends React.Component<Props, State> {
         fullWidth: true,
         allowBulkRemove: false,
         allowBulkInsert: false,
+        allowBulkUpdate: false,
         title: 'Results'
     };
 
@@ -180,7 +182,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     render() {
-        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert, title, maxInsertRows } = this.props;
+        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert, allowBulkUpdate, title, maxInsertRows } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
@@ -246,12 +248,13 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             isSubmitting={wizardModel.isSubmitting}
                                             disabled={currentStep !== AssayUploadTabs.Grid}
                                             allowBulkRemove={allowBulkRemove}
-                                            allowBulkUpdate={allowBulkInsert}
-                                            bulkUpdateText={'Bulk Insert'}
-                                            bulkUpdateProps={{
+                                            allowBulkAdd={allowBulkInsert}
+                                            bulkAddText={'Bulk Insert'}
+                                            bulkAddProps={{
                                                 title: 'Bulk Insert Assay Rows',
                                                 header: 'Add a batch of assay data rows that will share the properties set below.'
                                             }}
+                                            allowBulkUpdate={allowBulkUpdate}
                                             bordered={true}
                                             striped={true}
                                             addControlProps={{

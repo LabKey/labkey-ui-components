@@ -49,10 +49,9 @@ export class Export extends React.Component<Props, any> {
     render() {
         const { model, supportedTypes } = this.props;
 
-        // FIXME: remove inline styles.
         return (
             model &&
-            <span style={{paddingLeft: '10px'}}>
+            <span className={'gridbar-button-spacer'}>
                 <Tip caption="Export">
                     <DropdownButton
                         id={`export-drop-${model.getId()}`}

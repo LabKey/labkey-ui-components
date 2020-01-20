@@ -196,16 +196,18 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   className="btn-group"
                 >
                   <button
-                    className="btn btn-default"
+                    className="control-right btn btn-default"
                     disabled={true}
                     onClick={[Function]}
-                    title="Delete Rows"
                     type="button"
                   >
                     Delete Rows
                   </button>
                 </div>
               </div>
+              <div
+                className="pull-right col-sm-8"
+              />
             </div>
             <div
               className="editable-grid__container"
@@ -612,7 +614,11 @@ exports[`<RunDataPanel/> default props 1`] = `
           <div>
             <div
               className="row QueryGrid-bottom-spacing"
-            />
+            >
+              <div
+                className="pull-right col-xs-12"
+              />
+            </div>
             <div
               className="editable-grid__container"
               onKeyDown={[Function]}

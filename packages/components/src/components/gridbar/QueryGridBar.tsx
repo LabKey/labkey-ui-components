@@ -22,6 +22,7 @@ import { ViewSelector } from './ViewSelector';
 import { URLBox } from './URLBox';
 import { GridSelectionBanner } from './GridSelectionBanner';
 import { QueryGridModel } from '../base/models/model';
+import { PageSizeSelector } from "./PageSizeSelector";
 
 type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;
 export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;
@@ -66,6 +67,10 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             <QueryGridPaging model={model}/>
         ) : null;
 
+        const pageSizeBtn = model && model.isPaged ? (
+            <PageSizeSelector model={model} />
+        ) : null;
+
         const exportBtn = model ? (
             <Export model={model} />
         ) : null;
@@ -99,9 +104,8 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             <div className="col-md-6 col-sm-6 col-xs-12">
                 <div className="paging pull-right text-nowrap">
                     {paging}
-
+                    {pageSizeBtn}
                     {exportBtn}
-
                     {view}
                 </div>
             </div>

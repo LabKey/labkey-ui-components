@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, Set } from 'immutable';
+import { List, Map, Set, Iterable } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { SchemaQuery, User } from '../components/base/models/model';
@@ -338,7 +338,7 @@ export function valueIsEmpty(value) : boolean {
  *
  * @param data Map between ids and a map of data for the ids (i.e, a row of data for that id)
  */
-export function getCommonDataValues(data: Map<string, any>) : any {
+export function getCommonDataValues(data: Map<any, any>) : any {
     let valueMap = Map<string, any>();  // map from fields to the value shared by all rows
     let fieldsInConflict = Set<string>();
     let emptyFields = Set<string>(); // those fields that are empty
@@ -346,8 +346,8 @@ export function getCommonDataValues(data: Map<string, any>) : any {
         // const rowData = data.get(id);
         if (rowData) {
             rowData.forEach((data, key) => {
-                if (data && !fieldsInConflict.has(key)) { // skip fields that are already in conflict
-                    const value = data.get('value');
+                if (!fieldsInConflict.has(key)) { // skip fields that are already in conflict
+                    const value = Iterable.isIterable(data) ? data.get('value') : data;
                     const currentValueEmpty = valueIsEmpty(value);
                     const havePreviousValue = valueMap.has(key);
                     const arrayNotEqual = Array.isArray(value) && (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));

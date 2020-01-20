@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Button } from 'react-bootstrap';
-
+import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { loadPage } from '../../actions';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
@@ -45,14 +44,22 @@ export class QueryGridPaging extends React.Component<Props, any> {
         );
     }
 
+    getCurrentPage(): number {
+        return this.props.model.pageNumber || 1;
+    }
+
     nextPage = () => {
-        const { model } = this.props;
-        loadPage(model, model.pageNumber + 1);
+        this.goToPage(this.getCurrentPage() + 1);
     };
 
     prevPage = () => {
+        this.goToPage(this.getCurrentPage() - 1);
+    };
+
+    goToPage = (pageNumber: number) => {
         const { model } = this.props;
-        loadPage(model, model.pageNumber - 1);
+        loadPage(model, pageNumber);
+        (document.activeElement as HTMLElement).blur(); // Issue 39418
     };
 
     render() {
@@ -60,13 +67,16 @@ export class QueryGridPaging extends React.Component<Props, any> {
         const min = model.getMinRowIndex();
         const max = model.getMaxRowIndex();
         const total = model.totalRows;
+        const firstPageNumber = 1;
+        const lastPageNumber = model.maxRows && model.maxRows > 0 ? Math.ceil(total / model.maxRows) : 1;
+        const currentPage = this.getCurrentPage();
 
         if (!model.isPaged) {
             return null;
         }
 
-        // hidden when "0 of 0" or "1 - N of N"
-        const showButtons = !(max === 0 || (min === 1 && max === total));
+        // hidden when "0 of 0" or "1 - N of N" and pageNumber is 1
+        const showButtons = !(max === 0 || (min === 1 && max === total)) || currentPage > 1;
 
         return (
             <>
@@ -77,19 +87,82 @@ export class QueryGridPaging extends React.Component<Props, any> {
                     </span> : null}
                 {showButtons ? (
                     <div className="btn-group">
-                        <Tip caption="Previous Page">
-                            <Button onClick={this.prevPage} disabled={model.pageNumber <= 1}>
-                                <i className="fa fa-chevron-left"/>
-                            </Button>
+                        <PagingButton disabled={currentPage <= 1} tooltip={'Previous Page'} onClick={this.prevPage}>
+                            <i className={'fa fa-chevron-left'}/>
+                        </PagingButton>
+                        <Tip caption="Current Page" trigger={['hover']}>
+                            <DropdownButton
+                                id={`current-page-drop-${model.getId()}`}
+                                pullRight
+                                title={currentPage}
+                            >
+                                <MenuItem header>Jump To</MenuItem>
+                                <MenuItem
+                                    key={'first'}
+                                    disabled={currentPage === firstPageNumber}
+                                    onClick={() => this.goToPage(firstPageNumber)}
+                                >
+                                    First Page
+                                </MenuItem>
+                                <MenuItem
+                                    key={'last'}
+                                    disabled={currentPage === lastPageNumber}
+                                    onClick={() => this.goToPage(lastPageNumber)}
+                                >
+                                    Last Page
+                                </MenuItem>
+                                <MenuItem header>{lastPageNumber} Total Pages</MenuItem>
+                            </DropdownButton>
                         </Tip>
-                        <Tip caption="Next Page">
-                            <Button onClick={this.nextPage} disabled={max === total}>
-                                <i className="fa fa-chevron-right"/>
-                            </Button>
-                        </Tip>
+                        <PagingButton disabled={max === total} tooltip={'Next Page'} onClick={this.nextPage}>
+                            <i className={'fa fa-chevron-right'}/>
+                        </PagingButton>
                     </div>
                 ) : null}
             </>
         );
+    }
+}
+
+interface PagingButtonProps {
+    disabled?: boolean
+    btnCls?: string
+    tooltip?: string
+    onClick?: () => any
+}
+
+export class PagingButton extends React.PureComponent<PagingButtonProps, any> {
+
+    static defaultProps = {
+        disabled: false,
+        btnCls: ''
+    };
+
+    render() {
+        const { children, disabled, btnCls, tooltip, onClick } = this.props;
+
+        let btn = (
+            <Button onClick={onClick} disabled={disabled} className={btnCls}>
+                {children}
+            </Button>
+        );
+
+        if (disabled && tooltip) {
+            btn = (
+                <div className={'disabled-button-with-tooltip'}>
+                    {btn}
+                </div>
+            );
+        }
+
+        if (tooltip) {
+            return (
+                <Tip caption={tooltip}>
+                    {btn}
+                </Tip>
+            )
+        }
+
+        return btn;
     }
 }

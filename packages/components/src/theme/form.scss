@@ -77,6 +77,16 @@
   }
 }
 
+.disabled-button-in-group {
+    border-radius: 0;
+}
+
+.disabled-button-group-spacer {
+    border-width: 0 1px;
+    padding: 6px;
+    line-height: 12px;
+}
+
 .form-step {
   display: none;
 
@@ -147,4 +157,10 @@
 .cbmb-inline {
   display: inline-block;
   margin-right: 10px;
+}
+
+div.react-datepicker-time__header,
+div.react-datepicker,
+div.react-datepicker__current-month {
+    font-size: 14px;
 }

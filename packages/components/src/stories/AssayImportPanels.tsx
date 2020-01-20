@@ -122,6 +122,8 @@ storiesOf('AssayImportPanels', module)
                 onCancel={() => console.log('onCancel clicked')}
                 onComplete={(response) => console.log('onComplete', response)}
                 allowBulkRemove={true}
+                allowBulkInsert={true}
+                allowBulkUpdate={true}
                 maxInsertRows={number("Max cut-and-paste insert rows", undefined)}
             />
         )

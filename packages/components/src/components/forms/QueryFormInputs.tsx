@@ -28,6 +28,7 @@ import { FileInput } from './input/FileInput';
 import { initLookup } from '../../actions';
 import { insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '../base/models/model';
 import { caseInsensitive } from '../../util/utils';
+import { DatePickerInput } from "./input/DatePickerInput";
 
 const LABEL_FIELD_SUFFIX = '::label';
 
@@ -57,6 +58,7 @@ interface QueryFormInputsProps {
     renderFileInputs?: boolean
     allowFieldDisable?: boolean
     initiallyDisableFields?: boolean
+    useDatePicker?: boolean
     disabledFields?: List<string>
 }
 
@@ -68,6 +70,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
 
     static defaultProps : Partial<QueryFormInputsProps> = {
         checkRequiredFields: true,
+        useDatePicker: true,
         includeLabelField: false,
         renderFileInputs: false,
         allowFieldDisable: false,
@@ -151,7 +154,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             onChange,
             renderFileInputs,
             allowFieldDisable,
-            disabledFields
+            disabledFields,
+            useDatePicker
         } = this.props;
 
         const filter = columnFilter ? columnFilter : insertColumnFilter;
@@ -251,10 +255,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             />
                         );
                     }
-
                     switch (col.jsonType) {
                         case 'date':
-                            return <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
+                            return useDatePicker ?
+                                <DatePickerInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>
+                                : <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;;
                         case 'boolean':
                             return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
                         default:

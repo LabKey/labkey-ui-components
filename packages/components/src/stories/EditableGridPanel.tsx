@@ -265,7 +265,7 @@ storiesOf('EditableGridPanel', module)
         });
         gridInit(model, true);
 
-        const bulkUpdateProps = {
+        const bulkAddProps = {
             header: text("Header for bulk insert", "Create some mixture data here."),
             title: text("Title for bulk import", "Bulk creation of mixture data")
         };
@@ -274,11 +274,11 @@ storiesOf('EditableGridPanel', module)
             <EditableGridPanel
                 allowAdd={true}
                 allowBulkRemove={boolean("Allow bulk remove?", false)}
-                allowBulkUpdate={true}
+                allowBulkAdd={true}
                 model={model}
                 isSubmitting={false}
-                bulkUpdateProps={bulkUpdateProps}
-                bulkUpdateText={text("Bulk Update text", "Bulk Insert")}
+                bulkAddProps={bulkAddProps}
+                bulkAddText={text("Bulk Update text", "Bulk Insert")}
                 title={"Editable grid with bulk insert capabilities"}
             />
         );

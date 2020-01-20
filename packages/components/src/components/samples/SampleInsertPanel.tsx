@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Button, Form, Panel } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable';
-import { Link } from 'react-router';
 import { Utils } from '@labkey/api';
 
 import { SAMPLE_UNIQUE_FIELD_KEY } from '../../constants';
@@ -36,7 +35,7 @@ import {
     GenerateSampleResponse,
     IParentOption,
     ISampleSetOption,
-    SampleIdCreationModel,
+    SampleIdCreationModel, SampleInsertPanelTabs,
     SampleSetOption,
     SampleSetParentType,
 } from './models';
@@ -58,7 +57,20 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 import { Alert } from '../base/Alert';
+import { PlacementType } from "../editable/Controls";
+import {
+    DATA_IMPORT_TOPIC,
+    FileAttachmentForm,
+    helpLinkNode,
+    LabelHelpTip, withFormSteps, WithFormStepsProps,
+    WizardNavButtons
+} from "../..";
+import { FormStep, FormTabs } from '../forms/FormStep';
+import {FileSizeLimitProps} from "../files/models";
+import { Link } from "react-router";
 
+const TABS = ['Create From Grid', 'Import Samples From File'];
+const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
 
 class SampleGridLoader implements IGridLoader {
 
@@ -79,20 +91,28 @@ class SampleGridLoader implements IGridLoader {
 }
 
 interface OwnProps {
-    afterSampleCreation?: (sampleSetName, filter, sampleCount) => void
+    afterSampleCreation?: (sampleSetName, filter, sampleCount, actionStr) => void
+    getFileTemplateUrl?: (queryInfo: QueryInfo) => string
     location?: Location
     onCancel?: () => void
     maxSamples?: number
+    fileSizeLimits?: Map<string, FileSizeLimitProps>
+    handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean) => Promise<any>
+    canEditSampleTypeDetails?: boolean
 }
+
+type Props = OwnProps & WithFormStepsProps;
 
 interface StateProps {
     insertModel: SampleIdCreationModel
     originalQueryInfo: QueryInfo
     isSubmitting: boolean
     error: string
+    isMerge: boolean
+    file: File
 }
 
-export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
+export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
     constructor(props: any) {
         super(props);
@@ -108,12 +128,14 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
             insertModel: undefined,
             originalQueryInfo: undefined,
             isSubmitting: false,
-            error: undefined
+            error: undefined,
+            isMerge: false,
+            file: undefined,
         };
     }
 
     componentWillMount() {
-        this.init(this.props)
+        this.init(this.props, true)
     }
 
     componentWillReceiveProps(nextProps: OwnProps) {
@@ -146,13 +168,17 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
         }
     }
 
-    init(props: OwnProps) {
+    init(props: OwnProps, selectTab: boolean = false) {
 
-        const queryParams = props.location ? SampleInsertPanel.getQueryParameters(props.location.query) : {
+        const queryParams = props.location ? SampleInsertPanelImpl.getQueryParameters(props.location.query) : {
             parents: undefined,
             selectionKey: undefined,
             target: undefined
         };
+
+        const tab = props.location && props.location.query && props.location.query.tab ? props.location.query.tab : SampleInsertPanelTabs.Grid;
+        if (selectTab && tab != SampleInsertPanelTabs.Grid)
+            this.props.selectStep(parseInt(tab));
 
         let { insertModel } = this.state;
 
@@ -242,7 +268,7 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
     }
 
     createParentColumnName(parent: SampleSetParentType) {
-        const parentInputType = SampleInsertPanel.convertParentInputSchema(parent.schema);
+        const parentInputType = SampleInsertPanelImpl.convertParentInputSchema(parent.schema);
         const formattedQueryName = capitalizeFirstChar(parent.query);
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
@@ -251,7 +277,7 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
 
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
     static generateParentColumn(parent: SampleSetParentType): QueryColumn {
-        const parentInputType = SampleInsertPanel.convertParentInputSchema(parent.schema);
+        const parentInputType = SampleInsertPanelImpl.convertParentInputSchema(parent.schema);
         const formattedQueryName = capitalizeFirstChar(parent.query);
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
@@ -293,7 +319,7 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
         let columns = OrderedMap<string, QueryColumn>();
         insertModel.sampleParents.forEach((parent) => {
             if (parent.schema && parent.query) {
-                const column = SampleInsertPanel.generateParentColumn(parent);
+                const column = SampleInsertPanelImpl.generateParentColumn(parent);
                 // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
                 columns = columns.set(column.name.toLowerCase(), column);
             }
@@ -382,7 +408,7 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
                     'sampleParents',
                     existingParentKey
                 ], parentType) as SampleIdCreationModel;
-                column = SampleInsertPanel.generateParentColumn(parentType);
+                column = SampleInsertPanelImpl.generateParentColumn(parentType);
             }
             else {
                 let parentToResetKey = insertModel.sampleParents.findKey(parent => parent.get('index') === index);
@@ -501,20 +527,17 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
         }
     }
 
-    renderHeader() {
+    renderHeader(isGrid: boolean) {
         const { insertModel } = this.state;
 
         if (!insertModel)
             return null;
 
-        // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not split at CamelCase boundary.
         const name = insertModel.getTargetSampleSetName();
-        const sampleSet = insertModel.getTargetSampleSetName();
-        const importFromFileLink = insertModel.hasTargetSampleSet() ? AppURL.create('samples', sampleSet, 'import') : undefined;
 
         return (
             <>
-                <div className="sample-insert--header">
+                {isGrid && <div className="sample-insert--header">
                     <p>
                         Generate unique samples individually or in bulk using the bulk insert option.
                     </p>
@@ -531,12 +554,11 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
                                 Sample IDs will be generated for any samples that have no sample ID provided in the grid.
                             </p>
                     )}
-                </div>
-
+                </div>}
                 {insertModel.isInit && (
                     <SelectInput
                         formsy={false}
-                        inputClass="col-md-6 col-sm-5 col-xs-12"
+                        inputClass="col-sm-5"
                         label="Sample Type"
                         labelClass="col-sm-3 col-xs-12 sample-insert--parent-label"
                         name="targetSampleSet"
@@ -545,12 +567,9 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
                         options={insertModel.sampleSetOptions.toArray()}
                         required
                         value={insertModel && insertModel.hasTargetSampleSet() ? insertModel.targetSampleSet.label : undefined}
-                        afterInputElement={importFromFileLink &&
-                            <Link className={'col-md-3 col-sm-4 col-xs-12 sample-insert--link'} to={importFromFileLink.toString()}>Import Samples from File</Link>
-                        }
                     />
                 )}
-                {insertModel.isError ? this.renderError() : (insertModel.hasTargetSampleSet() ? this.renderParentSelections() : '')}
+                {insertModel.isError ? this.renderError() : (isGrid && insertModel.hasTargetSampleSet() ? this.renderParentSelections() : '')}
             </>
         )
     }
@@ -611,7 +630,7 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
 
                 this.setSubmitting(false);
                 if (this.props.afterSampleCreation) {
-                    this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), response.getFilter(), response.rows.length);
+                    this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), response.getFilter(), response.rows.length, 'created');
                 }
             }
             else {
@@ -634,7 +653,7 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
         insertModel.deriveSamples(count).then((result: GenerateSampleResponse) => {
             this.setSubmitting(false);
             if (this.props.afterSampleCreation) {
-                this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), result.getFilter(), result.data.materialOutputs.length);
+                this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), result.getFilter(), result.data.materialOutputs.length, 'created');
             }
         }).catch((reason) => {
             this.setSubmitting(false);
@@ -650,7 +669,7 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
         return false;
     }
 
-    renderButtons() {
+    renderGridButtons() {
         const { insertModel, isSubmitting } = this.state;
         const queryModel = this.getQueryGridModel();
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
@@ -686,11 +705,11 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
         }
     }
 
-    getBulkFormValues() {
+    getBulkAddFormValues() {
         const { insertModel } = this.state;
         const queryGridModel = this.getQueryGridModel();
 
-        if (!queryGridModel)
+        if (!queryGridModel || !queryGridModel.queryInfo)
             return null;
 
         // format/process sample parent column and values, for now, only sample parents are populated
@@ -717,27 +736,33 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
         return null;
     };
 
-    render() {
-        const { insertModel, isSubmitting, error } = this.state;
+    onTabChange = () => {
+        this.setState( (state) => ({
+            error: undefined,
+        }));
+    };
 
-        if (error) {
-            return <Alert>{error}</Alert>;
-        }
-        else if (!insertModel) {
-            return <LoadingSpinner wrapperClassName="loading-data-message"/>;
-        }
+    renderCreateFromGrid() {
+        const { insertModel } = this.state;
 
-        const bulkUpdateProps = {
+        const columnFilter = (colInfo) => {
+            return insertColumnFilter(colInfo) && colInfo["fieldKey"] !== SAMPLE_UNIQUE_FIELD_KEY
+        };
+
+        const bulkAddProps = {
             title: "Bulk Creation of Samples",
             header: "Add a batch of samples that will share the properties set below.",
-            columnFilter: (colInfo) => {
-                return insertColumnFilter(colInfo) && colInfo["fieldKey"] !== SAMPLE_UNIQUE_FIELD_KEY
-            },
-            fieldValues: this.getBulkFormValues()
+            columnFilter: columnFilter,
+            fieldValues: this.getBulkAddFormValues()
+        };
+        const bulkUpdateProps = {
+            columnFilter: columnFilter
         };
         let addControlProps = {
-            nounSingular: "row",
-            nounPlural: "rows"
+            nounSingular: "Sample",
+            nounPlural: "Samples",
+            placement: 'top' as PlacementType,
+            wrapperClass: 'pull-left'
         };
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
@@ -749,43 +774,229 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
 
         const queryGridModel = this.getQueryGridModel();
 
+        return (<>
+            {this.renderHeader(true)}
+            {queryGridModel && queryGridModel.isLoaded ?
+                <EditableGridPanel
+                    addControlProps={addControlProps}
+                    allowBulkRemove={true}
+                    allowBulkAdd={true}
+                    allowBulkUpdate={true}
+                    bordered={true}
+                    condensed={false}
+                    striped={true}
+                    bulkAddText={"Bulk Insert"}
+                    bulkAddProps={bulkAddProps}
+                    bulkUpdateProps={bulkUpdateProps}
+                    bulkRemoveText={"Remove Samples"}
+                    columnMetadata={columnMetadata}
+                    onRowCountChange={this.onRowCountChange}
+                    model={queryGridModel}
+                    initialEmptyRowCount={0}
+                    emptyGridMsg={'Start by adding the quantity of samples you want to create.'}
+                    maxTotalRows={this.props.maxSamples}
+                />
+                :
+                !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
+            }
+        </>);
+    }
+
+    toggleInsertOptionChange = () => {
+        this.setState((state) => ({isMerge: !state.isMerge}));
+    };
+
+    importOptionHelpText() {
         return (
             <>
-                <Panel>
-                    <Panel.Body>
-                        <Form>
-                            {this.renderHeader()}
-                            {queryGridModel && queryGridModel.isLoaded ?
-                                <EditableGridPanel
-                                    addControlProps={addControlProps}
-                                    allowBulkRemove={true}
-                                    allowBulkUpdate={true}
-                                    bordered={true}
-                                    condensed={false}
-                                    striped={true}
-                                    bulkUpdateText={"Bulk Insert"}
-                                    bulkUpdateProps={bulkUpdateProps}
-                                    columnMetadata={columnMetadata}
-                                    onRowCountChange={this.onRowCountChange}
-                                    model={queryGridModel}
-                                    initialEmptyRowCount={0}
-                                    emptyGridMsg={'Start by adding the quantity of samples you want to create.'}
-                                    maxTotalRows={this.props.maxSamples}
-                                />
-                                :
-                                 !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
-                            }
-                        </Form>
-                    </Panel.Body>
-                </Panel>
-                {this.renderButtons()}
-                <Progress
-                    estimate={insertModel.sampleCount * 20}
-                    modal={true}
-                    title="Generating samples"
-                    toggle={isSubmitting}
+                <p>
+                    By default, import will insert new samples based on the file provided. The operation will fail if
+                    there are existing Sample IDs that match those being imported.
+                </p>
+                <p>
+                    When update is selected, data will be updated for matching Sample IDs, and new samples
+                    will be created for any new Samples IDs provided. Data will not be changed for any columns not in the
+                    imported file.
+                </p>
+                <p>
+                    For more information on import options for samples, see
+                    the {helpLinkNode(IMPORT_SAMPLE_SETS_TOPIC, "Import Sample Types")} documentation page.
+                </p>
+            </>
+        );
+    }
+
+    renderImportOptions() {
+        return (
+            <div className={'margin-bottom'}>
+                <input
+                    type="checkbox"
+                    checked={this.state.isMerge}
+                    onChange={this.toggleInsertOptionChange}
                 />
+                <span
+                    className={'sm-mergeoption-checkbox'}
+                    onClick={this.toggleInsertOptionChange}
+                >
+                    Update data for existing samples during this file import
+                </span>
+                &nbsp;
+                <LabelHelpTip title={'Import Options'} body={this.importOptionHelpText}/>
+            </div>
+        )
+    }
+
+    handleFileChange = (files: Map<string, File>) => {
+        this.setState(() => ({
+            error: undefined,
+            file: files.first()
+        }));
+    };
+
+    handleFileRemoval = (attachmentName: string) => {
+        this.setState(() => ({
+            error: undefined,
+            file: undefined
+        }));
+    };
+
+    submitFileHandler = () => {
+        const { handleFileImport } = this.props;
+        const { insertModel, file, isMerge, originalQueryInfo } = this.state;
+
+        if (!handleFileImport)
+            return;
+
+        this.setSubmitting(true);
+
+        handleFileImport(originalQueryInfo, file, isMerge).then((response) => {
+            this.setSubmitting(false);
+            if (this.props.afterSampleCreation) {
+                this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), null, response.rowCount, 'imported');
+            }
+
+        }).catch((error) => {
+            this.setState(() => ({
+                error: error.msg,
+                isSubmitting: false
+            }));
+        });
+
+    };
+
+    renderFileButtons() {
+        const { isSubmitting, file, originalQueryInfo } = this.state;
+
+        return (
+            <WizardNavButtons
+                cancel={this.onCancel}
+                containerClassName=""
+                canFinish={file !== undefined && originalQueryInfo !== undefined}
+                finish={true}
+                nextStep={this.submitFileHandler} // nextStep is the function that will get called when finish button clicked
+                isFinishing={isSubmitting}
+            />
+        )
+    }
+
+    getTemplateUrl(): any {
+        const { getFileTemplateUrl } = this.props;
+        const { originalQueryInfo } = this.state;
+        if (getFileTemplateUrl && originalQueryInfo)
+            return getFileTemplateUrl(originalQueryInfo);
+
+        return originalQueryInfo && Utils.isArray(originalQueryInfo.importTemplates)  && originalQueryInfo.importTemplates[0]
+            ? originalQueryInfo.importTemplates[0].url : undefined;
+    }
+
+    renderImportSamplesFromFile() {
+        const { fileSizeLimits } = this.props;
+
+        return (<>
+            {this.renderHeader(false)}
+            {this.renderImportOptions()}
+            <FileAttachmentForm
+                showLabel={false}
+                acceptedFormats={".csv, .tsv, .txt, .xls, .xlsx"}
+                allowMultiple={false}
+                allowDirectories={false}
+                previewGridProps={{previewCount: 3}}
+                onFileChange={this.handleFileChange}
+                onFileRemoval={this.handleFileRemoval}
+                templateUrl={this.getTemplateUrl()}
+                sizeLimits={fileSizeLimits}
+                sizeLimitsHelpText={<>We recommend dividing your data into smaller files that meet this limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, "help article")} for best practices on data import.</>}
+            />
+        </>);
+    }
+
+    renderButtons() {
+        const { currentStep } = this.props;
+        return currentStep === SampleInsertPanelTabs.Grid ? this.renderGridButtons() : this.renderFileButtons();
+    }
+
+    renderProgress() {
+        const { currentStep } = this.props;
+        const { insertModel, isSubmitting, file } = this.state;
+
+        return currentStep === SampleInsertPanelTabs.Grid  ?
+            <Progress
+                estimate={insertModel.sampleCount * 20}
+                modal={true}
+                title="Generating samples"
+                toggle={isSubmitting}
+            /> :
+            <Progress
+                estimate={file ? file.size * .1 : undefined}
+                modal={true}
+                title="Importing samples from file"
+                toggle={isSubmitting}
+            />
+    }
+
+    render() {
+        const { canEditSampleTypeDetails } = this.props;
+        const { insertModel, error } = this.state;
+
+        if (!insertModel) {
+            return <LoadingSpinner wrapperClassName="loading-data-message"/>;
+        }
+
+        const sampleSet = insertModel.getTargetSampleSetName();
+        const editSampleTypeDetailsLink = sampleSet ? AppURL.create('samples', sampleSet, 'update') : undefined;
+
+        return (
+            <>
+                {error != null && <Alert>{error}</Alert>}
+                <div className={"panel panel-default"}>
+                    <div className="panel-body">
+                        <div className="row">
+                            <div className={'col-sm-7'}>
+                                <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
+                            </div>
+                            {editSampleTypeDetailsLink && canEditSampleTypeDetails ? <div className={'col-sm-5'}><Link className={'pull-right sample-insert--link'} to={editSampleTypeDetailsLink.toString()}>Edit Sample Type Details</Link></div> : undefined}
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <FormStep stepIndex={SampleInsertPanelTabs.Grid}>
+                                    {this.renderCreateFromGrid()}
+                                </FormStep>
+                                <FormStep stepIndex={SampleInsertPanelTabs.File}>
+                                    {this.renderImportSamplesFromFile()}
+                                </FormStep>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {this.renderButtons()}
+                {this.renderProgress()}
             </>
         )
     }
 }
+
+export const SampleInsertPanel = withFormSteps(SampleInsertPanelImpl, {
+    currentStep: SampleInsertPanelTabs.Grid,
+    furthestStep: SampleInsertPanelTabs.File,
+    hasDependentSteps: false
+});

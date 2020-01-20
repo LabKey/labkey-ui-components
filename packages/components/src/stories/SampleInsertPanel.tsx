@@ -15,7 +15,7 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import {boolean, withKnobs} from '@storybook/addon-knobs';
 import { Location } from '../util/URL';
 
 import { SampleInsertPanel } from '../components/samples/SampleInsertPanel';
@@ -25,7 +25,9 @@ import './stories.scss';
 storiesOf('SampleInsertPanel', module)
     .addDecorator(withKnobs)
     .add("No target sample set", () => {
-        return <SampleInsertPanel/>;
+        return <SampleInsertPanel
+            canEditSampleTypeDetails={boolean('canEditSampleTypeDetails', true)}
+        />;
 
     })
     .add("Target sample set without parent selections", () => {
@@ -35,6 +37,7 @@ storiesOf('SampleInsertPanel', module)
             }
         };
         return <SampleInsertPanel
+            canEditSampleTypeDetails={boolean('canEditSampleTypeDetails', true)}
             location={location}
         />;
     })

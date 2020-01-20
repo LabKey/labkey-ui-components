@@ -224,7 +224,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
                 actions={actions}
                 onChange={this.onOmniBoxChange}
                 values={values}
-                disabled={queryModel.isError}
+                disabled={queryModel && queryModel.isError}
             />
         )
     }

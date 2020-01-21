@@ -55,7 +55,7 @@ const createdModifiedRow = Map<string, any>(fromJS({
 describe("<CreatedModified/>", () => {
 
    test("with created row", () => {
-      const component = (<CreatedModified row={createdRow} userServerDate={false}/>);
+      const component = (<CreatedModified row={createdRow} useServerDate={false}/>);
 
       const wrapper = mount(component);
       expect(wrapper.text()).toContain('Created ');
@@ -68,7 +68,7 @@ describe("<CreatedModified/>", () => {
    });
 
    test("with modified row", () => {
-      const component = (<CreatedModified row={createdModifiedRow} userServerDate={false}/>);
+      const component = (<CreatedModified row={createdModifiedRow} useServerDate={false}/>);
 
       const wrapper = mount(component);
       expect(wrapper.text()).toContain('Modified ');

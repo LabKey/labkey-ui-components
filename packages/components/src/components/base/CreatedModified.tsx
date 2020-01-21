@@ -34,33 +34,34 @@ interface IRowConfig {
 interface CreatedModifiedProps {
     className?: string
     row: Map<string, any>
-    userServerDate?: boolean
+    useServerDate?: boolean
 }
 
 interface State {
     serverDate: string
+    loading: boolean
 }
 
 export class CreatedModified extends React.Component<CreatedModifiedProps, State> {
 
     static defaultProps = {
-        userServerDate: true
+        useServerDate: true
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            // undefined will be used as the loading state until Query.getServerDate is back, null means to use current date from JS
-            serverDate: props.userServerDate ? undefined : null
+            serverDate: undefined,
+            loading: props.useServerDate
         };
     }
 
     componentWillMount() {
-        if (this.props.userServerDate) {
+        if (this.props.useServerDate) {
             Query.getServerDate({
-                success: (serverDate) => this.setState(() => ({serverDate})),
-                failure: (error) => this.setState(() => ({serverDate: null}))
+                success: (serverDate) => this.setState(() => ({serverDate, loading: false})),
+                failure: (error) => this.setState(() => ({loading: false}))
             });
         }
     }
@@ -131,10 +132,10 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
     }
 
     render() {
-        const { className, userServerDate } = this.props;
-        const { serverDate } = this.state;
+        const { className } = this.props;
+        const { serverDate, loading } = this.state;
 
-        if (userServerDate && serverDate === undefined) {
+        if (loading) {
             return <LoadingSpinner/>
         }
 

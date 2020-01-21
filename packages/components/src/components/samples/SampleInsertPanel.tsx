@@ -738,9 +738,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     };
 
     onTabChange = () => {
-        this.setState( (state) => ({
-            error: undefined,
-        }));
+        this.setState(() => ({error: undefined}));
     };
 
     renderCreateFromGrid() {
@@ -970,7 +968,6 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         return (
             <>
-                {error != null && <Alert>{error}</Alert>}
                 <div className={"panel panel-default"}>
                     <div className="panel-body">
                         <div className="row">
@@ -989,6 +986,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                                 </FormStep>
                             </div>
                         </div>
+                        {error != null && <Alert>{error}</Alert>}
                     </div>
                 </div>
                 {this.renderButtons()}

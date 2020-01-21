@@ -1,5 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version TBD
+*Released*: 20 January 2020
+* Item 6654: Changes to include server side warnings while saving domain
+
 ### version 0.16.0
 *Released*: 20 January 2020
 * Add property to QueryGridModel to pass through parameters for parameterized queries
@@ -21,10 +26,6 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Issue 39367: Disabled button tool tip on grid doesn't hide for disabled button
     * Issue 39405: Paging too far can result in no data
     * Issue 39420: Setting url pageSize to negative number results in all data being shown
-
-### version TBD
-*Released*: 17 January 2020
-* Item 6654: Changes to include server side warnings while saving domain
 
 ### version 0.13.0
 *Released*: 14 January 2020

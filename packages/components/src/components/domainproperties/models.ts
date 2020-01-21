@@ -1302,13 +1302,13 @@ export class DomainFieldError extends Record({
         for (let i=0; i < errors.length; i++) {
 
             // stripping out server side warnings when there are errors
-            if (errors[i].id === SEVERITY_LEVEL_WARN && hasErrors)
+            if (errors[i].id === "ServerWarning" && hasErrors)
                 continue;
 
             //empty field name and property id comes in as "form" string from the server, resetting it to undefined here
             let fieldName = (errors[i].id === "form" && errors[i].field === "form" ? undefined : errors[i].field);
             let propertyId = ((errors[i].id === "form" && errors[i].field === "form") || errors[i].id < 1 ? undefined : errors[i].id);
-            let severity = (errors[i].id === "FieldWarning" ? SEVERITY_LEVEL_WARN : severityLevel);
+            let severity = errors[i].severity ? errors[i].severity : severityLevel;
 
             let domainFieldError = new DomainFieldError({message: errors[i].message, fieldName, propertyId,
                 severity: severity, serverError: true, rowIndexes: (errors[i].rowIndexes ? errors[i].rowIndexes : List<number>())});

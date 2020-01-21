@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 6759: Use Query.getServerDate() for CreatedModified.tsx component (fixes timezone issue)
 
+### version 0.16.1
+*Released*: 21 January 2020
+* Misc button text updates for Sample Manager (prefer 'Save' and 'Import' over 'Finish')
+
 ### version 0.16.0
 *Released*: 20 January 2020
 * Add property to QueryGridModel to pass through parameters for parameterized queries

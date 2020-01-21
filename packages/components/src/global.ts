@@ -15,10 +15,8 @@
  */
 import { getGlobal, setGlobal } from 'reactn';
 import { List, Map } from 'immutable';
-
-
 import { initBrowserHistoryState } from './util/global';
-import { DataViewInfo, EditorModel, LookupStore } from './models';
+import { EditorModel, LookupStore } from './models';
 import { Lineage } from './components/lineage/models';
 import { IUser } from './components/forms/model';
 import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';

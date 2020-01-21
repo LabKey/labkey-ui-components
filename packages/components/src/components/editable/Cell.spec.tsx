@@ -65,13 +65,19 @@ const emptyRow = Map<any, any>();
 
 describe("Cell", () => {
    test("default props", (done) => {
-       const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} row={emptyRow} rowIdx={2}/>);
+       const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2}/>);
 
        setTimeout(() => {
            expect(cell.find("div")).toHaveLength(1);
            expect(cell.find("input")).toHaveLength(0);
-           cell.simulate('doubleClick');
-           cell.render();
+           done();
+       }, 25);
+   });
+
+   test("with focus", (done) => {
+       const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused={true} selected={true}/>);
+
+       setTimeout(() => {
            expect(cell.find("div")).toHaveLength(0);
            expect(cell.find("input")).toHaveLength(1);
            done();
@@ -79,14 +85,16 @@ describe("Cell", () => {
    });
 
    test("with placeholder", () => {
-       const cell = mount(<Cell col={queryColumn} colIdx={2} modelId={MODEL_ID} placeholder="placeholder text" row={emptyRow} rowIdx={3}/>);
+       const cell = mount(<Cell col={queryColumn} colIdx={2} modelId={MODEL_ID} placeholder="placeholder text" rowIdx={3}/>);
        const div = cell.find("div");
        expect(div).toHaveLength(1);
        expect(div.text()).toBe("placeholder text");
        expect(cell.find("input")).toHaveLength(0);
+       cell.unmount();
+   });
 
-       cell.simulate('doubleClick');
-       cell.render();
+   test("with placeholder while focused", () => {
+       const cell = mount(<Cell col={queryColumn} colIdx={2} modelId={MODEL_ID} placeholder="placeholder text" rowIdx={3} selected={true} focused={true}/>);
        expect(cell.find("div")).toHaveLength(0);
        const input = cell.find("input");
        expect(input).toHaveLength(1);
@@ -95,9 +103,7 @@ describe("Cell", () => {
    });
 
    test("readOnly property", () => {
-       const cell = mount(<Cell col={queryColumn} colIdx={3} modelId={MODEL_ID} readOnly={true} row={emptyRow} rowIdx={3}/>);
-       cell.simulate('doubleClick');
-       cell.render();
+       const cell = mount(<Cell col={queryColumn} colIdx={3} modelId={MODEL_ID} readOnly={true} rowIdx={3}/>);
        expect(cell.find("div")).toHaveLength(1);
        expect(cell.find("input")).toHaveLength(0);
        cell.unmount();
@@ -108,23 +114,18 @@ describe("Cell", () => {
            readOnly: true,
            name: "roColumn"
        });
-       const cell = mount(<Cell col={roColumn} colIdx={4} modelId={MODEL_ID} readOnly={false} row={emptyRow} rowIdx={3}/>);
-       cell.simulate('doubleClick');
-       cell.render();
+       const cell = mount(<Cell col={roColumn} colIdx={4} modelId={MODEL_ID} readOnly={false} rowIdx={3}/>);
        expect(cell.find("div")).toHaveLength(1);
        expect(cell.find("input")).toHaveLength(0);
        cell.unmount();
    });
 
    test("with placeholder and readOnly", () => {
-       const cell = mount(<Cell col={queryColumn} colIdx={3} modelId={MODEL_ID} placeholder="readOnly placeholder" readOnly={true} row={emptyRow} rowIdx={3}/>);
+       const cell = mount(<Cell col={queryColumn} colIdx={3} modelId={MODEL_ID} placeholder="readOnly placeholder" readOnly={true} rowIdx={3}/>);
 
        const div = cell.find("div");
        expect(div).toHaveLength(1);
        expect(div.text()).toBe("readOnly placeholder");
-       cell.simulate('doubleClick');
-       cell.render();
-       expect(cell.find("div")).toHaveLength(1);
        expect(cell.find("input")).toHaveLength(0);
        cell.unmount();
    });

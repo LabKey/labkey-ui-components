@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as OrigReact from 'react';
-import React from 'reactn';
+import React from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
 import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from '../../actions';
-import { CellMessage, EditorModel, ValueDescriptor } from '../../models';
+import { CellMessage, ValueDescriptor } from '../../models';
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { QueryColumn } from '../base/models/model';
@@ -33,15 +32,27 @@ interface Props {
     name?: string
     placeholder?: string
     readOnly?: boolean
-    row: any
     rowIdx: number
+    focused?: boolean
+    message?: CellMessage
+    selected?: boolean
+    selection?: boolean
+    values?: List<ValueDescriptor>
 }
 
-export class Cell extends React.Component<Props, any> {
+export class Cell extends React.PureComponent<Props, any> {
 
     private changeTO: number;
     private clickTO: number;
     private displayEl: React.RefObject<any>;
+
+    static defaultProps = {
+        focused: false,
+        message: undefined,
+        selected: false,
+        selection: false,
+        values: List<ValueDescriptor>()
+    };
 
     constructor(props: Props) {
         super(props);
@@ -54,20 +65,19 @@ export class Cell extends React.Component<Props, any> {
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
 
-        this.displayEl = OrigReact.createRef();
+        this.displayEl = React.createRef();
     }
 
-    // shouldComponentUpdate -- don't ever use this
-
     componentDidUpdate() {
-        if (!this.focused() && this.selected()) {
+        if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
         }
     }
 
     handleSelectionBlur() {
-        if (this.selected())
+        if (this.props.selected) {
             unfocusCellSelection(this.props.modelId);
+        }
     }
 
     handleBlur(evt: any) {
@@ -81,6 +91,8 @@ export class Cell extends React.Component<Props, any> {
 
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         event.persist();
+
+        clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
             const { colIdx, modelId, rowIdx } = this.props;
             modifyCell(modelId, colIdx, rowIdx, {
@@ -104,9 +116,7 @@ export class Cell extends React.Component<Props, any> {
     }
 
     handleKeys(event: React.KeyboardEvent<HTMLElement>) {
-        const { colIdx, modelId, rowIdx } = this.props;
-        const focused = this.focused();
-        const selected = this.selected();
+        const { colIdx, focused, modelId, rowIdx, selected } = this.props;
 
         switch (event.keyCode) {
             case KEYS.Alt:
@@ -182,7 +192,7 @@ export class Cell extends React.Component<Props, any> {
     }
 
     handleSelect(event) {
-        const { colIdx, modelId, rowIdx } = this.props;
+        const { colIdx, modelId, rowIdx, selected } = this.props;
 
         if (event.ctrlKey || event.metaKey) {
             selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.SINGLE);
@@ -191,60 +201,15 @@ export class Cell extends React.Component<Props, any> {
             cancelEvent(event);
             selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.AREA);
         }
-        else if (!this.selected()) {
+        else if (!selected) {
             selectCell(modelId, colIdx, rowIdx);
         }
     }
 
-    getModel(): EditorModel {
-        const { modelId } = this.props;
-
-        // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid_editors.get(modelId);
-    }
-
-    focused(): boolean {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.isFocused(colIdx, rowIdx) : false;
-    }
-
-    selected(): boolean {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.isSelected(colIdx, rowIdx) : false;
-    }
-
-    selection(): boolean {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.inSelection(colIdx, rowIdx) : false;
-    }
-
-    message(): CellMessage {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.getMessage(colIdx, rowIdx) : undefined;
-    }
-
-    values(): List<ValueDescriptor> {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.getValue(colIdx, rowIdx) : List<ValueDescriptor>();
-    }
-
     render() {
-        const { col, colIdx, modelId, placeholder, rowIdx } = this.props;
-        const message = this.message();
-        const selected = this.selected();
-        const values = this.values();
+        const { col, colIdx, focused, message, modelId, placeholder, rowIdx, selected, selection, values } = this.props;
 
-        if (!this.focused()) {
+        if (!focused) {
             let valueDisplay = values
                 .filter(vd => vd && vd.display !== undefined)
                 .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
@@ -254,7 +219,7 @@ export class Cell extends React.Component<Props, any> {
                 className: classNames('cellular-display', {
                     'cell-selected': selected,
                     'size-limited': col.isLookup(),
-                    'cell-selection': this.selection(),
+                    'cell-selection': selection,
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),
                     'cell-placeholder': valueDisplay.length == 0 && placeholder !== undefined

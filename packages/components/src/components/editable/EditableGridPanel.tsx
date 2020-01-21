@@ -30,6 +30,7 @@ interface Props extends EditableGridProps {
 export class EditableGridPanel extends React.Component<Props, any> {
 
     constructor(props: EditableGridProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         if (!props.model) {

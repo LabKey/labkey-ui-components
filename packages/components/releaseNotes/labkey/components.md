@@ -1,5 +1,26 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version 0.16.0
+*Released*: 20 January 2020
+* Add property to QueryGridModel to pass through parameters for parameterized queries
+
+### version 0.15.0
+*Released*: 17 January 2020
+* Move add, bulk, edit, and delete controls to be together for SampleInsertPanel
+* Add DatePickerInput
+* Update QueryInfoForms to use date picker for date fields
+* Add BulkAddUpdateForm
+* Add support for bulk update selected grid rows for SampleInsertPanel and AssayImportPanels
+* Update SampleInsertPanel to support tabbed grid and file based insert
+
+### version 0.14.0
+*Released*: 17 January 2020
+* QueryGrid paging improvements / fixes
+    * Issue 38823: Allow users to select the number of rows they want to display in a grid on a single page
+    * Issue 38824: Allow users to go to the first and last page in a grid and see current page number and total page count
+    * Issue 39367: Disabled button tool tip on grid doesn't hide for disabled button
+    * Issue 39405: Paging too far can result in no data
+    * Issue 39420: Setting url pageSize to negative number results in all data being shown
 
 ### version TBD
 *Released*: 17 January 2020

@@ -170,10 +170,12 @@ import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
+import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput } from './components/forms/input/SelectInput';
+import { DatePickerInput } from './components/forms/input/DatePickerInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
@@ -351,9 +353,11 @@ export {
     EditableGridPanelForUpdate,
     EditableGridModal,
     QueryGridPanel,
+    BulkAddUpdateForm,
     BulkUpdateForm,
     LookupSelectInput,
     SelectInput,
+    DatePickerInput,
     QuerySelect,
     QuerySelectOwnProps,
     UserSelectInput,

@@ -19,13 +19,13 @@ import { List } from 'immutable';
 import { QueryFormInputs } from './QueryFormInputs';
 import { mount } from 'enzyme';
 import { TextInput } from './input/TextInput';
-import { DateInput } from './input/DateInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { FileInput } from './input/FileInput';
 import { SelectInput } from './input/SelectInput';
 import { initUnitTestMocks } from '../../testHelpers';
 import { getQueryDetails } from '../../query/api';
 import { SchemaQuery } from '../base/models/model';
+import { DatePickerInput } from "./input/DatePickerInput";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -47,8 +47,8 @@ describe("QueryFormInputs", () => {
             );
 
             expect(formWrapper.find('input').findWhere((input) => input.prop('disabled'))).toHaveLength(0);
-            expect(formWrapper.find(TextInput)).toHaveLength(4);
-            expect(formWrapper.find(DateInput)).toHaveLength(1);
+            expect(formWrapper.find(TextInput)).toHaveLength(3);
+            expect(formWrapper.find(DatePickerInput)).toHaveLength(1);
             expect(formWrapper.find(CheckboxInput)).toHaveLength(1);
             expect(formWrapper.find(SelectInput)).toHaveLength(1);
             // default properties don't render file inputs

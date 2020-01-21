@@ -1,5 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version 0.16.0
+*Released*: 20 January 2020
+* Add property to QueryGridModel to pass through parameters for parameterized queries
 
 ### version TBD
 *Released*: TBD

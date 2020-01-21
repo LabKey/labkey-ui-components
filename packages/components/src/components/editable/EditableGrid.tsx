@@ -33,7 +33,7 @@ import {
     removeRows,
     select, updateGridFromBulkForm,
 } from '../../actions';
-import { getEditorModel, getQueryGridModel } from '../../global';
+import { getQueryGridModel } from '../../global';
 import { Cell } from './Cell';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { headerSelectionCell } from '../../renderers';
@@ -46,6 +46,7 @@ import { capitalizeFirstChar, caseInsensitive } from '../../util/utils';
 import { DeleteIcon } from '../base/DeleteIcon';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { EditorModel, ValueDescriptor } from "../../models";
 import { BulkAddUpdateForm } from "../forms/BulkAddUpdateForm";
 
 const COUNT_COL = new GridColumn({
@@ -64,18 +65,26 @@ const COUNT_COL = new GridColumn({
 
 // the column index for cell values and cell messages does not include either the selection
 // column or the row number column, so we adjust the value passed to <Cell> to accommodate.
-function inputCellFactory(modelId: string, allowSelection?: boolean, columnMetadata?: EditableColumnMetadata) {
-    return (value: any, row: any, c: GridColumn, rn: number, cn: number) => (
-        <Cell
+function inputCellFactory(modelId: string, editorModel: EditorModel, allowSelection?: boolean, columnMetadata?: EditableColumnMetadata) {
+    return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
+        const colIdx = cn-(allowSelection ? 2 : 1);
+
+        return <Cell
             col={c.raw}
-            colIdx={cn-(allowSelection ? 2 : 1)}
+            colIdx={colIdx}
             key={inputCellKey(c.raw, row)}
             modelId={modelId}
             placeholder={columnMetadata ? columnMetadata.placeholder: undefined}
             readOnly={ columnMetadata ? columnMetadata.readOnly : false}
-            row={row}
-            rowIdx={rn}/>
-    );
+            rowIdx={rn}
+
+            focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
+            message={editorModel ? editorModel.getMessage(colIdx, rn) : undefined}
+            selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
+            selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
+            values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
+        />
+    };
 }
 
 function inputCellKey(col: QueryColumn, row: any): string {
@@ -163,6 +172,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     private readonly wrapper: React.RefObject<any>;
 
     constructor(props: EditableGridProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.onAddRows = this.onAddRows.bind(this);
@@ -287,6 +297,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     generateColumns(): List<GridColumn> {
         const { allowBulkRemove, allowRemove, columnMetadata } = this.props;
         const model = this.getModel(this.props);
+        const editorModel = this.getEditorModel();
         let gridColumns = List<GridColumn>();
 
         if (allowBulkRemove) {
@@ -308,7 +319,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         this.getColumns().forEach(qCol => {
             gridColumns = gridColumns.push(new GridColumn({
                 align: qCol.align,
-                cell: inputCellFactory(model.getId(), allowBulkRemove, columnMetadata.get(qCol.fieldKey)),
+                cell: inputCellFactory(model.getId(), editorModel, allowBulkRemove, columnMetadata.get(qCol.fieldKey)),
                 index: qCol.fieldKey,
                 raw: qCol,
                 title: qCol.caption,
@@ -435,9 +446,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     onPaste(event: any) {
         if (!this.props.disabled) {
             const modelId = this.props.model.getId();
-            const beforeRowCount = getEditorModel(modelId).rowCount;
+            const beforeRowCount = this.getEditorModel().rowCount;
             pasteEvent(modelId, event, this.showMask, this.hideMask, this.props.columnMetadata);
-            const afterRowCount =  getEditorModel(modelId).rowCount;
+            const afterRowCount =  this.getEditorModel().rowCount;
             if (beforeRowCount !== afterRowCount) {
                 this.onRowCountChange();
             }
@@ -498,7 +509,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     getEditorModel() {
         const modelId = this.props.model.getId();
-        return getEditorModel(modelId);
+        return this.global.QueryGrid_editors.get(modelId);
     }
 
     getSelectedRowIndexes() : List<number>{

@@ -63,6 +63,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     };
 
     constructor(props: URLBoxProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.onOmniBoxChange = this.onOmniBoxChange.bind(this);
@@ -223,7 +224,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
                 actions={actions}
                 onChange={this.onOmniBoxChange}
                 values={values}
-                disabled={queryModel.isError}
+                disabled={queryModel && queryModel.isError}
             />
         )
     }

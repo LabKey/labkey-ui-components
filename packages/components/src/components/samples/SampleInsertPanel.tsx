@@ -116,6 +116,7 @@ interface StateProps {
 export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
     constructor(props: any) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.insertRowsFromGrid = this.insertRowsFromGrid.bind(this);

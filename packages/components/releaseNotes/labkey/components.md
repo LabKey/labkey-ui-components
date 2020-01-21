@@ -6,6 +6,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add optional callback for SampleInsertPanel when data changes to help in detecting dirty state.
 * Add optional callback for AssayImportPanels when data changes to help in detecting dirty state.
 
+### version 0.17.0
+*Released*: 21 January 2020
+* EditableGrid cell render optimization
+    - prevent unnecessary re-render of all cells when one is edited/selected/etc.
+    - move reactn global state connection to EditableGrid and make Cell components PureComponents
+    - update to reactn version 2.2.4
+
 ### version 0.16.2
 *Released*: 21 January 2020
 * Item 6759: Use Query.getServerDate() for CreatedModified.tsx component (fixes timezone issue)

@@ -3,6 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add optional callback for SampleInsertPanel when data changes to help in detecting dirty state.
+* Add optional callback for AssayImportPanels when data changes to help in detecting dirty state.
 
 ### version 0.16.0
 *Released*: 20 January 2020

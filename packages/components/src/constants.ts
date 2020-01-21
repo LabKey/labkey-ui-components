@@ -214,5 +214,6 @@ export const VISUALIZATION_REPORTS = Set([
 export enum IMPORT_DATA_FORM_TYPES {
     GRID = 1,
     TEXT,
-    FILE
+    FILE,
+    OTHER
 }

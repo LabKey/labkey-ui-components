@@ -713,7 +713,7 @@ export class EditorModel extends Record({
     }
 
     hasRawValue(descriptor: ValueDescriptor) {
-        return descriptor && descriptor.raw !== undefined && descriptor.raw !== "";
+        return descriptor && descriptor.raw !== undefined && descriptor.raw.toString().trim() !== "";
     }
 
     hasData() : boolean {

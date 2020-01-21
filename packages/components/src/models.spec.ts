@@ -258,7 +258,30 @@ describe("EditorModel", () => {
                             "raw": "S-4"
                         }
                     ]),
-                    "5-0": List<ValueDescriptor>([
+                    "1-1": List<ValueDescriptor>([
+                        {
+                            "display": " spaceDupe ",
+                            "raw": " spaceDupe \n"
+                        }
+                    ]),
+                    "1-2": List<ValueDescriptor>([
+                        {
+                            "display": "spaceDupe",
+                            "raw": " \tspaceDupe"
+                        }
+                    ]),
+                    "1-3": List<ValueDescriptor>([
+                        {
+                            "display": "caseInSenSiTive",
+                            "raw": "caseInSenSiTive"
+                        }
+                    ]),
+                    "1-4": List<ValueDescriptor>([
+                        {
+                            "display": "CaseInsensItive",
+                            "raw": "CaseInsensItive"
+                        }
+                    ]),                    "5-0": List<ValueDescriptor>([
                         {
                             "display": "requirement 1",
                             "raw": "requirement 1"
@@ -333,6 +356,15 @@ describe("EditorModel", () => {
             expect(errors).toHaveLength(2);
             expect(errors[0].indexOf("Duplicate")).toBeGreaterThanOrEqual(0);
             expect(errors[1].indexOf("Duplicate")).toBeGreaterThanOrEqual(0);
+
+            const ciUniqueKeyViolations = editorModel.validateData(queryGridModel, "Description").uniqueKeyViolations;
+            expect(ciUniqueKeyViolations.get("Description").has("spacedupe")).toBe(true);
+            expect(ciUniqueKeyViolations.get("Description").get("spacedupe")).toEqual(List<number>([2, 3]));
+            expect(ciUniqueKeyViolations.get("Description").has("caseinsensitive")).toBe(true);
+            expect(ciUniqueKeyViolations.get("Description").get("caseinsensitive")).toEqual(List<number>([4, 5]));
+            const ciErrors = editorModel.getValidationErrors(queryGridModel, "Description");
+            expect(ciErrors[0].indexOf("Duplicate")).toBeGreaterThanOrEqual(0);
+            expect(ciErrors[1].indexOf("Duplicate")).toBeGreaterThanOrEqual(0);
         });
 
         test("missing required and unique key violations", () => {

@@ -8,6 +8,19 @@ Components, models, actions, and utility functions for LabKey applications and p
     - move reactn global state connection to EditableGrid and make Cell components PureComponents
     - update to reactn version 2.2.4
 
+### version 0.16.2
+*Released*: 21 January 2020
+* Item 6759: Use Query.getServerDate() for CreatedModified.tsx component (fixes timezone issue)
+    * Includes update of @labkey/api to version 0.0.31
+
+### version 0.16.1
+*Released*: 21 January 2020
+* Misc button text updates for Sample Manager (prefer 'Save' and 'Import' over 'Finish')
+
+### version 0.16.0
+*Released*: 20 January 2020
+* Add property to QueryGridModel to pass through parameters for parameterized queries
+
 ### version 0.15.0
 *Released*: 17 January 2020
 * Move add, bulk, edit, and delete controls to be together for SampleInsertPanel

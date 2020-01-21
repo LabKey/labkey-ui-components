@@ -210,3 +210,9 @@ export const VISUALIZATION_REPORTS = Set([
     DataViewInfoTypes.XYScatterPlot,
     DataViewInfoTypes.XYSeriesLinePlot,
 ]);
+
+export enum IMPORT_DATA_FORM_TYPES {
+    GRID = 1,
+    TEXT,
+    FILE
+}

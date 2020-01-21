@@ -1,12 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version 0.16.1
+*Released*: 21 January 2020
+* Misc button text updates for Sample Manager (prefer 'Save' and 'Import' over 'Finish')
+
 ### version 0.16.0
 *Released*: 20 January 2020
 * Add property to QueryGridModel to pass through parameters for parameterized queries
-
-### version TBD
-*Released*: TBD
-* Misc button text updates for Sample Manager (prefer 'Save' and 'Import' over 'Finish')
 
 ### version 0.15.0
 *Released*: 17 January 2020

@@ -99,6 +99,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>
     handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean) => Promise<any>
     canEditSampleTypeDetails?: boolean
+    onDataChange?: (dirty: boolean) => any
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -584,10 +585,16 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                     insertModel: insertModel.set('sampleCount', editorModel.rowCount) as SampleIdCreationModel
                 }
             });
+            if (this.props.onDataChange) {
+                this.props.onDataChange(true);
+            }
         }
     }
 
     onCancel() {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(false); // if cancelling, presumably they know that they want to discard changes.
+        }
         if (this.props.onCancel) {
             this.removeQueryGridModel();
             this.props.onCancel();
@@ -629,6 +636,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             if (response && response.rows) {
 
                 this.setSubmitting(false);
+                if (this.props.onDataChange) {
+                    this.props.onDataChange(false);
+                }
                 if (this.props.afterSampleCreation) {
                     this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), response.getFilter(), response.rows.length, 'created');
                 }
@@ -652,6 +662,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         this.setSubmitting(true);
         insertModel.deriveSamples(count).then((result: GenerateSampleResponse) => {
             this.setSubmitting(false);
+            if (this.props.onDataChange) {
+                this.props.onDataChange(false);
+            }
             if (this.props.afterSampleCreation) {
                 this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), result.getFilter(), result.data.materialOutputs.length, 'created');
             }
@@ -871,6 +884,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         handleFileImport(originalQueryInfo, file, isMerge).then((response) => {
             this.setSubmitting(false);
+            if (this.props.onDataChange) {
+                this.props.onDataChange(false);
+            }
             if (this.props.afterSampleCreation) {
                 this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), null, response.rowCount, 'imported');
             }

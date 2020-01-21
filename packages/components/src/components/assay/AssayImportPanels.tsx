@@ -608,7 +608,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     allowBulkUpdate={allowBulkUpdate}
                     fileSizeLimits={this.props.fileSizeLimits}
                     maxInsertRows={this.props.maxInsertRows}
-                    onDataChange={this.props.onDataChange}
+                    onGridDataChange={this.props.onDataChange}
                 />
                 {model.errorMsg && <Alert bsStyle="danger">{model.errorMsg}</Alert>}
                 <WizardNavButtons

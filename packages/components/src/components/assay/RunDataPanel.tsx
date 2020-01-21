@@ -52,7 +52,7 @@ interface Props {
     title: string
     fileSizeLimits?: Map<string, FileSizeLimitProps>
     maxInsertRows?: number
-    onDataChange?: (dirty: boolean, changeType: IMPORT_DATA_FORM_TYPES) => any
+    onGridDataChange?: (dirty: boolean, changeType: IMPORT_DATA_FORM_TYPES) => any
 }
 
 interface PreviousRunData {
@@ -185,8 +185,8 @@ export class RunDataPanel extends React.Component<Props, State> {
     onRowCountChange = (rowCount: number) => {
         const { gridModel } = this.props;
         const editorModel = getEditorModel(gridModel.getId());
-        if (this.props.onDataChange) {
-            this.props.onDataChange(editorModel && editorModel.rowCount > 0, IMPORT_DATA_FORM_TYPES.GRID);
+        if (this.props.onGridDataChange) {
+            this.props.onGridDataChange(editorModel && editorModel.rowCount > 0, IMPORT_DATA_FORM_TYPES.GRID);
         }
     };
 

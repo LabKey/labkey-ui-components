@@ -245,7 +245,7 @@ Array [
           onClick={[Function]}
           type="submit"
         >
-          Finish
+          Save
         </button>
       </div>
     </div>
@@ -498,7 +498,7 @@ Array [
           onClick={[Function]}
           type="submit"
         >
-          Finish
+          Save
         </button>
       </div>
     </div>

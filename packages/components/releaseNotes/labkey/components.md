@@ -1,9 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
 ### version TBD
 *Released*: TBD
 * Add optional callback for SampleInsertPanel when data changes to help in detecting dirty state.
 * Add optional callback for AssayImportPanels when data changes to help in detecting dirty state.
+
+### version 0.16.1
+*Released*: 21 January 2020
+* Misc button text updates for Sample Manager (prefer 'Save' and 'Import' over 'Finish')
 
 ### version 0.16.0
 *Released*: 20 January 2020

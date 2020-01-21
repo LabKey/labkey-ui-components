@@ -69,7 +69,7 @@ import { FormStep, FormTabs } from '../forms/FormStep';
 import {FileSizeLimitProps} from "../files/models";
 import { Link } from "react-router";
 
-const TABS = ['Create From Grid', 'Import Samples From File'];
+const TABS = ['Create Samples from Grid', 'Import Samples from File'];
 const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
 
 class SampleGridLoader implements IGridLoader {
@@ -917,6 +917,8 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                 finish={true}
                 nextStep={this.submitFileHandler} // nextStep is the function that will get called when finish button clicked
                 isFinishing={isSubmitting}
+                finishText={"Import"}
+                isFinishingText={"Importing..."}
             />
         )
     }

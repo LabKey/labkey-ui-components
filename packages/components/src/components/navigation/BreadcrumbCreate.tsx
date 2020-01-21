@@ -21,19 +21,24 @@ import { CreatedModified } from '../base/CreatedModified';
 
 interface Props {
     row?: Map<string, any>
+    useServerDate?: boolean
 }
 
 export class BreadcrumbCreate extends React.Component<Props, any> {
 
+    static defaultProps = {
+        useServerDate: true
+    };
+
     render() {
-        const { children, row } = this.props;
+        const { children, row, useServerDate } = this.props;
 
         return (
             <div className="row component-crumbcreate--container">
                 <Breadcrumb className="col-xs-8 col-sm-8 col-md-8">
                     {children}
                 </Breadcrumb>
-                <CreatedModified row={row} className="col-xs-4 col-sm-4 col-md-4"/>
+                <CreatedModified row={row} useServerDate={useServerDate} className="col-xs-4 col-sm-4 col-md-4"/>
             </div>
         )
     }

@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add optional callback for SampleInsertPanel when data changes to help in detecting dirty state.
 * Add optional callback for AssayImportPanels when data changes to help in detecting dirty state.
 
+### version 0.16.2
+*Released*: 21 January 2020
+* Item 6759: Use Query.getServerDate() for CreatedModified.tsx component (fixes timezone issue)
+    * Includes update of @labkey/api to version 0.0.31
+
 ### version 0.16.1
 *Released*: 21 January 2020
 * Misc button text updates for Sample Manager (prefer 'Save' and 'Import' over 'Finish')

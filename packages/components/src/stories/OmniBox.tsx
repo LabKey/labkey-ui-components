@@ -14,6 +14,7 @@ import { createMockActionContext } from '../test/OmniboxMock';
 import './stories.scss';
 import { OmniBox } from '../components/omnibox/OmniBox';
 import { Grid } from '../components/base/Grid';
+import {ViewAction} from "../components/omnibox/actions/View";
 
 const { model, resolveColumns, resolveModel } = createMockActionContext('toyStory');
 
@@ -59,7 +60,8 @@ storiesOf("Omnibox", module)
         const actions = [
             new SearchAction(undefined, 'q'),
             new FilterAction(resolveColumns, 'f', resolveModel),
-            new SortAction(resolveColumns, 's')
+            new SortAction(resolveColumns, 's'),
+            new ViewAction(resolveColumns, 'v', resolveModel)
         ];
 
         return (

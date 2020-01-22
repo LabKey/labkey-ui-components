@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.18.1
+*Released*: 22 January 2020
+* Hide the ViewAction on the omnibox when there are no non-default views
+* Hide the ViewAction on the omnibox when QueryModel.showViewSelector is false
+
 ### version 0.18.0
 *Released*: 22 January 2020
 * Add optional callback for SampleInsertPanel when data changes to help in detecting dirty state.

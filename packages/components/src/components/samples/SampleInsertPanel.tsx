@@ -68,6 +68,7 @@ import {
 import { FormStep, FormTabs } from '../forms/FormStep';
 import {FileSizeLimitProps} from "../files/models";
 import { Link } from "react-router";
+import { SAMPLE_INSERT_FAILURE_MESSAGE } from './constants';
 
 const TABS = ['Create Samples from Grid', 'Import Samples from File'];
 const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
@@ -643,7 +644,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         }).catch((error: InsertRowsResponse) => {
             this.setSubmitting(false);
             gridShowError(queryGridModel, {
-                message: error.error.exception
+                message: SAMPLE_INSERT_FAILURE_MESSAGE
             });
         });
     }
@@ -658,7 +659,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             }
         }).catch((reason) => {
             this.setSubmitting(false);
-            gridShowError(this.getQueryGridModel(), reason);
+            gridShowError(this.getQueryGridModel(), SAMPLE_INSERT_FAILURE_MESSAGE);
         });
     }
 
@@ -878,7 +879,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         }).catch((error) => {
             this.setState(() => ({
-                error: error.msg,
+                error: SAMPLE_INSERT_FAILURE_MESSAGE,
                 isSubmitting: false
             }));
         });

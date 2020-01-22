@@ -618,6 +618,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
                 }));
             },
             failure: (error) => {
+                console.error(error);
                 reject(new InsertRowsResponse({
                     schemaQuery,
                     error

@@ -1,0 +1,1 @@
+export const SAMPLE_INSERT_FAILURE_MESSAGE = "There was a problem generating your samples. Check your existing samples for possible duplicate Sample IDs and make sure any referenced parent samples are still valid.";

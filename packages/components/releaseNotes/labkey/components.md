@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 39182: Disabled "Assay Data" create menu item tool-top doesn't go away
 * Fix for Domain designer field focus jumps after moving a field row
 
+### version 0.18.0
+*Released*: 22 January 2020
+* Add optional callback for SampleInsertPanel when data changes to help in detecting dirty state.
+* Add optional callback for AssayImportPanels when data changes to help in detecting dirty state.
+
 ### version 0.17.0
 *Released*: 21 January 2020
 * EditableGrid cell render optimization

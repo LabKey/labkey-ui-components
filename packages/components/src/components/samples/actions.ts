@@ -195,7 +195,8 @@ export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Par
                 targetSampleSet
             })
         })
-        .catch(() => {
+        .catch((reason) => {
+            console.error(reason);
             reject(getActionErrorMessage('There was a problem initializing the sample set create page.', 'sample types'));
         })
     });

@@ -34,7 +34,7 @@ export class UserResetPasswordConfirmModal extends React.Component<Props, State>
             .then(onComplete)
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({error: (error ? error.exception : 'Unknown error'), submitting: false}));
+                this.setState(() => ({error: "There was a problem resetting the password for this user.", submitting: false}));
             });
     };
 

@@ -80,6 +80,7 @@ type Props = OwnProps & WithFormStepsProps;
 interface State {
     schemaQuery: SchemaQuery
     model: AssayWizardModel,
+    error: React.ReactNode,
     showRenameModal : boolean
     duplicateFileResponse?: DuplicateFilesResponse
     importAgain?: boolean
@@ -93,7 +94,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         this.state = {
             schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
             model: AssayImportPanelsImpl.getInitWizardModel(props),
-            showRenameModal: false
+            showRenameModal: false,
+            error: undefined
         }
     }
 
@@ -304,9 +306,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
     handleFileChange = (attachments: Map<string, File>) => {
         this.setState((state) => ({
+            error: undefined,
             model: state.model.merge({
                 attachedFiles: attachments,
-                errorMsg: undefined,
                 usePreviousRunFile: false,
             }) as AssayWizardModel
         }));
@@ -315,8 +317,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     handleFileRemove = (attachmentName: string) => {
         this.setState((state) => {
             return {
+                error: undefined,
                 model : state.model.merge({
-                    errorMsg: undefined,
                     attachedFiles: Map<string, File>(),
                     usePreviousRunFile: false
                 }) as AssayWizardModel
@@ -403,7 +405,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             }
         }).catch((reason) => {
             this.setState((state) => ({
-                model: state.model.set('errorMsg', getActionErrorMessage("There was a problem checking for duplicate file names.", "assay run")) as AssayWizardModel
+                error: getActionErrorMessage("There was a problem checking for duplicate file names.", "assay run"),
             }));
         });
     }
@@ -437,14 +439,12 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                         }
                     })
                     .catch((reason) => {
-                        const error = reason.message || reason.exception;
-                        console.error("Problem importing assay run", error);
-                        this.onFailure(error || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
+                        console.error("Problem importing assay run", reason);
+                        this.onFailure(getActionErrorMessage("There was a problem importing the assay results.", "referenced samples or assay design", false))
                     });
             }).catch((reason) => {
-                const error = reason.message || reason.exception;
-                console.error("Problem uploading assay run files", error);
-                this.onFailure(error || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
+                console.error("Problem uploading assay run files", reason);
+                this.onFailure( getActionErrorMessage("There was a problem uploading the data files.", "referenced samples or assay design", false));
             });
         }
     };
@@ -485,6 +485,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     setModelState(isSubmitting: boolean, errorMsg: React.ReactNode) {
         this.setState((state) => {
             return {
+                error: errorMsg,
                 model : state.model.merge({
                     isSubmitting,
                     errorMsg,
@@ -589,7 +590,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     fileSizeLimits={this.props.fileSizeLimits}
                     maxInsertRows={this.props.maxInsertRows}
                 />
-                {model.errorMsg && <Alert bsStyle="danger">{model.errorMsg}</Alert>}
+                {this.state.error && <Alert bsStyle="danger">{this.state.error}</Alert>}
                 <WizardNavButtons
                     cancel={onCancel}
                     containerClassName=""

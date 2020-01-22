@@ -36,7 +36,7 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
             .then(onComplete)
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({error: (error ? error.exception : 'Unknown error'), submitting: false}));
+                this.setState(() => ({error: "There was a problem updating the active state for the users.", submitting: false}));
             });
     };
 

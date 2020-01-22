@@ -63,6 +63,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                     }
                 },
                 failure: (error, request) => {
+                    console.error(error);
                     invalidateQueryDetailsCacheKey(key);
                     reject({
                         message: error.exception,

@@ -160,7 +160,7 @@ export function loadLineageIfNeeded(seed: string, distance?: number): Promise<Li
         })
         .catch(reason => {
             console.error(reason);
-            const lineage = new Lineage({error: "There was a problem retrieving the lineage data."});
+            const lineage = new Lineage({error: reason.message});
             updateLineageResult(seed, lineage);
             return lineage;
         });

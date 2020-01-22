@@ -1,5 +1,4 @@
 import React from 'react';
-export const SAMPLE_INSERT_FAILURE_MESSAGE = "There was a problem creating your samples. Check your existing samples for possible duplicate Sample IDs and make sure any referenced parent samples are still valid.";
 
 export function getActionErrorMessage(problemStatement: string, noun: string, showRefresh : boolean = true) : React.ReactNode {
     return (
@@ -11,9 +10,11 @@ export function getActionErrorMessage(problemStatement: string, noun: string, sh
     )
 }
 
-
-export function resolveErrorMessage(error: any, noun: string, defaultMsg?: React.ReactNode) : React.ReactNode {
+export function resolveErrorMessage(error: any, noun: string, nounPlural?: string, verb?: string) : string {
     let errorMsg;
+    if (!error) {
+        return undefined;
+    }
     if (typeof error == 'string') {
         errorMsg = error;
     } else if (error.message) {
@@ -22,18 +23,15 @@ export function resolveErrorMessage(error: any, noun: string, defaultMsg?: React
     else if (error.exception) {
         errorMsg = error.exception;
     }
-    else if (error.error && error.error.exception) {
-        errorMsg = error.exception;
-    }
     if (errorMsg) {
         const lcMessage = errorMsg.toLowerCase();
-        if (lcMessage.indexOf('violates unique constraint ') >= 0)
-            return defaultMsg;
+        if (lcMessage.indexOf('violates unique constraint') >= 0)
+            return "There was a problem creating your " + noun + ".  Check the existing " + (nounPlural || noun) + " for possible duplicates and make sure any referenced " + (nounPlural || noun) + " are still valid.";
         else if (lcMessage.indexOf('existing row was not found') >= 0) {
-            return 'The ' + noun + ' was not found.  It may have been deleted by another user.';
+            return 'We could not find the ' + noun + (verb ? ' to ' + verb : '') + '.  Try refreshing your page to see if it has been deleted.';
         }
         else if (lcMessage.indexOf('communication failure') >= 0) {
-            return getActionErrorMessage("There was a problem retrieving data.", "data");
+            return "There was a problem retrieving your " + (noun || "data") + ". Your session may have expired or the " + (noun || "data") + " may no longer be valid.  Try refreshing your page";
         }
     }
     return errorMsg;

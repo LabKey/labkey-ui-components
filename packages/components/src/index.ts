@@ -59,7 +59,7 @@ import {
     toggleDevTools,
     valueIsEmpty,
 } from './util/utils';
-import { getActionErrorMessage } from './util/messaging';
+import { getActionErrorMessage, resolveErrorMessage } from './util/messaging';
 import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL';
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
 import { AddEntityButton } from './components/buttons/AddEntityButton';
@@ -599,6 +599,7 @@ export {
     debounce,
     valueIsEmpty,
     getActionErrorMessage,
+    resolveErrorMessage,
     getHelpLink,
     helpLinkNode,
     DATA_IMPORT_TOPIC,

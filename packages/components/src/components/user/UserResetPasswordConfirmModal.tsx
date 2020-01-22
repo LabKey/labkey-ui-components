@@ -2,6 +2,7 @@ import React from 'react';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { resetPassword } from "./actions";
 import { Alert } from "../base/Alert";
+import { resolveErrorMessage } from '../../util/messaging';
 
 interface Props {
     email: string
@@ -12,7 +13,7 @@ interface Props {
 
 interface State {
     submitting: boolean
-    error: string
+    error: React.ReactNode
 }
 
 export class UserResetPasswordConfirmModal extends React.Component<Props, State> {
@@ -34,7 +35,7 @@ export class UserResetPasswordConfirmModal extends React.Component<Props, State>
             .then(onComplete)
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({error: "There was a problem resetting the password for this user.", submitting: false}));
+                this.setState(() => ({error: resolveErrorMessage(error, "user", "users", "update"), submitting: false}));
             });
     };
 

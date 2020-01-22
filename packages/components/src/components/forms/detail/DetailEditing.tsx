@@ -25,7 +25,7 @@ import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 import { Alert } from '../../base/Alert';
-import { getActionErrorMessage } from '../../..';
+import { resolveErrorMessage } from '../../../util/messaging';
 
 interface DetailEditingProps {
     queryModel: QueryGridModel
@@ -203,7 +203,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                 console.error(error);
                 this.setState(() => ({
                     warning: undefined,
-                    error: getActionErrorMessage('There was a problem updating the data.', 'data')
+                    error: resolveErrorMessage(error, 'data', undefined, 'update')
                 }));
             });
         }

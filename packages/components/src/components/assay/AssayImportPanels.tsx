@@ -423,7 +423,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const { currentStep, onSave, maxInsertRows } = this.props;
         const { model } = this.state;
         const data = model.prepareFormData(currentStep, this.getDataGridModel());
-        if (model.isCopyTab(currentStep) && maxInsertRows && ((Array.isArray(data.dataRows) && data.dataRows.length > maxInsertRows) || data.dataRows.size > maxInsertRows)) {
+        if (model.isCopyTab(currentStep) && maxInsertRows && ((Array.isArray(data.dataRows) && data.dataRows.length > maxInsertRows) || (data.dataRows && data.dataRows.size > maxInsertRows))) {
             this.setModelState(false, 'You have exceeded the maximum number of rows allowed (' + maxInsertRows +').  Please divide your data into smaller groups and try again.')
         }
         else {

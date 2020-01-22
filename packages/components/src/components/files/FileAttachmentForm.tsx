@@ -280,7 +280,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 }
             })
             .catch((reason) => {
-                this.updateErrors("There was a problem determining the fields in the uploaded file.  Check the format of the file to assure the fields are specified in the first line.");
+                this.updateErrors("There was a problem determining the fields in the uploaded file.  Please check the format of the file.");
             })
     }
 

@@ -8,6 +8,7 @@ import { Security } from '@labkey/api'
 import { PermissionsProviderProps, Principal } from "./models";
 import { LoadingPage } from "../../components/base/LoadingPage";
 import { getPrincipals, getInactiveUsers, getPrincipalsById, getRolesByUniqueName, processGetRolesResponse } from "./actions";
+import { resolveErrorMessage } from '../..';
 
 const Context = React.createContext<PermissionsProviderProps>(undefined);
 const PermissionsContextProvider = Context.Provider;
@@ -48,7 +49,7 @@ export const PermissionsPageContextProvider = (Component: React.ComponentType) =
                     this.setState(() => ({roles, rolesByUniqueName}));
                 },
                 failure: (response) => {
-                    this.setState(() => ({error: response.exception}));
+                    this.setState(() => ({error: resolveErrorMessage(response, "roles")}));
                 }
             });
         }
@@ -59,7 +60,7 @@ export const PermissionsPageContextProvider = (Component: React.ComponentType) =
                     const principalsById = getPrincipalsById(principals);
                     this.setState(() => ({principals, principalsById}));
                 }).catch((response) => {
-                    this.setState(() => ({error: "There was a problem retrieving the user data."}));
+                    this.setState(() => ({error: resolveErrorMessage(response, "users")}));
                 });
         }
 
@@ -69,7 +70,7 @@ export const PermissionsPageContextProvider = (Component: React.ComponentType) =
                     const inactiveUsersById = getPrincipalsById(principals);
                     this.setState(() => ({inactiveUsersById}));
                 }).catch((response) => {
-                    this.setState(() => ({error: response.message || response}));
+                    this.setState(() => ({error: resolveErrorMessage(response, "users")}));
                 });
         }
 

@@ -11,7 +11,7 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { generateId } from '../../util/utils';
 import { Alert } from '../base/Alert';
-import { getActionErrorMessage } from "../../util/messaging";
+import { getActionErrorMessage, resolveErrorMessage } from "../../util/messaging";
 import { DERIVE_SAMPLES_ALIAS_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 const CREATE_ERROR = getActionErrorMessage(`There was a problem creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
@@ -141,7 +141,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 .then((response) => this.onFinishSuccess(config))
                 .catch((error) => {
                     console.error(error);
-                    this.onFinishFailure(UPDATE_ERROR)
+                    this.onFinishFailure( resolveErrorMessage(error, "sample type", undefined, "update") || UPDATE_ERROR)
                 });
         }
         else {
@@ -157,7 +157,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 .then((response) => this.onFinishSuccess(config))
                 .catch((error) => {
                     console.error(error);
-                    this.onFinishFailure( CREATE_ERROR)
+                    this.onFinishFailure( resolveErrorMessage(error, "sample type") ||  CREATE_ERROR);
                 });
         }
     };

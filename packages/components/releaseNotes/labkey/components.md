@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Assay import editable grid button changes to match sample create (for bulk insert, update, remove, add)
 * Issue 39182: Disabled "Assay Data" create menu item tool-top doesn't go away
+* Fix for Domain designer field focus jumps after moving a field row
 
 ### version 0.17.0
 *Released*: 21 January 2020

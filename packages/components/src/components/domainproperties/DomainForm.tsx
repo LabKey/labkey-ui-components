@@ -364,6 +364,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.setState(() => ({dragId: idIndex}));
 
         this.onDomainChange(domain);
+
+        // remove focus for any current element so that it doesn't "jump" after drag end
+        (document.activeElement as HTMLElement).blur();
     };
 
     onDragEnd = (result) => {

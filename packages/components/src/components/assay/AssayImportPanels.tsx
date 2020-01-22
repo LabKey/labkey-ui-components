@@ -56,6 +56,7 @@ import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Progress } from '../base/Progress';
 import { FileSizeLimitProps } from '../files/models';
+import { IMPORT_DATA_FORM_TYPES } from '../../constants';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({isInit: false});
@@ -73,6 +74,7 @@ interface OwnProps {
     allowBulkUpdate?: boolean
     fileSizeLimits?: Map<string, FileSizeLimitProps>
     maxInsertRows?: number
+    onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -305,6 +307,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     handleFileChange = (attachments: Map<string, File>) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(attachments.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
+        }
         this.setState((state) => ({
             error: undefined,
             model: state.model.merge({
@@ -315,6 +320,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     handleFileRemove = (attachmentName: string) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(false, IMPORT_DATA_FORM_TYPES.FILE);
+        }
         this.setState((state) => {
             return {
                 error: undefined,
@@ -335,7 +343,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             ...this.state.model.batchProperties.toObject(),
             ...fieldValues,
         };
-
+        if (this.props.onDataChange) {
+            this.props.onDataChange(true, IMPORT_DATA_FORM_TYPES.OTHER);
+        }
         this.handleChange('batchProperties', Map<string, any>(values ? values : {}));
     };
 
@@ -361,6 +371,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             return result;
         }, {});
 
+        if (this.props.onDataChange) {
+            this.props.onDataChange(true, IMPORT_DATA_FORM_TYPES.OTHER);
+        }
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
             this.setState((state) => ({
                 model: state.model.merge({
@@ -372,8 +385,11 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     handleDataTextChange = (inputName: string, fieldValues: any) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(fieldValues !== undefined && fieldValues !== '', IMPORT_DATA_FORM_TYPES.TEXT);
+        }
         // use '' to clear out text area
-        this.handleChange('dataText', fieldValues != undefined ? fieldValues : '');
+        this.handleChange('dataText', fieldValues !== undefined ? fieldValues : '');
     };
 
     handleChange(prop: string, value: any, onComplete?: Function) {
@@ -427,10 +443,14 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             this.setModelState(false, 'You have exceeded the maximum number of rows allowed (' + maxInsertRows +').  Please divide your data into smaller groups and try again.')
         }
         else {
+
             this.setModelState(true, undefined);
             uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
                 importAssayRun(processedData)
                     .then((response: AssayUploadResultModel) => {
+                        if (this.props.onDataChange) {
+                            this.props.onDataChange(false);
+                        }
                         if (importAgain && onSave) {
                             this.onSuccessContinue(response);
                         }
@@ -589,6 +609,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     allowBulkUpdate={allowBulkUpdate}
                     fileSizeLimits={this.props.fileSizeLimits}
                     maxInsertRows={this.props.maxInsertRows}
+                    onGridDataChange={this.props.onDataChange}
                 />
                 {this.state.error && <Alert bsStyle="danger">{this.state.error}</Alert>}
                 <WizardNavButtons

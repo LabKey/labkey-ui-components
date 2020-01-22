@@ -145,7 +145,7 @@ import {
     updateRows,
 } from './query/api';
 import { loadReports, flattenBrowseDataTreeResponse } from './query/reports';
-import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from './constants';
+import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
@@ -428,6 +428,7 @@ export {
     FormStep,
     FormTabs,
     ISelectInitData,
+    IMPORT_DATA_FORM_TYPES,
 
     // heatmap
     addDateRangeFilter,

@@ -142,6 +142,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
     mapParamsToActionValues(): {actions: Array<Action>, values: Array<ActionValue>} {
         const queryModel = this.getQueryModel();
+        const {queryInfo} = queryModel;
         const location = getLocation();
         const urlPrefix = queryModel ? queryModel.urlPrefix : undefined;
 
@@ -152,7 +153,15 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         // setup known URL actions
         for (let i=0; i < actionsProp.length; i++) {
             if (actionsProp[i].toLowerCase() in urlActions) {
-                let urlAction = urlActions[actionsProp[i].toLowerCase()];
+                const actionName = actionsProp[i].toLowerCase();
+                if (actionName === ViewAction.NAME && queryInfo)
+                {
+                    const {views} = queryInfo;
+                    if (!queryModel.showViewSelector || (views && views.filter(v => !v.name.startsWith('~~')).size === 0))
+                        continue;
+                }
+
+                let urlAction = urlActions[actionName];
                 actions.push(new urlAction(this.requestColumns, urlPrefix, this.requestModel));
             }
         }

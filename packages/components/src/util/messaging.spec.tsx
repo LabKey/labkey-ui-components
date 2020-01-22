@@ -35,7 +35,7 @@ describe("resolveErrorMessage", () => {
             "exception" : "The existing row was not found.",
             "exceptionClass" : "org.labkey.api.view.NotFoundException",
         };
-        expect(resolveErrorMessage(error, "frog")).toBe("We could not find the frog to update.  Try refreshing your page to see if it has been deleted.");
+        expect(resolveErrorMessage(error, "frog", undefined, "update")).toBe("We could not find the frog to update.  Try refreshing your page to see if it has been deleted.");
     });
 
     test("Communication error", () => {

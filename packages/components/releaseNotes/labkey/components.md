@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add utility method resolveErrorMessage that can be used to extract a string error message from API responses and convert some
+messages that are not very friendly for users into better text.
+
 ### version 0.18.0
 *Released*: 22 January 2020
 * Add optional callback for SampleInsertPanel when data changes to help in detecting dirty state.

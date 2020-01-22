@@ -154,11 +154,10 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         for (let i=0; i < actionsProp.length; i++) {
             if (actionsProp[i].toLowerCase() in urlActions) {
                 const actionName = actionsProp[i].toLowerCase();
-                if (actionName === ViewAction.NAME && queryInfo )
+                if (actionName === ViewAction.NAME && queryInfo)
                 {
-                    console.log(actionsProp[i]);
                     const {views} = queryInfo;
-                    if (views && views.filter(v => !v.name.startsWith('~~')).size === 0)
+                    if (!queryModel.showViewSelector || (views && views.filter(v => !v.name.startsWith('~~')).size === 0))
                         continue;
                 }
 

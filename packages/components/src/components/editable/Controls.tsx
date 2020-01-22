@@ -174,7 +174,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         const { count } = this.state;
 
         const hasError = !disable && this.hasError();
-        const wrapperClasses = classNames('editable-grid__controls', 'form-group', wrapperClass, {
+        const wrapperClasses = classNames('editable-grid__controls', 'text-nowrap', wrapperClass, {
             'margin-top': placement === 'bottom',
             'has-error': hasError
         });

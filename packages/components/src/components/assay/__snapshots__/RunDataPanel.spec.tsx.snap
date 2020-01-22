@@ -190,10 +190,83 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               className="row QueryGrid-bottom-spacing"
             >
               <div
-                className="col-sm-4"
+                className="col-sm-3"
               >
                 <div
-                  className="btn-group"
+                  className="editable-grid__controls text-nowrap"
+                >
+                  <span
+                    className="input-group"
+                  >
+                    <span
+                      className="input-group-btn"
+                    >
+                      <button
+                        className="btn btn-default"
+                        disabled={false}
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Add
+                      </button>
+                    </span>
+                    <input
+                      className="form-control"
+                      disabled={false}
+                      max={1000}
+                      min={1}
+                      name="addCount"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      style={
+                        Object {
+                          "width": "65px",
+                        }
+                      }
+                      type="number"
+                      value="1"
+                    />
+                    <span
+                      style={
+                        Object {
+                          "display": "inline-block",
+                          "padding": "6px 8px",
+                        }
+                      }
+                    >
+                      row
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                          data-icon="question-circle"
+                          data-prefix="fas"
+                          focusable="false"
+                          role="img"
+                          style={Object {}}
+                          viewBox="0 0 512 512"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                            fill="currentColor"
+                            style={Object {}}
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                className="col-sm-9"
+              >
+                <span
+                  className="control-right"
                 >
                   <button
                     className="control-right btn btn-default"
@@ -203,11 +276,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   >
                     Delete Rows
                   </button>
-                </div>
+                </span>
               </div>
-              <div
-                className="pull-right col-sm-8"
-              />
             </div>
             <div
               className="editable-grid__container"
@@ -345,75 +415,6 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   </tbody>
                 </table>
               </div>
-            </div>
-            <div
-              className="editable-grid__controls form-group margin-top"
-            >
-              <span
-                className="input-group"
-              >
-                <span
-                  className="input-group-btn"
-                >
-                  <button
-                    className="btn btn-default"
-                    disabled={false}
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    Add
-                  </button>
-                </span>
-                <input
-                  className="form-control"
-                  disabled={false}
-                  max={1000}
-                  min={1}
-                  name="addCount"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  style={
-                    Object {
-                      "width": "65px",
-                    }
-                  }
-                  type="number"
-                  value="1"
-                />
-                <span
-                  style={
-                    Object {
-                      "display": "inline-block",
-                      "padding": "6px 8px",
-                    }
-                  }
-                >
-                  row
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
-                  >
-                    <svg
-                      aria-hidden="true"
-                      className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                      data-icon="question-circle"
-                      data-prefix="fas"
-                      focusable="false"
-                      role="img"
-                      style={Object {}}
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                        fill="currentColor"
-                        style={Object {}}
-                      />
-                    </svg>
-                  </span>
-                </span>
-              </span>
             </div>
           </div>
         </div>
@@ -616,7 +617,80 @@ exports[`<RunDataPanel/> default props 1`] = `
               className="row QueryGrid-bottom-spacing"
             >
               <div
-                className="pull-right col-xs-12"
+                className="col-sm-3"
+              >
+                <div
+                  className="editable-grid__controls text-nowrap"
+                >
+                  <span
+                    className="input-group"
+                  >
+                    <span
+                      className="input-group-btn"
+                    >
+                      <button
+                        className="btn btn-default"
+                        disabled={false}
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Add
+                      </button>
+                    </span>
+                    <input
+                      className="form-control"
+                      disabled={false}
+                      max={1000}
+                      min={1}
+                      name="addCount"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      style={
+                        Object {
+                          "width": "65px",
+                        }
+                      }
+                      type="number"
+                      value="1"
+                    />
+                    <span
+                      style={
+                        Object {
+                          "display": "inline-block",
+                          "padding": "6px 8px",
+                        }
+                      }
+                    >
+                      row
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                          data-icon="question-circle"
+                          data-prefix="fas"
+                          focusable="false"
+                          role="img"
+                          style={Object {}}
+                          viewBox="0 0 512 512"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                            fill="currentColor"
+                            style={Object {}}
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                className="col-sm-9"
               />
             </div>
             <div
@@ -739,75 +813,6 @@ exports[`<RunDataPanel/> default props 1`] = `
                   </tbody>
                 </table>
               </div>
-            </div>
-            <div
-              className="editable-grid__controls form-group margin-top"
-            >
-              <span
-                className="input-group"
-              >
-                <span
-                  className="input-group-btn"
-                >
-                  <button
-                    className="btn btn-default"
-                    disabled={false}
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    Add
-                  </button>
-                </span>
-                <input
-                  className="form-control"
-                  disabled={false}
-                  max={1000}
-                  min={1}
-                  name="addCount"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  style={
-                    Object {
-                      "width": "65px",
-                    }
-                  }
-                  type="number"
-                  value="1"
-                />
-                <span
-                  style={
-                    Object {
-                      "display": "inline-block",
-                      "padding": "6px 8px",
-                    }
-                  }
-                >
-                  row
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
-                  >
-                    <svg
-                      aria-hidden="true"
-                      className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                      data-icon="question-circle"
-                      data-prefix="fas"
-                      focusable="false"
-                      role="img"
-                      style={Object {}}
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                        fill="currentColor"
-                        style={Object {}}
-                      />
-                    </svg>
-                  </span>
-                </span>
-              </span>
             </div>
           </div>
         </div>

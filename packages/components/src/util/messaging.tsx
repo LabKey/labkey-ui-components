@@ -31,7 +31,7 @@ export function resolveErrorMessage(error: any, noun: string, nounPlural?: strin
             return 'We could not find the ' + noun + (verb ? ' to ' + verb : '') + '.  Try refreshing your page to see if it has been deleted.';
         }
         else if (lcMessage.indexOf('communication failure') >= 0) {
-            return "There was a problem retrieving your " + (noun || "data") + ". Your session may have expired or the " + (noun || "data") + " may no longer be valid.  Try refreshing your page";
+            return "There was a problem retrieving your " + (noun || "data") + ". Your session may have expired or the " + (noun || "data") + " may no longer be valid.  Try refreshing your page.";
         }
     }
     return errorMsg;

@@ -69,6 +69,7 @@ import {
 import { buildURL, getSortFromUrl } from './url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
 import { intersect, naturalSort, not } from './util/utils';
+import { resolveErrorMessage } from './util/messaging';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -118,7 +119,7 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
                 }
             }
         }).catch(reason => {
-            setError(newModel, reason.message, connectedComponent);
+            setError(newModel, resolveErrorMessage(reason, "data"), connectedComponent);
         });
     }
     else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {

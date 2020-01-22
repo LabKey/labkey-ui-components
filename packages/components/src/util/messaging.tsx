@@ -19,6 +19,8 @@ export function resolveErrorMessage(error: any, noun: string, nounPlural?: strin
         errorMsg = error;
     } else if (error.message) {
         errorMsg = error.message;
+    } else if (error.msg)  {
+        errorMsg = error.msg;
     }
     else if (error.exception) {
         errorMsg = error.exception;

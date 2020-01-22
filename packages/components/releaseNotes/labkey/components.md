@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.18.2
+*Released*: 22 January 2020
+* Make EditableGrid.validateData case insensitive and trim key values prior to comparison
+
 ### version 0.18.1
 *Released*: 22 January 2020
 * Hide the ViewAction on the omnibox when there are no non-default views

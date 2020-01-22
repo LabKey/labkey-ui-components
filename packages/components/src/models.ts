@@ -617,7 +617,7 @@ export class EditorModel extends Record({
                     // there better be only one of these
                     const valueDescriptor = values.get(0);
                     if (valueDescriptor && this.hasRawValue(valueDescriptor)) {
-                        const stringVal = valueDescriptor.raw.toString();
+                        const stringVal = valueDescriptor.raw.toString().trim().toLowerCase();
                         if (uniqueKeyMap.has(stringVal)) {
                             uniqueKeyMap = uniqueKeyMap.set(stringVal, uniqueKeyMap.get(stringVal).push(rn+1));
                         }
@@ -713,7 +713,7 @@ export class EditorModel extends Record({
     }
 
     hasRawValue(descriptor: ValueDescriptor) {
-        return descriptor && descriptor.raw !== undefined && descriptor.raw !== "";
+        return descriptor && descriptor.raw !== undefined && descriptor.raw.toString().trim() !== "";
     }
 
     hasData() : boolean {

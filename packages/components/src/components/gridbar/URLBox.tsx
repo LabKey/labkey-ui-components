@@ -142,9 +142,9 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
     mapParamsToActionValues(): {actions: Array<Action>, values: Array<ActionValue>} {
         const queryModel = this.getQueryModel();
-        const {queryInfo} = queryModel;
         const location = getLocation();
         const urlPrefix = queryModel ? queryModel.urlPrefix : undefined;
+        const queryInfo = queryModel ? queryModel.queryInfo : undefined;
 
         let actions: Array<Action> = [];
         let actionValues = [];

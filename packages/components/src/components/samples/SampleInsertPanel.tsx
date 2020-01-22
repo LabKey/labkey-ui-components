@@ -18,7 +18,7 @@ import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { SAMPLE_UNIQUE_FIELD_KEY } from '../../constants';
+import { IMPORT_DATA_FORM_TYPES, SAMPLE_UNIQUE_FIELD_KEY } from '../../constants';
 
 import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn } from '../../actions';
 import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
@@ -99,6 +99,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>
     handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean) => Promise<any>
     canEditSampleTypeDetails?: boolean
+    onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -585,10 +586,16 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                     insertModel: insertModel.set('sampleCount', editorModel.rowCount) as SampleIdCreationModel
                 }
             });
+            if (this.props.onDataChange) {
+                this.props.onDataChange(editorModel.rowCount > 0, IMPORT_DATA_FORM_TYPES.GRID);
+            }
         }
     }
 
     onCancel() {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(false); // if cancelling, presumably they know that they want to discard changes.
+        }
         if (this.props.onCancel) {
             this.removeQueryGridModel();
             this.props.onCancel();
@@ -630,6 +637,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             if (response && response.rows) {
 
                 this.setSubmitting(false);
+                if (this.props.onDataChange) {
+                    this.props.onDataChange(false);
+                }
                 if (this.props.afterSampleCreation) {
                     this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), response.getFilter(), response.rows.length, 'created');
                 }
@@ -653,6 +663,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         this.setSubmitting(true);
         insertModel.deriveSamples(count).then((result: GenerateSampleResponse) => {
             this.setSubmitting(false);
+            if (this.props.onDataChange) {
+                this.props.onDataChange(false);
+            }
             if (this.props.afterSampleCreation) {
                 this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), result.getFilter(), result.data.materialOutputs.length, 'created');
             }
@@ -848,6 +861,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     handleFileChange = (files: Map<string, File>) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(files.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
+        }
         this.setState(() => ({
             error: undefined,
             file: files.first()
@@ -855,6 +871,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     };
 
     handleFileRemoval = (attachmentName: string) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(false, IMPORT_DATA_FORM_TYPES.FILE);
+        }
         this.setState(() => ({
             error: undefined,
             file: undefined
@@ -872,6 +891,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         handleFileImport(originalQueryInfo, file, isMerge).then((response) => {
             this.setSubmitting(false);
+            if (this.props.onDataChange) {
+                this.props.onDataChange(false);
+            }
             if (this.props.afterSampleCreation) {
                 this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), null, response.rowCount, 'imported');
             }

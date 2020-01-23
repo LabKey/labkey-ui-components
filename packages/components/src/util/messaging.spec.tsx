@@ -44,4 +44,13 @@ describe("resolveErrorMessage", () => {
         };
         expect(resolveErrorMessage(error, "octopus")).toBe("There was a problem retrieving your octopus. Your session may have expired or the octopus may no longer be valid.  Try refreshing your page.");
     });
+
+    test ("No model found", () => {
+        const error = {
+            "exception" : "Query 'delete it' in schema 'samples' doesn't exist.",
+            "exceptionClass" : "org.labkey.api.view.NotFoundException",
+        };
+        expect(resolveErrorMessage(error, undefined)).toBe("There was a problem retrieving your data. Your session may have expired or the data may no longer be valid.  Try refreshing your page.");
+
+    })
 });

@@ -267,7 +267,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             bordered={true}
                                             striped={true}
                                             addControlProps={{
-                                                placement: 'bottom',
+                                                placement: 'top',
                                                 nounPlural: "rows",
                                                 nounSingular: "row"
                                             }}

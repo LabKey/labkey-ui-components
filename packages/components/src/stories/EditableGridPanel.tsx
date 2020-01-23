@@ -273,12 +273,16 @@ storiesOf('EditableGridPanel', module)
         return (
             <EditableGridPanel
                 allowAdd={true}
-                allowBulkRemove={boolean("Allow bulk remove?", false)}
-                allowBulkAdd={true}
+                addControlProps={{placement: text('Add control placement', 'bottom') as PlacementType}}
+                allowBulkRemove={boolean("Allow bulk remove?", true)}
+                bulkRemoveText={text("Bulk remove text", "Delete Rows")}
+                allowBulkAdd={boolean("Allow bulk add?", true)}
+                bulkAddText={text("Bulk add text", "Bulk Add")}
+                allowBulkUpdate={boolean("Allow bulk update?", true)}
+                bulkUpdateText={text("Bulk update text", "Bulk Update")}
                 model={model}
                 isSubmitting={false}
                 bulkAddProps={bulkAddProps}
-                bulkAddText={text("Bulk Update text", "Bulk Insert")}
                 title={"Editable grid with bulk insert capabilities"}
             />
         );

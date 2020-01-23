@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add utility method resolveErrorMessage that can be used to extract a string error message from API responses and convert some
 messages that are not very friendly for users into better text.
 
+### version 0.19.0
+*Released*: 22 January 2020
+* Assay import editable grid button changes to match sample create (for bulk insert, update, remove, add)
+* Issue 39182: Disabled "Assay Data" create menu item tool-top doesn't go away
+* Fix for Domain designer field focus jumps after moving a field row
+
 ### version 0.18.2
 *Released*: 22 January 2020
 * Make EditableGrid.validateData case insensitive and trim key values prior to comparison

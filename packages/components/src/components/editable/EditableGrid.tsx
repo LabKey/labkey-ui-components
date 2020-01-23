@@ -295,12 +295,12 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     generateColumns(): List<GridColumn> {
-        const { allowBulkRemove, allowRemove, columnMetadata } = this.props;
+        const { allowBulkRemove, allowBulkUpdate, allowRemove, columnMetadata } = this.props;
         const model = this.getModel(this.props);
         const editorModel = this.getEditorModel();
         let gridColumns = List<GridColumn>();
 
-        if (allowBulkRemove) {
+        if (allowBulkRemove || allowBulkUpdate) {
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
@@ -391,7 +391,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     headerCell(col: GridColumn) {
         const model = this.getModel(this.props);
-        if (this.props.allowBulkRemove && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
+        if ((this.props.allowBulkRemove || this.props.allowBulkUpdate) && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
             return headerSelectionCell(this.selectAll, this.state.selectedState, false);
         }
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
@@ -498,7 +498,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     renderError() {
         const model = this.getModel(this.props);
         if (model.isError) {
-            return <Alert>{model.message ? model.message : 'Something went wrong.'}</Alert>
+            return <Alert className={'margin-top'}>{model.message ? model.message : 'Something went wrong.'}</Alert>
         }
     }
 
@@ -560,10 +560,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         const { allowAdd, allowBulkAdd, allowBulkRemove, allowBulkUpdate, bulkAddText, bulkRemoveText, bulkUpdateText, initialEmptyRowCount, isSubmitting, addControlProps } = this.props;
         const nounPlural = addControlProps ? addControlProps.nounPlural : "rows";
         const editorModel = this.getEditorModel();
-
         const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
-        const haveLeftControls = allowBulkRemove || showAddOnTop;
-
         const noValidSelection = this.state.selected.size === 0 || (initialEmptyRowCount === 1 && editorModel.rowCount === 1 && !editorModel.hasData());
         const model = this.getModel(this.props);
         const canAddRows = !isSubmitting && model.data && (model.data.size < this.props.maxTotalRows);
@@ -578,7 +575,11 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         );
 
         const addBtn = (
-            <Button title={canAddRows? "Add multiple " + nounPlural + " with the same values" : "The grid contains the maximum number of " + nounPlural + "."} disabled={!canAddRows} onClick={this.toggleBulkAdd}>
+            <Button
+                title={canAddRows ? "Add multiple " + nounPlural + " with the same values" : "The grid contains the maximum number of " + nounPlural + "."}
+                disabled={!canAddRows}
+                onClick={this.toggleBulkAdd}
+            >
                 {bulkAddText}
             </Button>
         );
@@ -592,37 +593,18 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             </Button>
         );
 
-        if (showAddOnTop) {
-            return (
-                <div className="row QueryGrid-bottom-spacing">
-                    {<div className={"col-sm-12"}>
-                        {this.renderAddRowsControl("top")}
-                        <div className={"col-sm-7 pull-right"}>
-                            {allowBulkAdd && <span className="control-right">{addBtn}</span>}
-                            {allowBulkUpdate && <span className="control-right">{updateBtn}</span>}
-                            {allowBulkRemove && <span className="control-right">{removeBtn}</span>}
-                        </div>
-                    </div>}
+        return (
+            <div className="row QueryGrid-bottom-spacing">
+                {showAddOnTop && <div className={"col-sm-3"}>
+                    {this.renderAddRowsControl("top")}
+                </div>}
+                <div className={showAddOnTop ? "col-sm-9" : "col-sm-12"}>
+                    {allowBulkAdd && <span className="control-right">{addBtn}</span>}
+                    {allowBulkUpdate && <span className="control-right">{updateBtn}</span>}
+                    {allowBulkRemove && <span className="control-right">{removeBtn}</span>}
                 </div>
-            )
-        }
-        else {
-            return (
-                <div className="row QueryGrid-bottom-spacing">
-                    {allowBulkRemove && <div className={"col-sm-4"}>
-                        <div className="btn-group">
-                            {removeBtn}
-                        </div>
-                    </div>}
-                    {
-                        <div className={'pull-right ' + (haveLeftControls? "col-sm-8" : "col-xs-12")}>
-                            {allowBulkAdd && <span className="control-right">{addBtn}</span>}
-                            {allowBulkUpdate && <span className="control-right">{updateBtn}</span>}
-                        </div>
-                    }
-                </div>
-            )
-        }
+            </div>
+        )
     }
 
     renderBulkCreationHeader() : ReactNode {

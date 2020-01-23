@@ -50,7 +50,7 @@ import {
     QueryGridModel,
     SchemaQuery,
 } from '../base/models/model';
-import { getActionErrorMessage } from '../../util/messaging';
+import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
@@ -445,6 +445,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         else {
 
             this.setModelState(true, undefined);
+            const errorPrefix = "There was a problem importing the assay results.";
             uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
                 importAssayRun(processedData)
                     .then((response: AssayUploadResultModel) => {
@@ -460,11 +461,13 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     })
                     .catch((reason) => {
                         console.error("Problem importing assay run", reason);
-                        this.onFailure(getActionErrorMessage("There was a problem importing the assay results.", "referenced samples or assay design", false))
+                        const message = resolveErrorMessage(reason);
+                        this.onFailure(message ? errorPrefix + " " + message : getActionErrorMessage(errorPrefix, "referenced samples or assay design", false))
                     });
             }).catch((reason) => {
                 console.error("Problem uploading assay run files", reason);
-                this.onFailure( getActionErrorMessage("There was a problem uploading the data files.", "referenced samples or assay design", false));
+                const message = resolveErrorMessage(reason);
+                this.onFailure( message ? errorPrefix + " " + message :getActionErrorMessage(errorPrefix, "referenced samples or assay design", false));
             });
         }
     };

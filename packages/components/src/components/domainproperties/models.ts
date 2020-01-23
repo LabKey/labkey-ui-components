@@ -1168,15 +1168,15 @@ export class DomainException extends Record({
             }
 
             const domainName = this.getDomainNameFromException(rawModel.exception);
-            let exception = rawModel.exception;
+
             if (domainName) {
                 const prefix = domainName + " -- ";
-                exception = exception.split(prefix)[1];
                 errors = errors.map((err) => {
                     let parts = err.message.split(prefix);
                     return err.set('message', parts.length > 1 ? parts[1] : parts[0]);
                 }) as List<DomainFieldError>
             }
+            let exception = this.getExceptionMessage(errors);
 
             return new DomainException({
                 exception: exception,
@@ -1263,6 +1263,23 @@ export class DomainException extends Record({
         });
 
         return exceptionFromServer.set('errors', allFieldErrors) as DomainException;
+    }
+
+    static getExceptionMessage(errors: List<DomainFieldError>) {
+        let fieldErrorsCount = 0;
+        let generalErrorMsg = '';
+        let singleFieldError = '';
+        errors.toArray().forEach(error => {
+            if (error.fieldName !== undefined && error.fieldName !== '') {
+                // Field error
+                fieldErrorsCount++;
+                singleFieldError = error.message;
+            } else {
+                // General error
+                generalErrorMsg += error.message + ' \n';
+            }
+        });
+        return fieldErrorsCount > 1 ? "You have "+ fieldErrorsCount + ' field errors. ' + generalErrorMsg : singleFieldError + " " + generalErrorMsg;
     }
 }
 

@@ -1949,10 +1949,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@labkey/api@0.0.30-fb-specimenDesigner.0":
-  version "0.0.30-fb-specimenDesigner.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.30-fb-specimenDesigner.0.tgz#36611e9cd5628a0f281bfad47610fa4ae8ebc46f"
-  integrity sha1-NmEenNViig8oG/rUdhD6SujrxG8=
+"@labkey/api@0.0.31-fb-specimenDesigner.1":
+  version "0.0.31-fb-specimenDesigner.1"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.31-fb-specimenDesigner.1.tgz#3004c9113fab9ffcb39ec2fb9e08959c1dbda313"
+  integrity sha1-MATJET+rn/yznsL7ngiVnB29oxM=
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

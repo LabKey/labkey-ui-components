@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.20.0
+*Released*: 23 January 2020
+* Add utility method resolveErrorMessage that can be used to extract a string error message from API responses and convert some
+messages that are not very friendly for users into better text.
+
 ### version 0.19.0
 *Released*: 22 January 2020
 * Assay import editable grid button changes to match sample create (for bulk insert, update, remove, add)

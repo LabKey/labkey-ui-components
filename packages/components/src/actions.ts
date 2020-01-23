@@ -154,6 +154,7 @@ export function selectAll(key: string, schemaName: string, queryName: string, fi
                 resolve(response);
             }),
             failure: Utils.getCallbackWrapper((response) => {
+                console.error("Problem in selecting all items in the grid", key, schemaName, queryName, response)
                 reject(response);
             }),
         });
@@ -174,7 +175,7 @@ export function gridSelectAll(model: QueryGridModel, onSelectionChange?: (model:
                         onSelectionChange(updatedModel, undefined, true);
                     }
                 }).catch(err => {
-                    const error = err ? err : {message: 'Something went wrong in selecting all items for this grid (name: ' + model.getModelName() + ', id:' + id + ')'};
+                    const error = err ? err : {message: 'Something went wrong in selecting all items for this grid'};
                     gridShowError(model, error);
                 });
             }
@@ -245,6 +246,7 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
                 onSelectionChange(updatedModel, row, checked);
             }
         }).catch(reason => {
+            console.error(reason);
             const error = reason ? reason : {message: 'There was a problem updating the selection for this grid.'};
             gridShowError(model, error);
         });
@@ -851,6 +853,7 @@ function clearSelected(key: string, schemaName?: string, queryName?: string, fil
                 resolve(response);
             }),
             failure: Utils.getCallbackWrapper((response) => {
+                console.error("Problem clearing the selection ", key, schemaName, queryName, response);
                 reject(response);
             })
         });
@@ -1016,7 +1019,8 @@ export function getSelectedData(model: QueryGridModel) : Promise<IGridResponse> 
             totalRows
         });
     }).catch( reason => {
-        reject(reason);
+        console.error(reason);
+        reject(resolveErrorMessage(reason));
     }));
 }
 
@@ -1093,6 +1097,7 @@ function setError(model: QueryGridModel, message: string, connectedComponent?: R
     }, connectedComponent)
 }
 
+// TODO update this to not show the status and use resolveErrorMessage
 export function gridShowError(model: QueryGridModel, error: any, connectedComponent?: React.Component) {
     setError(model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error', connectedComponent);
 }

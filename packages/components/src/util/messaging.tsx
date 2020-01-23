@@ -10,7 +10,7 @@ export function getActionErrorMessage(problemStatement: string, noun: string, sh
     )
 }
 
-export function resolveErrorMessage(error: any, noun: string, nounPlural?: string, verb?: string) : string {
+export function resolveErrorMessage(error: any, noun: string = undefined, nounPlural?: string, verb?: string) : string {
     let errorMsg;
     if (!error) {
         return undefined;

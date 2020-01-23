@@ -74,18 +74,26 @@ const fetchFileTree = (directory?: string): Promise<any> => {
 
         node.children = [];
 
-        // if (!directory){
-        //      resolve([node]);
-        // }
-
         resolve(node);
     })
 };
+
+const fetchBadTree = (): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        reject('Unable to load file tree. Verify the root directory exists.')
+    })
+}
 
 storiesOf('FileTree', module)
     .addDecorator(withKnobs)
     .add('With basic data', () =>
         <div>
             <FileTree loadData={fetchFileTree}/>
+        </div>
+    )
+
+    .add('With error', () =>
+        <div>
+            <FileTree loadData={fetchBadTree}/>
         </div>
     )

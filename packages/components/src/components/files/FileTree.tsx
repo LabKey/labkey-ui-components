@@ -1,10 +1,10 @@
 
 import * as React from 'react';
-import {Treebeard, decorators} from 'react-treebeard';
+import { Treebeard, decorators } from 'react-treebeard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faFolder, faFileAlt} from '@fortawesome/free-solid-svg-icons';
-import {Checkbox} from "react-bootstrap";
-import {List} from "immutable";
+import { faFolder, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { Checkbox, Alert } from "react-bootstrap";
+import { List } from "immutable";
 
 const customStyle = {
     tree: {
@@ -93,6 +93,7 @@ interface FileTreeState {
     cursor: any,
     checked: List<string>
     data: any
+    error?: string
 }
 
 export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
@@ -103,7 +104,8 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
         this.state = {
             cursor: undefined,
             checked: List<string>(),
-            data: []
+            data: [],
+            error: undefined
         }
     }
 
@@ -131,6 +133,8 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
             }
 
             this.setState(() => ({data: loadedData}))
+        }).catch((reason: any) => {
+            this.setState(() => ({error: reason}));
         })
     }
 
@@ -288,26 +292,32 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
                     });
 
                     node.children = children;  // This is not immutable so this is updating the data object
-                    this.setState(() => ({cursor: node, data: Object.assign({}, data)}), (callback ? callback() : undefined));
+                    this.setState(() => ({cursor: node, data: Object.assign({}, data), error: undefined}), (callback ? callback() : undefined));
+                }).catch((reason: any) => {
+                        this.setState(() => ({error: reason}));
                 })
             }
             else {
-                this.setState(() => ({cursor: node, data: Object.assign({}, data)}), (callback ? callback() : undefined));
+                this.setState(() => ({cursor: node, data: Object.assign({}, data), error: undefined}), (callback ? callback() : undefined));
             }
         }
     };
 
     render = () => {
-        const { data } = this.state;
+        const { data, error } = this.state;
         const Header = this.Header;
 
         return (
             <div className='filetree-container'>
-                <Treebeard data={data}
-                           onToggle={this.onToggle}
-                           decorators={{...decorators, Header}}
-                           style={customStyle}
-                />
+                {!!error ?
+                    <Alert bsStyle='danger'>{error}</Alert>
+                    :
+                    <Treebeard data={data}
+                               onToggle={this.onToggle}
+                               decorators={{...decorators, Header}}
+                               style={customStyle}
+                    />
+                }
             </div>
         )
     }

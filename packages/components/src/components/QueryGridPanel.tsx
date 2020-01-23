@@ -59,6 +59,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
     };
 
     constructor(props: Props) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.state = {

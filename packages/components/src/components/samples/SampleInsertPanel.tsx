@@ -18,7 +18,7 @@ import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { SAMPLE_UNIQUE_FIELD_KEY } from '../../constants';
+import { IMPORT_DATA_FORM_TYPES, SAMPLE_UNIQUE_FIELD_KEY } from '../../constants';
 
 import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn } from '../../actions';
 import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
@@ -69,7 +69,7 @@ import { FormStep, FormTabs } from '../forms/FormStep';
 import {FileSizeLimitProps} from "../files/models";
 import { Link } from "react-router";
 
-const TABS = ['Create From Grid', 'Import Samples From File'];
+const TABS = ['Create Samples from Grid', 'Import Samples from File'];
 const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
 
 class SampleGridLoader implements IGridLoader {
@@ -99,6 +99,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>
     handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean) => Promise<any>
     canEditSampleTypeDetails?: boolean
+    onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -115,6 +116,7 @@ interface StateProps {
 export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
     constructor(props: any) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.insertRowsFromGrid = this.insertRowsFromGrid.bind(this);
@@ -584,10 +586,16 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                     insertModel: insertModel.set('sampleCount', editorModel.rowCount) as SampleIdCreationModel
                 }
             });
+            if (this.props.onDataChange) {
+                this.props.onDataChange(editorModel.rowCount > 0, IMPORT_DATA_FORM_TYPES.GRID);
+            }
         }
     }
 
     onCancel() {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(false); // if cancelling, presumably they know that they want to discard changes.
+        }
         if (this.props.onCancel) {
             this.removeQueryGridModel();
             this.props.onCancel();
@@ -629,6 +637,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             if (response && response.rows) {
 
                 this.setSubmitting(false);
+                if (this.props.onDataChange) {
+                    this.props.onDataChange(false);
+                }
                 if (this.props.afterSampleCreation) {
                     this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), response.getFilter(), response.rows.length, 'created');
                 }
@@ -652,6 +663,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         this.setSubmitting(true);
         insertModel.deriveSamples(count).then((result: GenerateSampleResponse) => {
             this.setSubmitting(false);
+            if (this.props.onDataChange) {
+                this.props.onDataChange(false);
+            }
             if (this.props.afterSampleCreation) {
                 this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), result.getFilter(), result.data.materialOutputs.length, 'created');
             }
@@ -737,9 +751,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     };
 
     onTabChange = () => {
-        this.setState( (state) => ({
-            error: undefined,
-        }));
+        this.setState(() => ({error: undefined}));
     };
 
     renderCreateFromGrid() {
@@ -847,6 +859,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     handleFileChange = (files: Map<string, File>) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(files.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
+        }
         this.setState(() => ({
             error: undefined,
             file: files.first()
@@ -854,6 +869,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     };
 
     handleFileRemoval = (attachmentName: string) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(false, IMPORT_DATA_FORM_TYPES.FILE);
+        }
         this.setState(() => ({
             error: undefined,
             file: undefined
@@ -871,6 +889,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         handleFileImport(originalQueryInfo, file, isMerge).then((response) => {
             this.setSubmitting(false);
+            if (this.props.onDataChange) {
+                this.props.onDataChange(false);
+            }
             if (this.props.afterSampleCreation) {
                 this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), null, response.rowCount, 'imported');
             }
@@ -895,6 +916,8 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                 finish={true}
                 nextStep={this.submitFileHandler} // nextStep is the function that will get called when finish button clicked
                 isFinishing={isSubmitting}
+                finishText={"Import"}
+                isFinishingText={"Importing..."}
             />
         )
     }
@@ -967,7 +990,6 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         return (
             <>
-                {error != null && <Alert>{error}</Alert>}
                 <div className={"panel panel-default"}>
                     <div className="panel-body">
                         <div className="row">
@@ -986,6 +1008,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                                 </FormStep>
                             </div>
                         </div>
+                        {error != null && <Alert>{error}</Alert>}
                     </div>
                 </div>
                 {this.renderButtons()}

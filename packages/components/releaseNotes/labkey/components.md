@@ -2,8 +2,44 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version TBD
-*Released*: 20 January 2020
+*Released*: 22 January 2020
 * Item 6654: Changes to include server side warnings while saving domain
+
+### version 0.19.0
+*Released*: 22 January 2020
+* Assay import editable grid button changes to match sample create (for bulk insert, update, remove, add)
+* Issue 39182: Disabled "Assay Data" create menu item tool-top doesn't go away
+* Fix for Domain designer field focus jumps after moving a field row
+
+### version 0.18.2
+*Released*: 22 January 2020
+* Make EditableGrid.validateData case insensitive and trim key values prior to comparison
+
+### version 0.18.1
+*Released*: 22 January 2020
+* Hide the ViewAction on the omnibox when there are no non-default views
+* Hide the ViewAction on the omnibox when QueryModel.showViewSelector is false
+
+### version 0.18.0
+*Released*: 22 January 2020
+* Add optional callback for SampleInsertPanel when data changes to help in detecting dirty state.
+* Add optional callback for AssayImportPanels when data changes to help in detecting dirty state.
+
+### version 0.17.0
+*Released*: 21 January 2020
+* EditableGrid cell render optimization
+    - prevent unnecessary re-render of all cells when one is edited/selected/etc.
+    - move reactn global state connection to EditableGrid and make Cell components PureComponents
+    - update to reactn version 2.2.4
+
+### version 0.16.2
+*Released*: 21 January 2020
+* Item 6759: Use Query.getServerDate() for CreatedModified.tsx component (fixes timezone issue)
+    * Includes update of @labkey/api to version 0.0.31
+
+### version 0.16.1
+*Released*: 21 January 2020
+* Misc button text updates for Sample Manager (prefer 'Save' and 'Import' over 'Finish')
 
 ### version 0.16.0
 *Released*: 20 January 2020

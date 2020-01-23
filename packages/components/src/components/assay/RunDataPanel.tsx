@@ -30,7 +30,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
 import { FileSizeLimitProps } from '../files/models';
-import { helpLinkNode } from '../..';
+import { getEditorModel, helpLinkNode, IMPORT_DATA_FORM_TYPES } from '../..';
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 import { Button } from 'react-bootstrap';
 
@@ -52,6 +52,7 @@ interface Props {
     title: string
     fileSizeLimits?: Map<string, FileSizeLimitProps>
     maxInsertRows?: number
+    onGridDataChange?: (dirty: boolean, changeType: IMPORT_DATA_FORM_TYPES) => any
 }
 
 interface PreviousRunData {
@@ -181,6 +182,14 @@ export class RunDataPanel extends React.Component<Props, State> {
         this.resetMessage();
     };
 
+    onRowCountChange = (rowCount: number) => {
+        const { gridModel } = this.props;
+        const editorModel = getEditorModel(gridModel.getId());
+        if (this.props.onGridDataChange) {
+            this.props.onGridDataChange(editorModel && editorModel.rowCount > 0, IMPORT_DATA_FORM_TYPES.GRID);
+        }
+    };
+
     render() {
         const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert, allowBulkUpdate, title, maxInsertRows } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
@@ -258,13 +267,14 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             bordered={true}
                                             striped={true}
                                             addControlProps={{
-                                                placement: 'bottom',
+                                                placement: 'top',
                                                 nounPlural: "rows",
                                                 nounSingular: "row"
                                             }}
                                             initialEmptyRowCount={0}
                                             emptyGridMsg={'Start by adding the quantity of assay data rows you want to create.'}
                                             maxTotalRows={this.props.maxInsertRows}
+                                            onRowCountChange={this.onRowCountChange}
                                         />
                                     </FormStep>
                                 </div>

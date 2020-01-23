@@ -17,6 +17,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Map } from 'immutable';
 import moment from 'moment';
+import { Query } from '@labkey/api';
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface IRowConfig {
     createdBy: string
@@ -32,9 +34,37 @@ interface IRowConfig {
 interface CreatedModifiedProps {
     className?: string
     row: Map<string, any>
+    useServerDate?: boolean
 }
 
-export class CreatedModified extends React.Component<CreatedModifiedProps, any> {
+interface State {
+    serverDate: string
+    loading: boolean
+}
+
+export class CreatedModified extends React.Component<CreatedModifiedProps, State> {
+
+    static defaultProps = {
+        useServerDate: true
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            serverDate: undefined,
+            loading: props.useServerDate
+        };
+    }
+
+    componentWillMount() {
+        if (this.props.useServerDate) {
+            Query.getServerDate({
+                success: (serverDate) => this.setState(() => ({serverDate, loading: false})),
+                failure: (error) => this.setState(() => ({loading: false}))
+            });
+        }
+    }
 
     formatTitle(config: IRowConfig): string {
         let title = [];
@@ -103,17 +133,22 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, any> 
 
     render() {
         const { className } = this.props;
+        const { serverDate, loading } = this.state;
+
+        if (loading) {
+            return <LoadingSpinner/>
+        }
 
         const config = this.processRow();
-
         if (config.display) {
             // also supports '/'
             const timestamp = config.useCreated ? config.createdTS : config.modifiedTS;
+            const displayTxt = serverDate ? moment(timestamp).from(serverDate) : moment(timestamp).fromNow();
 
             return (
                 <span title={this.formatTitle(config)}
                       className={classNames('createdmodified', className)}>
-                    {config.useCreated ? 'Created' : 'Modified'} {moment(timestamp).fromNow()}
+                    {config.useCreated ? 'Created' : 'Modified'} {displayTxt}
                 </span>
             )
         }

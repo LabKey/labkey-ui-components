@@ -12,12 +12,14 @@ interface Props extends SubMenuItemProps {
     assayDefModels: List<AssayDefinitionModel>
     model: QueryGridModel
     requireSelection: boolean
+    nounPlural?: string
 }
 
 export class AssayImportSubMenuItem extends React.Component<Props, any> {
 
     static defaultProps = {
-        text: 'Upload Assay Data'
+        text: 'Upload Assay Data',
+        nounPlural: 'items'
     };
 
     getItems(): Array<ISubItem> {
@@ -36,7 +38,7 @@ export class AssayImportSubMenuItem extends React.Component<Props, any> {
     }
 
     render() {
-        const { isLoaded, model, requireSelection } = this.props;
+        const { isLoaded, model, requireSelection, nounPlural } = this.props;
 
         if (!isLoaded) {
             return <MenuItem disabled={true}><span className='fa fa-spinner fa-pulse' /> Loading assays...</MenuItem>;
@@ -47,8 +49,8 @@ export class AssayImportSubMenuItem extends React.Component<Props, any> {
         // only display menu if valid items are available
         if (items.length) {
             const selectedCount = model ? model.selectedIds.size : -1;
-            const overlayMessage = (requireSelection && selectedCount == 0) ? "Select one or more items"
-                : (selectedCount > MAX_EDITABLE_GRID_ROWS ? "Too many items selected (Limit " + MAX_EDITABLE_GRID_ROWS + ")" : "");
+            const overlayMessage = (requireSelection && selectedCount == 0) ? "Select one or more " + nounPlural + '.'
+                : (selectedCount > MAX_EDITABLE_GRID_ROWS ? "At most " + MAX_EDITABLE_GRID_ROWS + " " + nounPlural + " can be selected." : "");
             let menuProps: Props = Object.assign({}, this.props, {
                 disabled: overlayMessage.length > 0,
                 items
@@ -56,19 +58,17 @@ export class AssayImportSubMenuItem extends React.Component<Props, any> {
 
             delete menuProps.model;
 
-            const item = <SubMenuItem {...menuProps} />;
-
             if (menuProps.disabled) {
+                const overlay = <Popover id="assay-submenu-warning">{overlayMessage}</Popover>;
+
                 return (
-                    <OverlayTrigger
-                        overlay={<Popover id="assay-submenu-warning">{overlayMessage}</Popover>}
-                        placement="right">
-                        {item}
+                    <OverlayTrigger overlay={overlay} placement="right">
+                        <MenuItem disabled={true}>{menuProps.text}</MenuItem>
                     </OverlayTrigger>
                 )
             }
 
-            return item;
+            return <SubMenuItem {...menuProps} />;
         }
 
         return null;

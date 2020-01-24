@@ -191,15 +191,17 @@ export function getMaxPhiLevel(): Promise<string> {
  * @param kind: DomainKind if creating new Domain
  * @param options: Options for creating new Domain
  * @param name: Name of new Domain
+ * @param includeWarnings: Set this to true if warnings are desired
  * @return Promise wrapped Domain API call.
  */
-export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string) : Promise<DomainDesign> {
+export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string, includeWarnings?: boolean) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         if (domain.domainId) {
             Domain.save({
                 containerPath: LABKEY.container.path,
                 domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
+                includeWarnings: includeWarnings,
                 success: (data) => {
                     resolve(DomainDesign.create(data));
                 },

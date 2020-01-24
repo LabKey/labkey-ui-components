@@ -2,7 +2,7 @@
 
 This package contains Components, models, actions, and utility functions for LabKey applications and pages.
 
-:construction: **Warning** :construction: 
+:construction: **Warning** :construction:
 This package is under development, so these components should be considered unstable and are very likely to change.
 Once they're ready, we'll officially push the components as version 1.0.0.
 :construction: **Warning** :construction:
@@ -17,7 +17,7 @@ If you are building the components locally, you will need to do the following to
 
 #### 1. Install yarn
 
-[Yarn](https://yarnpkg.com) is a package manager much like npm.  
+[Yarn](https://yarnpkg.com) is a package manager much like npm.
 There a couple of different ways to install yarn. If you have npm you can do a global install:
 
 ```sh
@@ -40,17 +40,17 @@ Now that yarn is set up, you can go ahead and clone this repository to a local d
 git clone https://github.com/LabKey/labkey-ui-components.git # or via ssh
 ```
 
-Navigate into the directory and run:
+Navigate into the packages/components directory and run:
 
 ```sh
 yarn install
 ```
 
-This will install all dependencies for the component packages. 
-Once this is complete you can utilize either yarn to run builds for a specific package. 
+This will install all dependencies for the component packages.
+Once this is complete you can utilize yarn to run builds for a package.
 
 
-### Technologies 
+### Technologies
 For doing development of LabKey UI Components, you should be familiar with the following technologies:
 * [React](https://reactjs.org/) - used for building the UI components
 * [Bootstrap](https://getbootstrap.com/docs/3.4/) - for consistent, responsive styling
@@ -63,12 +63,12 @@ For doing development of LabKey UI Components, you should be familiar with the f
 Note that we are currently not using the latest versions of Bootstrap, React-Bootstrap and Typescript because there
 have been some significant changes between our current version and the latest version of these libraries, so when looking for docs,
 be sure to look at the ones corresponding to the version we are using.
- 
+
 And, for building, we use
 * [Yarn](https://yarnpkg.com) - package manager and build tool
 
 ### Best Practices
-You should do pretty well to follow the styles and practices currently represented in the code, but here are   
+You should do pretty well to follow the styles and practices currently represented in the code, but here are
 some guides to best practices for doing front-end development:
 * [Alan's Guidelines](https://docs.google.com/presentation/d/1hW9gYbWhW6spr7uhAjpKBNl3hWPXUOPbmlwD6UkYWE8/edit?pli=1#slide=id.g5627a1f538_0_120)
 * [Airbnb Style Guide](https://github.com/airbnb/javascript)
@@ -82,31 +82,31 @@ Generally, when doing development, you should:
 ### Local Development
 
 When making modifications to an existing package, you should:
-* Update the version number for the package to be `X.Y.Z-fb-my-branch-name.0`, where `X.Y.Z` is your best guess at the 
+* Update the version number for the package to be `X.Y.Z-fb-my-branch-name.0`, where `X.Y.Z` is your best guess at the
 next [SemVer](https://semver.org/) version that will include your changes, `fb-my-branch-name` is the name of your
 feature branch with underscores replaced by hyphens and the `.0` is just a starting point for the prerelease versioning.
 You can do this editing manually within the `package.json` file or when running `yarn publish`.  See [below](#version-numbering) for
  more on version numbering.
-* Update the `releaseNotes/labkey/components.md` file to document what is changing in this version.  
-* Write [jest](https://jestjs.io/docs/en/getting-started.html) tests together with [enzyme](https://airbnb.io/enzyme/) to test 
-non-rendering functions and rendering of components with different sets of parameters.  Jest 
-tests should be preferred over other types of tests since they are quick to run and small enough to be easily understood, 
-but they should generally not try to do a lot of interaction with the components. You can, however, validate that callbacks 
-passed to a component are called when expected.  See existing `.spec.ts` files for examples.  
-* Write jest tests that use actual server responses where needed.  We have several examples of tests using `xhr-mock` 
+* Update the `releaseNotes/labkey/components.md` file to document what is changing in this version.
+* Write [jest](https://jestjs.io/docs/en/getting-started.html) tests together with [enzyme](https://airbnb.io/enzyme/) to test
+non-rendering functions and rendering of components with different sets of parameters.  Jest
+tests should be preferred over other types of tests since they are quick to run and small enough to be easily understood,
+but they should generally not try to do a lot of interaction with the components. You can, however, validate that callbacks
+passed to a component are called when expected.  See existing `.spec.ts` files for examples.
+* Write jest tests that use actual server responses where needed.  We have several examples of tests using `xhr-mock`
 for reading in realistic data that can be captured from the server.
 * Write or update [storybook stories](#storybook) that illustrate the functionality.  This is the easiest way to do the bulk of manual
-testing and iteration on display updates.  Again, we have several examples of stories that use actual data captured 
-from the server for various Ajax calls that are required.  
-* Test within the application once display and functionality are as expected from within storybook.  
-  
+testing and iteration on display updates.  Again, we have several examples of stories that use actual data captured
+from the server for various Ajax calls that are required.
+* Test within the application once display and functionality are as expected from within storybook.
+
 #### Getting @labkey/components packages to the application
 
 While you can [publish](#publishing) a pre-release version of the glass packages and then update your application's `package.json`
-to reference the new pre-release version in order to view the changes within the application, you will likely want to 
+to reference the new pre-release version in order to view the changes within the application, you will likely want to
 be able to do this without publishing for quicker development iteration.
 
-In order to use and test the components you are developing or modifying in this repository within another application, 
+In order to use and test the components you are developing or modifying in this repository within another application,
 we currently recommend using `yarn watch` together with a copy command from the `dist` directory to the `node_modules/@labkey/components`
 directory of your application. The `watch` command will automatically build a package when the source code changes.  If you have hot reloading started for your application, after you copy the `dist` directory, changes made in the components
 will then get loaded into the application.
@@ -139,28 +139,28 @@ in order to maintain notes about the cost of updating our various packages.  To 
 yarn outdated
 ```
 command to show which packages are out of date and then compare to the spreadsheet to determine if there has already
-been investigation into the cost of upgrading packages that are out of date.  
- 
-### Documentation
-We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/labkey-ui-components/).  
+been investigation into the cost of upgrading packages that are out of date.
 
-All exported components, methods, interfaces, etc. should include 
+### Documentation
+We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/labkey-ui-components/).
+
+All exported components, methods, interfaces, etc. should include
 documentation.  You can use the supported [JavaDoc tags](https://typedoc.org/guides/doccomments/) to provide additional explanations for parameters, return values, etc. as well as for indicating that some objects should not have documentation generated for them.
 
 You can generate the docs locally by running the following command in the ```labkey-ui-components``` directory.
 * ``yarn run build:docs``
- 
-**N.B.** This command produces a good number of errors from Typescript not being able to resolve classes and such. 
+
+**N.B.** This command produces a good number of errors from Typescript not being able to resolve classes and such.
 Try to eliminate as many of these as possible before deploying the docs.
 
 To publish the documentation to [GitHub pages](https://labkey.github.io/labkey-ui-components/) use the following command in the ```labkey-ui-components``` directory:
 * ``yarn run deploy:docs``
 
-This deployment of docs should be done after each pull request is merged into ```master```. 
+This deployment of docs should be done after each pull request is merged into ```master```.
 
 ### Storybook
 
-A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories". 
+A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories".
 These stories are composed by developers to show features of a component and let other members of the team interact with a component. Because storybook uses WebPack's hot reloading,
 this is also a great way to do visual inspection and testing of your components in isolation.
 
@@ -169,7 +169,7 @@ conventions currently:
 * The configuration files for storybook are in the `.storybook` directory.
 * Stories are placed the directory `src/stories` with the names of the story files the same as the names of the respective components
 * The [addon-knobs](https://www.npmjs.com/package/@storybook/addon-knobs) package is used for parameterizing the stories so a user can
-explore the different options available within a component. 
+explore the different options available within a component.
 
 You can start up Storybook via:
 
@@ -191,18 +191,18 @@ If you do not have permissions to publish to this repository, contact a LabKey A
 
 ### Version numbering
 
-When updates are made to any @labkey npm package, the version number updates will follow [SemVer](https://semver.org/). 
+When updates are made to any @labkey npm package, the version number updates will follow [SemVer](https://semver.org/).
 The next version you go to for a package should be based on the following guidelines:
-1. Am I fixing a bug but not adding anything new - use the next patch version 
+1. Am I fixing a bug but not adding anything new - use the next patch version
 1. Am I adding something new, but not changing anything that already existed - use the next minor version
 1. Am I breaking something existing because of my changes - use the next major version
 
-With that in mind, we want to make use of "prerelease" version numbers while a feature / story is being developed 
-and only go to that next “release” version right before the feature branch on labkey-ui-components is ready to 
-merge back to master. 
+With that in mind, we want to make use of "prerelease" version numbers while a feature / story is being developed
+and only go to that next “release” version right before the feature branch on labkey-ui-components is ready to
+merge back to master.
 
 Steps for package version numbering during feature branch development:
-1. Create your feature branch off of master, i.e. fb_feature_1, and add your changes. 
+1. Create your feature branch off of master, i.e. fb_feature_1, and add your changes.
 1. When you are ready to push an alpha version up to Artifactory so you can test it in your application and
 on TeamCity, update the `package.json` version for that package. Ex. if adding a new feature and the current version is `0.1.0`,
 you would use `0.2.0-fb-feature-1.1`.

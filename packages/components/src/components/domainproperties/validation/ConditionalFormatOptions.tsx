@@ -230,13 +230,16 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
     render() {
         const { validatorIndex, expanded, dataType, validator, mvEnabled, index } = this.props;
 
+        // Needs to be able to take string values for between syntax, but keep as date if that is the selected type (issue 39193)
+        const type = dataType.getJsonType() === 'date' ? dataType.getJsonType() : 'string';
+
         return(
             <div className='domain-validator-panel' id={"domain-condition-format-" + validatorIndex}>
                 {expanded &&
                 <div>
                     <Filters validatorIndex={validatorIndex}
                              onChange={this.onFilterChange}
-                             type={'string'} // Needs to be able to take string values for between syntax
+                             type={type}
                              mvEnabled={mvEnabled}
                              expression={validator.formatFilter}
                              prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: 22 January 2020
+### version 0.21.0
+*Released*: 24 January 2020
 * Item 6654: Changes to include server side warnings while saving domain
 
 ### version 0.20.0

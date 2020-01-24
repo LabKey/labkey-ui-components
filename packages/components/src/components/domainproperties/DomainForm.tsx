@@ -479,7 +479,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <div className={'margin-top'}>
                     or&nbsp;
                     <span className={'domain-form-add-link'} onClick={this.initNewDesign}>
-                        Start a New Design
+                        Manually define fields
                     </span>
                 </div>
             )

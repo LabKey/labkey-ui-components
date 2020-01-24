@@ -3389,7 +3389,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                               className="domain-form-add-link"
                               onClick={[Function]}
                             >
-                              Start a New Design
+                              Manually define fields
                             </span>
                           </div>
                         </div>

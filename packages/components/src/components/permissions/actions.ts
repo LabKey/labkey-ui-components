@@ -42,6 +42,7 @@ export function getPrincipals(): Promise<List<Principal>> {
 
             resolve(principals)
         }).catch((response) => {
+            console.error(response);
             reject(response.message);
         });
     });

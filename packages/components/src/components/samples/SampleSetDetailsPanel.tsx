@@ -11,11 +11,11 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { generateId } from '../../util/utils';
 import { Alert } from '../base/Alert';
-import { getActionErrorMessage } from "../../util/messaging";
+import { getActionErrorMessage, resolveErrorMessage } from "../../util/messaging";
 import { DERIVE_SAMPLES_ALIAS_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
-const UNKNOWN_ERROR_CREATE = getActionErrorMessage(`An unknown error occurred creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
-const UNKNOWN_ERROR_UPDATE = getActionErrorMessage(`An unknown error occurred updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
+const CREATE_ERROR = getActionErrorMessage(`There was a problem creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
+const UPDATE_ERROR = getActionErrorMessage(`There was a problem updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
 
 export const FORM_IDS = {
     NAME: 'sample-set-create-name',
@@ -35,7 +35,7 @@ interface State {
     formValues: ISampleSetDetails
     parentOptions: Array<IParentOption>
     parentAliases: Map<string, IParentAlias>
-    error: string
+    error: React.ReactNode
     submitting: boolean
 }
 
@@ -139,7 +139,10 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
             updateSampleSet(config)
                 .then((response) => this.onFinishSuccess(config))
-                .catch((error) => this.onFinishFailure(error ? error.exception : UNKNOWN_ERROR_UPDATE));
+                .catch((error) => {
+                    console.error(error);
+                    this.onFinishFailure( resolveErrorMessage(error, "sample type", undefined, "update") || UPDATE_ERROR)
+                });
         }
         else {
             const config = {
@@ -152,7 +155,10 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
             createSampleSet(config)
                 .then((response) => this.onFinishSuccess(config))
-                .catch((error) => this.onFinishFailure(error ? error.exception : UNKNOWN_ERROR_CREATE));
+                .catch((error) => {
+                    console.error(error);
+                    this.onFinishFailure( resolveErrorMessage(error, "sample type") ||  CREATE_ERROR);
+                });
         }
     };
 
@@ -178,7 +184,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         this.props.onComplete(response);
     }
 
-    onFinishFailure(error: string) {
+    onFinishFailure(error: React.ReactNode) {
         this.setState(() => ({
             error,
             submitting: false

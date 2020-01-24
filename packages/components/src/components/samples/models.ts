@@ -268,6 +268,7 @@ export class SampleIdCreationModel extends Record({
                     resolve(new GenerateSampleResponse(response));
                 }),
                 failure: Utils.getCallbackWrapper((error) => {
+                    console.error(error);
                     reject(error);
                 })
             });

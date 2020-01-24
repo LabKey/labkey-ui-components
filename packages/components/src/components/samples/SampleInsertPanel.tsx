@@ -35,7 +35,8 @@ import {
     GenerateSampleResponse,
     IParentOption,
     ISampleSetOption,
-    SampleIdCreationModel, SampleInsertPanelTabs,
+    SampleIdCreationModel,
+    SampleInsertPanelTabs,
     SampleSetOption,
     SampleSetParentType,
 } from './models';
@@ -62,12 +63,15 @@ import {
     DATA_IMPORT_TOPIC,
     FileAttachmentForm,
     helpLinkNode,
-    LabelHelpTip, withFormSteps, WithFormStepsProps,
+    LabelHelpTip,
+    withFormSteps,
+    WithFormStepsProps,
     WizardNavButtons
 } from "../..";
 import { FormStep, FormTabs } from '../forms/FormStep';
-import {FileSizeLimitProps} from "../files/models";
+import { FileSizeLimitProps } from "../files/models";
 import { Link } from "react-router";
+import { resolveErrorMessage } from '../../util/messaging';
 
 const TABS = ['Create Samples from Grid', 'Import Samples from File'];
 const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
@@ -108,7 +112,7 @@ interface StateProps {
     insertModel: SampleIdCreationModel
     originalQueryInfo: QueryInfo
     isSubmitting: boolean
-    error: string
+    error: React.ReactNode
     isMerge: boolean
     file: File
 }
@@ -650,10 +654,11 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                     message: 'Insert response has unexpected format. No "rows" available.'
                 });
             }
-        }).catch((error: InsertRowsResponse) => {
+        }).catch((response: InsertRowsResponse) => {
             this.setSubmitting(false);
+            const message = resolveErrorMessage(response.error, "samples");
             gridShowError(queryGridModel, {
-                message: error.error.exception
+                message
             });
         });
     }
@@ -671,7 +676,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             }
         }).catch((reason) => {
             this.setSubmitting(false);
-            gridShowError(this.getQueryGridModel(), reason);
+            gridShowError(this.getQueryGridModel(), resolveErrorMessage(reason, count > 1 ? "samples" : "sample"));
         });
     }
 
@@ -898,7 +903,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         }).catch((error) => {
             this.setState(() => ({
-                error: error.msg,
+                error: resolveErrorMessage(error, "samples"),
                 isSubmitting: false
             }));
         });

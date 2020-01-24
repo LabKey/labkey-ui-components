@@ -5,6 +5,7 @@ import { QueryInfo, SchemaQuery } from './base/models/model';
 import { LoadingSpinner } from './base/LoadingSpinner';
 import { Grid } from './base/Grid';
 import { getQueryDetails, selectRows } from '../query/api';
+import { resolveErrorMessage } from '..';
 
 interface PreviewGridProps {
     schemaQuery: SchemaQuery,
@@ -84,9 +85,7 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, PreviewGr
         const handleFailure = (resp) => {
             // Do we know for sure that the error response in getQueryDetails will look the same as selectRows? We may
             // need to tweak this error handler to handle both cases, or just write one for each.
-            const error = resp.message ?
-                `Error loading data: ${resp.message}` :
-                'Unexpected error encountered while loading data';
+            const error = resolveErrorMessage(resp) || 'An unexpected error encountered while loading the data.';
             this.setState(() => ({
                 error,
                 loading: false,

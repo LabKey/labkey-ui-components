@@ -295,11 +295,11 @@ describe('DomainRow', () => {
         expect(req.props().checked).toEqual(false);
 
         // Verify not expanded
-        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _index)});
+        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _index)}).hostNodes();
         expect(expandButton.length).toEqual(1);
 
-        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index)});
-        expect(deleteButton.length).toEqual(0);
+        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index)}).hostNodes();
+        expect(deleteButton.length).toEqual(1);
 
         let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index)});
         expect(advButton.length).toEqual(0);
@@ -354,10 +354,10 @@ describe('DomainRow', () => {
         expect(req.props().checked).toEqual(false);
 
         // Verify expanded
-        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _index)});
+        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _index)}).hostNodes();
         expect(expandButton.length).toEqual(1);
 
-        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index), bsStyle: 'default'});
+        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index)}).hostNodes();
         expect(deleteButton.length).toEqual(1);
 
         let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index), bsStyle: 'default'});

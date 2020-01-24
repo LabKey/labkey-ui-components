@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 39193: Fix for conditional format dialog to respect filter types allowed for date field type
+* Issue 39528: Change Assay designer results text should for option to define fields manually
+* Move “remove field” to field top display (so it will show in collapsed and expanded view)
+* Only show "Confirm Remove Field" dialog for previously saved fields
+* Field row icons, drag handle and expand icon, only highlight on hover of icon instead of row hover
+
 ### version 0.21.0
 *Released*: 24 January 2020
 * Item 6654: Changes to include server side warnings while saving domain

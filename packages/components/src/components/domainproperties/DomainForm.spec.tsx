@@ -345,16 +345,16 @@ describe('DomainForm', () => {
         form.setProps({domain: updatedDomain, onChange: changeHandler});
 
         // Check new row is added
-        let expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 1)});
+        let expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 1)}).hostNodes();
         expect(expandButton.length).toEqual(1);
 
         // Expand first row
-        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 0)});
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 0)}).hostNodes();
         expect(expandButton.length).toEqual(1);
         expandButton.simulate('click');
 
         // Delete first row
-        let deleteButton = form.find({id: createFormInputId(DOMAIN_FIELD_DELETE, 0), type: "button"});
+        let deleteButton = form.find({id: createFormInputId(DOMAIN_FIELD_DELETE, 0)}).hostNodes();
         expect(deleteButton.length).toEqual(1);
         deleteButton.simulate('click');
         let confirmButton = form.find('.btn-danger[children="Yes, Remove Field"]');
@@ -364,9 +364,9 @@ describe('DomainForm', () => {
         form.setProps({domain: updatedDomain, onChange: changeHandler});
 
         // Ensure only one row and expand it
-        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 1)});
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 1)}).hostNodes();
         expect(expandButton.length).toEqual(0);
-        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 0)});
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 0)}).hostNodes();
         expect(expandButton.length).toEqual(1);
         expandButton.simulate('click');
 

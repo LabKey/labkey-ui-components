@@ -129,9 +129,8 @@ export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 
 export const MAX_TEXT_LENGTH = 4000;
 
-export const HIGHLIGHT_BLUE = '#2980B9';  // See $blue-border in variables.scss
-export const NOT_HIGHLIGHT_GRAY = '#999999';
-// export const HIGHLIGHT_BLUE = '#3495D2';
+export const HIGHLIGHT_BLUE = '#2980B9';  // See $blue-highlight in variables.scss
+export const NOT_HIGHLIGHT_GRAY = '#999999'; // See $gray-no-highlight in variables.scss
 
 export const PHILEVEL_NOT_PHI = "NotPHI";
 export const PHILEVEL_LIMITED_PHI = "Limited";

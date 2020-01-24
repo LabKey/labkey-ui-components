@@ -350,8 +350,6 @@ exports[`DomainRow Sample Field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="6"
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -539,7 +537,6 @@ exports[`DomainRow Sample Field 1`] = `
                             <FontAwesomeIcon
                               border={false}
                               className=""
-                              color="#999999"
                               fixedWidth={false}
                               flip={null}
                               icon={
@@ -570,7 +567,6 @@ exports[`DomainRow Sample Field 1`] = `
                               <svg
                                 aria-hidden="true"
                                 className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
-                                color="#999999"
                                 data-icon="grip-vertical"
                                 data-prefix="fas"
                                 focusable="false"
@@ -748,62 +744,132 @@ exports[`DomainRow Sample Field 1`] = `
                                 <div
                                   className="domain-field-buttons"
                                 >
-                                  <div
-                                    className="field-icon"
+                                  <DeleteIcon
+                                    iconCls="domain-field-delete-icon"
+                                    id="domainpropertiesrow-delete-0"
+                                    onDelete={[Function]}
+                                    title="Remove field"
+                                  >
+                                    <span
+                                      className="field-icon"
+                                      id="domainpropertiesrow-delete-0"
+                                      onClick={[Function]}
+                                      title="Remove field"
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className="domain-field-delete-icon"
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f057",
+                                              "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
+                                            ],
+                                            "iconName": "times-circle",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-times-circle fa-w-16 domain-field-delete-icon"
+                                          data-icon="times-circle"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </span>
+                                  </DeleteIcon>
+                                  <FieldExpansionToggle
+                                    cls="domain-field-expand-icon"
+                                    collapsedTitle="Show additional field properties"
+                                    expanded={false}
+                                    expandedTitle="Hide additional field properties"
                                     id="domainpropertiesrow-expand-0"
                                     onClick={[Function]}
                                   >
-                                    <FontAwesomeIcon
-                                      border={false}
-                                      className=""
-                                      color="#999999"
-                                      fixedWidth={false}
-                                      flip={null}
-                                      icon={
-                                        Object {
-                                          "icon": Array [
-                                            448,
-                                            512,
-                                            Array [],
-                                            "f0fe",
-                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                          ],
-                                          "iconName": "plus-square",
-                                          "prefix": "fas",
-                                        }
-                                      }
-                                      inverse={false}
-                                      listItem={false}
-                                      mask={null}
-                                      pull={null}
-                                      pulse={false}
-                                      rotation={null}
-                                      size="lg"
-                                      spin={false}
-                                      symbol={false}
-                                      title=""
-                                      transform={null}
+                                    <div
+                                      className="field-icon domain-field-expand-icon"
+                                      id="domainpropertiesrow-expand-0"
+                                      onClick={[Function]}
+                                      title="Show additional field properties"
                                     >
-                                      <svg
-                                        aria-hidden="true"
-                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                        color="#999999"
-                                        data-icon="plus-square"
-                                        data-prefix="fas"
-                                        focusable="false"
-                                        role="img"
-                                        style={Object {}}
-                                        viewBox="0 0 448 512"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              448,
+                                              512,
+                                              Array [],
+                                              "f0fe",
+                                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                            ],
+                                            "iconName": "plus-square",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size="lg"
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
                                       >
-                                        <path
-                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                          fill="currentColor"
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                          data-icon="plus-square"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
                                           style={Object {}}
-                                        />
-                                      </svg>
-                                    </FontAwesomeIcon>
-                                  </div>
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </FieldExpansionToggle>
                                 </div>
                               </div>
                             </Col>
@@ -2521,8 +2587,6 @@ exports[`DomainRow client side warning on field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-warning"
                       data-react-beautiful-dnd-draggable="7"
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -2710,7 +2774,6 @@ exports[`DomainRow client side warning on field 1`] = `
                             <FontAwesomeIcon
                               border={false}
                               className=""
-                              color="#999999"
                               fixedWidth={false}
                               flip={null}
                               icon={
@@ -2741,7 +2804,6 @@ exports[`DomainRow client side warning on field 1`] = `
                               <svg
                                 aria-hidden="true"
                                 className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
-                                color="#999999"
                                 data-icon="grip-vertical"
                                 data-prefix="fas"
                                 focusable="false"
@@ -2979,62 +3041,132 @@ exports[`DomainRow client side warning on field 1`] = `
                                 <div
                                   className="domain-field-buttons"
                                 >
-                                  <div
-                                    className="field-icon"
+                                  <DeleteIcon
+                                    iconCls="domain-field-delete-icon"
+                                    id="domainpropertiesrow-delete-1"
+                                    onDelete={[Function]}
+                                    title="Remove field"
+                                  >
+                                    <span
+                                      className="field-icon"
+                                      id="domainpropertiesrow-delete-1"
+                                      onClick={[Function]}
+                                      title="Remove field"
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className="domain-field-delete-icon"
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f057",
+                                              "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
+                                            ],
+                                            "iconName": "times-circle",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-times-circle fa-w-16 domain-field-delete-icon"
+                                          data-icon="times-circle"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </span>
+                                  </DeleteIcon>
+                                  <FieldExpansionToggle
+                                    cls="domain-field-expand-icon"
+                                    collapsedTitle="Show additional field properties"
+                                    expanded={false}
+                                    expandedTitle="Hide additional field properties"
                                     id="domainpropertiesrow-expand-1"
                                     onClick={[Function]}
                                   >
-                                    <FontAwesomeIcon
-                                      border={false}
-                                      className=""
-                                      color="#999999"
-                                      fixedWidth={false}
-                                      flip={null}
-                                      icon={
-                                        Object {
-                                          "icon": Array [
-                                            448,
-                                            512,
-                                            Array [],
-                                            "f0fe",
-                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                          ],
-                                          "iconName": "plus-square",
-                                          "prefix": "fas",
-                                        }
-                                      }
-                                      inverse={false}
-                                      listItem={false}
-                                      mask={null}
-                                      pull={null}
-                                      pulse={false}
-                                      rotation={null}
-                                      size="lg"
-                                      spin={false}
-                                      symbol={false}
-                                      title=""
-                                      transform={null}
+                                    <div
+                                      className="field-icon domain-field-expand-icon"
+                                      id="domainpropertiesrow-expand-1"
+                                      onClick={[Function]}
+                                      title="Show additional field properties"
                                     >
-                                      <svg
-                                        aria-hidden="true"
-                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                        color="#999999"
-                                        data-icon="plus-square"
-                                        data-prefix="fas"
-                                        focusable="false"
-                                        role="img"
-                                        style={Object {}}
-                                        viewBox="0 0 448 512"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              448,
+                                              512,
+                                              Array [],
+                                              "f0fe",
+                                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                            ],
+                                            "iconName": "plus-square",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size="lg"
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
                                       >
-                                        <path
-                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                          fill="currentColor"
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                          data-icon="plus-square"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
                                           style={Object {}}
-                                        />
-                                      </svg>
-                                    </FontAwesomeIcon>
-                                  </div>
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </FieldExpansionToggle>
                                 </div>
                               </div>
                             </Col>
@@ -4500,8 +4632,6 @@ exports[`DomainRow date time field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="3"
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -4689,7 +4819,6 @@ exports[`DomainRow date time field 1`] = `
                             <FontAwesomeIcon
                               border={false}
                               className=""
-                              color="#999999"
                               fixedWidth={false}
                               flip={null}
                               icon={
@@ -4720,7 +4849,6 @@ exports[`DomainRow date time field 1`] = `
                               <svg
                                 aria-hidden="true"
                                 className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
-                                color="#999999"
                                 data-icon="grip-vertical"
                                 data-prefix="fas"
                                 focusable="false"
@@ -4878,62 +5006,132 @@ exports[`DomainRow date time field 1`] = `
                                 <div
                                   className="domain-field-buttons"
                                 >
-                                  <div
-                                    className="field-icon"
+                                  <DeleteIcon
+                                    iconCls="domain-field-delete-icon"
+                                    id="domainpropertiesrow-delete-0"
+                                    onDelete={[Function]}
+                                    title="Remove field"
+                                  >
+                                    <span
+                                      className="field-icon"
+                                      id="domainpropertiesrow-delete-0"
+                                      onClick={[Function]}
+                                      title="Remove field"
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className="domain-field-delete-icon"
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f057",
+                                              "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
+                                            ],
+                                            "iconName": "times-circle",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-times-circle fa-w-16 domain-field-delete-icon"
+                                          data-icon="times-circle"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </span>
+                                  </DeleteIcon>
+                                  <FieldExpansionToggle
+                                    cls="domain-field-expand-icon"
+                                    collapsedTitle="Show additional field properties"
+                                    expanded={false}
+                                    expandedTitle="Hide additional field properties"
                                     id="domainpropertiesrow-expand-0"
                                     onClick={[Function]}
                                   >
-                                    <FontAwesomeIcon
-                                      border={false}
-                                      className=""
-                                      color="#999999"
-                                      fixedWidth={false}
-                                      flip={null}
-                                      icon={
-                                        Object {
-                                          "icon": Array [
-                                            448,
-                                            512,
-                                            Array [],
-                                            "f0fe",
-                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                          ],
-                                          "iconName": "plus-square",
-                                          "prefix": "fas",
-                                        }
-                                      }
-                                      inverse={false}
-                                      listItem={false}
-                                      mask={null}
-                                      pull={null}
-                                      pulse={false}
-                                      rotation={null}
-                                      size="lg"
-                                      spin={false}
-                                      symbol={false}
-                                      title=""
-                                      transform={null}
+                                    <div
+                                      className="field-icon domain-field-expand-icon"
+                                      id="domainpropertiesrow-expand-0"
+                                      onClick={[Function]}
+                                      title="Show additional field properties"
                                     >
-                                      <svg
-                                        aria-hidden="true"
-                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                        color="#999999"
-                                        data-icon="plus-square"
-                                        data-prefix="fas"
-                                        focusable="false"
-                                        role="img"
-                                        style={Object {}}
-                                        viewBox="0 0 448 512"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              448,
+                                              512,
+                                              Array [],
+                                              "f0fe",
+                                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                            ],
+                                            "iconName": "plus-square",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size="lg"
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
                                       >
-                                        <path
-                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                          fill="currentColor"
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                          data-icon="plus-square"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
                                           style={Object {}}
-                                        />
-                                      </svg>
-                                    </FontAwesomeIcon>
-                                  </div>
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </FieldExpansionToggle>
                                 </div>
                               </div>
                             </Col>
@@ -6792,8 +6990,6 @@ exports[`DomainRow decimal field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="2"
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -6981,7 +7177,6 @@ exports[`DomainRow decimal field 1`] = `
                             <FontAwesomeIcon
                               border={false}
                               className=""
-                              color="#999999"
                               fixedWidth={false}
                               flip={null}
                               icon={
@@ -7012,7 +7207,6 @@ exports[`DomainRow decimal field 1`] = `
                               <svg
                                 aria-hidden="true"
                                 className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
-                                color="#999999"
                                 data-icon="grip-vertical"
                                 data-prefix="fas"
                                 focusable="false"
@@ -7170,62 +7364,132 @@ exports[`DomainRow decimal field 1`] = `
                                 <div
                                   className="domain-field-buttons"
                                 >
-                                  <div
-                                    className="field-icon"
+                                  <DeleteIcon
+                                    iconCls="domain-field-delete-icon"
+                                    id="domainpropertiesrow-delete-2"
+                                    onDelete={[Function]}
+                                    title="Remove field"
+                                  >
+                                    <span
+                                      className="field-icon"
+                                      id="domainpropertiesrow-delete-2"
+                                      onClick={[Function]}
+                                      title="Remove field"
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className="domain-field-delete-icon"
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f057",
+                                              "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
+                                            ],
+                                            "iconName": "times-circle",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-times-circle fa-w-16 domain-field-delete-icon"
+                                          data-icon="times-circle"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </span>
+                                  </DeleteIcon>
+                                  <FieldExpansionToggle
+                                    cls="domain-field-expand-icon"
+                                    collapsedTitle="Show additional field properties"
+                                    expanded={false}
+                                    expandedTitle="Hide additional field properties"
                                     id="domainpropertiesrow-expand-2"
                                     onClick={[Function]}
                                   >
-                                    <FontAwesomeIcon
-                                      border={false}
-                                      className=""
-                                      color="#999999"
-                                      fixedWidth={false}
-                                      flip={null}
-                                      icon={
-                                        Object {
-                                          "icon": Array [
-                                            448,
-                                            512,
-                                            Array [],
-                                            "f0fe",
-                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                          ],
-                                          "iconName": "plus-square",
-                                          "prefix": "fas",
-                                        }
-                                      }
-                                      inverse={false}
-                                      listItem={false}
-                                      mask={null}
-                                      pull={null}
-                                      pulse={false}
-                                      rotation={null}
-                                      size="lg"
-                                      spin={false}
-                                      symbol={false}
-                                      title=""
-                                      transform={null}
+                                    <div
+                                      className="field-icon domain-field-expand-icon"
+                                      id="domainpropertiesrow-expand-2"
+                                      onClick={[Function]}
+                                      title="Show additional field properties"
                                     >
-                                      <svg
-                                        aria-hidden="true"
-                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                        color="#999999"
-                                        data-icon="plus-square"
-                                        data-prefix="fas"
-                                        focusable="false"
-                                        role="img"
-                                        style={Object {}}
-                                        viewBox="0 0 448 512"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              448,
+                                              512,
+                                              Array [],
+                                              "f0fe",
+                                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                            ],
+                                            "iconName": "plus-square",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size="lg"
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
                                       >
-                                        <path
-                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                          fill="currentColor"
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                          data-icon="plus-square"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
                                           style={Object {}}
-                                        />
-                                      </svg>
-                                    </FontAwesomeIcon>
-                                  </div>
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </FieldExpansionToggle>
                                 </div>
                               </div>
                             </Col>
@@ -9119,8 +9383,6 @@ exports[`DomainRow participant id field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="4"
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -9308,7 +9570,6 @@ exports[`DomainRow participant id field 1`] = `
                             <FontAwesomeIcon
                               border={false}
                               className=""
-                              color="#999999"
                               fixedWidth={false}
                               flip={null}
                               icon={
@@ -9339,7 +9600,6 @@ exports[`DomainRow participant id field 1`] = `
                               <svg
                                 aria-hidden="true"
                                 className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
-                                color="#999999"
                                 data-icon="grip-vertical"
                                 data-prefix="fas"
                                 focusable="false"
@@ -9521,62 +9781,132 @@ exports[`DomainRow participant id field 1`] = `
                                 <div
                                   className="domain-field-buttons"
                                 >
-                                  <div
-                                    className="field-icon"
+                                  <DeleteIcon
+                                    iconCls="domain-field-delete-icon"
+                                    id="domainpropertiesrow-delete-0"
+                                    onDelete={[Function]}
+                                    title="Remove field"
+                                  >
+                                    <span
+                                      className="field-icon"
+                                      id="domainpropertiesrow-delete-0"
+                                      onClick={[Function]}
+                                      title="Remove field"
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className="domain-field-delete-icon"
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f057",
+                                              "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
+                                            ],
+                                            "iconName": "times-circle",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-times-circle fa-w-16 domain-field-delete-icon"
+                                          data-icon="times-circle"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </span>
+                                  </DeleteIcon>
+                                  <FieldExpansionToggle
+                                    cls="domain-field-expand-icon"
+                                    collapsedTitle="Show additional field properties"
+                                    expanded={false}
+                                    expandedTitle="Hide additional field properties"
                                     id="domainpropertiesrow-expand-0"
                                     onClick={[Function]}
                                   >
-                                    <FontAwesomeIcon
-                                      border={false}
-                                      className=""
-                                      color="#999999"
-                                      fixedWidth={false}
-                                      flip={null}
-                                      icon={
-                                        Object {
-                                          "icon": Array [
-                                            448,
-                                            512,
-                                            Array [],
-                                            "f0fe",
-                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                          ],
-                                          "iconName": "plus-square",
-                                          "prefix": "fas",
-                                        }
-                                      }
-                                      inverse={false}
-                                      listItem={false}
-                                      mask={null}
-                                      pull={null}
-                                      pulse={false}
-                                      rotation={null}
-                                      size="lg"
-                                      spin={false}
-                                      symbol={false}
-                                      title=""
-                                      transform={null}
+                                    <div
+                                      className="field-icon domain-field-expand-icon"
+                                      id="domainpropertiesrow-expand-0"
+                                      onClick={[Function]}
+                                      title="Show additional field properties"
                                     >
-                                      <svg
-                                        aria-hidden="true"
-                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                        color="#999999"
-                                        data-icon="plus-square"
-                                        data-prefix="fas"
-                                        focusable="false"
-                                        role="img"
-                                        style={Object {}}
-                                        viewBox="0 0 448 512"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              448,
+                                              512,
+                                              Array [],
+                                              "f0fe",
+                                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                            ],
+                                            "iconName": "plus-square",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size="lg"
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
                                       >
-                                        <path
-                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                          fill="currentColor"
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                          data-icon="plus-square"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
                                           style={Object {}}
-                                        />
-                                      </svg>
-                                    </FontAwesomeIcon>
-                                  </div>
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </FieldExpansionToggle>
                                 </div>
                               </div>
                             </Col>
@@ -11053,8 +11383,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-error"
                       data-react-beautiful-dnd-draggable="8"
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -11242,7 +11570,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             <FontAwesomeIcon
                               border={false}
                               className=""
-                              color="#999999"
                               fixedWidth={false}
                               flip={null}
                               icon={
@@ -11273,7 +11600,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                               <svg
                                 aria-hidden="true"
                                 className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
-                                color="#999999"
                                 data-icon="grip-vertical"
                                 data-prefix="fas"
                                 focusable="false"
@@ -11511,62 +11837,132 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 <div
                                   className="domain-field-buttons"
                                 >
-                                  <div
-                                    className="field-icon"
+                                  <DeleteIcon
+                                    iconCls="domain-field-delete-icon"
+                                    id="domainpropertiesrow-delete-1"
+                                    onDelete={[Function]}
+                                    title="Remove field"
+                                  >
+                                    <span
+                                      className="field-icon"
+                                      id="domainpropertiesrow-delete-1"
+                                      onClick={[Function]}
+                                      title="Remove field"
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className="domain-field-delete-icon"
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f057",
+                                              "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
+                                            ],
+                                            "iconName": "times-circle",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-times-circle fa-w-16 domain-field-delete-icon"
+                                          data-icon="times-circle"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </span>
+                                  </DeleteIcon>
+                                  <FieldExpansionToggle
+                                    cls="domain-field-expand-icon"
+                                    collapsedTitle="Show additional field properties"
+                                    expanded={false}
+                                    expandedTitle="Hide additional field properties"
                                     id="domainpropertiesrow-expand-1"
                                     onClick={[Function]}
                                   >
-                                    <FontAwesomeIcon
-                                      border={false}
-                                      className=""
-                                      color="#999999"
-                                      fixedWidth={false}
-                                      flip={null}
-                                      icon={
-                                        Object {
-                                          "icon": Array [
-                                            448,
-                                            512,
-                                            Array [],
-                                            "f0fe",
-                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                          ],
-                                          "iconName": "plus-square",
-                                          "prefix": "fas",
-                                        }
-                                      }
-                                      inverse={false}
-                                      listItem={false}
-                                      mask={null}
-                                      pull={null}
-                                      pulse={false}
-                                      rotation={null}
-                                      size="lg"
-                                      spin={false}
-                                      symbol={false}
-                                      title=""
-                                      transform={null}
+                                    <div
+                                      className="field-icon domain-field-expand-icon"
+                                      id="domainpropertiesrow-expand-1"
+                                      onClick={[Function]}
+                                      title="Show additional field properties"
                                     >
-                                      <svg
-                                        aria-hidden="true"
-                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                        color="#999999"
-                                        data-icon="plus-square"
-                                        data-prefix="fas"
-                                        focusable="false"
-                                        role="img"
-                                        style={Object {}}
-                                        viewBox="0 0 448 512"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              448,
+                                              512,
+                                              Array [],
+                                              "f0fe",
+                                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                            ],
+                                            "iconName": "plus-square",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size="lg"
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
                                       >
-                                        <path
-                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                          fill="currentColor"
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                          data-icon="plus-square"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
                                           style={Object {}}
-                                        />
-                                      </svg>
-                                    </FontAwesomeIcon>
-                                  </div>
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </FieldExpansionToggle>
                                 </div>
                               </div>
                             </Col>
@@ -13032,8 +13428,6 @@ exports[`DomainRow string field test 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="1"
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -13221,7 +13615,6 @@ exports[`DomainRow string field test 1`] = `
                             <FontAwesomeIcon
                               border={false}
                               className=""
-                              color="#999999"
                               fixedWidth={false}
                               flip={null}
                               icon={
@@ -13252,7 +13645,6 @@ exports[`DomainRow string field test 1`] = `
                               <svg
                                 aria-hidden="true"
                                 className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
-                                color="#999999"
                                 data-icon="grip-vertical"
                                 data-prefix="fas"
                                 focusable="false"
@@ -13434,62 +13826,132 @@ exports[`DomainRow string field test 1`] = `
                                 <div
                                   className="domain-field-buttons"
                                 >
-                                  <div
-                                    className="field-icon"
+                                  <DeleteIcon
+                                    iconCls="domain-field-delete-icon"
+                                    id="domainpropertiesrow-delete-1"
+                                    onDelete={[Function]}
+                                    title="Remove field"
+                                  >
+                                    <span
+                                      className="field-icon"
+                                      id="domainpropertiesrow-delete-1"
+                                      onClick={[Function]}
+                                      title="Remove field"
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className="domain-field-delete-icon"
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f057",
+                                              "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
+                                            ],
+                                            "iconName": "times-circle",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-times-circle fa-w-16 domain-field-delete-icon"
+                                          data-icon="times-circle"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </span>
+                                  </DeleteIcon>
+                                  <FieldExpansionToggle
+                                    cls="domain-field-expand-icon"
+                                    collapsedTitle="Show additional field properties"
+                                    expanded={false}
+                                    expandedTitle="Hide additional field properties"
                                     id="domainpropertiesrow-expand-1"
                                     onClick={[Function]}
                                   >
-                                    <FontAwesomeIcon
-                                      border={false}
-                                      className=""
-                                      color="#999999"
-                                      fixedWidth={false}
-                                      flip={null}
-                                      icon={
-                                        Object {
-                                          "icon": Array [
-                                            448,
-                                            512,
-                                            Array [],
-                                            "f0fe",
-                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                          ],
-                                          "iconName": "plus-square",
-                                          "prefix": "fas",
-                                        }
-                                      }
-                                      inverse={false}
-                                      listItem={false}
-                                      mask={null}
-                                      pull={null}
-                                      pulse={false}
-                                      rotation={null}
-                                      size="lg"
-                                      spin={false}
-                                      symbol={false}
-                                      title=""
-                                      transform={null}
+                                    <div
+                                      className="field-icon domain-field-expand-icon"
+                                      id="domainpropertiesrow-expand-1"
+                                      onClick={[Function]}
+                                      title="Show additional field properties"
                                     >
-                                      <svg
-                                        aria-hidden="true"
-                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                        color="#999999"
-                                        data-icon="plus-square"
-                                        data-prefix="fas"
-                                        focusable="false"
-                                        role="img"
-                                        style={Object {}}
-                                        viewBox="0 0 448 512"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              448,
+                                              512,
+                                              Array [],
+                                              "f0fe",
+                                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                            ],
+                                            "iconName": "plus-square",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size="lg"
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
                                       >
-                                        <path
-                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                          fill="currentColor"
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                          data-icon="plus-square"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
                                           style={Object {}}
-                                        />
-                                      </svg>
-                                    </FontAwesomeIcon>
-                                  </div>
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </FieldExpansionToggle>
                                 </div>
                               </div>
                             </Col>
@@ -15245,8 +15707,6 @@ exports[`DomainRow with empty domain form 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="0"
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -15433,7 +15893,6 @@ exports[`DomainRow with empty domain form 1`] = `
                             <FontAwesomeIcon
                               border={false}
                               className=""
-                              color="#999999"
                               fixedWidth={false}
                               flip={null}
                               icon={
@@ -15464,7 +15923,6 @@ exports[`DomainRow with empty domain form 1`] = `
                               <svg
                                 aria-hidden="true"
                                 className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
-                                color="#999999"
                                 data-icon="grip-vertical"
                                 data-prefix="fas"
                                 focusable="false"
@@ -15696,62 +16154,132 @@ exports[`DomainRow with empty domain form 1`] = `
                                 <div
                                   className="domain-field-buttons"
                                 >
-                                  <div
-                                    className="field-icon"
+                                  <DeleteIcon
+                                    iconCls="domain-field-delete-icon"
+                                    id="domainpropertiesrow-delete-1"
+                                    onDelete={[Function]}
+                                    title="Remove field"
+                                  >
+                                    <span
+                                      className="field-icon"
+                                      id="domainpropertiesrow-delete-1"
+                                      onClick={[Function]}
+                                      title="Remove field"
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className="domain-field-delete-icon"
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f057",
+                                              "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
+                                            ],
+                                            "iconName": "times-circle",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-times-circle fa-w-16 domain-field-delete-icon"
+                                          data-icon="times-circle"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </span>
+                                  </DeleteIcon>
+                                  <FieldExpansionToggle
+                                    cls="domain-field-expand-icon"
+                                    collapsedTitle="Show additional field properties"
+                                    expanded={false}
+                                    expandedTitle="Hide additional field properties"
                                     id="domainpropertiesrow-expand-1"
                                     onClick={[Function]}
                                   >
-                                    <FontAwesomeIcon
-                                      border={false}
-                                      className=""
-                                      color="#999999"
-                                      fixedWidth={false}
-                                      flip={null}
-                                      icon={
-                                        Object {
-                                          "icon": Array [
-                                            448,
-                                            512,
-                                            Array [],
-                                            "f0fe",
-                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                          ],
-                                          "iconName": "plus-square",
-                                          "prefix": "fas",
-                                        }
-                                      }
-                                      inverse={false}
-                                      listItem={false}
-                                      mask={null}
-                                      pull={null}
-                                      pulse={false}
-                                      rotation={null}
-                                      size="lg"
-                                      spin={false}
-                                      symbol={false}
-                                      title=""
-                                      transform={null}
+                                    <div
+                                      className="field-icon domain-field-expand-icon"
+                                      id="domainpropertiesrow-expand-1"
+                                      onClick={[Function]}
+                                      title="Show additional field properties"
                                     >
-                                      <svg
-                                        aria-hidden="true"
-                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                        color="#999999"
-                                        data-icon="plus-square"
-                                        data-prefix="fas"
-                                        focusable="false"
-                                        role="img"
-                                        style={Object {}}
-                                        viewBox="0 0 448 512"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              448,
+                                              512,
+                                              Array [],
+                                              "f0fe",
+                                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                            ],
+                                            "iconName": "plus-square",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size="lg"
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
                                       >
-                                        <path
-                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                          fill="currentColor"
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                          data-icon="plus-square"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
                                           style={Object {}}
-                                        />
-                                      </svg>
-                                    </FontAwesomeIcon>
-                                  </div>
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </FieldExpansionToggle>
                                 </div>
                               </div>
                             </Col>

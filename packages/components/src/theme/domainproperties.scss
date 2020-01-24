@@ -133,15 +133,20 @@
   height: 50px;
 };
 
-.domain-field-icon {
-  color: $gray-light;
-  display: inline-block;
-  padding-left: 20px;
+.domain-field-expand-icon {
+    color: $gray-no-highlight;
 
-  &:hover {
-    color: $gray-base;
-    cursor: pointer;
-  }
+    &:hover {
+        color: $blue-highlight;
+    }
+}
+
+.domain-field-delete-icon {
+    color: $gray-no-highlight;
+
+    &:hover {
+        color: $brand-danger;
+    }
 }
 
 .domain-help-icon {
@@ -374,6 +379,11 @@
   width: 30px;
   vertical-align: middle;
   background-color: $gray-shadow;
+  color: $gray-no-highlight;
+
+  &:hover {
+      color: $blue-highlight;
+  }
 }
 
 .domain-row-empty-handle {

@@ -17,7 +17,7 @@ import React from 'react';
 import { Button, Checkbox, Col, Collapse, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGripVertical, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import { Draggable } from 'react-beautiful-dnd';
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -48,6 +48,8 @@ import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
+import { FieldExpansionToggle } from "../base/FieldExpansionToggle";
+import { DeleteIcon } from "../base/DeleteIcon";
 import { SCHEMAS } from '../base/models/schemas';
 
 interface IDomainRowProps {
@@ -75,7 +77,6 @@ interface IDomainRowProps {
 interface IDomainRowState {
     showAdv: boolean
     closing: boolean
-    hover: boolean
     showingModal: boolean
     isDragDisabled: boolean
 }
@@ -91,7 +92,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.state = {
             showAdv: false,
             closing: false,
-            hover: false,
             showingModal: false,
             isDragDisabled: props.isDragDisabled
         };
@@ -287,14 +287,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.setDragDisabled(this.props.isDragDisabled, false);
     };
 
-    onMouseOver = (): any => {
-        this.setState(() => ({hover: true}))
-    };
-
-    onMouseOut = (): any => {
-        this.setState(() => ({hover: false}))
-    };
-
     onDelete = (): any => {
         const { index, onDelete } = this.props;
 
@@ -329,10 +321,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
     renderHandle() {
         const { dragging } = this.props;
-        const { isDragDisabled, hover, closing } = this.state;
+        const { isDragDisabled } = this.state;
 
         return (
-            <FontAwesomeIcon size='lg' color={!isDragDisabled && (dragging || hover || closing) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY} icon={faGripVertical}/>
+            <FontAwesomeIcon size='lg' color={dragging ? HIGHLIGHT_BLUE : isDragDisabled ? NOT_HIGHLIGHT_GRAY: undefined} icon={faGripVertical}/>
         )
     }
 
@@ -385,23 +377,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderButtons() {
-        const { expanded, index, field, dragging, appPropertiesOnly } = this.props;
-        const { hover, closing } = this.state;
+        const { expanded, index, field, appPropertiesOnly } = this.props;
+        const { closing } = this.state;
 
-        // TODO update to use FieldExpansionToggle
         return (
             <div className={expanded ? "domain-field-buttons-expanded" : "domain-field-buttons"}>
-                {(expanded || closing) && !isFieldFullyLocked(field.lockType) && (
-                <>
+                {(expanded || closing) && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
                     <Button
-                        className="domain-row-button"
-                        name={createFormInputName(DOMAIN_FIELD_DELETE)}
-                        id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
-                        disabled={isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)}
-                        onClick={this.onDelete}>
-                        Remove Field
-                    </Button>
-                    {!appPropertiesOnly && <Button
                         disabled={isFieldFullyLocked(field.lockType)}
                         name={createFormInputName(DOMAIN_FIELD_ADV)}
                         id={createFormInputId(DOMAIN_FIELD_ADV, index)}
@@ -409,13 +391,24 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         className="domain-row-button"
                     >
                         Advanced Settings
-                    </Button>}
-                </>
+                    </Button>
                 )}
-                <div className="field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)} onClick={this.onExpand}>
-                    <FontAwesomeIcon size='lg' color={(dragging || hover) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
-                                     icon={expanded ? faMinusSquare : faPlusSquare}/>
-                </div>
+                {!(isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)) &&
+                    <DeleteIcon
+                        id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
+                        title={'Remove field'}
+                        iconCls={'domain-field-delete-icon'}
+                        onDelete={this.onDelete}
+                    />
+                }
+                <FieldExpansionToggle
+                    cls={'domain-field-expand-icon'}
+                    expanded={expanded}
+                    expandedTitle={"Hide additional field properties"}
+                    collapsedTitle={"Show additional field properties"}
+                    id={createFormInputId(DOMAIN_FIELD_EXPAND, index)}
+                    onClick={this.onExpand}
+                />
             </div>
         )
     }
@@ -432,8 +425,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                          {...provided.draggableProps}
                          ref={provided.innerRef}
                          tabIndex={index}
-                         onMouseEnter={showingModal ? undefined : this.onMouseOver}
-                         onMouseLeave={showingModal ? undefined : this.onMouseOut}
                     >
                         <Row key={createFormInputId("domainrow", index)} className={'domain-row-container'}>
                             <AdvancedSettings

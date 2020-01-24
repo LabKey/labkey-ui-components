@@ -87,7 +87,7 @@ interface IDomainFormInput {
 interface IDomainFormState {
     expandedRowIndex: number
     expandTransition: number
-    showConfirm: boolean
+    confirmDeleteRowIndex: number
     collapsed: boolean
     maxPhiLevel: string
     dragId?: number
@@ -125,7 +125,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.state = {
             expandedRowIndex: undefined,
             expandTransition: EXPAND_TRANSITION,
-            showConfirm: false,
+            confirmDeleteRowIndex: undefined,
             dragId: undefined,
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
             availableTypes: this.getAvailableTypes(),
@@ -141,9 +141,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     this.setState(() => ({maxPhiLevel}));
                 })
                 .catch((error) => {
-                        console.error("Unable to retrieve max PHI level.")
-                    }
-                )
+                    console.error("Unable to retrieve max PHI level.")
+                })
         }
     }
 
@@ -301,14 +300,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     }
 
-    onDeleteConfirm = () => {
+    onDeleteConfirm(index: number) {
+        if (index !== undefined) {
+            this.onDomainChange(removeField(this.props.domain, index));
+        }
+
         this.setState(() => ({
             expandedRowIndex: undefined,
-            showConfirm: false
+            confirmDeleteRowIndex: undefined
         }));
-
-        this.onDomainChange(removeField(this.props.domain, this.state.expandedRowIndex));
-    };
+    }
 
     initNewDesign = () => {
         const {domain} = this.props;
@@ -341,19 +342,21 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onDeleteField = (index: number): void => {
         const { domain } = this.props;
-
-        let field = domain.fields.get(index);
+        const field = domain.fields.get(index);
 
         if (field) {
-            this.setState(() => ({showConfirm: true}));
-        }
-        else {
-            this.onDeleteConfirm();
+            // only show the confirm dialog for saved fields
+            if (!field.isNew()) {
+                this.setState(() => ({confirmDeleteRowIndex: index}));
+            }
+            else {
+                this.onDeleteConfirm(index);
+            }
         }
     };
 
     onConfirmCancel = () => {
-        this.setState(() => ({showConfirm: false}));
+        this.setState(() => ({confirmDeleteRowIndex: undefined}));
     };
 
     onBeforeDragStart = (initial) => {
@@ -531,11 +534,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderFieldRemoveConfirm() {
+        const { confirmDeleteRowIndex } = this.state;
+        const field = this.props.domain.fields.get(confirmDeleteRowIndex);
+
         return (
             <ConfirmModal
-                title='Confirm Field Deletion'
-                msg='Are you sure you want to remove this field? All of its data will be deleted as well.'
-                onConfirm={this.onDeleteConfirm}
+                title='Confirm Remove Field'
+                msg={<div>Are you sure you want to remove {field && field.name && field.name.trim().length > 0 ? <b>{field.name}</b> : 'this field'}? All of its data will be deleted as well.</div>}
+                onConfirm={() => this.onDeleteConfirm(confirmDeleteRowIndex)}
                 onCancel={this.onConfirmCancel}
                 confirmVariant='danger'
                 confirmButtonText='Yes, Remove Field'
@@ -913,11 +919,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { domain, showHeader, collapsible, controlledCollapse } = this.props;
-        const { showConfirm } = this.state;
 
         return (
             <>
-                {showConfirm && this.renderFieldRemoveConfirm()}
+                {this.state.confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
                 <Panel className={this.getPanelClass()} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
                         <Panel.Heading onClick={this.togglePanel} className={this.getPanelHeaderClass()} id={domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header'}>

@@ -811,6 +811,10 @@ export class DomainField extends Record({
         return isFieldNew(this);
     }
 
+    isSaved(): boolean {
+        return isFieldSaved(this);
+    }
+
     isValid(): boolean {
         // TODO should the rest of these checks move up to the getErrors() function and return different FieldErrors?
         // if so, then we can remove this isValid() function and just use !hasErrors()
@@ -904,6 +908,10 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
 
 function isFieldNew(field: Partial<IDomainField>): boolean {
     return field.propertyId === undefined;
+}
+
+function isFieldSaved(field: Partial<IDomainField>): boolean {
+    return !isFieldNew(field) && field.propertyId !== 0;
 }
 
 export function resolveAvailableTypes(field: DomainField, availableTypes: List<PropDescType>, appPropertiesOnly?: boolean, showFilePropertyType?: boolean): List<PropDescType> {

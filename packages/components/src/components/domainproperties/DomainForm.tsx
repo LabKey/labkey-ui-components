@@ -346,7 +346,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         if (field) {
             // only show the confirm dialog for saved fields
-            if (!field.isNew()) {
+            if (field.isSaved()) {
                 this.setState(() => ({confirmDeleteRowIndex: index}));
             }
             else {

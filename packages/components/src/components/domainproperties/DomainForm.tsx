@@ -687,9 +687,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderAppDomainHeader = () => {
-        const {appDomainHeaderRenderer, modelDomains, domain} = this.props;
+        const {appDomainHeaderRenderer, modelDomains, domain, domainIndex} = this.props;
         const config = {
             domain,
+            domainIndex,
             modelDomains,
             onChange: this.onFieldsChange,
             onAddField: this.applyAddField

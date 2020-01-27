@@ -1528,6 +1528,7 @@ export type HeaderRenderer = (config:IAppDomainHeader) => any
 
 export interface IAppDomainHeader {
     domain: DomainDesign
+    domainIndex: number
     modelDomains?: List<DomainDesign>
     onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
     onAddField?: (fieldConfig: Partial<IDomainField>) => void

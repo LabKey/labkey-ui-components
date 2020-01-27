@@ -110,7 +110,7 @@ import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/base/Cards';
 import { Footer } from './components/base/Footer';
 
-import { EditorModel, getStateQueryGridModel, IDataViewInfo } from './models';
+import { EditorModel, getStateQueryGridModel, getStateModelId, IDataViewInfo } from './models';
 import {
     createQueryGridModelFilteredBySample,
     getSelected,
@@ -293,6 +293,7 @@ export {
     // global state functions
     initQueryGridState,
     getStateQueryGridModel,
+    getStateModelId,
     getQueryGridModel,
     getQueryGridModelsForGridId,
     getEditorModel,

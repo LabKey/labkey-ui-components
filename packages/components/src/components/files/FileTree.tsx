@@ -109,8 +109,9 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
         }
     }
 
-    checkIdPrefix = 'filetree-check-';
-    defaultRootPrefix = '|root';
+    CHECK_ID_PREFIX = 'filetree-check-';
+    DEFAULT_ROOT_PREFIX = '|root';
+    EMPTY_FILE_NAME = '*empty';
 
     componentDidMount(): void {
         const { loadData } = this.props;
@@ -145,12 +146,12 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
 
         return (
             <>
-                {node.id.endsWith('|*empty') ?
+                {node.id.endsWith('|' + this.EMPTY_FILE_NAME) ?
                     <div className='filetree-empty-directory'>No Files Found</div>
                     :
                     <span
                         className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node')}>
-                        <Checkbox id={this.checkIdPrefix + node.id} checked={checked.contains(node.id)}
+                        <Checkbox id={this.CHECK_ID_PREFIX + node.id} checked={checked.contains(node.id)}
                                   onChange={this.handleCheckbox} onClick={this.checkClick}/>
                         <div style={style.base} onClick={onSelect}>
                             <div style={node.selected ? {...style.title, ...customStyles.header.title} : style.title}>
@@ -179,7 +180,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
     };
 
     getNodeIdFromId = (id: string) : string => {
-        const parts = id.split(this.checkIdPrefix);
+        const parts = id.split(this.CHECK_ID_PREFIX);
         if (parts.length === 2) {
             return parts[1];
         }
@@ -209,8 +210,8 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
         let path = id;
 
         // strip off default root id if exists
-        if (path.startsWith(this.defaultRootPrefix)) {
-            path = path.substring(0, this.defaultRootPrefix.length);
+        if (path.startsWith(this.DEFAULT_ROOT_PREFIX)) {
+            path = path.substring(0, this.DEFAULT_ROOT_PREFIX.length);
         }
 
         return path.replace(/\|/g, '/');
@@ -225,7 +226,9 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
     onFileSelect = (id: string, checked: boolean, isDirectory: boolean) => {
         const { onFileSelect } = this.props;
 
-        if (onFileSelect) {
+        const fileName = this.getNameFromId(id);
+
+        if (fileName !== this.EMPTY_FILE_NAME && onFileSelect) {
             onFileSelect(this.getNameFromId(id), this.getPathFromId(id), checked, isDirectory);
         }
     }
@@ -307,7 +310,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
                     });
 
                     if (children.length < 1) {
-                        children = [{id: node.id + "|*empty", active: false, name: "empty"}]
+                        children = [{id: node.id + "|" + this.EMPTY_FILE_NAME, active: false, name: "empty"}]
                     }
 
                     node.children = children;  // This is not immutable so this is updating the data object

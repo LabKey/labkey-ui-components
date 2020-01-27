@@ -311,7 +311,7 @@ describe('DomainForm', () => {
         let fields = [{
             name: 'fieldname',
             rangeURI: INT_RANGE_URI,
-            propertyId: 0,
+            propertyId: 1,
             propertyURI: 'test'
         }];
 

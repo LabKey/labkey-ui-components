@@ -3389,7 +3389,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                               className="domain-form-add-link"
                               onClick={[Function]}
                             >
-                              Manually define fields
+                              manually define fields
                             </span>
                           </div>
                         </div>
@@ -19167,7 +19167,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                               className="domain-form-add-link"
                               onClick={[Function]}
                             >
-                              Manually define fields
+                              manually define fields
                             </span>
                           </div>
                         </div>
@@ -22234,7 +22234,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                               className="domain-form-add-link"
                               onClick={[Function]}
                             >
-                              Manually define fields
+                              manually define fields
                             </span>
                           </div>
                         </div>

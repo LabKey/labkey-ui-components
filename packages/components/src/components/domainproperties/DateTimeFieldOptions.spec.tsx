@@ -15,6 +15,7 @@ describe('DateTimeFieldOptions', () => {
 
         const props = {
             index: 1,
+            domainIndex: 1,
             label: _section,
             format: _format,
             excludeFromShifting: true,
@@ -32,13 +33,13 @@ describe('DateTimeFieldOptions', () => {
         expect(sectionLabel.text()).toEqual(_section);
 
         // Test format field initial value
-        let formatField = dateTime.find({id: createFormInputId(DOMAIN_FIELD_FORMAT, 1), className: 'form-control'});
+        let formatField = dateTime.find({id: createFormInputId(DOMAIN_FIELD_FORMAT, 1, 1), className: 'form-control'});
         expect(formatField.length).toEqual(1);
         expect(formatField.props().value).toEqual(_format);
 
         // Verify format value changes with props
         dateTime.setProps({format: _format2});
-        formatField = dateTime.find({id: createFormInputId(DOMAIN_FIELD_FORMAT, 1), className: 'form-control'});
+        formatField = dateTime.find({id: createFormInputId(DOMAIN_FIELD_FORMAT, 1, 1), className: 'form-control'});
         expect(formatField.props().value).toEqual(_format2);
 
         expect(toJson(dateTime)).toMatchSnapshot();

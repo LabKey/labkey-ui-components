@@ -82,6 +82,7 @@ interface IDomainFormInput {
     modelDomains?: List<DomainDesign> //Set of domains that encompass the full protocol, that may impact validation or alerts
     appPropertiesOnly?: boolean //Flag to indicate if LKS specific types should be shown (false) or not (true)
     showFilePropertyType?: boolean //Flag to indicate if the File property type should be allowed
+    domainIndex?: number
 }
 
 interface IDomainFormState {
@@ -110,6 +111,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
  * Form containing all properties of a domain
  */
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
+
     static defaultProps = {
         helpNoun: 'field designer',
         helpTopic: FIELD_EDITOR_TOPIC,
@@ -117,6 +119,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         initCollapsed: false,
         isNew: false,
         appPropertiesOnly: false,
+        domainIndex: 0
     };
 
     constructor(props) {
@@ -664,12 +667,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderSearchField() {
-        const { fields } = this.props.domain;
+        const { domain, domainIndex} = this.props;
+        const { fields } = domain;
 
         return (
             <Row>
                 <Col xs={3}>
-                    <FormControl id={"domain-search-name"} type="text" placeholder={'Search Fields'} onChange={this.onSearch}/>
+                    <FormControl id={"domain-search-name-" + domainIndex} type="text" placeholder={'Search Fields'} onChange={this.onSearch}/>
                 </Col>
                 {this.state.filtered &&
                     <Col xs={9}>
@@ -695,7 +699,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm() {
-        const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType } = this.props;
+        const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
@@ -727,6 +731,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 key={'domain-row-key-' + i}
                                                 field={field}
                                                 fieldError={this.getFieldError(domain, i)}
+                                                domainIndex={domainIndex}
                                                 index={i}
                                                 expanded={expandedRowIndex === i}
                                                 expandTransition={expandTransition}

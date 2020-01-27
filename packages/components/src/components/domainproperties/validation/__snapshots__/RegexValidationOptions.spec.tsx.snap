@@ -14,6 +14,7 @@ exports[`RegexValidationOptions Regex Validator - collapsed 1`] = `
       "lookupQuery": undefined,
     }
   }
+  domainIndex={1}
   expanded={false}
   index={1}
   mvEnabled={true}
@@ -116,6 +117,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
       "lookupQuery": undefined,
     }
   }
+  domainIndex={1}
   expanded={true}
   index={1}
   mvEnabled={true}
@@ -296,7 +298,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                   bsClass="form-control"
                   className="domain-validation-textarea"
                   componentClass="textarea"
-                  id="domainpropertiesrow-expression-0"
+                  id="domainpropertiesrow-expression-1-0"
                   name="domainpropertiesrow-expression"
                   onChange={[Function]}
                   rows={3}
@@ -304,7 +306,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                 >
                   <textarea
                     className="domain-validation-textarea form-control"
-                    id="domainpropertiesrow-expression-0"
+                    id="domainpropertiesrow-expression-1-0"
                     name="domainpropertiesrow-expression"
                     onChange={[Function]}
                     rows={3}
@@ -350,7 +352,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                   bsClass="form-control"
                   className="domain-validation-textarea"
                   componentClass="textarea"
-                  id="domainpropertiesrow-description-0"
+                  id="domainpropertiesrow-description-1-0"
                   name="domainpropertiesrow-description"
                   onChange={[Function]}
                   rows={3}
@@ -358,7 +360,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                 >
                   <textarea
                     className="domain-validation-textarea form-control"
-                    id="domainpropertiesrow-description-0"
+                    id="domainpropertiesrow-description-1-0"
                     name="domainpropertiesrow-description"
                     onChange={[Function]}
                     rows={3}
@@ -522,7 +524,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                   bsClass="form-control"
                   className="domain-validation-textarea"
                   componentClass="textarea"
-                  id="domainpropertiesrow-errorMessage-0"
+                  id="domainpropertiesrow-errorMessage-1-0"
                   name="domainpropertiesrow-errorMessage"
                   onChange={[Function]}
                   rows={3}
@@ -530,7 +532,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                 >
                   <textarea
                     className="domain-validation-textarea form-control"
-                    id="domainpropertiesrow-errorMessage-0"
+                    id="domainpropertiesrow-errorMessage-1-0"
                     name="domainpropertiesrow-errorMessage"
                     onChange={[Function]}
                     rows={3}
@@ -571,7 +573,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                 bsClass="checkbox"
                 checked={true}
                 disabled={false}
-                id="domainpropertiesrow-failOnMatch-0"
+                id="domainpropertiesrow-failOnMatch-1-0"
                 inline={false}
                 name="domainpropertiesrow-failOnMatch"
                 onChange={[Function]}
@@ -586,7 +588,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                     <input
                       checked={true}
                       disabled={false}
-                      id="domainpropertiesrow-failOnMatch-0"
+                      id="domainpropertiesrow-failOnMatch-1-0"
                       name="domainpropertiesrow-failOnMatch"
                       onChange={[Function]}
                       type="checkbox"
@@ -748,7 +750,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
-                id="domainpropertiesrow-name-0"
+                id="domainpropertiesrow-name-1-0"
                 name="domainpropertiesrow-name"
                 onChange={[Function]}
                 type="text"
@@ -756,7 +758,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
               >
                 <input
                   className="form-control"
-                  id="domainpropertiesrow-name-0"
+                  id="domainpropertiesrow-name-1-0"
                   name="domainpropertiesrow-name"
                   onChange={[Function]}
                   type="text"
@@ -789,14 +791,14 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                 bsStyle="default"
                 className="domain-validation-delete"
                 disabled={false}
-                id="domainpropertiesrow-removeValidator-0"
+                id="domainpropertiesrow-removeValidator-1-0"
                 name="domainpropertiesrow-removeValidator"
                 onClick={[Function]}
               >
                 <button
                   className="domain-validation-delete btn btn-default"
                   disabled={false}
-                  id="domainpropertiesrow-removeValidator-0"
+                  id="domainpropertiesrow-removeValidator-1-0"
                   name="domainpropertiesrow-removeValidator"
                   onClick={[Function]}
                   type="button"

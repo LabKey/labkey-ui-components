@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, fetchQueries } from './actions';
-import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants';
+import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_HIDDEN, DOMAIN_FIELD_SAMPLE_TYPE } from './constants';
 import { encodeLookup, IDomainField, ITypeDependentProps, PropDescType, QueryInfoLite } from './models';
 import { List } from 'immutable';
 import { LabelHelpTip } from '../base/LabelHelpTip';
@@ -72,10 +72,10 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
     };
 
     render() {
-        const { index, label, lockType, value } = this.props;
+        const { index, label, lockType, value, domainIndex } = this.props;
         const {loading, sampleTypes} = this.state;
 
-        const id = createFormInputId( DOMAIN_FIELD_SAMPLE_TYPE, index);
+        const id = createFormInputId( DOMAIN_FIELD_SAMPLE_TYPE, domainIndex, index);
 
         return (
             <div>
@@ -96,17 +96,24 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                 </Row>
                 <Row>
                     <Col xs={5}>
-                        <FormControl componentClass="select"
-                                     id={id}
-                                     key={id}
-                                     disabled={isFieldFullyLocked(lockType)}
-                                     name={createFormInputName(DOMAIN_FIELD_SAMPLE_TYPE)}
-                                     onChange={this.onFieldChange}
-                                     value={value || ALL_SAMPLES_DISPLAY_TEXT}>
+                        <FormControl
+                            componentClass="select"
+                            id={id}
+                            key={id}
+                            disabled={isFieldFullyLocked(lockType)}
+                            name={createFormInputName(DOMAIN_FIELD_SAMPLE_TYPE)}
+                            onChange={this.onFieldChange}
+                            value={value || ALL_SAMPLES_DISPLAY_TEXT}
+                        >
                             {loading && <option disabled key="_loading" value={value}>Loading...</option>}
-                            {!loading && <option
-                                key={createFormInputId( DOMAIN_FIELD_SAMPLE_TYPE + '-option-' + index, index)}
-                                value={'all'}>All Samples</option>}
+                            {!loading &&
+                                <option
+                                    key={createFormInputId( DOMAIN_FIELD_SAMPLE_TYPE + '-option-' + index, domainIndex, index)}
+                                    value={'all'}
+                                >
+                                    All Samples
+                                </option>
+                            }
                             {sampleTypes
                                 .filter(st=>st.type.isInteger())  //Remove rowId duplicates
                                 .map((st) => {

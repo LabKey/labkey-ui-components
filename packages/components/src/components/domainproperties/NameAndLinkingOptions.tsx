@@ -14,6 +14,7 @@ import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
 interface NameAndLinkingProps {
     index: number,
+    domainIndex: number,
     field: DomainField,
     onChange: (string, any) => any
 }
@@ -50,7 +51,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
     };
 
     render() {
-        const { index, field } = this.props;
+        const { index, field, domainIndex } = this.props;
 
         return (
             <div>
@@ -68,14 +69,14 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                             className="form-control domain-field-textarea"
                                      rows={4}
                                      value={field.description || ''}
-                                  id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
+                                  id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, domainIndex, index)}
                                   name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
                                   onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>
                     <Col xs={3}>
                         <div className={'domain-field-label'}>Label</div>
                         <FormControl type="text" value={field.label || ''}
-                                     id={createFormInputId(DOMAIN_FIELD_LABEL, index)}
+                                     id={createFormInputId(DOMAIN_FIELD_LABEL, domainIndex, index)}
                                      name={createFormInputName(DOMAIN_FIELD_LABEL)}
                                      onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                         <div className={'domain-field-label'}>
@@ -85,7 +86,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                 body={this.getImportAliasHelpText}/>
                         </div>
                         <FormControl type="text" value={field.importAliases || ''}
-                                     id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, index)}
+                                     id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
                                      name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
                                      onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>
@@ -97,7 +98,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                 body={this.getURLHelpText} />
                         </div>
                         <FormControl type="text" value={field.URL || ''}
-                                     id={createFormInputId(DOMAIN_FIELD_URL, index)}
+                                     id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}
                                      name={createFormInputName(DOMAIN_FIELD_URL)}
                                      onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>

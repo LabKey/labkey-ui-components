@@ -283,6 +283,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     return (
                         <DomainForm
                             key={domain.domainId || i}
+                            domainIndex={i}
                             domain={domain}
                             headerPrefix={protocolModel.name}
                             controlledCollapse={true}

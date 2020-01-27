@@ -15,6 +15,7 @@ import { JsonType } from '../models';
 export const NO_FILTER_TYPE = 'None';
 
 interface FiltersProps {
+    domainIndex: number
     validatorIndex: number
     expression?: string
     mvEnabled: boolean
@@ -290,7 +291,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
 
     render() {
         const { validatorIndex, type, firstFilterTypeLabel, firstFilterValueLabel, secondFilterTypeLabel, secondFilterValueLabel,
-            firstFilterTooltip, secondFilterTooltip } = this.props;
+            firstFilterTooltip, secondFilterTooltip, domainIndex } = this.props;
         const { firstFilterTypes, secondFilterTypes, filterSet } = this.state;
 
         return(
@@ -306,7 +307,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                         <div>
                             <FormControl
                                 componentClass="select"
-                                id={createFormInputId(DOMAIN_FIRST_FILTER_TYPE, validatorIndex)}
+                                id={createFormInputId(DOMAIN_FIRST_FILTER_TYPE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_FIRST_FILTER_TYPE)}
                                 value={filterSet.firstFilterType !== undefined ? filterSet.firstFilterType : (type === 'date' ? 'dateeq' : 'eq')}
                                 onChange={this.onChange}
@@ -331,7 +332,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                         <div>
                             <FormControl
                                 type={this.getFormControlType()}
-                                id={createFormInputId(DOMAIN_FIRST_FILTER_VALUE, validatorIndex)}
+                                id={createFormInputId(DOMAIN_FIRST_FILTER_VALUE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_FIRST_FILTER_VALUE)}
                                 value={filterSet.firstFilterValue !== undefined ? filterSet.firstFilterValue : ""}
                                 disabled={!this.isDataValueRequired(false)}
@@ -352,7 +353,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                         <div>
                             <FormControl
                                 componentClass="select"
-                                id={createFormInputId(DOMAIN_SECOND_FILTER_TYPE, validatorIndex)}
+                                id={createFormInputId(DOMAIN_SECOND_FILTER_TYPE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_SECOND_FILTER_TYPE)}
                                 value={filterSet.secondFilterType ? filterSet.secondFilterType : NO_FILTER_TYPE}
                                 onChange={this.onChange}
@@ -376,7 +377,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                         <div>
                             <FormControl
                                 type={this.getFormControlType()}
-                                id={createFormInputId(DOMAIN_SECOND_FILTER_VALUE, validatorIndex)}
+                                id={createFormInputId(DOMAIN_SECOND_FILTER_VALUE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_SECOND_FILTER_VALUE)}
                                 value={filterSet.secondFilterValue !== undefined ? filterSet.secondFilterValue : ""}
                                 disabled={!this.isDataValueRequired(true)}

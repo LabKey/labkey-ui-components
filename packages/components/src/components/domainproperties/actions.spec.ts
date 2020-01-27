@@ -38,7 +38,7 @@ import { QueryColumn } from '../base/models/model';
 describe("domain properties actions", () => {
 
     test("test create id", () => {
-        return expect(createFormInputId("marty", 100)).toBe(DOMAIN_FIELD_PREFIX + "-marty-100");
+        return expect(createFormInputId("marty", 0, 100)).toBe(DOMAIN_FIELD_PREFIX + "-marty-0-100");
     });
 
     test("test get field type", () => {

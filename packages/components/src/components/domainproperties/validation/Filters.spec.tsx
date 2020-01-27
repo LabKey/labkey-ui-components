@@ -20,10 +20,11 @@ describe('Filters', () => {
         const typeLabel2 = 'TypeLabel2';
         const valueLabel2 = 'ValueLabel2';
         const validatorIndex = 3;
-
+        const domainIndex = 1;
 
         const props = {
             validatorIndex: validatorIndex,
+            domainIndex: domainIndex,
             mvEnabled: false,
             type: 'string' as JsonType,
             firstFilterTypeLabel: typeLabel1,
@@ -56,10 +57,10 @@ describe('Filters', () => {
         let options = filters.find('option');
         expect(options.length).toEqual(39);
 
-        let select = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_TYPE, validatorIndex)});
+        let select = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_TYPE, domainIndex, validatorIndex)});
         expect(select.at(0).props().value).toEqual('eq');
 
-        select = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_TYPE, validatorIndex)});
+        select = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_TYPE, domainIndex, validatorIndex)});
         expect(select.at(0).props().value).toEqual('None');
 
         expect(toJson(filters)).toMatchSnapshot();
@@ -68,6 +69,7 @@ describe('Filters', () => {
 
     test('Test Expressions', () => {
         const validatorIndex = 1;
+        const domainIndex = 1;
         const expression1 = "format.column~isblank=";
         const expression2 = "format.column~gt=0&format.column~lte=100";
         const expression3 = "format.column~neqornull=-5&format.column~hasmvvalue=";
@@ -77,6 +79,7 @@ describe('Filters', () => {
 
         const props = {
             validatorIndex: validatorIndex,
+            domainIndex: domainIndex,
             mvEnabled: true,
             type: 'int' as JsonType,
             prefix: 'format.column',
@@ -92,17 +95,17 @@ describe('Filters', () => {
         expect(options.length).toEqual(31);
 
         // Expression1
-        let select = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_TYPE, validatorIndex)});
+        let select = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_TYPE, domainIndex, validatorIndex)});
         expect(select.at(0).props().value).toEqual('isblank');
 
-        let value = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, validatorIndex)});
+        let value = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, domainIndex, validatorIndex)});
         expect(value.at(0).props().value).toEqual('');
         expect(value.at(0).props().disabled).toEqual(true);
 
-        select = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_TYPE, validatorIndex)});
+        select = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_TYPE, domainIndex, validatorIndex)});
         expect(select.at(0).props().value).toEqual("None");
 
-        value = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, validatorIndex)});
+        value = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, domainIndex, validatorIndex)});
         expect(value.at(0).props().value).toEqual("");
 
         expect(Filters.describeExpression(expression1, prefix)).toEqual("Is Blank");
@@ -110,17 +113,17 @@ describe('Filters', () => {
 
         // Expression 2
         filters.setState({filterSet: Filters.parseFilterString(expression2, prefix)}, () => {
-            select = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_TYPE, validatorIndex)});
+            select = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_TYPE, domainIndex, validatorIndex)});
             expect(select.at(0).props().value).toEqual('gt');
 
-            select = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_TYPE, validatorIndex)});
+            select = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_TYPE, domainIndex, validatorIndex)});
             expect(select.at(0).props().value).toEqual('lte');
 
-            value = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, validatorIndex)});
+            value = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, domainIndex, validatorIndex)});
             expect(value.at(0).props().value).toEqual("0");
             expect(value.at(0).props().disabled).toEqual(false);
 
-            value = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, validatorIndex)});
+            value = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, domainIndex, validatorIndex)});
             expect(value.at(0).props().value).toEqual("100");
             expect(value.at(0).props().disabled).toEqual(false);
 
@@ -129,17 +132,17 @@ describe('Filters', () => {
 
             // Expression 3
             filters.setState({filterSet: Filters.parseFilterString(expression3, prefix)}, () => {
-                select = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_TYPE, validatorIndex)});
+                select = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_TYPE, domainIndex, validatorIndex)});
                 expect(select.at(0).props().value).toEqual('neqornull');
 
-                select = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_TYPE, validatorIndex)});
+                select = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_TYPE, domainIndex, validatorIndex)});
                 expect(select.at(0).props().value).toEqual('hasmvvalue');
 
-                value = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, validatorIndex)});
+                value = filters.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, domainIndex, validatorIndex)});
                 expect(value.at(0).props().value).toEqual("-5");
                 expect(value.at(0).props().disabled).toEqual(false);
 
-                value = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, validatorIndex)});
+                value = filters.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, domainIndex, validatorIndex)});
                 expect(value.at(0).props().value).toEqual("");
                 expect(value.at(0).props().disabled).toEqual(true);
 
@@ -157,9 +160,11 @@ describe('Filters', () => {
 
     test('Date Range', () => {
         const validatorIndex = 1;
+        const domainIndex = 1;
 
         const props = {
             validatorIndex: validatorIndex,
+            domainIndex: domainIndex,
             mvEnabled: true,
             type: 'date' as JsonType,
             range: true,

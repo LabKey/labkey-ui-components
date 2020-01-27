@@ -213,6 +213,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainIndex={1}
                 dragging={false}
                 expandTransition={300}
                 expanded={false}
@@ -306,14 +307,14 @@ exports[`DomainRow Sample Field 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-0"
+                  draggableId="domainpropertiesrow-domaindrag-1-0"
                   index={0}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-0"
+                    draggableId="domainpropertiesrow-domaindrag-1-0"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
                     index={0}
@@ -363,7 +364,7 @@ exports[`DomainRow Sample Field 1`] = `
                         bsClass="row"
                         className="domain-row-container"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-0"
+                        key="domainpropertiesrow-domainrow-1-0"
                       >
                         <div
                           className="domain-row-container row"
@@ -377,6 +378,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainIndex={1}
                             field={
                               Immutable.Record {
                                 "conceptURI": "http://www.labkey.org/exp/xml#sample",
@@ -596,7 +598,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 className="domain-row-base-fields col-xs-6"
                               >
                                 <div
-                                  id="domainpropertiesrow-row-0"
+                                  id="domainpropertiesrow-row-1-0"
                                 >
                                   <Col
                                     bsClass="col"
@@ -610,7 +612,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         bsClass="form-control"
                                         componentClass="input"
                                         disabled={false}
-                                        id="domainpropertiesrow-name-0"
+                                        id="domainpropertiesrow-name-1-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
                                         type="text"
@@ -619,7 +621,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         <input
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-name-0"
+                                          id="domainpropertiesrow-name-1-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
                                           type="text"
@@ -640,7 +642,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         bsClass="form-control"
                                         componentClass="select"
                                         disabled={false}
-                                        id="domainpropertiesrow-type-0"
+                                        id="domainpropertiesrow-type-1-0"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
                                         value="sample"
@@ -648,7 +650,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         <select
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-type-0"
+                                          id="domainpropertiesrow-type-1-0"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
                                           value="sample"
@@ -697,7 +699,7 @@ exports[`DomainRow Sample Field 1`] = `
                                           checked={false}
                                           className="domain-field-checkbox"
                                           disabled={false}
-                                          id="domainpropertiesrow-required-0"
+                                          id="domainpropertiesrow-required-1-0"
                                           inline={false}
                                           name="domainpropertiesrow-required"
                                           onChange={[Function]}
@@ -712,7 +714,7 @@ exports[`DomainRow Sample Field 1`] = `
                                               <input
                                                 checked={false}
                                                 disabled={false}
-                                                id="domainpropertiesrow-required-0"
+                                                id="domainpropertiesrow-required-1-0"
                                                 name="domainpropertiesrow-required"
                                                 onChange={[Function]}
                                                 type="checkbox"
@@ -737,7 +739,7 @@ exports[`DomainRow Sample Field 1`] = `
                               >
                                 <div
                                   className="domain-field-details"
-                                  id="domainpropertiesrow-details-0"
+                                  id="domainpropertiesrow-details-1-0"
                                 >
                                   All Samples
                                 </div>
@@ -746,13 +748,13 @@ exports[`DomainRow Sample Field 1`] = `
                                 >
                                   <DeleteIcon
                                     iconCls="domain-field-delete-icon"
-                                    id="domainpropertiesrow-delete-0"
+                                    id="domainpropertiesrow-delete-1-0"
                                     onDelete={[Function]}
                                     title="Remove field"
                                   >
                                     <span
                                       className="field-icon"
-                                      id="domainpropertiesrow-delete-0"
+                                      id="domainpropertiesrow-delete-1-0"
                                       onClick={[Function]}
                                       title="Remove field"
                                     >
@@ -811,12 +813,12 @@ exports[`DomainRow Sample Field 1`] = `
                                     collapsedTitle="Show additional field properties"
                                     expanded={false}
                                     expandedTitle="Hide additional field properties"
-                                    id="domainpropertiesrow-expand-0"
+                                    id="domainpropertiesrow-expand-1-0"
                                     onClick={[Function]}
                                   >
                                     <div
                                       className="field-icon domain-field-expand-icon"
-                                      id="domainpropertiesrow-expand-0"
+                                      id="domainpropertiesrow-expand-1-0"
                                       onClick={[Function]}
                                       title="Show additional field properties"
                                     >
@@ -908,6 +910,7 @@ exports[`DomainRow Sample Field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainIndex={1}
                               field={
                                 Immutable.Record {
                                   "conceptURI": "http://www.labkey.org/exp/xml#sample",
@@ -1009,6 +1012,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <SampleFieldOptions
+                                        domainIndex={1}
                                         index={0}
                                         label="Sample Options"
                                         lockType="NotLocked"
@@ -1219,8 +1223,8 @@ exports[`DomainRow Sample Field 1`] = `
                                                     bsClass="form-control"
                                                     componentClass="select"
                                                     disabled={false}
-                                                    id="domainpropertiesrow-sampleTypeSelect-0"
-                                                    key="domainpropertiesrow-sampleTypeSelect-0"
+                                                    id="domainpropertiesrow-sampleTypeSelect-1-0"
+                                                    key="domainpropertiesrow-sampleTypeSelect-1-0"
                                                     name="domainpropertiesrow-sampleTypeSelect"
                                                     onChange={[Function]}
                                                     value="http://www.w3.org/2001/XMLSchema#int|Materials"
@@ -1228,7 +1232,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                     <select
                                                       className="form-control"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-sampleTypeSelect-0"
+                                                      id="domainpropertiesrow-sampleTypeSelect-1-0"
                                                       name="domainpropertiesrow-sampleTypeSelect"
                                                       onChange={[Function]}
                                                       value="http://www.w3.org/2001/XMLSchema#int|Materials"
@@ -1260,6 +1264,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       className="col-lg-10 col-xs-12"
                                     >
                                       <NameAndLinkingOptions
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": "http://www.labkey.org/exp/xml#sample",
@@ -1394,7 +1399,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       className="form-control domain-field-textarea"
                                                       componentClass="textarea"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-description-0"
+                                                      id="domainpropertiesrow-description-1-0"
                                                       name="domainpropertiesrow-description"
                                                       onChange={[Function]}
                                                       rows={4}
@@ -1403,7 +1408,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       <textarea
                                                         className="form-control domain-field-textarea form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-description-0"
+                                                        id="domainpropertiesrow-description-1-0"
                                                         name="domainpropertiesrow-description"
                                                         onChange={[Function]}
                                                         rows={4}
@@ -1429,7 +1434,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-label-0"
+                                                      id="domainpropertiesrow-label-1-0"
                                                       name="domainpropertiesrow-label"
                                                       onChange={[Function]}
                                                       type="text"
@@ -1438,7 +1443,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-label-0"
+                                                        id="domainpropertiesrow-label-1-0"
                                                         name="domainpropertiesrow-label"
                                                         onChange={[Function]}
                                                         type="text"
@@ -1572,7 +1577,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-importAliases-0"
+                                                      id="domainpropertiesrow-importAliases-1-0"
                                                       name="domainpropertiesrow-importAliases"
                                                       onChange={[Function]}
                                                       type="text"
@@ -1581,7 +1586,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-importAliases-0"
+                                                        id="domainpropertiesrow-importAliases-1-0"
                                                         name="domainpropertiesrow-importAliases"
                                                         onChange={[Function]}
                                                         type="text"
@@ -1725,7 +1730,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-URL-0"
+                                                      id="domainpropertiesrow-URL-1-0"
                                                       name="domainpropertiesrow-URL"
                                                       onChange={[Function]}
                                                       type="text"
@@ -1734,7 +1739,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-URL-0"
+                                                        id="domainpropertiesrow-URL-1-0"
                                                         name="domainpropertiesrow-URL"
                                                         onChange={[Function]}
                                                         type="text"
@@ -1759,6 +1764,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": "http://www.labkey.org/exp/xml#sample",
@@ -2017,14 +2023,14 @@ exports[`DomainRow Sample Field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-conditionalFormat-0"
+                                                        id="domainpropertiesrow-conditionalFormat-1-0"
                                                         name="domainpropertiesrow-conditionalFormat"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-conditionalFormat-0"
+                                                          id="domainpropertiesrow-conditionalFormat-1-0"
                                                           name="domainpropertiesrow-conditionalFormat"
                                                           onClick={[Function]}
                                                           type="button"
@@ -2173,14 +2179,14 @@ exports[`DomainRow Sample Field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-regexValidator-0"
+                                                        id="domainpropertiesrow-regexValidator-1-0"
                                                         name="domainpropertiesrow-regexValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-regexValidator-0"
+                                                          id="domainpropertiesrow-regexValidator-1-0"
                                                           name="domainpropertiesrow-regexValidator"
                                                           onClick={[Function]}
                                                           type="button"
@@ -2439,6 +2445,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainIndex={1}
                 dragging={false}
                 expandTransition={300}
                 expanded={false}
@@ -2543,14 +2550,14 @@ exports[`DomainRow client side warning on field 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-1"
+                  draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-1"
+                    draggableId="domainpropertiesrow-domaindrag-1-1"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
                     index={1}
@@ -2600,7 +2607,7 @@ exports[`DomainRow client side warning on field 1`] = `
                         bsClass="row"
                         className="domain-row-container"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-1"
+                        key="domainpropertiesrow-domainrow-1-1"
                       >
                         <div
                           className="domain-row-container row"
@@ -2614,6 +2621,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainIndex={1}
                             field={
                               Immutable.Record {
                                 "conceptURI": undefined,
@@ -2833,7 +2841,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 className="domain-row-base-fields col-xs-6"
                               >
                                 <div
-                                  id="domainpropertiesrow-row-1"
+                                  id="domainpropertiesrow-row-1-1"
                                 >
                                   <Col
                                     bsClass="col"
@@ -2847,7 +2855,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         bsClass="form-control"
                                         componentClass="input"
                                         disabled={false}
-                                        id="domainpropertiesrow-name-1"
+                                        id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
                                         type="text"
@@ -2856,7 +2864,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         <input
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-name-1"
+                                          id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
                                           type="text"
@@ -2877,7 +2885,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         bsClass="form-control"
                                         componentClass="select"
                                         disabled={false}
-                                        id="domainpropertiesrow-type-1"
+                                        id="domainpropertiesrow-type-1-1"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
                                         value="attachment"
@@ -2885,7 +2893,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         <select
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-type-1"
+                                          id="domainpropertiesrow-type-1-1"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
                                           value="attachment"
@@ -2988,7 +2996,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                           checked={false}
                                           className="domain-field-checkbox"
                                           disabled={false}
-                                          id="domainpropertiesrow-required-1"
+                                          id="domainpropertiesrow-required-1-1"
                                           inline={false}
                                           name="domainpropertiesrow-required"
                                           onChange={[Function]}
@@ -3003,7 +3011,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                               <input
                                                 checked={false}
                                                 disabled={false}
-                                                id="domainpropertiesrow-required-1"
+                                                id="domainpropertiesrow-required-1-1"
                                                 name="domainpropertiesrow-required"
                                                 onChange={[Function]}
                                                 type="checkbox"
@@ -3028,7 +3036,7 @@ exports[`DomainRow client side warning on field 1`] = `
                               >
                                 <div
                                   className="domain-field-details"
-                                  id="domainpropertiesrow-details-1"
+                                  id="domainpropertiesrow-details-1-1"
                                 >
                                   New field
                                   . 
@@ -3043,13 +3051,13 @@ exports[`DomainRow client side warning on field 1`] = `
                                 >
                                   <DeleteIcon
                                     iconCls="domain-field-delete-icon"
-                                    id="domainpropertiesrow-delete-1"
+                                    id="domainpropertiesrow-delete-1-1"
                                     onDelete={[Function]}
                                     title="Remove field"
                                   >
                                     <span
                                       className="field-icon"
-                                      id="domainpropertiesrow-delete-1"
+                                      id="domainpropertiesrow-delete-1-1"
                                       onClick={[Function]}
                                       title="Remove field"
                                     >
@@ -3108,12 +3116,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                     collapsedTitle="Show additional field properties"
                                     expanded={false}
                                     expandedTitle="Hide additional field properties"
-                                    id="domainpropertiesrow-expand-1"
+                                    id="domainpropertiesrow-expand-1-1"
                                     onClick={[Function]}
                                   >
                                     <div
                                       className="field-icon domain-field-expand-icon"
-                                      id="domainpropertiesrow-expand-1"
+                                      id="domainpropertiesrow-expand-1-1"
                                       onClick={[Function]}
                                       title="Show additional field properties"
                                     >
@@ -3205,6 +3213,7 @@ exports[`DomainRow client side warning on field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainIndex={1}
                               field={
                                 Immutable.Record {
                                   "conceptURI": undefined,
@@ -3316,6 +3325,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       className="col-lg-10 col-xs-12"
                                     >
                                       <NameAndLinkingOptions
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -3450,7 +3460,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       className="form-control domain-field-textarea"
                                                       componentClass="textarea"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-description-1"
+                                                      id="domainpropertiesrow-description-1-1"
                                                       name="domainpropertiesrow-description"
                                                       onChange={[Function]}
                                                       rows={4}
@@ -3459,7 +3469,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       <textarea
                                                         className="form-control domain-field-textarea form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-description-1"
+                                                        id="domainpropertiesrow-description-1-1"
                                                         name="domainpropertiesrow-description"
                                                         onChange={[Function]}
                                                         rows={4}
@@ -3485,7 +3495,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-label-1"
+                                                      id="domainpropertiesrow-label-1-1"
                                                       name="domainpropertiesrow-label"
                                                       onChange={[Function]}
                                                       type="text"
@@ -3494,7 +3504,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-label-1"
+                                                        id="domainpropertiesrow-label-1-1"
                                                         name="domainpropertiesrow-label"
                                                         onChange={[Function]}
                                                         type="text"
@@ -3628,7 +3638,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-importAliases-1"
+                                                      id="domainpropertiesrow-importAliases-1-1"
                                                       name="domainpropertiesrow-importAliases"
                                                       onChange={[Function]}
                                                       type="text"
@@ -3637,7 +3647,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-importAliases-1"
+                                                        id="domainpropertiesrow-importAliases-1-1"
                                                         name="domainpropertiesrow-importAliases"
                                                         onChange={[Function]}
                                                         type="text"
@@ -3781,7 +3791,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-URL-1"
+                                                      id="domainpropertiesrow-URL-1-1"
                                                       name="domainpropertiesrow-URL"
                                                       onChange={[Function]}
                                                       type="text"
@@ -3790,7 +3800,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-URL-1"
+                                                        id="domainpropertiesrow-URL-1-1"
                                                         name="domainpropertiesrow-URL"
                                                         onChange={[Function]}
                                                         type="text"
@@ -3815,6 +3825,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -4073,14 +4084,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-conditionalFormat-1"
+                                                        id="domainpropertiesrow-conditionalFormat-1-1"
                                                         name="domainpropertiesrow-conditionalFormat"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-conditionalFormat-1"
+                                                          id="domainpropertiesrow-conditionalFormat-1-1"
                                                           name="domainpropertiesrow-conditionalFormat"
                                                           onClick={[Function]}
                                                           type="button"
@@ -4229,14 +4240,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-regexValidator-1"
+                                                        id="domainpropertiesrow-regexValidator-1-1"
                                                         name="domainpropertiesrow-regexValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-regexValidator-1"
+                                                          id="domainpropertiesrow-regexValidator-1-1"
                                                           name="domainpropertiesrow-regexValidator"
                                                           onClick={[Function]}
                                                           type="button"
@@ -4495,6 +4506,7 @@ exports[`DomainRow date time field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainIndex={1}
                 dragging={false}
                 expandTransition={300}
                 expanded={false}
@@ -4588,14 +4600,14 @@ exports[`DomainRow date time field 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-0"
+                  draggableId="domainpropertiesrow-domaindrag-1-0"
                   index={0}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-0"
+                    draggableId="domainpropertiesrow-domaindrag-1-0"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
                     index={0}
@@ -4645,7 +4657,7 @@ exports[`DomainRow date time field 1`] = `
                         bsClass="row"
                         className="domain-row-container"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-0"
+                        key="domainpropertiesrow-domainrow-1-0"
                       >
                         <div
                           className="domain-row-container row"
@@ -4659,6 +4671,7 @@ exports[`DomainRow date time field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainIndex={1}
                             field={
                               Immutable.Record {
                                 "conceptURI": undefined,
@@ -4878,7 +4891,7 @@ exports[`DomainRow date time field 1`] = `
                                 className="domain-row-base-fields col-xs-6"
                               >
                                 <div
-                                  id="domainpropertiesrow-row-0"
+                                  id="domainpropertiesrow-row-1-0"
                                 >
                                   <Col
                                     bsClass="col"
@@ -4892,7 +4905,7 @@ exports[`DomainRow date time field 1`] = `
                                         bsClass="form-control"
                                         componentClass="input"
                                         disabled={false}
-                                        id="domainpropertiesrow-name-0"
+                                        id="domainpropertiesrow-name-1-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
                                         type="text"
@@ -4901,7 +4914,7 @@ exports[`DomainRow date time field 1`] = `
                                         <input
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-name-0"
+                                          id="domainpropertiesrow-name-1-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
                                           type="text"
@@ -4922,7 +4935,7 @@ exports[`DomainRow date time field 1`] = `
                                         bsClass="form-control"
                                         componentClass="select"
                                         disabled={false}
-                                        id="domainpropertiesrow-type-0"
+                                        id="domainpropertiesrow-type-1-0"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
                                         value="dateTime"
@@ -4930,7 +4943,7 @@ exports[`DomainRow date time field 1`] = `
                                         <select
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-type-0"
+                                          id="domainpropertiesrow-type-1-0"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
                                           value="dateTime"
@@ -4961,7 +4974,7 @@ exports[`DomainRow date time field 1`] = `
                                           checked={false}
                                           className="domain-field-checkbox"
                                           disabled={false}
-                                          id="domainpropertiesrow-required-0"
+                                          id="domainpropertiesrow-required-1-0"
                                           inline={false}
                                           name="domainpropertiesrow-required"
                                           onChange={[Function]}
@@ -4976,7 +4989,7 @@ exports[`DomainRow date time field 1`] = `
                                               <input
                                                 checked={false}
                                                 disabled={false}
-                                                id="domainpropertiesrow-required-0"
+                                                id="domainpropertiesrow-required-1-0"
                                                 name="domainpropertiesrow-required"
                                                 onChange={[Function]}
                                                 type="checkbox"
@@ -5001,20 +5014,20 @@ exports[`DomainRow date time field 1`] = `
                               >
                                 <div
                                   className="domain-field-details"
-                                  id="domainpropertiesrow-details-0"
+                                  id="domainpropertiesrow-details-1-0"
                                 />
                                 <div
                                   className="domain-field-buttons"
                                 >
                                   <DeleteIcon
                                     iconCls="domain-field-delete-icon"
-                                    id="domainpropertiesrow-delete-0"
+                                    id="domainpropertiesrow-delete-1-0"
                                     onDelete={[Function]}
                                     title="Remove field"
                                   >
                                     <span
                                       className="field-icon"
-                                      id="domainpropertiesrow-delete-0"
+                                      id="domainpropertiesrow-delete-1-0"
                                       onClick={[Function]}
                                       title="Remove field"
                                     >
@@ -5073,12 +5086,12 @@ exports[`DomainRow date time field 1`] = `
                                     collapsedTitle="Show additional field properties"
                                     expanded={false}
                                     expandedTitle="Hide additional field properties"
-                                    id="domainpropertiesrow-expand-0"
+                                    id="domainpropertiesrow-expand-1-0"
                                     onClick={[Function]}
                                   >
                                     <div
                                       className="field-icon domain-field-expand-icon"
-                                      id="domainpropertiesrow-expand-0"
+                                      id="domainpropertiesrow-expand-1-0"
                                       onClick={[Function]}
                                       title="Show additional field properties"
                                     >
@@ -5170,6 +5183,7 @@ exports[`DomainRow date time field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainIndex={1}
                               field={
                                 Immutable.Record {
                                   "conceptURI": undefined,
@@ -5271,6 +5285,7 @@ exports[`DomainRow date time field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <DateTimeFieldOptions
+                                        domainIndex={1}
                                         excludeFromShifting={false}
                                         index={0}
                                         label="Date and Time Options"
@@ -5475,7 +5490,7 @@ exports[`DomainRow date time field 1`] = `
                                                     bsClass="form-control"
                                                     componentClass="input"
                                                     disabled={false}
-                                                    id="domainpropertiesrow-format-0"
+                                                    id="domainpropertiesrow-format-1-0"
                                                     name="domainpropertiesrow-format"
                                                     onChange={[Function]}
                                                     type="text"
@@ -5484,7 +5499,7 @@ exports[`DomainRow date time field 1`] = `
                                                     <input
                                                       className="form-control"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-format-0"
+                                                      id="domainpropertiesrow-format-1-0"
                                                       name="domainpropertiesrow-format"
                                                       onChange={[Function]}
                                                       type="text"
@@ -5518,6 +5533,7 @@ exports[`DomainRow date time field 1`] = `
                                       className="col-lg-10 col-xs-12"
                                     >
                                       <NameAndLinkingOptions
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -5652,7 +5668,7 @@ exports[`DomainRow date time field 1`] = `
                                                       className="form-control domain-field-textarea"
                                                       componentClass="textarea"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-description-0"
+                                                      id="domainpropertiesrow-description-1-0"
                                                       name="domainpropertiesrow-description"
                                                       onChange={[Function]}
                                                       rows={4}
@@ -5661,7 +5677,7 @@ exports[`DomainRow date time field 1`] = `
                                                       <textarea
                                                         className="form-control domain-field-textarea form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-description-0"
+                                                        id="domainpropertiesrow-description-1-0"
                                                         name="domainpropertiesrow-description"
                                                         onChange={[Function]}
                                                         rows={4}
@@ -5687,7 +5703,7 @@ exports[`DomainRow date time field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-label-0"
+                                                      id="domainpropertiesrow-label-1-0"
                                                       name="domainpropertiesrow-label"
                                                       onChange={[Function]}
                                                       type="text"
@@ -5696,7 +5712,7 @@ exports[`DomainRow date time field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-label-0"
+                                                        id="domainpropertiesrow-label-1-0"
                                                         name="domainpropertiesrow-label"
                                                         onChange={[Function]}
                                                         type="text"
@@ -5830,7 +5846,7 @@ exports[`DomainRow date time field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-importAliases-0"
+                                                      id="domainpropertiesrow-importAliases-1-0"
                                                       name="domainpropertiesrow-importAliases"
                                                       onChange={[Function]}
                                                       type="text"
@@ -5839,7 +5855,7 @@ exports[`DomainRow date time field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-importAliases-0"
+                                                        id="domainpropertiesrow-importAliases-1-0"
                                                         name="domainpropertiesrow-importAliases"
                                                         onChange={[Function]}
                                                         type="text"
@@ -5983,7 +5999,7 @@ exports[`DomainRow date time field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-URL-0"
+                                                      id="domainpropertiesrow-URL-1-0"
                                                       name="domainpropertiesrow-URL"
                                                       onChange={[Function]}
                                                       type="text"
@@ -5992,7 +6008,7 @@ exports[`DomainRow date time field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-URL-0"
+                                                        id="domainpropertiesrow-URL-1-0"
                                                         name="domainpropertiesrow-URL"
                                                         onChange={[Function]}
                                                         type="text"
@@ -6017,6 +6033,7 @@ exports[`DomainRow date time field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -6275,14 +6292,14 @@ exports[`DomainRow date time field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-conditionalFormat-0"
+                                                        id="domainpropertiesrow-conditionalFormat-1-0"
                                                         name="domainpropertiesrow-conditionalFormat"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-conditionalFormat-0"
+                                                          id="domainpropertiesrow-conditionalFormat-1-0"
                                                           name="domainpropertiesrow-conditionalFormat"
                                                           onClick={[Function]}
                                                           type="button"
@@ -6431,14 +6448,14 @@ exports[`DomainRow date time field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-regexValidator-0"
+                                                        id="domainpropertiesrow-regexValidator-1-0"
                                                         name="domainpropertiesrow-regexValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-regexValidator-0"
+                                                          id="domainpropertiesrow-regexValidator-1-0"
                                                           name="domainpropertiesrow-regexValidator"
                                                           onClick={[Function]}
                                                           type="button"
@@ -6587,14 +6604,14 @@ exports[`DomainRow date time field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-rangeValidator-0"
+                                                        id="domainpropertiesrow-rangeValidator-1-0"
                                                         name="domainpropertiesrow-rangeValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-rangeValidator-0"
+                                                          id="domainpropertiesrow-rangeValidator-1-0"
                                                           name="domainpropertiesrow-rangeValidator"
                                                           onClick={[Function]}
                                                           type="button"
@@ -6853,6 +6870,7 @@ exports[`DomainRow decimal field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainIndex={1}
                 dragging={false}
                 expandTransition={300}
                 expanded={false}
@@ -6946,14 +6964,14 @@ exports[`DomainRow decimal field 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-2"
+                  draggableId="domainpropertiesrow-domaindrag-1-2"
                   index={2}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-2"
+                    draggableId="domainpropertiesrow-domaindrag-1-2"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
                     index={2}
@@ -7003,7 +7021,7 @@ exports[`DomainRow decimal field 1`] = `
                         bsClass="row"
                         className="domain-row-container"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-2"
+                        key="domainpropertiesrow-domainrow-1-2"
                       >
                         <div
                           className="domain-row-container row"
@@ -7017,6 +7035,7 @@ exports[`DomainRow decimal field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainIndex={1}
                             field={
                               Immutable.Record {
                                 "conceptURI": undefined,
@@ -7236,7 +7255,7 @@ exports[`DomainRow decimal field 1`] = `
                                 className="domain-row-base-fields col-xs-6"
                               >
                                 <div
-                                  id="domainpropertiesrow-row-2"
+                                  id="domainpropertiesrow-row-1-2"
                                 >
                                   <Col
                                     bsClass="col"
@@ -7250,7 +7269,7 @@ exports[`DomainRow decimal field 1`] = `
                                         bsClass="form-control"
                                         componentClass="input"
                                         disabled={false}
-                                        id="domainpropertiesrow-name-2"
+                                        id="domainpropertiesrow-name-1-2"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
                                         type="text"
@@ -7259,7 +7278,7 @@ exports[`DomainRow decimal field 1`] = `
                                         <input
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-name-2"
+                                          id="domainpropertiesrow-name-1-2"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
                                           type="text"
@@ -7280,7 +7299,7 @@ exports[`DomainRow decimal field 1`] = `
                                         bsClass="form-control"
                                         componentClass="select"
                                         disabled={false}
-                                        id="domainpropertiesrow-type-2"
+                                        id="domainpropertiesrow-type-1-2"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
                                         value="double"
@@ -7288,7 +7307,7 @@ exports[`DomainRow decimal field 1`] = `
                                         <select
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-type-2"
+                                          id="domainpropertiesrow-type-1-2"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
                                           value="double"
@@ -7319,7 +7338,7 @@ exports[`DomainRow decimal field 1`] = `
                                           checked={true}
                                           className="domain-field-checkbox"
                                           disabled={false}
-                                          id="domainpropertiesrow-required-2"
+                                          id="domainpropertiesrow-required-1-2"
                                           inline={false}
                                           name="domainpropertiesrow-required"
                                           onChange={[Function]}
@@ -7334,7 +7353,7 @@ exports[`DomainRow decimal field 1`] = `
                                               <input
                                                 checked={true}
                                                 disabled={false}
-                                                id="domainpropertiesrow-required-2"
+                                                id="domainpropertiesrow-required-1-2"
                                                 name="domainpropertiesrow-required"
                                                 onChange={[Function]}
                                                 type="checkbox"
@@ -7359,20 +7378,20 @@ exports[`DomainRow decimal field 1`] = `
                               >
                                 <div
                                   className="domain-field-details"
-                                  id="domainpropertiesrow-details-2"
+                                  id="domainpropertiesrow-details-1-2"
                                 />
                                 <div
                                   className="domain-field-buttons"
                                 >
                                   <DeleteIcon
                                     iconCls="domain-field-delete-icon"
-                                    id="domainpropertiesrow-delete-2"
+                                    id="domainpropertiesrow-delete-1-2"
                                     onDelete={[Function]}
                                     title="Remove field"
                                   >
                                     <span
                                       className="field-icon"
-                                      id="domainpropertiesrow-delete-2"
+                                      id="domainpropertiesrow-delete-1-2"
                                       onClick={[Function]}
                                       title="Remove field"
                                     >
@@ -7431,12 +7450,12 @@ exports[`DomainRow decimal field 1`] = `
                                     collapsedTitle="Show additional field properties"
                                     expanded={false}
                                     expandedTitle="Hide additional field properties"
-                                    id="domainpropertiesrow-expand-2"
+                                    id="domainpropertiesrow-expand-1-2"
                                     onClick={[Function]}
                                   >
                                     <div
                                       className="field-icon domain-field-expand-icon"
-                                      id="domainpropertiesrow-expand-2"
+                                      id="domainpropertiesrow-expand-1-2"
                                       onClick={[Function]}
                                       title="Show additional field properties"
                                     >
@@ -7528,6 +7547,7 @@ exports[`DomainRow decimal field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainIndex={1}
                               field={
                                 Immutable.Record {
                                   "conceptURI": undefined,
@@ -7629,6 +7649,7 @@ exports[`DomainRow decimal field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <NumericFieldOptions
+                                        domainIndex={1}
                                         index={2}
                                         label="Decimal Options"
                                         lockType="NotLocked"
@@ -7838,7 +7859,7 @@ exports[`DomainRow decimal field 1`] = `
                                                     bsClass="form-control"
                                                     componentClass="input"
                                                     disabled={false}
-                                                    id="domainpropertiesrow-format-2"
+                                                    id="domainpropertiesrow-format-1-2"
                                                     name="domainpropertiesrow-format"
                                                     onChange={[Function]}
                                                     type="text"
@@ -7847,7 +7868,7 @@ exports[`DomainRow decimal field 1`] = `
                                                     <input
                                                       className="form-control"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-format-2"
+                                                      id="domainpropertiesrow-format-1-2"
                                                       name="domainpropertiesrow-format"
                                                       onChange={[Function]}
                                                       type="text"
@@ -7868,25 +7889,25 @@ exports[`DomainRow decimal field 1`] = `
                                                     bsClass="form-control"
                                                     componentClass="select"
                                                     disabled={false}
-                                                    id="domainpropertiesrow-defaultScale-2"
+                                                    id="domainpropertiesrow-defaultScale-1-2"
                                                     name="domainpropertiesrow-defaultScale"
                                                     onChange={[Function]}
                                                   >
                                                     <select
                                                       className="form-control"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-defaultScale-2"
+                                                      id="domainpropertiesrow-defaultScale-1-2"
                                                       name="domainpropertiesrow-defaultScale"
                                                       onChange={[Function]}
                                                     >
                                                       <option
-                                                        key="domainpropertiesrow-defaultScaleoption-LINEAR-2"
+                                                        key="domainpropertiesrow-defaultScaleoption-LINEAR-1-2"
                                                         value="LINEAR"
                                                       >
                                                         Linear
                                                       </option>
                                                       <option
-                                                        key="domainpropertiesrow-defaultScaleoption-LOG-2"
+                                                        key="domainpropertiesrow-defaultScaleoption-LOG-1-2"
                                                         value="LOG"
                                                       >
                                                         Log
@@ -7911,6 +7932,7 @@ exports[`DomainRow decimal field 1`] = `
                                       className="col-lg-10 col-xs-12"
                                     >
                                       <NameAndLinkingOptions
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -8045,7 +8067,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       className="form-control domain-field-textarea"
                                                       componentClass="textarea"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-description-2"
+                                                      id="domainpropertiesrow-description-1-2"
                                                       name="domainpropertiesrow-description"
                                                       onChange={[Function]}
                                                       rows={4}
@@ -8054,7 +8076,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       <textarea
                                                         className="form-control domain-field-textarea form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-description-2"
+                                                        id="domainpropertiesrow-description-1-2"
                                                         name="domainpropertiesrow-description"
                                                         onChange={[Function]}
                                                         rows={4}
@@ -8080,7 +8102,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-label-2"
+                                                      id="domainpropertiesrow-label-1-2"
                                                       name="domainpropertiesrow-label"
                                                       onChange={[Function]}
                                                       type="text"
@@ -8089,7 +8111,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-label-2"
+                                                        id="domainpropertiesrow-label-1-2"
                                                         name="domainpropertiesrow-label"
                                                         onChange={[Function]}
                                                         type="text"
@@ -8223,7 +8245,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-importAliases-2"
+                                                      id="domainpropertiesrow-importAliases-1-2"
                                                       name="domainpropertiesrow-importAliases"
                                                       onChange={[Function]}
                                                       type="text"
@@ -8232,7 +8254,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-importAliases-2"
+                                                        id="domainpropertiesrow-importAliases-1-2"
                                                         name="domainpropertiesrow-importAliases"
                                                         onChange={[Function]}
                                                         type="text"
@@ -8376,7 +8398,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-URL-2"
+                                                      id="domainpropertiesrow-URL-1-2"
                                                       name="domainpropertiesrow-URL"
                                                       onChange={[Function]}
                                                       type="text"
@@ -8385,7 +8407,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-URL-2"
+                                                        id="domainpropertiesrow-URL-1-2"
                                                         name="domainpropertiesrow-URL"
                                                         onChange={[Function]}
                                                         type="text"
@@ -8410,6 +8432,7 @@ exports[`DomainRow decimal field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -8668,14 +8691,14 @@ exports[`DomainRow decimal field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-conditionalFormat-2"
+                                                        id="domainpropertiesrow-conditionalFormat-1-2"
                                                         name="domainpropertiesrow-conditionalFormat"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-conditionalFormat-2"
+                                                          id="domainpropertiesrow-conditionalFormat-1-2"
                                                           name="domainpropertiesrow-conditionalFormat"
                                                           onClick={[Function]}
                                                           type="button"
@@ -8824,14 +8847,14 @@ exports[`DomainRow decimal field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-regexValidator-2"
+                                                        id="domainpropertiesrow-regexValidator-1-2"
                                                         name="domainpropertiesrow-regexValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-regexValidator-2"
+                                                          id="domainpropertiesrow-regexValidator-1-2"
                                                           name="domainpropertiesrow-regexValidator"
                                                           onClick={[Function]}
                                                           type="button"
@@ -8980,14 +9003,14 @@ exports[`DomainRow decimal field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-rangeValidator-2"
+                                                        id="domainpropertiesrow-rangeValidator-1-2"
                                                         name="domainpropertiesrow-rangeValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-rangeValidator-2"
+                                                          id="domainpropertiesrow-rangeValidator-1-2"
                                                           name="domainpropertiesrow-rangeValidator"
                                                           onClick={[Function]}
                                                           type="button"
@@ -9246,6 +9269,7 @@ exports[`DomainRow participant id field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainIndex={1}
                 dragging={false}
                 expandTransition={300}
                 expanded={false}
@@ -9339,14 +9363,14 @@ exports[`DomainRow participant id field 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-0"
+                  draggableId="domainpropertiesrow-domaindrag-1-0"
                   index={0}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-0"
+                    draggableId="domainpropertiesrow-domaindrag-1-0"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
                     index={0}
@@ -9396,7 +9420,7 @@ exports[`DomainRow participant id field 1`] = `
                         bsClass="row"
                         className="domain-row-container"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-0"
+                        key="domainpropertiesrow-domainrow-1-0"
                       >
                         <div
                           className="domain-row-container row"
@@ -9410,6 +9434,7 @@ exports[`DomainRow participant id field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainIndex={1}
                             field={
                               Immutable.Record {
                                 "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
@@ -9629,7 +9654,7 @@ exports[`DomainRow participant id field 1`] = `
                                 className="domain-row-base-fields col-xs-6"
                               >
                                 <div
-                                  id="domainpropertiesrow-row-0"
+                                  id="domainpropertiesrow-row-1-0"
                                 >
                                   <Col
                                     bsClass="col"
@@ -9643,7 +9668,7 @@ exports[`DomainRow participant id field 1`] = `
                                         bsClass="form-control"
                                         componentClass="input"
                                         disabled={false}
-                                        id="domainpropertiesrow-name-0"
+                                        id="domainpropertiesrow-name-1-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
                                         type="text"
@@ -9652,7 +9677,7 @@ exports[`DomainRow participant id field 1`] = `
                                         <input
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-name-0"
+                                          id="domainpropertiesrow-name-1-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
                                           type="text"
@@ -9673,7 +9698,7 @@ exports[`DomainRow participant id field 1`] = `
                                         bsClass="form-control"
                                         componentClass="select"
                                         disabled={false}
-                                        id="domainpropertiesrow-type-0"
+                                        id="domainpropertiesrow-type-1-0"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
                                         value="ParticipantId"
@@ -9681,7 +9706,7 @@ exports[`DomainRow participant id field 1`] = `
                                         <select
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-type-0"
+                                          id="domainpropertiesrow-type-1-0"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
                                           value="ParticipantId"
@@ -9736,7 +9761,7 @@ exports[`DomainRow participant id field 1`] = `
                                           checked={false}
                                           className="domain-field-checkbox"
                                           disabled={false}
-                                          id="domainpropertiesrow-required-0"
+                                          id="domainpropertiesrow-required-1-0"
                                           inline={false}
                                           name="domainpropertiesrow-required"
                                           onChange={[Function]}
@@ -9751,7 +9776,7 @@ exports[`DomainRow participant id field 1`] = `
                                               <input
                                                 checked={false}
                                                 disabled={false}
-                                                id="domainpropertiesrow-required-0"
+                                                id="domainpropertiesrow-required-1-0"
                                                 name="domainpropertiesrow-required"
                                                 onChange={[Function]}
                                                 type="checkbox"
@@ -9776,20 +9801,20 @@ exports[`DomainRow participant id field 1`] = `
                               >
                                 <div
                                   className="domain-field-details"
-                                  id="domainpropertiesrow-details-0"
+                                  id="domainpropertiesrow-details-1-0"
                                 />
                                 <div
                                   className="domain-field-buttons"
                                 >
                                   <DeleteIcon
                                     iconCls="domain-field-delete-icon"
-                                    id="domainpropertiesrow-delete-0"
+                                    id="domainpropertiesrow-delete-1-0"
                                     onDelete={[Function]}
                                     title="Remove field"
                                   >
                                     <span
                                       className="field-icon"
-                                      id="domainpropertiesrow-delete-0"
+                                      id="domainpropertiesrow-delete-1-0"
                                       onClick={[Function]}
                                       title="Remove field"
                                     >
@@ -9848,12 +9873,12 @@ exports[`DomainRow participant id field 1`] = `
                                     collapsedTitle="Show additional field properties"
                                     expanded={false}
                                     expandedTitle="Hide additional field properties"
-                                    id="domainpropertiesrow-expand-0"
+                                    id="domainpropertiesrow-expand-1-0"
                                     onClick={[Function]}
                                   >
                                     <div
                                       className="field-icon domain-field-expand-icon"
-                                      id="domainpropertiesrow-expand-0"
+                                      id="domainpropertiesrow-expand-1-0"
                                       onClick={[Function]}
                                       title="Show additional field properties"
                                     >
@@ -9945,6 +9970,7 @@ exports[`DomainRow participant id field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainIndex={1}
                               field={
                                 Immutable.Record {
                                   "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
@@ -10056,6 +10082,7 @@ exports[`DomainRow participant id field 1`] = `
                                       className="col-lg-10 col-xs-12"
                                     >
                                       <NameAndLinkingOptions
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
@@ -10190,7 +10217,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       className="form-control domain-field-textarea"
                                                       componentClass="textarea"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-description-0"
+                                                      id="domainpropertiesrow-description-1-0"
                                                       name="domainpropertiesrow-description"
                                                       onChange={[Function]}
                                                       rows={4}
@@ -10199,7 +10226,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       <textarea
                                                         className="form-control domain-field-textarea form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-description-0"
+                                                        id="domainpropertiesrow-description-1-0"
                                                         name="domainpropertiesrow-description"
                                                         onChange={[Function]}
                                                         rows={4}
@@ -10225,7 +10252,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-label-0"
+                                                      id="domainpropertiesrow-label-1-0"
                                                       name="domainpropertiesrow-label"
                                                       onChange={[Function]}
                                                       type="text"
@@ -10234,7 +10261,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-label-0"
+                                                        id="domainpropertiesrow-label-1-0"
                                                         name="domainpropertiesrow-label"
                                                         onChange={[Function]}
                                                         type="text"
@@ -10368,7 +10395,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-importAliases-0"
+                                                      id="domainpropertiesrow-importAliases-1-0"
                                                       name="domainpropertiesrow-importAliases"
                                                       onChange={[Function]}
                                                       type="text"
@@ -10377,7 +10404,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-importAliases-0"
+                                                        id="domainpropertiesrow-importAliases-1-0"
                                                         name="domainpropertiesrow-importAliases"
                                                         onChange={[Function]}
                                                         type="text"
@@ -10521,7 +10548,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-URL-0"
+                                                      id="domainpropertiesrow-URL-1-0"
                                                       name="domainpropertiesrow-URL"
                                                       onChange={[Function]}
                                                       type="text"
@@ -10530,7 +10557,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-URL-0"
+                                                        id="domainpropertiesrow-URL-1-0"
                                                         name="domainpropertiesrow-URL"
                                                         onChange={[Function]}
                                                         type="text"
@@ -10555,6 +10582,7 @@ exports[`DomainRow participant id field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
@@ -10813,14 +10841,14 @@ exports[`DomainRow participant id field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-conditionalFormat-0"
+                                                        id="domainpropertiesrow-conditionalFormat-1-0"
                                                         name="domainpropertiesrow-conditionalFormat"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-conditionalFormat-0"
+                                                          id="domainpropertiesrow-conditionalFormat-1-0"
                                                           name="domainpropertiesrow-conditionalFormat"
                                                           onClick={[Function]}
                                                           type="button"
@@ -10969,14 +10997,14 @@ exports[`DomainRow participant id field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-regexValidator-0"
+                                                        id="domainpropertiesrow-regexValidator-1-0"
                                                         name="domainpropertiesrow-regexValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-regexValidator-0"
+                                                          id="domainpropertiesrow-regexValidator-1-0"
                                                           name="domainpropertiesrow-regexValidator"
                                                           onClick={[Function]}
                                                           type="button"
@@ -11235,6 +11263,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainIndex={1}
                 dragging={false}
                 expandTransition={300}
                 expanded={false}
@@ -11339,14 +11368,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-1"
+                  draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-1"
+                    draggableId="domainpropertiesrow-domaindrag-1-1"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
                     index={1}
@@ -11396,7 +11425,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                         bsClass="row"
                         className="domain-row-container"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-1"
+                        key="domainpropertiesrow-domainrow-1-1"
                       >
                         <div
                           className="domain-row-container row"
@@ -11410,6 +11439,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainIndex={1}
                             field={
                               Immutable.Record {
                                 "conceptURI": undefined,
@@ -11629,7 +11659,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 className="domain-row-base-fields col-xs-6"
                               >
                                 <div
-                                  id="domainpropertiesrow-row-1"
+                                  id="domainpropertiesrow-row-1-1"
                                 >
                                   <Col
                                     bsClass="col"
@@ -11643,7 +11673,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         bsClass="form-control"
                                         componentClass="input"
                                         disabled={false}
-                                        id="domainpropertiesrow-name-1"
+                                        id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
                                         type="text"
@@ -11652,7 +11682,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         <input
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-name-1"
+                                          id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
                                           type="text"
@@ -11673,7 +11703,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         bsClass="form-control"
                                         componentClass="select"
                                         disabled={false}
-                                        id="domainpropertiesrow-type-1"
+                                        id="domainpropertiesrow-type-1-1"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
                                         value="attachment"
@@ -11681,7 +11711,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         <select
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-type-1"
+                                          id="domainpropertiesrow-type-1-1"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
                                           value="attachment"
@@ -11784,7 +11814,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           checked={false}
                                           className="domain-field-checkbox"
                                           disabled={false}
-                                          id="domainpropertiesrow-required-1"
+                                          id="domainpropertiesrow-required-1-1"
                                           inline={false}
                                           name="domainpropertiesrow-required"
                                           onChange={[Function]}
@@ -11799,7 +11829,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                               <input
                                                 checked={false}
                                                 disabled={false}
-                                                id="domainpropertiesrow-required-1"
+                                                id="domainpropertiesrow-required-1-1"
                                                 name="domainpropertiesrow-required"
                                                 onChange={[Function]}
                                                 type="checkbox"
@@ -11824,7 +11854,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                               >
                                 <div
                                   className="domain-field-details"
-                                  id="domainpropertiesrow-details-1"
+                                  id="domainpropertiesrow-details-1-1"
                                 >
                                   New field
                                   . 
@@ -11839,13 +11869,13 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 >
                                   <DeleteIcon
                                     iconCls="domain-field-delete-icon"
-                                    id="domainpropertiesrow-delete-1"
+                                    id="domainpropertiesrow-delete-1-1"
                                     onDelete={[Function]}
                                     title="Remove field"
                                   >
                                     <span
                                       className="field-icon"
-                                      id="domainpropertiesrow-delete-1"
+                                      id="domainpropertiesrow-delete-1-1"
                                       onClick={[Function]}
                                       title="Remove field"
                                     >
@@ -11904,12 +11934,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     collapsedTitle="Show additional field properties"
                                     expanded={false}
                                     expandedTitle="Hide additional field properties"
-                                    id="domainpropertiesrow-expand-1"
+                                    id="domainpropertiesrow-expand-1-1"
                                     onClick={[Function]}
                                   >
                                     <div
                                       className="field-icon domain-field-expand-icon"
-                                      id="domainpropertiesrow-expand-1"
+                                      id="domainpropertiesrow-expand-1-1"
                                       onClick={[Function]}
                                       title="Show additional field properties"
                                     >
@@ -12001,6 +12031,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainIndex={1}
                               field={
                                 Immutable.Record {
                                   "conceptURI": undefined,
@@ -12112,6 +12143,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       className="col-lg-10 col-xs-12"
                                     >
                                       <NameAndLinkingOptions
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -12246,7 +12278,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       className="form-control domain-field-textarea"
                                                       componentClass="textarea"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-description-1"
+                                                      id="domainpropertiesrow-description-1-1"
                                                       name="domainpropertiesrow-description"
                                                       onChange={[Function]}
                                                       rows={4}
@@ -12255,7 +12287,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       <textarea
                                                         className="form-control domain-field-textarea form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-description-1"
+                                                        id="domainpropertiesrow-description-1-1"
                                                         name="domainpropertiesrow-description"
                                                         onChange={[Function]}
                                                         rows={4}
@@ -12281,7 +12313,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-label-1"
+                                                      id="domainpropertiesrow-label-1-1"
                                                       name="domainpropertiesrow-label"
                                                       onChange={[Function]}
                                                       type="text"
@@ -12290,7 +12322,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-label-1"
+                                                        id="domainpropertiesrow-label-1-1"
                                                         name="domainpropertiesrow-label"
                                                         onChange={[Function]}
                                                         type="text"
@@ -12424,7 +12456,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-importAliases-1"
+                                                      id="domainpropertiesrow-importAliases-1-1"
                                                       name="domainpropertiesrow-importAliases"
                                                       onChange={[Function]}
                                                       type="text"
@@ -12433,7 +12465,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-importAliases-1"
+                                                        id="domainpropertiesrow-importAliases-1-1"
                                                         name="domainpropertiesrow-importAliases"
                                                         onChange={[Function]}
                                                         type="text"
@@ -12577,7 +12609,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-URL-1"
+                                                      id="domainpropertiesrow-URL-1-1"
                                                       name="domainpropertiesrow-URL"
                                                       onChange={[Function]}
                                                       type="text"
@@ -12586,7 +12618,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-URL-1"
+                                                        id="domainpropertiesrow-URL-1-1"
                                                         name="domainpropertiesrow-URL"
                                                         onChange={[Function]}
                                                         type="text"
@@ -12611,6 +12643,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -12869,14 +12902,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-conditionalFormat-1"
+                                                        id="domainpropertiesrow-conditionalFormat-1-1"
                                                         name="domainpropertiesrow-conditionalFormat"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-conditionalFormat-1"
+                                                          id="domainpropertiesrow-conditionalFormat-1-1"
                                                           name="domainpropertiesrow-conditionalFormat"
                                                           onClick={[Function]}
                                                           type="button"
@@ -13025,14 +13058,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-regexValidator-1"
+                                                        id="domainpropertiesrow-regexValidator-1-1"
                                                         name="domainpropertiesrow-regexValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-regexValidator-1"
+                                                          id="domainpropertiesrow-regexValidator-1-1"
                                                           name="domainpropertiesrow-regexValidator"
                                                           onClick={[Function]}
                                                           type="button"
@@ -13291,6 +13324,7 @@ exports[`DomainRow string field test 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainIndex={1}
                 dragging={false}
                 expandTransition={300}
                 expanded={false}
@@ -13384,14 +13418,14 @@ exports[`DomainRow string field test 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-1"
+                  draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-1"
+                    draggableId="domainpropertiesrow-domaindrag-1-1"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
                     index={1}
@@ -13441,7 +13475,7 @@ exports[`DomainRow string field test 1`] = `
                         bsClass="row"
                         className="domain-row-container"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-1"
+                        key="domainpropertiesrow-domainrow-1-1"
                       >
                         <div
                           className="domain-row-container row"
@@ -13455,6 +13489,7 @@ exports[`DomainRow string field test 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainIndex={1}
                             field={
                               Immutable.Record {
                                 "conceptURI": undefined,
@@ -13674,7 +13709,7 @@ exports[`DomainRow string field test 1`] = `
                                 className="domain-row-base-fields col-xs-6"
                               >
                                 <div
-                                  id="domainpropertiesrow-row-1"
+                                  id="domainpropertiesrow-row-1-1"
                                 >
                                   <Col
                                     bsClass="col"
@@ -13688,7 +13723,7 @@ exports[`DomainRow string field test 1`] = `
                                         bsClass="form-control"
                                         componentClass="input"
                                         disabled={false}
-                                        id="domainpropertiesrow-name-1"
+                                        id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
                                         type="text"
@@ -13697,7 +13732,7 @@ exports[`DomainRow string field test 1`] = `
                                         <input
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-name-1"
+                                          id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
                                           type="text"
@@ -13718,7 +13753,7 @@ exports[`DomainRow string field test 1`] = `
                                         bsClass="form-control"
                                         componentClass="select"
                                         disabled={false}
-                                        id="domainpropertiesrow-type-1"
+                                        id="domainpropertiesrow-type-1-1"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
                                         value="string"
@@ -13726,7 +13761,7 @@ exports[`DomainRow string field test 1`] = `
                                         <select
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-type-1"
+                                          id="domainpropertiesrow-type-1-1"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
                                           value="string"
@@ -13781,7 +13816,7 @@ exports[`DomainRow string field test 1`] = `
                                           checked={false}
                                           className="domain-field-checkbox"
                                           disabled={false}
-                                          id="domainpropertiesrow-required-1"
+                                          id="domainpropertiesrow-required-1-1"
                                           inline={false}
                                           name="domainpropertiesrow-required"
                                           onChange={[Function]}
@@ -13796,7 +13831,7 @@ exports[`DomainRow string field test 1`] = `
                                               <input
                                                 checked={false}
                                                 disabled={false}
-                                                id="domainpropertiesrow-required-1"
+                                                id="domainpropertiesrow-required-1-1"
                                                 name="domainpropertiesrow-required"
                                                 onChange={[Function]}
                                                 type="checkbox"
@@ -13821,20 +13856,20 @@ exports[`DomainRow string field test 1`] = `
                               >
                                 <div
                                   className="domain-field-details"
-                                  id="domainpropertiesrow-details-1"
+                                  id="domainpropertiesrow-details-1-1"
                                 />
                                 <div
                                   className="domain-field-buttons"
                                 >
                                   <DeleteIcon
                                     iconCls="domain-field-delete-icon"
-                                    id="domainpropertiesrow-delete-1"
+                                    id="domainpropertiesrow-delete-1-1"
                                     onDelete={[Function]}
                                     title="Remove field"
                                   >
                                     <span
                                       className="field-icon"
-                                      id="domainpropertiesrow-delete-1"
+                                      id="domainpropertiesrow-delete-1-1"
                                       onClick={[Function]}
                                       title="Remove field"
                                     >
@@ -13893,12 +13928,12 @@ exports[`DomainRow string field test 1`] = `
                                     collapsedTitle="Show additional field properties"
                                     expanded={false}
                                     expandedTitle="Hide additional field properties"
-                                    id="domainpropertiesrow-expand-1"
+                                    id="domainpropertiesrow-expand-1-1"
                                     onClick={[Function]}
                                   >
                                     <div
                                       className="field-icon domain-field-expand-icon"
-                                      id="domainpropertiesrow-expand-1"
+                                      id="domainpropertiesrow-expand-1-1"
                                       onClick={[Function]}
                                       title="Show additional field properties"
                                     >
@@ -13990,6 +14025,7 @@ exports[`DomainRow string field test 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainIndex={1}
                               field={
                                 Immutable.Record {
                                   "conceptURI": undefined,
@@ -14091,6 +14127,7 @@ exports[`DomainRow string field test 1`] = `
                                       className="col-xs-12"
                                     >
                                       <TextFieldOptions
+                                        domainIndex={1}
                                         index={1}
                                         label="Text Options"
                                         lockType="NotLocked"
@@ -14288,7 +14325,7 @@ exports[`DomainRow string field test 1`] = `
                                                     className="domain-text-options-radio1 domain-field-float-left"
                                                     componentClass="input"
                                                     disabled={false}
-                                                    id="domainpropertiesrow-maxLength-1"
+                                                    id="domainpropertiesrow-maxLength-1-1"
                                                     onChange={[Function]}
                                                     type="radio"
                                                     value="maxLength"
@@ -14297,7 +14334,7 @@ exports[`DomainRow string field test 1`] = `
                                                       checked={true}
                                                       className="domain-text-options-radio1 domain-field-float-left form-control"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-maxLength-1"
+                                                      id="domainpropertiesrow-maxLength-1-1"
                                                       onChange={[Function]}
                                                       type="radio"
                                                       value="maxLength"
@@ -14333,7 +14370,7 @@ exports[`DomainRow string field test 1`] = `
                                                     checked={false}
                                                     className="domain-text-options-radio2 domain-field-float-left"
                                                     componentClass="input"
-                                                    id="domainpropertiesrow-customLength-1"
+                                                    id="domainpropertiesrow-customLength-1-1"
                                                     onChange={[Function]}
                                                     type="radio"
                                                     value="customLength"
@@ -14341,7 +14378,7 @@ exports[`DomainRow string field test 1`] = `
                                                     <input
                                                       checked={false}
                                                       className="domain-text-options-radio2 domain-field-float-left form-control"
-                                                      id="domainpropertiesrow-customLength-1"
+                                                      id="domainpropertiesrow-customLength-1-1"
                                                       onChange={[Function]}
                                                       type="radio"
                                                       value="customLength"
@@ -14357,7 +14394,7 @@ exports[`DomainRow string field test 1`] = `
                                                     className="domain-text-length-field"
                                                     componentClass="input"
                                                     disabled={true}
-                                                    id="domainpropertiesrow-scale-1"
+                                                    id="domainpropertiesrow-scale-1-1"
                                                     name="domainpropertiesrow-scale"
                                                     onChange={[Function]}
                                                     type="number"
@@ -14366,7 +14403,7 @@ exports[`DomainRow string field test 1`] = `
                                                     <input
                                                       className="domain-text-length-field form-control"
                                                       disabled={true}
-                                                      id="domainpropertiesrow-scale-1"
+                                                      id="domainpropertiesrow-scale-1-1"
                                                       name="domainpropertiesrow-scale"
                                                       onChange={[Function]}
                                                       type="number"
@@ -14391,6 +14428,7 @@ exports[`DomainRow string field test 1`] = `
                                       className="col-lg-10 col-xs-12"
                                     >
                                       <NameAndLinkingOptions
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -14525,7 +14563,7 @@ exports[`DomainRow string field test 1`] = `
                                                       className="form-control domain-field-textarea"
                                                       componentClass="textarea"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-description-1"
+                                                      id="domainpropertiesrow-description-1-1"
                                                       name="domainpropertiesrow-description"
                                                       onChange={[Function]}
                                                       rows={4}
@@ -14534,7 +14572,7 @@ exports[`DomainRow string field test 1`] = `
                                                       <textarea
                                                         className="form-control domain-field-textarea form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-description-1"
+                                                        id="domainpropertiesrow-description-1-1"
                                                         name="domainpropertiesrow-description"
                                                         onChange={[Function]}
                                                         rows={4}
@@ -14560,7 +14598,7 @@ exports[`DomainRow string field test 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-label-1"
+                                                      id="domainpropertiesrow-label-1-1"
                                                       name="domainpropertiesrow-label"
                                                       onChange={[Function]}
                                                       type="text"
@@ -14569,7 +14607,7 @@ exports[`DomainRow string field test 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-label-1"
+                                                        id="domainpropertiesrow-label-1-1"
                                                         name="domainpropertiesrow-label"
                                                         onChange={[Function]}
                                                         type="text"
@@ -14703,7 +14741,7 @@ exports[`DomainRow string field test 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-importAliases-1"
+                                                      id="domainpropertiesrow-importAliases-1-1"
                                                       name="domainpropertiesrow-importAliases"
                                                       onChange={[Function]}
                                                       type="text"
@@ -14712,7 +14750,7 @@ exports[`DomainRow string field test 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-importAliases-1"
+                                                        id="domainpropertiesrow-importAliases-1-1"
                                                         name="domainpropertiesrow-importAliases"
                                                         onChange={[Function]}
                                                         type="text"
@@ -14856,7 +14894,7 @@ exports[`DomainRow string field test 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-URL-1"
+                                                      id="domainpropertiesrow-URL-1-1"
                                                       name="domainpropertiesrow-URL"
                                                       onChange={[Function]}
                                                       type="text"
@@ -14865,7 +14903,7 @@ exports[`DomainRow string field test 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-URL-1"
+                                                        id="domainpropertiesrow-URL-1-1"
                                                         name="domainpropertiesrow-URL"
                                                         onChange={[Function]}
                                                         type="text"
@@ -14890,6 +14928,7 @@ exports[`DomainRow string field test 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -15148,14 +15187,14 @@ exports[`DomainRow string field test 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-conditionalFormat-1"
+                                                        id="domainpropertiesrow-conditionalFormat-1-1"
                                                         name="domainpropertiesrow-conditionalFormat"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-conditionalFormat-1"
+                                                          id="domainpropertiesrow-conditionalFormat-1-1"
                                                           name="domainpropertiesrow-conditionalFormat"
                                                           onClick={[Function]}
                                                           type="button"
@@ -15304,14 +15343,14 @@ exports[`DomainRow string field test 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-regexValidator-1"
+                                                        id="domainpropertiesrow-regexValidator-1-1"
                                                         name="domainpropertiesrow-regexValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-regexValidator-1"
+                                                          id="domainpropertiesrow-regexValidator-1-1"
                                                           name="domainpropertiesrow-regexValidator"
                                                           onClick={[Function]}
                                                           type="button"
@@ -15570,6 +15609,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainIndex={1}
                 dragging={false}
                 expandTransition={300}
                 expanded={false}
@@ -15663,14 +15703,14 @@ exports[`DomainRow with empty domain form 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-1"
+                  draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-1"
+                    draggableId="domainpropertiesrow-domaindrag-1-1"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
                     index={1}
@@ -15720,7 +15760,7 @@ exports[`DomainRow with empty domain form 1`] = `
                         bsClass="row"
                         className="domain-row-container"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-1"
+                        key="domainpropertiesrow-domainrow-1-1"
                       >
                         <div
                           className="domain-row-container row"
@@ -15734,6 +15774,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainIndex={1}
                             field={
                               Immutable.Record {
                                 "conceptURI": undefined,
@@ -15952,7 +15993,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 className="domain-row-base-fields col-xs-6"
                               >
                                 <div
-                                  id="domainpropertiesrow-row-1"
+                                  id="domainpropertiesrow-row-1-1"
                                 >
                                   <Col
                                     bsClass="col"
@@ -15966,7 +16007,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         bsClass="form-control"
                                         componentClass="input"
                                         disabled={false}
-                                        id="domainpropertiesrow-name-1"
+                                        id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
                                         type="text"
@@ -15975,7 +16016,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         <input
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-name-1"
+                                          id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
                                           type="text"
@@ -15996,7 +16037,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         bsClass="form-control"
                                         componentClass="select"
                                         disabled={false}
-                                        id="domainpropertiesrow-type-1"
+                                        id="domainpropertiesrow-type-1-1"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
                                         value="string"
@@ -16004,7 +16045,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         <select
                                           className="form-control"
                                           disabled={false}
-                                          id="domainpropertiesrow-type-1"
+                                          id="domainpropertiesrow-type-1-1"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
                                           value="string"
@@ -16107,7 +16148,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                           checked={false}
                                           className="domain-field-checkbox"
                                           disabled={false}
-                                          id="domainpropertiesrow-required-1"
+                                          id="domainpropertiesrow-required-1-1"
                                           inline={false}
                                           name="domainpropertiesrow-required"
                                           onChange={[Function]}
@@ -16122,7 +16163,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                               <input
                                                 checked={false}
                                                 disabled={false}
-                                                id="domainpropertiesrow-required-1"
+                                                id="domainpropertiesrow-required-1-1"
                                                 name="domainpropertiesrow-required"
                                                 onChange={[Function]}
                                                 type="checkbox"
@@ -16147,7 +16188,7 @@ exports[`DomainRow with empty domain form 1`] = `
                               >
                                 <div
                                   className="domain-field-details"
-                                  id="domainpropertiesrow-details-1"
+                                  id="domainpropertiesrow-details-1-1"
                                 >
                                   New field
                                 </div>
@@ -16156,13 +16197,13 @@ exports[`DomainRow with empty domain form 1`] = `
                                 >
                                   <DeleteIcon
                                     iconCls="domain-field-delete-icon"
-                                    id="domainpropertiesrow-delete-1"
+                                    id="domainpropertiesrow-delete-1-1"
                                     onDelete={[Function]}
                                     title="Remove field"
                                   >
                                     <span
                                       className="field-icon"
-                                      id="domainpropertiesrow-delete-1"
+                                      id="domainpropertiesrow-delete-1-1"
                                       onClick={[Function]}
                                       title="Remove field"
                                     >
@@ -16221,12 +16262,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                     collapsedTitle="Show additional field properties"
                                     expanded={false}
                                     expandedTitle="Hide additional field properties"
-                                    id="domainpropertiesrow-expand-1"
+                                    id="domainpropertiesrow-expand-1-1"
                                     onClick={[Function]}
                                   >
                                     <div
                                       className="field-icon domain-field-expand-icon"
-                                      id="domainpropertiesrow-expand-1"
+                                      id="domainpropertiesrow-expand-1-1"
                                       onClick={[Function]}
                                       title="Show additional field properties"
                                     >
@@ -16318,6 +16359,7 @@ exports[`DomainRow with empty domain form 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainIndex={1}
                               field={
                                 Immutable.Record {
                                   "conceptURI": undefined,
@@ -16419,6 +16461,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       className="col-xs-12"
                                     >
                                       <TextFieldOptions
+                                        domainIndex={1}
                                         index={1}
                                         label="Text Options"
                                         lockType="NotLocked"
@@ -16616,7 +16659,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     className="domain-text-options-radio1 domain-field-float-left"
                                                     componentClass="input"
                                                     disabled={false}
-                                                    id="domainpropertiesrow-maxLength-1"
+                                                    id="domainpropertiesrow-maxLength-1-1"
                                                     onChange={[Function]}
                                                     type="radio"
                                                     value="maxLength"
@@ -16625,7 +16668,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       checked={true}
                                                       className="domain-text-options-radio1 domain-field-float-left form-control"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-maxLength-1"
+                                                      id="domainpropertiesrow-maxLength-1-1"
                                                       onChange={[Function]}
                                                       type="radio"
                                                       value="maxLength"
@@ -16661,7 +16704,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     checked={false}
                                                     className="domain-text-options-radio2 domain-field-float-left"
                                                     componentClass="input"
-                                                    id="domainpropertiesrow-customLength-1"
+                                                    id="domainpropertiesrow-customLength-1-1"
                                                     onChange={[Function]}
                                                     type="radio"
                                                     value="customLength"
@@ -16669,7 +16712,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     <input
                                                       checked={false}
                                                       className="domain-text-options-radio2 domain-field-float-left form-control"
-                                                      id="domainpropertiesrow-customLength-1"
+                                                      id="domainpropertiesrow-customLength-1-1"
                                                       onChange={[Function]}
                                                       type="radio"
                                                       value="customLength"
@@ -16685,7 +16728,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     className="domain-text-length-field"
                                                     componentClass="input"
                                                     disabled={true}
-                                                    id="domainpropertiesrow-scale-1"
+                                                    id="domainpropertiesrow-scale-1-1"
                                                     name="domainpropertiesrow-scale"
                                                     onChange={[Function]}
                                                     type="number"
@@ -16694,7 +16737,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     <input
                                                       className="domain-text-length-field form-control"
                                                       disabled={true}
-                                                      id="domainpropertiesrow-scale-1"
+                                                      id="domainpropertiesrow-scale-1-1"
                                                       name="domainpropertiesrow-scale"
                                                       onChange={[Function]}
                                                       type="number"
@@ -16719,6 +16762,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       className="col-lg-10 col-xs-12"
                                     >
                                       <NameAndLinkingOptions
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -16853,7 +16897,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       className="form-control domain-field-textarea"
                                                       componentClass="textarea"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-description-1"
+                                                      id="domainpropertiesrow-description-1-1"
                                                       name="domainpropertiesrow-description"
                                                       onChange={[Function]}
                                                       rows={4}
@@ -16862,7 +16906,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       <textarea
                                                         className="form-control domain-field-textarea form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-description-1"
+                                                        id="domainpropertiesrow-description-1-1"
                                                         name="domainpropertiesrow-description"
                                                         onChange={[Function]}
                                                         rows={4}
@@ -16888,7 +16932,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-label-1"
+                                                      id="domainpropertiesrow-label-1-1"
                                                       name="domainpropertiesrow-label"
                                                       onChange={[Function]}
                                                       type="text"
@@ -16897,7 +16941,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-label-1"
+                                                        id="domainpropertiesrow-label-1-1"
                                                         name="domainpropertiesrow-label"
                                                         onChange={[Function]}
                                                         type="text"
@@ -17031,7 +17075,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-importAliases-1"
+                                                      id="domainpropertiesrow-importAliases-1-1"
                                                       name="domainpropertiesrow-importAliases"
                                                       onChange={[Function]}
                                                       type="text"
@@ -17040,7 +17084,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-importAliases-1"
+                                                        id="domainpropertiesrow-importAliases-1-1"
                                                         name="domainpropertiesrow-importAliases"
                                                         onChange={[Function]}
                                                         type="text"
@@ -17184,7 +17228,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       bsClass="form-control"
                                                       componentClass="input"
                                                       disabled={false}
-                                                      id="domainpropertiesrow-URL-1"
+                                                      id="domainpropertiesrow-URL-1-1"
                                                       name="domainpropertiesrow-URL"
                                                       onChange={[Function]}
                                                       type="text"
@@ -17193,7 +17237,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       <input
                                                         className="form-control"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-URL-1"
+                                                        id="domainpropertiesrow-URL-1-1"
                                                         name="domainpropertiesrow-URL"
                                                         onChange={[Function]}
                                                         type="text"
@@ -17218,6 +17262,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainIndex={1}
                                         field={
                                           Immutable.Record {
                                             "conceptURI": undefined,
@@ -17476,14 +17521,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-conditionalFormat-1"
+                                                        id="domainpropertiesrow-conditionalFormat-1-1"
                                                         name="domainpropertiesrow-conditionalFormat"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-conditionalFormat-1"
+                                                          id="domainpropertiesrow-conditionalFormat-1-1"
                                                           name="domainpropertiesrow-conditionalFormat"
                                                           onClick={[Function]}
                                                           type="button"
@@ -17632,14 +17677,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                                         bsStyle="default"
                                                         className="domain-validation-button"
                                                         disabled={false}
-                                                        id="domainpropertiesrow-regexValidator-1"
+                                                        id="domainpropertiesrow-regexValidator-1-1"
                                                         name="domainpropertiesrow-regexValidator"
                                                         onClick={[Function]}
                                                       >
                                                         <button
                                                           className="domain-validation-button btn btn-default"
                                                           disabled={false}
-                                                          id="domainpropertiesrow-regexValidator-1"
+                                                          id="domainpropertiesrow-regexValidator-1-1"
                                                           name="domainpropertiesrow-regexValidator"
                                                           onClick={[Function]}
                                                           type="button"

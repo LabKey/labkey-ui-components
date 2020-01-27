@@ -50,6 +50,7 @@ export interface IBannerMessage {
 
 export interface ITypeDependentProps {
     index: number,
+    domainIndex: number
     label: string,
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     lockType: string

@@ -79,6 +79,7 @@ describe('DomainRow', () => {
                 <DomainRow
                     key={'domain-row-key-1'}
                     index={1}
+                    domainIndex={1}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -101,6 +102,7 @@ describe('DomainRow', () => {
 
     test('string field test', () => {
         const _index = 1;
+        const _domainIndex = 1;
         const _name = 'stringField';
         const _propDesc = TEXT_TYPE;
 
@@ -116,6 +118,7 @@ describe('DomainRow', () => {
                 <DomainRow
                     key={'domain-row-key-1'}
                     index={_index}
+                    domainIndex={_domainIndex}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -132,15 +135,15 @@ describe('DomainRow', () => {
                     helpNoun="domain"
                 />));
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
@@ -150,6 +153,7 @@ describe('DomainRow', () => {
 
     test('decimal field', () => {
         const _index = 2;
+        const _domainIndex = 1;
         const _name = 'decimalField';
         const _propDesc = DOUBLE_TYPE;
 
@@ -166,6 +170,7 @@ describe('DomainRow', () => {
                 <DomainRow
                     key={'domain-row-key-1'}
                     index={_index}
+                    domainIndex={_domainIndex}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -182,15 +187,15 @@ describe('DomainRow', () => {
                     helpNoun="domain"
                 />));
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(true);
 
@@ -200,6 +205,7 @@ describe('DomainRow', () => {
 
     test('date time field', () => {
         const _index = 0;
+        const _domainIndex = 1;
         const _name = 'dateTimeField';
         const _propDesc = DATETIME_TYPE;
 
@@ -216,6 +222,7 @@ describe('DomainRow', () => {
                 <DomainRow
                     key={'domain-row-key-1'}
                     index={_index}
+                    domainIndex={_domainIndex}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -232,15 +239,15 @@ describe('DomainRow', () => {
                     helpNoun="domain"
                 />));
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
@@ -250,6 +257,7 @@ describe('DomainRow', () => {
 
     test('participant id field', () => {
         const _index = 0;
+        const _domainIndex = 1;
         const _name = 'participantField';
         const _propDesc = PARTICIPANT_TYPE;
 
@@ -266,6 +274,7 @@ describe('DomainRow', () => {
                 <DomainRow
                     key={'domain-row-key-1'}
                     index={_index}
+                    domainIndex={_domainIndex}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -282,26 +291,26 @@ describe('DomainRow', () => {
                     helpNoun="domain"
                 />));
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
         // Verify not expanded
-        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _index)}).hostNodes();
+        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index)}).hostNodes();
         expect(expandButton.length).toEqual(1);
 
-        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index)}).hostNodes();
+        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index)}).hostNodes();
         expect(deleteButton.length).toEqual(1);
 
-        let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index)});
+        let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index)});
         expect(advButton.length).toEqual(0);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -310,6 +319,7 @@ describe('DomainRow', () => {
 
     test('attachment field', () => {
         const _index = 0;
+        const _domainIndex = 0;
         const _name = 'attachmentField';
         const _propDesc = ATTACHMENT_TYPE;
 
@@ -325,6 +335,7 @@ describe('DomainRow', () => {
                 <DomainRow
                     key={'domain-row-key-1'}
                     index={_index}
+                    domainIndex={_domainIndex}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -341,26 +352,26 @@ describe('DomainRow', () => {
                     helpNoun="domain"
                 />));
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
         // Verify expanded
-        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _index)}).hostNodes();
+        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index)}).hostNodes();
         expect(expandButton.length).toEqual(1);
 
-        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index)}).hostNodes();
+        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index)}).hostNodes();
         expect(deleteButton.length).toEqual(1);
 
-        let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index), bsStyle: 'default'});
+        let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index), bsStyle: 'default'});
         expect(advButton.length).toEqual(1);
 
         let sectionLabel = row.find({className: 'domain-field-section-heading domain-field-section-hdr'});
@@ -370,6 +381,7 @@ describe('DomainRow', () => {
 
     test('Sample Field', () => {
         const _index = 0;
+        const _domainIndex = 1;
         const _name = 'sampleField';
         const _propDesc = SAMPLE_TYPE;
 
@@ -387,6 +399,7 @@ describe('DomainRow', () => {
                 <DomainRow
                     key={'domain-row-key-1'}
                     index={_index}
+                    domainIndex={_domainIndex}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -403,15 +416,15 @@ describe('DomainRow', () => {
                     helpNoun="domain"
                 />));
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
@@ -438,6 +451,7 @@ describe('DomainRow', () => {
                 <DomainRow
                     key={'domain-row-key-1'}
                     index={1}
+                    domainIndex={1}
                     field={field}
                     fieldError={domainFieldError}
                     onChange={jest.fn()}
@@ -460,7 +474,7 @@ describe('DomainRow', () => {
         expect(warningRowClass.length).toEqual(1);
 
         //test warning message
-        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
+        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1, 1), className: 'domain-field-details'});
         expect(rowDetails.length).toEqual(1);
         const received = rowDetails.props().children[0] + rowDetails.props().children[1] + rowDetails.props().children[2].props.children;
         const expected = "New field. " + severity + ": " + message;
@@ -489,6 +503,7 @@ describe('DomainRow', () => {
                 <DomainRow
                     key={'domain-row-key-1'}
                     index={1}
+                    domainIndex={1}
                     field={field}
                     fieldError={domainFieldError}
                     onChange={jest.fn()}
@@ -511,7 +526,7 @@ describe('DomainRow', () => {
         expect(warningRowClass.length).toEqual(1);
 
         //test error message
-        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
+        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1, 1), className: 'domain-field-details'});
         expect(rowDetails.length).toEqual(1);
         const received = rowDetails.props().children[0] + rowDetails.props().children[1] + rowDetails.props().children[2].props.children;
         const expected = "New field. " + severity + ": " + message;

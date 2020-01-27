@@ -59,6 +59,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
     };
 
     constructor(props: Props) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.state = {
@@ -200,6 +201,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
                     showSampleComparisonReports={showSampleComparisonReports}
                     onReportClicked={onReportClicked}
                     onCreateReportClicked={onCreateReportClicked}
+                    onSelectionChange={onSelectionChange}
                 />
             );
         }

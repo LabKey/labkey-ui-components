@@ -19,10 +19,11 @@ import { Action, ActionOption, ActionValue, Value } from './Action';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 
 export class ViewAction implements Action {
+    static NAME:string = 'view';
     iconCls = 'table';
-    param = 'view';
-    keyword = 'view';
-    oneWordLabel = 'view';
+    param = ViewAction.NAME;
+    keyword = ViewAction.NAME;
+    oneWordLabel = ViewAction.NAME;
     optionalLabel = 'name';
     resolveColumns: () => Promise<List<QueryColumn>>;
     resolveModel: () => Promise<QueryGridModel>;

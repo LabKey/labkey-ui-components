@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import createHistory from 'history/createBrowserHistory';
-
 import { getGlobal, setGlobal } from 'reactn';
+import createHistory from 'history/createBrowserHistory';
 
 /**
  * Initialize the global state object for this package.
  */
 export function initBrowserHistoryState() {
-    if (!getGlobal().utils) {
+    if (!getGlobal().BrowserHistory) {
         setGlobal( {
-            QueryGrid_browserHistory: createHistory()
+                BrowserHistory: createHistory()
         },
 
         (global) => {
@@ -37,9 +36,9 @@ export function initBrowserHistoryState() {
  * Access method for better browser history object from global state
  */
 export function getBrowserHistory() {
-    if (!getGlobal().QueryGrid_browserHistory) {
-        throw new Error('Must call initBrowserHistoryState before you can access the global.QueryGrid_browserHistory object.');
+    if (!getGlobal().BrowserHistory) {
+        throw new Error('Must call initBrowserHistoryState before you can access the global.BrowserHistory object.');
     }
 
-    return getGlobal().QueryGrid_browserHistory;
+    return getGlobal().BrowserHistory;
 }

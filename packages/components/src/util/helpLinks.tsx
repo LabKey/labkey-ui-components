@@ -28,6 +28,7 @@ export const DERIVE_SAMPLES_ALIAS_TOPIC = DERIVE_SAMPLES_TOPIC + '#alias';
 export const URL_ENCODING_TOPIC = 'urlEncoding';
 
 export const SEARCH_SYNTAX_TOPIC = "luceneSearch";
+export const DATA_IMPORT_TOPIC = 'dataImport';
 
 export function getHelpLink(topic: string) {
     return LABKEY.helpLinkPrefix + topic;

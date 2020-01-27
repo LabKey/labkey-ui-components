@@ -152,8 +152,8 @@ export class UserProfile extends React.Component<Props, State> {
                     schemaQuery={queryInfo.schemaQuery}
                     fieldValues={userProperties.toJS()}
                     includeCountField={false}
-                    submitText={'Finish'}
-                    isSubmittedText={'Finish'}
+                    submitText={'Save'}
+                    isSubmittedText={'Saving...'}
                     onSubmit={this.submitUserDetails}
                     onSuccess={this.onSuccess}
                     onHide={onCancel}

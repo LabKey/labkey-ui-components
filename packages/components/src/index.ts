@@ -59,7 +59,7 @@ import {
     toggleDevTools,
     valueIsEmpty,
 } from './util/utils';
-import { getActionErrorMessage } from './util/messaging';
+import { getActionErrorMessage, resolveErrorMessage } from './util/messaging';
 import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL';
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
 import { AddEntityButton } from './components/buttons/AddEntityButton';
@@ -148,11 +148,11 @@ import {
     updateRows,
 } from './query/api';
 import { loadReports, flattenBrowseDataTreeResponse } from './query/reports';
-import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from './constants';
+import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
-import { getHelpLink, helpLinkNode } from './util/helpLinks';
+import { getHelpLink, helpLinkNode, DATA_IMPORT_TOPIC } from './util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -175,10 +175,12 @@ import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
+import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput } from './components/forms/input/SelectInput';
+import { DatePickerInput } from './components/forms/input/DatePickerInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
@@ -359,9 +361,11 @@ export {
     QueryGridPanel,
     CollapsiblePanel,
     ExpandableDndRow,
+    BulkAddUpdateForm,
     BulkUpdateForm,
     LookupSelectInput,
     SelectInput,
+    DatePickerInput,
     QuerySelect,
     QuerySelectOwnProps,
     UserSelectInput,
@@ -432,6 +436,7 @@ export {
     FormStep,
     FormTabs,
     ISelectInitData,
+    IMPORT_DATA_FORM_TYPES,
 
     // heatmap
     addDateRangeFilter,
@@ -607,8 +612,10 @@ export {
     debounce,
     valueIsEmpty,
     getActionErrorMessage,
+    resolveErrorMessage,
     getHelpLink,
     helpLinkNode,
+    DATA_IMPORT_TOPIC,
 
     // url functions
     buildURL,

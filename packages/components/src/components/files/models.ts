@@ -61,32 +61,14 @@ export const DEFAULT_FILE: IFile = {
     propertiesRowId: undefined
 };
 
-export interface DisplayFile {
-    id: string,
-    file: WebDavFile,
-    toggled: boolean,
-    loading: boolean,
-    checked: boolean,
-    children?: List<DisplayFile>
+export interface FileSizeLimitProps {
+    maxSize?: {
+        value: number
+        displayValue: string
+    }
+    maxPreviewSize?: {
+        value: number
+        displayValue: string
+    }
 }
-
-export class TreeDisplayFile extends Record({
-    id: undefined,
-    file: undefined,
-    toggled: false,
-    loading: false,
-    checked: false,
-    children: undefined
-}) implements DisplayFile
-{
-    id: string;
-    file: WebDavFile;
-    toggled: boolean;
-    loading: boolean;
-    checked: boolean;
-    children: List<DisplayFile>;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    };
-}
+export const ALL_FILES_LIMIT_KEY = "all";

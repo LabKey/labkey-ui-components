@@ -50,11 +50,13 @@ import {
     QueryGridModel,
     SchemaQuery,
 } from '../base/models/model';
-import { getActionErrorMessage } from '../../util/messaging';
+import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Progress } from '../base/Progress';
+import { FileSizeLimitProps } from '../files/models';
+import { IMPORT_DATA_FORM_TYPES } from '../../constants';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({isInit: false});
@@ -69,6 +71,10 @@ interface OwnProps {
     location?: Location
     allowBulkRemove?: boolean
     allowBulkInsert?: boolean
+    allowBulkUpdate?: boolean
+    fileSizeLimits?: Map<string, FileSizeLimitProps>
+    maxInsertRows?: number
+    onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -76,6 +82,7 @@ type Props = OwnProps & WithFormStepsProps;
 interface State {
     schemaQuery: SchemaQuery
     model: AssayWizardModel,
+    error: React.ReactNode,
     showRenameModal : boolean
     duplicateFileResponse?: DuplicateFilesResponse
     importAgain?: boolean
@@ -89,7 +96,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         this.state = {
             schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
             model: AssayImportPanelsImpl.getInitWizardModel(props),
-            showRenameModal: false
+            showRenameModal: false,
+            error: undefined
         }
     }
 
@@ -299,20 +307,26 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     handleFileChange = (attachments: Map<string, File>) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(attachments.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
+        }
         this.setState((state) => ({
+            error: undefined,
             model: state.model.merge({
                 attachedFiles: attachments,
-                errorMsg: undefined,
                 usePreviousRunFile: false,
             }) as AssayWizardModel
         }));
     };
 
     handleFileRemove = (attachmentName: string) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(false, IMPORT_DATA_FORM_TYPES.FILE);
+        }
         this.setState((state) => {
             return {
+                error: undefined,
                 model : state.model.merge({
-                    errorMsg: undefined,
                     attachedFiles: Map<string, File>(),
                     usePreviousRunFile: false
                 }) as AssayWizardModel
@@ -329,7 +343,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             ...this.state.model.batchProperties.toObject(),
             ...fieldValues,
         };
-
+        if (this.props.onDataChange) {
+            this.props.onDataChange(true, IMPORT_DATA_FORM_TYPES.OTHER);
+        }
         this.handleChange('batchProperties', Map<string, any>(values ? values : {}));
     };
 
@@ -355,6 +371,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             return result;
         }, {});
 
+        if (this.props.onDataChange) {
+            this.props.onDataChange(true, IMPORT_DATA_FORM_TYPES.OTHER);
+        }
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
             this.setState((state) => ({
                 model: state.model.merge({
@@ -366,8 +385,11 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     handleDataTextChange = (inputName: string, fieldValues: any) => {
+        if (this.props.onDataChange) {
+            this.props.onDataChange(fieldValues !== undefined && fieldValues !== '', IMPORT_DATA_FORM_TYPES.TEXT);
+        }
         // use '' to clear out text area
-        this.handleChange('dataText', fieldValues != undefined ? fieldValues : '');
+        this.handleChange('dataText', fieldValues !== undefined ? fieldValues : '');
     };
 
     handleChange(prop: string, value: any, onComplete?: Function) {
@@ -399,7 +421,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             }
         }).catch((reason) => {
             this.setState((state) => ({
-                model: state.model.set('errorMsg', getActionErrorMessage("There was in a problem checking for duplicate file names.", "assay run")) as AssayWizardModel
+                error: getActionErrorMessage("There was a problem checking for duplicate file names.", "assay run"),
             }));
         });
     }
@@ -414,31 +436,40 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     onFinish(importAgain: boolean) {
-        const { currentStep, onSave } = this.props;
+        const { currentStep, onSave, maxInsertRows } = this.props;
         const { model } = this.state;
-        this.setModelState(true, undefined);
         const data = model.prepareFormData(currentStep, this.getDataGridModel());
+        if (model.isCopyTab(currentStep) && maxInsertRows && ((Array.isArray(data.dataRows) && data.dataRows.length > maxInsertRows) || (data.dataRows && data.dataRows.size > maxInsertRows))) {
+            this.setModelState(false, 'You have exceeded the maximum number of rows allowed (' + maxInsertRows +').  Please divide your data into smaller groups and try again.')
+        }
+        else {
 
-        uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
-            importAssayRun(processedData)
-                .then((response: AssayUploadResultModel) => {
-                    if (importAgain && onSave) {
-                        this.onSuccessContinue(response);
-                    }
-                    else {
-                        this.onSuccessComplete(response);
-                    }
-                })
-                .catch((reason) => {
-                    const error = reason.message || reason.exception;
-                    console.error("Problem importing assay run", error);
-                    this.onFailure(error || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
-                });
-        }).catch((reason) => {
-            const error = reason.message || reason.exception;
-            console.error("Problem uploading assay run files", error);
-            this.onFailure(error || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
-        });
+            this.setModelState(true, undefined);
+            const errorPrefix = "There was a problem importing the assay results.";
+            uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
+                importAssayRun(processedData)
+                    .then((response: AssayUploadResultModel) => {
+                        if (this.props.onDataChange) {
+                            this.props.onDataChange(false);
+                        }
+                        if (importAgain && onSave) {
+                            this.onSuccessContinue(response);
+                        }
+                        else {
+                            this.onSuccessComplete(response);
+                        }
+                    })
+                    .catch((reason) => {
+                        console.error("Problem importing assay run", reason);
+                        const message = resolveErrorMessage(reason);
+                        this.onFailure(message ? errorPrefix + " " + message : getActionErrorMessage(errorPrefix, "referenced samples or assay design", false))
+                    });
+            }).catch((reason) => {
+                console.error("Problem uploading assay run files", reason);
+                const message = resolveErrorMessage(reason);
+                this.onFailure( message ? errorPrefix + " " + message :getActionErrorMessage(errorPrefix, "referenced samples or assay design", false));
+            });
+        }
     };
 
     onSuccessContinue = (response: AssayUploadResultModel) => {
@@ -477,6 +508,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     setModelState(isSubmitting: boolean, errorMsg: React.ReactNode) {
         this.setState((state) => {
             return {
+                error: errorMsg,
                 model : state.model.merge({
                     isSubmitting,
                     errorMsg,
@@ -541,7 +573,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     render() {
-        const { currentStep, onCancel, acceptedPreviewFileFormats, allowBulkRemove, allowBulkInsert, onSave } = this.props;
+        const { currentStep, onCancel, acceptedPreviewFileFormats, allowBulkRemove, allowBulkInsert, allowBulkUpdate, onSave } = this.props;
         const { model, showRenameModal } = this.state;
 
         if (!model.isInit) {
@@ -577,8 +609,12 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     fullWidth={false}
                     allowBulkRemove={allowBulkRemove}
                     allowBulkInsert={allowBulkInsert}
+                    allowBulkUpdate={allowBulkUpdate}
+                    fileSizeLimits={this.props.fileSizeLimits}
+                    maxInsertRows={this.props.maxInsertRows}
+                    onGridDataChange={this.props.onDataChange}
                 />
-                {model.errorMsg && <Alert bsStyle="danger">{model.errorMsg}</Alert>}
+                {this.state.error && <Alert bsStyle="danger">{this.state.error}</Alert>}
                 <WizardNavButtons
                     cancel={onCancel}
                     containerClassName=""

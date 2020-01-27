@@ -1,6 +1,101 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.21.0
+*Released*: 24 January 2020
+* Item 6654: Changes to include server side warnings while saving domain
+
+### version 0.20.0
+*Released*: 23 January 2020
+* Add utility method resolveErrorMessage that can be used to extract a string error message from API responses and convert some
+messages that are not very friendly for users into better text.
+
+### version 0.19.0
+*Released*: 22 January 2020
+* Assay import editable grid button changes to match sample create (for bulk insert, update, remove, add)
+* Issue 39182: Disabled "Assay Data" create menu item tool-top doesn't go away
+* Fix for Domain designer field focus jumps after moving a field row
+
+### version 0.18.2
+*Released*: 22 January 2020
+* Make EditableGrid.validateData case insensitive and trim key values prior to comparison
+
+### version 0.18.1
+*Released*: 22 January 2020
+* Hide the ViewAction on the omnibox when there are no non-default views
+* Hide the ViewAction on the omnibox when QueryModel.showViewSelector is false
+
+### version 0.18.0
+*Released*: 22 January 2020
+* Add optional callback for SampleInsertPanel when data changes to help in detecting dirty state.
+* Add optional callback for AssayImportPanels when data changes to help in detecting dirty state.
+
+### version 0.17.0
+*Released*: 21 January 2020
+* EditableGrid cell render optimization
+    - prevent unnecessary re-render of all cells when one is edited/selected/etc.
+    - move reactn global state connection to EditableGrid and make Cell components PureComponents
+    - update to reactn version 2.2.4
+
+### version 0.16.2
+*Released*: 21 January 2020
+* Item 6759: Use Query.getServerDate() for CreatedModified.tsx component (fixes timezone issue)
+    * Includes update of @labkey/api to version 0.0.31
+
+### version 0.16.1
+*Released*: 21 January 2020
+* Misc button text updates for Sample Manager (prefer 'Save' and 'Import' over 'Finish')
+
+### version 0.16.0
+*Released*: 20 January 2020
+* Add property to QueryGridModel to pass through parameters for parameterized queries
+
+### version 0.15.0
+*Released*: 17 January 2020
+* Move add, bulk, edit, and delete controls to be together for SampleInsertPanel
+* Add DatePickerInput
+* Update QueryInfoForms to use date picker for date fields
+* Add BulkAddUpdateForm
+* Add support for bulk update selected grid rows for SampleInsertPanel and AssayImportPanels
+* Update SampleInsertPanel to support tabbed grid and file based insert
+
+### version 0.14.0
+*Released*: 17 January 2020
+* QueryGrid paging improvements / fixes
+    * Issue 38823: Allow users to select the number of rows they want to display in a grid on a single page
+    * Issue 38824: Allow users to go to the first and last page in a grid and see current page number and total page count
+    * Issue 39367: Disabled button tool tip on grid doesn't hide for disabled button
+    * Issue 39405: Paging too far can result in no data
+    * Issue 39420: Setting url pageSize to negative number results in all data being shown
+
+### version 0.13.0
+*Released*: 14 January 2020
+* Item 6571: User Details panel updates to allow single user delete / deactivate / reactivate / reset password
+    - add resetPassword() action and UserResetPasswordConfirmModal
+    - also include optional message input for CreateUsersModal
+    - Issue 39374: Better handling of selection state for SiteUsersGridPanel on page reload and navigation
+
+### version 0.12.0
+*Released*: 13 January 2020
+* Update FileAttachmentForm and relatives
+  - Add sizeLimits property for checking against maximum size
+  - Change styling of error block to Alert instead of simple div
+  - If multiple files are allowed, attach the files that pass validation even if some do not
+* Update Controls and EditableGrid to add optional property for total number of rows allowed
+and add a tooltip for the AddControls with info on the data size limits.
+* Update placeholder text for cut-and-paste area for assay data
+* Add optional parameters for AssayImportPanels and RunDataPanel and SampleInsertPanel
+* Add clear button on cut-and-paste tab for assay import
+* Issue 38567: use POST instead of GET to help deal with long filters (particularly IN filters) when dealing with selections
+* Issue 39381: fix column layout for select inputs in QueryInfoForm
+
+### version 0.11.0
+*Released*: 13 January 2020
+* Item 6633: Omit some property types from the field designer for SM
+  * Changed basePropertiesOnly option to appPropertiesOnly
+  * Expanded application of appPropertiesOnly to additional controls
+  * DomainForm hide field types and DomainRow options based on appPropertiesOnly
+
 ### version 0.10.0
 *Released*: 9 January 2020
 * Item 6506: User management components and related model / action updates

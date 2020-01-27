@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-
+import { Map } from "immutable";
 import { ChartSelector } from '../chart/ChartSelector';
 import { Export } from './Export';
 import { QueryGridPaging } from './QueryGridPaging';
@@ -22,6 +22,7 @@ import { ViewSelector } from './ViewSelector';
 import { URLBox } from './URLBox';
 import { GridSelectionBanner } from './GridSelectionBanner';
 import { QueryGridModel } from '../base/models/model';
+import { PageSizeSelector } from "./PageSizeSelector";
 
 type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;
 export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;
@@ -32,6 +33,7 @@ interface QueryGridBarProps {
     showSampleComparisonReports?: boolean,
     onReportClicked?: Function,
     onCreateReportClicked?: Function,
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
 }
 
 /**
@@ -46,7 +48,7 @@ interface QueryGridBarProps {
  */
 export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
     render() {
-        const { buttons, model, showSampleComparisonReports, onReportClicked, onCreateReportClicked } = this.props;
+        const { buttons, model, showSampleComparisonReports, onReportClicked, onCreateReportClicked, onSelectionChange } = this.props;
         let buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
 
         if (buttons) {
@@ -67,6 +69,10 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
 
         const exportBtn = model && model.showExport ? (
             <Export model={model} />
+        ) : null;
+
+        const pageSizeBtn = model && model.isPaged ? (
+            <PageSizeSelector model={model} />
         ) : null;
 
         const chart = model && model.showChartSelector ? (
@@ -102,9 +108,8 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             <div className="col-md-6 col-sm-6 col-xs-12">
                 <div className="paging pull-right text-nowrap">
                     {paging}
-
+                    {pageSizeBtn}
                     {exportBtn}
-
                     {view}
                 </div>
             </div>
@@ -126,7 +131,11 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
 
                 <div className="row">
                     <div className="col-md-12 col-xs-12">
-                        <GridSelectionBanner containerCls="QueryGrid-bottom-spacing" model={model}/>
+                        <GridSelectionBanner
+                            containerCls="QueryGrid-bottom-spacing"
+                            model={model}
+                            onSelectionChange={onSelectionChange}
+                        />
                     </div>
                 </div>
             </div>

@@ -69,6 +69,7 @@ import {
 import { buildURL, getSortFromUrl } from './url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
 import { intersect, naturalSort, not } from './util/utils';
+import { resolveErrorMessage } from './util/messaging';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -118,7 +119,7 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
                 }
             }
         }).catch(reason => {
-            setError(newModel, reason.message, connectedComponent);
+            setError(newModel, resolveErrorMessage(reason, "data"), connectedComponent);
         });
     }
     else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
@@ -127,10 +128,14 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
     }
 }
 
-export function gridClearAll(model: QueryGridModel) {
+export function gridClearAll(model: QueryGridModel, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
     clearSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath)
         .then(() => {
-           updateQueryGridModel(model, QueryGridModel.EMPTY_SELECTION);
+           const updatedModel = updateQueryGridModel(model, QueryGridModel.EMPTY_SELECTION);
+
+            if (onSelectionChange) {
+                onSelectionChange(updatedModel, undefined, false);
+            }
         }).catch(err => {
             const error = err ? err : {message: 'Something went wrong when clearing the selection from the grid.'};
             gridShowError(model, error);
@@ -149,6 +154,7 @@ export function selectAll(key: string, schemaName: string, queryName: string, fi
                 resolve(response);
             }),
             failure: Utils.getCallbackWrapper((response) => {
+                console.error("Problem in selecting all items in the grid", key, schemaName, queryName, response)
                 reject(response);
             }),
         });
@@ -156,19 +162,20 @@ export function selectAll(key: string, schemaName: string, queryName: string, fi
 }
 
 
-export function gridSelectAll(model: QueryGridModel) {
+export function gridSelectAll(model: QueryGridModel, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
     const id = model.getId();
 
     selectAll(id, model.schema, model.query, model.getFilters(), model.containerPath)
         .then(data => {
             if (data && data.count > 0) {
                 return getSelected(id, model.schema, model.query, model.getFilters(), model.containerPath).then(response => {
-                    updateSelections(model, {
-                        selectedIds: List(response.selected)
-                    })
+                    const updatedModel = updateSelections(model, {selectedIds: List(response.selected)});
 
+                    if (onSelectionChange) {
+                        onSelectionChange(updatedModel, undefined, true);
+                    }
                 }).catch(err => {
-                    const error = err ? err : {message: 'Something went wrong in selecting all items for this grid (name: ' + model.getModelName() + ', id:' + id + ')'};
+                    const error = err ? err : {message: 'Something went wrong in selecting all items for this grid'};
                     gridShowError(model, error);
                 });
             }
@@ -239,6 +246,7 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
                 onSelectionChange(updatedModel, row, checked);
             }
         }).catch(reason => {
+            console.error(reason);
             const error = reason ? reason : {message: 'There was a problem updating the selection for this grid.'};
             gridShowError(model, error);
         });
@@ -323,7 +331,23 @@ export function loadPage(model: QueryGridModel, pageNumber: number) {
             }));
         }
         else {
-            let newModel = updateQueryGridModel(model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
+            const newModel = updateQueryGridModel(model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
+            gridLoad(newModel);
+        }
+    }
+}
+
+export function setMaxRows(model: QueryGridModel, maxRows: number) {
+    if (maxRows !== model.maxRows) {
+        // also make sure to reset page number to force grid back to first page
+        if (model.bindURL) {
+            replaceParameters(getLocation(), Map<string, any>({
+                [model.createParam('p')]: undefined,
+                [model.createParam('pageCount')]: maxRows
+            }));
+        }
+        else {
+            const newModel = updateQueryGridModel(model, {pageNumber: 1, maxRows});
             gridLoad(newModel);
         }
     }
@@ -488,6 +512,7 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
         }
         else {
             console.error("No model available for loading.", payload.error);
+            setError(model, resolveErrorMessage(payload.error, "data"));
         }
     });
 }
@@ -496,14 +521,16 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     let props = {
         filterArray: List<Filter.IFilter>(),
         pageNumber: 1,
+        maxRows: model.maxRows,
         sorts: model.sorts || undefined,
-        urlParamValues: Map<string, any>().asMutable(),
+        urlParamValues: Map<string, any>(),
         view: undefined
     };
 
     const location = getLocation();
     const queryString = buildQueryString(location.query);
     const p = location.query.get(model.createParam('p'));
+    const pageCount = location.query.get(model.createParam('pageCount'));
     const q = location.query.get(model.createParam('q'));
     const view = location.query.get(model.createParam('view'));
 
@@ -518,6 +545,16 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
         if (!isNaN(pageNumber)) {
             props.pageNumber = pageNumber;
         }
+
+        let maxRows = parseInt(pageCount);
+        if (!isNaN(maxRows)) {
+            // Issue 39420: pageCount param of negative number will result in all rows being shown in QueryGrid
+            if (maxRows < 0) {
+                maxRows = 0;
+            }
+
+            props.maxRows = maxRows;
+        }
     }
 
     // pick up other parameters as indicated by the model
@@ -525,12 +562,10 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
         model.urlParams.forEach((paramName) => {
             const value = location.query.get(model.createParam(paramName));
             if (value !== undefined) {
-                props.urlParamValues.set(paramName, value);
+                props.urlParamValues = props.urlParamValues.set(paramName, value);
             }
         });
     }
-
-    props.urlParamValues = props.urlParamValues.asImmutable();
 
     return props;
 }
@@ -787,9 +822,11 @@ function getQueryParams(key: string, schemaName: string, queryName: string, filt
 export function getSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>, containerPath?: string): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'getSelected.api', getFilteredQueryParams(key, schemaName, queryName, filterList), {
+            url: buildURL('query', 'getSelected.api', undefined, {
                 container: containerPath
             }),
+            method: "POST",
+            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -807,14 +844,16 @@ interface ISelectResponse {
 function clearSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>, containerPath?: string): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'clearSelected.api', getFilteredQueryParams(key, schemaName, queryName, filterList), {
+            url: buildURL('query', 'clearSelected.api', undefined, {
                 container: containerPath
             }),
             method: 'POST',
+            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
             failure: Utils.getCallbackWrapper((response) => {
+                console.error("Problem clearing the selection ", key, schemaName, queryName, response);
                 reject(response);
             })
         });
@@ -980,7 +1019,8 @@ export function getSelectedData(model: QueryGridModel) : Promise<IGridResponse> 
             totalRows
         });
     }).catch( reason => {
-        reject(reason);
+        console.error(reason);
+        reject(resolveErrorMessage(reason));
     }));
 }
 
@@ -1057,6 +1097,7 @@ function setError(model: QueryGridModel, message: string, connectedComponent?: R
     }, connectedComponent)
 }
 
+// TODO update this to not show the status and use resolveErrorMessage
 export function gridShowError(model: QueryGridModel, error: any, connectedComponent?: React.Component) {
     setError(model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error', connectedComponent);
 }
@@ -1520,13 +1561,39 @@ function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: 
  * @param colMin the starting column
  */
 export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, rowCount: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
-    const columns = gridModel.getInsertColumns();
     const editorModel = getEditorModel(gridModel.getId());
 
-    const getLookup = (col: QueryColumn) => getLookupStore(col);
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
     let selectionCells = Set<string>();
+
+    const preparedData = prepareInsertRowDataFromBulkForm(gridModel, rowData, colMin);
+    const { values, messages } = preparedData;
+
+    for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
+        rowData.forEach((value, cn) => {
+
+            const colIdx = colMin + cn;
+            const cellKey = genCellKey(colIdx, rowIdx);
+
+            cellMessages = cellMessages.set(cellKey, messages.get(cn));
+            selectionCells = selectionCells.add(cellKey);
+            cellValues = cellValues.set(cellKey, values.get(cn));
+        });
+    }
+
+    return updateEditorModel(editorModel, {
+        cellValues,
+        cellMessages,
+        selectionCells,
+        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount)
+    });
+}
+
+function prepareInsertRowDataFromBulkForm(gridModel: QueryGridModel, rowData: List<any>, colMin: number = 0) {
+    const columns = gridModel.getInsertColumns();
+
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
 
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
@@ -1561,25 +1628,12 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
         values = values.push(cv);
     });
 
-    for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
-        rowData.forEach((value, cn) => {
-
-            const colIdx = colMin + cn;
-            const cellKey = genCellKey(colIdx, rowIdx);
-
-            cellMessages = cellMessages.set(cellKey, messages.get(cn));
-            selectionCells = selectionCells.add(cellKey);
-            cellValues = cellValues.set(cellKey, values.get(cn));
-        });
+    return {
+        values,
+        messages
     }
-
-    return updateEditorModel(editorModel, {
-        cellValues,
-        cellMessages,
-        selectionCells,
-        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount)
-    });
 }
+
 
 export function pasteEvent(modelId: string, event: any, onBefore?: any, onComplete?: any, columnMetadata?: Map<string, EditableColumnMetadata>) {
     const model = getEditorModel(modelId);
@@ -2307,6 +2361,80 @@ export function removeAllRows(model: QueryGridModel) : QueryGridModel {
         isError: false,
         message: undefined
     });
+}
+
+export function updateGridFromBulkForm(gridModel: QueryGridModel, rowData: OrderedMap<string, any>, dataRowIndexes: List<number>) : EditorModel {
+    const editorModel = getEditorModel(gridModel.getId());
+
+    let cellMessages = editorModel.cellMessages;
+    let cellValues = editorModel.cellValues;
+
+    const preparedData = prepareUpdateRowDataFromBulkForm(gridModel, rowData);
+    const { values, messages } = preparedData; // {3: 'x', 4: 'z}
+
+    dataRowIndexes.forEach((rowIdx) => {
+        values.forEach((value, colIdx) => {
+            const cellKey = genCellKey(colIdx, rowIdx);
+            cellMessages = cellMessages.set(cellKey, messages.get(colIdx));
+            cellValues = cellValues.set(cellKey, value);
+        });
+    });
+
+    return updateEditorModel(editorModel, {
+        cellValues,
+        cellMessages
+    });
+}
+
+function prepareUpdateRowDataFromBulkForm(gridModel: QueryGridModel, rowData: OrderedMap<string, any>) {
+    const columns = gridModel.getInsertColumns();
+
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
+
+    let values = OrderedMap<number, List<ValueDescriptor>>();
+    let messages = OrderedMap<number, CellMessage>();
+
+    rowData.forEach((data, colKey) => {
+        let colIdx = -1;
+        columns.forEach((col, ind) => {
+            if (col.fieldKey === colKey) {
+                colIdx = ind;
+                return;
+            }
+        });
+
+        const col = columns.get(colIdx);
+
+        let cv : List<ValueDescriptor>;
+
+        if (data && col && col.isLookup()) {
+            cv =  List<ValueDescriptor>();
+            // value had better be the rowId here, but it may be several in a comma-separated list.
+            // If it's the display value, which happens to be a number, much confusion will arise.
+            const values = data.toString().split(",");
+            values.forEach((val) => {
+                const intVal = parseInt(val);
+                const {message, valueDescriptor} = getLookupDisplayValue(col, getLookup(col), isNaN(intVal) ? val : intVal);
+                cv = cv.push(valueDescriptor);
+                if (message) {
+                    messages = messages.set(colIdx, message);
+                }
+            });
+
+        } else {
+            cv = List([{
+                display: data,
+                raw: data
+            }]);
+        }
+
+        values = values.set(colIdx, cv);
+    });
+
+    return {
+        values,
+        messages
+    }
 }
 
 

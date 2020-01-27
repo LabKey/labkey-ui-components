@@ -80,6 +80,8 @@ interface IDomainFormInput {
     maxPhiLevel?: string  // Just for testing, only affects display
     containerTop?: number // This sets the top of the sticky header, default is 0
     modelDomains?: List<DomainDesign> //Set of domains that encompass the full protocol, that may impact validation or alerts
+    appPropertiesOnly?: boolean //Flag to indicate if LKS specific types should be shown (false) or not (true)
+    showFilePropertyType?: boolean //Flag to indicate if the File property type should be allowed
 }
 
 interface IDomainFormState {
@@ -113,7 +115,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         helpTopic: FIELD_EDITOR_TOPIC,
         showHeader: true,
         initCollapsed: false,
-        isNew: false
+        isNew: false,
+        appPropertiesOnly: false,
     };
 
     constructor(props) {
@@ -361,6 +364,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.setState(() => ({dragId: idIndex}));
 
         this.onDomainChange(domain);
+
+        // remove focus for any current element so that it doesn't "jump" after drag end
+        (document.activeElement as HTMLElement).blur();
     };
 
     onDragEnd = (result) => {
@@ -683,7 +689,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm() {
-        const { domain, helpNoun, containerTop, appDomainHeaderRenderer } = this.props;
+        const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
@@ -728,6 +734,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 showDefaultValueSettings={domain.showDefaultValueSettings}
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
                                                 defaultValueOptions={domain.defaultValueOptions}
+                                                appPropertiesOnly={appPropertiesOnly}
+                                                showFilePropertyType={showFilePropertyType}
                                             />
                                         }))}
                                         {provided.placeholder}

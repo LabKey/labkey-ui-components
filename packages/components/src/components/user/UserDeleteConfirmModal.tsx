@@ -1,19 +1,20 @@
 import React from 'react';
 import { Utils } from '@labkey/api';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { getSelectedUserIds, deleteUsers } from "./actions";
-import { QueryGridModel } from "../base/models/model";
+import { deleteUsers } from "./actions";
 import { Alert } from "../base/Alert";
+import { List } from "immutable";
+import { resolveErrorMessage } from '../../util/messaging';
 
 interface Props {
-    model: QueryGridModel
+    userIds: List<number>
     onComplete: (response: any) => any
     onCancel: () => any
 }
 
 interface State {
     submitting: boolean
-    error: string
+    error: React.ReactNode
 }
 
 export class UserDeleteConfirmModal extends React.Component<Props, State> {
@@ -28,22 +29,21 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
     }
 
     onConfirm = () => {
-        const { model, onComplete } = this.props;
-        const userIds = getSelectedUserIds(model);
+        const { userIds, onComplete } = this.props;
 
         this.setState(() => ({submitting: true}));
         deleteUsers(userIds)
             .then(onComplete)
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({error: (error ? error.exception : 'Unknown error'), submitting: false}));
+                this.setState(() => ({error: resolveErrorMessage(error, "user", "users", "delete"), submitting: false}));
             });
     };
 
     render() {
-        const { onCancel, model } = this.props;
+        const { onCancel, userIds } = this.props;
         const { error, submitting } = this.state;
-        const userCount = model.selectedIds.size;
+        const userCount = userIds.size;
 
         return (
             <ConfirmModal
@@ -51,15 +51,16 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
                 msg={
                     <>
                         <p>
-                            Deletion of a user is <b>permanent and cannot be undone</b>. The user's display name will no
-                            longer be displayed with actions taken or data uploaded by that user. Also, group membership
-                            and permission settings for the deleted users will be lost. You cannot reactivate a deleted
-                            user to restore this information.
+                            Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login,
+                            but their information will be preserved in case they are reactivated at a later time.
                         </p>
                         <p>
-                            Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login,
-                            but their information will be preserved for display purposes, and their group memberships
-                            will be preserved in case they are reactivated at a later time.
+                            Deletion of a user is <b>permanent and cannot be undone</b>. Deleted users:
+                            <ul>
+                                <li>will no longer be displayed with actions taken or data uploaded by them</li>
+                                <li>will be removed from groups and permissions settings</li>
+                                <li>cannot be reactivated</li>
+                            </ul>
                         </p>
                         <p>
                             {Utils.pluralBasic(userCount, 'user')} will be deleted. Do you want to proceed?

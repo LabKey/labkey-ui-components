@@ -22,6 +22,7 @@ interface ConditionalFormattingAndValidationProps {
     field: DomainField,
     onChange: (string, any) => any
     showingModal: (boolean) => any
+    hideConditionalFormatting?: boolean
 }
 
 interface ConditionalFormattingAndValidationState {
@@ -136,7 +137,9 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
     };
 
     renderConditionalFormats = () => {
-        const { field, index } = this.props;
+        const { field, index, hideConditionalFormatting } = this.props;
+        if (hideConditionalFormatting)
+            return null;
 
         let count = field.conditionalFormats ? field.conditionalFormats.size : 0;
 
@@ -161,23 +164,25 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
     };
 
     render() {
-        const { index, field } = this.props;
+        const { index, field, hideConditionalFormatting } = this.props;
         const { showCondFormat, showRegex, showRange } = this.state;
 
         const CondFormatModal = ValidatorModal(ConditionalFormatOptions);
         const RangeValidator = ValidatorModal(RangeValidationOptions);
         const RegexValidator = ValidatorModal(RegexValidationOptions);
 
+        const title = hideConditionalFormatting ? 'Validation Options' : 'Conditional Formatting and Validation Options';
+
         return (
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading domain-field-section-hdr'}>Conditional Formatting and Validation Options</div>
+                        <div className={'domain-field-section-heading domain-field-section-hdr'}>{title}</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        {this.renderConditionalFormats()}
+                        {!hideConditionalFormatting && this.renderConditionalFormats()}
                         {this.renderValidator(false)}
                         {DomainField.hasRangeValidation(field) && this.renderValidator(true)}
                         {showCondFormat &&

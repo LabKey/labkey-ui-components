@@ -17,14 +17,13 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { List } from "immutable";
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
-import { QueryGridModel } from "../base/models/model";
 
 describe("<UserDeleteConfirmModal/>", () => {
 
     test("single user selected", () => {
         const component = (
             <UserDeleteConfirmModal
-                model={new QueryGridModel({selectedIds: List<string>(['test1'])})}
+                userIds={List<number>([1])}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
             />
@@ -44,7 +43,7 @@ describe("<UserDeleteConfirmModal/>", () => {
     test("multiple users selected", () => {
         const component = (
             <UserDeleteConfirmModal
-                model={new QueryGridModel({selectedIds: List<string>(['test1', 'test2', 'test3'])})}
+                userIds={List<number>([1, 2, 3])}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
             />
@@ -64,7 +63,7 @@ describe("<UserDeleteConfirmModal/>", () => {
     test("with state", () => {
         const component = (
             <UserDeleteConfirmModal
-                model={new QueryGridModel({selectedIds: List<string>(['test1', 'test2', 'test3'])})}
+                userIds={List<number>([1, 2, 3])}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
             />

@@ -16,8 +16,8 @@
 import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { mount } from 'enzyme';
-
 import { CreatedModified } from './CreatedModified';
+import { JEST_SITE_ADMIN_USER_ID } from "../../test/data/constants";
 
 const createdRow = Map<string, any>(fromJS({
    Created: {
@@ -26,7 +26,7 @@ const createdRow = Map<string, any>(fromJS({
    },
    CreatedBy: {
       displayValue: "username",
-      url: "#/q/core/siteusers/1004",
+      url: "#/q/core/siteusers/" + JEST_SITE_ADMIN_USER_ID,
       value: 1001
    }
 }));
@@ -55,7 +55,7 @@ const createdModifiedRow = Map<string, any>(fromJS({
 describe("<CreatedModified/>", () => {
 
    test("with created row", () => {
-      const component = (<CreatedModified row={createdRow}/>);
+      const component = (<CreatedModified row={createdRow} useServerDate={false}/>);
 
       const wrapper = mount(component);
       expect(wrapper.text()).toContain('Created ');
@@ -68,7 +68,7 @@ describe("<CreatedModified/>", () => {
    });
 
    test("with modified row", () => {
-      const component = (<CreatedModified row={createdModifiedRow}/>);
+      const component = (<CreatedModified row={createdModifiedRow} useServerDate={false}/>);
 
       const wrapper = mount(component);
       expect(wrapper.text()).toContain('Modified ');

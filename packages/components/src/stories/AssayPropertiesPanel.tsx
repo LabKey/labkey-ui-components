@@ -44,7 +44,7 @@ class WrappedAssayPropertiesPanel extends React.Component<Props, State> {
                 model={this.state.model}
                 onChange={this.onAssayPropertiesChange}
                 asPanel={boolean('asPanel', true)}
-                basePropertiesOnly={boolean('basePropertiesOnly', false)}
+                appPropertiesOnly={boolean('appPropertiesOnly', false)}
                 initCollapsed={boolean('initCollapsed', false)}
                 collapsible={boolean('collapsible', true)}
             />

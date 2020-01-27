@@ -11,7 +11,14 @@ import { Security } from '@labkey/api'
 import { PermissionAssignments } from "../components/permissions/PermissionAssignments";
 import { SecurityPolicy, SecurityRole } from "../components/permissions/models";
 import { Principal } from "../components/permissions/models";
-import { getPrincipals, getPrincipalsById, getRolesByUniqueName, processGetRolesResponse } from "../components/permissions/actions";
+import {
+    getInactiveUsers,
+    getPrincipals,
+    getPrincipalsById,
+    getRolesByUniqueName,
+    processGetRolesResponse
+} from "../components/permissions/actions";
+import { JEST_SITE_ADMIN_USER_ID } from "../test/data/constants";
 import policyJSON from "../test/data/security-getPolicy.json";
 import './stories.scss'
 
@@ -28,6 +35,7 @@ interface State {
     rolesByUniqueName: Map<string, SecurityRole>
     principals: List<Principal>
     principalsById: Map<number, Principal>
+    inactiveUsersById: Map<number, Principal>
     error: string
     message: string
 }
@@ -43,6 +51,7 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
             rolesByUniqueName: undefined,
             principals: undefined,
             principalsById: undefined,
+            inactiveUsersById: undefined,
             error: undefined,
             message: undefined
         };
@@ -65,8 +74,19 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
                     policy: SecurityPolicy.updateAssignmentsData(state.policy, principalsById)
                 }));
             }).catch((response) => {
-            this.setState(() => ({error: response.message}));
-        });
+                this.setState(() => ({error: response.message}));
+            });
+
+        getInactiveUsers()
+            .then((principals: List<Principal>) => {
+                const inactiveUsersById = getPrincipalsById(principals);
+                this.setState((state) => ({
+                    inactiveUsersById,
+                    policy: SecurityPolicy.updateAssignmentsData(state.policy, inactiveUsersById)
+                }));
+            }).catch((response) => {
+                this.setState(() => ({error: response.message}));
+            });
     }
 
     onChange = (policy: SecurityPolicy) => {
@@ -87,7 +107,7 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
                 typeToShow={showUsersOnly ? 'u' : undefined}
                 rolesToShow={rolesToShow}
                 containerId={'BOGUS'}
-                disabledId={1004}
+                disabledId={JEST_SITE_ADMIN_USER_ID}
                 onChange={this.onChange}
                 onSuccess={() => console.log('Success')}
             />

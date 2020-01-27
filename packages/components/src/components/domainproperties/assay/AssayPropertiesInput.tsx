@@ -23,17 +23,17 @@ interface AssayPropertiesInputProps {
     required?: boolean
     colSize?: number
     helpTipBody?: () => any
-    basePropertiesOnly?: boolean
+    appPropertiesOnly?: boolean
 }
 
 export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInputProps, any> {
 
     render() {
-        const { label, required, helpTipBody, colSize, basePropertiesOnly, children } = this.props;
+        const { label, required, helpTipBody, colSize, appPropertiesOnly, children } = this.props;
 
         return (
             <Row className={'margin-top'}>
-                <Col xs={3} lg={basePropertiesOnly ? 2 : 4}>
+                <Col xs={3} lg={appPropertiesOnly ? 2 : 4}>
                     {getSplitSentence(label, false)}
                     <span className='domain-no-wrap'>
                         {getSplitSentence(label, true)}
@@ -47,7 +47,7 @@ export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInp
                         }
                     </span>
                 </Col>
-                <Col xs={colSize || 9} lg={basePropertiesOnly ? 10 : 8}>
+                <Col xs={colSize || 9} lg={appPropertiesOnly ? 10 : 8}>
                     {children}
                 </Col>
             </Row>
@@ -58,7 +58,7 @@ export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInp
 interface InputProps {
     model: AssayProtocolModel
     onChange: (evt) => void
-    basePropertiesOnly?: boolean
+    appPropertiesOnly?: boolean
 }
 
 export function NameInput(props: InputProps) {
@@ -66,7 +66,7 @@ export function NameInput(props: InputProps) {
         <AssayPropertiesInput
             label={'Name'}
             required={true}
-            basePropertiesOnly={props.basePropertiesOnly}
+            appPropertiesOnly={props.appPropertiesOnly}
             helpTipBody={() => {
                 return (
                     <>
@@ -91,7 +91,7 @@ export function DescriptionInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label={'Description'}
-            basePropertiesOnly={props.basePropertiesOnly}
+            appPropertiesOnly={props.appPropertiesOnly}
             helpTipBody={() => {
                 return (
                     <p>A short description for this assay design.</p>
@@ -137,7 +137,7 @@ export function PlateTemplatesInput(props: InputProps) {
             label={'Plate Template'}
             required={true}
             colSize={6}
-            basePropertiesOnly={props.basePropertiesOnly}
+            appPropertiesOnly={props.appPropertiesOnly}
             helpTipBody={() => {
                 return (
                     <>
@@ -173,7 +173,7 @@ export function DetectionMethodsInput(props: InputProps) {
             label={'Detection Method'}
             required={true}
             colSize={6}
-            basePropertiesOnly={props.basePropertiesOnly}
+            appPropertiesOnly={props.appPropertiesOnly}
         >
             <FormControl
                 componentClass="select"
@@ -198,7 +198,7 @@ export function MetadataInputFormatsInput(props: InputProps) {
             label={'Metadata Input Format'}
             required={true}
             colSize={6}
-            basePropertiesOnly={props.basePropertiesOnly}
+            appPropertiesOnly={props.appPropertiesOnly}
             helpTipBody={() => {
                 return (
                     <>
@@ -235,7 +235,7 @@ export function EditableRunsInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label={'Editable Runs'}
-            basePropertiesOnly={props.basePropertiesOnly}
+            appPropertiesOnly={props.appPropertiesOnly}
             helpTipBody={() => {
                 return (
                     <p>
@@ -260,7 +260,7 @@ export function EditableResultsInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label={'Editable Results'}
-            basePropertiesOnly={props.basePropertiesOnly}
+            appPropertiesOnly={props.appPropertiesOnly}
             helpTipBody={() => {
                 return (
                     <p>

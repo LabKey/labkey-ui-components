@@ -18,6 +18,7 @@ interface Props {
 interface State {
     emailText: string
     sendEmail: boolean
+    optionalMessage: string
     role: string
     isSubmitting: boolean
     error: string
@@ -26,6 +27,7 @@ interface State {
 const DEFAULT_STATE = {
     emailText: '',
     sendEmail: true,
+    optionalMessage: '',
     role: undefined,
     isSubmitting: false,
     error: undefined
@@ -44,9 +46,18 @@ export class CreateUsersModal extends React.Component<Props, State> {
         this.setState(() => ({emailText}));
     };
 
+    handleOptionalMessage = (evt: any) => {
+        const optionalMessage = evt.target.value;
+        this.setState(() => ({optionalMessage}));
+    };
+
     handleSendEmail = (evt: any) => {
         const sendEmail = evt.target.checked;
-        this.setState(() => ({sendEmail}));
+        this.setState((state) => ({
+            sendEmail,
+            // reset the optional message if we unchecked the sendEmail checkbox
+            optionalMessage: !sendEmail ? '' : state.optionalMessage
+        }));
     };
 
     handleRole = (name, formValue, selectedOption) => {
@@ -55,7 +66,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
     };
 
     createUsers = () => {
-        const { emailText, sendEmail } = this.state;
+        const { emailText, sendEmail, optionalMessage } = this.state;
         this.setState(() => ({isSubmitting: true, error: undefined}));
 
         // convert the email addresses from newline separated to semicolon separated
@@ -64,6 +75,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
         Security.createNewUser({
             email,
             sendEmail,
+            optionalMessage: optionalMessage && optionalMessage.length > 0 ? optionalMessage : undefined,
             success: (response) => {
                 this.props.onComplete(response, this.getSelectedRole());
                 this.setState(() => (DEFAULT_STATE));
@@ -84,7 +96,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
     }
 
     renderForm() {
-        const { emailText, sendEmail } = this.state;
+        const { emailText, sendEmail, optionalMessage } = this.state;
 
         return (
             <>
@@ -99,14 +111,6 @@ export class CreateUsersModal extends React.Component<Props, State> {
                     value={emailText || ''}
                     onChange={this.handleEmail}
                 />
-                <Checkbox
-                    id={'create-users-sendEmail-input'}
-                    checked={sendEmail}
-                    onChange={this.handleSendEmail}
-                >
-                    Send notification emails to all new users
-                </Checkbox>
-
                 {this.hasRoleOptions() &&
                     <>
                         <div className={'create-users-label-top create-users-label-bottom'}>
@@ -128,6 +132,27 @@ export class CreateUsersModal extends React.Component<Props, State> {
                         />
                     </>
                 }
+                <Checkbox
+                    id={'create-users-sendEmail-input'}
+                    className={'create-users-label-top'}
+                    checked={sendEmail}
+                    onChange={this.handleSendEmail}
+                >
+                    Send notification emails to all new users?
+                </Checkbox>
+                <div className={'create-users-label-bottom'}>
+                    Optional Message:
+                </div>
+                <FormControl
+                    componentClass='textarea'
+                    className="form-control create-users-textarea"
+                    id={'create-users-optionalMessage-input'}
+                    rows={5}
+                    value={optionalMessage || ''}
+                    placeholder={'Add your message to be included in the invite email...'}
+                    disabled={!sendEmail}
+                    onChange={this.handleOptionalMessage}
+                />
             </>
         )
     }
@@ -135,6 +160,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
     renderButtons() {
         return (
             <WizardNavButtons
+                containerClassName=""
                 cancel={this.props.onCancel}
                 finish={true}
                 finishText={'Create Users'}
@@ -156,7 +182,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
                 </Modal.Header>
                 <Modal.Body>
                     {this.renderForm()}
-                    {error && <Alert>{error}</Alert>}
+                    {error && <Alert style={{marginTop: '10px'}}>{error}</Alert>}
                 </Modal.Body>
                 <Modal.Footer>
                     {this.renderButtons()}

@@ -15,10 +15,8 @@
  */
 import { getGlobal, setGlobal } from 'reactn';
 import { List, Map } from 'immutable';
-
-
 import { initBrowserHistoryState } from './util/global';
-import { DataViewInfo, EditorModel, LookupStore } from './models';
+import { EditorModel, LookupStore } from './models';
 import { Lineage } from './components/lineage/models';
 import { IUser } from './components/forms/model';
 import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
@@ -231,7 +229,7 @@ interface IGridSelectionResponse {
  * @param model
  * @param response
  */
-export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse)  {
+export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse): QueryGridModel  {
     const selectedIds = response.selectedIds;
     const id = model.getId();
     const selectedLoaded = true;
@@ -246,14 +244,20 @@ export function updateSelections(model: QueryGridModel, response: IGridSelection
             selectedState
         } as any;
 
+        const updatedModel = model.merge(updatedState) as QueryGridModel;
         setGlobal({
-            QueryGrid_models: getGlobalState('models').set(model.getId(), model.merge(updatedState))
+            QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel)
         });
+
+        return updatedModel;
     }
     else {
+        const updatedModel = model.merge({selectedLoaded, ...QueryGridModel.EMPTY_SELECTION}) as QueryGridModel;
         setGlobal({
-            QueryGrid_models: getGlobalState('models').set(id, model.merge({selectedLoaded, ...QueryGridModel.EMPTY_SELECTION}))
+            QueryGrid_models: getGlobalState('models').set(id, updatedModel)
         });
+
+        return updatedModel;
     }
 }
 

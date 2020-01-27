@@ -1,12 +1,13 @@
 import React from 'react';
+import { List } from "immutable";
 import { Utils } from '@labkey/api';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { getSelectedUserIds, updateUsersActiveState } from "./actions";
-import { QueryGridModel } from "../base/models/model";
+import { updateUsersActiveState } from "./actions";
 import { Alert } from "../base/Alert";
+import { resolveErrorMessage } from '../../util/messaging';
 
 interface Props {
-    model: QueryGridModel
+    userIds: List<number>
     reactivate: boolean
     onComplete: (response: any) => any
     onCancel: () => any
@@ -14,7 +15,7 @@ interface Props {
 
 interface State {
     submitting: boolean
-    error: string
+    error: React.ReactNode
 }
 
 export class UserActivateChangeConfirmModal extends React.Component<Props, State> {
@@ -29,22 +30,21 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
     }
 
     onConfirm = () => {
-        const { model, reactivate, onComplete } = this.props;
-        const userIds = getSelectedUserIds(model);
+        const { userIds, reactivate, onComplete } = this.props;
 
         this.setState(() => ({submitting: true}));
         updateUsersActiveState(userIds, reactivate)
             .then(onComplete)
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({error: (error ? error.exception : 'Unknown error'), submitting: false}));
+                this.setState(() => ({error: resolveErrorMessage(error, "user", "users", "update"), submitting: false}));
             });
     };
 
     render() {
-        const { onCancel, model, reactivate } = this.props;
+        const { onCancel, userIds, reactivate } = this.props;
         const { error, submitting } = this.state;
-        const userCount = model.selectedIds.size;
+        const userCount = userIds.size;
         const action = reactivate ? 'Reactivate' : 'Deactivate';
 
         return (

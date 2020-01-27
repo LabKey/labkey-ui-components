@@ -7,7 +7,8 @@ import { List } from 'immutable'
 import { Security } from '@labkey/api'
 import { PermissionsProviderProps, Principal } from "./models";
 import { LoadingPage } from "../../components/base/LoadingPage";
-import { getPrincipals, getPrincipalsById, getRolesByUniqueName, processGetRolesResponse } from "./actions";
+import { getPrincipals, getInactiveUsers, getPrincipalsById, getRolesByUniqueName, processGetRolesResponse } from "./actions";
+import { resolveErrorMessage } from '../..';
 
 const Context = React.createContext<PermissionsProviderProps>(undefined);
 const PermissionsContextProvider = Context.Provider;
@@ -29,6 +30,7 @@ export const PermissionsPageContextProvider = (Component: React.ComponentType) =
                 rolesByUniqueName: undefined,
                 principals: undefined,
                 principalsById: undefined,
+                inactiveUsersById: undefined,
                 error: undefined
             };
         }
@@ -36,6 +38,7 @@ export const PermissionsPageContextProvider = (Component: React.ComponentType) =
         componentDidMount() {
             this.loadSecurityRoles();
             this.loadPrincipals();
+            this.loadInactiveUsers();
         }
 
         loadSecurityRoles() {
@@ -46,7 +49,7 @@ export const PermissionsPageContextProvider = (Component: React.ComponentType) =
                     this.setState(() => ({roles, rolesByUniqueName}));
                 },
                 failure: (response) => {
-                    this.setState(() => ({error: response.exception}));
+                    this.setState(() => ({error: resolveErrorMessage(response, "roles")}));
                 }
             });
         }
@@ -57,12 +60,22 @@ export const PermissionsPageContextProvider = (Component: React.ComponentType) =
                     const principalsById = getPrincipalsById(principals);
                     this.setState(() => ({principals, principalsById}));
                 }).catch((response) => {
-                    this.setState(() => ({error: response.message || response}));
+                    this.setState(() => ({error: resolveErrorMessage(response, "users")}));
+                });
+        }
+
+        loadInactiveUsers() {
+            getInactiveUsers()
+                .then((principals: List<Principal>) => {
+                    const inactiveUsersById = getPrincipalsById(principals);
+                    this.setState(() => ({inactiveUsersById}));
+                }).catch((response) => {
+                    this.setState(() => ({error: resolveErrorMessage(response, "users")}));
                 });
         }
 
         render() {
-            const isLoaded = (this.state.roles && this.state.principals) || this.state.error;
+            const isLoaded = (this.state.roles && this.state.principals && this.state.inactiveUsersById) || this.state.error;
 
             if (isLoaded) {
                 return (

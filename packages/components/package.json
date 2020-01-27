@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.10.0-fb-provenance-runbuilder.14",
+  "version": "0.21.0-fb-provenance-runbuilder.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -68,7 +68,7 @@
     "react-select": "1.0.0-rc.10",
     "react-sticky": "6.0.3",
     "react-treebeard": "3.2.4",
-    "reactn": "1.0.0",
+    "reactn": "2.2.4",
     "vis": "4.21.0"
   },
   "devDependencies": {
@@ -125,7 +125,7 @@
     "react": "^16.0",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.0",
-    "reactn": "^1.0.0"
+    "reactn": "^2.2.4"
   },
   "jest": {
     "globals": {
@@ -133,6 +133,9 @@
         "contextPath": "/labkey",
         "container": {
           "path": ""
+        },
+        "user": {
+          "id": 1004
         },
         "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name="
       }

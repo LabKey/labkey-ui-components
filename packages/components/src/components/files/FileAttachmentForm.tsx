@@ -22,12 +22,19 @@ import { Progress } from '../base/Progress';
 import { FileAttachmentContainer } from './FileAttachmentContainer';
 import { FileGridPreviewProps, FilePreviewGrid } from './FilePreviewGrid';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from './actions';
+import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { InferDomainResponse } from '../base/models/model';
 import { inferDomainFromFile } from '../base/actions';
+import { FileSizeLimitProps } from './models';
+
+
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
+    // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
+    // "all" limits will be overridden by limits for a specific extension.
+    sizeLimits?: Map<string, FileSizeLimitProps>
+    sizeLimitsHelpText?: React.ReactNode
     showAcceptedFormats?: boolean
     allowDirectories?: boolean
     allowMultiple?: boolean
@@ -66,7 +73,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         allowMultiple: true,
         cancelText: 'Cancel',
         label: 'Attachments',
-        labelLong: 'Select file or drag and drop here',
+        labelLong: 'Select file or drag and drop here.',
         onCancel: undefined,
         onSubmit: undefined,
         showButtons: false,
@@ -114,13 +121,21 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     handleFileChange = (fileList: {[key: string]: File}) => {
-        const { onFileChange } = this.props;
+        const { onFileChange, sizeLimits } = this.props;
         const attachedFiles = this.state.attachedFiles.merge(fileList);
 
         this.setState(() => ({attachedFiles}), () => {
 
             if (this.isShowPreviewGrid()) {
-                this.uploadDataFileForPreview();
+                // if showing preview, there can be only one attached file
+                const sizeCheck = fileSizeLimitCompare(attachedFiles.valueSeq().first(), sizeLimits);
+                if (!sizeCheck.isOversizedForPreview)
+                    this.uploadDataFileForPreview();
+                else {
+                    this.setState(() => ({
+                        errorMessage: "This file is too large to be previewed. The maximum size allowed for previewing files of this type is " + sizeCheck.limits.maxPreviewSize.displayValue
+                    }))
+                }
             }
 
             if (onFileChange) {
@@ -132,12 +147,12 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     handleFileRemoval = (attachmentName: string) => {
         const { onFileRemoval } = this.props;
 
-        this.setState({
+        this.setState(() => ({
             attachedFiles: this.state.attachedFiles.remove(attachmentName),
             previewData: undefined,
             previewStatus: undefined,
             errorMessage: undefined
-        }, () => {
+        }), () => {
             if (onFileRemoval) {
                 onFileRemoval(attachmentName);
             }
@@ -150,9 +165,9 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         if (onSubmit)
             onSubmit(this.state.attachedFiles);
         // clear out attached files once they have been submitted.
-        this.setState({
+        this.setState(() => ({
             attachedFiles: Map<string, File>()
-        });
+        }));
     };
 
     renderButtons() {
@@ -160,7 +175,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
         return (
             <div className="row top-spacing bottom-spacing">
-                <div className="col-md-7">
+                <div className="col-xs-6">
                     <Button
                         onClick={onCancel}
                         bsStyle="default"
@@ -168,7 +183,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                         {cancelText}
                     </Button>
                 </div>
-                <div className="col-md-5">
+                <div className="col-xs-6">
                     <div className="pull-right">
                         <Button
                             className={"file-form-submit-btn"}
@@ -265,7 +280,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 }
             })
             .catch((reason) => {
-                this.updateErrors(reason);
+                this.updateErrors("There was a problem determining the fields in the uploaded file.  Please check the format of the file.");
             })
     }
 
@@ -331,6 +346,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             showButtons,
             showLabel,
             showProgressBar,
+            sizeLimits,
+            sizeLimitsHelpText,
             isSubmitting
         } = this.props;
 
@@ -350,6 +367,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                             initialFileNames={initialFileNames}
                             initialFiles={initialFiles}
                             allowMultiple={allowMultiple}
+                            sizeLimits={sizeLimits}
+                            sizeLimitsHelpText={sizeLimitsHelpText}
                             labelLong={labelLong}/>
                     </FormSection>
                 </span>

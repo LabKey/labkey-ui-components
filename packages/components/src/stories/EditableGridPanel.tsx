@@ -106,6 +106,7 @@ storiesOf('EditableGridPanel', module)
                 bordered={boolean("Bordered?", false, PANEL_GROUP)}
                 condensed={boolean("Condensed?", true, PANEL_GROUP)}
                 emptyGridMsg={text("Empty grid message", "Add rows to start", PANEL_GROUP)}
+                maxTotalRows={number("Max rows", undefined, {}, PANEL_GROUP)}
             />
         );
 
@@ -134,8 +135,8 @@ storiesOf('EditableGridPanel', module)
         gridInit(model, true);
 
         const addRowsControl = {
-            minCount: number("Minimum count", 1, {}, CONTROLS_GROUP),
-            maxCount: number("Maximum count", 100, {}, CONTROLS_GROUP),
+            minCount: number("Minimum to be added", 1, {}, CONTROLS_GROUP),
+            maxCount: number("Maximum to be added", 100, {}, CONTROLS_GROUP),
             nounPlural: text("Plural noun", "rows", CONTROLS_GROUP),
             nounSingular: text("Singular noun", "row", CONTROLS_GROUP),
             placement: select("Placement", ['top', 'bottom', 'both'], "bottom", CONTROLS_GROUP)
@@ -151,6 +152,7 @@ storiesOf('EditableGridPanel', module)
                 disabled={boolean("Disabled?", false, PANEL_GROUP)}
                 isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
                 title={text("Title", "Editable grid with data", PANEL_GROUP)}
+                maxTotalRows={number("Max Rows Total", undefined, {}, CONTROLS_GROUP)}
                 model={model}
             />
         );
@@ -263,7 +265,7 @@ storiesOf('EditableGridPanel', module)
         });
         gridInit(model, true);
 
-        const bulkUpdateProps = {
+        const bulkAddProps = {
             header: text("Header for bulk insert", "Create some mixture data here."),
             title: text("Title for bulk import", "Bulk creation of mixture data")
         };
@@ -271,12 +273,16 @@ storiesOf('EditableGridPanel', module)
         return (
             <EditableGridPanel
                 allowAdd={true}
-                allowBulkRemove={boolean("Allow bulk remove?", false)}
-                allowBulkUpdate={true}
+                addControlProps={{placement: text('Add control placement', 'bottom') as PlacementType}}
+                allowBulkRemove={boolean("Allow bulk remove?", true)}
+                bulkRemoveText={text("Bulk remove text", "Delete Rows")}
+                allowBulkAdd={boolean("Allow bulk add?", true)}
+                bulkAddText={text("Bulk add text", "Bulk Add")}
+                allowBulkUpdate={boolean("Allow bulk update?", true)}
+                bulkUpdateText={text("Bulk update text", "Bulk Update")}
                 model={model}
                 isSubmitting={false}
-                bulkUpdateProps={bulkUpdateProps}
-                bulkUpdateText={text("Bulk Update text", "Bulk Insert")}
+                bulkAddProps={bulkAddProps}
                 title={"Editable grid with bulk insert capabilities"}
             />
         );

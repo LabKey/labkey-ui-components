@@ -31,11 +31,11 @@ import {
     pasteEvent,
     removeRow,
     removeRows,
-    select,
+    select, updateGridFromBulkForm,
 } from '../../actions';
-import { getEditorModel, getQueryGridModel } from '../../global';
+import { getQueryGridModel } from '../../global';
 import { Cell } from './Cell';
-import { AddRowsControl, AddRowsControlProps } from './Controls';
+import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { headerSelectionCell } from '../../renderers';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
@@ -46,6 +46,8 @@ import { capitalizeFirstChar, caseInsensitive } from '../../util/utils';
 import { DeleteIcon } from '../base/DeleteIcon';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { EditorModel, ValueDescriptor } from "../../models";
+import { BulkAddUpdateForm } from "../forms/BulkAddUpdateForm";
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
@@ -63,18 +65,26 @@ const COUNT_COL = new GridColumn({
 
 // the column index for cell values and cell messages does not include either the selection
 // column or the row number column, so we adjust the value passed to <Cell> to accommodate.
-function inputCellFactory(modelId: string, allowSelection?: boolean, columnMetadata?: EditableColumnMetadata) {
-    return (value: any, row: any, c: GridColumn, rn: number, cn: number) => (
-        <Cell
+function inputCellFactory(modelId: string, editorModel: EditorModel, allowSelection?: boolean, columnMetadata?: EditableColumnMetadata) {
+    return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
+        const colIdx = cn-(allowSelection ? 2 : 1);
+
+        return <Cell
             col={c.raw}
-            colIdx={cn-(allowSelection ? 2 : 1)}
+            colIdx={colIdx}
             key={inputCellKey(c.raw, row)}
             modelId={modelId}
             placeholder={columnMetadata ? columnMetadata.placeholder: undefined}
             readOnly={ columnMetadata ? columnMetadata.readOnly : false}
-            row={row}
-            rowIdx={rn}/>
-    );
+            rowIdx={rn}
+
+            focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
+            message={editorModel ? editorModel.getMessage(colIdx, rn) : undefined}
+            selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
+            selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
+            values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
+        />
+    };
 }
 
 function inputCellKey(col: QueryColumn, row: any): string {
@@ -95,14 +105,18 @@ export interface EditableColumnMetadata {
 
 export interface EditableGridProps {
     allowAdd?: boolean
-    allowBulkUpdate?: boolean
+    allowBulkAdd?: boolean
     allowBulkRemove?: boolean
+    allowBulkUpdate?: boolean
     allowFieldDisable?: boolean
     bordered?: boolean
+    bulkAddProps?: Partial<QueryInfoFormProps>
     bulkUpdateProps?: Partial<QueryInfoFormProps>
     condensed?: boolean
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
+    bulkAddText?: string
+    bulkRemoveText?: string
     bulkUpdateText?: string
     columnMetadata?: Map<string, EditableColumnMetadata>
     disabled?: boolean
@@ -116,11 +130,13 @@ export interface EditableGridProps {
     isSubmitting?: boolean
     onRowCountChange?: (rowCount?: number) => any
     emptyGridMsg?: string
+    maxTotalRows?: number
 }
 
 export interface EditableGridState {
     selected: Set<string>
     selectedState: GRID_CHECKBOX_OPTIONS
+    showBulkAdd: boolean
     showBulkUpdate: boolean
 }
 
@@ -128,8 +144,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     static defaultProps = {
         allowAdd: true,
-        allowBulkUpdate: false,
+        allowBulkAdd: false,
         allowBulkRemove: false,
+        allowBulkUpdate: false,
         allowRemove: false,
         removeColumnTitle: "Delete",
         addControlProps: {
@@ -137,6 +154,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             nounSingular: "Row"
         },
         bordered: false,
+        bulkAddText: "Bulk Add",
+        bulkRemoveText: "Delete Rows",
         bulkUpdateText: "Bulk Update",
         columnMetadata: Map<string, EditableColumnMetadata>(),
         notDeletable: List<any>(),
@@ -144,7 +163,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         disabled: false,
         isSubmitting: false,
         initialEmptyRowCount: 1,
-        striped: false
+        striped: false,
+        maxTotalRows: MAX_EDITABLE_GRID_ROWS
     };
 
     private maskDelay: number;
@@ -152,10 +172,11 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     private readonly wrapper: React.RefObject<any>;
 
     constructor(props: EditableGridProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.onAddRows = this.onAddRows.bind(this);
-        this.toggleBulkUpdate = this.toggleBulkUpdate.bind(this);
+        this.toggleBulkAdd = this.toggleBulkAdd.bind(this);
         this.generateColumns = this.generateColumns.bind(this);
         this.headerCell = this.headerCell.bind(this);
         this.hideMask = this.hideMask.bind(this);
@@ -170,6 +191,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         this.select = this.select.bind(this);
         this.selectAll = this.selectAll.bind(this);
         this.bulkAdd = this.bulkAdd.bind(this);
+        this.editSelectionInGrid = this.editSelectionInGrid.bind(this);
         this.removeSelectedRows = this.removeSelectedRows.bind(this);
         this.onRowCountChange = this.onRowCountChange.bind(this);
 
@@ -179,6 +201,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         this.state = {
             selected: Set<string>(),
             selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+            showBulkAdd: false,
             showBulkUpdate: false
         }
     }
@@ -272,11 +295,12 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     generateColumns(): List<GridColumn> {
-        const { allowBulkRemove, allowRemove, columnMetadata } = this.props;
+        const { allowBulkRemove, allowBulkUpdate, allowRemove, columnMetadata } = this.props;
         const model = this.getModel(this.props);
+        const editorModel = this.getEditorModel();
         let gridColumns = List<GridColumn>();
 
-        if (allowBulkRemove) {
+        if (allowBulkRemove || allowBulkUpdate) {
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
@@ -295,7 +319,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         this.getColumns().forEach(qCol => {
             gridColumns = gridColumns.push(new GridColumn({
                 align: qCol.align,
-                cell: inputCellFactory(model.getId(), allowBulkRemove, columnMetadata.get(qCol.fieldKey)),
+                cell: inputCellFactory(model.getId(), editorModel, allowBulkRemove, columnMetadata.get(qCol.fieldKey)),
                 index: qCol.fieldKey,
                 raw: qCol,
                 title: qCol.caption,
@@ -367,7 +391,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     headerCell(col: GridColumn) {
         const model = this.getModel(this.props);
-        if (this.props.allowBulkRemove && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
+        if ((this.props.allowBulkRemove || this.props.allowBulkUpdate) && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
             return headerSelectionCell(this.selectAll, this.state.selectedState, false);
         }
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
@@ -422,9 +446,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     onPaste(event: any) {
         if (!this.props.disabled) {
             const modelId = this.props.model.getId();
-            const beforeRowCount = getEditorModel(modelId).rowCount;
+            const beforeRowCount = this.getEditorModel().rowCount;
             pasteEvent(modelId, event, this.showMask, this.hideMask, this.props.columnMetadata);
-            const afterRowCount =  getEditorModel(modelId).rowCount;
+            const afterRowCount =  this.getEditorModel().rowCount;
             if (beforeRowCount !== afterRowCount) {
                 this.onRowCountChange();
             }
@@ -444,23 +468,37 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     onAddRows(count: number) {
         const model = this.getModel(this.props);
-        addRows(model, count);
+        const editorModel = this.getEditorModel();
+        let toAdd = count;
+        if (this.props.maxTotalRows && (count + editorModel.rowCount > this.props.maxTotalRows)) {
+            toAdd = this.props.maxTotalRows - editorModel.rowCount;
+        }
+        addRows(model, toAdd);
         this.onRowCountChange();
     }
 
-    toggleBulkUpdate() {
+    toggleBulkAdd() {
         this.setState((state) => ({
-            showBulkUpdate: !state.showBulkUpdate
+            showBulkAdd: !state.showBulkAdd
         }), () => {
             // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
             (document.activeElement as HTMLElement).blur();
         });
     }
 
+    toggleBulkUpdate = () => {
+        this.setState((state) => ({
+            showBulkUpdate: !state.showBulkUpdate
+        }), () => {
+            // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
+            (document.activeElement as HTMLElement).blur();
+        });
+    };
+
     renderError() {
         const model = this.getModel(this.props);
         if (model.isError) {
-            return <Alert>{model.message ? model.message : 'Something went wrong.'}</Alert>
+            return <Alert className={'margin-top'}>{model.message ? model.message : 'Something went wrong.'}</Alert>
         }
     }
 
@@ -471,7 +509,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     getEditorModel() {
         const modelId = this.props.model.getId();
-        return getEditorModel(modelId);
+        return this.global.QueryGrid_editors.get(modelId);
     }
 
     getSelectedRowIndexes() : List<number>{
@@ -495,53 +533,87 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         this.onRowCountChange();
     }
 
-    renderTopControls() {
-        const { addControlProps, allowAdd, allowBulkUpdate, allowBulkRemove, bulkUpdateText, initialEmptyRowCount, isSubmitting } = this.props;
+    getAddControlProps() {
+        const { addControlProps, maxTotalRows } = this.props;
         const editorModel = this.getEditorModel();
+        if (maxTotalRows && editorModel.rowCount + addControlProps.maxCount > maxTotalRows) {
+            return {...addControlProps, maxTotalCount: maxTotalRows, maxCount: maxTotalRows - editorModel.rowCount};
+        }
+        else {
+            return {...addControlProps, maxTotalCount: maxTotalRows};
+        }
+    }
 
+    renderAddRowsControl(placement: PlacementType) {
+        const { isSubmitting } = this.props;
+        return (
+            <AddRowsControl
+                {...this.getAddControlProps()}
+                placement={placement}
+                disable={isSubmitting || (this.props.maxTotalRows && this.getEditorModel().rowCount >= this.props.maxTotalRows)}
+                onAdd={this.onAddRows}
+            />
+        )
+    }
+
+    renderTopControls() {
+        const { allowAdd, allowBulkAdd, allowBulkRemove, allowBulkUpdate, bulkAddText, bulkRemoveText, bulkUpdateText, initialEmptyRowCount, isSubmitting, addControlProps } = this.props;
+        const nounPlural = addControlProps ? addControlProps.nounPlural : "rows";
+        const editorModel = this.getEditorModel();
         const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
-        const haveLeftControls = allowBulkRemove || showAddOnTop;
+        const noValidSelection = this.state.selected.size === 0 || (initialEmptyRowCount === 1 && editorModel.rowCount === 1 && !editorModel.hasData());
+        const model = this.getModel(this.props);
+        const canAddRows = !isSubmitting && model.data && (model.data.size < this.props.maxTotalRows);
+
+        const removeBtn = (
+            <Button
+                className={'control-right'}
+                disabled={noValidSelection}
+                onClick={this.removeSelectedRows}>
+                {bulkRemoveText}
+            </Button>
+        );
+
+        const addBtn = (
+            <Button
+                title={canAddRows ? "Add multiple " + nounPlural + " with the same values" : "The grid contains the maximum number of " + nounPlural + "."}
+                disabled={!canAddRows}
+                onClick={this.toggleBulkAdd}
+            >
+                {bulkAddText}
+            </Button>
+        );
+
+        const updateBtn = (
+            <Button
+                className={'control-right'}
+                disabled={noValidSelection}
+                onClick={this.toggleBulkUpdate}>
+                {bulkUpdateText}
+            </Button>
+        );
+
         return (
             <div className="row QueryGrid-bottom-spacing">
-                {haveLeftControls && <div className={"col-sm-4"}>
-                    <div className="btn-group">
-                        {allowBulkRemove && (
-                            <Button
-                                disabled={this.state.selected.size === 0 || (initialEmptyRowCount === 1 && editorModel.rowCount === 1 && !editorModel.hasData()) }
-                                onClick={this.removeSelectedRows}
-                                title="Delete Rows">
-                                Delete Rows
-                            </Button>
-                        )}
-                        {showAddOnTop && (
-                            <AddRowsControl
-                                {...addControlProps}
-                                placement={"top"}
-                                disable={isSubmitting}
-                                onAdd={this.onAddRows}/>
-                        )}
-                    </div>
+                {showAddOnTop && <div className={"col-sm-3"}>
+                    {this.renderAddRowsControl("top")}
                 </div>}
-                {allowBulkUpdate && (
-                    <div className={haveLeftControls? "col-sm-8" : "col-xs-12"}>
-                        <div className="pull-right control-right">
-                            <Button onClick={this.toggleBulkUpdate}>
-                                {bulkUpdateText}
-                            </Button>
-                        </div>
-                    </div>
-                )}
+                <div className={showAddOnTop ? "col-sm-9" : "col-sm-12"}>
+                    {allowBulkAdd && <span className="control-right">{addBtn}</span>}
+                    {allowBulkUpdate && <span className="control-right">{updateBtn}</span>}
+                    {allowBulkRemove && <span className="control-right">{removeBtn}</span>}
+                </div>
             </div>
         )
     }
 
     renderBulkCreationHeader() : ReactNode {
-        const { bulkUpdateProps } = this.props;
+        const { bulkAddProps } = this.props;
 
-        if (bulkUpdateProps && bulkUpdateProps.header) {
+        if (bulkAddProps && bulkAddProps.header) {
             return (
                 <div className={"editable-grid__bulk-header"}>
-                    {bulkUpdateProps.header}
+                    {bulkAddProps.header}
                 </div>
             )
         }
@@ -554,7 +626,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     bulkAdd(data: OrderedMap<string, any>) : Promise<any> {
-        const {addControlProps, bulkUpdateProps} = this.props;
+        const {addControlProps, bulkAddProps} = this.props;
         const { nounSingular, nounPlural } = addControlProps;
         const model = this.getModel(this.props);
 
@@ -562,7 +634,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         let updatedData = data.delete('numItems');
 
         if (numItems) {
-            if (bulkUpdateProps.columnFilter) {
+            if (bulkAddProps.columnFilter) {
                 updatedData = this.restoreBulkInsertData(model, updatedData);
             }
 
@@ -582,12 +654,12 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         })
     }
 
-    renderBulkUpdate() {
-        const { showBulkUpdate } = this.state;
+    renderBulkAdd() {
+        const { showBulkAdd } = this.state;
         const model = this.getModel(this.props);
-
+        const maxToAdd = this.props.maxTotalRows && this.props.maxTotalRows - model.data.size < MAX_EDITABLE_GRID_ROWS ? this.props.maxTotalRows - model.data.size : MAX_EDITABLE_GRID_ROWS
         return (
-            showBulkUpdate &&
+            showBulkAdd &&
             <QueryInfoForm
                 allowFieldDisable={this.props.allowFieldDisable}
                 onSubmitForEdit={this.bulkAdd}
@@ -595,19 +667,50 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 checkRequiredFields={false}
                 showLabelAsterisk={true}
                 submitForEditText={`Add ${capitalizeFirstChar(this.props.addControlProps.nounPlural)} to Grid`}
-                maxCount={MAX_EDITABLE_GRID_ROWS - model.data.size}
-                onHide={this.toggleBulkUpdate}
-                onCancel={this.toggleBulkUpdate}
-                onSuccess={this.toggleBulkUpdate}
-                fieldValues={this.props.bulkUpdateProps ? this.props.bulkUpdateProps.fieldValues : null}
-                columnFilter={this.props.bulkUpdateProps ? this.props.bulkUpdateProps.columnFilter : null}
+                maxCount={maxToAdd}
+                onHide={this.toggleBulkAdd}
+                onCancel={this.toggleBulkAdd}
+                onSuccess={this.toggleBulkAdd}
+                fieldValues={this.props.bulkAddProps ? this.props.bulkAddProps.fieldValues : null}
+                columnFilter={this.props.bulkAddProps ? this.props.bulkAddProps.columnFilter : null}
                 queryInfo={model.queryInfo}
                 schemaQuery={model.queryInfo.schemaQuery}
-                title={this.props.bulkUpdateProps && this.props.bulkUpdateProps.title}
+                title={this.props.bulkAddProps && this.props.bulkAddProps.title}
                 header={this.renderBulkCreationHeader()}
             />
         )
     }
+
+    renderBulkUpdate() {
+        const { showBulkUpdate } = this.state;
+        const model = this.getModel(this.props);
+
+        return (
+            showBulkUpdate &&
+            <BulkAddUpdateForm
+                selectedRowIndexes={this.getSelectedRowIndexes()}
+                singularNoun={this.props.addControlProps.nounSingular}
+                pluralNoun={this.props.addControlProps.nounPlural}
+                model={model}
+                columnFilter={this.props.bulkUpdateProps ? this.props.bulkUpdateProps.columnFilter : null}
+                onCancel={this.toggleBulkUpdate}
+                onComplete={this.toggleBulkUpdate}
+                onSubmitForEdit={this.editSelectionInGrid}
+            />
+        )
+    }
+
+    editSelectionInGrid(updatedData: OrderedMap<string, any>) : Promise<any> {
+        const model = this.getModel(this.props);
+
+        return new Promise((resolve) => {
+            const updatedGrid = updateGridFromBulkForm(model, updatedData, this.getSelectedRowIndexes());
+            resolve({
+                success: true,
+                updatedGrid
+            });
+        });
+    };
 
     getControlsPlacement() {
         const { addControlProps } = this.props;
@@ -619,7 +722,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     render() {
-        const { addControlProps, allowAdd, bordered, condensed, emptyGridMsg, isSubmitting, striped } = this.props;
+        const { allowAdd, bordered, condensed, emptyGridMsg, isSubmitting, striped } = this.props;
         const model = this.getModel(this.props);
 
         if (!model || !model.isLoaded) {
@@ -649,14 +752,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             tableRef={this.table}
                         />
                     </div>
-                    {allowAdd && (this.getControlsPlacement() != 'top') && (
-                        <AddRowsControl
-                            {...addControlProps}
-                            placement={"bottom"}
-                            disable={isSubmitting}
-                            onAdd={this.onAddRows}/>
-                    )}
+                    {allowAdd && (this.getControlsPlacement() != 'top') && this.renderAddRowsControl("bottom")}
                     {this.renderError()}
+                    {this.renderBulkAdd()}
                     {this.renderBulkUpdate()}
                 </div>
             )

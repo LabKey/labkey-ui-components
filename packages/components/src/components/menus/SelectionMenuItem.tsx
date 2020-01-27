@@ -42,7 +42,7 @@ export class SelectionMenuItem extends React.Component<Props, any> {
         const disabled = !model || model.totalRows === 0 || tooFewSelected || tooManySelected;
         const item = <MenuItem onClick={onClick} disabled={disabled}>{text}</MenuItem>;
 
-        let message = tooFewSelected ? disabledMsg + ' ' + nounPlural: (maxSelectionDisabledMsg || "At most " + maxSelection + " " + nounPlural + " can be selected.");
+        let message = tooFewSelected ? disabledMsg + ' ' + nounPlural + '.' : (maxSelectionDisabledMsg || "At most " + maxSelection + " " + nounPlural + " can be selected.");
         if (disabled) {
             const overlay = <Popover id={id + "-disabled-warning"}>{message}</Popover>;
 

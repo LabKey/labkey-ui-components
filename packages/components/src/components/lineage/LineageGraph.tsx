@@ -93,6 +93,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
     private readonly visGraphRef = undefined;
 
     constructor(props: LineageGraphDisplayProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.onVisGraphNodeDoubleClick = this.onVisGraphNodeDoubleClick.bind(this);
@@ -319,6 +320,7 @@ interface SelectedNodeProps {
 class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
 
     constructor(props) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.isNodeInGraph = this.isNodeInGraph.bind(this);
@@ -504,6 +506,7 @@ interface ClusterNodeDetailProps {
 class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
 
     constructor(props) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.isNodeInGraph = this.isNodeInGraph.bind(this);

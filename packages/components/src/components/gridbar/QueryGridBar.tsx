@@ -92,6 +92,10 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
                     {chart}
                 </div>
             );
+        } else {
+            leftContent = (
+                <div className="col-md-6 col-sm-6 col-xs-12" />
+            )
         }
 
         const rightContent = (

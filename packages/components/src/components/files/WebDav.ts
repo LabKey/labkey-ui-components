@@ -118,7 +118,7 @@ export class WebDav extends Record({
             let url = this.getWebDavBaseUrl();
 
             if (directory) {
-                url  += ("/" + encodeURIComponent(directory));
+                url  += ("/" + directory);
             }
 
             return Ajax.request({

@@ -29,9 +29,19 @@ const data = {
                     ]
                 }
             ]
+        },
+        {
+            name: 'empty directory',
+            children: []
         }
     ]
 };
+
+const getFileFromPath = (path: string) => {
+    const pathParts = path.split("\\");
+
+    return pathParts[pathParts.length - 1];
+}
 
 const getDirectoryNode = (name: string, root: any) => {
     if (root.name === name) {
@@ -42,7 +52,7 @@ const getDirectoryNode = (name: string, root: any) => {
 
     if (root.children) {
         root.children.forEach((child) => {
-            let found = getDirectoryNode(name, child);
+            let found = getDirectoryNode(getFileFromPath(name), child);
             if (found) {
                 node = {...found};
             }
@@ -78,12 +88,6 @@ const fetchFileTree = (directory?: string): Promise<any> => {
     })
 };
 
-const fetchBadTree = (): Promise<any> => {
-    return new Promise((resolve, reject) => {
-        reject('Unable to load file tree. Verify the root directory exists.')
-    })
-}
-
 storiesOf('FileTree', module)
     .addDecorator(withKnobs)
     .add('With basic data', () =>
@@ -92,8 +96,3 @@ storiesOf('FileTree', module)
         </div>
     )
 
-    .add('With error', () =>
-        <div>
-            <FileTree loadData={fetchBadTree}/>
-        </div>
-    )

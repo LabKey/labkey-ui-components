@@ -142,22 +142,35 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
         const { style, onSelect, node, customStyles } = props;
         const { checked } = this.state;
         const iconType = node.children ? 'folder' : 'file-text';
-        const iconStyle = {marginRight: '5px'};
 
         return (
-            <span className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node')}>
-                <Checkbox id={this.checkIdPrefix + node.id} checked={checked.contains(node.id)} onChange={this.handleCheckbox} onClick={this.checkClick}/>
-                <div style={style.base} onClick={onSelect}>
-                    <div style={node.selected ? {...style.title, ...customStyles.header.title} : style.title}>
-                        {iconType === 'folder' ?
-                            <FontAwesomeIcon icon={faFolder} className='filetree-folder-icon'/>
-                            : <FontAwesomeIcon icon={faFileAlt} className='filetree-folder-icon'/>
-                        }
-                        {node.name}
-                    </div>
-                </div>
-            </span>
+            <>
+                {node.id.endsWith('|*empty') ?
+                    <div className='filetree-empty-directory'>No Files Found</div>
+                    :
+                    <span
+                        className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node')}>
+                        <Checkbox id={this.checkIdPrefix + node.id} checked={checked.contains(node.id)}
+                                  onChange={this.handleCheckbox} onClick={this.checkClick}/>
+                        <div style={style.base} onClick={onSelect}>
+                            <div style={node.selected ? {...style.title, ...customStyles.header.title} : style.title}>
+                                {iconType === 'folder' ?
+                                    <FontAwesomeIcon icon={faFolder} className='filetree-folder-icon'/>
+                                    : <FontAwesomeIcon icon={faFileAlt} className='filetree-folder-icon'/>
+                                }
+                                {node.name}
+                            </div>
+                        </div>
+                    </span>
+                }
+            </>
         );
+    };
+
+    Loading = () => {
+        return (
+            <div className='filetree-empty-directory'>Loading...</div>
+        )
     };
 
     // Do not always want to toggle directories when clicking a check box
@@ -200,7 +213,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
             path = path.substring(0, this.defaultRootPrefix.length);
         }
 
-        return path.replace('|', '\\');
+        return path.replace(/\|/g, '/');
     };
 
     getNameFromId = (id: string): string => {
@@ -241,12 +254,14 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
         }
     };
 
-    cascadeToggle = ( node, callback: () => any ) => {
+    // recursively toggle all child files.  callback used to check selection of each subfile
+    cascadeToggle = ( node, callback: (any) => any ) => {
 
         const afterToggle = () => {
+            callback(node);
             if (node.children) {
                 node.children.forEach(child => {
-                    this.cascadeToggle(node, callback)
+                    this.cascadeToggle(child, callback)
                 })
             }
         };
@@ -262,12 +277,12 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
         const node = this.getDataNode(id, data);
         if (node.children && checked) {
             // Toggle open selected directory and check the children
-            const callback = () => {
-                this.setCheckedValue(node, checked);
+            const callback = (checkNode) => {
+                this.setCheckedValue(checkNode, checked);
             };
 
-            // this.cascadeToggle(node, callback)
-            this.onToggle(node, true, callback);
+            this.cascadeToggle(node, callback)
+            // this.onToggle(node, true, callback);
         }
         this.setCheckedValue(node, checked);
     };
@@ -285,16 +300,20 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
 
             // load data if not already loaded
             if (node.children.length === 0) {
-                loadData(node.name).then((children) => {
+                loadData(this.getPathFromId(node.id)).then((children) => {
                     children = children.map((child) => {
                         child.id = (node.id + "|" + child.name); // generate Id from path
                         return child;
                     });
 
+                    if (children.length < 1) {
+                        children = [{id: node.id + "|*empty", active: false, name: "empty"}]
+                    }
+
                     node.children = children;  // This is not immutable so this is updating the data object
                     this.setState(() => ({cursor: node, data: Object.assign({}, data), error: undefined}), (callback ? callback() : undefined));
                 }).catch((reason: any) => {
-                        this.setState(() => ({error: reason}));
+                        this.setState(() => ({error: (reason.message ? reason.message : 'Unable to fetch data')}));
                 })
             }
             else {
@@ -306,6 +325,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
     render = () => {
         const { data, error } = this.state;
         const Header = this.Header;
+        const Loading = this.Loading;
 
         return (
             <div className='filetree-container'>
@@ -314,7 +334,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
                     :
                     <Treebeard data={data}
                                onToggle={this.onToggle}
-                               decorators={{...decorators, Header}}
+                               decorators={{...decorators, Header, Loading}}
                                style={customStyle}
                     />
                 }

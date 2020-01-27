@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Move “remove field” to field top display (so it will show in collapsed and expanded view)
 * Only show "Confirm Remove Field" dialog for previously saved fields
 * Field row icons, drag handle and expand icon, only highlight on hover of icon instead of row hover
+* Fix for Domain Designer duplicate field input ids for assay designer case (results in warnings in browser for LKS pages)
 
 ### version 0.21.0
 *Released*: 24 January 2020

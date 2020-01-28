@@ -10,6 +10,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       "allowQCStates": false,
       "allowSpacesInPath": false,
       "allowTransformationScript": false,
+      "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
       "availableDetectionMethods": undefined,
@@ -94,6 +95,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
       "qcEnabled": undefined,
+      "plateMetadata": undefined,
     }
   }
   onCancel={[Function]}
@@ -112,6 +114,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         "allowQCStates": false,
         "allowSpacesInPath": false,
         "allowTransformationScript": false,
+        "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
         "availableDetectionMethods": undefined,
@@ -196,6 +199,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
         "qcEnabled": undefined,
+        "plateMetadata": undefined,
       }
     }
     onChange={[Function]}
@@ -417,6 +421,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -501,6 +506,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -699,6 +705,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -783,6 +790,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -996,6 +1004,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -1080,6 +1089,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -3459,6 +3469,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
       "allowQCStates": false,
       "allowSpacesInPath": false,
       "allowTransformationScript": false,
+      "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
       "availableDetectionMethods": undefined,
@@ -3752,6 +3763,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
       "qcEnabled": undefined,
+      "plateMetadata": undefined,
     }
   }
   onCancel={[Function]}
@@ -3770,6 +3782,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         "allowQCStates": false,
         "allowSpacesInPath": false,
         "allowTransformationScript": false,
+        "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
         "availableDetectionMethods": undefined,
@@ -4063,6 +4076,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
         "qcEnabled": undefined,
+        "plateMetadata": undefined,
       }
     }
     onChange={[Function]}
@@ -4336,6 +4350,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -4629,6 +4644,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -4827,6 +4843,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -5120,6 +5137,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -5333,6 +5351,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -5626,6 +5645,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -5808,6 +5828,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -6101,6 +6122,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -15287,6 +15309,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
       "allowQCStates": false,
       "allowSpacesInPath": false,
       "allowTransformationScript": false,
+      "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
       "availableDetectionMethods": undefined,
@@ -15371,6 +15394,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
       "qcEnabled": undefined,
+      "plateMetadata": undefined,
     }
   }
   onCancel={[Function]}
@@ -15389,6 +15413,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "allowQCStates": false,
         "allowSpacesInPath": false,
         "allowTransformationScript": false,
+        "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
         "availableDetectionMethods": undefined,
@@ -15473,6 +15498,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
         "qcEnabled": undefined,
+        "plateMetadata": undefined,
       }
     }
     onChange={[Function]}
@@ -15694,6 +15720,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -15778,6 +15805,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -15976,6 +16004,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -16060,6 +16089,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -16273,6 +16303,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -16357,6 +16388,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -16581,6 +16613,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -16665,6 +16698,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -19039,6 +19073,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
       "allowQCStates": false,
       "allowSpacesInPath": false,
       "allowTransformationScript": false,
+      "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
       "availableDetectionMethods": undefined,
@@ -19123,6 +19158,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
       "qcEnabled": undefined,
+      "plateMetadata": undefined,
     }
   }
   onCancel={[Function]}
@@ -19141,6 +19177,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         "allowQCStates": false,
         "allowSpacesInPath": false,
         "allowTransformationScript": false,
+        "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
         "availableDetectionMethods": undefined,
@@ -19225,6 +19262,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
         "qcEnabled": undefined,
+        "plateMetadata": undefined,
       }
     }
     onChange={[Function]}
@@ -19446,6 +19484,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -19530,6 +19569,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -19728,6 +19768,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -19812,6 +19853,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -20025,6 +20067,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -20109,6 +20152,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -20333,6 +20377,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -20417,6 +20462,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -22106,6 +22152,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
       "allowQCStates": false,
       "allowSpacesInPath": false,
       "allowTransformationScript": false,
+      "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
       "availableDetectionMethods": undefined,
@@ -22399,6 +22446,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
       "qcEnabled": undefined,
+      "plateMetadata": undefined,
     }
   }
   onCancel={[Function]}
@@ -22417,6 +22465,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         "allowQCStates": false,
         "allowSpacesInPath": false,
         "allowTransformationScript": false,
+        "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
         "availableDetectionMethods": undefined,
@@ -22710,6 +22759,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
         "qcEnabled": undefined,
+        "plateMetadata": undefined,
       }
     }
     onChange={[Function]}
@@ -22983,6 +23033,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -23276,6 +23327,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -23474,6 +23526,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -23767,6 +23820,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -23980,6 +24034,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -24273,6 +24328,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -24455,6 +24511,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -24748,6 +24805,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -24972,6 +25030,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -25265,6 +25324,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -25454,6 +25514,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -25747,6 +25808,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -34452,6 +34514,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
       "allowQCStates": false,
       "allowSpacesInPath": false,
       "allowTransformationScript": false,
+      "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
       "availableDetectionMethods": undefined,
@@ -34745,6 +34808,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
       "qcEnabled": undefined,
+      "plateMetadata": undefined,
     }
   }
   onCancel={[Function]}
@@ -34763,6 +34827,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         "allowQCStates": false,
         "allowSpacesInPath": false,
         "allowTransformationScript": false,
+        "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
         "availableDetectionMethods": undefined,
@@ -35056,6 +35121,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
         "qcEnabled": undefined,
+        "plateMetadata": undefined,
       }
     }
     onChange={[Function]}
@@ -35329,6 +35395,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -35622,6 +35689,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -35820,6 +35888,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -36113,6 +36182,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -36326,6 +36396,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -36619,6 +36690,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -36801,6 +36873,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -37094,6 +37167,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -37318,6 +37392,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -37611,6 +37686,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}
@@ -37800,6 +37876,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "allowQCStates": false,
                                       "allowSpacesInPath": false,
                                       "allowTransformationScript": false,
+                                      "allowPlateMetadata": false,
                                       "autoCopyTargetContainer": undefined,
                                       "autoCopyTargetContainerId": undefined,
                                       "availableDetectionMethods": undefined,
@@ -38093,6 +38170,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       "selectedMetadataInputFormat": undefined,
                                       "selectedPlateTemplate": undefined,
                                       "qcEnabled": undefined,
+                                      "plateMetadata": undefined,
                                     }
                                   }
                                   onChange={[Function]}

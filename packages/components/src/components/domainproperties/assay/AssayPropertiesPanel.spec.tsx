@@ -13,6 +13,7 @@ import {
     MetadataInputFormatsInput,
     ModuleProvidedScriptsInput,
     NameInput,
+    PlateMetadataInput,
     PlateTemplatesInput,
     QCStatesInput,
     SaveScriptDataInput,
@@ -138,6 +139,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(QCStatesInput)).toHaveLength(0);
+        expect(simpleModelWrapper.find(PlateMetadataInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(PlateTemplatesInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(DetectionMethodsInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(MetadataInputFormatsInput)).toHaveLength(0);
@@ -155,6 +157,7 @@ describe('AssayPropertiesPanel', () => {
         const model = AssayProtocolModel.create({
             allowBackgroundUpload: true,
             allowEditableResults: true,
+            allowPlateMetadata: true,
             allowQCStates: true,
             allowTransformationScript: true,
             availableDetectionMethods: ['a', 'b', 'c'],
@@ -166,6 +169,7 @@ describe('AssayPropertiesPanel', () => {
         const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn}/>);
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
+        expect(simpleModelWrapper.find(PlateMetadataInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(QCStatesInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(PlateTemplatesInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DetectionMethodsInput)).toHaveLength(1);
@@ -184,6 +188,7 @@ describe('AssayPropertiesPanel', () => {
         const model = AssayProtocolModel.create({
             allowBackgroundUpload: true,
             allowEditableResults: true,
+            allowPlateMetadata: true,
             allowQCStates: true,
             availableDetectionMethods: ['a', 'b', 'c'],
             availableMetadataInputFormats: {test1: 'abc'},
@@ -194,6 +199,7 @@ describe('AssayPropertiesPanel', () => {
         const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn} appPropertiesOnly={true}/>);
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
+        expect(simpleModelWrapper.find(PlateMetadataInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(QCStatesInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(PlateTemplatesInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DetectionMethodsInput)).toHaveLength(1);

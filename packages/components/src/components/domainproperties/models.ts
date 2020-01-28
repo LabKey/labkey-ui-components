@@ -1314,6 +1314,7 @@ export class AssayProtocolModel extends Record({
     allowQCStates: false,
     allowSpacesInPath: false,
     allowTransformationScript: false,
+    allowPlateMetadata: false,
     autoCopyTargetContainer: undefined,
     autoCopyTargetContainerId: undefined,
     availableDetectionMethods: undefined,
@@ -1336,13 +1337,15 @@ export class AssayProtocolModel extends Record({
     selectedDetectionMethod: undefined,
     selectedMetadataInputFormat: undefined,
     selectedPlateTemplate: undefined,
-    qcEnabled: undefined
+    qcEnabled: undefined,
+    plateMetadata: undefined
 }) {
     allowBackgroundUpload: boolean;
     allowEditableResults: boolean;
     allowQCStates: boolean;
     allowSpacesInPath: boolean;
     allowTransformationScript: boolean;
+    allowPlateMetadata: boolean;
     autoCopyTargetContainer: {};
     autoCopyTargetContainerId: string;
     availableDetectionMethods: [];
@@ -1366,6 +1369,7 @@ export class AssayProtocolModel extends Record({
     selectedMetadataInputFormat: string;
     selectedPlateTemplate: string;
     qcEnabled: boolean;
+    plateMetadata: boolean;
 
     constructor(values?: {[key:string]: any}) {
         super(values);

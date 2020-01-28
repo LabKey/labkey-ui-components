@@ -99,6 +99,7 @@ export interface SelectInputProps extends DisableableInputProps {
     autoload?: boolean
     autoValue?: boolean
     backspaceRemoves?: boolean
+    deleteRemoves?: boolean
     cache?: boolean
     clearCacheOnChange?: boolean
     clearable?: boolean
@@ -390,6 +391,8 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             addLabelText,
             autoload,
             cache,
+            backspaceRemoves,
+            deleteRemoves,
             clearable,
             delimiter,
             disabled,
@@ -413,6 +416,8 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         const selectProps = {
             addLabelText,
             autoload,
+            backspaceRemoves,
+            deleteRemoves,
             clearable,
             delimiter,
             disabled : disabled || this.state.isDisabled,

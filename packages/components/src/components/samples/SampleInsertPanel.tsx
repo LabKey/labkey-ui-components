@@ -18,7 +18,7 @@ import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { IMPORT_DATA_FORM_TYPES, SAMPLE_UNIQUE_FIELD_KEY } from '../../constants';
+import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, SAMPLE_UNIQUE_FIELD_KEY } from '../../constants';
 
 import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn } from '../../actions';
 import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
@@ -766,7 +766,8 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             nounSingular: "Sample",
             nounPlural: "Samples",
             placement: 'top' as PlacementType,
-            wrapperClass: 'pull-left'
+            wrapperClass: 'pull-left',
+            maxCount: MAX_EDITABLE_GRID_ROWS
         };
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
@@ -785,6 +786,8 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         return (<>
             {this.renderHeader(true)}
+            <hr className={'bottom-spacing'}/>
+            <div className={'top-spacing'}>
             {queryGridModel && queryGridModel.isLoaded ?
                 <EditableGridPanel
                     addControlProps={addControlProps}
@@ -808,6 +811,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                 :
                 !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
             }
+            </div>
         </>);
     }
 

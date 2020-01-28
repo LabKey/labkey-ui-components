@@ -547,19 +547,6 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                     <p>
                         Generate unique samples individually or in bulk using the bulk insert option.
                     </p>
-                    <p>
-                        Assign properties, including parent samples, to your new samples.
-                    </p>
-                    {name && (
-                        this.isNameRequired() ?
-                            <p>
-                                A sample ID is required for each new sample since this sample type has no naming pattern.
-                                You can provide a naming pattern by editing the sample type definition.
-                            </p> :
-                            <p>
-                                Sample IDs will be generated for any samples that have no sample ID provided in the grid.
-                            </p>
-                    )}
                 </div>}
                 {insertModel.isInit && (
                     <SelectInput
@@ -785,7 +772,12 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(SAMPLE_UNIQUE_FIELD_KEY, {
                 readOnly: false,
-                placeholder: "[generated id]"
+                placeholder: "[generated id]",
+                toolTip: "A generated sample ID will be provided for samples that don't have a user-provided ID in the grid."
+            })
+        } else {
+            columnMetadata = columnMetadata.set(SAMPLE_UNIQUE_FIELD_KEY, {
+                toolTip: "A sample ID is required for each sample since this sample type has no naming pattern. You can provide a naming pattern by editing the sample type details."
             })
         }
 

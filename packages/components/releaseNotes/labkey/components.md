@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 39558: Adjust styling of import tabs to better indicate they are actionable.
+* Issue 39551: Use tooltip on sampleId column to provide text about the use of generated ids or not
+
 ### version 0.21.0
 *Released*: 24 January 2020
 * Item 6654: Changes to include server side warnings while saving domain

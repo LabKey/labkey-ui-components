@@ -121,9 +121,14 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
 
             // treebeard has bugs when there is not a single root node
             if (Array.isArray(data)) {
+
+                if (data.length < 1) {
+                    data = [{id: this.DEFAULT_ROOT_PREFIX + "|" + this.EMPTY_FILE_NAME, active: false, name: "empty"}]
+                }
+
                 loadedData = {
                     name: 'root',
-                    id: '|root',  // Special id
+                    id: this.DEFAULT_ROOT_PREFIX,  // Special id
                     children: data,
                     toggled: true
                 }
@@ -211,7 +216,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
 
         // strip off default root id if exists
         if (path.startsWith(this.DEFAULT_ROOT_PREFIX)) {
-            path = path.substring(0, this.DEFAULT_ROOT_PREFIX.length);
+            path = path.substring(this.DEFAULT_ROOT_PREFIX.length);
         }
 
         return path.replace(/\|/g, '/');
@@ -285,7 +290,6 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
             };
 
             this.cascadeToggle(node, callback)
-            // this.onToggle(node, true, callback);
         }
         this.setCheckedValue(node, checked);
     };
@@ -298,8 +302,9 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
             node.active = false;
         }
         node.active = true;
+        node.toggled = toggled;
+
         if (node.children) {
-            node.toggled = toggled;
 
             // load data if not already loaded
             if (node.children.length === 0) {

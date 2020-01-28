@@ -102,15 +102,19 @@
   border-radius: 0;
   margin-right: 15px;
   cursor: pointer;
+  background-color: #eeeeee;
 
   &:hover {
-    background-color: #eeeeee;
+      background-color: white;
   }
 
   &.list-group-item, &.list-group-item:last-child, &.list-group-item:first-child {
     margin-bottom: 0;
     border-radius: 4px 4px 0 0;
-    border: none;
+    border-bottom: 3px solid white;
+    &:hover {
+      border-bottom:  3px solid $brand-secondary;
+    }
   }
 }
 

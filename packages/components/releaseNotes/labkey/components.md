@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 39551: Use tooltip on sampleId column to provide text about the use of generated ids or not
 * Issue 39559: Reorder add row controls for better left-to-right flow and remove tool tip
 * Better error messaging when only 1 additional row is allowed for bulk insert
+* Issue 39554: Parameterized name expression placeholder text
 
 ### version 0.21.0
 *Released*: 24 January 2020

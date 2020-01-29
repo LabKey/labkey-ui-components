@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Map } from 'immutable';
+import {List, Map} from 'immutable';
 
 import { getBrowserHistory } from './global';
+import {ActionURL} from "@labkey/api";
 
 // This type is roughly equivalent to the Location object from this history package
 // but here we have all fields optional to make it also compatible with the window.location object
@@ -128,4 +129,19 @@ export function replaceParameter(location: Location, key: string, value: string 
 
 export function replaceParameters(location: Location, params: Map<string, string | number>) {
     setParameters(location, params, true);
+}
+
+export function resetParameters(except?: List<string>) {
+    let location = getLocation();
+
+    let emptyParams = location.query.map((value: string, key: string) => {
+        if (except && except.contains(key)) {
+            return value;
+        }
+        else {
+            return undefined;
+        }
+    });
+
+    setParameters(location, emptyParams);
 }

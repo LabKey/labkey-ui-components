@@ -149,7 +149,7 @@ import {
 } from './query/api';
 import { loadReports, flattenBrowseDataTreeResponse } from './query/reports';
 import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from './constants';
-import { getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
+import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
 import { getHelpLink, helpLinkNode, DATA_IMPORT_TOPIC } from './util/helpLinks';
@@ -345,6 +345,7 @@ export {
     getLocation,
     replaceParameter,
     replaceParameters,
+    resetParameters,
 
     // renderers
     AliasRenderer,

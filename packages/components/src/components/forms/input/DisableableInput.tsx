@@ -3,10 +3,12 @@ import React from 'react';
 export interface DisableableInputProps {
     allowDisable?: boolean
     initiallyDisabled?: boolean
+    value?: any
 }
 
 export interface DisableableInputState {
     isDisabled?: boolean
+    inputValue?: any
 }
 
 export class DisableableInput<P extends DisableableInputProps, S extends DisableableInputState> extends React.Component<P, S> {
@@ -15,11 +17,24 @@ export class DisableableInput<P extends DisableableInputProps, S extends Disable
         initiallyDisabled: false
     };
 
+    getInputValue() {
+        if (!this.props.allowDisable || this.state.inputValue === undefined)
+            return this.props.value;
+
+        return this.state.inputValue;
+    }
+
     toggleDisabled = () => {
+        const { value } = this.props;
+        const { inputValue } = this.state;
+
         this.setState(() => {
             return {
-                isDisabled: !this.state.isDisabled
+                isDisabled: !this.state.isDisabled,
+                inputValue: this.state.isDisabled ? inputValue : value,
             }
         });
-    }
+
+    };
+
 }

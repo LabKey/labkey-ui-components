@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Issue 38012: For the Batch Update Dialog a field should be cleared if it is changed to disabled
+
 ### version 0.21.2
 *Released*: 29 January 2020
 * Add backspaceRemoves and deleteRemoves props to SelectInput

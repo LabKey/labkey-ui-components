@@ -45,17 +45,18 @@ interface QueryGridState {
     /**
      * Original location.hash value so that we can avoid calling the reloadQueryGridModel listener on navigation
      */
-    locationHash: string
+    locationHash?: string
 
     /**
      * Function returned by the getBrowserHistory().listen() call so that we can cleanup after unmount
      */
-    unlisten: any
+    unlisten?: any
 }
 
 export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
     constructor(props: QueryGridProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         // bind event handlers
@@ -77,39 +78,58 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             _modelId = generateId(QUERY_GRID_PREFIX);
         }
 
-        const unlisten = getBrowserHistory().listen((location, action) => {
-            // this listener only applies if we are staying on the same route, exit early if we are navigating
-            const originalRoute = getRouteFromLocationHash(this.state.locationHash);
-            const currentRoute = getRouteFromLocationHash(location.hash);
-            if (originalRoute !== currentRoute) {
-                return;
-            }
-
-            if (this.props.model && this.props.model.bindURL) {
-                reloadQueryGridModel(this.props.model);
-            }
-        });
-
         // set local state for this component
         this.state = {
-            modelId: _modelId,
-            locationHash: getBrowserHistory().location.hash,
-            unlisten,
+            modelId: _modelId
         };
     }
 
     componentDidMount() {
         this.initModel(this.props);
+        this.initUrlRouteListener();
     }
 
     componentWillReceiveProps(nextProps: QueryGridProps) {
         this.initModel(nextProps);
+
+        // if the nextProps has a model and we didn't before or we have a different model id, then reset the url route listener
+        const modelIdMisMatch = nextProps.model && this.props.model && nextProps.model.getId() !== this.props.model.getId();
+        if (nextProps.model && (this.props.model === undefined || modelIdMisMatch)) {
+            this.initUrlRouteListener();
+        }
     }
 
     componentWillUnmount() {
+        this.removeUrlRouteListener();
+    }
+
+    removeUrlRouteListener() {
         const { unlisten } = this.state;
         if (unlisten) {
             unlisten();
+        }
+    }
+
+    initUrlRouteListener() {
+        // make sure to remove any previous route listeners by calling their unlisten() function
+        this.removeUrlRouteListener();
+
+        if (this.props.model && this.props.model.bindURL) {
+            const unlisten = getBrowserHistory().listen((location, action) => {
+                // this listener only applies if we are staying on the same route, exit early if we are navigating
+                const originalRoute = getRouteFromLocationHash(this.state.locationHash);
+                const currentRoute = getRouteFromLocationHash(location.hash);
+                if (originalRoute !== currentRoute) {
+                    return;
+                }
+
+                reloadQueryGridModel(this.props.model);
+            });
+
+            this.setState(() => ({
+                locationHash: getBrowserHistory().location.hash,
+                unlisten
+            }));
         }
     }
 

@@ -4,6 +4,7 @@ import { Utils } from '@labkey/api';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { updateUsersActiveState } from "./actions";
 import { Alert } from "../base/Alert";
+import { resolveErrorMessage } from '../../util/messaging';
 
 interface Props {
     userIds: List<number>
@@ -14,7 +15,7 @@ interface Props {
 
 interface State {
     submitting: boolean
-    error: string
+    error: React.ReactNode
 }
 
 export class UserActivateChangeConfirmModal extends React.Component<Props, State> {
@@ -36,7 +37,7 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
             .then(onComplete)
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({error: (error ? error.exception : 'Unknown error'), submitting: false}));
+                this.setState(() => ({error: resolveErrorMessage(error, "user", "users", "update"), submitting: false}));
             });
     };
 

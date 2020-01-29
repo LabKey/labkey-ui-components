@@ -135,6 +135,7 @@ const COLLAPSED_LIST_SHOW_COUNT = 4;
 export class LineageNodeList extends React.Component<LineageNodeListProps, LineageNodeListState> {
 
     constructor(props) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.onCollapseClicked = this.onCollapseClicked.bind(this);

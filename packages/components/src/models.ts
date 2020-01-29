@@ -52,8 +52,10 @@ interface IStateModelProps {
     omittedColumns?: List<string>
     showChartSelector?: boolean
     showViewSelector?: boolean
+    showSearchBox?: boolean
     containerPath?: string
     containerFilter?: string
+    queryParameters?: any
 }
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
@@ -159,6 +161,10 @@ export function getStateQueryGridModel(
                 modelProps.queryInfo = props.queryInfo;
             }
 
+            if (props.queryParameters !== undefined) {
+                modelProps.queryParameters = props.queryParameters;
+            }
+
             if (props.maxRows !== undefined) {
                 modelProps.maxRows = props.maxRows;
             }
@@ -204,6 +210,10 @@ export function getStateQueryGridModel(
 
             if (props.showViewSelector !== undefined) {
                 modelProps.showViewSelector = props.showViewSelector;
+            }
+
+            if (props.showSearchBox !== undefined) {
+                modelProps.showSearchBox = props.showSearchBox;
             }
         }
     }
@@ -607,7 +617,7 @@ export class EditorModel extends Record({
                     // there better be only one of these
                     const valueDescriptor = values.get(0);
                     if (valueDescriptor && this.hasRawValue(valueDescriptor)) {
-                        const stringVal = valueDescriptor.raw.toString();
+                        const stringVal = valueDescriptor.raw.toString().trim().toLowerCase();
                         if (uniqueKeyMap.has(stringVal)) {
                             uniqueKeyMap = uniqueKeyMap.set(stringVal, uniqueKeyMap.get(stringVal).push(rn+1));
                         }
@@ -703,7 +713,7 @@ export class EditorModel extends Record({
     }
 
     hasRawValue(descriptor: ValueDescriptor) {
-        return descriptor && descriptor.raw !== undefined && descriptor.raw !== "";
+        return descriptor && descriptor.raw !== undefined && descriptor.raw.toString().trim() !== "";
     }
 
     hasData() : boolean {

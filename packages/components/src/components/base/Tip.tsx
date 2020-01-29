@@ -18,12 +18,17 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 interface Props {
     caption: React.ReactNode
+    trigger?: Array<string>
 }
 
 export class Tip extends React.Component<Props, any> {
 
+    static defaultProps = {
+        trigger: ['focus', 'hover']
+    };
+
     render() {
-        const { caption } = this.props;
+        const { caption, trigger } = this.props;
 
         return (
             <OverlayTrigger
@@ -34,7 +39,8 @@ export class Tip extends React.Component<Props, any> {
                     </Tooltip>
                 )}
                 placement="top"
-                trigger={['focus', 'hover']}>
+                trigger={trigger}
+            >
                 {this.props.children}
             </OverlayTrigger>
         )

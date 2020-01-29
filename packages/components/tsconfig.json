@@ -5,6 +5,7 @@
   },
   "files": [
     "./src/typings/main.d.ts",
+    "./src/typings/global.d.ts",
     "src/index.ts"
   ]
 }

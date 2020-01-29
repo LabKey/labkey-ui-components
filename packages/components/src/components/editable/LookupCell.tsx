@@ -48,6 +48,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
     private inputEl: React.RefObject<any>;
 
     constructor(props: LookupCellProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.clearInput = this.clearInput.bind(this);

@@ -39,6 +39,7 @@ export class ViewSelector extends React.Component<Props, any> {
     dropId: string;
 
     constructor(props: Props) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.dropId = generateId('viewselector-');
@@ -115,9 +116,8 @@ export class ViewSelector extends React.Component<Props, any> {
             return null;
         }
 
-        // FIXME: remove inline styles.
         return (
-            <span style={{paddingLeft: '10px'}}>
+            <span className={'gridbar-button-spacer'}>
                 <DropdownButton
                     disabled={viewItems.size <= 1}
                     id={this.dropId}

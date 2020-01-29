@@ -40,6 +40,20 @@ export function datePlaceholder(col: QueryColumn): string {
     return placeholder;
 }
 
+export function isDateTimeCol(col: QueryColumn): boolean {
+    if (col) {
+        const rangeURI = col.rangeURI.toLowerCase();
+
+        // attempt to use the rangeURI to figure out if we are working with a dateTime or date object
+        // note Created and Modified columns do not include the rangeURI information
+        if (rangeURI.indexOf('datetime') > -1) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // 30834: get look and feel display formats
 export function getDateFormat(): string {
     return moment().toMomentFormatString(LABKEY.container.formats.dateFormat);
@@ -62,13 +76,24 @@ function getFormattedDateTime(d) {
     return d ? moment(d, getDateTimeFormat()) : d;
 }
 
-export function formatDate(date : Date, timezone?: string) {
+export function parseDate(dateStr: string, dateFormat?: string)  {
+    if (!dateStr)
+        return null;
+
+    let date = moment(dateStr, dateFormat ? dateFormat : getDateFormat());
+    if (date)
+        return date.toDate();
+
+    return null;
+}
+
+export function formatDate(date : Date, timezone?: string, dateFormat?: string) {
     if (!date)
         return null;
     let _date = moment(date);
     if (timezone)
         _date = _date.tz(timezone);
-    return _date.formatWithJDF(getDateFormat());
+    return _date.formatWithJDF(dateFormat ? dateFormat : getDateFormat());
 }
 
 export function formatDateTime(date : Date, timezone?: string) {

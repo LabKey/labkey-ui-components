@@ -268,6 +268,7 @@ export class SampleIdCreationModel extends Record({
                     resolve(new GenerateSampleResponse(response));
                 }),
                 failure: Utils.getCallbackWrapper((error) => {
+                    console.error(error);
                     reject(error);
                 })
             });
@@ -370,4 +371,9 @@ export interface IParentAlias {
     parentValue: IParentOption;
     ignoreAliasError: boolean
     ignoreSelectError: boolean
+}
+
+export const enum SampleInsertPanelTabs {
+    Grid = 1,
+    File = 2
 }

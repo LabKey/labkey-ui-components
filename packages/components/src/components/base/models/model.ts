@@ -462,6 +462,7 @@ export interface IQueryGridModel {
     omittedColumns?: List<string>
     pageNumber?: number
     queryInfo?: QueryInfo
+    queryParameters?: any
     requiredColumns?: List<string>
     showSearchBox?: boolean
     showViewSelector?: boolean
@@ -502,6 +503,7 @@ export class QueryGridModel extends Record({
     id: undefined,
     schema: undefined,
     query: undefined,
+    queryParameters: undefined, // These are the parameters used as input to a parameterized query
 
     allowSelection: true,
     baseFilters: List<Filter.IFilter>(),
@@ -553,6 +555,7 @@ export class QueryGridModel extends Record({
     id: string;
     schema: string;
     query: string;
+    queryParameters: any; // an object mapping parameter names to values such as {'MinTemp': '36', 'MinWeight': '90'}
     allowSelection: boolean;
     baseFilters: List<Filter.IFilter>;
     bindURL: boolean;

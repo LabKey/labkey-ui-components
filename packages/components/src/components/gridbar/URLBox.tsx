@@ -63,6 +63,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     };
 
     constructor(props: URLBoxProps) {
+        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.onOmniBoxChange = this.onOmniBoxChange.bind(this);
@@ -143,6 +144,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         const queryModel = this.getQueryModel();
         const location = getLocation();
         const urlPrefix = queryModel ? queryModel.urlPrefix : undefined;
+        const queryInfo = queryModel ? queryModel.queryInfo : undefined;
 
         let actions: Array<Action> = [];
         let actionValues = [];
@@ -151,7 +153,15 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         // setup known URL actions
         for (let i=0; i < actionsProp.length; i++) {
             if (actionsProp[i].toLowerCase() in urlActions) {
-                let urlAction = urlActions[actionsProp[i].toLowerCase()];
+                const actionName = actionsProp[i].toLowerCase();
+                if (actionName === ViewAction.NAME && queryInfo)
+                {
+                    const {views} = queryInfo;
+                    if (!queryModel.showViewSelector || (views && views.filter(v => !v.name.startsWith('~~')).size === 0))
+                        continue;
+                }
+
+                let urlAction = urlActions[actionName];
                 actions.push(new urlAction(this.requestColumns, urlPrefix, this.requestModel));
             }
         }
@@ -223,7 +233,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
                 actions={actions}
                 onChange={this.onOmniBoxChange}
                 values={values}
-                disabled={queryModel.isError}
+                disabled={queryModel && queryModel.isError}
             />
         )
     }

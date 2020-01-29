@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.13.1-fb-compactFileAttachmentForm.0",
+  "version": "0.21.0-fb-compactFileAttachmentForm.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -42,7 +42,7 @@
     "@fortawesome/free-regular-svg-icons": "5.11.2",
     "@fortawesome/free-solid-svg-icons": "5.9.0",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "@labkey/api": "0.0.30",
+    "@labkey/api": "0.0.32",
     "bootstrap": "3.4.1",
     "classnames": "2.2.6",
     "font-awesome": "4.7.0",
@@ -67,7 +67,7 @@
     "react-router": "3.2.1",
     "react-select": "1.0.0-rc.10",
     "react-sticky": "6.0.3",
-    "reactn": "1.0.0",
+    "reactn": "2.2.4",
     "vis": "4.21.0"
   },
   "devDependencies": {
@@ -124,7 +124,7 @@
     "react": "^16.0",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.0",
-    "reactn": "^1.0.0"
+    "reactn": "^2.2.4"
   },
   "jest": {
     "globals": {

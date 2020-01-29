@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { ASSAY_WIZARD_MODEL } from '../../test/data/constants';
 import { TextInput } from '../forms/input/TextInput';
-import { DateInput } from '../forms/input/DateInput';
+import { DatePickerInput } from '../forms/input/DatePickerInput';
 import { CheckboxInput } from '../forms/input/CheckboxInput';
 import { SelectInput } from '../forms/input/SelectInput';
 import { AssayWizardModel } from './models';
@@ -42,8 +42,8 @@ describe("<BatchPropertiesPanel/>", () => {
         const wrapper = mount(component);
         expect(wrapper.find(".panel")).toHaveLength(1);
         expect(wrapper.find(QueryFormInputs)).toHaveLength(1);
-        expect(wrapper.find(TextInput)).toHaveLength(4); // text, multi-line, integer, and decimal fields
-        expect(wrapper.find(DateInput)).toHaveLength(1);
+        expect(wrapper.find(TextInput)).toHaveLength(3); // text, multi-line, integer, and decimal fields
+        expect(wrapper.find(DatePickerInput)).toHaveLength(1);
         expect(wrapper.find(CheckboxInput)).toHaveLength(1);
         expect(wrapper.find(SelectInput)).toHaveLength(0);
     });

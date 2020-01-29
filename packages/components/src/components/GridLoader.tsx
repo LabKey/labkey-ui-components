@@ -34,7 +34,8 @@ class GridLoader implements IGridLoader {
                 sort: model.getSorts(),
                 columns: model.getRequestColumnsString(),
                 offset: model.getOffset(),
-                maxRows: model.getMaxRows()
+                maxRows: model.getMaxRows(),
+                parameters: model.queryParameters
             }).then(response => {
                 const { models, orderedModels, totalRows, messages } = response;
 

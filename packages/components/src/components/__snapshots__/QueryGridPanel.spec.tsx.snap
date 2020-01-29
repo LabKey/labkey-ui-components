@@ -54,11 +54,7 @@ exports[`QueryGridPanel render loading 1`] = `
             className="paging pull-right text-nowrap"
           >
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown btn-group"
@@ -150,11 +146,7 @@ exports[`QueryGridPanel render loading 1`] = `
               </div>
             </span>
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown disabled btn-group"
@@ -552,11 +544,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
             className="paging pull-right text-nowrap"
           >
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown disabled btn-group"
@@ -648,11 +636,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
               </div>
             </span>
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown disabled btn-group"
@@ -765,7 +749,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
           className="alert alert-danger"
           role="alert"
         >
-          Communication failure.
+          There was a problem retrieving your data. Your session may have expired or the data may no longer be valid.  Try refreshing your page.
         </div>
       </div>
     </div>
@@ -834,11 +818,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
             className="paging pull-right text-nowrap"
           >
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown btn-group"
@@ -930,11 +910,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
               </div>
             </span>
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown disabled btn-group"
@@ -1158,11 +1134,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
             className="paging pull-right text-nowrap"
           >
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown btn-group"
@@ -1254,11 +1226,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
               </div>
             </span>
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown disabled btn-group"
@@ -1479,11 +1447,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
             className="paging pull-right text-nowrap"
           >
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown btn-group"
@@ -1575,11 +1539,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
               </div>
             </span>
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown disabled btn-group"
@@ -1988,11 +1948,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
             className="paging pull-right text-nowrap"
           >
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown btn-group"
@@ -2084,11 +2040,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
               </div>
             </span>
             <span
-              style={
-                Object {
-                  "paddingLeft": "10px",
-                }
-              }
+              className="gridbar-button-spacer"
             >
               <div
                 className="dropdown disabled btn-group"

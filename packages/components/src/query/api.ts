@@ -63,6 +63,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                     }
                 },
                 failure: (error, request) => {
+                    console.error(error);
                     invalidateQueryDetailsCacheKey(key);
                     reject({
                         message: error.exception,
@@ -411,7 +412,7 @@ function handle132Response(json): Promise<any> {
                     models = {}, // TODO: Switch to Map
                     orderedModels = {},
                     qsKey = 'queries',
-                    rowCount = 0;
+                    rowCount = json.rowCount || 0;
 
                 const metadataKey = resolved.metaData.id,
                     modelKey = resolveKeyFromJson(resolved);
@@ -618,6 +619,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
                 }));
             },
             failure: (error) => {
+                console.error(error);
                 reject(new InsertRowsResponse({
                     schemaQuery,
                     error

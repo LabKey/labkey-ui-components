@@ -157,7 +157,7 @@ Array [
               className="form-control"
               id="sample-set-create-name-expression"
               onChange={[Function]}
-              placeholder="S-\${genId}"
+              placeholder="S-\${now:date}-\${dailySampleCount}"
               type="text"
               value=""
             />
@@ -410,7 +410,7 @@ Array [
               className="form-control"
               id="sample-set-create-name-expression"
               onChange={[Function]}
-              placeholder="S-\${genId}"
+              placeholder="S-\${now:date}-\${dailySampleCount}"
               type="text"
               value=""
             />

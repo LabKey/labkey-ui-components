@@ -50,7 +50,7 @@ const IMPORT_PREFIX :string = 'materialInputs/';
 export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     static defaultProps = {
-        nameExpressionPlaceholder: 'S-\${genId}'
+        nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}'
     };
 
     constructor(props: Props) {

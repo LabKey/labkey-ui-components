@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Add backspaceRemoves and deleteRemoves props to SelectInput
 
+### version 0.21.1
+*Released*: 29 January 2020
+* Added support for smaller version of FileAttachmentForm
+
 ### version 0.21.0
 *Released*: 24 January 2020
 * Item 6654: Changes to include server side warnings while saving domain

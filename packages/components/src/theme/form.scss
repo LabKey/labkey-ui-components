@@ -27,6 +27,10 @@
   display: block;
 }
 
+.input-group-align {
+    display: inline;
+}
+
 // Truncate overflow
 .text__truncate {
   white-space: nowrap;
@@ -93,6 +97,10 @@
   &.active {
     display: block;
   }
+}
+
+.import-panel .list-group {
+    margin-bottom: 15px;
 }
 
 .form-step-tab {

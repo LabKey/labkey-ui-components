@@ -183,8 +183,8 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                     {this.renderButton()}
                 </span>
                 {hasError &&
-                    <span className="text-danger pull-left">
-                        {minCount == maxToAdd ? `${minCount} additional ${nounSingular} allowed` : `${minCount}-${maxToAdd} additional ${nounPlural} allowed`}
+                    <span className="text-danger pull-left add-control--error-message">
+                        {minCount == maxToAdd ? `${minCount} ${nounSingular.toLowerCase()} allowed` : `${minCount}-${maxToAdd} ${nounPlural.toLowerCase()} allowed`}
                     </span>
                 }
             </div>

@@ -124,6 +124,12 @@
       border-bottom:  3px solid $brand-secondary;
     }
   }
+
+  &.list-group-item.active {
+      &:hover {
+          border-bottom: 3px solid white
+      }
+  }
 }
 
 

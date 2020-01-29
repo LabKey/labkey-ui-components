@@ -28,10 +28,10 @@ export class DisableableInput<P extends DisableableInputProps, S extends Disable
         const { value } = this.props;
         const { inputValue } = this.state;
 
-        this.setState(() => {
+        this.setState((state) => {
             return {
-                isDisabled: !this.state.isDisabled,
-                inputValue: this.state.isDisabled ? inputValue : value,
+                isDisabled: !state.isDisabled,
+                inputValue: state.isDisabled ? inputValue : value,
             }
         });
 

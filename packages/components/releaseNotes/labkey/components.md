@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.21.1
+*Released*: 29 January 2020
 * Added support for smaller version of FileAttachmentForm
 
 ### version 0.21.0

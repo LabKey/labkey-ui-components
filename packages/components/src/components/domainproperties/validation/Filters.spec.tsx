@@ -149,6 +149,10 @@ describe('Filters', () => {
                 expect(Filters.describeExpression(expression3, prefix)).toEqual("Does Not Equal -5 and Has a missing value indicator");
                 expect(Filters.isValid(expression3, prefix)).toEqual(true);
 
+                const expression4 = "format.column~contains=a%2Bb"; // Issue 39191
+                expect(Filters.describeExpression(expression4, prefix)).toEqual("Contains a+b");
+                expect(Filters.isValid(expression4, prefix)).toEqual(true);
+
                 expect(Filters.isValid(invalidExpression1, prefix)).toEqual(false);
                 expect(Filters.isValid(invalidExpression2, prefix)).toEqual(false);
 

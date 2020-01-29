@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 39193: Fix for conditional format dialog to respect filter types allowed for date field type
+* Issue 21401: Fix for conditional formatting filter string URL encoding issue
 * Issue 39528: Change Assay designer results text should for option to define fields manually
 * Move “remove field” to field top display (so it will show in collapsed and expanded view)
 * Only show "Confirm Remove Field" dialog for previously saved fields

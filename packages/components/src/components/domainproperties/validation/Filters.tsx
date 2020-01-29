@@ -170,11 +170,11 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
         let returnVal = {type: undefined, value: undefined};
 
         if (parts.length > 0 && parts[0].length > 0) {
-            returnVal.type = parts[0].substring(1 + (prefix ? prefix.length : 0)); // remove ~
+            returnVal.type = decodeURIComponent(parts[0].substring(1 + (prefix ? prefix.length : 0))); // remove ~
         }
 
         if (parts.length > 1) {
-            returnVal.value = parts[1];
+            returnVal.value = decodeURIComponent(parts[1]);
         }
 
         return returnVal;
@@ -214,11 +214,11 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
 
     getFilterString = (filters: FilterSet): string => {
         const { prefix } = this.props;
+        const encodedPrefix = encodeURIComponent(prefix ? prefix : '') + '~';
 
-        let filterString = (prefix ? prefix : '') + '~' + filters.firstFilterType + '=' + filters.firstFilterValue;
-
+        let filterString = encodedPrefix + filters.firstFilterType + '=' + encodeURIComponent(filters.firstFilterValue);
         if (Filters.hasFilterType(filters.secondFilterType)) {
-            filterString = filterString.concat('&' + (prefix ? prefix : '') + '~' + filters.secondFilterType + '=' + filters.secondFilterValue);
+            filterString = filterString.concat('&' + encodedPrefix + filters.secondFilterType + '=' + encodeURIComponent(filters.secondFilterValue));
         }
 
         return filterString;

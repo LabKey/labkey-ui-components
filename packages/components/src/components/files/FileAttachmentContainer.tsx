@@ -38,6 +38,7 @@ interface FileAttachmentContainerProps {
     labelLong?: string
     initialFileNames?: Array<string>
     initialFiles?: {[key:string]: File}
+    compact?: boolean
 }
 
 interface FileAttachmentContainerState {
@@ -271,7 +272,12 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
         if (errorMsg !== '' && errorMsg !== undefined) {
             return (
-                <Alert bsStyle={'danger'}>{errorMsg}</Alert>
+                <Alert
+                    className={this.props.compact ? "file-upload--error-message--compact" : null}
+                    bsStyle={'danger'}
+                >
+                    {errorMsg}
+                </Alert>
             )
         }
     }
@@ -294,7 +300,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
     }
 
     render() {
-        const { acceptedFormats, allowMultiple, index } = this.props;
+        const { acceptedFormats, allowMultiple, index, compact } = this.props;
         const { fileNames, isHover } = this.state;
         const hideFileUpload = !allowMultiple && fileNames.length > 0;
         const fileUploadText = "fileUpload" + (index !== undefined ? index : '');
@@ -303,13 +309,23 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             <div>
                 <div className={classNames("file-upload--container", (hideFileUpload ? "hidden" : "block"))}>
                     <label
-                        className={classNames("file-upload--label", {'file-upload__is-hover': isHover})}
+                        className={classNames({
+                            'file-upload--label': !compact,
+                            'file-upload--label--compact': compact,
+                            'file-upload__is-hover': isHover,
+                        })}
                         htmlFor={fileUploadText}
                         onDragEnter={this.handleDrag}
                         onDragLeave={this.handleLeave}
                         onDragOver={this.handleDrag}
                         onDrop={this.handleDrop}>
-                        <i className="fa fa-cloud-upload fa-2x cloud-logo" aria-hidden="true"/>
+                        <i
+                            className={classNames(
+                                'fa fa-cloud-upload',
+                                { 'fa-2x cloud-logo': !compact, 'file-upload__label__icon': compact }
+                            )}
+                            aria-hidden="true"
+                        />
                         {this.getLabelLong()}
                     </label>
                     <input
@@ -320,7 +336,8 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                         name={fileUploadText}
                         onChange={this.handleChange}
                         ref={this.fileInput}
-                        type="file"/>
+                        type="file"
+                    />
                 </div>
 
                 {this.renderErrorDetails()}

@@ -9,6 +9,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Better error messaging when only 1 additional row is allowed for bulk insert
 * Issue 39554: Parameterized name expression placeholder text
 
+### version 0.21.2
+*Released*: 29 January 2020
+* Add backspaceRemoves and deleteRemoves props to SelectInput
+
+### version 0.21.1
+*Released*: 29 January 2020
+* Added support for smaller version of FileAttachmentForm
+
 ### version 0.21.0
 *Released*: 24 January 2020
 * Item 6654: Changes to include server side warnings while saving domain

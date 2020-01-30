@@ -31,8 +31,6 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_ROW,
     DOMAIN_FIELD_TYPE,
-    HIGHLIGHT_BLUE,
-    NOT_HIGHLIGHT_GRAY,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
@@ -50,6 +48,7 @@ import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 import { FieldExpansionToggle } from "../base/FieldExpansionToggle";
 import { DeleteIcon } from "../base/DeleteIcon";
+import { DragDropHandle } from "../base/DragDropHandle";
 import { SCHEMAS } from '../base/models/schemas';
 
 interface IDomainRowProps {
@@ -317,15 +316,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.setState(() => ({showingModal: showing}));
     };
 
-    renderHandle() {
-        const { dragging } = this.props;
-        const { isDragDisabled } = this.state;
-
-        return (
-            <FontAwesomeIcon size='lg' color={dragging ? HIGHLIGHT_BLUE : isDragDisabled ? NOT_HIGHLIGHT_GRAY: undefined} icon={faGripVertical}/>
-        )
-    }
-
     renderBaseFields() {
         const { index, field, availableTypes, appPropertiesOnly, showFilePropertyType, domainIndex } = this.props;
 
@@ -441,7 +431,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 defaultValueOptions={defaultValueOptions}
                             />
                             <div className='domain-row-handle' {...provided.dragHandleProps}>
-                                {this.renderHandle()}
+                                {<DragDropHandle highlighted={dragging ? true : isDragDisabled ? false: undefined /* use undefined instead of false to allow for css to handle the highlight color for hover*/}/>}
                             </div>
                             <div className='domain-row-main'>
                                 <Col xs={6} className='domain-row-base-fields'>

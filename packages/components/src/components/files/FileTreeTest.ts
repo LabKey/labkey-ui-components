@@ -1,0 +1,87 @@
+
+import React from "react";
+
+const data = {
+    name: 'root',
+    children: [
+        {
+            name: 'parent1',
+            children: [
+                { name: 'child1' },
+                { name: 'child2' }
+            ]
+        },
+        {
+            name: 'loading parent',
+            loading: true,
+            children: []
+        },
+        {
+            name: 'parent2',
+            children: [
+                {
+                    name: 'nested parent',
+                    children: [
+                        { name: 'nested child 1' },
+                        { name: 'nested child 2' }
+                    ]
+                }
+            ]
+        },
+        {
+            name: 'empty directory',
+            children: []
+        }
+    ]
+};
+
+const getFileFromPath = (path: string) => {
+    const pathParts = path.split("/");
+
+    return pathParts[pathParts.length - 1];
+}
+
+const getDirectoryNode = (name: string, root: any) => {
+    if (root.name === name) {
+        return root;
+    }
+
+    let node = undefined;
+
+    if (root.children) {
+        root.children.forEach((child) => {
+            let found = getDirectoryNode(getFileFromPath(name), child);
+            if (found) {
+                node = {...found};
+            }
+        })
+    }
+
+    return node;
+};
+
+export const fetchFileTestTree = (directory?: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        let node = {...data};  // Make a copy
+
+        if (directory)
+        {
+            node = getDirectoryNode(directory, node);
+
+            if (node.children)
+            {
+                resolve(node.children.map(child => {
+                    let newChild = {...child};
+                    if (newChild.children) {
+                        newChild.children = [];  // empty this out to replicate data coming from webdav
+                    }
+                    return newChild;
+                }))
+            }
+        }
+
+        node.children = [];
+
+        resolve(node);
+    })
+};

@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FileTree/> with data 1`] = `
+<div
+  className="filetree-container"
+>
+  <TreeBeard
+    animations={
+      Object {
+        "drawer": [Function],
+        "toggle": [Function],
+      }
+    }
+    data={
+      Object {
+        "active": true,
+        "children": Array [
+          Object {
+            "children": Array [],
+            "id": "root|parent1",
+            "name": "parent1",
+          },
+          Object {
+            "children": Array [],
+            "id": "root|loading parent",
+            "loading": true,
+            "name": "loading parent",
+          },
+          Object {
+            "children": Array [],
+            "id": "root|parent2",
+            "name": "parent2",
+          },
+          Object {
+            "children": Array [],
+            "id": "root|empty directory",
+            "name": "empty directory",
+          },
+        ],
+        "id": "root",
+        "name": "root",
+        "toggled": true,
+      }
+    }
+    decorators={
+      Object {
+        "Container": [Function],
+        "Header": [Function],
+        "Loading": [Function],
+        "Toggle": [Function],
+      }
+    }
+    onToggle={[Function]}
+    style={
+      Object {
+        "tree": Object {
+          "base": Object {
+            "backgroundColor": "white",
+            "color": "#777",
+            "fontFamily": "lucida grande ,tahoma,verdana,arial,sans-serif",
+            "fontSize": "14px",
+            "listStyle": "none",
+            "margin": 0,
+            "padding": 0,
+          },
+          "node": Object {
+            "activeLink": Object {
+              "background": "white",
+            },
+            "base": Object {
+              "position": "relative",
+            },
+            "header": Object {
+              "base": Object {
+                "color": "#777",
+                "display": "inline-block",
+                "verticalAlign": "top",
+              },
+              "connector": Object {
+                "borderBottom": "solid 2px black",
+                "borderLeft": "solid 2px black",
+                "height": "12px",
+                "left": "-21px",
+                "position": "absolute",
+                "top": "0px",
+                "width": "2px",
+              },
+              "title": Object {
+                "lineHeight": "24px",
+                "verticalAlign": "middle",
+              },
+            },
+            "link": Object {
+              "cursor": "pointer",
+              "display": "block",
+              "padding": "0px 5px",
+              "position": "relative",
+            },
+            "loading": Object {
+              "color": "#777",
+            },
+            "subtree": Object {
+              "listStyle": "none",
+              "paddingLeft": "19px",
+            },
+            "toggle": Object {
+              "arrow": Object {
+                "fill": "#777",
+                "strokeWidth": 0,
+              },
+              "base": Object {
+                "display": "inline-block",
+                "height": "24px",
+                "marginLeft": "-5px",
+                "position": "relative",
+                "verticalAlign": "top",
+                "width": "24px",
+              },
+              "height": 14,
+              "width": 14,
+              "wrapper": Object {
+                "height": "14px",
+                "left": "50%",
+                "margin": "-7px 0 0 -7px",
+                "position": "absolute",
+                "top": "50%",
+              },
+            },
+          },
+        },
+      }
+    }
+  />
+</div>
+`;

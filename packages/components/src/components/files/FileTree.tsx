@@ -93,6 +93,7 @@ interface FileTreeState {
     cursor: any,
     checked: List<string>
     data: any
+    loading: boolean
     error?: string
 }
 
@@ -105,6 +106,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
             cursor: undefined,
             checked: List<string>(),
             data: [],
+            loading: false,
             error: undefined
         }
     }
@@ -115,7 +117,9 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
 
     componentDidMount(): void {
         const { loadData } = this.props;
+        const { loading } = this.state;
 
+        this.setState((state) => ({loading: true}));
         loadData().then((data) => {
             let loadedData = data;
 
@@ -138,7 +142,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
                 loadedData.id = loadedData.name;
             }
 
-            this.setState(() => ({data: loadedData}))
+            this.setState(() => ({data: loadedData, loading: false}))
         }).catch((reason: any) => {
             this.setState(() => ({error: reason}));
         })
@@ -308,6 +312,8 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
 
             // load data if not already loaded
             if (node.children.length === 0) {
+                this.setState((state) => ({loading: true}));
+
                 loadData(this.getPathFromId(node.id)).then((children) => {
                     children = children.map((child) => {
                         child.id = (node.id + "|" + child.name); // generate Id from path
@@ -319,7 +325,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
                     }
 
                     node.children = children;  // This is not immutable so this is updating the data object
-                    this.setState(() => ({cursor: node, data: Object.assign({}, data), error: undefined}), (callback ? callback() : undefined));
+                    this.setState(() => ({cursor: node, data: Object.assign({}, data), error: undefined, loading: false}), (callback ? callback() : undefined));
                 }).catch((reason: any) => {
                         this.setState(() => ({error: (reason.message ? reason.message : 'Unable to fetch data')}));
                 })

@@ -50,6 +50,8 @@ import { FieldExpansionToggle } from "../base/FieldExpansionToggle";
 import { DeleteIcon } from "../base/DeleteIcon";
 import { DragDropHandle } from "../base/DragDropHandle";
 import { SCHEMAS } from '../base/models/schemas';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface IDomainRowProps {
     domainId?: number
@@ -170,7 +172,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         placement={'bottom'}
                         overlay={<Popover bsClass="popover">{fieldError.extraInfo}</Popover>}
                     >
-                        <i className="fa fa-question-circle"/>
+                        <FontAwesomeIcon icon={faExclamationCircle} className={'domain-warning-icon'}/>
                     </OverlayTrigger>}
                 </>
             );

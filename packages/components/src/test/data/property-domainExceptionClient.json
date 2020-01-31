@@ -1,10 +1,10 @@
 {
-"exception": "Field name contains invalid characters.",
+"exception": "Field name contains special characters.",
 "success": null,
 "severity": "Warning",
 "errors": [{
     "field": "#FieldText$",
-    "message": "Field name contains invalid characters.",
+    "message": "Field name contains special characters.",
     "extraInfo": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
     "severity": "Warning",
     "rowIndexes" : [0]

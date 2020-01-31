@@ -181,5 +181,5 @@ export const DOMAIN_FIELD_COLS = List([
     })
 ]);
 
-export const FIELD_NAME_CHAR_WARNING_MSG = 'Field name contains invalid characters.';
+export const FIELD_NAME_CHAR_WARNING_MSG = 'Field name contains special characters.';
 export const FIELD_NAME_CHAR_WARNING_INFO = 'SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.';

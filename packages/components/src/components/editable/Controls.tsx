@@ -84,7 +84,8 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
 
     onAdd() {
         if (this.isValid(this.state.count)) {
-            this.props.onAdd(this.state.count);
+            const numToAdd = this.state.count;
+            this.setState(() => ({count: this.props.minCount}), () => this.props.onAdd(numToAdd));
         }
     }
 
@@ -122,19 +123,22 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     renderButton() {
-        const { disable, quickAddText, onQuickAdd, addText, nounPlural } = this.props;
+        const { disable, quickAddText, onQuickAdd, addText, nounSingular, nounPlural } = this.props;
+        const { count } = this.state;
 
+        let title = addText + " " + ((count === 1 ? nounSingular : nounPlural));
         return (
             <span className="input-group-btn">
                 {quickAddText && onQuickAdd ?
                     <SplitButton
                         id="addRowsDropdown"
                         onClick={this.onAdd}
-                        title={addText}
+                        title={title}
+                        bsStyle={"primary"}
                     >
                         <MenuItem onClick={this.onQuickAdd}>{quickAddText}</MenuItem>
                     </SplitButton> :
-                    <Button title={disable ? "Maximum number of " + nounPlural + " reached." : undefined} disabled={disable || this.hasError()} onClick={this.onAdd}>{addText}</Button>
+                    <Button bsStyle={"primary"} title={disable ? "Maximum number of " + nounPlural + " reached." : undefined} disabled={disable || this.hasError()} onClick={this.onAdd}>{title}</Button>
                 }
             </span>
         )
@@ -144,28 +148,8 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         return this.props.maxCount || this.props.maxTotalCount;
     }
 
-    renderRowHelpText = () => {
-        const { nounPlural, maxTotalCount } = this.props;
-
-        const maxIncrement = this.getMaxRowsToAdd();
-        const haveMaxIncrement = maxIncrement !== 0 && maxIncrement !== undefined && maxIncrement < maxTotalCount;
-        return (
-            <>
-                {haveMaxIncrement && <>At most {maxIncrement} {nounPlural} can be added at one time</>}
-                {maxTotalCount &&
-                <>
-                    {haveMaxIncrement ? " and no " : "No "}
-                    more than {maxTotalCount} {nounPlural} are allowed in total
-                </>
-                }
-                .
-            </>
-        );
-    };
-
     getMaxRowsToAdd() {
-        const {maxCount, maxTotalCount} = this.props;
-
+        const { maxCount, maxTotalCount } = this.props;
         return maxCount && maxTotalCount && maxCount > maxTotalCount ? maxTotalCount : maxCount;
     }
 
@@ -182,8 +166,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
 
         return (
             <div className={wrapperClasses}>
-                <span className="input-group">
-                    {this.renderButton()}
+                <span className="input-group input-group-align">
                     <input
                         className="form-control"
                         max={disable ? undefined : maxToAdd}
@@ -197,11 +180,13 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                         type="number"
                         value={count ? count.toString() : undefined}
                     />
-                    <span style={{display: 'inline-block', padding: '6px 8px'}}>
-                        {hasError ? <span className="text-danger">{`${minCount}-${maxToAdd} ${nounPlural}.`}</span> : (count === 1 ? nounSingular : nounPlural)}
-                        {this.shouldRenderHelpText() && <LabelHelpTip body={this.renderRowHelpText} title={"Data Limits"}/>}
-                    </span>
+                    {this.renderButton()}
                 </span>
+                {hasError &&
+                    <span className="text-danger pull-left add-control--error-message">
+                        {minCount == maxToAdd ? `${minCount} ${nounSingular.toLowerCase()} allowed` : `${minCount}-${maxToAdd} ${nounPlural.toLowerCase()} allowed`}
+                    </span>
+                }
             </div>
         )
     }

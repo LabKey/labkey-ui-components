@@ -195,6 +195,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
                 case 'node':     return this.renderSelectedGraphNode(seed, hoverNodeLsid, selectedNode);
                 case 'combined': return this.renderSelectedCombinedNode(seed, hoverNodeLsid, selectedNode);
                 case 'cluster':  return this.renderSelectedClusterNode(seed, hoverNodeLsid, selectedNode);
+                default:
                     throw new Error('unknown node kind');
             }
         }
@@ -417,7 +418,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
             // see DotGraph.TYPECODE_* constants
             const typePrefix =
                 node.type === 'Sample' ? 'M' :
-                    node.type === 'Data' ? 'D' : 'A'
+                    node.type === 'Data' ? 'D' : 'A';
             legacyDetailsLineageUrl = ActionURL.buildURL('experiment', 'showRunGraphDetail.view', LABKEY.container.path, {
                 rowId: runId,
                 detail: true,

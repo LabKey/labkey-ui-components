@@ -42,6 +42,8 @@ import {
     DOMAIN_LAST_ENTERED_DEFAULT,
     DOMAIN_NON_EDITABLE_DEFAULT,
     EXPAND_TRANSITION,
+    FIELD_NAME_CHAR_WARNING_INFO,
+    FIELD_NAME_CHAR_WARNING_MSG,
     PHILEVEL_RESTRICTED_PHI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
@@ -433,11 +435,13 @@ describe('DomainRow', () => {
     });
 
     test('client side warning on field', () => {
-
-        const message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
         const fieldName = '#ColumnAwesome';
         const severity = SEVERITY_LEVEL_WARN;
-        const domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index: 0});
+        const domainFieldError = new DomainFieldError({
+            message: FIELD_NAME_CHAR_WARNING_MSG,
+            extraInfo: FIELD_NAME_CHAR_WARNING_INFO,
+            fieldName, propertyId: undefined, severity, index: 0
+        });
 
         const field = DomainField.create({
             name: fieldName,
@@ -476,9 +480,8 @@ describe('DomainRow', () => {
         //test warning message
         const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1, 1), className: 'domain-field-details'});
         expect(rowDetails.length).toEqual(1);
-        const received = rowDetails.props().children[0] + rowDetails.props().children[1] + rowDetails.props().children[2].props.children;
-        const expected = "New field. " + severity + ": " + message;
-        expect(received).toEqual(expected);
+        const expected = "New field. " + severity + ": " + FIELD_NAME_CHAR_WARNING_MSG;
+        expect(rowDetails.text()).toContain(expected);
 
         expect(toJson(row)).toMatchSnapshot();
         row.unmount();
@@ -528,9 +531,8 @@ describe('DomainRow', () => {
         //test error message
         const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1, 1), className: 'domain-field-details'});
         expect(rowDetails.length).toEqual(1);
-        const received = rowDetails.props().children[0] + rowDetails.props().children[1] + rowDetails.props().children[2].props.children;
         const expected = "New field. " + severity + ": " + message;
-        expect(received).toEqual(expected);
+        expect(rowDetails.text()).toContain(expected);
 
         expect(toJson(row)).toMatchSnapshot();
         row.unmount();

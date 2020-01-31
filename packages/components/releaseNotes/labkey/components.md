@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Only show "Confirm Remove Field" dialog for previously saved fields
 * Field row icons, drag handle and expand icon, only highlight on hover of icon instead of row hover
 * Fix for Domain Designer duplicate field input ids for assay designer case (results in warnings in browser for LKS pages)
+* Issue 39603: Domain warning message with a field name containing invalid characters goes out of the "normal" range
 
 ### version 0.22.0
 *Released*: 30 January 2020

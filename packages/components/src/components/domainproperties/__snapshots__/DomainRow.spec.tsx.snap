@@ -2531,13 +2531,14 @@ exports[`DomainRow client side warning on field 1`] = `
                 }
                 fieldError={
                   Immutable.Record {
-                    "message": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
+                    "message": "Field name contains invalid characters.",
                     "fieldName": "#ColumnAwesome",
                     "propertyId": undefined,
                     "severity": "Warning",
                     "serverError": undefined,
                     "rowIndexes": Immutable.List [],
                     "newRowIndexes": undefined,
+                    "extraInfo": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
                   }
                 }
                 helpNoun="domain"
@@ -3047,8 +3048,36 @@ exports[`DomainRow client side warning on field 1`] = `
                                   <b
                                     key="#ColumnAwesome_1"
                                   >
-                                    Warning: SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.
+                                    Warning: Field name contains invalid characters.
                                   </b>
+                                   
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    overlay={
+                                      <Popover
+                                        bsClass="popover"
+                                        placement="right"
+                                      >
+                                        SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.
+                                      </Popover>
+                                    }
+                                    placement="bottom"
+                                    trigger={
+                                      Array [
+                                        "hover",
+                                        "focus",
+                                      ]
+                                    }
+                                  >
+                                    <i
+                                      className="fa fa-question-circle"
+                                      onBlur={[Function]}
+                                      onClick={null}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                    />
+                                  </OverlayTrigger>
                                 </div>
                                 <div
                                   className="domain-field-buttons"
@@ -11364,6 +11393,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "serverError": undefined,
                     "rowIndexes": Immutable.List [],
                     "newRowIndexes": undefined,
+                    "extraInfo": undefined,
                   }
                 }
                 helpNoun="domain"
@@ -11875,6 +11905,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   >
                                     Error: 'modified' is a reserved field name in 'CancerCuringStudy'
                                   </b>
+                                   
                                 </div>
                                 <div
                                   className="domain-field-buttons"

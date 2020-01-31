@@ -273,11 +273,8 @@ export class DomainDesign extends Record({
                 indices = DomainIndex.fromJS(rawModel.indices);
             }
 
-            if (rawModel.defaultValueOptions)
-            {
-
-                for (let i = 0; i < rawModel.defaultValueOptions.length; i++)
-                {
+            if (rawModel.defaultValueOptions) {
+                for (let i = 0; i < rawModel.defaultValueOptions.length; i++) {
                     defaultValueOptions = defaultValueOptions.push(rawModel.defaultValueOptions[i]);
                 }
             }
@@ -1308,7 +1305,8 @@ export class DomainFieldError extends Record({
     severity: undefined,
     serverError: undefined,
     rowIndexes: List<number>(),
-    newRowIndexes: undefined
+    newRowIndexes: undefined,
+    extraInfo: undefined
 
 }) implements IDomainFieldError {
     message: string;
@@ -1318,6 +1316,7 @@ export class DomainFieldError extends Record({
     serverError: boolean;
     rowIndexes: List<number>;
     newRowIndexes?: List<number>;
+    extraInfo?: string;
 
     static fromJS(errors: Array<any>, severityLevel: String): List<DomainFieldError> {
 
@@ -1326,7 +1325,6 @@ export class DomainFieldError extends Record({
         let hasErrors = errors.find(error => error.severity === SEVERITY_LEVEL_ERROR);
 
         for (let i=0; i < errors.length; i++) {
-
             // stripping out server side warnings when there are errors
             if (errors[i].id === "ServerWarning" && hasErrors)
                 continue;
@@ -1336,8 +1334,15 @@ export class DomainFieldError extends Record({
             let propertyId = ((errors[i].id === "form" && errors[i].field === "form") || errors[i].id < 1 ? undefined : errors[i].id);
             let severity = errors[i].severity ? errors[i].severity : severityLevel;
 
-            let domainFieldError = new DomainFieldError({message: errors[i].message, fieldName, propertyId,
-                severity: severity, serverError: true, rowIndexes: (errors[i].rowIndexes ? errors[i].rowIndexes : List<number>())});
+            let domainFieldError = new DomainFieldError({
+                fieldName,
+                propertyId,
+                message: errors[i].message,
+                extraInfo: errors[i].extraInfo,
+                severity: severity,
+                serverError: true,
+                rowIndexes: (errors[i].rowIndexes ? errors[i].rowIndexes : List<number>())
+            });
             fieldErrors = fieldErrors.push(domainFieldError);
         }
 

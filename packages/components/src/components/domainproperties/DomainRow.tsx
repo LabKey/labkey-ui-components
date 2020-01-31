@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Button, Checkbox, Col, Collapse, FormControl, Row } from 'react-bootstrap';
+import { Button, Checkbox, Col, Collapse, FormControl, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import { Draggable } from 'react-beautiful-dnd';
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -31,6 +29,8 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_ROW,
     DOMAIN_FIELD_TYPE,
+    FIELD_NAME_CHAR_WARNING_INFO,
+    FIELD_NAME_CHAR_WARNING_MSG,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
@@ -108,7 +108,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const { field, index } = this.props;
+        const { field, index, fieldError } = this.props;
         let details = [];
 
         if (field.hasErrors()) {
@@ -152,7 +152,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             period = '. ';
         }
 
-        if (this.props.field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
+        if (field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
             details.push(period + 'Locked');
         }
 
@@ -160,10 +160,20 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             period = '. ';
         }
 
-        if (this.props.fieldError) {
+        if (fieldError) {
             details.push(period);
-            const msg = this.props.fieldError.severity + ": " + this.props.fieldError.message;
-            details.push(<b key={field.name + "_" + index}>{msg}</b>);
+            const msg = fieldError.severity + ': ' + fieldError.message;
+            details.push(
+                <>
+                    <b key={field.name + "_" + index}>{msg}</b>&nbsp;
+                    {fieldError.extraInfo && <OverlayTrigger
+                        placement={'bottom'}
+                        overlay={<Popover bsClass="popover">{fieldError.extraInfo}</Popover>}
+                    >
+                        <i className="fa fa-question-circle"/>
+                    </OverlayTrigger>}
+                </>
+            );
         }
 
         return details;
@@ -253,11 +263,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index), value: undefined});
         }
         else {
-            let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
             let fieldName = value;
             let severity = SEVERITY_LEVEL_WARN;
             let indexes = List<number>([index]);
-            let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, rowIndexes: indexes});
+            let domainFieldError = new DomainFieldError({
+                message: FIELD_NAME_CHAR_WARNING_MSG,
+                extraInfo: FIELD_NAME_CHAR_WARNING_INFO,
+                fieldName,
+                propertyId: undefined,
+                severity,
+                rowIndexes: indexes
+            });
 
             //set value for field error
             nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index), value: domainFieldError});

@@ -1,12 +1,12 @@
 {
-"exception": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
+"exception": "Field name contains invalid characters.",
 "success": null,
 "severity": "Warning",
-"errors": [
-    {
+"errors": [{
     "field": "#FieldText$",
-    "message": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
+    "message": "Field name contains invalid characters.",
+    "extraInfo": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
     "severity": "Warning",
     "rowIndexes" : [0]
-    }]
+  }]
 }

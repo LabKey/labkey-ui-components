@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.22.1
+*Released*: 3 February 2020
 * Issue 38012: For the Batch Update Dialog a field should be cleared if it is changed to disabled
 
 ### version 0.22.0

@@ -29,6 +29,7 @@ interface Props {
     beforeFinish?: (formValues: {}) => void
     nameExpressionInfoUrl?: string
     data?: Map<string, any>
+    nameExpressionPlaceholder?: string
 }
 
 interface State {
@@ -47,6 +48,10 @@ const NEW_SAMPLE_SET_OPTION : IParentOption = {
 const IMPORT_PREFIX :string = 'materialInputs/';
 
 export class SampleSetDetailsPanel extends React.Component<Props, State> {
+
+    static defaultProps = {
+        nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}'
+    };
 
     constructor(props: Props) {
         super(props);
@@ -326,7 +331,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     };
 
     render() {
-        const { onCancel, nameExpressionInfoUrl } = this.props;
+        const { onCancel, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
         const { submitting, error, parentOptions } = this.state;
 
         const moreInfoLink = nameExpressionInfoUrl ?
@@ -395,7 +400,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                     <FormControl
                                         id={FORM_IDS.NAME_EXPRESSION}
                                         type="text"
-                                        placeholder={'S-\${now:date}-\${batchRandomId}-\${randomId}'}
+                                        placeholder={nameExpressionPlaceholder}
                                         onChange={this.onFormChange}
                                         value={this.getNameExpressionValue()}
                                     />

@@ -95,6 +95,16 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         />
     }
 
+    onChange = (name, value) => {
+        const { onChange } = this.props;
+
+        if (this.props.allowDisable)
+            this.setState({inputValue: value});
+
+        if (onChange)
+            onChange(value);
+    };
+
     render() {
         const {
             changeDebounceInterval,
@@ -135,7 +145,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 label={this.renderLabel()}
                 labelClassName={labelClassName}
                 name={name ? name : queryColumn.name}
-                onChange={onChange}
+                onChange={this.onChange}
                 placeholder={placeholder || `Enter ${queryColumn.caption.toLowerCase()}`}
                 required={queryColumn.required}
                 rowClassName={rowClassName}
@@ -143,7 +153,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 type={type}
                 validatePristine={validatePristine}
                 validations={validations}
-                value={value}
+                value={this.getInputValue()}
                 componentRef={node => this.textInput = node}
             />
         );

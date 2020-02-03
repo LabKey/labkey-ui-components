@@ -150,6 +150,7 @@ export interface SelectInputProps extends DisableableInputProps {
 
 export interface SelectInputState extends DisableableInputState {
     selectedOptions?: any
+    originalOptions?: any
 }
 
 // Implementation exported only for tests
@@ -183,12 +184,8 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         this.handleBlur = this.handleBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleFocus = this.handleFocus.bind(this);
-        this.toggleDisabled = this.toggleDisabled.bind(this);
 
-        this.state = {
-            selectedOptions: props.autoValue === true ? initOptions(props): undefined,
-            isDisabled: props.initiallyDisabled
-        };
+        this.initState(props);
     }
 
     refs: {
@@ -198,7 +195,14 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     componentWillReceiveProps(nextProps: SelectInputProps) {
         // This allows for "late-bound" value
         if (this.props.autoValue && !this.change && !equalValues(this.props.value, nextProps.value)) {
-            this._setOptionsAndValue(initOptions(nextProps));
+            if (nextProps.autoValue)
+                this._setOptionsAndValue(initOptions(nextProps));
+            else {
+                this.setState({
+                    selectedOptions: nextProps.selectedOptions,
+                    originalOptions: nextProps.selectedOptions,
+                });
+            }
         }
 
         // Issue 36478: reset the select input cache object on prop change
@@ -206,6 +210,28 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
 
         this.change = false;
     }
+
+
+    initState(props: SelectInputProps) {
+        const { autoValue, selectedOptions } = props;
+        const originalOptions = autoValue === true ? initOptions(props) : selectedOptions;
+        this.state = {
+            selectedOptions: originalOptions,
+            originalOptions: originalOptions,
+            isDisabled: props.initiallyDisabled
+        };
+    }
+
+    toggleDisabled = () => {
+        const { selectedOptions } = this.state;
+
+        this.setState((state) => {
+            return {
+                isDisabled: !state.isDisabled,
+                selectedOptions: state.isDisabled ? selectedOptions : state.originalOptions,
+            }
+        });
+    };
 
     getId() {
         if (this.props.id) {
@@ -438,7 +464,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             promptTextCreator,
             ref: 'reactSelect',
             required,
-            value: autoValue === true ? this.state.selectedOptions : this.props.selectedOptions,
+            value: this.state.selectedOptions,
             valueKey
         };
 

@@ -12,6 +12,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Fix for Domain Designer duplicate field input ids for assay designer case (results in warnings in browser for LKS pages)
 * Issue 39603: Domain warning message with a field name containing invalid characters goes out of the "normal" range
 
+### version 0.22.1
+*Released*: 3 February 2020
+* Issue 38012: For the Batch Update Dialog a field should be cleared if it is changed to disabled
+
 ### version 0.22.0
 *Released*: 30 January 2020
 * Issue 39558: Adjust styling of import tabs to better indicate they are actionable.

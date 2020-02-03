@@ -4,8 +4,9 @@ import { faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 
 interface Props {
+    cls?: string
     expanded: boolean
-    highlighted: boolean
+    highlighted?: boolean
     expandedTitle: string
     collapsedTitle: string
     id: string
@@ -15,14 +16,14 @@ interface Props {
 export class FieldExpansionToggle extends React.Component<Props, any> {
 
     render() {
-        const { expanded, expandedTitle, collapsedTitle, highlighted, id, onClick } = this.props;
-        const className = classNames({
-            'field-highlighted': this.props.highlighted && !expanded,
-            'field-not-highlighted': !this.props.highlighted
-        });
+        const { expanded, expandedTitle, collapsedTitle, cls, highlighted, id, onClick } = this.props;
+        const className = highlighted !== undefined ? classNames({
+            'field-highlighted': highlighted && !expanded,
+            'field-not-highlighted': !highlighted
+        }) : undefined;
 
         return (
-            <div title={expanded ? expandedTitle : collapsedTitle} className="field-icon" id={id} onClick={onClick}>
+            <div title={expanded ? expandedTitle : collapsedTitle} className={'field-icon ' + (cls ? cls : '')} id={id} onClick={onClick}>
                 <FontAwesomeIcon size='lg' className={className} icon={expanded ? faMinusSquare : faPlusSquare}/>
             </div>
         )

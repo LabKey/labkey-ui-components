@@ -16,6 +16,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 interface RangeValidationOptionsProps {
     validator: any
     index: number
+    domainIndex: number
     validatorIndex: number
     mvEnabled: boolean
     expanded: boolean
@@ -35,7 +36,9 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
         return (Filters.isValid(validator.get("expression")) && !!validator.get("name"));
     };
 
-    renderRowTextbox(label: string, name: string, validatorIndex: number, value: string, tooltipTitle?: string, tooltipBody?: () => any) {
+    renderRowTextbox(label: string, name: string, value: string, tooltipTitle?: string, tooltipBody?: () => any) {
+        const { validatorIndex, domainIndex } = this.props;
+
         return (
             <Row className='domain-validator-filter-row'>
                 <Col xs={this.labelWidth}>
@@ -52,7 +55,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
                             componentClass='textarea'
                             className='domain-validation-textarea'
                             rows={3}
-                            id={createFormInputId(name, validatorIndex)}
+                            id={createFormInputId(name, domainIndex, validatorIndex)}
                             name={createFormInputName(name)}
                             value={value}
                             onChange={this.onChange}
@@ -63,7 +66,9 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
         )
     }
 
-    renderName(validatorIndex: number, value: string) {
+    renderName(value: string) {
+        const { validatorIndex, domainIndex } = this.props;
+
         return (
             <Row>
                 <Col xs={this.labelWidth}>
@@ -74,7 +79,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
                 <Col xs={this.fieldWidth}>
                     <FormControl
                         type='text'
-                        id={createFormInputId(DOMAIN_VALIDATOR_NAME, validatorIndex)}
+                        id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}
                         name={createFormInputName(DOMAIN_VALIDATOR_NAME)}
                         value={value}
                         onChange={this.onChange}
@@ -85,7 +90,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
     }
 
     renderRemoveValidator() {
-        const { validatorIndex } = this.props;
+        const { validatorIndex, domainIndex } = this.props;
 
         return (
             <Row>
@@ -93,7 +98,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
                     <Button
                         className="domain-validation-delete"
                         name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
-                        id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, validatorIndex)}
+                        id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
                         onClick={this.onDelete}>
                         Remove Validator
                     </Button>
@@ -162,13 +167,14 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
     };
 
     render() {
-        const { validatorIndex, expanded, dataType, validator, mvEnabled, index } = this.props;
+        const { validatorIndex, expanded, dataType, validator, mvEnabled, domainIndex } = this.props;
 
         return(
             <div className='domain-validator-panel' id={"domain-range-validator-" + validatorIndex}>
                 {expanded &&
                 <div>
                     <Filters validatorIndex={validatorIndex}
+                             domainIndex={domainIndex}
                              range={true}
                              mvEnabled={mvEnabled}
                              onChange={this.onFilterChange}
@@ -178,9 +184,9 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
                              secondFilterTooltip={this.secondFilterTooltip()}
 
                     />
-                    {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex, validator.description)}
-                    {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex, validator.errorMessage)}
-                    {this.renderName(validatorIndex, validator.name)}
+                    {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validator.description)}
+                    {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validator.errorMessage)}
+                    {this.renderName(validator.name)}
                     {this.renderRemoveValidator()}
 
                 </div>

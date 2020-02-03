@@ -27,6 +27,8 @@ import {
 } from './models';
 import {
     DOMAIN_FIELD_PREFIX,
+    FIELD_NAME_CHAR_WARNING_INFO,
+    FIELD_NAME_CHAR_WARNING_MSG,
     FLAG_CONCEPT_URI,
     INT_RANGE_URI,
     SEVERITY_LEVEL_ERROR,
@@ -38,7 +40,7 @@ import { QueryColumn } from '../base/models/model';
 describe("domain properties actions", () => {
 
     test("test create id", () => {
-        return expect(createFormInputId("marty", 100)).toBe(DOMAIN_FIELD_PREFIX + "-marty-100");
+        return expect(createFormInputId("marty", 0, 100)).toBe(DOMAIN_FIELD_PREFIX + "-marty-0-100");
     });
 
     test("test get field type", () => {
@@ -149,9 +151,8 @@ describe("domain properties actions", () => {
         });
 
         let fieldName = '#column#';
-        let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
         let domainFieldError = [];
-        domainFieldError.push({message, fieldName, propertyId: undefined, severity: SEVERITY_LEVEL_WARN});
+        domainFieldError.push({message: FIELD_NAME_CHAR_WARNING_MSG, extraInfo: FIELD_NAME_CHAR_WARNING_INFO, fieldName, propertyId: undefined, severity: SEVERITY_LEVEL_WARN});
 
         let domain = DomainDesign.create({
             name: "CancerCuringStudy",
@@ -163,7 +164,7 @@ describe("domain properties actions", () => {
         }, undefined);
 
         let updatedDomain = updateDomainException(domain, 0, domainFieldError);
-        expect(updatedDomain.domainException.get('errors').get(0)[0].message).toBe(message);
+        expect(updatedDomain.domainException.get('errors').get(0)[0].message).toBe(FIELD_NAME_CHAR_WARNING_MSG);
     });
 
     test('setDomainFields', () => {

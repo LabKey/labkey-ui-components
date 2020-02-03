@@ -50,6 +50,7 @@ export interface IBannerMessage {
 
 export interface ITypeDependentProps {
     index: number,
+    domainIndex: number
     label: string,
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     lockType: string
@@ -272,11 +273,8 @@ export class DomainDesign extends Record({
                 indices = DomainIndex.fromJS(rawModel.indices);
             }
 
-            if (rawModel.defaultValueOptions)
-            {
-
-                for (let i = 0; i < rawModel.defaultValueOptions.length; i++)
-                {
+            if (rawModel.defaultValueOptions) {
+                for (let i = 0; i < rawModel.defaultValueOptions.length; i++) {
                     defaultValueOptions = defaultValueOptions.push(rawModel.defaultValueOptions[i]);
                 }
             }
@@ -811,6 +809,10 @@ export class DomainField extends Record({
         return isFieldNew(this);
     }
 
+    isSaved(): boolean {
+        return isFieldSaved(this);
+    }
+
     isValid(): boolean {
         // TODO should the rest of these checks move up to the getErrors() function and return different FieldErrors?
         // if so, then we can remove this isValid() function and just use !hasErrors()
@@ -904,6 +906,10 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
 
 function isFieldNew(field: Partial<IDomainField>): boolean {
     return field.propertyId === undefined;
+}
+
+function isFieldSaved(field: Partial<IDomainField>): boolean {
+    return !isFieldNew(field) && field.propertyId !== 0;
 }
 
 export function resolveAvailableTypes(field: DomainField, availableTypes: List<PropDescType>, appPropertiesOnly?: boolean, showFilePropertyType?: boolean): List<PropDescType> {
@@ -1299,7 +1305,8 @@ export class DomainFieldError extends Record({
     severity: undefined,
     serverError: undefined,
     rowIndexes: List<number>(),
-    newRowIndexes: undefined
+    newRowIndexes: undefined,
+    extraInfo: undefined
 
 }) implements IDomainFieldError {
     message: string;
@@ -1309,6 +1316,7 @@ export class DomainFieldError extends Record({
     serverError: boolean;
     rowIndexes: List<number>;
     newRowIndexes?: List<number>;
+    extraInfo?: string;
 
     static fromJS(errors: Array<any>, severityLevel: String): List<DomainFieldError> {
 
@@ -1317,7 +1325,6 @@ export class DomainFieldError extends Record({
         let hasErrors = errors.find(error => error.severity === SEVERITY_LEVEL_ERROR);
 
         for (let i=0; i < errors.length; i++) {
-
             // stripping out server side warnings when there are errors
             if (errors[i].id === "ServerWarning" && hasErrors)
                 continue;
@@ -1327,8 +1334,15 @@ export class DomainFieldError extends Record({
             let propertyId = ((errors[i].id === "form" && errors[i].field === "form") || errors[i].id < 1 ? undefined : errors[i].id);
             let severity = errors[i].severity ? errors[i].severity : severityLevel;
 
-            let domainFieldError = new DomainFieldError({message: errors[i].message, fieldName, propertyId,
-                severity: severity, serverError: true, rowIndexes: (errors[i].rowIndexes ? errors[i].rowIndexes : List<number>())});
+            let domainFieldError = new DomainFieldError({
+                fieldName,
+                propertyId,
+                message: errors[i].message,
+                extraInfo: errors[i].extraInfo,
+                severity: severity,
+                serverError: true,
+                rowIndexes: (errors[i].rowIndexes ? errors[i].rowIndexes : List<number>())
+            });
             fieldErrors = fieldErrors.push(domainFieldError);
         }
 
@@ -1519,6 +1533,7 @@ export type HeaderRenderer = (config:IAppDomainHeader) => any
 
 export interface IAppDomainHeader {
     domain: DomainDesign
+    domainIndex: number
     modelDomains?: List<DomainDesign>
     onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
     onAddField?: (fieldConfig: Partial<IDomainField>) => void

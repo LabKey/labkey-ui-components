@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.23.0
+*Released*: 3 February 2020
+* Issue 39193: Fix for conditional format dialog to respect filter types allowed for date field type
+* Issue 21401: Fix for conditional formatting filter string URL encoding issue
+* Issue 39528: Change Assay designer results text should for option to define fields manually
+* Move “remove field” to field top display (so it will show in collapsed and expanded view)
+* Only show "Confirm Remove Field" dialog for previously saved fields
+* Field row icons, drag handle and expand icon, only highlight on hover of icon instead of row hover
+* Fix for Domain Designer duplicate field input ids for assay designer case (results in warnings in browser for LKS pages)
+* Issue 39603: Domain warning message with a field name containing invalid characters goes out of the "normal" range
+
 ### version 0.22.1
 *Released*: 3 February 2020
 * Issue 38012: For the Batch Update Dialog a field should be cleared if it is changed to disabled

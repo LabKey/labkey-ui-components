@@ -10,11 +10,11 @@ interface Props {
 export class DragDropHandle extends React.Component<Props, any> {
 
     render() {
-
-        const className = classNames({
-            'field-highlighted': this.props.highlighted,
-            'field-not-highlighted': !this.props.highlighted
-        });
+        const { highlighted } = this.props;
+        const className = highlighted !== undefined ? classNames({
+            'field-highlighted': highlighted,
+            'field-not-highlighted': !highlighted
+        }) : undefined;
 
         return (<FontAwesomeIcon size='lg' className={className} icon={faGripVertical}/>)
     }

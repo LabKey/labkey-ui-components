@@ -18,12 +18,14 @@ describe('RangeValidationOptions', () => {
 
     test('Range Validator - expanded', () => {
         const validatorIndex = 0;
+        const domainIndex = 1;
         const validatorModel = PropertyValidator.fromJS([propertyValidator], 'Range').get(0);
 
         const props = {
             validator: validatorModel,
             index: 1,
             validatorIndex: validatorIndex,
+            domainIndex: domainIndex,
             mvEnabled: true,
             expanded: true,
             dataType: INTEGER_TYPE,
@@ -36,19 +38,19 @@ describe('RangeValidationOptions', () => {
             {...props}
         />);
 
-        let value = validator.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, validatorIndex)});
+        let value = validator.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, domainIndex, validatorIndex)});
         expect(value.at(0).props().value).toEqual('0');
 
-        value = validator.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, validatorIndex)});
+        value = validator.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, domainIndex, validatorIndex)});
         expect(value.at(0).props().value).toEqual('10');
 
-        const name = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_NAME, validatorIndex)});
+        const name = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)});
         expect(name.at(0).props().value).toEqual("Test range validator");
 
-        const description = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex)});
+        const description = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_DESCRIPTION, domainIndex, validatorIndex)});
         expect(description.at(0).props().value).toEqual("This is a range validator");
 
-        const errorMsg = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex)});
+        const errorMsg = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_ERRORMESSAGE, domainIndex, validatorIndex)});
         expect(errorMsg.at(0).props().value).toEqual("Range validation failed");
 
         expect(RangeValidationOptions.isValid(validatorModel)).toEqual(true);
@@ -59,12 +61,14 @@ describe('RangeValidationOptions', () => {
 
     test('Range Validator - collapsed', () => {
         const validatorIndex = 0;
+        const domainIndex = 1;
         const validatorModel = PropertyValidator.fromJS([propertyValidator], 'Range').get(0);
 
         const props = {
             validator: validatorModel,
             index: 1,
             validatorIndex: validatorIndex,
+            domainIndex: domainIndex,
             mvEnabled: true,
             expanded: false,
             dataType: INTEGER_TYPE,

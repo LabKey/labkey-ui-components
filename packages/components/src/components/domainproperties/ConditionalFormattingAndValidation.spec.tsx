@@ -19,6 +19,7 @@ describe('ConditionalFormattingAndValidation', () => {
 
         const props = {
             index: 1,
+            domainIndex: 1,
             field: DomainField.create({}),
             setDragDisabled: jest.fn(),
             onChange: jest.fn(),
@@ -82,6 +83,7 @@ describe('ConditionalFormattingAndValidation', () => {
 
         const props = {
             index: 1,
+            domainIndex: 1,
             field: DomainField.create({propertyValidators: [propertyValidatorRange, propertyValidatorRegex], rangeURI: integerPropertyType.rangeURI}),
             setDragDisabled: jest.fn(),
             onChange: jest.fn(),

@@ -19,6 +19,7 @@ import {
 
 interface ConditionalFormattingAndValidationProps {
     index: number,
+    domainIndex: number
     field: DomainField,
     onChange: (string, any) => any
     showingModal: (boolean) => any
@@ -45,17 +46,14 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
 
     handleChange = (evt: any) => {
         const { onChange } = this.props;
-
-        if (onChange)
-        {
+        if (onChange) {
             onChange(evt.target.id, evt.target.value);
         }
     };
 
     onApply = (validator: List<PropertyValidator | ConditionalFormat>, type: string) => {
-        const { onChange, index } = this.props;
-
-        onChange(createFormInputId(type, index), validator);
+        const { onChange, index, domainIndex } = this.props;
+        onChange(createFormInputId(type, domainIndex, index), validator);
     };
 
     getRangeValidatorHelpText = () => {
@@ -108,7 +106,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
     };
 
     renderValidator = (range: boolean) => {
-        const { field, index } = this.props;
+        const { field, index, domainIndex } = this.props;
 
         const validators = range ? field.rangeValidators : field.regexValidators;
         const count = validators ? validators.size : 0;
@@ -122,7 +120,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                     <Button
                         className="domain-validation-button"
                         name={createFormInputName((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR))}
-                        id={createFormInputId((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR), index)}
+                        id={createFormInputId((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR), domainIndex, index)}
                         disabled={isFieldFullyLocked(field.lockType)}
                         onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}>
                         {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : (range ? 'Add Range' : 'Add Regex')}
@@ -137,7 +135,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
     };
 
     renderConditionalFormats = () => {
-        const { field, index, hideConditionalFormatting } = this.props;
+        const { field, index, hideConditionalFormatting, domainIndex } = this.props;
         if (hideConditionalFormatting)
             return null;
 
@@ -152,7 +150,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                     <Button
                         className="domain-validation-button"
                         name={createFormInputName(DOMAIN_COND_FORMAT)}
-                        id={createFormInputId(DOMAIN_COND_FORMAT, index)}
+                        id={createFormInputId(DOMAIN_COND_FORMAT, domainIndex, index)}
                         disabled={isFieldFullyLocked(field.lockType)}
                         onClick={this.showHideConditionalFormat}>
                         {count > 0 ? 'Edit Formats' : 'Add Format'}

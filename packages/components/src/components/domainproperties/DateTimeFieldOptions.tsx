@@ -40,7 +40,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
     };
 
     render() {
-        const { index, label, format, lockType } = this.props;
+        const { index, label, format, lockType, domainIndex } = this.props;
 
         return (
             <div>
@@ -66,7 +66,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                                      value={format || ''}
                                      onChange={this.onFieldChange}
                                      disabled={isFieldFullyLocked(lockType)}
-                                     id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
+                                     id={createFormInputId(DOMAIN_FIELD_FORMAT, domainIndex, index)}
                                      name={createFormInputName(DOMAIN_FIELD_FORMAT)}
                         />
                     </Col>

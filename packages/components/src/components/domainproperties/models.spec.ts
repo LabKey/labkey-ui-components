@@ -149,6 +149,15 @@ describe('DomainField', () => {
         expect(f2.isNew()).toBeFalsy();
     });
 
+    test("isSaved", () => {
+        const f1 = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI});
+        expect(f1.isSaved()).toBeFalsy();
+        const f2 = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 0});
+        expect(f2.isSaved()).toBeFalsy();
+        const f3 = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 1});
+        expect(f3.isSaved()).toBeTruthy();
+    });
+
     test("updateDefaultValues", () => {
         const textField = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI});
         expect(textField.measure).toBeFalsy();

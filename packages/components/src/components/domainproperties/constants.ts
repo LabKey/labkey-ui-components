@@ -129,10 +129,6 @@ export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 
 export const MAX_TEXT_LENGTH = 4000;
 
-export const HIGHLIGHT_BLUE = '#2980B9';  // See $blue-border in variables.scss
-export const NOT_HIGHLIGHT_GRAY = '#999999';
-// export const HIGHLIGHT_BLUE = '#3495D2';
-
 export const PHILEVEL_NOT_PHI = "NotPHI";
 export const PHILEVEL_LIMITED_PHI = "Limited";
 export const PHILEVEL_FULL_PHI = "PHI";
@@ -184,3 +180,6 @@ export const DOMAIN_FIELD_COLS = List([
         title: 'Scale'
     })
 ]);
+
+export const FIELD_NAME_CHAR_WARNING_MSG = 'Field name contains special characters.';
+export const FIELD_NAME_CHAR_WARNING_INFO = 'SQL queries, R scripts, and other code are easiest to write when field names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore.';

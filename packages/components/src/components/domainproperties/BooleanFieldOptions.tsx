@@ -34,7 +34,7 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
     };
 
     render() {
-        const { index, label, format, lockType } = this.props;
+        const { index, label, format, lockType, domainIndex } = this.props;
 
         return (
             <div>
@@ -56,7 +56,7 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
                         <FormControl type="text"
                                      value={format || ''}
                                      onChange={this.onFieldChange}
-                                     id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
+                                     id={createFormInputId(DOMAIN_FIELD_FORMAT, domainIndex, index)}
                                      disabled={isFieldFullyLocked(lockType)}
                                      name={createFormInputName(DOMAIN_FIELD_SCALE)}
                         />

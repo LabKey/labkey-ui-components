@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.23.0
+*Released*: 3 February 2020
 * Issue 39193: Fix for conditional format dialog to respect filter types allowed for date field type
 * Issue 21401: Fix for conditional formatting filter string URL encoding issue
 * Issue 39528: Change Assay designer results text should for option to define fields manually

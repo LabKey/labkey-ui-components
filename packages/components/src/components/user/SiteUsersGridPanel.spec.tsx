@@ -110,4 +110,31 @@ describe("<SiteUsersGridPanel/>", () => {
         wrapper.unmount();
     });
 
+    test("all users view", () => {
+        const component = (
+            <SiteUsersGridPanel
+                onCreateComplete={jest.fn()}
+                onUsersStateChangeComplete={jest.fn()}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+            />
+        );
+
+        const wrapper = mount(component);
+        wrapper.setState({usersView: 'all'});
+
+        expect(wrapper.find('QueryGridPanel')).toHaveLength(1);
+        expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').first().text()).toBe('All Users');
+        expect(wrapper.find('.btn-success')).toHaveLength(1);
+        expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
+        wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(1);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View Active Users')).toHaveLength(1);
+        wrapper.unmount();
+    });
+
 });

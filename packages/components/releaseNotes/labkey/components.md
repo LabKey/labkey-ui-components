@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Use DatePickerInput for DetailEdit
+* Add advancedExportOption to QueryGridPanel
+
 ### version 0.23.0
 *Released*: 3 February 2020
 * Issue 39193: Fix for conditional format dialog to respect filter types allowed for date field type

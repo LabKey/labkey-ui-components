@@ -42,7 +42,7 @@ interface Props {
 }
 
 interface State {
-    usersView: string
+    usersView: string // valid options are 'active', 'inactive', 'all'
     showDialog: string // valid options are 'create', 'deactivate', 'reactivate', 'delete', undefined
     selectedUserId: number
     unlisten: any
@@ -95,7 +95,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     }
 
     getUsersView(paramVal: string): string {
-        return paramVal === 'inactive' ? paramVal : 'active'; // default to view active users
+        return paramVal === 'inactive' || paramVal === 'all' ? paramVal : 'active'; // default to view active users
     }
 
     getUsersModel(): QueryGridModel {
@@ -104,7 +104,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         const model = getStateQueryGridModel(gridId, SCHEMAS.CORE_TABLES.USERS, {
             containerPath: '/',
             omittedColumns: OMITTED_COLUMNS,
-            baseFilters: List<Filter.IFilter>([Filter.create('active', usersView === 'active')]),
+            baseFilters: usersView === 'all' ? undefined : List<Filter.IFilter>([Filter.create('active', usersView === 'active')]),
             bindURL: true,
             isPaged: true
         });
@@ -188,7 +188,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     }
 
     renderButtons = () => {
-        const viewActive = this.state.usersView === 'active';
+        const { usersView } = this.state;
 
         return (
             <>
@@ -196,7 +196,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                     Create
                 </Button>
                 <ManageDropdownButton id={'users-manage-btn'}>
-                    {viewActive &&
+                    {usersView === 'active' &&
                         <SelectionMenuItem
                             id={'deactivate-users-menu-item'}
                             text={'Deactivate Users'}
@@ -214,7 +214,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             nounPlural={"users"}
                         />
                     }
-                    {!viewActive &&
+                    {usersView === 'inactive' &&
                         <SelectionMenuItem
                             id={'reactivate-users-menu-item'}
                             text={'Reactivate Users'}
@@ -227,7 +227,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                         id={'viewactive-users-menu-item'}
                         onClick={this.toggleViewActive}
                     >
-                        View {(viewActive ? 'Inactive' : 'Active') + ' Users'}
+                        View {(usersView === 'active' ? 'Inactive' : 'Active') + ' Users'}
                     </MenuItem>
                 </ManageDropdownButton>
             </>

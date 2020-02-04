@@ -60,6 +60,8 @@ export class RemovableButton extends React.PureComponent<Props, State> {
             btnCls = btnCls.push('permissions-button-added');
         }
 
+        const btn = <Button className={btnCls.join(' ')} bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>;
+
         return (
             <>
                 {onRemove
@@ -72,9 +74,9 @@ export class RemovableButton extends React.PureComponent<Props, State> {
                             </Tip>
                             : <Button bsStyle={bsStyle} onClick={this.onRemoveClick}><i className={'fa fa-remove'}/></Button>
                         }
-                        <Button className={btnCls.join(' ')} bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>
+                        {btn}
                     </ButtonGroup>
-                    : <Button className={btnCls.join(' ')} bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>
+                    : btn
                 }
             </>
         )

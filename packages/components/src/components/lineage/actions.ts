@@ -24,6 +24,7 @@ import { AppURL } from '../../url/AppURL';
 import { buildURL } from '../../url/ActionURL';
 import { GridColumn } from '../base/Grid';
 import { SchemaQuery } from '../base/models/model';
+import { URLResolver } from '../..';
 
 const LINEAGE_METADATA_COLUMNS = List(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
@@ -141,7 +142,8 @@ export function loadLineageIfNeeded(seed: string, distance?: number): Promise<Li
     return fetchLineage(seed, distance)
         .then(result => getLineageNodeMetadata(result))
         .then(result => {
-            const updatedResult = resolveResultURLs(result);
+            const urlResolver = new URLResolver();
+            const updatedResult = urlResolver.resolveLineageNodes(result);
 
             // either update the global state to include the result or set it
             let lineage = getLineageResult(seed);
@@ -254,38 +256,6 @@ function fetchSampleSets() {
         schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
         queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
     });
-}
-
-// TODO add jest test coverage for this function
-function resolveResultURLs(result: LineageResult): LineageResult {
-    const resolvedNodes = result.nodes.map((node) => {
-        if (node.type === 'Sample' || node.type === 'Data') {
-
-            let route = 'samples';
-            if (node.type === 'Data') {
-                route = 'registry';
-            }
-
-            if (node.cpasType) {
-                let parts = node.cpasType.split(':');
-                let namespace = parts[parts.length-2];
-                let name = parts[parts.length-1];
-
-                // TODO: we ought to be using the urlResolver here instead
-                // Lsid strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
-                name = name.replace(/\+/g, ' ');
-
-                return node.merge({
-                    listURL: [route, name.toLowerCase()].join('/'),
-                    url: ['#', route, name.toLowerCase(), node.get('rowId')].join('/')
-                });
-            }
-        }
-
-        return node;
-    });
-
-    return result.set('nodes', resolvedNodes) as LineageResult;
 }
 
 export function getLocationString(location: Location): string {

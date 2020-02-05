@@ -146,7 +146,7 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                     if (useDatePicker) {
                         return (
                             <DatePickerInput
-                                //elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}
+                                wrapperClassName={"col-sm-12"}
                                 name={col.name}
                                 queryColumn={col}
                                 value={value}/>)

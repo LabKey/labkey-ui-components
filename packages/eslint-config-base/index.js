@@ -170,7 +170,9 @@ module.exports = {
       'functions': false,
       'classes': false
     }],
-    '@typescript-eslint/array-type': ['error', 'array-simple'],
+    '@typescript-eslint/array-type': ['error', {
+        'default': 'array-simple'
+    }],
     // see: https://github.com/Microsoft/TypeScript/commit/b8f22f51441495203c96b95969c45a3f78482517#diff-66cec844e251a1918deb897eabca206bR2765
     '@typescript-eslint/ban-types': ['error', {
       'types': {

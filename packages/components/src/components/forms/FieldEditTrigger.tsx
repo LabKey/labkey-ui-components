@@ -158,7 +158,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
             }).catch((error) => {
                 console.error(error);
                 this.setState({
-                    error: error.exception
+                    error: "There was a problem updating the data."
                 });
             });
         }

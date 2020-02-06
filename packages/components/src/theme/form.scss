@@ -27,6 +27,10 @@
   display: block;
 }
 
+.input-group-align {
+    display: inline;
+}
+
 // Truncate overflow
 .text__truncate {
   white-space: nowrap;
@@ -95,6 +99,10 @@
   }
 }
 
+.import-panel .list-group {
+    margin-bottom: 15px;
+}
+
 .form-step-tab {
   float: left;
   padding: 10px 15px;
@@ -102,15 +110,25 @@
   border-radius: 0;
   margin-right: 15px;
   cursor: pointer;
+  background-color: #eeeeee;
 
   &:hover {
-    background-color: #eeeeee;
+      background-color: white;
   }
 
   &.list-group-item, &.list-group-item:last-child, &.list-group-item:first-child {
     margin-bottom: 0;
     border-radius: 4px 4px 0 0;
-    border: none;
+    border-bottom: 3px solid white;
+    &:hover {
+      border-bottom:  3px solid $brand-secondary;
+    }
+  }
+
+  &.list-group-item.active {
+      &:hover {
+          border-bottom: 3px solid white
+      }
   }
 }
 
@@ -163,4 +181,8 @@ div.react-datepicker-time__header,
 div.react-datepicker,
 div.react-datepicker__current-month {
     font-size: 14px;
+}
+
+.add-control--error-message {
+    padding-top: 5px;
 }

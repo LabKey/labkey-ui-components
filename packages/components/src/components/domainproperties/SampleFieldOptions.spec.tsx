@@ -11,9 +11,9 @@ describe('SampleFieldOptions', () => {
 
     const waitForLoad = jest.fn((field) => Promise.resolve(!field.state().loading));
 
-    const sampleFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<TargetTableSelectProps, ITargetTableSelectImplState> => {
+    const sampleFieldSelector = (field: ReactWrapper<any>, domainIndex: number, index: number): ReactWrapper<TargetTableSelectProps, ITargetTableSelectImplState> => {
         const config = {
-            id: createFormInputId(DOMAIN_FIELD_SAMPLE_TYPE, index),
+            id: createFormInputId(DOMAIN_FIELD_SAMPLE_TYPE, domainIndex, index),
             name: createFormInputName(DOMAIN_FIELD_SAMPLE_TYPE),
         };
 
@@ -24,6 +24,7 @@ describe('SampleFieldOptions', () => {
     test('Sample field options', () => {
         const _container = '/StudyVerifyProject/My Study';
         const _index = 1;
+        const _domainIndex = 1;
         const _label = 'Sample Options';
         const _allSamples = 'All Samples';
 
@@ -40,9 +41,11 @@ describe('SampleFieldOptions', () => {
                 <SampleFieldOptions
                     original={field}
                     index={_index}
+                    domainIndex={_domainIndex}
                     container={_container}
                     onChange={jest.fn()}
-                    label={_label} lockType={DOMAIN_FIELD_NOT_LOCKED}/>
+                    label={_label} lockType={DOMAIN_FIELD_NOT_LOCKED}
+                />
             </MockLookupProvider>
         );
         expect(sampleField.length).toEqual(1);
@@ -54,7 +57,7 @@ describe('SampleFieldOptions', () => {
 
         return waitForLoad(sampleField)
             .then(() => {
-                let selectorField = sampleFieldSelector(sampleField, _index);
+                let selectorField = sampleFieldSelector(sampleField, _domainIndex, _index);
                 expect(selectorField.props().value).toEqual(_allSamples); //Verify default
                 sampleField.unmount();
             })

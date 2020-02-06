@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, Record } from 'immutable';
+import {fromJS, is, List, Map, Record} from 'immutable';
 import { Utils } from '@labkey/api';
 import {
     ATTACHMENT_RANGE_URI,
+    BINARY_RANGE_URI,
     BOOLEAN_RANGE_URI,
+    DATE_RANGE_URI,
     DATETIME_RANGE_URI,
+    DECIMAL_RANGE_URI,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_NOT_LOCKED,
@@ -27,13 +30,16 @@ import {
     DOUBLE_RANGE_URI,
     FILELINK_RANGE_URI,
     FLAG_CONCEPT_URI,
+    FLOAT_RANGE_URI,
     INT_RANGE_URI,
+    LONG_RANGE_URI,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
+    TIME_RANGE_URI,
     USER_RANGE_URI,
 } from './constants';
 import { SCHEMAS } from '../base/models/schemas';
@@ -50,6 +56,7 @@ export interface IBannerMessage {
 
 export interface ITypeDependentProps {
     index: number,
+    domainIndex: number
     label: string,
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     lockType: string
@@ -177,6 +184,13 @@ export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rang
 export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
 export const SAMPLE_TYPE = new PropDescType({name: 'sample', display: 'Sample', rangeURI: INT_RANGE_URI, conceptURI: SAMPLE_TYPE_CONCEPT_URI});
 
+export const BINARY_TYPE = new PropDescType({name: 'binary', display: 'Byte Buffer', rangeURI: BINARY_RANGE_URI});
+export const DATE_TYPE = new PropDescType({name: 'date', display: 'Date', rangeURI: DATE_RANGE_URI});
+export const DECIMAL_TYPE = new PropDescType({name: 'decimal', display: 'Decimal', rangeURI: DECIMAL_RANGE_URI});
+export const FLOAT_TYPE = new PropDescType({name: 'float', display: 'Float', rangeURI: FLOAT_RANGE_URI});
+export const LONG_TYPE = new PropDescType({name: 'long', display: 'Long Integer', rangeURI: LONG_RANGE_URI});
+export const TIME_TYPE = new PropDescType({name: 'time', display: 'Time', rangeURI: TIME_RANGE_URI});
+
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     MULTILINE_TYPE,
@@ -191,6 +205,15 @@ export const PROP_DESC_TYPES = List([
     PARTICIPANT_TYPE,
     LOOKUP_TYPE,
     SAMPLE_TYPE,
+]);
+
+export const READONLY_DESC_TYPES = List([
+    BINARY_TYPE,
+    DATE_TYPE,
+    DECIMAL_TYPE,
+    FLOAT_TYPE,
+    LONG_TYPE,
+    TIME_TYPE
 ]);
 
 interface IDomainDesign {
@@ -272,11 +295,8 @@ export class DomainDesign extends Record({
                 indices = DomainIndex.fromJS(rawModel.indices);
             }
 
-            if (rawModel.defaultValueOptions)
-            {
-
-                for (let i = 0; i < rawModel.defaultValueOptions.length; i++)
-                {
+            if (rawModel.defaultValueOptions) {
+                for (let i = 0; i < rawModel.defaultValueOptions.length; i++) {
                     defaultValueOptions = defaultValueOptions.push(rawModel.defaultValueOptions[i]);
                 }
             }
@@ -811,6 +831,10 @@ export class DomainField extends Record({
         return isFieldNew(this);
     }
 
+    isSaved(): boolean {
+        return isFieldSaved(this);
+    }
+
     isValid(): boolean {
         // TODO should the rest of these checks move up to the getErrors() function and return different FieldErrors?
         // if so, then we can remove this isValid() function and just use !hasErrors()
@@ -906,6 +930,10 @@ function isFieldNew(field: Partial<IDomainField>): boolean {
     return field.propertyId === undefined;
 }
 
+function isFieldSaved(field: Partial<IDomainField>): boolean {
+    return !isFieldNew(field) && field.propertyId !== 0;
+}
+
 export function resolveAvailableTypes(field: DomainField, availableTypes: List<PropDescType>, appPropertiesOnly?: boolean, showFilePropertyType?: boolean): List<PropDescType> {
     // field has not been saved -- display all property types allowed by app
     if (field.isNew()) {
@@ -916,8 +944,7 @@ export function resolveAvailableTypes(field: DomainField, availableTypes: List<P
     const { rangeURI } = field.original;
 
     // field has been saved -- display eligible propTypes
-    return availableTypes.filter((type) => {
-
+    let filteredTypes = availableTypes.filter((type) => {
         //Can always return to the original type for field
         if (type.name === field.dataType.name)
             return true;
@@ -931,6 +958,13 @@ export function resolveAvailableTypes(field: DomainField, availableTypes: List<P
 
         return true;
     }).toList();
+
+    // Issue 39341: if the field type is coming from the server as a type we don't support in new field creation, add it to the list
+    if (!filteredTypes.contains(field.dataType)) {
+        filteredTypes = filteredTypes.push(field.dataType);
+    }
+
+    return filteredTypes;
 }
 
 function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean): boolean {
@@ -996,6 +1030,11 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
 
             return false;
         });
+
+        // Issue 39341: support for a few field types that are used in certain domains but are not supported for newly created fields
+        if (!type) {
+            type = READONLY_DESC_TYPES.find((type) => type.rangeURI === rawField.rangeURI);
+        }
     }
 
     return type ? type : TEXT_TYPE;
@@ -1159,21 +1198,29 @@ export class DomainException extends Record({
                 errors = DomainFieldError.fromJS(rawModel.errors, severityLevel);
             }
 
+            let severity = severityLevel;
+            // warnings will only be there if there are no errors, so looking only the first one
+            let hasOnlyWarnings = errors.find(error => error.severity === SEVERITY_LEVEL_WARN);
+
+            if (hasOnlyWarnings) {
+                severity = SEVERITY_LEVEL_WARN;
+            }
+
             const domainName = this.getDomainNameFromException(rawModel.exception);
-            let exception = rawModel.exception;
+
             if (domainName) {
                 const prefix = domainName + " -- ";
-                exception = exception.split(prefix)[1];
                 errors = errors.map((err) => {
                     let parts = err.message.split(prefix);
                     return err.set('message', parts.length > 1 ? parts[1] : parts[0]);
                 }) as List<DomainFieldError>
             }
+            let exception = this.getExceptionMessage(errors);
 
             return new DomainException({
                 exception: exception,
                 success: rawModel.success,
-                severity: severityLevel,
+                severity: severity,
                 domainName: domainName,
                 errors: errors
             })
@@ -1256,6 +1303,23 @@ export class DomainException extends Record({
 
         return exceptionFromServer.set('errors', allFieldErrors) as DomainException;
     }
+
+    static getExceptionMessage(errors: List<DomainFieldError>) {
+        let fieldErrorsCount = 0;
+        let generalErrorMsg = '';
+        let singleFieldError = '';
+        errors.toArray().forEach(error => {
+            if (error.fieldName !== undefined && error.fieldName !== '') {
+                // Field error
+                fieldErrorsCount++;
+                singleFieldError = error.message;
+            } else {
+                // General error
+                generalErrorMsg += error.message + ' \n';
+            }
+        });
+        return fieldErrorsCount > 1 ? "You have "+ fieldErrorsCount + ' field errors. ' + generalErrorMsg : singleFieldError + " " + generalErrorMsg;
+    }
 }
 
 interface IDomainFieldError {
@@ -1274,7 +1338,8 @@ export class DomainFieldError extends Record({
     severity: undefined,
     serverError: undefined,
     rowIndexes: List<number>(),
-    newRowIndexes: undefined
+    newRowIndexes: undefined,
+    extraInfo: undefined
 
 }) implements IDomainFieldError {
     message: string;
@@ -1284,19 +1349,33 @@ export class DomainFieldError extends Record({
     serverError: boolean;
     rowIndexes: List<number>;
     newRowIndexes?: List<number>;
+    extraInfo?: string;
 
-    static fromJS(rawFields: Array<any>, severityLevel: String): List<DomainFieldError> {
+    static fromJS(errors: Array<any>, severityLevel: String): List<DomainFieldError> {
 
         let fieldErrors = List<DomainFieldError>();
 
-        for (let i=0; i < rawFields.length; i++) {
+        let hasErrors = errors.find(error => error.severity === SEVERITY_LEVEL_ERROR);
+
+        for (let i=0; i < errors.length; i++) {
+            // stripping out server side warnings when there are errors
+            if (errors[i].id === "ServerWarning" && hasErrors)
+                continue;
 
             //empty field name and property id comes in as "form" string from the server, resetting it to undefined here
-            let fieldName = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].field);
-            let propertyId = ((rawFields[i].id === "form" && rawFields[i].field === "form") || rawFields[i].id < 1 ? undefined : rawFields[i].id);
+            let fieldName = (errors[i].id === "form" && errors[i].field === "form" ? undefined : errors[i].field);
+            let propertyId = ((errors[i].id === "form" && errors[i].field === "form") || errors[i].id < 1 ? undefined : errors[i].id);
+            let severity = errors[i].severity ? errors[i].severity : severityLevel;
 
-            let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId,
-                severity: severityLevel, serverError: true, rowIndexes: (rawFields[i].rowIndexes ? rawFields[i].rowIndexes : List<number>())});
+            let domainFieldError = new DomainFieldError({
+                fieldName,
+                propertyId,
+                message: errors[i].message,
+                extraInfo: errors[i].extraInfo,
+                severity: severity,
+                serverError: true,
+                rowIndexes: (errors[i].rowIndexes ? errors[i].rowIndexes : List<number>())
+            });
             fieldErrors = fieldErrors.push(domainFieldError);
         }
 
@@ -1491,6 +1570,7 @@ export type HeaderRenderer = (config:IAppDomainHeader) => any
 
 export interface IAppDomainHeader {
     domain: DomainDesign
+    domainIndex: number
     modelDomains?: List<DomainDesign>
     onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
     onAddField?: (fieldConfig: Partial<IDomainField>) => void

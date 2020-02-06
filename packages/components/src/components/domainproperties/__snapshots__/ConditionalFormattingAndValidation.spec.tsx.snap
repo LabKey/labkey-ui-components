@@ -2,6 +2,7 @@
 
 exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] = `
 <ConditionalFormattingAndValidation
+  domainIndex={1}
   field={
     Immutable.Record {
       "conceptURI": undefined,
@@ -278,14 +279,14 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                   bsStyle="default"
                   className="domain-validation-button"
                   disabled={false}
-                  id="domainpropertiesrow-conditionalFormat-1"
+                  id="domainpropertiesrow-conditionalFormat-1-1"
                   name="domainpropertiesrow-conditionalFormat"
                   onClick={[Function]}
                 >
                   <button
                     className="domain-validation-button btn btn-default"
                     disabled={false}
-                    id="domainpropertiesrow-conditionalFormat-1"
+                    id="domainpropertiesrow-conditionalFormat-1-1"
                     name="domainpropertiesrow-conditionalFormat"
                     onClick={[Function]}
                     type="button"
@@ -435,14 +436,14 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                   bsStyle="default"
                   className="domain-validation-button"
                   disabled={false}
-                  id="domainpropertiesrow-regexValidator-1"
+                  id="domainpropertiesrow-regexValidator-1-1"
                   name="domainpropertiesrow-regexValidator"
                   onClick={[Function]}
                 >
                   <button
                     className="domain-validation-button btn btn-default"
                     disabled={false}
-                    id="domainpropertiesrow-regexValidator-1"
+                    id="domainpropertiesrow-regexValidator-1-1"
                     name="domainpropertiesrow-regexValidator"
                     onClick={[Function]}
                     type="button"
@@ -467,6 +468,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
 
 exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
 <ConditionalFormattingAndValidation
+  domainIndex={1}
   field={
     Immutable.Record {
       "conceptURI": undefined,
@@ -726,14 +728,14 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                   bsStyle="default"
                   className="domain-validation-button"
                   disabled={false}
-                  id="domainpropertiesrow-conditionalFormat-1"
+                  id="domainpropertiesrow-conditionalFormat-1-1"
                   name="domainpropertiesrow-conditionalFormat"
                   onClick={[Function]}
                 >
                   <button
                     className="domain-validation-button btn btn-default"
                     disabled={false}
-                    id="domainpropertiesrow-conditionalFormat-1"
+                    id="domainpropertiesrow-conditionalFormat-1-1"
                     name="domainpropertiesrow-conditionalFormat"
                     onClick={[Function]}
                     type="button"
@@ -882,14 +884,14 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                   bsStyle="default"
                   className="domain-validation-button"
                   disabled={false}
-                  id="domainpropertiesrow-regexValidator-1"
+                  id="domainpropertiesrow-regexValidator-1-1"
                   name="domainpropertiesrow-regexValidator"
                   onClick={[Function]}
                 >
                   <button
                     className="domain-validation-button btn btn-default"
                     disabled={false}
-                    id="domainpropertiesrow-regexValidator-1"
+                    id="domainpropertiesrow-regexValidator-1-1"
                     name="domainpropertiesrow-regexValidator"
                     onClick={[Function]}
                     type="button"
@@ -996,14 +998,14 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                   bsStyle="default"
                   className="domain-validation-button"
                   disabled={false}
-                  id="domainpropertiesrow-rangeValidator-1"
+                  id="domainpropertiesrow-rangeValidator-1-1"
                   name="domainpropertiesrow-rangeValidator"
                   onClick={[Function]}
                 >
                   <button
                     className="domain-validation-button btn btn-default"
                     disabled={false}
-                    id="domainpropertiesrow-rangeValidator-1"
+                    id="domainpropertiesrow-rangeValidator-1-1"
                     name="domainpropertiesrow-rangeValidator"
                     onClick={[Function]}
                     type="button"

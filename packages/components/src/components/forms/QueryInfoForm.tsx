@@ -35,7 +35,9 @@ addValidationRule('isPositiveLt', (vs, v, smax) => {
     const max = parseInt(smax);
     const i = parseInt(v);
 
-    return !isNaN(i) && i >= 1 && i <= max ? true : `Value must be between 1 and ${max}.`;
+    if (!isNaN(i) && i >= 1 && i <= max)
+        return true;
+    return max == 1 ? 'Only 1 allowed' : `Value must be between 1 and ${max}.`;
 });
 
 export interface QueryInfoFormProps {

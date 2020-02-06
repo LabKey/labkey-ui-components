@@ -3,6 +3,7 @@
 exports[`NumericFieldOptions Numeric data type 1`] = `
 <NumericFieldOptions
   defaultScale="LOG"
+  domainIndex={1}
   format="#.##"
   index={1}
   label="Numeric Field Options"
@@ -213,7 +214,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
               bsClass="form-control"
               componentClass="input"
               disabled={false}
-              id="domainpropertiesrow-format-1"
+              id="domainpropertiesrow-format-1-1"
               name="domainpropertiesrow-format"
               onChange={[Function]}
               type="text"
@@ -222,7 +223,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
               <input
                 className="form-control"
                 disabled={false}
-                id="domainpropertiesrow-format-1"
+                id="domainpropertiesrow-format-1-1"
                 name="domainpropertiesrow-format"
                 onChange={[Function]}
                 type="text"
@@ -243,7 +244,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
               bsClass="form-control"
               componentClass="select"
               disabled={false}
-              id="domainpropertiesrow-defaultScale-1"
+              id="domainpropertiesrow-defaultScale-1-1"
               name="domainpropertiesrow-defaultScale"
               onChange={[Function]}
               value="LOG"
@@ -251,19 +252,19 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
               <select
                 className="form-control"
                 disabled={false}
-                id="domainpropertiesrow-defaultScale-1"
+                id="domainpropertiesrow-defaultScale-1-1"
                 name="domainpropertiesrow-defaultScale"
                 onChange={[Function]}
                 value="LOG"
               >
                 <option
-                  key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
+                  key="domainpropertiesrow-defaultScaleoption-LINEAR-1-1"
                   value="LINEAR"
                 >
                   Linear
                 </option>
                 <option
-                  key="domainpropertiesrow-defaultScaleoption-LOG-1"
+                  key="domainpropertiesrow-defaultScaleoption-LOG-1-1"
                   value="LOG"
                 >
                   Log

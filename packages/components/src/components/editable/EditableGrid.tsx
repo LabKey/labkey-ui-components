@@ -657,7 +657,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     renderBulkAdd() {
         const { showBulkAdd } = this.state;
         const model = this.getModel(this.props);
-        const maxToAdd = this.props.maxTotalRows && this.props.maxTotalRows - model.data.size < MAX_EDITABLE_GRID_ROWS ? this.props.maxTotalRows - model.data.size : MAX_EDITABLE_GRID_ROWS
+        const maxToAdd = this.props.maxTotalRows && this.props.maxTotalRows - model.data.size < MAX_EDITABLE_GRID_ROWS ? this.props.maxTotalRows - model.data.size : MAX_EDITABLE_GRID_ROWS;
         return (
             showBulkAdd &&
             <QueryInfoForm

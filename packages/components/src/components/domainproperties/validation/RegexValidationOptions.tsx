@@ -17,6 +17,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 interface RegexValidationOptionsProps {
     validator: any
     index: number
+    domainIndex: number
     validatorIndex: number
     expanded: boolean
     onExpand: (index: number) => any
@@ -34,7 +35,9 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         return (!!validator.get("expression") && !!validator.get("name"))
     };
 
-    renderRowTextbox(label: string, name: string, validatorIndex: number, value: string, tooltipTitle?: string, tooltipBody?: () => any, required?: boolean) {
+    renderRowTextbox(label: string, name: string, value: string, tooltipTitle?: string, tooltipBody?: () => any, required?: boolean) {
+        const { validatorIndex, domainIndex } = this.props;
+
         return (
             <Row className='domain-validator-filter-row'>
                 <Col xs={this.labelWidth}>
@@ -51,7 +54,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             componentClass='textarea'
                             className='domain-validation-textarea'
                             rows={3}
-                            id={createFormInputId(name, validatorIndex)}
+                            id={createFormInputId(name, domainIndex, validatorIndex)}
                             name={createFormInputName(name)}
                             value={value}
                             onChange={this.onChange}
@@ -62,13 +65,15 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         )
     }
 
-    renderFailValidationCheckbox(validatorIndex: number, value: boolean) {
+    renderFailValidationCheckbox(value: boolean) {
+        const { validatorIndex, domainIndex } = this.props;
+
         return (
             <Row>
                 <Col xs={this.labelWidth} />
                 <Col xs={this.fieldWidth} className='domain-validation-failOnMatch-row'>
                     <Checkbox
-                        id={createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, validatorIndex)}
+                        id={createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, domainIndex, validatorIndex)}
                         name={createFormInputName(DOMAIN_VALIDATOR_FAILONMATCH)}
                         checked={value}
                         onChange={this.onChange}
@@ -81,7 +86,9 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         )
     }
 
-    renderName(validatorIndex: number, value: string) {
+    renderName(value: string) {
+        const { validatorIndex, domainIndex } = this.props;
+
         return (
             <Row>
                 <Col xs={this.labelWidth}>
@@ -92,7 +99,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                 <Col xs={this.fieldWidth}>
                     <FormControl
                         type='text'
-                        id={createFormInputId(DOMAIN_VALIDATOR_NAME, validatorIndex)}
+                        id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}
                         name={createFormInputName(DOMAIN_VALIDATOR_NAME)}
                         value={value}
                         onChange={this.onChange}
@@ -103,7 +110,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
     }
 
     renderRemoveValidator() {
-        const { validatorIndex } = this.props;
+        const { validatorIndex, domainIndex } = this.props;
 
         return (
             <Row>
@@ -111,7 +118,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                     <Button
                         className="domain-validation-delete"
                         name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
-                        id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, validatorIndex)}
+                        id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
                         onClick={this.onDelete}>
                         Remove Validator
                     </Button>
@@ -175,7 +182,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
     failOnMatchTooltip = () => {
         return ("By default, validation will fail if the field value does not match the specified regular expression. Check " +
             "this box if you want validation to fail when the pattern matches the field value.")
-    }
+    };
 
     render() {
         const { validatorIndex, expanded, validator } = this.props;
@@ -184,13 +191,13 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
             <div className='domain-validator-panel' id={"domain-regex-validator-" + validatorIndex}>
                 {expanded &&
                         <div>
-                            {this.renderRowTextbox('Regular Expression *', DOMAIN_VALIDATOR_EXPRESSION, validatorIndex, validator.expression,
+                            {this.renderRowTextbox('Regular Expression *', DOMAIN_VALIDATOR_EXPRESSION, validator.expression,
                                 'Regular Expression', this.regExTooltip, true)}
-                            {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex, validator.description)}
-                            {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex, validator.errorMessage,
+                            {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validator.description)}
+                            {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validator.errorMessage,
                                 'Error Message', this.errorMsgTooltip)}
-                            {this.renderFailValidationCheckbox(validatorIndex, validator.properties.failOnMatch)}
-                            {this.renderName(validatorIndex, validator.name)}
+                            {this.renderFailValidationCheckbox(validator.properties.failOnMatch)}
+                            {this.renderName(validator.name)}
                             {this.renderRemoveValidator()}
                         </div>
                 }

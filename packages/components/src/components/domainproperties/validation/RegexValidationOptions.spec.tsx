@@ -18,12 +18,14 @@ describe('RegexValidationOptions', () => {
 
     test('Regex Validator - expanded', () => {
         const validatorIndex = 0;
+        const domainIndex = 1;
         const validatorModel = PropertyValidator.fromJS([propertyValidator], 'RegEx').get(0);
 
         const props = {
             validator: validatorModel,
             index: 1,
             validatorIndex: validatorIndex,
+            domainIndex: domainIndex,
             mvEnabled: true,
             expanded: true,
             dataType: INTEGER_TYPE,
@@ -36,19 +38,19 @@ describe('RegexValidationOptions', () => {
             {...props}
         />);
 
-        const expression = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_EXPRESSION, validatorIndex)});
+        const expression = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_EXPRESSION, domainIndex, validatorIndex)});
         expect(expression.at(0).props().value).toEqual("$[abc]");
 
-        const name = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_NAME, validatorIndex)});
+        const name = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)});
         expect(name.at(0).props().value).toEqual("Test Validator");
 
-        const description = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex)});
+        const description = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_DESCRIPTION, domainIndex, validatorIndex)});
         expect(description.at(0).props().value).toEqual("This is my validator description");
 
-        const errorMsg = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex)});
+        const errorMsg = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_ERRORMESSAGE, domainIndex, validatorIndex)});
         expect(errorMsg.at(0).props().value).toEqual("Test Validation Failure");
 
-        const failOnMatch = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, validatorIndex)});
+        const failOnMatch = validator.find({id: createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, domainIndex, validatorIndex)});
         expect(failOnMatch.at(0).props().checked).toEqual(true);
 
         expect(RegexValidationOptions.isValid(validatorModel)).toEqual(true);
@@ -59,12 +61,14 @@ describe('RegexValidationOptions', () => {
 
     test('Regex Validator - collapsed', () => {
         const validatorIndex = 0;
+        const domainIndex = 1;
         const validatorModel = PropertyValidator.fromJS([propertyValidator], 'RegEx').get(0);
 
         const props = {
             validator: validatorModel,
             index: 1,
             validatorIndex: validatorIndex,
+            domainIndex: domainIndex,
             mvEnabled: true,
             expanded: false,
             dataType: INTEGER_TYPE,

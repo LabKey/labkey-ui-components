@@ -63,6 +63,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                     }
                 },
                 failure: (error, request) => {
+                    console.error(error);
                     invalidateQueryDetailsCacheKey(key);
                     reject({
                         message: error.exception,
@@ -618,6 +619,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
                 }));
             },
             failure: (error) => {
+                console.error(error);
                 reject(new InsertRowsResponse({
                     schemaQuery,
                     error

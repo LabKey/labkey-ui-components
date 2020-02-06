@@ -28,6 +28,7 @@ storiesOf('SampleSetDetailsPanel', module)
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org')}
+            nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
         />
     })
     .add('for update', () => {
@@ -48,5 +49,6 @@ storiesOf('SampleSetDetailsPanel', module)
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
+            nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
         />
     });

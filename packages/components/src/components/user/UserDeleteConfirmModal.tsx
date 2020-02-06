@@ -4,6 +4,7 @@ import { ConfirmModal } from '../base/ConfirmModal';
 import { deleteUsers } from "./actions";
 import { Alert } from "../base/Alert";
 import { List } from "immutable";
+import { resolveErrorMessage } from '../../util/messaging';
 
 interface Props {
     userIds: List<number>
@@ -13,7 +14,7 @@ interface Props {
 
 interface State {
     submitting: boolean
-    error: string
+    error: React.ReactNode
 }
 
 export class UserDeleteConfirmModal extends React.Component<Props, State> {
@@ -35,7 +36,7 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
             .then(onComplete)
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({error: (error ? error.exception : 'Unknown error'), submitting: false}));
+                this.setState(() => ({error: resolveErrorMessage(error, "user", "users", "delete"), submitting: false}));
             });
     };
 

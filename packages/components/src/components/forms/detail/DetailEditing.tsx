@@ -25,6 +25,7 @@ import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 import { Alert } from '../../base/Alert';
+import { resolveErrorMessage } from '../../../util/messaging';
 
 interface DetailEditingProps {
     queryModel: QueryGridModel
@@ -44,7 +45,7 @@ interface DetailEditingState {
     canSubmit?: boolean
     editing?: boolean
     warning?: string
-    error?: string
+    error?: React.ReactNode
 }
 
 export class DetailEditing extends React.Component<DetailEditingProps, DetailEditingState> {
@@ -199,9 +200,10 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                 }
 
             }).catch((error) => {
+                console.error(error);
                 this.setState(() => ({
                     warning: undefined,
-                    error: 'Error: ' + error.exception
+                    error: resolveErrorMessage(error, 'data', undefined, 'update')
                 }));
             });
         }

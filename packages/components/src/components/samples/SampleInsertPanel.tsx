@@ -18,7 +18,7 @@ import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { IMPORT_DATA_FORM_TYPES, SAMPLE_UNIQUE_FIELD_KEY } from '../../constants';
+import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, SAMPLE_UNIQUE_FIELD_KEY } from '../../constants';
 
 import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn } from '../../actions';
 import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
@@ -35,7 +35,8 @@ import {
     GenerateSampleResponse,
     IParentOption,
     ISampleSetOption,
-    SampleIdCreationModel, SampleInsertPanelTabs,
+    SampleIdCreationModel,
+    SampleInsertPanelTabs,
     SampleSetOption,
     SampleSetParentType,
 } from './models';
@@ -62,12 +63,15 @@ import {
     DATA_IMPORT_TOPIC,
     FileAttachmentForm,
     helpLinkNode,
-    LabelHelpTip, withFormSteps, WithFormStepsProps,
+    LabelHelpTip,
+    withFormSteps,
+    WithFormStepsProps,
     WizardNavButtons
 } from "../..";
 import { FormStep, FormTabs } from '../forms/FormStep';
-import {FileSizeLimitProps} from "../files/models";
+import { FileSizeLimitProps } from "../files/models";
 import { Link } from "react-router";
+import { resolveErrorMessage } from '../../util/messaging';
 
 const TABS = ['Create Samples from Grid', 'Import Samples from File'];
 const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
@@ -108,7 +112,7 @@ interface StateProps {
     insertModel: SampleIdCreationModel
     originalQueryInfo: QueryInfo
     isSubmitting: boolean
-    error: string
+    error: React.ReactNode
     isMerge: boolean
     file: File
 }
@@ -543,19 +547,6 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                     <p>
                         Generate unique samples individually or in bulk using the bulk insert option.
                     </p>
-                    <p>
-                        Assign properties, including parent samples, to your new samples.
-                    </p>
-                    {name && (
-                        this.isNameRequired() ?
-                            <p>
-                                A sample ID is required for each new sample since this sample type has no naming pattern.
-                                You can provide a naming pattern by editing the sample type definition.
-                            </p> :
-                            <p>
-                                Sample IDs will be generated for any samples that have no sample ID provided in the grid.
-                            </p>
-                    )}
                 </div>}
                 {insertModel.isInit && (
                     <SelectInput
@@ -650,10 +641,11 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                     message: 'Insert response has unexpected format. No "rows" available.'
                 });
             }
-        }).catch((error: InsertRowsResponse) => {
+        }).catch((response: InsertRowsResponse) => {
             this.setSubmitting(false);
+            const message = resolveErrorMessage(response.error, "samples");
             gridShowError(queryGridModel, {
-                message: error.error.exception
+                message
             });
         });
     }
@@ -671,7 +663,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             }
         }).catch((reason) => {
             this.setSubmitting(false);
-            gridShowError(this.getQueryGridModel(), reason);
+            gridShowError(this.getQueryGridModel(), resolveErrorMessage(reason, count > 1 ? "samples" : "sample"));
         });
     }
 
@@ -774,13 +766,19 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             nounSingular: "Sample",
             nounPlural: "Samples",
             placement: 'top' as PlacementType,
-            wrapperClass: 'pull-left'
+            wrapperClass: 'pull-left',
+            maxCount: MAX_EDITABLE_GRID_ROWS
         };
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(SAMPLE_UNIQUE_FIELD_KEY, {
                 readOnly: false,
-                placeholder: "[generated id]"
+                placeholder: "[generated id]",
+                toolTip: "A generated sample ID will be provided for samples that don't have a user-provided ID in the grid."
+            })
+        } else {
+            columnMetadata = columnMetadata.set(SAMPLE_UNIQUE_FIELD_KEY, {
+                toolTip: "A sample ID is required for each sample since this sample type has no naming pattern. You can provide a naming pattern by editing the sample type details."
             })
         }
 
@@ -788,6 +786,8 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         return (<>
             {this.renderHeader(true)}
+            <hr className={'bottom-spacing'}/>
+            <div className={'top-spacing'}>
             {queryGridModel && queryGridModel.isLoaded ?
                 <EditableGridPanel
                     addControlProps={addControlProps}
@@ -811,6 +811,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                 :
                 !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
             }
+            </div>
         </>);
     }
 
@@ -898,7 +899,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         }).catch((error) => {
             this.setState(() => ({
-                error: error.msg,
+                error: resolveErrorMessage(error, "samples"),
                 isSubmitting: false
             }));
         });
@@ -993,7 +994,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
                 <div className={"panel panel-default"}>
                     <div className="panel-body">
                         <div className="row">
-                            <div className={'col-sm-7'}>
+                            <div className={'import-panel col-sm-7'}>
                                 <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
                             </div>
                             {editSampleTypeDetailsLink && canEditSampleTypeDetails ? <div className={'col-sm-5'}><Link className={'pull-right sample-insert--link'} to={editSampleTypeDetailsLink.toString()}>Edit Sample Type Details</Link></div> : undefined}

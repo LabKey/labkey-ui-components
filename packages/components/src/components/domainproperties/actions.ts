@@ -191,15 +191,17 @@ export function getMaxPhiLevel(): Promise<string> {
  * @param kind: DomainKind if creating new Domain
  * @param options: Options for creating new Domain
  * @param name: Name of new Domain
+ * @param includeWarnings: Set this to true if warnings are desired
  * @return Promise wrapped Domain API call.
  */
-export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string) : Promise<DomainDesign> {
+export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string, includeWarnings?: boolean) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         if (domain.domainId) {
             Domain.save({
                 containerPath: LABKEY.container.path,
                 domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
+                includeWarnings: includeWarnings,
                 success: (data) => {
                     resolve(DomainDesign.create(data));
                 },
@@ -238,13 +240,13 @@ export function createFormInputName(name: string): string {
     return [DOMAIN_FIELD_PREFIX, name].join('-');
 }
 
-export function createFormInputId(name: string, index: number): string {
-    return [DOMAIN_FIELD_PREFIX, name, index].join('-');
+export function createFormInputId(name: string, domainIndex: number, rowIndex: number): string {
+    return [DOMAIN_FIELD_PREFIX, name, domainIndex, rowIndex].join('-');
 }
 
 export function getNameFromId(id: string) : string {
     const parts = id.split('-');
-    if (parts.length === 3) {
+    if (parts.length === 4) {
         return parts[1];
     }
 
@@ -253,8 +255,8 @@ export function getNameFromId(id: string) : string {
 
 export function getIndexFromId(id: string): number {
     const parts = id.split('-');
-    if (parts.length === 3) {
-        return parseInt(parts[2]);
+    if (parts.length === 4) {
+        return parseInt(parts[3]);
     }
 
     return -1;

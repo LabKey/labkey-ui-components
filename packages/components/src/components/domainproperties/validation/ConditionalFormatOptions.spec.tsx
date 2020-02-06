@@ -19,11 +19,13 @@ describe('ConditionalFormatOptions', () => {
 
     test('Format 1 - expanded', () => {
         const validatorIndex = 0;
+        const domainIndex = 1;
 
         const props = {
             validator: conditionalFormat1,
             index: 1,
             validatorIndex: validatorIndex,
+            domainIndex: domainIndex,
             mvEnabled: true,
             expanded: true,
             dataType: INTEGER_TYPE,
@@ -36,19 +38,19 @@ describe('ConditionalFormatOptions', () => {
             {...props}
         />);
 
-        let value = format.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, validatorIndex)});
+        let value = format.find({id: createFormInputId(DOMAIN_FIRST_FILTER_VALUE, domainIndex, validatorIndex)});
         expect(value.at(0).props().value).toEqual('0');
 
-        value = format.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, validatorIndex)});
+        value = format.find({id: createFormInputId(DOMAIN_SECOND_FILTER_VALUE, domainIndex, validatorIndex)});
         expect(value.at(0).props().value).toEqual('1');
 
-        const bold = format.find({id: createFormInputId(DOMAIN_VALIDATOR_BOLD, validatorIndex), bsClass: 'checkbox'});
+        const bold = format.find({id: createFormInputId(DOMAIN_VALIDATOR_BOLD, domainIndex, validatorIndex), bsClass: 'checkbox'});
         expect(bold.props().checked).toEqual(true);
 
-        const italic = format.find({id: createFormInputId(DOMAIN_VALIDATOR_ITALIC, validatorIndex), bsClass: 'checkbox'});
+        const italic = format.find({id: createFormInputId(DOMAIN_VALIDATOR_ITALIC, domainIndex, validatorIndex), bsClass: 'checkbox'});
         expect(italic.props().checked).toEqual(false);
 
-        const strike = format.find({id: createFormInputId(DOMAIN_VALIDATOR_STRIKETHROUGH, validatorIndex), bsClass: 'checkbox'});
+        const strike = format.find({id: createFormInputId(DOMAIN_VALIDATOR_STRIKETHROUGH, domainIndex, validatorIndex), bsClass: 'checkbox'});
         expect(strike.props().checked).toEqual(false);
 
         const colorPreviews = format.find({className: 'domain-color-preview'});
@@ -65,11 +67,13 @@ describe('ConditionalFormatOptions', () => {
 
     test('Format 2 - collapsed', () => {
         const validatorIndex = 0;
+        const domainIndex = 1;
 
         const props = {
             validator: conditionalFormat2,
             index: 1,
             validatorIndex: validatorIndex,
+            domainIndex: domainIndex,
             mvEnabled: true,
             expanded: false,
             dataType: TEXT_TYPE,

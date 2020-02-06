@@ -1,6 +1,50 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.23.1
+*Released*: 6 February 2020
+* Issue 39341: Fix for specimen designer usage of data types that aren't supported for new domain field creation
+
+### version 0.23.0
+*Released*: 3 February 2020
+* Issue 39193: Fix for conditional format dialog to respect filter types allowed for date field type
+* Issue 21401: Fix for conditional formatting filter string URL encoding issue
+* Issue 39528: Change Assay designer results text should for option to define fields manually
+* Move “remove field” to field top display (so it will show in collapsed and expanded view)
+* Only show "Confirm Remove Field" dialog for previously saved fields
+* Field row icons, drag handle and expand icon, only highlight on hover of icon instead of row hover
+* Fix for Domain Designer duplicate field input ids for assay designer case (results in warnings in browser for LKS pages)
+* Issue 39603: Domain warning message with a field name containing invalid characters goes out of the "normal" range
+
+### version 0.22.1
+*Released*: 3 February 2020
+* Issue 38012: For the Batch Update Dialog a field should be cleared if it is changed to disabled
+
+### version 0.22.0
+*Released*: 30 January 2020
+* Issue 39558: Adjust styling of import tabs to better indicate they are actionable.
+* Issue 39551: Use tooltip on sampleId column to provide text about the use of generated ids or not
+* Issue 39559: Reorder add row controls for better left-to-right flow and remove tool tip
+* Better error messaging when only 1 additional row is allowed for bulk insert
+* Issue 39554: Parameterized name expression placeholder text
+
+### version 0.21.2
+*Released*: 29 January 2020
+* Add backspaceRemoves and deleteRemoves props to SelectInput
+
+### version 0.21.1
+*Released*: 29 January 2020
+* Added support for smaller version of FileAttachmentForm
+
+### version 0.21.0
+*Released*: 24 January 2020
+* Item 6654: Changes to include server side warnings while saving domain
+
+### version 0.20.0
+*Released*: 23 January 2020
+* Add utility method resolveErrorMessage that can be used to extract a string error message from API responses and convert some
+messages that are not very friendly for users into better text.
+
 ### version 0.19.0
 *Released*: 22 January 2020
 * Assay import editable grid button changes to match sample create (for bulk insert, update, remove, add)

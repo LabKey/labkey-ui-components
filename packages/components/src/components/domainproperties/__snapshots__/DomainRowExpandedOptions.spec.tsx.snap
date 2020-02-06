@@ -2,6 +2,7 @@
 
 exports[`DomainExpandedOptions Boolean data type 1`] = `
 <DomainRowExpandedOptions
+  domainIndex={1}
   field={
     Immutable.Record {
       "conceptURI": undefined,
@@ -103,6 +104,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
           className="col-xs-12"
         >
           <BooleanFieldOptions
+            domainIndex={1}
             index={1}
             label="Boolean Field Options"
             lockType="NotLocked"
@@ -297,7 +299,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                         bsClass="form-control"
                         componentClass="input"
                         disabled={false}
-                        id="domainpropertiesrow-format-1"
+                        id="domainpropertiesrow-format-1-1"
                         name="domainpropertiesrow-scale"
                         onChange={[Function]}
                         type="text"
@@ -306,7 +308,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                         <input
                           className="form-control"
                           disabled={false}
-                          id="domainpropertiesrow-format-1"
+                          id="domainpropertiesrow-format-1-1"
                           name="domainpropertiesrow-scale"
                           onChange={[Function]}
                           type="text"
@@ -331,6 +333,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
           className="col-lg-10 col-xs-12"
         >
           <NameAndLinkingOptions
+            domainIndex={1}
             field={
               Immutable.Record {
                 "conceptURI": undefined,
@@ -465,7 +468,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                           className="form-control domain-field-textarea"
                           componentClass="textarea"
                           disabled={false}
-                          id="domainpropertiesrow-description-1"
+                          id="domainpropertiesrow-description-1-1"
                           name="domainpropertiesrow-description"
                           onChange={[Function]}
                           rows={4}
@@ -474,7 +477,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                           <textarea
                             className="form-control domain-field-textarea form-control"
                             disabled={false}
-                            id="domainpropertiesrow-description-1"
+                            id="domainpropertiesrow-description-1-1"
                             name="domainpropertiesrow-description"
                             onChange={[Function]}
                             rows={4}
@@ -500,7 +503,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-label-1"
+                          id="domainpropertiesrow-label-1-1"
                           name="domainpropertiesrow-label"
                           onChange={[Function]}
                           type="text"
@@ -509,7 +512,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-label-1"
+                            id="domainpropertiesrow-label-1-1"
                             name="domainpropertiesrow-label"
                             onChange={[Function]}
                             type="text"
@@ -643,7 +646,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-importAliases-1"
+                          id="domainpropertiesrow-importAliases-1-1"
                           name="domainpropertiesrow-importAliases"
                           onChange={[Function]}
                           type="text"
@@ -652,7 +655,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-importAliases-1"
+                            id="domainpropertiesrow-importAliases-1-1"
                             name="domainpropertiesrow-importAliases"
                             onChange={[Function]}
                             type="text"
@@ -796,7 +799,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-URL-1"
+                          id="domainpropertiesrow-URL-1-1"
                           name="domainpropertiesrow-URL"
                           onChange={[Function]}
                           type="text"
@@ -805,7 +808,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-URL-1"
+                            id="domainpropertiesrow-URL-1-1"
                             name="domainpropertiesrow-URL"
                             onChange={[Function]}
                             type="text"
@@ -830,6 +833,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
           className="col-xs-12"
         >
           <ConditionalFormattingAndValidation
+            domainIndex={1}
             field={
               Immutable.Record {
                 "conceptURI": undefined,
@@ -1088,14 +1092,14 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-conditionalFormat-1"
+                            id="domainpropertiesrow-conditionalFormat-1-1"
                             name="domainpropertiesrow-conditionalFormat"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-conditionalFormat-1"
+                              id="domainpropertiesrow-conditionalFormat-1-1"
                               name="domainpropertiesrow-conditionalFormat"
                               onClick={[Function]}
                               type="button"
@@ -1244,14 +1248,14 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-regexValidator-1"
+                            id="domainpropertiesrow-regexValidator-1-1"
                             name="domainpropertiesrow-regexValidator"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-regexValidator-1"
+                              id="domainpropertiesrow-regexValidator-1-1"
                               name="domainpropertiesrow-regexValidator"
                               onClick={[Function]}
                               type="button"
@@ -1281,6 +1285,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
 
 exports[`DomainExpandedOptions Date/time data type 1`] = `
 <DomainRowExpandedOptions
+  domainIndex={1}
   field={
     Immutable.Record {
       "conceptURI": undefined,
@@ -1382,6 +1387,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
           className="col-xs-12"
         >
           <DateTimeFieldOptions
+            domainIndex={1}
             excludeFromShifting={false}
             index={1}
             label="Date and Time Options"
@@ -1586,7 +1592,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                         bsClass="form-control"
                         componentClass="input"
                         disabled={false}
-                        id="domainpropertiesrow-format-1"
+                        id="domainpropertiesrow-format-1-1"
                         name="domainpropertiesrow-format"
                         onChange={[Function]}
                         type="text"
@@ -1595,7 +1601,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                         <input
                           className="form-control"
                           disabled={false}
-                          id="domainpropertiesrow-format-1"
+                          id="domainpropertiesrow-format-1-1"
                           name="domainpropertiesrow-format"
                           onChange={[Function]}
                           type="text"
@@ -1629,6 +1635,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
           className="col-lg-10 col-xs-12"
         >
           <NameAndLinkingOptions
+            domainIndex={1}
             field={
               Immutable.Record {
                 "conceptURI": undefined,
@@ -1763,7 +1770,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                           className="form-control domain-field-textarea"
                           componentClass="textarea"
                           disabled={false}
-                          id="domainpropertiesrow-description-1"
+                          id="domainpropertiesrow-description-1-1"
                           name="domainpropertiesrow-description"
                           onChange={[Function]}
                           rows={4}
@@ -1772,7 +1779,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                           <textarea
                             className="form-control domain-field-textarea form-control"
                             disabled={false}
-                            id="domainpropertiesrow-description-1"
+                            id="domainpropertiesrow-description-1-1"
                             name="domainpropertiesrow-description"
                             onChange={[Function]}
                             rows={4}
@@ -1798,7 +1805,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-label-1"
+                          id="domainpropertiesrow-label-1-1"
                           name="domainpropertiesrow-label"
                           onChange={[Function]}
                           type="text"
@@ -1807,7 +1814,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-label-1"
+                            id="domainpropertiesrow-label-1-1"
                             name="domainpropertiesrow-label"
                             onChange={[Function]}
                             type="text"
@@ -1941,7 +1948,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-importAliases-1"
+                          id="domainpropertiesrow-importAliases-1-1"
                           name="domainpropertiesrow-importAliases"
                           onChange={[Function]}
                           type="text"
@@ -1950,7 +1957,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-importAliases-1"
+                            id="domainpropertiesrow-importAliases-1-1"
                             name="domainpropertiesrow-importAliases"
                             onChange={[Function]}
                             type="text"
@@ -2094,7 +2101,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-URL-1"
+                          id="domainpropertiesrow-URL-1-1"
                           name="domainpropertiesrow-URL"
                           onChange={[Function]}
                           type="text"
@@ -2103,7 +2110,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-URL-1"
+                            id="domainpropertiesrow-URL-1-1"
                             name="domainpropertiesrow-URL"
                             onChange={[Function]}
                             type="text"
@@ -2128,6 +2135,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
           className="col-xs-12"
         >
           <ConditionalFormattingAndValidation
+            domainIndex={1}
             field={
               Immutable.Record {
                 "conceptURI": undefined,
@@ -2386,14 +2394,14 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-conditionalFormat-1"
+                            id="domainpropertiesrow-conditionalFormat-1-1"
                             name="domainpropertiesrow-conditionalFormat"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-conditionalFormat-1"
+                              id="domainpropertiesrow-conditionalFormat-1-1"
                               name="domainpropertiesrow-conditionalFormat"
                               onClick={[Function]}
                               type="button"
@@ -2542,14 +2550,14 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-regexValidator-1"
+                            id="domainpropertiesrow-regexValidator-1-1"
                             name="domainpropertiesrow-regexValidator"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-regexValidator-1"
+                              id="domainpropertiesrow-regexValidator-1-1"
                               name="domainpropertiesrow-regexValidator"
                               onClick={[Function]}
                               type="button"
@@ -2698,14 +2706,14 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-rangeValidator-1"
+                            id="domainpropertiesrow-rangeValidator-1-1"
                             name="domainpropertiesrow-rangeValidator"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-rangeValidator-1"
+                              id="domainpropertiesrow-rangeValidator-1-1"
                               name="domainpropertiesrow-rangeValidator"
                               onClick={[Function]}
                               type="button"
@@ -2735,6 +2743,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
 
 exports[`DomainExpandedOptions Numeric data type 1`] = `
 <DomainRowExpandedOptions
+  domainIndex={1}
   field={
     Immutable.Record {
       "conceptURI": undefined,
@@ -2836,6 +2845,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
           className="col-xs-12"
         >
           <NumericFieldOptions
+            domainIndex={1}
             index={1}
             label="Integer Options"
             lockType="NotLocked"
@@ -3045,7 +3055,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                         bsClass="form-control"
                         componentClass="input"
                         disabled={false}
-                        id="domainpropertiesrow-format-1"
+                        id="domainpropertiesrow-format-1-1"
                         name="domainpropertiesrow-format"
                         onChange={[Function]}
                         type="text"
@@ -3054,7 +3064,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                         <input
                           className="form-control"
                           disabled={false}
-                          id="domainpropertiesrow-format-1"
+                          id="domainpropertiesrow-format-1-1"
                           name="domainpropertiesrow-format"
                           onChange={[Function]}
                           type="text"
@@ -3075,25 +3085,25 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                         bsClass="form-control"
                         componentClass="select"
                         disabled={false}
-                        id="domainpropertiesrow-defaultScale-1"
+                        id="domainpropertiesrow-defaultScale-1-1"
                         name="domainpropertiesrow-defaultScale"
                         onChange={[Function]}
                       >
                         <select
                           className="form-control"
                           disabled={false}
-                          id="domainpropertiesrow-defaultScale-1"
+                          id="domainpropertiesrow-defaultScale-1-1"
                           name="domainpropertiesrow-defaultScale"
                           onChange={[Function]}
                         >
                           <option
-                            key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
+                            key="domainpropertiesrow-defaultScaleoption-LINEAR-1-1"
                             value="LINEAR"
                           >
                             Linear
                           </option>
                           <option
-                            key="domainpropertiesrow-defaultScaleoption-LOG-1"
+                            key="domainpropertiesrow-defaultScaleoption-LOG-1-1"
                             value="LOG"
                           >
                             Log
@@ -3118,6 +3128,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
           className="col-lg-10 col-xs-12"
         >
           <NameAndLinkingOptions
+            domainIndex={1}
             field={
               Immutable.Record {
                 "conceptURI": undefined,
@@ -3252,7 +3263,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                           className="form-control domain-field-textarea"
                           componentClass="textarea"
                           disabled={false}
-                          id="domainpropertiesrow-description-1"
+                          id="domainpropertiesrow-description-1-1"
                           name="domainpropertiesrow-description"
                           onChange={[Function]}
                           rows={4}
@@ -3261,7 +3272,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                           <textarea
                             className="form-control domain-field-textarea form-control"
                             disabled={false}
-                            id="domainpropertiesrow-description-1"
+                            id="domainpropertiesrow-description-1-1"
                             name="domainpropertiesrow-description"
                             onChange={[Function]}
                             rows={4}
@@ -3287,7 +3298,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-label-1"
+                          id="domainpropertiesrow-label-1-1"
                           name="domainpropertiesrow-label"
                           onChange={[Function]}
                           type="text"
@@ -3296,7 +3307,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-label-1"
+                            id="domainpropertiesrow-label-1-1"
                             name="domainpropertiesrow-label"
                             onChange={[Function]}
                             type="text"
@@ -3430,7 +3441,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-importAliases-1"
+                          id="domainpropertiesrow-importAliases-1-1"
                           name="domainpropertiesrow-importAliases"
                           onChange={[Function]}
                           type="text"
@@ -3439,7 +3450,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-importAliases-1"
+                            id="domainpropertiesrow-importAliases-1-1"
                             name="domainpropertiesrow-importAliases"
                             onChange={[Function]}
                             type="text"
@@ -3583,7 +3594,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-URL-1"
+                          id="domainpropertiesrow-URL-1-1"
                           name="domainpropertiesrow-URL"
                           onChange={[Function]}
                           type="text"
@@ -3592,7 +3603,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-URL-1"
+                            id="domainpropertiesrow-URL-1-1"
                             name="domainpropertiesrow-URL"
                             onChange={[Function]}
                             type="text"
@@ -3617,6 +3628,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
           className="col-xs-12"
         >
           <ConditionalFormattingAndValidation
+            domainIndex={1}
             field={
               Immutable.Record {
                 "conceptURI": undefined,
@@ -3875,14 +3887,14 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-conditionalFormat-1"
+                            id="domainpropertiesrow-conditionalFormat-1-1"
                             name="domainpropertiesrow-conditionalFormat"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-conditionalFormat-1"
+                              id="domainpropertiesrow-conditionalFormat-1-1"
                               name="domainpropertiesrow-conditionalFormat"
                               onClick={[Function]}
                               type="button"
@@ -4031,14 +4043,14 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-regexValidator-1"
+                            id="domainpropertiesrow-regexValidator-1-1"
                             name="domainpropertiesrow-regexValidator"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-regexValidator-1"
+                              id="domainpropertiesrow-regexValidator-1-1"
                               name="domainpropertiesrow-regexValidator"
                               onClick={[Function]}
                               type="button"
@@ -4187,14 +4199,14 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-rangeValidator-1"
+                            id="domainpropertiesrow-rangeValidator-1-1"
                             name="domainpropertiesrow-rangeValidator"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-rangeValidator-1"
+                              id="domainpropertiesrow-rangeValidator-1-1"
                               name="domainpropertiesrow-rangeValidator"
                               onClick={[Function]}
                               type="button"
@@ -4224,6 +4236,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
 
 exports[`DomainExpandedOptions Text data type 1`] = `
 <DomainRowExpandedOptions
+  domainIndex={1}
   field={
     Immutable.Record {
       "conceptURI": undefined,
@@ -4325,6 +4338,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
           className="col-xs-12"
         >
           <TextFieldOptions
+            domainIndex={1}
             index={1}
             label="Text Options"
             lockType="NotLocked"
@@ -4522,7 +4536,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                         className="domain-text-options-radio1 domain-field-float-left"
                         componentClass="input"
                         disabled={false}
-                        id="domainpropertiesrow-maxLength-1"
+                        id="domainpropertiesrow-maxLength-1-1"
                         onChange={[Function]}
                         type="radio"
                         value="maxLength"
@@ -4531,7 +4545,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           checked={true}
                           className="domain-text-options-radio1 domain-field-float-left form-control"
                           disabled={false}
-                          id="domainpropertiesrow-maxLength-1"
+                          id="domainpropertiesrow-maxLength-1-1"
                           onChange={[Function]}
                           type="radio"
                           value="maxLength"
@@ -4567,7 +4581,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                         checked={false}
                         className="domain-text-options-radio2 domain-field-float-left"
                         componentClass="input"
-                        id="domainpropertiesrow-customLength-1"
+                        id="domainpropertiesrow-customLength-1-1"
                         onChange={[Function]}
                         type="radio"
                         value="customLength"
@@ -4575,7 +4589,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                         <input
                           checked={false}
                           className="domain-text-options-radio2 domain-field-float-left form-control"
-                          id="domainpropertiesrow-customLength-1"
+                          id="domainpropertiesrow-customLength-1-1"
                           onChange={[Function]}
                           type="radio"
                           value="customLength"
@@ -4591,7 +4605,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                         className="domain-text-length-field"
                         componentClass="input"
                         disabled={true}
-                        id="domainpropertiesrow-scale-1"
+                        id="domainpropertiesrow-scale-1-1"
                         name="domainpropertiesrow-scale"
                         onChange={[Function]}
                         type="number"
@@ -4600,7 +4614,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                         <input
                           className="domain-text-length-field form-control"
                           disabled={true}
-                          id="domainpropertiesrow-scale-1"
+                          id="domainpropertiesrow-scale-1-1"
                           name="domainpropertiesrow-scale"
                           onChange={[Function]}
                           type="number"
@@ -4625,6 +4639,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
           className="col-lg-10 col-xs-12"
         >
           <NameAndLinkingOptions
+            domainIndex={1}
             field={
               Immutable.Record {
                 "conceptURI": undefined,
@@ -4759,7 +4774,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           className="form-control domain-field-textarea"
                           componentClass="textarea"
                           disabled={false}
-                          id="domainpropertiesrow-description-1"
+                          id="domainpropertiesrow-description-1-1"
                           name="domainpropertiesrow-description"
                           onChange={[Function]}
                           rows={4}
@@ -4768,7 +4783,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           <textarea
                             className="form-control domain-field-textarea form-control"
                             disabled={false}
-                            id="domainpropertiesrow-description-1"
+                            id="domainpropertiesrow-description-1-1"
                             name="domainpropertiesrow-description"
                             onChange={[Function]}
                             rows={4}
@@ -4794,7 +4809,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-label-1"
+                          id="domainpropertiesrow-label-1-1"
                           name="domainpropertiesrow-label"
                           onChange={[Function]}
                           type="text"
@@ -4803,7 +4818,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-label-1"
+                            id="domainpropertiesrow-label-1-1"
                             name="domainpropertiesrow-label"
                             onChange={[Function]}
                             type="text"
@@ -4937,7 +4952,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-importAliases-1"
+                          id="domainpropertiesrow-importAliases-1-1"
                           name="domainpropertiesrow-importAliases"
                           onChange={[Function]}
                           type="text"
@@ -4946,7 +4961,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-importAliases-1"
+                            id="domainpropertiesrow-importAliases-1-1"
                             name="domainpropertiesrow-importAliases"
                             onChange={[Function]}
                             type="text"
@@ -5090,7 +5105,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           bsClass="form-control"
                           componentClass="input"
                           disabled={false}
-                          id="domainpropertiesrow-URL-1"
+                          id="domainpropertiesrow-URL-1-1"
                           name="domainpropertiesrow-URL"
                           onChange={[Function]}
                           type="text"
@@ -5099,7 +5114,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           <input
                             className="form-control"
                             disabled={false}
-                            id="domainpropertiesrow-URL-1"
+                            id="domainpropertiesrow-URL-1-1"
                             name="domainpropertiesrow-URL"
                             onChange={[Function]}
                             type="text"
@@ -5124,6 +5139,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
           className="col-xs-12"
         >
           <ConditionalFormattingAndValidation
+            domainIndex={1}
             field={
               Immutable.Record {
                 "conceptURI": undefined,
@@ -5382,14 +5398,14 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-conditionalFormat-1"
+                            id="domainpropertiesrow-conditionalFormat-1-1"
                             name="domainpropertiesrow-conditionalFormat"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-conditionalFormat-1"
+                              id="domainpropertiesrow-conditionalFormat-1-1"
                               name="domainpropertiesrow-conditionalFormat"
                               onClick={[Function]}
                               type="button"
@@ -5538,14 +5554,14 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                             bsStyle="default"
                             className="domain-validation-button"
                             disabled={false}
-                            id="domainpropertiesrow-regexValidator-1"
+                            id="domainpropertiesrow-regexValidator-1-1"
                             name="domainpropertiesrow-regexValidator"
                             onClick={[Function]}
                           >
                             <button
                               className="domain-validation-button btn btn-default"
                               disabled={false}
-                              id="domainpropertiesrow-regexValidator-1"
+                              id="domainpropertiesrow-regexValidator-1-1"
                               name="domainpropertiesrow-regexValidator"
                               onClick={[Function]}
                               type="button"

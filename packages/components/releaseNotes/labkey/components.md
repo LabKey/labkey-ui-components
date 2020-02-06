@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.23.1
+*Released*: 6 February 2020
+* Issue 39341: Fix for specimen designer usage of data types that aren't supported for new domain field creation
+
 ### version 0.23.0
 *Released*: 3 February 2020
 * Issue 39193: Fix for conditional format dialog to respect filter types allowed for date field type

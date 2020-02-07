@@ -41,6 +41,7 @@ import {
     PROP_DESC_TYPES,
     QueryInfoLite,
     updateSampleField,
+    ListModel
 } from './models';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../util/utils';
@@ -197,24 +198,24 @@ export function getMaxPhiLevel(): Promise<string> {
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string, includeWarnings?: boolean) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         if (domain.domainId) {
-            Domain.save({
-                containerPath: LABKEY.container.path,
-                domainDesign: DomainDesign.serialize(domain),
-                domainId: domain.domainId,
-                includeWarnings: includeWarnings,
-                success: (data) => {
-                    resolve(DomainDesign.create(data));
-                },
-                failure: (error) => {
-                    if (!error.exception) {
-                        error = {exception: error};
-                    }
-
-                    const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    const badDomain = setDomainException(domain, exception);
-                    reject(badDomain);
-                }
-            })
+            // Domain.save({
+            //     containerPath: LABKEY.container.path,
+            //     domainDesign: DomainDesign.serialize(domain),
+            //     domainId: domain.domainId,
+            //     includeWarnings: includeWarnings,
+            //     success: (data) => {
+            //         resolve(DomainDesign.create(data));
+            //     },
+            //     failure: (error) => {
+            //         if (!error.exception) {
+            //             error = {exception: error};
+            //         }
+            //
+            //         const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+            //         const badDomain = setDomainException(domain, exception);
+            //         reject(badDomain);
+            //     }
+            // })
         }
         else {
             Domain.create({
@@ -583,6 +584,23 @@ export function fetchProtocol(protocolId?: number, providerName?: string, copy?:
             }),
             success: Utils.getCallbackWrapper((data) => {
                 resolve(AssayProtocolModel.create(data.data));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error);
+            })
+        })
+    });
+}
+
+export function fetchListDesign(domainId = null) {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('property', 'GetDomainKind.api', {
+                domainId: domainId // currently hardcoded
+                // or, queryName and schemaName
+            }),
+            success: Utils.getCallbackWrapper((data) => {
+                resolve(ListModel.create(data));
             }),
             failure: Utils.getCallbackWrapper((error) => {
                 reject(error);

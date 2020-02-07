@@ -253,12 +253,14 @@ import {
     createFormInputId,
     fetchDomain,
     fetchProtocol,
+    fetchListDesign,
     saveAssayDesign,
     saveDomain,
     setDomainFields,
 } from './components/domainproperties/actions';
 import {
     AssayProtocolModel,
+    ListModel,
     DomainDesign,
     DomainField,
     IAppDomainHeader,
@@ -271,6 +273,8 @@ import DomainForm from './components/domainproperties/DomainForm';
 import { DomainFieldsDisplay } from './components/domainproperties/DomainFieldsDisplay';
 import { AssayPropertiesPanel } from './components/domainproperties/assay/AssayPropertiesPanel';
 import { AssayDesignerPanels } from './components/domainproperties/assay/AssayDesignerPanels';
+import { ListDesignerPanels } from "./components/domainproperties/list/ListDesignerPanels";
+import { ListPropertiesPanel } from "./components/domainproperties/list/ListPropertiesPanel";
 import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
@@ -476,6 +480,7 @@ export {
     fetchDomain,
     saveDomain,
     fetchProtocol,
+    fetchListDesign,
     createFormInputId,
     saveAssayDesign,
     setDomainFields,
@@ -491,6 +496,9 @@ export {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    ListDesignerPanels,
+    ListPropertiesPanel,
+    ListModel,
 
     // Base
     GRID_CHECKBOX_OPTIONS,

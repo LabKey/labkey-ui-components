@@ -1526,3 +1526,114 @@ export interface IAppDomainHeader {
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
+
+export class ListModel extends Record({
+    domain: undefined,
+    entityId : undefined,
+    createdBy : undefined,
+    created : undefined,
+    modifiedBy : undefined,
+    modified : undefined,
+    containerId : undefined,
+    name : undefined,
+    description : undefined,
+    lastIndexed : undefined, //confirm defaults
+    keyName : undefined,
+    titleColumn : undefined,
+    domainId : undefined,
+    keyType : undefined,
+    discussionSetting : undefined,
+    allowDelete : undefined,
+    allowUpload : undefined,
+    allowExport : undefined,
+    entireListIndex : undefined,
+    entireListIndexSetting : undefined,
+    entireListTitleSetting : undefined,
+    entireListTitleTemplate : undefined,
+    entireListBodySetting : undefined,
+    entireListBodyTemplate : undefined,
+    eachItemIndex : undefined,
+    eachItemTitleSetting : undefined,
+    eachItemTitleTemplate : undefined,
+    eachItemBodySetting : undefined,
+    eachItemBodyTemplate : undefined,
+    fileAttachmentIndex : undefined,
+    listId : undefined,
+    entireListTitleSettingEnum : undefined,
+    entireListBodySettingEnum : undefined,
+    eachItemTitleSettingEnum : undefined,
+    eachItemBodySettingEnum : undefined,
+    discussionSettingEnum : undefined,
+    entireListIndexSettingEnum : undefined,
+    containerPath : undefined,
+}) {
+    domain: DomainDesign;
+    entityId : string;
+    createdBy : number;
+    created : number;
+    modifiedBy : number;
+    modified : number;
+    containerId : string;
+    name : string;
+    description : string;
+    lastIndexed : any; //confirm
+    keyName : string;
+    titleColumn : null;
+    domainId : number;
+    keyType : string;
+    discussionSetting : number;
+    allowDelete : true;
+    allowUpload : true;
+    allowExport : true;
+    entireListIndex : true;
+    entireListIndexSetting : number;
+    entireListTitleSetting : number;
+    entireListTitleTemplate : any; //confirm
+    entireListBodySetting : number;
+    entireListBodyTemplate : any; //confirm
+    eachItemIndex : false;
+    eachItemTitleSetting : number;
+    eachItemTitleTemplate : any; //confirm
+    eachItemBodySetting : number;
+    eachItemBodyTemplate : any; //confirm
+    fileAttachmentIndex : false;
+    listId : number;
+    entireListTitleSettingEnum : string;
+    entireListBodySettingEnum : string;
+    eachItemTitleSettingEnum : string;
+    eachItemBodySettingEnum : string;
+    discussionSettingEnum : string;
+    entireListIndexSettingEnum : string;
+    containerPath : string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    static create(raw: any): ListModel {
+        console.log("createListModel's raw", raw);
+        // let domains = DomainDesign();
+        let domain = DomainDesign.create(raw.domainDesign);
+
+
+
+
+
+
+        return new ListModel({...raw.options, domain});
+    }
+
+    static serialize(model: ListModel): any {
+        // TODO: remove unrecognized fields from model before converting to json
+    }
+
+
+
+    isNew(): boolean {
+        return !this.listId;
+    }
+
+    hasValidProperties(): boolean {
+        return true; //todo
+    }
+}

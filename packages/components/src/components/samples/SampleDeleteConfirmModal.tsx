@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 import React from 'react';
-import { DeleteConfirmationData, getSampleDeleteConfirmationData } from './actions';
-import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
-import { ConfirmModal } from '../base/ConfirmModal';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from "../base/Alert";
+import { EntityDeleteConfirmModal } from '../lineage/EntityDeleteConfirmModal';
+import { DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
+import { LineageDataType } from '../lineage/models';
 
 interface Props {
     onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
@@ -27,94 +25,18 @@ interface Props {
     selectionKey?: string
 }
 
-interface State {
-    error: string
-    isLoading: boolean
-    confirmationData: DeleteConfirmationData
-}
-
-/**
- * The higher-order component that wraps SampleDeleteConfirmModal or displays a loading modal or eror modal.
- */
-export class SampleDeleteConfirmModal extends React.Component<Props, State> {
-
-    // This is used because a user may cancel during the loading phase, in which case we don't want to update state
-    private _mounted : boolean;
-
-    constructor(props: Props) {
-        super(props);
-
-        if (props.rowIds === undefined && props.selectionKey === undefined) {
-            throw new Error("Either rowIds or selectionKey must be provided in order to confirm deletion.");
-        }
-
-        this.state = {
-            error: undefined,
-            isLoading: true,
-            confirmationData: undefined
-        }
-    }
-
-    componentWillMount() {
-        this._mounted = true;
-        this.init(this.props)
-    }
-
-    componentWillUnmount() {
-        this._mounted = false;
-    }
-
-    init(props: Props) {
-        getSampleDeleteConfirmationData(props.selectionKey, props.rowIds )
-            .then((confirmationData) => {
-                if (this._mounted) {
-                    this.setState(() => ({isLoading: false, confirmationData}));
-                }
-            })
-            .catch((reason) => {
-                console.error("There was a problem retrieving the delete confirmation data.", reason);
-                if (this._mounted) {
-                    this.setState(() => ({
-                        isLoading: false,
-                        error: "There was a problem retrieving the delete confirmation data."
-                    }));
-                }
-            });
-    }
+export class SampleDeleteConfirmModal extends React.Component<Props, any> {
 
     render() {
-        const { onConfirm, onCancel } = this.props;
-
-
-        if (this.state.isLoading) {
-            return (
-                <ConfirmModal
-                      title={"Loading confirmation data"}
-                      msg={<LoadingSpinner/>}
-                      onCancel={onCancel}
-                      cancelButtonText="Cancel"
-                />
-            )
-        }
-
-        if (this.state.error) {
-            return (
-                <ConfirmModal
-                    title={"Deletion Error"}
-                    onCancel={onCancel}
-                    msg={<Alert>{this.state.error}</Alert>}
-                    onConfirm={undefined}
-                    cancelButtonText={"Dismiss"}
-                />
-            )
-        }
-
         return (
-            <SampleDeleteConfirmModalDisplay
-                confirmationData={this.state.confirmationData}
-                onConfirm={onConfirm}
-                onCancel={onCancel}
-            />
+            <EntityDeleteConfirmModal
+                {... this.props}
+                lineageDataType={LineageDataType.Sample}
+                nounSingular={"sample"}
+                nounPlural={"samples"}
+                dependencyText={"derived sample or assay data dependencies"}
+                helpLinkTopic={DELETE_SAMPLES_TOPIC}
+             />
         )
     }
 }

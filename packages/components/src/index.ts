@@ -126,8 +126,8 @@ import {
     getQueryGridModel,
     initQueryGridState,
     invalidateLineageResults,
-    removeQueryGridModel,
-    invalidateUsers
+    invalidateUsers,
+    removeQueryGridModel
 } from './global';
 import {
     deleteRows,
@@ -144,12 +144,12 @@ import {
     selectRows,
     updateRows,
 } from './query/api';
-import { loadReports, flattenBrowseDataTreeResponse } from './query/reports';
-import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from './constants';
+import { flattenBrowseDataTreeResponse, loadReports } from './query/reports';
+import { DataViewInfoTypes, IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
-import { getHelpLink, helpLinkNode, DATA_IMPORT_TOPIC } from './util/helpLinks';
+import { DELETE_SAMPLES_TOPIC, DATA_IMPORT_TOPIC, getHelpLink, helpLinkNode } from './util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -170,6 +170,7 @@ import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
+import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/lineage/actions';
 import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
@@ -194,12 +195,7 @@ import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
-import {
-    deleteSampleSet,
-    getSampleDeleteConfirmationData,
-    getSampleSet,
-    loadSelectedSamples,
-} from './components/samples/actions';
+import { deleteSampleSet, getSampleSet, loadSelectedSamples, } from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
@@ -234,6 +230,7 @@ import { LineageFilter } from './components/lineage/models';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
+import { EntityDeleteConfirmModal } from './components/lineage/EntityDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
@@ -280,7 +277,7 @@ import {
 import { ExpandableContainer } from './components/ExpandableContainer';
 import { PermissionAssignments } from './components/permissions/PermissionAssignments';
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
-import { PermissionsProviderProps, SecurityPolicy, SecurityRole, Principal } from './components/permissions/models';
+import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './components/permissions/models';
 import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 
 
@@ -316,7 +313,6 @@ export {
     importData,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
-    getSampleDeleteConfirmationData,
     setSelected,
 
     // editable grid related items
@@ -454,6 +450,9 @@ export {
     SampleTypeLineageCounts,
     VisGraphNode,
     invalidateLineageResults,
+    getSampleDeleteConfirmationData,
+    getDataDeleteConfirmationData,
+    EntityDeleteConfirmModal,
 
     // Navigation
     MenuSectionConfig,
@@ -604,6 +603,7 @@ export {
     getHelpLink,
     helpLinkNode,
     DATA_IMPORT_TOPIC,
+    DELETE_SAMPLES_TOPIC,
 
     // url functions
     buildURL,

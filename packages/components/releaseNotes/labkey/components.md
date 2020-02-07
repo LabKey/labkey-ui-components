@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 39529: Make reset view in lineage graph operational
+* Use URLResolver for resolving links returned from lineage query
+* Rename and reparameterize SampleDeleteConfirmModal to EntityDeleteConfirmModal (and move to lineage instead of samples) for reuse with data class objects
+
 ### version 0.23.1
 *Released*: 6 February 2020
 * Issue 39341: Fix for specimen designer usage of data types that aren't supported for new domain field creation

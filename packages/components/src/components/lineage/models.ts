@@ -537,3 +537,8 @@ export class LineagePageModel extends Record({
         super(values);
     }
 }
+
+export enum LineageDataType {
+    Sample,
+    DataClass
+}

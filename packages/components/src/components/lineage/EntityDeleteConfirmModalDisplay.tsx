@@ -22,32 +22,33 @@ interface Props {
     onConfirm:  (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
     onCancel: () => any
     confirmationData: DeleteConfirmationData
+    nounSingular: string
+    nounPlural: string
+    dependencyText: string
+    helpLinkTopic: string
 }
 
 /**
- * Displays the modal with a message about how many samples can and cannot be deleted.
+ * Displays the modal with a message about how many items can and cannot be deleted.
  * Note that the main reason this is a separate component is for testability.  When encompassed
- * within SampleDeleteConfirmation, the jest tests do not render the component fully enough to test
+ * within DeleteConfirmationModal, the jest tests do not render the component fully enough to test
  * different confirmation data scenarios.
  */
-export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any> {
+export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any> {
 
     getConfirmationProperties() : {message: any, title: string, canDelete: boolean}{
 
-        const { confirmationData } = this.props;
+        const { confirmationData, helpLinkTopic, nounSingular, nounPlural, dependencyText } = this.props;
 
         if (!confirmationData)
             return undefined;
 
-        const nounSingular = "sample";
-        const nounPlural = "samples";
         const numCanDelete = confirmationData.canDelete.length;
         const numCannotDelete = confirmationData.cannotDelete.length;
         const canDeleteNoun = numCanDelete === 1 ? nounSingular : nounPlural;
         const cannotDeleteNoun = numCannotDelete === 1 ? nounSingular : nounPlural;
         const totalNum = numCanDelete + numCannotDelete;
         const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
-        const dependencyText = "derived sample or assay data dependencies";
         let text;
         if (totalNum === 0) {
             text = "Either no " + nounPlural + " are selected for deletion or the selected " + nounPlural + " are no longer valid."
@@ -73,7 +74,7 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         const message = (
             <span>
                 {text}
-                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(DELETE_SAMPLES_TOPIC, "more info")})</>}
+                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(helpLinkTopic, "more info")})</>}
                 {numCanDelete > 0 && <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>  Do you want to proceed?</p>}
             </span>
         );

@@ -16,19 +16,25 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
-import { SampleDeleteConfirmModal } from './SampleDeleteConfirmModal';
 import { ConfirmModal } from '../base/ConfirmModal';
+import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
+import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
+import { LineageDataType } from './models';
 
-describe("<SampleDeleteConfirmModal/>", () => {
+describe("<EntityDeleteConfirmModal/>", () => {
 
     test("Error display", () => {
         const errorMsg = "There was an error";
         const component = (
-            <SampleDeleteConfirmModal
+            <EntityDeleteConfirmModal
                 selectionKey={"nonesuch"}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
+                lineageDataType={LineageDataType.Sample}
+                nounSingular={"datum"}
+                nounPlural={"data"}
+                dependencyText={"dependents"}
+                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);
@@ -42,10 +48,15 @@ describe("<SampleDeleteConfirmModal/>", () => {
     });
     test("Have confirmation data", () => {
         const component = (
-            <SampleDeleteConfirmModal
+            <EntityDeleteConfirmModal
                 selectionKey={"nonesuch"}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
+                lineageDataType={LineageDataType.Sample}
+                nounSingular={"datum"}
+                nounPlural={"data"}
+                dependencyText={"dependents"}
+                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);
@@ -59,6 +70,6 @@ describe("<SampleDeleteConfirmModal/>", () => {
                 "cannotDelete" : [  ]
             }
         });
-        expect(wrapper.find(SampleDeleteConfirmModalDisplay)).toHaveLength(1);
+        expect(wrapper.find(EntityDeleteConfirmModalDisplay)).toHaveLength(1);
     })
 });

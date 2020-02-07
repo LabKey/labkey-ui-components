@@ -170,7 +170,6 @@ import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
-import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/lineage/actions';
 import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
@@ -226,7 +225,8 @@ import {
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants';
-import { LineageFilter } from './components/lineage/models';
+import { LineageFilter, LineageDataType } from './components/lineage/models';
+import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/lineage/actions';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
@@ -453,6 +453,7 @@ export {
     getSampleDeleteConfirmationData,
     getDataDeleteConfirmationData,
     EntityDeleteConfirmModal,
+    LineageDataType,
 
     // Navigation
     MenuSectionConfig,

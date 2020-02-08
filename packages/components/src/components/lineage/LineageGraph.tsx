@@ -49,6 +49,7 @@ interface LinageGraphProps {
     filterIn?: boolean
     grouping?: ILineageGroupingOptions
     hideLegacyLinks?: boolean
+    initialModel?: QueryGridModel
 }
 
 export class LineageGraph extends React.Component<LinageGraphProps, any> {
@@ -258,6 +259,21 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         }
     }
 
+    createInitialLineageNode() : LineageNode {
+        const { initialModel } = this.props;
+        const row = initialModel.getRow();
+        const lsid = row.getIn(['LSID', 'value']);
+
+        return LineageNode.create(lsid, {
+            name: row.getIn(['Name', 'value']),
+            schemaName: initialModel.schema,
+            queryName: initialModel.query,
+            rowId: row.getIn(['RowId', 'value']),
+            url: row.getIn(['RowId', 'url']),
+            lsid: lsid
+        })
+    }
+
     render() {
         const { lineage, filters, filterIn, grouping } = this.props;
 
@@ -301,8 +317,25 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
                 </div>
             )
         }
-
-        return <LoadingSpinner msg="Loading lineage..."/>;
+        else {
+            return (
+                <div className='row'>
+                    <div className='col-md-8'>
+                        <div className='top-spacing'>
+                            <LoadingSpinner  msg="Loading lineage..."/>
+                        </div>
+                    </div>
+                    <div className='col-md-4 lineage-node-detail-container'>
+                        {this.props.initialModel ? this.renderSelectedGraphNode(this.props.lsid, undefined, {
+                            id: this.props.lsid,
+                            cid: 0,
+                            kind: 'node',
+                            lineageNode: this.createInitialLineageNode()
+                        }) : <LoadingSpinner msg={"Loading details..."}/>}
+                    </div>
+                </div>
+            )
+        }
     }
 }
 

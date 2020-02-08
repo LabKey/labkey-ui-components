@@ -178,16 +178,16 @@ export class LineageNode extends Record ({
 
     static create(lsid, values?: { [key:string]: any }): LineageNode {
         return new LineageNode({
-            children: LineageLink.createList(values.children),
-            cpasType: values.cpasType,
+            children: values ? LineageLink.createList(values.children) : undefined,
+            cpasType: values ? values.cpasType : undefined,
             lsid,
-            name: values.name,
-            parents: LineageLink.createList(values.parents),
-            queryName: values.queryName,
-            rowId: values.rowId,
-            schemaName: values.schemaName,
-            type: values.type,
-            url: values.url
+            name: values ? values.name : undefined,
+            parents: values ? LineageLink.createList(values.parents) : undefined,
+            queryName: values ? values.queryName : undefined,
+            rowId: values ? values.rowId : undefined,
+            schemaName: values ? values.schemaName : undefined,
+            type: values ? values.type : undefined,
+            url: values ? values.url : undefined
         });
     }
 }

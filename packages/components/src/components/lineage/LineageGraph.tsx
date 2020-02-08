@@ -208,17 +208,19 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         const lineageNode = node.lineageNode;
         const model = this.getNodeGridDataModel(lineageNode);
 
-        return <SelectedNodeDetail
-            seed={seed}
-            node={lineageNode}
-            entityModel={model}
-            highlightNode={hoverNodeLsid}
-            isNodeInGraph={this.isNodeInGraph}
-            onNodeMouseOver={this.onSummaryNodeMouseOver}
-            onNodeMouseOut={this.onSummaryNodeMouseOut}
-            onNodeClick={this.onSummaryNodeClick}
-            hideLegacyLinks={this.props.hideLegacyLinks}
-        />;
+        return (
+            <SelectedNodeDetail
+                seed={seed}
+                node={lineageNode}
+                entityModel={model}
+                highlightNode={hoverNodeLsid}
+                isNodeInGraph={this.isNodeInGraph}
+                onNodeMouseOver={this.onSummaryNodeMouseOver}
+                onNodeMouseOut={this.onSummaryNodeMouseOut}
+                onNodeClick={this.onSummaryNodeClick}
+                hideLegacyLinks={this.props.hideLegacyLinks}
+            />
+        );
     }
 
     renderSelectedClusterNode(seed: string, hoverNodeLsid: string, node: VisGraphClusterNode) {
@@ -293,7 +295,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
                             seed={lineage.getSeed()}
                         />
                     </div>
-                    <div className='col-md-4' style={{borderLeft: '1px solid #ddd'}}>
+                    <div className='col-md-4 lineage-node-detail-container'>
                         {this.renderSelectedNodes(lineage.getSeed(), graph)}
                     </div>
                 </div>
@@ -427,7 +429,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
         }
 
         return <>
-            <div className="margin-bottom" style={{display: 'inline-block', width: '100%'}}>
+            <div className="margin-bottom lineage-node-detail" >
                 <i className="component-detail--child--img">
                     <SVGIcon
                         iconDir={'_images'}
@@ -438,7 +440,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
                 </i>
                 <div className="text__truncate">
                     <div className='lineage-name'>
-                        <h4 className="no-margin-top" style={{display: 'inline'}}>
+                        <h4 className="no-margin-top lineage-name-data">
                             {(lineageUrl && !isSeed) &&
                             <a href={lineageUrl} onClick={this.handleLinkClick}>{name}</a>
                             ||
@@ -446,14 +448,13 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
                             }
                             <div className='pull-right'>
                                 <a href={url}
-                                   style={{paddingLeft: '1px', paddingRight: '1px'}}
+                                   className='lineage-data-link-left'
                                    onClick={this.handleLinkClick}>
-                                    <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Overview</small>
+                                    <span className='lineage-data-link--text'>Overview</span>
                                 </a>
-                                <a href={lineageUrl}
-                                   style={{paddingLeft: '5px', paddingRight: '5px'}}
+                                <a href={lineageUrl} className='lineage-data-link-right'
                                    onClick={this.handleLinkClick}>
-                                    <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Lineage</small>
+                                    <span className='lineage-data-link--text'>Lineage</span>
                                 </a>
                             </div>
                         </h4>
@@ -566,7 +567,7 @@ class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
         }
 
         return <>
-            <div className="margin-bottom" style={{display: 'inline-block', width: '100%'}}>
+            <div className="margin-bottom lineage-node-detail">
                 <i className="component-detail--child--img">
                     <SVGIcon
                         iconDir={'_images'}
@@ -577,7 +578,7 @@ class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
                 </i>
                 <div className="text__truncate">
                     <div className='lineage-name'>
-                        <h4 className="no-margin-top" style={{display: 'inline'}}>
+                        <h4 className="no-margin-top lineage-name-data">
                             {title}
                         </h4>
                     </div>
@@ -600,6 +601,4 @@ class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
 
         </>;
     }
-
-
 }

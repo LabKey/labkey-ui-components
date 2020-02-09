@@ -19,6 +19,7 @@ import { Checkbox, Input, Textarea } from 'formsy-react-components';
 
 import { LabelOverlay } from '../LabelOverlay';
 import { DateInput } from '../input/DateInput';
+import { DatePickerInput } from '../input/DatePickerInput';
 import { _defaultRenderer } from './Detail';
 import { resolveRenderer } from '../renderers';
 import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
@@ -71,7 +72,7 @@ export function titleRenderer(col: QueryColumn): React.ReactNode {
     return <LabelOverlay column={col} />;
 }
 
-export function resolveDetailEditRenderer(col: QueryColumn): React.ReactNode {
+export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boolean): React.ReactNode {
 
     return (data) => {
         const editable = col.isEditable();
@@ -142,14 +143,24 @@ export function resolveDetailEditRenderer(col: QueryColumn): React.ReactNode {
                 );
             case 'date':
                 if (typeof value === 'string') {
-                    return (
-                        <DateInput
-                            elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}
-                            name={col.name}
-                            queryColumn={col}
-                            validatePristine={true}
-                            value={value}/>
-                    );
+                    if (useDatePicker) {
+                        return (
+                            <DatePickerInput
+                                wrapperClassName={"col-sm-12"}
+                                name={col.name}
+                                queryColumn={col}
+                                value={value}/>)
+                    }
+                    else {
+                        return (
+                            <DateInput
+                                elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}
+                                name={col.name}
+                                queryColumn={col}
+                                validatePristine={true}
+                                value={value}/>
+                        )
+                    }
                  }
             default:
                 let validations,

@@ -14,6 +14,7 @@ import {
     LineageFilter,
     LineageGroupingOptions,
     LineageNode,
+    LineageNodeMetadata,
     LineageOptions,
 } from './models';
 import {
@@ -205,7 +206,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         }
     }
 
-    renderSelectedGraphNode(seed: string, hoverNodeLsid: string, node: VisGraphNode) {
+    renderSelectedGraphNode(seed: string, hoverNodeLsid: string, node: VisGraphNode, showLineageSummary: boolean = true) {
         const lineageNode = node.lineageNode;
         const model = this.getNodeGridDataModel(lineageNode);
 
@@ -220,6 +221,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
                 onNodeMouseOut={this.onSummaryNodeMouseOut}
                 onNodeClick={this.onSummaryNodeClick}
                 hideLegacyLinks={this.props.hideLegacyLinks}
+                showLineageSummary={showLineageSummary}
             />
         );
     }
@@ -270,6 +272,10 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
             queryName: initialModel.query,
             rowId: row.getIn(['RowId', 'value']),
             url: row.getIn(['RowId', 'url']),
+            meta: new LineageNodeMetadata({
+                displayType: initialModel.queryInfo.title,
+                description: row.getIn(['Description', 'value'])
+            }),
             lsid: lsid
         })
     }
@@ -331,7 +337,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
                             cid: 0,
                             kind: 'node',
                             lineageNode: this.createInitialLineageNode()
-                        }) : <LoadingSpinner msg={"Loading details..."}/>}
+                        }, false) : <LoadingSpinner msg={"Loading details..."}/>}
                     </div>
                 </div>
             )
@@ -350,10 +356,15 @@ interface SelectedNodeProps {
     onNodeMouseOut?: (node: LineageNode) => void
     onNodeClick?: (node: LineageNode) => void
     hideLegacyLinks?: boolean
+    showLineageSummary?: boolean
 }
 
 // TODO: Refactor and share with ComponentDetailHOCImpl?
 class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
+
+    static defaultProps = {
+        showLineageSummary: true
+    };
 
     constructor(props) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
@@ -419,7 +430,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
     }
 
     render() {
-        const { seed, node, highlightNode, hideLegacyLinks } = this.props;
+        const { seed, node, highlightNode, hideLegacyLinks, showLineageSummary } = this.props;
         const url = node.url;
         const lineageUrl = url + '/lineage';
         const name = node.name;
@@ -513,15 +524,17 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
 
             <Detail queryModel={model} />
 
-            <LineageSummary
-                seed={node.lsid}
-                showRuns={false}
-                highlightNode={highlightNode}
-                isNodeInGraph={this.isNodeInGraph}
-                onNodeMouseOver={this.onNodeMouseOver}
-                onNodeMouseOut={this.onNodeMouseOut}
-                onNodeClick={this.onNodeClick}
-            />
+            {showLineageSummary && (
+                <LineageSummary
+                    seed={node.lsid}
+                    showRuns={false}
+                    highlightNode={highlightNode}
+                    isNodeInGraph={this.isNodeInGraph}
+                    onNodeMouseOver={this.onNodeMouseOver}
+                    onNodeMouseOut={this.onNodeMouseOut}
+                    onNodeClick={this.onNodeClick}
+                />
+            )}
 
         </>;
     }

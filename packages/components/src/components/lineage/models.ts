@@ -187,7 +187,8 @@ export class LineageNode extends Record ({
             rowId: values ? values.rowId : undefined,
             schemaName: values ? values.schemaName : undefined,
             type: values ? values.type : undefined,
-            url: values ? values.url : undefined
+            url: values ? values.url : undefined,
+            meta: values ? values.meta : undefined
         });
     }
 }

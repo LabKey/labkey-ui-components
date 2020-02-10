@@ -6,10 +6,10 @@ import classNames from 'classnames';
 import {DomainPanelStatus, ListModel} from "../models";
 import {
     AllowableActions,
-    AdvancedSettingsButton,
     Header,
     BasicPropertiesFields,
 } from "./ListPropertiesPanelFormElements";
+import {AdvancedSettingsButton} from "./ListPropertiesAdvancedSettings";
 import {Utils} from "@labkey/api";
 
 interface Props {
@@ -48,9 +48,23 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
         );
     };
 
-    onInputChange = (e) => {
+    callChange = (identifier, value) => {
         const {model, onChange} = this.props;
 
+        const newModel = model.merge({
+            [identifier]: value
+        }) as ListModel;
+
+        console.log("callChange", identifier, value);
+        console.log("callChange newModel", newModel);
+
+        // TODO: Check for validity of new model properties. Set validity state, then call
+        // model change on callback.
+
+        onChange(newModel);
+    };
+
+    onInputChange = (e) => {
         const id = e.target.id;
         let value = e.target.value;
 
@@ -59,17 +73,12 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
             value = null;
         }
 
-        const newModel = model.merge({
-            [id]: value
-        }) as ListModel;
-
-        console.log("onInputChange", id, value);
-        console.log("onInputChange newModel", newModel);
-
-        // TODO: Check for validity of new model properties. Set validity state, then call
-        // model change on callback.
-
-        onChange(newModel);
+        this.callChange(id, value);
+        // const newModel = model.merge({
+        //     [id]: value
+        // }) as ListModel;
+        //
+        // onChange(newModel);
     };
 
     onCheckBoxChange = (name, checked) => {
@@ -79,6 +88,12 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
         }) as ListModel;
 
         onChange(newModel);
+    };
+
+    onRadioChange = (e) => {
+        const name = e.currentTarget.name;
+        let value = e.target.value;
+        this.callChange(name, value);
     };
 
     render() {
@@ -102,7 +117,7 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
                     />
 
                     <Panel.Body collapsible={collapsible}>
-                        <AdvancedSettingsButton title={"Advanced Settings"}/>
+                        <AdvancedSettingsButton title={"Advanced Settings"} model={model} onRadioChange={this.onRadioChange}/>
                         <Form>
                             <BasicPropertiesFields
                                 model={model}

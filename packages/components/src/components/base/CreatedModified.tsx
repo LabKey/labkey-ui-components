@@ -60,8 +60,8 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
     componentWillMount() {
         if (this.props.useServerDate) {
             Query.getServerDate({
-                success: (serverDate) => this.setState(() => ({serverDate, loading: false})),
-                failure: (error) => this.setState(() => ({loading: false}))
+                // success: (serverDate) => this.setState(() => ({serverDate, loading: false})),
+                // failure: (error) => this.setState(() => ({loading: false}))
             });
         }
     }

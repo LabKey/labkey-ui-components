@@ -622,3 +622,48 @@
 .domain-assay-buttons .btn {
     width: 75px;
 }
+
+// TODO RP Move to separate file
+.list__bold-text {
+    font-weight: bold;
+}
+
+.list__advanced-settings-modal__bottom {
+    border-top: 1px solid #eee;
+    padding-top: 13px;
+}
+
+.list__advanced-settings-modal__help-link {
+    margin-right: 5px;
+}
+
+.list__advanced-settings-modal__display-title-input {
+    border-radius: 5px;
+    width: 300px;
+}
+
+.list__advanced-settings-modal__section-container {
+    margin-bottom: 20px;
+}
+
+.list__advanced-settings-modal__heading {
+    margin-bottom: 7px;
+}
+
+.list__advanced-settings-modal__index-checkbox {
+     margin-left: 7px;
+}
+
+.list__advanced-settings-modal__index-text {
+    margin-left: 5px;
+}
+
+.list__advanced-settings-modal__single-doc-fields {
+    margin-top: 10px;
+    padding-left: 50px;
+}
+
+.list__advanced-settings-modal__text-field {
+    width: 250px;
+    border-radius: 5px;
+}

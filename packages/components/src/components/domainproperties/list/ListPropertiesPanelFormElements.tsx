@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Col, FormControl, Panel, Row} from "react-bootstrap";
+import {Button, Col, FormControl, Panel, Row, Modal, FormGroup, Radio} from "react-bootstrap";
 import classNames from "classnames";
 import {faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -17,7 +17,6 @@ class ListPropertiesHeader extends React.PureComponent<any, any> {
     }
 
     render(){
-        let name = "blahblah";
         const { panelStatus, controlledCollapse, collapsible, collapsed, model } = this.props;
         const { validProperties } = this.state;
 
@@ -41,12 +40,12 @@ class ListPropertiesHeader extends React.PureComponent<any, any> {
 
                 {(controlledCollapse || collapsible) &&
                 <span className='pull-right'>
-                        <FontAwesomeIcon
-                            size={'lg'}
-                            icon={collapsed ? faPlusSquare: faMinusSquare}
-                            className={classNames({'domain-form-expand-btn': collapsed, 'domain-form-collapse-btn': !collapsed})}
-                        />
-                    </span>
+                    <FontAwesomeIcon
+                        size={'lg'}
+                        icon={collapsed ? faPlusSquare: faMinusSquare}
+                        className={classNames({'domain-form-expand-btn': collapsed, 'domain-form-collapse-btn': !collapsed})}
+                    />
+                </span>
                 }
             </>
         );
@@ -77,22 +76,6 @@ export class Header extends React.PureComponent<any, any> {
                 />
                 }
             </Panel.Heading>
-        );
-    }
-}
-
-export class AdvancedSettingsButton extends React.PureComponent<any, any> {
-    render(){
-        return(
-            <Row>
-                <Col xs={12}>
-                    <Button style={{float: "right"}}>
-                        {this.props.title}
-                    </Button>
-
-
-                </Col>
-            </Row>
         );
     }
 }
@@ -187,7 +170,7 @@ export class BasicPropertiesFields extends React.PureComponent<any, any> {
 
 export class CheckBox extends React.PureComponent<any, any> {
     render() {
-        let {onCheckBoxChange, checked} = this.props;
+        let {onClick, checked} = this.props;
 
         const checkedOrNot = checked ? (
             <FontAwesomeIcon size="lg" icon={faCheckSquare} color="#0073BB" />
@@ -196,7 +179,7 @@ export class CheckBox extends React.PureComponent<any, any> {
         );
 
         return (
-            <span style={{cursor: "pointer"}} onClick={onCheckBoxChange}>
+            <span style={{cursor: "pointer"}} onClick={onClick}>
                 {checkedOrNot}
             </span>
         );

@@ -1,5 +1,133 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<PermissionsRole/> not editable 1`] = `
+<div
+  className="row container-expandable"
+>
+  <div
+    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <i
+      className="container-expandable-child__img"
+    >
+      <i
+        className="fa fa-users fa-3x"
+        style={
+          Object {
+            "padding": "5px",
+          }
+        }
+      />
+    </i>
+    <div
+      className="pull-right container-expandable-child__chevron"
+    >
+      <i
+        className="fa fa-chevron-down"
+      />
+    </div>
+    <div
+      className="container-expandable-heading"
+    >
+      <div
+        className="container-expandable-heading--clause"
+      >
+        <span
+          className="permissions-title"
+        >
+          Editor
+        </span>
+      </div>
+      <div>
+        <span
+          className="container-expandable-heading"
+        >
+          <span>
+            <a>
+              3
+               member
+              s
+            </a>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="permissions-role-container"
+  >
+    <div>
+      Editors may read, add, update and delete information.
+    </div>
+    <div
+      className="permissions-assignments-row row"
+    >
+      <div
+        className="col-sm-6 col-xs-12"
+      >
+        <div>
+          Groups:
+        </div>
+        <ul
+          className="permissions-members-ul"
+        >
+          <li
+            className="permissions-member-li"
+          >
+            <button
+              className="permissions-button-display btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Editor User Group
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="col-sm-6 col-xs-12"
+      >
+        <div>
+          Users:
+        </div>
+        <ul
+          className="permissions-members-ul"
+        >
+          <li
+            className="permissions-member-li"
+          >
+            <button
+              className="permissions-button-display btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              cnathe@labkey.com (Cory Nathe)
+            </button>
+          </li>
+          <li
+            className="permissions-member-li"
+          >
+            <button
+              className="permissions-button-display btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Inactive User: 4971
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<PermissionsRole/> showing only a single type and a selected and disabled principal 1`] = `
 <div
   className="row container-expandable"

@@ -10,7 +10,7 @@ import { Tip } from "../../components/base/Tip";
 interface Props {
     id: number
     display: string
-    onRemove: (userId: number) => any
+    onRemove?: (userId: number) => any
     onClick: (userId: number) => any
     bsStyle?: string
     added?: boolean
@@ -42,11 +42,13 @@ export class RemovableButton extends React.PureComponent<Props, State> {
 
     onRemove = () => {
         const { id, onRemove } = this.props;
-        onRemove(id);
+        if (onRemove) {
+            onRemove(id);
+        }
     };
 
     render() {
-        const { id, display, onClick, bsStyle, added, disabledMsg } = this.props;
+        const { id, display, onClick, bsStyle, added, disabledMsg, onRemove } = this.props;
 
         let btnGroupCls = List<string>(['permissions-button-group']);
         if (this.state.removed) {
@@ -58,18 +60,25 @@ export class RemovableButton extends React.PureComponent<Props, State> {
             btnCls = btnCls.push('permissions-button-added');
         }
 
+        const btn = <Button className={btnCls.join(' ')} bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>;
+
         return (
-            <ButtonGroup className={btnGroupCls.join(' ')}>
-                {disabledMsg
-                    ? <Tip caption={disabledMsg}>
-                        <div className={'disabled-button-with-tooltip'}>
-                            <Button bsStyle={bsStyle} disabled={true}><i className={'fa fa-remove'}/></Button>
-                        </div>
-                    </Tip>
-                    : <Button bsStyle={bsStyle} onClick={this.onRemoveClick}><i className={'fa fa-remove'}/></Button>
+            <>
+                {onRemove
+                    ? <ButtonGroup className={btnGroupCls.join(' ')}>
+                        {disabledMsg
+                            ? <Tip caption={disabledMsg}>
+                                <div className={'disabled-button-with-tooltip'}>
+                                    <Button bsStyle={bsStyle} disabled={true}><i className={'fa fa-remove'}/></Button>
+                                </div>
+                            </Tip>
+                            : <Button bsStyle={bsStyle} onClick={this.onRemoveClick}><i className={'fa fa-remove'}/></Button>
+                        }
+                        {btn}
+                    </ButtonGroup>
+                    : btn
                 }
-                <Button className={btnCls.join(' ')} bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>
-            </ButtonGroup>
+            </>
         )
     }
 }

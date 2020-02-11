@@ -16,8 +16,8 @@ interface Props {
     assignments: List<SecurityAssignment>
     typeToShow: string
     principals: List<Principal>
-    onAddAssignment: (principal: Principal, role: SecurityRole) => any
-    onRemoveAssignment: (userId: number, role: SecurityRole) => any
+    onAddAssignment?: (principal: Principal, role: SecurityRole) => any
+    onRemoveAssignment?: (userId: number, role: SecurityRole) => any
     onClickAssignment: (userId: number) => any
     selectedUserId: number
     disabledId?: number
@@ -103,7 +103,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                                             id={assignment.userId}
                                                             display={SecurityAssignment.getDisplayName(assignment)}
                                                             onClick={(userId: number) => onClickAssignment(userId)}
-                                                            onRemove={(userId: number) => onRemoveAssignment(userId, role)}
+                                                            onRemove={onRemoveAssignment ? (userId: number) => onRemoveAssignment(userId, role) : undefined}
                                                             bsStyle={selectedUserId === assignment.userId ? 'primary' : undefined}
                                                             added={assignment.isNew}
                                                             disabledMsg={disabledMsg}
@@ -118,12 +118,12 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                             )
                         })}
                     </Row>
-                    <AddRoleAssignmentInput
+                    {onAddAssignment && <AddRoleAssignmentInput
                         role={role}
                         principals={principalsToAdd}
                         onSelect={(selected: Principal) => onAddAssignment(selected, role)}
                         placeholder={typeToShow === 'u' ? 'Add member...' : undefined}
-                    />
+                    />}
                 </div>
             </ExpandableContainer>
         )

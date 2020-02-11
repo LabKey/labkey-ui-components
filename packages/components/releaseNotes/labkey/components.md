@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Rename and re-parameterize SampleDeleteConfirmModal to EntityDeleteConfirmModal (and move to entities instead of samples) for reuse with data class objects
 * Issue 39252: Show initial seed node details on lineage panel while lineage is loading.
 
+### version 0.23.3
+*Released*: 11 February 2020
+* Issue 39524: User management: Creating new user grid filter from notification is incorrect if user already exists and is disabled
+* Issue 39501: Permissions management: Handle case where the security policy for a container is inheriting from the parent container
+* Issue 39616: Update domain field warning message regarding special characters
+
 ### version 0.23.2
 *Released*: 8 February 2020
 * Use DatePickerInput for DetailEdit

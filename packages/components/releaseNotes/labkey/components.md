@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.23.3
+*Released*: 11 February 2020
+* Issue 39524: User management: Creating new user grid filter from notification is incorrect if user already exists and is disabled
+* Issue 39501: Permissions management: Handle case where the security policy for a container is inheriting from the parent container
+* Issue 39616: Update domain field warning message regarding special characters
+
 ### version 0.23.2
 *Released*: 8 February 2020
 * Use DatePickerInput for DetailEdit

@@ -95,7 +95,7 @@ export function fetchContainerSecurityPolicy(containerId: string, principalsById
             containerPath: containerId,
             resourceId: containerId,
             success: (data, relevantRoles) => {
-                let policy = SecurityPolicy.create({policy: data, relevantRoles});
+                let policy = SecurityPolicy.create({policy: data, relevantRoles, containerId});
                 policy = SecurityPolicy.updateAssignmentsData(policy, principalsById);
                 if (inactiveUsersById) {
                     policy = SecurityPolicy.updateAssignmentsData(policy, inactiveUsersById);

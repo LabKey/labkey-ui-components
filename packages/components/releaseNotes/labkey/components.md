@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Rename and re-parameterize SampleDeleteConfirmModal to EntityDeleteConfirmModal (and move to lineage instead of samples) for reuse with data class objects
 * Issue 39252: Show initial seed node details on lineage panel while lineage is loading.
 
+### version 0.23.2
+*Released*: 8 February 2020
+* Use DatePickerInput for DetailEdit
+* Add advancedExportOption to QueryGridPanel
+
 ### version 0.23.1
 *Released*: 6 February 2020
 * Issue 39341: Fix for specimen designer usage of data types that aren't supported for new domain field creation

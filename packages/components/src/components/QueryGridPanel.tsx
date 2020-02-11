@@ -45,6 +45,7 @@ interface Props {
     rightTabs?: List<string>,
     onChangeTab?: (tabInd : number) => any,
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+    advancedExportOption?: Object
 }
 
 interface State {
@@ -188,7 +189,8 @@ export class QueryGridPanel extends React.Component<Props, State> {
             showSampleComparisonReports,
             onReportClicked,
             onCreateReportClicked,
-            onSelectionChange
+            onSelectionChange,
+            advancedExportOption
         } = this.props;
         const activeModel = this.getModel();
         let gridBar;
@@ -202,6 +204,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
                     onReportClicked={onReportClicked}
                     onCreateReportClicked={onCreateReportClicked}
                     onSelectionChange={onSelectionChange}
+                    advancedExportOption={advancedExportOption}
                 />
             );
         }

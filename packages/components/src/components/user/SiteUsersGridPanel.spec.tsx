@@ -54,6 +54,7 @@ describe("<SiteUsersGridPanel/>", () => {
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(1);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(1);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Active Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View All Users')).toHaveLength(1);
         wrapper.unmount();
     });
 
@@ -80,6 +81,7 @@ describe("<SiteUsersGridPanel/>", () => {
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(1);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Active Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View All Users')).toHaveLength(1);
         wrapper.unmount();
     });
 
@@ -107,6 +109,7 @@ describe("<SiteUsersGridPanel/>", () => {
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(1);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Active Users')).toHaveLength(1);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View All Users')).toHaveLength(1);
         wrapper.unmount();
     });
 
@@ -132,8 +135,9 @@ describe("<SiteUsersGridPanel/>", () => {
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(1);
-        expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(1);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Active Users')).toHaveLength(1);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View All Users')).toHaveLength(0);
         wrapper.unmount();
     });
 

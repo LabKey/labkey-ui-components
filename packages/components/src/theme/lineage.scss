@@ -26,7 +26,7 @@
 
 .lineage-data-link--text {
     line-height: 1;
-    color: #777;
+    color: $gray-light;
     font-size: 75%;
     font-weight: 400;
 }
@@ -89,10 +89,10 @@
 }
 
 .lineage-node-detail-container {
-    border-left: 1px solid #ddd;
+    border-left: 1px solid $gray-lighter;
     @media (max-width: $screen-md-min) {
         border-left: 0;
-        border-top: 1px solid #ddd;
+        border-top: 1px solid $gray-lighter;
         margin-top: 15px;
         padding-top: 15px;
     }

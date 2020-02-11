@@ -17,7 +17,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import './stories.scss';
-import { EntityDeleteConfirmModal, LineageDataType } from '..';
+import { EntityDeleteConfirmModal, EntityDataType } from '..';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
 storiesOf('EntityDeleteConfirmModal', module)
@@ -27,7 +27,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'nonesuch'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            lineageDataType={LineageDataType.Sample}
+            entityDataType={EntityDataType.Sample}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents")}
@@ -39,7 +39,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'deleteNone'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            lineageDataType={LineageDataType.Sample}
+            entityDataType={EntityDataType.Sample}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents and obligations")}
@@ -51,7 +51,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'deleteOne'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            lineageDataType={LineageDataType.Sample}
+            entityDataType={EntityDataType.Sample}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents")}
@@ -63,7 +63,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'deleteAll'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            lineageDataType={LineageDataType.Sample}
+            entityDataType={EntityDataType.Sample}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents")}
@@ -75,7 +75,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'deleteSome'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            lineageDataType={LineageDataType.Sample}
+            entityDataType={EntityDataType.Sample}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents")}

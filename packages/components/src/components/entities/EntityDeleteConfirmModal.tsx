@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 import React from 'react';
-import { DeleteConfirmationData, getDeleteConfirmationData } from '../lineage/actions';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from "../base/Alert";
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
-import { LineageDataType } from '../lineage/models';
+import { DeleteConfirmationData, getDeleteConfirmationData } from './actions';
+import { EntityDataType } from './constants';
 
 interface Props {
     onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
     onCancel: () => any
-    lineageDataType: LineageDataType
+    entityDataType: EntityDataType
     nounSingular: string
     nounPlural: string
     dependencyText: string
@@ -71,7 +71,7 @@ export class EntityDeleteConfirmModal extends React.Component<Props, State> {
     }
 
     init(props: Props) {
-        getDeleteConfirmationData(props.selectionKey, props.lineageDataType, props.rowIds)
+        getDeleteConfirmationData(props.selectionKey, props.entityDataType, props.rowIds)
             .then((confirmationData) => {
                 if (this._mounted) {
                     this.setState(() => ({isLoading: false, confirmationData}));

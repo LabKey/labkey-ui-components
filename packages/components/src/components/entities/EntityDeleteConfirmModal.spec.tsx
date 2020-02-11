@@ -19,7 +19,7 @@ import { mount } from 'enzyme';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
-import { LineageDataType } from '../lineage/models';
+import { EntityDataType } from './constants';
 
 describe("<EntityDeleteConfirmModal/>", () => {
 
@@ -30,7 +30,7 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 selectionKey={"nonesuch"}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
-                lineageDataType={LineageDataType.Sample}
+                entityDataType={EntityDataType.Sample}
                 nounSingular={"datum"}
                 nounPlural={"data"}
                 dependencyText={"dependents"}
@@ -52,7 +52,7 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 selectionKey={"nonesuch"}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
-                lineageDataType={LineageDataType.Sample}
+                entityDataType={EntityDataType.Sample}
                 nounSingular={"datum"}
                 nounPlural={"data"}
                 dependencyText={"dependents"}

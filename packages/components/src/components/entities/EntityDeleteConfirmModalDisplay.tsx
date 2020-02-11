@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import React from 'react';
-import { DeleteConfirmationData } from '../lineage/actions';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { helpLinkNode, DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
+import { helpLinkNode } from '../../util/helpLinks';
+import { DeleteConfirmationData } from './actions';
 
 interface Props {
     onConfirm:  (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any

@@ -224,8 +224,7 @@ import {
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants';
-import { LineageFilter, LineageDataType } from './components/lineage/models';
-import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/lineage/actions';
+import { LineageFilter} from './components/lineage/models';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
@@ -278,6 +277,8 @@ import { PermissionAssignments } from './components/permissions/PermissionAssign
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './components/permissions/models';
 import { fetchContainerSecurityPolicy } from './components/permissions/actions';
+import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
+import { EntityDataType } from './components/entities/constants';
 
 
 export {
@@ -451,7 +452,7 @@ export {
     getSampleDeleteConfirmationData,
     getDataDeleteConfirmationData,
     EntityDeleteConfirmModal,
-    LineageDataType,
+    EntityDataType,
 
     // Navigation
     MenuSectionConfig,

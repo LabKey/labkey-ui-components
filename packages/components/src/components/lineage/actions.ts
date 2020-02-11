@@ -7,7 +7,6 @@ import { Ajax, Filter, Utils } from '@labkey/api';
 
 import {
     Lineage,
-    LineageDataType,
     LineageFilter,
     LineageGridModel,
     LineageNode,
@@ -326,49 +325,5 @@ export function getPageNumberChangeURL(location: Location, seed: string, pageNum
     }
 
     return url;
-}
-
-export interface DeleteConfirmationData {
-    canDelete: Array<any>
-    cannotDelete: Array<any>
-}
-
-export function getDeleteConfirmationData(selectionKey: string, dataTypeKey: LineageDataType, rowIds?: Array<string>) : Promise<DeleteConfirmationData> {
-    return new Promise((resolve, reject) => {
-        let params;
-        if (selectionKey) {
-            params = {
-                dataRegionSelectionKey: selectionKey
-            }
-        }
-        else {
-            params = {
-                rowIds
-            }
-        }
-        return Ajax.request({
-            url: buildURL('experiment', dataTypeKey === LineageDataType.DataClass ? 'getDataDeleteConfirmationData.api' : "getMaterialDeleteConfirmationData.api", params),
-            method: "GET",
-            success: Utils.getCallbackWrapper((response) => {
-                if (response.success) {
-                    resolve(response.data);
-                }
-                else {
-                    reject(response.exception);
-                }
-            }),
-            failure: Utils.getCallbackWrapper((response) => {
-                reject(response ? response.exception : 'Unknown error getting delete confirmation data.');
-            })
-        })
-    });
-}
-
-export function getSampleDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>) : Promise<DeleteConfirmationData> {
-    return getDeleteConfirmationData(selectionKey, LineageDataType.Sample, rowIds);
-}
-
-export function getDataDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>) : Promise<DeleteConfirmationData> {
-    return getDeleteConfirmationData(selectionKey, LineageDataType.DataClass, rowIds);
 }
 

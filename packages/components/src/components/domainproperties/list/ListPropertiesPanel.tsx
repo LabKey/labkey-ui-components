@@ -9,7 +9,7 @@ import {
     Header,
     BasicPropertiesFields,
 } from "./ListPropertiesPanelFormElements";
-import {AdvancedSettingsButton} from "./ListPropertiesAdvancedSettings";
+import {AdvancedSettings} from "./ListPropertiesAdvancedSettings";
 import {Utils} from "@labkey/api";
 
 interface Props {
@@ -48,15 +48,16 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
         );
     };
 
-    callChange = (identifier, value) => {
+    // oh no, we already get a 'onChange' from props. Rename this
+    onChange = (identifier, value) => {
         const {model, onChange} = this.props;
 
         const newModel = model.merge({
             [identifier]: value
         }) as ListModel;
 
-        console.log("callChange", identifier, value);
-        console.log("callChange newModel", newModel);
+        console.log("onChange", identifier, value);
+        console.log("onChange newModel", newModel);
 
         // TODO: Check for validity of new model properties. Set validity state, then call
         // model change on callback.
@@ -73,12 +74,7 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
             value = null;
         }
 
-        this.callChange(id, value);
-        // const newModel = model.merge({
-        //     [id]: value
-        // }) as ListModel;
-        //
-        // onChange(newModel);
+        this.onChange(id, value);
     };
 
     onCheckBoxChange = (name, checked) => {
@@ -93,9 +89,17 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
     onRadioChange = (e) => {
         const name = e.currentTarget.name;
         let value = e.target.value;
-        this.callChange(name, value);
+        this.onChange(name, value);
     };
 
+    saveAdvancedProperties = (newAdvancedProperties) => {
+        const {model, onChange} = this.props;
+
+        console.log("saveAdvProps", typeof(model), typeof(newAdvancedProperties));
+        const newModel = model.merge(newAdvancedProperties);
+        onChange(newModel);
+    };
+    
     render() {
         let { panelStatus, collapsible, model } = this.props;
         let { validProperties, collapsed } = this.state;
@@ -117,7 +121,11 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
                     />
 
                     <Panel.Body collapsible={collapsible}>
-                        <AdvancedSettingsButton title={"Advanced Settings"} model={model} onRadioChange={this.onRadioChange}/>
+                        <AdvancedSettings
+                            title={"Advanced Settings"}
+                            model={model}
+                            saveAdvancedProperties={this.saveAdvancedProperties}
+                        />
                         <Form>
                             <BasicPropertiesFields
                                 model={model}

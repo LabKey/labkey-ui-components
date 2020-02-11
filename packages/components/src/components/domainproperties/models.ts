@@ -1612,13 +1612,7 @@ export class ListModel extends Record({
 
     static create(raw: any): ListModel {
         console.log("createListModel's raw", raw);
-        // let domains = DomainDesign();
         let domain = DomainDesign.create(raw.domainDesign);
-
-
-
-
-
 
         return new ListModel({...raw.options, domain});
     }

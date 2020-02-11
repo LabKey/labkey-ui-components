@@ -595,7 +595,7 @@ export function fetchProtocol(protocolId?: number, providerName?: string, copy?:
 export function fetchListDesign(domainId = null) {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('property', 'GetDomainKind.api', {
+            url: buildURL('property', 'getDomainDetails.api', {
                 domainId: domainId // currently hardcoded
                 // or, queryName and schemaName
             }),

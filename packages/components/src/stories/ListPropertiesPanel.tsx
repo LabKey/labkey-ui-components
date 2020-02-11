@@ -1,12 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { Record } from 'immutable';
 
 import { ListModel } from '../components/domainproperties/models';
 import { ListPropertiesPanel } from '../components/domainproperties/list/ListPropertiesPanel';
 
 import './stories.scss';
-import {AdvancedSettingsButton} from "../components/domainproperties/list/ListPropertiesAdvancedSettings";
+import {AdvancedSettings} from "../components/domainproperties/list/ListPropertiesAdvancedSettings";
 
 const json = {
     "domainDesign" : {
@@ -710,6 +711,33 @@ const json = {
     }
 };
 
+class A extends Record({a: undefined, b: undefined}) {
+    a: string;
+    b: string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    static create() {
+        return new A({a: "1", b:"2"})
+    }
+}
+
+class B extends Record({a: undefined, b: undefined}) {
+    a: string;
+    b: string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    static create() {
+        return new B({ b:"3"})
+    }
+}
+
+
 class Wrapped extends React.Component<any, any> {
     constructor(props) {
         super(props);
@@ -726,11 +754,34 @@ class Wrapped extends React.Component<any, any> {
 
     render() {
         return(
-            <AdvancedSettingsButton title={"Advanced Settings"} model={this.state.model} onInputChange={this.onRadioChange}/>
+            <AdvancedSettings title={"Advanced Settings"} model={this.state.model} onInputChange={this.onRadioChange}/>
         );
     }
 }
 
+// class Test extends React.Component<any, any> {
+//     constructor(props) {
+//         super(props);
+//         this.state = {};
+//     }
+//
+//     componentDidMount() {
+//         const thing = A.create();
+//         this.setState = {() => ({thing}), () => {console.log(this.state)}};
+//     }
+//
+//     render() {
+//         const a = Record({ a: 1, b: 2 });
+//
+//
+//
+//         return(
+//             <div>
+//
+//             </div>
+//         );
+//     }
+// }
 
 //
 // storiesOf("ListPropertiesPanel", module)

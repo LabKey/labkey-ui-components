@@ -19,7 +19,7 @@ import { mount } from 'enzyme';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
-import { LineageDataType } from './models';
+import { LineageDataType } from '../lineage/models';
 
 describe("<EntityDeleteConfirmModal/>", () => {
 

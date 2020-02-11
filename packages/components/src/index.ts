@@ -189,7 +189,6 @@ import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
-import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
@@ -230,7 +229,7 @@ import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from '
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
-import { EntityDeleteConfirmModal } from './components/lineage/EntityDeleteConfirmModal';
+import { EntityDeleteConfirmModal } from './components/entities/EntityDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
@@ -378,7 +377,6 @@ export {
 
     // samples-related
     SampleInsertPanel,
-    SampleDeleteConfirmModal,
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { DeleteConfirmationData } from './actions';
+import { DeleteConfirmationData } from '../lineage/actions';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { helpLinkNode, DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
 

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 import React from 'react';
-import { DeleteConfirmationData, getDeleteConfirmationData } from './actions';
+import { DeleteConfirmationData, getDeleteConfirmationData } from '../lineage/actions';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from "../base/Alert";
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
-import { LineageDataType } from './models';
+import { LineageDataType } from '../lineage/models';
 
 interface Props {
     onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any

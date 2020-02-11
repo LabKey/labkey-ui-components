@@ -688,7 +688,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         className="col-lg-10 col-xs-9"
                       >
                         <textarea
-                          className="form-control domain-field-textarea"
+                          className="form-control textarea-noresize"
                           id="assay-design-description"
                           onChange={[Function]}
                           value=""
@@ -1774,7 +1774,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   className="col-lg-8 col-xs-9"
                                 >
                                   <textarea
-                                    className="form-control domain-field-textarea"
+                                    className="form-control textarea-noresize"
                                     id="assay-design-description"
                                     onChange={[Function]}
                                     value=""
@@ -3172,7 +3172,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   className="col-lg-8 col-xs-9"
                                 >
                                   <textarea
-                                    className="form-control domain-field-textarea"
+                                    className="form-control textarea-noresize"
                                     id="assay-design-description"
                                     onChange={[Function]}
                                     value=""
@@ -4386,7 +4386,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   className="col-lg-8 col-xs-9"
                                 >
                                   <textarea
-                                    className="form-control domain-field-textarea"
+                                    className="form-control textarea-noresize"
                                     id="assay-design-description"
                                     onChange={[Function]}
                                     value="test description for this assay"
@@ -5631,7 +5631,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   className="col-lg-10 col-xs-9"
                                 >
                                   <textarea
-                                    className="form-control domain-field-textarea"
+                                    className="form-control textarea-noresize"
                                     id="assay-design-description"
                                     onChange={[Function]}
                                     value=""

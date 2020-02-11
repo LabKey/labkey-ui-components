@@ -99,7 +99,7 @@ export function DescriptionInput(props: InputProps) {
             }}
         >
             <textarea
-                className="form-control domain-field-textarea"
+                className="form-control textarea-noresize"
                 id={FORM_IDS.ASSAY_DESCRIPTION}
                 value={props.model.description || ''}
                 onChange={props.onChange}

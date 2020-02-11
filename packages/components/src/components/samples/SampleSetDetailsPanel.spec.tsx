@@ -17,8 +17,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS, Map } from 'immutable';
-import { FORM_IDS, SampleSetDetailsPanel } from './SampleSetDetailsPanel';
+import { SampleSetDetailsPanel } from './SampleSetDetailsPanel';
 import { initUnitTestMocks } from "../../testHelpers";
+import { FORM_IDS } from "../entities/EntityDetailsForm";
 
 beforeAll(() => {
     initUnitTestMocks();

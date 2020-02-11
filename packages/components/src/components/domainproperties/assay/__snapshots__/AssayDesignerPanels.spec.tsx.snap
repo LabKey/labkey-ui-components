@@ -944,7 +944,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                             className="col-lg-10 col-xs-9"
                                           >
                                             <textarea
-                                              className="form-control domain-field-textarea"
+                                              className="form-control textarea-noresize"
                                               id="assay-design-description"
                                               onChange={[Function]}
                                               value=""
@@ -5289,7 +5289,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                             className="col-lg-10 col-xs-9"
                                           >
                                             <textarea
-                                              className="form-control domain-field-textarea"
+                                              className="form-control textarea-noresize"
                                               id="assay-design-description"
                                               onChange={[Function]}
                                               value="My assay protocol for you all to use."
@@ -10365,7 +10365,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                       </div>
                                                                                       <FormControl
                                                                                         bsClass="form-control"
-                                                                                        className="form-control domain-field-textarea"
+                                                                                        className="form-control textarea-noresize"
                                                                                         componentClass="textarea"
                                                                                         disabled={false}
                                                                                         id="domainpropertiesrow-description-1-0"
@@ -10375,7 +10375,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         value=""
                                                                                       >
                                                                                         <textarea
-                                                                                          className="form-control domain-field-textarea form-control"
+                                                                                          className="form-control textarea-noresize form-control"
                                                                                           disabled={false}
                                                                                           id="domainpropertiesrow-description-1-0"
                                                                                           name="domainpropertiesrow-description"
@@ -12407,7 +12407,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                       </div>
                                                                                       <FormControl
                                                                                         bsClass="form-control"
-                                                                                        className="form-control domain-field-textarea"
+                                                                                        className="form-control textarea-noresize"
                                                                                         componentClass="textarea"
                                                                                         disabled={false}
                                                                                         id="domainpropertiesrow-description-1-1"
@@ -12417,7 +12417,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         value=""
                                                                                       >
                                                                                         <textarea
-                                                                                          className="form-control domain-field-textarea form-control"
+                                                                                          className="form-control textarea-noresize form-control"
                                                                                           disabled={false}
                                                                                           id="domainpropertiesrow-description-1-1"
                                                                                           name="domainpropertiesrow-description"
@@ -14570,7 +14570,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                       </div>
                                                                                       <FormControl
                                                                                         bsClass="form-control"
-                                                                                        className="form-control domain-field-textarea"
+                                                                                        className="form-control textarea-noresize"
                                                                                         componentClass="textarea"
                                                                                         disabled={false}
                                                                                         id="domainpropertiesrow-description-1-2"
@@ -14580,7 +14580,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         value=""
                                                                                       >
                                                                                         <textarea
-                                                                                          className="form-control domain-field-textarea form-control"
+                                                                                          className="form-control textarea-noresize form-control"
                                                                                           disabled={false}
                                                                                           id="domainpropertiesrow-description-1-2"
                                                                                           name="domainpropertiesrow-description"
@@ -16455,7 +16455,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                             className="col-lg-8 col-xs-9"
                                           >
                                             <textarea
-                                              className="form-control domain-field-textarea"
+                                              className="form-control textarea-noresize"
                                               id="assay-design-description"
                                               onChange={[Function]}
                                               value=""
@@ -20215,7 +20215,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                             className="col-lg-8 col-xs-9"
                                           >
                                             <textarea
-                                              className="form-control domain-field-textarea"
+                                              className="form-control textarea-noresize"
                                               id="assay-design-description"
                                               onChange={[Function]}
                                               value=""
@@ -24176,7 +24176,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                             className="col-lg-8 col-xs-9"
                                           >
                                             <textarea
-                                              className="form-control domain-field-textarea"
+                                              className="form-control textarea-noresize"
                                               id="assay-design-description"
                                               onChange={[Function]}
                                               value="My assay protocol for you all to use."
@@ -29240,7 +29240,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                       </div>
                                                                                       <FormControl
                                                                                         bsClass="form-control"
-                                                                                        className="form-control domain-field-textarea"
+                                                                                        className="form-control textarea-noresize"
                                                                                         componentClass="textarea"
                                                                                         disabled={false}
                                                                                         id="domainpropertiesrow-description-1-0"
@@ -29250,7 +29250,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         value=""
                                                                                       >
                                                                                         <textarea
-                                                                                          className="form-control domain-field-textarea form-control"
+                                                                                          className="form-control textarea-noresize form-control"
                                                                                           disabled={false}
                                                                                           id="domainpropertiesrow-description-1-0"
                                                                                           name="domainpropertiesrow-description"
@@ -31468,7 +31468,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                       </div>
                                                                                       <FormControl
                                                                                         bsClass="form-control"
-                                                                                        className="form-control domain-field-textarea"
+                                                                                        className="form-control textarea-noresize"
                                                                                         componentClass="textarea"
                                                                                         disabled={false}
                                                                                         id="domainpropertiesrow-description-1-1"
@@ -31478,7 +31478,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         value=""
                                                                                       >
                                                                                         <textarea
-                                                                                          className="form-control domain-field-textarea form-control"
+                                                                                          className="form-control textarea-noresize form-control"
                                                                                           disabled={false}
                                                                                           id="domainpropertiesrow-description-1-1"
                                                                                           name="domainpropertiesrow-description"
@@ -33817,7 +33817,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                       </div>
                                                                                       <FormControl
                                                                                         bsClass="form-control"
-                                                                                        className="form-control domain-field-textarea"
+                                                                                        className="form-control textarea-noresize"
                                                                                         componentClass="textarea"
                                                                                         disabled={false}
                                                                                         id="domainpropertiesrow-description-1-2"
@@ -33827,7 +33827,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         value=""
                                                                                       >
                                                                                         <textarea
-                                                                                          className="form-control domain-field-textarea form-control"
+                                                                                          className="form-control textarea-noresize form-control"
                                                                                           disabled={false}
                                                                                           id="domainpropertiesrow-description-1-2"
                                                                                           name="domainpropertiesrow-description"
@@ -36746,7 +36746,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                             className="col-lg-8 col-xs-9"
                                           >
                                             <textarea
-                                              className="form-control domain-field-textarea"
+                                              className="form-control textarea-noresize"
                                               id="assay-design-description"
                                               onChange={[Function]}
                                               value="My assay protocol for you all to use."
@@ -42838,7 +42838,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                       </div>
                                                                                       <FormControl
                                                                                         bsClass="form-control"
-                                                                                        className="form-control domain-field-textarea"
+                                                                                        className="form-control textarea-noresize"
                                                                                         componentClass="textarea"
                                                                                         disabled={false}
                                                                                         id="domainpropertiesrow-description-1-0"
@@ -42848,7 +42848,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         value=""
                                                                                       >
                                                                                         <textarea
-                                                                                          className="form-control domain-field-textarea form-control"
+                                                                                          className="form-control textarea-noresize form-control"
                                                                                           disabled={false}
                                                                                           id="domainpropertiesrow-description-1-0"
                                                                                           name="domainpropertiesrow-description"
@@ -45066,7 +45066,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                       </div>
                                                                                       <FormControl
                                                                                         bsClass="form-control"
-                                                                                        className="form-control domain-field-textarea"
+                                                                                        className="form-control textarea-noresize"
                                                                                         componentClass="textarea"
                                                                                         disabled={false}
                                                                                         id="domainpropertiesrow-description-1-1"
@@ -45076,7 +45076,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         value=""
                                                                                       >
                                                                                         <textarea
-                                                                                          className="form-control domain-field-textarea form-control"
+                                                                                          className="form-control textarea-noresize form-control"
                                                                                           disabled={false}
                                                                                           id="domainpropertiesrow-description-1-1"
                                                                                           name="domainpropertiesrow-description"
@@ -47415,7 +47415,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                       </div>
                                                                                       <FormControl
                                                                                         bsClass="form-control"
-                                                                                        className="form-control domain-field-textarea"
+                                                                                        className="form-control textarea-noresize"
                                                                                         componentClass="textarea"
                                                                                         disabled={false}
                                                                                         id="domainpropertiesrow-description-1-2"
@@ -47425,7 +47425,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         value=""
                                                                                       >
                                                                                         <textarea
-                                                                                          className="form-control domain-field-textarea form-control"
+                                                                                          className="form-control textarea-noresize form-control"
                                                                                           disabled={false}
                                                                                           id="domainpropertiesrow-description-1-2"
                                                                                           name="domainpropertiesrow-description"

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
+import { Col, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { createSampleSet, initSampleSetSelects, updateSampleSet } from './actions';
 import { IParentAlias, IParentOption, ISampleSetDetails } from './models';
-import { LabelOverlay } from '../../components/forms/LabelOverlay';
 import { SampleSetParentAliasRow } from '../../components/samples/SampleSetParentAliasRow';
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../constants';
 import { AddEntityButton } from '../buttons/AddEntityButton';
@@ -13,15 +12,17 @@ import { generateId } from '../../util/utils';
 import { Alert } from '../base/Alert';
 import { getActionErrorMessage, resolveErrorMessage } from "../../util/messaging";
 import { DERIVE_SAMPLES_ALIAS_TOPIC, helpLinkNode } from '../../util/helpLinks';
+import { EntityDetailsForm, FORM_IDS } from "../entities/EntityDetailsForm";
+import {
+    getEntityDescriptionValue,
+    getEntityNameExpressionValue,
+    getEntityNameValue,
+    isEntityFormValid,
+    isExistingEntity
+} from "../entities/actions";
 
 const CREATE_ERROR = getActionErrorMessage(`There was a problem creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
 const UPDATE_ERROR = getActionErrorMessage(`There was a problem updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
-
-export const FORM_IDS = {
-    NAME: 'sample-set-create-name',
-    NAME_EXPRESSION: 'sample-set-create-name-expression',
-    DESCRIPTION: 'sample-set-create-description',
-};
 
 interface Props {
     onCancel: () => void
@@ -66,9 +67,10 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     }
 
     init(props: Props) {
-        let {parentOptions} = this.state;
-        const isUpdate = this.isExistingSampleSet();
-        const name = this.getSampleSetName();
+        const { data } = this.props;
+        const { parentOptions, formValues } = this.state;
+        const isUpdate = isExistingEntity(formValues, data);
+        const name = getEntityNameValue(formValues, data);
 
         if (!parentOptions) {
             initSampleSetSelects(isUpdate, name, NEW_SAMPLE_SET_OPTION, IMPORT_PREFIX).then((results) => {
@@ -124,20 +126,22 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     onFinish = () => {
         const { beforeFinish, data } = this.props;
         const { formValues } = this.state;
-        this.setSubmitting(true);
+        const name = getEntityNameValue(formValues, data);
+        const nameExpression = getEntityNameExpressionValue(formValues, data);
+        const description = getEntityDescriptionValue(formValues, data);
+        const { importAliasKeys, importAliasValues } = this.getImportAliases();
 
+        this.setSubmitting(true);
         if (beforeFinish) {
             beforeFinish(formValues);
         }
 
-        const { importAliasKeys, importAliasValues } = this.getImportAliases();
-
-        if (this.isExistingSampleSet()) {
+        if (isExistingEntity(formValues, data)) {
             const config = {
                 isUpdate: true,
                 rowId: data.get('rowId'),
-                nameExpression: this.getNameExpressionValue(),
-                description: this.getDescriptionValue(),
+                nameExpression,
+                description,
                 importAliasKeys,
                 importAliasValues,
             } as ISampleSetDetails;
@@ -151,9 +155,9 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         }
         else {
             const config = {
-                name: formValues[FORM_IDS.NAME],
-                nameExpression: this.getNameExpressionValue(),
-                description: this.getDescriptionValue(),
+                name,
+                nameExpression,
+                description,
                 importAliasKeys,
                 importAliasValues,
             } as ISampleSetDetails;
@@ -216,8 +220,8 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     }
 
     isFormValid(): boolean {
+        const { data } = this.props;
         const { formValues, parentAliases } = this.state;
-        const hasValidName = formValues !== undefined && formValues[FORM_IDS.NAME] !== undefined && formValues[FORM_IDS.NAME].length > 0;
 
         //Check if there are any parent aliases, and if any are invalid (either field blank)
         const hasInvalidAliases =
@@ -225,37 +229,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             && parentAliases.size > 0
             && parentAliases.find(SampleSetDetailsPanel.parentAliasInvalid);
 
-        return (this.isExistingSampleSet() || hasValidName) && !hasInvalidAliases;
-    }
-
-    getDataValue(key: string, propName: string, defaultValue: any): any {
-        const { data } = this.props;
-        const { formValues } = this.state;
-
-        if (key && formValues && formValues[key] !== undefined) {
-            return formValues[key] || defaultValue;
-        }
-        else if (data) {
-            return data.get(propName) || defaultValue;
-        }
-
-        return defaultValue;
-    }
-
-    isExistingSampleSet(): boolean {
-        return this.getDataValue(null, 'rowId', undefined) !== undefined;
-    }
-
-    getSampleSetName(): string {
-        return this.getDataValue(FORM_IDS.NAME, 'name', '');
-    }
-
-    getNameExpressionValue(): string {
-        return this.getDataValue(FORM_IDS.NAME_EXPRESSION, 'nameExpression', '');
-    }
-
-    getDescriptionValue(): string {
-        return this.getDataValue(FORM_IDS.DESCRIPTION, 'description', '');
+        return isEntityFormValid(formValues, data) && !hasInvalidAliases;
     }
 
     addParentAlias = (): void => {
@@ -331,12 +305,8 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     };
 
     render() {
-        const { onCancel, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
-        const { submitting, error, parentOptions } = this.state;
-
-        const moreInfoLink = nameExpressionInfoUrl ?
-            <p><a target={'_blank'} href={nameExpressionInfoUrl}>More info</a></p> :
-            '';
+        const { onCancel, nameExpressionInfoUrl, nameExpressionPlaceholder, data } = this.props;
+        const { submitting, error, parentOptions, formValues } = this.state;
 
         return (
             <>
@@ -346,79 +316,26 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                         <div className={'sample-insert--headerhelp'}>
                             Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.
                         </div>
-                        <Form>
-                            {!this.isExistingSampleSet() && <Row className={'margin-bottom'}>
+                        <EntityDetailsForm
+                            noun={'Sample Type'}
+                            onFormChange={this.onFormChange}
+                            data={data}
+                            formValues={formValues}
+                            nameExpressionInfoUrl={nameExpressionInfoUrl}
+                            nameExpressionPlaceholder={nameExpressionPlaceholder}
+                        />
+                        {this.renderParentAliases()}
+                        {parentOptions &&
+                            <Row>
                                 <Col xs={3}>
-                                    <LabelOverlay
-                                        isFormsy={false}
-                                        labelClass={'sample-insert--overlaylabel'}
-                                        label={'Name'}
-                                        type={'Text (String)'}
-                                        description={`The name for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}. Note that this can\'t be changed after ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()} creation.`}
-                                        required={true}
-                                        canMouseOverTooltip={true}
-                                    />
                                 </Col>
                                 <Col xs={9}>
-                                    <FormControl
-                                        id={FORM_IDS.NAME}
-                                        type="text"
-                                        placeholder={`Enter a name for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}`}
-                                        onChange={this.onFormChange}
-                                    />
-                                </Col>
-                            </Row>}
-                            <Row className='margin-bottom'>
-                                <Col xs={3}>
-                                    <LabelOverlay
-                                        label={'Description'}
-                                        type={'Text (String)'}
-                                        description={`A short description for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
-                                        canMouseOverTooltip={true}
-                                    />
-                                </Col>
-                                <Col xs={9}>
-                                    <textarea
-                                        className="form-control"
-                                        id={FORM_IDS.DESCRIPTION}
-                                        onChange={this.onFormChange}
-                                        value={this.getDescriptionValue()}
-                                    />
+                                    <span>
+                                        <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias} helperBody={this.renderAddEntityHelper} />
+                                    </span>
                                 </Col>
                             </Row>
-                            <Row className={'margin-bottom'}>
-                                <Col xs={3}>
-                                    <LabelOverlay
-                                        label={'Naming Pattern'}
-                                        type={'Text (String)'}
-                                        description={`Pattern used for generating unique sample IDs for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
-                                        content={moreInfoLink}
-                                        canMouseOverTooltip={true}
-                                    />
-                                </Col>
-                                <Col xs={9}>
-                                    <FormControl
-                                        id={FORM_IDS.NAME_EXPRESSION}
-                                        type="text"
-                                        placeholder={nameExpressionPlaceholder}
-                                        onChange={this.onFormChange}
-                                        value={this.getNameExpressionValue()}
-                                    />
-                                </Col>
-                            </Row>
-                            { this.renderParentAliases() }
-                            { parentOptions &&
-                                <Row>
-                                    <Col xs={3}>
-                                    </Col>
-                                    <Col xs={9}>
-                                        <span>
-                                            <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias} helperBody={this.renderAddEntityHelper} />
-                                        </span>
-                                    </Col>
-                                </Row>
-                            }
-                        </Form>
+                        }
                     </Panel.Body>
                 </Panel>
                 <WizardNavButtons

@@ -30,6 +30,7 @@ import { QueryGridModel } from '../base/models/model';
 interface Props {
     model: QueryGridModel
     supportedTypes?: Set<EXPORT_TYPES> // the types that are supported
+    advancedOption?: Object
 }
 
 /**
@@ -41,9 +42,9 @@ export class Export extends React.Component<Props, any> {
     };
 
     doExport(type: EXPORT_TYPES) {
-        const { model } = this.props;
+        const { model, advancedOption } = this.props;
 
-        return gridExport(model, type);
+        return gridExport(model, type, advancedOption);
     }
 
     render() {

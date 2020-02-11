@@ -111,6 +111,12 @@ export const DATETIME_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#dateTime';
 export const FILELINK_RANGE_URI = 'http://cpas.fhcrc.org/exp/xml#fileLink';
 export const ATTACHMENT_RANGE_URI = 'http://www.labkey.org/exp/xml#attachment';
 export const USER_RANGE_URI = 'http://www.labkey.org/exp/xml#int';
+export const BINARY_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#binary';
+export const DATE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#date';
+export const DECIMAL_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#decimal';
+export const FLOAT_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#float';
+export const LONG_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#long';
+export const TIME_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#time';
 export const RANGE_URIS = {
     STRING: STRING_RANGE_URI,
     MULTILINE: MULTILINE_RANGE_URI,

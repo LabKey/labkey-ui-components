@@ -7,6 +7,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 39501: Permissions management: Handle case where the security policy for a container is inheriting from the parent container
 * Issue 39616: Update domain field warning message regarding special characters
 
+### version 0.23.2
+*Released*: 8 February 2020
+* Use DatePickerInput for DetailEdit
+* Add advancedExportOption to QueryGridPanel
+
+### version 0.23.1
+*Released*: 6 February 2020
+* Issue 39341: Fix for specimen designer usage of data types that aren't supported for new domain field creation
+
 ### version 0.23.0
 *Released*: 3 February 2020
 * Issue 39193: Fix for conditional format dialog to respect filter types allowed for date field type

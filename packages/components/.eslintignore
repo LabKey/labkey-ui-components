@@ -1,0 +1,10 @@
+# exclude everything by default
+*.*
+
+# white-list files
+!*.js
+!*.jsx
+!*.ts
+!*.tsx
+!*.css
+!*.scss

@@ -8,20 +8,11 @@ import {faSquare} from "@fortawesome/free-regular-svg-icons/faSquare";
 import {LabelHelpTip} from "../../..";
 
 class ListPropertiesHeader extends React.PureComponent<any, any> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            // collapsed: props.initCollapsed, // todo
-            validProperties: true
-        }
-    }
-
     render(){
-        const { panelStatus, controlledCollapse, collapsible, collapsed, model } = this.props;
-        const { validProperties } = this.state;
+        const { panelStatus, controlledCollapse, collapsible, collapsed, model, validProperties } = this.props;
+        // console.log("ListPropertiesHeader", this.props);
 
-        // const isComplete = validProperties && panelStatus === 'COMPLETE'; //todo
-        const isComplete = true;
+        const isComplete = validProperties && panelStatus === 'COMPLETE';
 
         let headerIconClass = classNames('domain-panel-status-icon', {
             'domain-panel-list-header-expanded': !collapsed,
@@ -29,7 +20,7 @@ class ListPropertiesHeader extends React.PureComponent<any, any> {
             'domain-panel-status-icon-blue': !isComplete && collapsed
         });
 
-        const statusIcon = (!validProperties || panelStatus === 'TODO') ? faExclamationCircle : faCheckCircle;
+        let statusIcon = (!validProperties || panelStatus === 'TODO') ? faExclamationCircle : faCheckCircle;
         return(
             <>
                 <span className={headerIconClass}>
@@ -54,7 +45,7 @@ class ListPropertiesHeader extends React.PureComponent<any, any> {
 
 export class Header extends React.PureComponent<any, any> {
     render(){
-        const {togglePanel, collapsible, collapsed, panelStatus, model} = this.props;
+        const {togglePanel, collapsible, collapsed, panelStatus, model, validProperties} = this.props;
 
         return(
             <Panel.Heading
@@ -67,13 +58,13 @@ export class Header extends React.PureComponent<any, any> {
                 style={{backgroundColor: collapsed ? null :'#2980b9'}}
             >
                 {panelStatus && panelStatus !== 'NONE' &&
-                <ListPropertiesHeader
-                    panelStatus
-                    validProperties
-                    collapsed={collapsed}
-                    collapsible={true} //todo
-                    model={model}
-                />
+                    <ListPropertiesHeader
+                        panelStatus={panelStatus}
+                        validProperties={validProperties}
+                        collapsed={collapsed}
+                        collapsible={true} //todo
+                        model={model}
+                    />
                 }
             </Panel.Heading>
         );
@@ -192,7 +183,7 @@ class CheckBoxRow extends React.PureComponent<any, any> {
 
         return(
             <div style={{marginTop:"10px"}}>
-                <CheckBox checked={checked} onCheckBoxChange={() => {onCheckBoxChange(name, checked)}}/>
+                <CheckBox checked={checked} onClick={() => {onCheckBoxChange(name, checked)}}/>
                 <span style={{marginLeft: "10px"}}>
                     {this.props.text}
                 </span>

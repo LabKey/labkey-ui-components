@@ -1,20 +1,22 @@
 import React from 'react';
 import {ListPropertiesPanel} from "./ListPropertiesPanel";
-import {ListModel} from "../models";
+import {DomainPanelStatus, ListModel} from "../models";
 import DomainForm, {DomainFormImpl} from "../DomainForm";
 import {Button} from "react-bootstrap";
+import {saveListDesign} from "../actions";
 
 export class ListDesignerPanels extends React.PureComponent<any, any> {
     constructor(props) {
         super(props);
 
         this.state = {
-            model: props.model //TODO: this should eventually be props.initModel?
+            model: props.model, //TODO: this should eventually be props.initModel?
+            // firstState: true
         }
     }
 
     onPropertiesChange = (model: ListModel) => {
-        console.log("onPropertiesChange, recieved Model", model);
+        console.log("onPropertiesChange, received Model", model);
 
         this.setState(() => ({
             model: model
@@ -41,8 +43,28 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
             // TODO: set state 'Submitting' and, for some reason, the model?
         }
 
+        // TODO: finalize upon receiving info
+        saveListDesign(this.state.model)
+            .then((response) => console.log("yay!:", response))
+            .catch((model) => console.log("failure:", model));
+    };
 
+    getPanelStatus = (index: number): DomainPanelStatus => {
+        const { currentPanelIndex, visitedPanels, firstState } = this.state;
 
+        if (index === 0 && firstState) {
+            return 'NONE';
+        }
+
+        // if (currentPanelIndex === index) {
+        //     return 'INPROGRESS';
+        // }
+        //
+        // if (visitedPanels.contains(index)) {
+        //     return 'COMPLETE';
+        // }
+
+        return 'TODO';
     };
 
     render(){
@@ -54,7 +76,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
         return(
             <>
                 <ListPropertiesPanel
-                    panelStatus={'COMPLETE'}
+                    panelStatus={model.isNew() ? this.getPanelStatus(0) : 'COMPLETE'}
                     model={model}
                     collapsible={true}
                     onChange={this.onPropertiesChange}
@@ -70,7 +92,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
                     controlledCollapse={true}
                     initCollapsed={true}
                     headerTitle={"List Fields"}
-                    panelStatus={"TODO"} //TODO
+                    panelStatus={model.isNew() ? this.getPanelStatus(1) : 'COMPLETE'}
                     showInferFromFile={true}
                 />
 
@@ -86,12 +108,11 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
                         className='pull-right'
                         bsStyle='success'
                         // disabled={this.state.submitting}
-                        // onClick={this.onFinish}
+                        onClick={this.onFinish}
                     >
                         Save
                     </Button>
                 </div>
-
             </>
         );
     }

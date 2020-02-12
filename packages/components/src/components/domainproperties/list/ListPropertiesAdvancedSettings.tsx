@@ -346,7 +346,7 @@ class AdvancedSettingsModalBottom extends React.PureComponent<any, any> {
                 </Button>
 
                 <span style={{float: "right"}}>
-                    <a target="_blank" href="" className="list__advanced-settings-modal__help-link">
+                    <a target="_blank" href="https://www.labkey.org/Documentation/wiki-page.view?name=lists" className="list__advanced-settings-modal__help-link">
                         Learn more about using lists
                     </a>
 

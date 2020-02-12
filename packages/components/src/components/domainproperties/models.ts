@@ -1629,6 +1629,8 @@ export class ListModel extends Record({
     }
 
     hasValidProperties(): boolean {
-        return true; //todo
+        return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
+            // && //additional validation to come
+        )
     }
 }

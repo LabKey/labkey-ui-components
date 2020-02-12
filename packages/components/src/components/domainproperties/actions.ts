@@ -692,7 +692,7 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
 export function saveListDesign(model: ListModel): Promise<ListModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('assay', 'saveProtocol.api'),
+            url: buildURL('property', 'SaveDomain.api'), // To update
             jsonData: ListModel.serialize(model),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(ListModel.create(response.data)); // I guess Binal gives me back my ListModel?
@@ -717,7 +717,6 @@ export function saveListDesign(model: ListModel): Promise<ListModel> {
             }, this, false)
         });
     });
-
 }
 
 

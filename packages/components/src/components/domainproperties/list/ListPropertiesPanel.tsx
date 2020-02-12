@@ -40,9 +40,11 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     toggleLocalPanel = (): void => {
+        const {model} = this.props;
+
         this.setState((state) => ({
             collapsed: !state.collapsed,
-            // validProperties: model && model.hasValidProperties()
+            validProperties: model && model.hasValidProperties()
         })
         // ,() => {console.log("collapsed:", this.state.collapsed)}
         );
@@ -56,13 +58,17 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
             [identifier]: value
         }) as ListModel;
 
-        console.log("onChange", identifier, value);
-        console.log("onChange newModel", newModel);
+        // console.log("onChange", identifier, value);
+        // console.log("onChange newModel", newModel);
 
-        // TODO: Check for validity of new model properties. Set validity state, then call
-        // model change on callback.
+        // We only clear validation errors here
+        const validProperties = (newModel.hasValidProperties() ? true : this.state.validProperties);
 
-        onChange(newModel);
+        this.setState(() => (
+            {validProperties}
+        ), () => {
+            onChange(newModel);
+        });
     };
 
     onInputChange = (e) => {
@@ -82,7 +88,7 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
         const newModel = model.merge({
             [name]: !checked
         }) as ListModel;
-
+        // console.log("onCheckBoxChange", newModel);
         onChange(newModel);
     };
 
@@ -117,6 +123,7 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
                         collapsed={collapsed}
                         panelStatus={panelStatus}
                         model={model}
+                        validProperties={validProperties}
                     />
 
                     <Panel.Body collapsible={collapsible}>
@@ -138,9 +145,9 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
                         </Form>
                     </Panel.Body>
 
-                    {false &&
-                        <div>
-                            <Alert bsStyle={"danger"}> Contains errors or is missing required values. </Alert>
+                    {!validProperties &&
+                        <div onClick={this.toggleLocalPanel}>
+                            <Alert style={{marginBottom:"0px"}} bsStyle={"danger"}> Contains errors or is missing required values. </Alert>
                         </div>
                     }
                 </Panel>

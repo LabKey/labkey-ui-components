@@ -1,0 +1,4 @@
+{
+//  "extends": ["../eslint-config-base", "../eslint-config-react"]
+  "extends": "@labkey/eslint-config-react"
+}

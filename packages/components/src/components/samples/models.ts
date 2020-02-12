@@ -26,27 +26,27 @@ import { generateId } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
 
 export interface SampleInputProps {
-    role: string
-    rowId: number
+    role: string;
+    rowId: number;
 }
 
 export interface IDerivePayload {
-    dataInputs?: Array<SampleInputProps>
-    materialDefault?: any
-    materialInputs?: Array<SampleInputProps>
-    materialOutputCount?: number
-    materialOutputs?: Array<{[key: string]: any}>
-    targetSampleSet: string
+    dataInputs?: SampleInputProps[];
+    materialDefault?: any;
+    materialInputs?: SampleInputProps[];
+    materialOutputCount?: number;
+    materialOutputs?: Array<{ [key: string]: any }>;
+    targetSampleSet: string;
 }
 
 export interface IParentOption extends Option {
-    query?: string
-    schema?: string
+    query?: string;
+    schema?: string;
 }
 
 export interface DisplayObject {
-    displayValue: any,
-    value: any
+    displayValue: any;
+    value: any;
 }
 
 export class SampleSetParentType extends Record({
@@ -67,15 +67,14 @@ export class SampleSetParentType extends Record({
     }
 
     static create(values: any) {
-        if (!values.key)
-            values.key = generateId('parent-type-');
+        if (!values.key) values.key = generateId('parent-type-');
         return new SampleSetParentType(values);
     }
 }
 
 export interface ISampleSetOption extends Option {
-    lsid: string
-    rowId: number
+    lsid: string;
+    rowId: number;
 }
 
 export class SampleSetOption implements ISampleSetOption {
@@ -86,7 +85,7 @@ export class SampleSetOption implements ISampleSetOption {
 
     constructor(props?: Partial<SampleSetOption>) {
         if (props) {
-            for (let k in props) {
+            for (const k in props) {
                 this[k] = props[k];
             }
         }
@@ -94,26 +93,25 @@ export class SampleSetOption implements ISampleSetOption {
 }
 
 interface MaterialOutput {
-    created: any
-    createdBy: string
-    id: number
-    lsid: string
-    modified: any
-    modifiedBy: string
-    name: string
-    properties: any
-    sampleSet: any
+    created: any;
+    createdBy: string;
+    id: number;
+    lsid: string;
+    modified: any;
+    modifiedBy: string;
+    name: string;
+    properties: any;
+    sampleSet: any;
 }
 
-export class GenerateSampleResponse extends Record( {
+export class GenerateSampleResponse extends Record({
     data: undefined,
     message: undefined,
-    success: false
+    success: false,
 }) {
-
     data: {
-        materialOutputs: Array<MaterialOutput>
-        [key: string]: any
+        materialOutputs: MaterialOutput[];
+        [key: string]: any;
     };
     message: string;
     success: boolean;
@@ -124,14 +122,12 @@ export class GenerateSampleResponse extends Record( {
 
     // Get all of the rowIds of the newly generated sampleIds (or the runs)
     getFilter(): Filter.IFilter {
-        let filterColumn: string,
-            filterValue;
+        let filterColumn: string, filterValue;
 
         // data.id is the run rowId. If provided, create a filter based off the run instead of sampleIds.
         if (this.data.id) {
             filterColumn = 'Run/RowId';
             filterValue = [this.data.id];
-
         } else {
             filterColumn = 'RowId';
 
@@ -155,13 +151,13 @@ export class SampleIdCreationModel extends Record({
     sampleSetOptions: List<ISampleSetOption>(),
     selectionKey: undefined,
     targetSampleSet: undefined,
-    sampleCount: 0
+    sampleCount: 0,
 }) {
-    errors: Array<any>;
+    errors: any[];
     initialSampleSet: any;
     isError: boolean;
     isInit: boolean;
-    parents: Array<string>; // TODO should be 'originalParents'
+    parents: string[]; // TODO should be 'originalParents'
     parentOptions: List<IParentOption>;
     sampleParents: List<SampleSetParentType>;
     sampleSetData: Map<string, any>;
@@ -174,20 +170,20 @@ export class SampleIdCreationModel extends Record({
         super(values);
     }
 
-    hasTargetSampleSet() : boolean {
-        return this.targetSampleSet && this.targetSampleSet.value
+    hasTargetSampleSet(): boolean {
+        return this.targetSampleSet && this.targetSampleSet.value;
     }
 
-    getTargetSampleSetName() : string {
+    getTargetSampleSetName(): string {
         return this.hasTargetSampleSet() ? this.targetSampleSet.value : undefined;
     }
 
     getSampleInputs(): {
-        dataInputs: Array<SampleInputProps>,
-        materialInputs: Array<SampleInputProps>
+        dataInputs: SampleInputProps[];
+        materialInputs: SampleInputProps[];
     } {
-        let dataInputs: Array<SampleInputProps> = [],
-            materialInputs: Array<SampleInputProps> = [];
+        const dataInputs: SampleInputProps[] = [],
+            materialInputs: SampleInputProps[] = [];
 
         this.sampleParents.forEach((parent, index) => {
             if (parent.value) {
@@ -197,20 +193,24 @@ export class SampleIdCreationModel extends Record({
                 if (isData || isSample) {
                     const role = isData ? 'data' : 'sample';
 
-                    parent.value.forEach((option) => {
+                    parent.value.forEach(option => {
                         const rowId = parseInt(option.value);
                         if (!isNaN(rowId)) {
-                            const input = {role, rowId};
+                            const input = { role, rowId };
 
                             if (isData) {
                                 dataInputs.push(input);
-                            }
-                            else {
+                            } else {
                                 materialInputs.push(input);
                             }
-                        }
-                        else {
-                            console.warn('SampleSet/actions/getSampleInputs -- Unable to parse rowId from "' + option.value + '" for ' + role + '.');
+                        } else {
+                            console.warn(
+                                'SampleSet/actions/getSampleInputs -- Unable to parse rowId from "' +
+                                    option.value +
+                                    '" for ' +
+                                    role +
+                                    '.'
+                            );
                         }
                     });
                 }
@@ -219,39 +219,39 @@ export class SampleIdCreationModel extends Record({
 
         return {
             dataInputs,
-            materialInputs
-        }
+            materialInputs,
+        };
     }
 
     getSaveValues(): IDerivePayload {
         const { dataInputs, materialInputs } = this.getSampleInputs();
 
-        let materialDefault = {};
+        const materialDefault = {};
 
         return {
             dataInputs,
             materialDefault,
             materialInputs,
-            targetSampleSet: this.targetSampleSet.lsid
+            targetSampleSet: this.targetSampleSet.lsid,
         };
     }
 
-    getParentOptions(currentSelection: string): Array<any> {
+    getParentOptions(currentSelection: string): any[] {
         // exclude options that have already been selected, except the current selection for this input
         return this.parentOptions
-            .filter(o => (
+            .filter(o =>
                 this.sampleParents.every(parent => {
                     const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
                     const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
                     return notParentMatch || matchesCurrent;
                 })
-            ))
+            )
             .toArray();
     }
 
     // Make the call to the Derive API
     deriveSamples(materialOutputCount: number): Promise<GenerateSampleResponse> {
-        const { dataInputs, materialInputs, materialOutputs,  materialDefault, targetSampleSet } = this.getSaveValues();
+        const { dataInputs, materialInputs, materialOutputs, materialDefault, targetSampleSet } = this.getSaveValues();
 
         return new Promise((resolve, reject) => {
             Ajax.request({
@@ -262,15 +262,15 @@ export class SampleIdCreationModel extends Record({
                     targetSampleSet,
                     materialOutputCount,
                     materialOutputs,
-                    materialDefault
+                    materialDefault,
                 },
-                success: Utils.getCallbackWrapper((response) => {
+                success: Utils.getCallbackWrapper(response => {
                     resolve(new GenerateSampleResponse(response));
                 }),
-                failure: Utils.getCallbackWrapper((error) => {
+                failure: Utils.getCallbackWrapper(error => {
                     console.error(error);
                     reject(error);
-                })
+                }),
             });
         });
     }
@@ -280,26 +280,27 @@ export class SampleIdCreationModel extends Record({
         return sampleSetName ? SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSetName) : undefined;
     }
 
-
-    postSampleGrid(queryGridModel: QueryGridModel) : Promise<any>  {
+    postSampleGrid(queryGridModel: QueryGridModel): Promise<any> {
         const editorModel = getEditorModel(queryGridModel.getId());
         if (!editorModel) {
             gridShowError(queryGridModel, {
-                message: 'Grid does not expose an editor. Ensure the grid is properly initialized for editing.'
+                message: 'Grid does not expose an editor. Ensure the grid is properly initialized for editing.',
             });
             return;
         }
 
-        const rows = editorModel.getRawData(queryGridModel).valueSeq()
+        const rows = editorModel
+            .getRawData(queryGridModel)
+            .valueSeq()
             .reduce((rows, row) => rows.push(row.toMap()), List<Map<string, any>>());
 
         // TODO: InsertRows responses are fragile and depend heavily on shape of data uploaded
         return insertRows({
             fillEmptyFields: true,
-            schemaQuery : this.getSchemaQuery(),
-            rows
-        })
-    };
+            schemaQuery: this.getSchemaQuery(),
+            rows,
+        });
+    }
 
     static revertParentInputSchema(inputColumn: QueryColumn): SchemaQuery {
         if (inputColumn.isExpInput()) {
@@ -308,18 +309,22 @@ export class SampleIdCreationModel extends Record({
                 let schemaName: string;
                 if (fieldKey[0] === QueryColumn.DATA_INPUTS.toLowerCase()) {
                     schemaName = SCHEMAS.DATA_CLASSES.SCHEMA;
-                }
-                else if (fieldKey[0] === QueryColumn.MATERIAL_INPUTS.toLowerCase()) {
+                } else if (fieldKey[0] === QueryColumn.MATERIAL_INPUTS.toLowerCase()) {
                     schemaName = SCHEMAS.SAMPLE_SETS.SCHEMA;
-                }
-                else {
-                    throw new Error('SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn fieldKey. "' + fieldKey[0] + '"');
+                } else {
+                    throw new Error(
+                        'SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn fieldKey. "' +
+                            fieldKey[0] +
+                            '"'
+                    );
                 }
 
                 return SchemaQuery.create(schemaName, fieldKey[1]);
             }
 
-            throw new Error('SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn fieldKey length.');
+            throw new Error(
+                'SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn fieldKey length.'
+            );
         }
 
         throw new Error('SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn.');
@@ -331,22 +336,22 @@ export class SampleIdCreationModel extends Record({
         for (let i = 0; i < this.sampleCount; i++) {
             let values = Map<string, any>();
 
-            queryInfo
-                .getInsertColumns()
-                .forEach((col) => {
-                    const colName = col.name;
+            queryInfo.getInsertColumns().forEach(col => {
+                const colName = col.name;
 
-                    if (col.isExpInput()) {
-                        // Convert parent values into appropriate column names
-                        const sq = SampleIdCreationModel.revertParentInputSchema(col);
+                if (col.isExpInput()) {
+                    // Convert parent values into appropriate column names
+                    const sq = SampleIdCreationModel.revertParentInputSchema(col);
 
-                        // should be only one parent with the matching schema and query name
-                        const selected = this.sampleParents.find((parent) => parent.schema === sq.schemaName && parent.query === sq.queryName);
-                        if (selected && selected.value) {
-                            values = values.set(colName, selected.value);
-                        }
+                    // should be only one parent with the matching schema and query name
+                    const selected = this.sampleParents.find(
+                        parent => parent.schema === sq.schemaName && parent.query === sq.queryName
+                    );
+                    if (selected && selected.value) {
+                        values = values.set(colName, selected.value);
                     }
-                });
+                }
+            });
 
             data = data.push(values);
         }
@@ -356,24 +361,24 @@ export class SampleIdCreationModel extends Record({
 }
 
 export interface ISampleSetDetails {
-    isUpdate?: boolean
-    rowId?: number
-    name?: string
-    nameExpression?: string
-    description?: string
-    importAliasKeys?: Array<string>
-    importAliasValues?: Array<string>
+    isUpdate?: boolean;
+    rowId?: number;
+    name?: string;
+    nameExpression?: string;
+    description?: string;
+    importAliasKeys?: string[];
+    importAliasValues?: string[];
 }
 
 export interface IParentAlias {
     alias: string;
-    id: string; //generated by panel used for removal, not saved
+    id: string; // generated by panel used for removal, not saved
     parentValue: IParentOption;
-    ignoreAliasError: boolean
-    ignoreSelectError: boolean
+    ignoreAliasError: boolean;
+    ignoreSelectError: boolean;
 }
 
 export const enum SampleInsertPanelTabs {
     Grid = 1,
-    File = 2
+    File = 2,
 }

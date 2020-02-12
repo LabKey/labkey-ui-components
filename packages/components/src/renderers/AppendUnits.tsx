@@ -15,8 +15,7 @@
  */
 import React from 'react';
 
-export class AppendUnits extends React.Component<{data: any, col: any}, any> {
-
+export class AppendUnits extends React.Component<{ data: any; col: any }, any> {
     render() {
         const { data, col } = this.props;
         // ToDo: adhere to formatting?

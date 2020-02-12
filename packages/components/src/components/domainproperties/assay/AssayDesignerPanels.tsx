@@ -1,39 +1,42 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 
+import { Button, Col, Row } from 'react-bootstrap';
+
 import { AssayProtocolModel, DomainDesign, DomainPanelStatus, HeaderRenderer } from '../models';
 import { saveAssayDesign } from '../actions';
-import { AssayPropertiesPanel } from './AssayPropertiesPanel';
+
 import DomainForm, { DomainFormImpl } from '../DomainForm';
-import { Button, Col, Row } from 'react-bootstrap';
 import { SEVERITY_LEVEL_ERROR } from '../constants';
 import { Alert } from '../../base/Alert';
 
+import { AssayPropertiesPanel } from './AssayPropertiesPanel';
+
 interface Props {
-    onChange?: (model: AssayProtocolModel) => void
-    onCancel: () => void
-    beforeFinish?: (model: AssayProtocolModel) => void
-    onComplete: (model: AssayProtocolModel) => void
-    initModel: AssayProtocolModel
-    hideEmptyBatchDomain?: boolean
-    containerTop?: number // This sets the top of the sticky header, default is 0
-    appPropertiesOnly?: boolean
-    appDomainHeaders?: Map<string, HeaderRenderer>
-    appIsValidMsg?: (model: AssayProtocolModel) => string
-    useTheme?: boolean
+    onChange?: (model: AssayProtocolModel) => void;
+    onCancel: () => void;
+    beforeFinish?: (model: AssayProtocolModel) => void;
+    onComplete: (model: AssayProtocolModel) => void;
+    initModel: AssayProtocolModel;
+    hideEmptyBatchDomain?: boolean;
+    containerTop?: number; // This sets the top of the sticky header, default is 0
+    appPropertiesOnly?: boolean;
+    appDomainHeaders?: Map<string, HeaderRenderer>;
+    appIsValidMsg?: (model: AssayProtocolModel) => string;
+    useTheme?: boolean;
 }
 
 interface State {
-    submitting: boolean
-    currentPanelIndex: number
-    protocolModel: AssayProtocolModel
-    visitedPanels: List<number>
-    validatePanel: number
-    firstState: boolean
+    submitting: boolean;
+    currentPanelIndex: number;
+    protocolModel: AssayProtocolModel;
+    visitedPanels: List<number>;
+    validatePanel: number;
+    firstState: boolean;
 }
 
 export class AssayDesignerPanels extends React.PureComponent<Props, State> {
-    panelCount = 1;// start at 1 for the AssayPropertiesPanel, will updated count after domains are defined in constructor
+    panelCount = 1; // start at 1 for the AssayPropertiesPanel, will updated count after domains are defined in constructor
 
     constructor(props: Props) {
         super(props);
@@ -46,31 +49,34 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
             protocolModel: props.initModel,
             visitedPanels: List<number>([0]),
             validatePanel: undefined,
-            firstState: true
-        }
+            firstState: true,
+        };
     }
 
     isLastStep(): boolean {
-        return this.state.currentPanelIndex  + 1 ===  this.panelCount;
+        return this.state.currentPanelIndex + 1 === this.panelCount;
     }
 
     onDomainChange = (index: number, updatedDomain: DomainDesign) => {
         const { onChange } = this.props;
 
-        this.setState((state) => {
-            const domains = state.protocolModel.domains.map((domain, i) => {
-                return i === index ? updatedDomain : domain;
-            });
-            const updatedModel = state.protocolModel.merge({domains}) as AssayProtocolModel;
+        this.setState(
+            state => {
+                const domains = state.protocolModel.domains.map((domain, i) => {
+                    return i === index ? updatedDomain : domain;
+                });
+                const updatedModel = state.protocolModel.merge({ domains }) as AssayProtocolModel;
 
-            return {
-                protocolModel: updatedModel
+                return {
+                    protocolModel: updatedModel,
+                };
+            },
+            () => {
+                if (onChange) {
+                    onChange(this.state.protocolModel);
+                }
             }
-        }, () => {
-            if (onChange) {
-                onChange(this.state.protocolModel);
-            }
-        });
+        );
     };
 
     shouldSkipStep(stepIndex: number): boolean {
@@ -82,14 +88,16 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
     }
 
     shouldSkipBatchDomain(domain: DomainDesign): boolean {
-        return this.props.hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch') && domain.fields.size === 0;
+        return (
+            this.props.hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch') && domain.fields.size === 0
+        );
     }
 
     onPrevious = () => {
         if (this.state.currentPanelIndex !== 0) {
             const step = this.shouldSkipStep(this.state.currentPanelIndex - 1) ? 2 : 1;
             const nextStepIndex = this.state.currentPanelIndex - step;
-            this.setState(() => ({currentPanelIndex: nextStepIndex}));
+            this.setState(() => ({ currentPanelIndex: nextStepIndex }));
         }
     };
 
@@ -97,7 +105,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         if (!this.isLastStep()) {
             const step = this.shouldSkipStep(this.state.currentPanelIndex + 1) ? 2 : 1;
             const nextStepIndex = this.state.currentPanelIndex + step;
-            this.setState(() => ({currentPanelIndex: nextStepIndex}));
+            this.setState(() => ({ currentPanelIndex: nextStepIndex }));
         }
     };
 
@@ -106,19 +114,17 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
 
         if (!collapsed) {
             if (!visitedPanels.contains(index)) {
-                this.setState(() => ({currentPanelIndex: index,
-                    visitedPanels: visitedPanels.push(index),
-                    firstState: false}), callback());
+                this.setState(
+                    () => ({ currentPanelIndex: index, visitedPanels: visitedPanels.push(index), firstState: false }),
+                    callback()
+                );
+            } else {
+                this.setState(() => ({ currentPanelIndex: index, firstState: false }), callback());
             }
-            else {
-                this.setState(() => ({currentPanelIndex: index, firstState: false}), callback());
-            }
-        }
-        else {
+        } else {
             if (currentPanelIndex === index) {
-                this.setState(() => ({currentPanelIndex: undefined, firstState: false}), callback());
-            }
-            else {
+                this.setState(() => ({ currentPanelIndex: undefined, firstState: false }), callback());
+            } else {
                 callback();
             }
         }
@@ -130,26 +136,33 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
 
         // This first setState forces the current expanded panel to validate its fields and display and errors
         // the callback setState then sets that to undefined so it doesn't keep validating every render
-        this.setState((state) => ({validatePanel: state.currentPanelIndex}), () => {
-            this.setState((state) => ({validatePanel: undefined}), () => {
+        this.setState(
+            state => ({ validatePanel: state.currentPanelIndex }),
+            () => {
+                this.setState(
+                    state => ({ validatePanel: undefined }),
+                    () => {
+                        if (this.isValid()) {
+                            this.setSubmitting(true, protocolModel);
+                            if (beforeFinish) {
+                                beforeFinish(protocolModel);
+                            }
 
-                if (this.isValid()) {
-                    this.setSubmitting(true, protocolModel);
-                    if (beforeFinish) {
-                        beforeFinish(protocolModel);
+                            saveAssayDesign(protocolModel)
+                                .then(response => this.onFinishSuccess(response))
+                                .catch(protocolModel => this.onFinishFailure(protocolModel));
+                        } else if (this.getAppIsValidMsg() !== undefined) {
+                            this.setState(() => ({
+                                protocolModel: protocolModel.set(
+                                    'exception',
+                                    this.getAppIsValidMsg()
+                                ) as AssayProtocolModel,
+                            }));
+                        }
                     }
-
-                    saveAssayDesign(protocolModel)
-                        .then((response) => this.onFinishSuccess(response))
-                        .catch((protocolModel) => this.onFinishFailure(protocolModel));
-                }
-                else if (this.getAppIsValidMsg() !== undefined) {
-                    this.setState(() => ({protocolModel: protocolModel.set('exception', this.getAppIsValidMsg()) as AssayProtocolModel}));
-                }
-            })
-
-        });
-
+                );
+            }
+        );
     };
 
     onFinishSuccess(protocolModel: AssayProtocolModel) {
@@ -164,7 +177,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
     setSubmitting(submitting: boolean, protocolModel: AssayProtocolModel) {
         this.setState(() => ({
             protocolModel,
-            submitting
+            submitting,
         }));
     }
 
@@ -182,13 +195,16 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
     onAssayPropertiesChange = (model: AssayProtocolModel) => {
         const { onChange } = this.props;
 
-        this.setState(() => ({
-            protocolModel: model
-        }), () => {
-            if (onChange) {
-                onChange(model);
+        this.setState(
+            () => ({
+                protocolModel: model,
+            }),
+            () => {
+                if (onChange) {
+                    onChange(model);
+                }
             }
-        });
+        );
     };
 
     getPanelStatus = (index: number): DomainPanelStatus => {
@@ -209,13 +225,12 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         return 'TODO';
     };
 
-    getAppDomainHeaderRenderer = (domain: DomainDesign): HeaderRenderer =>  {
-        const {appDomainHeaders} = this.props;
+    getAppDomainHeaderRenderer = (domain: DomainDesign): HeaderRenderer => {
+        const { appDomainHeaders } = this.props;
 
-        if (!appDomainHeaders)
-            return undefined;
+        if (!appDomainHeaders) return undefined;
 
-        return appDomainHeaders.filter((v,k) => domain.isNameSuffixMatch(k)).first();
+        return appDomainHeaders.filter((v, k) => domain.isNameSuffixMatch(k)).first();
     };
 
     getBottomErrorBanner = (errorDomains: List<string>) => {
@@ -224,21 +239,16 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         let message;
         if (protocolModel.exception) {
             message = protocolModel.exception;
-        }
-        else if (errorDomains.size > 1 || (errorDomains.size > 0 && !protocolModel.hasValidProperties())) {
-            message = "Please correct errors above before saving.";
-        }
-        else if (visitedPanels.size > 1 && !protocolModel.hasValidProperties()) {
-            message = "Please correct errors in Assay Properties before saving.";
-        }
-        else if (errorDomains.size == 1) {
-            message = "Please correct errors in " + errorDomains.get(0) + " before saving.";
+        } else if (errorDomains.size > 1 || (errorDomains.size > 0 && !protocolModel.hasValidProperties())) {
+            message = 'Please correct errors above before saving.';
+        } else if (visitedPanels.size > 1 && !protocolModel.hasValidProperties()) {
+            message = 'Please correct errors in Assay Properties before saving.';
+        } else if (errorDomains.size == 1) {
+            message = 'Please correct errors in ' + errorDomains.get(0) + ' before saving.';
         }
 
         if (message) {
-            return (
-                <Alert bsStyle="danger">{message}</Alert>
-            )
+            return <Alert bsStyle="danger">{message}</Alert>;
         }
 
         return undefined;
@@ -256,8 +266,8 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     model={protocolModel}
                     onChange={this.onAssayPropertiesChange}
                     controlledCollapse={true}
-                    initCollapsed={currentPanelIndex !== 0 }
-                    panelStatus={protocolModel.isNew() ? this.getPanelStatus(0) : "COMPLETE"}
+                    initCollapsed={currentPanelIndex !== 0}
+                    panelStatus={protocolModel.isNew() ? this.getPanelStatus(0) : 'COMPLETE'}
                     validate={validatePanel === 0}
                     appPropertiesOnly={appPropertiesOnly}
                     onToggle={(collapsed, callback) => {
@@ -272,12 +282,15 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     }
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
-                    const showInferFromFile = protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
+                    const showInferFromFile =
+                        protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
                     const showFilePropertyType = domain.isNameSuffixMatch('Batch') || domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
                     if (domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
-                        errorDomains = errorDomains.push(DomainFormImpl.getHeaderName(domain.name, undefined, protocolModel.name));
+                        errorDomains = errorDomains.push(
+                            DomainFormImpl.getHeaderName(domain.name, undefined, protocolModel.name)
+                        );
                     }
 
                     return (
@@ -287,9 +300,9 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                             domain={domain}
                             headerPrefix={protocolModel.name}
                             controlledCollapse={true}
-                            initCollapsed={currentPanelIndex !== (i+1)}
+                            initCollapsed={currentPanelIndex !== i + 1}
                             validate={validatePanel === i + 1}
-                            panelStatus={protocolModel.isNew() ? this.getPanelStatus(i + 1) : "COMPLETE"}
+                            panelStatus={protocolModel.isNew() ? this.getPanelStatus(i + 1) : 'COMPLETE'}
                             showInferFromFile={showInferFromFile}
                             containerTop={containerTop}
                             helpTopic={null} // so we only show the help link for the first assay domain
@@ -297,26 +310,29 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                                 this.onDomainChange(i, updatedDomain);
                             }}
                             onToggle={(collapsed, callback) => {
-                                this.onTogglePanel((i + 1), collapsed, callback);
+                                this.onTogglePanel(i + 1, collapsed, callback);
                             }}
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
                             useTheme={useTheme}
                             appPropertiesOnly={appPropertiesOnly}
-                            showFilePropertyType={showFilePropertyType}
-                        >
+                            showFilePropertyType={showFilePropertyType}>
                             <div>{domain.description}</div>
                         </DomainForm>
-                    )
+                    );
                 })}
-                <div className={'domain-form-panel'}>
-                    {this.getBottomErrorBanner(errorDomains)}
-                </div>
-                <div className={'domain-form-panel domain-assay-buttons'}>
+                <div className="domain-form-panel">{this.getBottomErrorBanner(errorDomains)}</div>
+                <div className="domain-form-panel domain-assay-buttons">
                     <Button onClick={onCancel}>Cancel</Button>
-                    <Button className='pull-right' bsStyle='success' disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
+                    <Button
+                        className="pull-right"
+                        bsStyle="success"
+                        disabled={this.state.submitting}
+                        onClick={this.onFinish}>
+                        Save
+                    </Button>
                 </div>
             </>
-        )
+        );
     }
 }

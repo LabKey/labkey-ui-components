@@ -20,7 +20,7 @@ import { Checkbox, Input, Textarea } from 'formsy-react-components';
 import { LabelOverlay } from '../LabelOverlay';
 import { DateInput } from '../input/DateInput';
 import { DatePickerInput } from '../input/DatePickerInput';
-import { _defaultRenderer } from './Detail';
+
 import { resolveRenderer } from '../renderers';
 import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
 import { AliasRenderer } from '../../../renderers/AliasRenderer';
@@ -30,29 +30,31 @@ import { LookupSelectInput } from '../input/LookupSelectInput';
 import { QueryColumn } from '../../base/models/model';
 import { getUnFormattedNumber } from '../../../util/Date';
 
+import { _defaultRenderer } from './Detail';
+
 function findValue(data: Map<string, any>, lookup?: boolean) {
-    return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')
+    return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value');
 }
 
-function resolveDetailFieldValue(data: any, lookup?: boolean): string | Array<string> {
+function resolveDetailFieldValue(data: any, lookup?: boolean): string | string[] {
     let value;
 
     if (data) {
         if (List.isList(data) && data.size) {
-            value = data.map(d => {
-                if (d.has('formattedValue')) {
-                    return d.get('formattedValue');
-                }
+            value = data
+                .map(d => {
+                    if (d.has('formattedValue')) {
+                        return d.get('formattedValue');
+                    }
 
-                let o = findValue(d, lookup);
-                return o !== null && o !== undefined ? o : undefined;
-            }).toArray();
-        }
-        else if (data.has('formattedValue')) {
+                    const o = findValue(d, lookup);
+                    return o !== null && o !== undefined ? o : undefined;
+                })
+                .toArray();
+        } else if (data.has('formattedValue')) {
             value = data.get('formattedValue');
-        }
-        else {
-            let o = findValue(data, lookup);
+        } else {
+            const o = findValue(data, lookup);
             value = o !== null && o !== undefined ? o : undefined;
         }
     }
@@ -62,27 +64,22 @@ function resolveDetailFieldValue(data: any, lookup?: boolean): string | Array<st
 }
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
-    //If the column cannot be edited, return the label as is
+    // If the column cannot be edited, return the label as is
     if (!col.isEditable()) {
-        return (
-            <span className='field__un-editable'>{col.caption}</span>
-        );
+        return <span className="field__un-editable">{col.caption}</span>;
     }
 
     return <LabelOverlay column={col} />;
 }
 
 export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boolean): React.ReactNode {
-
-    return (data) => {
+    return data => {
         const editable = col.isEditable();
 
         // If the column cannot be edited, return as soon as possible
         // Render the value with the defaultRenderer and a class that grays it out
         if (!editable) {
-            return (
-                <div className="field__un-editable">{_defaultRenderer(data)}</div>
-            );
+            return <div className="field__un-editable">{_defaultRenderer(data)}</div>;
         }
 
         let value = resolveDetailFieldValue(data, false);
@@ -113,7 +110,8 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                         multiple={multiple}
                         queryColumn={col}
                         value={resolveDetailFieldValue(data, true)}
-                        required={col.required}/>
+                        required={col.required}
+                    />
                 );
             }
         }
@@ -123,12 +121,13 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                 <Textarea
                     changeDebounceInterval={0}
                     cols={4}
-                    elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}
+                    elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
                     name={col.name}
                     required={col.required}
                     rows={4}
                     validatePristine={true}
-                    value={value}/>
+                    value={value}
+                />
             );
         }
 
@@ -139,35 +138,37 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                         name={col.name}
                         required={col.required}
                         validatePristine={true}
-                        value={value && value.toString().toLowerCase() === 'true'}/>
+                        value={value && value.toString().toLowerCase() === 'true'}
+                    />
                 );
             case 'date':
                 if (typeof value === 'string') {
                     if (useDatePicker) {
                         return (
                             <DatePickerInput
-                                wrapperClassName={"col-sm-12"}
+                                wrapperClassName="col-sm-12"
                                 name={col.name}
                                 queryColumn={col}
-                                value={value}/>)
-                    }
-                    else {
+                                value={value}
+                            />
+                        );
+                    } else {
                         return (
                             <DateInput
-                                elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}
+                                elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
                                 name={col.name}
                                 queryColumn={col}
                                 validatePristine={true}
-                                value={value}/>
-                        )
+                                value={value}
+                            />
+                        );
                     }
-                 }
+                }
             default:
-                let validations,
-                    validationError;
+                let validations, validationError;
 
                 if (col.jsonType === 'int' || col.jsonType === 'float') {
-                    let unformat = getUnFormattedNumber(value);
+                    const unformat = getUnFormattedNumber(value);
                     if (unformat !== undefined && unformat !== null) {
                         value = unformat.toString();
                     }
@@ -185,14 +186,14 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                         validationError={validationError}
                         value={value}
                         required={col.required}
-                        elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}/>
+                        elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
+                    />
                 );
         }
     };
 }
 
 export function resolveDetailRenderer(column: QueryColumn) {
-
     let renderer; // defaults to undefined -- leave it up to the details
 
     if (column && column.detailRenderer) {
@@ -208,16 +209,16 @@ export function resolveDetailRenderer(column: QueryColumn) {
             //     renderer = (d) => <SequenceLoader data={d}/>;
             //     break;
             case 'multivaluedetailrenderer':
-                renderer = (d) => <MultiValueRenderer data={d}/>;
+                renderer = d => <MultiValueRenderer data={d} />;
                 break;
             case 'aliasrenderer':
-                renderer = (d) => <AliasRenderer data={d} view="detail"/>;
+                renderer = d => <AliasRenderer data={d} view="detail" />;
                 break;
             case 'appendunits':
-                renderer = (d) => <AppendUnits data={d} col={column}/>;
+                renderer = d => <AppendUnits data={d} col={column} />;
                 break;
             case 'assayrunreference':
-                renderer = (d) => <AssayRunReferenceRenderer data={d}/>;
+                renderer = d => <AssayRunReferenceRenderer data={d} />;
                 break;
             default:
                 break;

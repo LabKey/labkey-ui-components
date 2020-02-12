@@ -16,16 +16,16 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { createMemoryHistory, Route, Router } from 'react-router';
+
 import data from '../test/data/example_browse_data_tree_api.json';
 import './stories.scss';
 import { ReportItemModal, ReportList } from '../components/report-list/ReportList';
 import { AppURL } from '../url/AppURL';
 import { flattenBrowseDataTreeResponse } from '../query/reports';
 
-
 const history = createMemoryHistory();
 
-const exampleReports = flattenBrowseDataTreeResponse(data, (report) => {
+const exampleReports = flattenBrowseDataTreeResponse(data, report => {
     const { schemaName, queryName, viewName } = report;
 
     if (!queryName) {
@@ -50,15 +50,15 @@ class ReportListContainer extends React.PureComponent<any, any> {
         };
     }
 
-    onReportClicked = (report) => {
+    onReportClicked = report => {
         this.setState(() => {
             return { selectedReport: report };
-        })
+        });
     };
 
     onClose = () => {
         this.setState(() => {
-            return {selectedReport: null};
+            return { selectedReport: null };
         });
     };
 
@@ -67,12 +67,12 @@ class ReportListContainer extends React.PureComponent<any, any> {
         let modal = null;
 
         if (this.state.selectedReport !== null) {
-            modal = <ReportItemModal report={selectedReport} onClose={this.onClose} />
+            modal = <ReportItemModal report={selectedReport} onClose={this.onClose} />;
         }
 
         return (
             <>
-                <ReportList loading={false} reports={exampleReports} onReportClicked={this.onReportClicked}/>
+                <ReportList loading={false} reports={exampleReports} onReportClicked={this.onReportClicked} />
                 {modal}
             </>
         );
@@ -80,20 +80,18 @@ class ReportListContainer extends React.PureComponent<any, any> {
 }
 
 storiesOf('ReportList', module)
-    .add('No Data', () =>{
-        return <ReportList loading={false} reports={[]} onReportClicked={() =>{}}/>
+    .add('No Data', () => {
+        return <ReportList loading={false} reports={[]} onReportClicked={() => {}} />;
     })
     .add('With Data', () => {
         const onReportClicked = report => console.log('Report clicked:', report);
 
-        return (
-            <ReportList loading={false} reports={exampleReports} onReportClicked={onReportClicked}/>
-        );
+        return <ReportList loading={false} reports={exampleReports} onReportClicked={onReportClicked} />;
     })
     .add('Loading', () => {
-        return <ReportList loading={true} reports={[]} onReportClicked={() =>{}}/>
+        return <ReportList loading={true} reports={[]} onReportClicked={() => {}} />;
     })
-    .add('With Modal', () =>{
+    .add('With Modal', () => {
         // We have to wrap ReportListContainer in a Router and a Route because if we don't do that React Router Link
         // objects will *not* render any attributes on anchor tags, like hrefs.
         return (

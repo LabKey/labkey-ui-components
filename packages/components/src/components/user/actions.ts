@@ -1,29 +1,30 @@
 import moment from 'moment';
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Utils } from '@labkey/api';
-import { ChangePasswordModel } from './models';
+
 import { caseInsensitive, hasAllPermissions } from '../../util/utils';
 import { QueryGridModel, SchemaQuery, User } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';
 import { PermissionTypes } from '../base/models/constants';
 
-export function getUserPermissionsDisplay(user: User): Array<string> {
-    let permissions = [];
+import { ChangePasswordModel } from './models';
+
+export function getUserPermissionsDisplay(user: User): string[] {
+    const permissions = [];
 
     if (user.isAdmin) {
         permissions.push('Administrator');
-    }
-    else {
+    } else {
         if (hasAllPermissions(user, [PermissionTypes.DesignSampleSet])) {
             permissions.push('Sample Set Designer');
         }
         if (hasAllPermissions(user, [PermissionTypes.DesignAssay])) {
             permissions.push('Assay Designer');
         }
-        permissions.push(user.canUpdate ? 'Editor' : (user.canInsert ? 'Author' : 'Reader'));
+        permissions.push(user.canUpdate ? 'Editor' : user.canInsert ? 'Author' : 'Reader');
     }
 
-    return permissions
+    return permissions;
 }
 
 export function getUserLastLogin(userProperties: Map<string, any>, dateFormat: string): string {
@@ -33,9 +34,9 @@ export function getUserLastLogin(userProperties: Map<string, any>, dateFormat: s
 
 export function getUserDetailsRowData(user: User, data: OrderedMap<string, any>, avatar: File): FormData {
     const formData = new FormData();
-    const row = {UserId: user.id, ...data.toJS()};
+    const row = { UserId: user.id, ...data.toJS() };
 
-    Object.keys(row).forEach((key) => {
+    Object.keys(row).forEach(key => {
         let value = row[key];
 
         // need to convert booleans to string for save
@@ -73,7 +74,7 @@ export function updateUserDetails(schemaQuery: SchemaQuery, data: FormData): Pro
             }),
             failure: Utils.getCallbackWrapper(error => {
                 reject(error);
-            })
+            }),
         });
     });
 }
@@ -84,12 +85,12 @@ export function changePassword(model: ChangePasswordModel): Promise<any> {
             url: buildURL('login', 'changePasswordApi.api'),
             method: 'POST',
             params: model.toJS(),
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
-            })
+            }),
         });
     });
 }
@@ -99,10 +100,10 @@ export function getPasswordRuleInfo(): Promise<any> {
         return Ajax.request({
             url: buildURL('login', 'getPasswordRulesInfo.api'),
             method: 'GET',
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
             }),
         });
@@ -130,14 +131,14 @@ function updateUsersState(userIds: List<number>, isDelete: boolean, isActivate: 
             params: {
                 userId: userIds.toArray(),
                 delete: isDelete,
-                activate: isActivate
+                activate: isActivate,
             },
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
-            })
+            }),
         });
     });
 }
@@ -147,16 +148,16 @@ export function resetPassword(email: string): Promise<any> {
         Ajax.request({
             url: buildURL('security', 'adminResetPassword.api'),
             method: 'POST',
-            params: {email},
-            success: Utils.getCallbackWrapper((response) => {
+            params: { email },
+            success: Utils.getCallbackWrapper(response => {
                 resolve({
                     resetPassword: true,
-                    email
+                    email,
                 });
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
-            })
+            }),
         });
     });
 }

@@ -16,22 +16,21 @@
 import React from 'react';
 
 interface Props {
-    onSearch: (value: string) => any
-    placeholder?: string
+    onSearch: (value: string) => any;
+    placeholder?: string;
 }
 
 interface State {
-    value?: string
+    value?: string;
 }
 
 export class SearchBox extends React.Component<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            value: ''
-        }
+            value: '',
+        };
     }
 
     onSearch = (evt: any) => {
@@ -39,21 +38,21 @@ export class SearchBox extends React.Component<Props, State> {
         this.props.onSearch(this.state.value);
 
         // reset the input value after it is has submitted
-        this.setState(() => ({value: ''}));
+        this.setState(() => ({ value: '' }));
     };
 
     handleChange = (evt: any) => {
         const value = evt.target.value;
-        this.setState(() => ({value}));
+        this.setState(() => ({ value }));
     };
 
     render() {
         return (
-            <form className={'navbar__search-form'} onSubmit={this.onSearch}>
-                <div className={'form-group'}>
-                    <i className={'fa fa-search navbar__search-icon'}/>
+            <form className="navbar__search-form" onSubmit={this.onSearch}>
+                <div className="form-group">
+                    <i className="fa fa-search navbar__search-icon" />
                     <input
-                        type={"text"}
+                        type="text"
                         placeholder={this.props.placeholder || 'Enter Search Terms'}
                         className="navbar__search-input"
                         onChange={this.handleChange}
@@ -62,6 +61,6 @@ export class SearchBox extends React.Component<Props, State> {
                     />
                 </div>
             </form>
-        )
+        );
     }
 }

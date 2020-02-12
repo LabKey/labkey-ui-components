@@ -15,27 +15,30 @@
  */
 import React from 'react';
 import { List } from 'immutable';
+
 import { QueryGridModel, SchemaQuery } from '../base/models/model';
 import { DataViewInfo, IDataViewInfo } from '../../models';
-import { ChartMenu } from './ChartMenu';
+
 import { fetchCharts } from '../../actions';
-import { naturalSort } from '../../';
+import { naturalSort } from '../..';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../constants';
 import { loadReports } from '../../query/reports';
+
+import { ChartMenu } from './ChartMenu';
 
 const CHART_COMPARATOR = (chart: DataViewInfo): string => chart.name;
 
 interface Props {
-    model: QueryGridModel,
-    onReportClicked?: Function,
-    onCreateReportClicked?: Function,
-    showSampleComparisonReports?: boolean,
+    model: QueryGridModel;
+    onReportClicked?: Function;
+    onCreateReportClicked?: Function;
+    showSampleComparisonReports?: boolean;
 }
 
 interface State {
-    publicCharts: List<DataViewInfo>,
-    privateCharts: List<DataViewInfo>,
-    error: string,
+    publicCharts: List<DataViewInfo>;
+    privateCharts: List<DataViewInfo>;
+    error: string;
 }
 
 export class ChartSelector extends React.Component<Props, State> {
@@ -50,7 +53,7 @@ export class ChartSelector extends React.Component<Props, State> {
             publicCharts: null,
             privateCharts: null,
             error: null,
-        }
+        };
     }
 
     componentDidMount() {
@@ -80,34 +83,36 @@ export class ChartSelector extends React.Component<Props, State> {
         const targetQuery = model.query;
 
         // reset charts to null so we trigger loading status.
-        this.setState({publicCharts: null, privateCharts: null});
-        loadReports().then((charts) => {
-            let publicCharts = List<DataViewInfo>();
-            let privateCharts = List<DataViewInfo>();
+        this.setState({ publicCharts: null, privateCharts: null });
+        loadReports()
+            .then(charts => {
+                let publicCharts = List<DataViewInfo>();
+                let privateCharts = List<DataViewInfo>();
 
-            charts.forEach((rawReport: IDataViewInfo) => {
-                const report = new DataViewInfo(rawReport);
-                const type = report.type;
-                // We have to check the schema and query here because loadReports loads *all* reports.
-                const matchingSq = report.schemaName === targetSchema && report.queryName === targetQuery;
-                const isVisualization = matchingSq && VISUALIZATION_REPORTS.contains(type);
+                charts.forEach((rawReport: IDataViewInfo) => {
+                    const report = new DataViewInfo(rawReport);
+                    const type = report.type;
+                    // We have to check the schema and query here because loadReports loads *all* reports.
+                    const matchingSq = report.schemaName === targetSchema && report.queryName === targetQuery;
+                    const isVisualization = matchingSq && VISUALIZATION_REPORTS.contains(type);
 
-                if (isVisualization || type === DataViewInfoTypes.SampleComparison) {
-                    if (report.shared) {
-                        publicCharts = publicCharts.push(new DataViewInfo(report));
-                    } else {
-                        privateCharts = privateCharts.push(report);
+                    if (isVisualization || type === DataViewInfoTypes.SampleComparison) {
+                        if (report.shared) {
+                            publicCharts = publicCharts.push(new DataViewInfo(report));
+                        } else {
+                            privateCharts = privateCharts.push(report);
+                        }
                     }
-                }
-            });
+                });
 
-            publicCharts = publicCharts.sortBy(CHART_COMPARATOR, naturalSort).toList();
-            privateCharts = privateCharts.sortBy(CHART_COMPARATOR, naturalSort).toList();
-            this.setState({
-                publicCharts,
-                privateCharts,
-            });
-        }).catch(this.setErrorStatus);
+                publicCharts = publicCharts.sortBy(CHART_COMPARATOR, naturalSort).toList();
+                privateCharts = privateCharts.sortBy(CHART_COMPARATOR, naturalSort).toList();
+                this.setState({
+                    publicCharts,
+                    privateCharts,
+                });
+            })
+            .catch(this.setErrorStatus);
     };
 
     requestChartsWithoutSampleComparisonReports = () => {
@@ -115,26 +120,28 @@ export class ChartSelector extends React.Component<Props, State> {
         const sq = SchemaQuery.create(model.schema, model.query);
 
         // reset charts to null so we trigger loading status.
-        this.setState({publicCharts: null, privateCharts: null});
-        fetchCharts(sq, model.containerPath).then(data => {
-            let publicCharts = List<DataViewInfo>();
-            let privateCharts = List<DataViewInfo>();
+        this.setState({ publicCharts: null, privateCharts: null });
+        fetchCharts(sq, model.containerPath)
+            .then(data => {
+                let publicCharts = List<DataViewInfo>();
+                let privateCharts = List<DataViewInfo>();
 
-            data.forEach((report) => {
-                if (VISUALIZATION_REPORTS.contains(report.type)) {
-                    if (report.shared) {
-                        publicCharts = publicCharts.push(report);
-                    } else {
-                        privateCharts = privateCharts.push(report);
+                data.forEach(report => {
+                    if (VISUALIZATION_REPORTS.contains(report.type)) {
+                        if (report.shared) {
+                            publicCharts = publicCharts.push(report);
+                        } else {
+                            privateCharts = privateCharts.push(report);
+                        }
                     }
-                }
-            });
+                });
 
-            this.setState({
-                privateCharts: privateCharts.sortBy(CHART_COMPARATOR, naturalSort).toList(),
-                publicCharts: publicCharts.sortBy(CHART_COMPARATOR, naturalSort).toList(),
-            });
-        }).catch(this.setErrorStatus);
+                this.setState({
+                    privateCharts: privateCharts.sortBy(CHART_COMPARATOR, naturalSort).toList(),
+                    publicCharts: publicCharts.sortBy(CHART_COMPARATOR, naturalSort).toList(),
+                });
+            })
+            .catch(this.setErrorStatus);
     };
 
     requestCharts() {

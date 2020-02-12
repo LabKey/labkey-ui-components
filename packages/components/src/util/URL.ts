@@ -20,25 +20,23 @@ import { getBrowserHistory } from './global';
 // This type is roughly equivalent to the Location object from this history package
 // but here we have all fields optional to make it also compatible with the window.location object
 export type Location = {
-    action?: string
-    hash?: string
-    key?: string
-    pathname?: string
-    query?: any //{[key:string]: string}
-    search?: string
-    state?: any // {[key:string]: string}
-}
+    action?: string;
+    hash?: string;
+    key?: string;
+    pathname?: string;
+    query?: any; // {[key:string]: string}
+    search?: string;
+    state?: any; // {[key:string]: string}
+};
 
-export function getLocation() : Location
-{
-    let location : Location = getBrowserHistory().location;
-    let query =  Map<string, string>(location.query).asMutable();
+export function getLocation(): Location {
+    const location: Location = getBrowserHistory().location;
+    const query = Map<string, string>(location.query).asMutable();
 
     // check for query params that are before the hash
-    if (location.search && location.search.length > 0)
-    {
+    if (location.search && location.search.length > 0) {
         const params = location.search.substring(1).split('&');
-        params.forEach( (p) => {
+        params.forEach(p => {
             const keyVal = p.split('=');
             query.set(decodeURI(keyVal[0].trim()), decodeURI(keyVal[1].trim()));
         });
@@ -49,7 +47,7 @@ export function getLocation() : Location
         const index = location.hash.indexOf('?');
 
         const params = location.hash.substring(index + 1).split('&');
-        params.forEach( (p) => {
+        params.forEach(p => {
             const keyVal = p.split('=');
             query.set(decodeURI(keyVal[0].trim()), decodeURI(keyVal[1].trim()));
         });
@@ -75,7 +73,8 @@ export function getRouteFromLocationHash(hash: string) {
 }
 
 export function buildQueryString(params: Map<string, string | number>): string {
-    let q = '', sep = '';
+    let q = '',
+        sep = '';
     params.forEach((v, k) => {
         q += sep + k + '=' + v;
         sep = '&';
@@ -88,29 +87,27 @@ function build(pathname: string, hash?: string, params?: Map<string, string | nu
     return pathname + (hash || '') + (params ? buildQueryString(params) : '');
 }
 
-function setParameter(location: Location, key: string, value: string | number, asReplace: boolean = false) {
+function setParameter(location: Location, key: string, value: string | number, asReplace = false) {
     const params = Map<string, string | number>();
     setParameters(location, params.set(key, value), asReplace);
 }
 
-function setParameters(location: Location, params: Map<string, string | number>, asReplace: boolean = false) {
+function setParameters(location: Location, params: Map<string, string | number>, asReplace = false) {
     const { query } = location;
 
-    let newParams = Map<string, string | number>(query).asMutable();
+    const newParams = Map<string, string | number>(query).asMutable();
     params.forEach((value, key) => {
         if (value === undefined) {
             newParams.delete(key);
-        }
-        else {
+        } else {
             newParams.set(key, value);
         }
     });
 
     if (asReplace) {
         getBrowserHistory().replace(build(location.pathname, location.hash, newParams.asImmutable()));
-    }
-    else {
-        getBrowserHistory().push(build(location.pathname, location.hash, newParams.asImmutable()))
+    } else {
+        getBrowserHistory().push(build(location.pathname, location.hash, newParams.asImmutable()));
     }
 }
 

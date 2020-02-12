@@ -23,9 +23,11 @@ import { AssayResultDeleteConfirmModal } from '..';
 storiesOf('AssayResultDeleteConfirmModal', module)
     .addDecorator(withKnobs)
     .add('with knobs', () => {
-        return <AssayResultDeleteConfirmModal
-            numToDelete={number("Number of results to delete", 1, {})}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
+        return (
+            <AssayResultDeleteConfirmModal
+                numToDelete={number('Number of results to delete', 1, {})}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     });

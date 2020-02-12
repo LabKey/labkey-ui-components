@@ -5,7 +5,7 @@
 
 export enum LINEAGE_DIRECTIONS {
     Children = 'children',
-    Parent = 'parents'
+    Parent = 'parents',
 }
 
 export enum LINEAGE_GROUPING_GENERATIONS {
@@ -16,7 +16,7 @@ export enum LINEAGE_GROUPING_GENERATIONS {
     /** Include only the immediately connected nodes from the seed. */
     Nearest = 'nearest',
     /** Include all nodes from the seed up to the {@link ILineageGroupingOptions.parentDepth} or {@link ILineageGroupingOptions.childDepth} specified. */
-    Specific = 'specific'
+    Specific = 'specific',
 }
 
 // Default depth to fetch with the lineage API

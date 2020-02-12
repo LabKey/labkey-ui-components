@@ -18,9 +18,8 @@ import { mount } from 'enzyme';
 
 import { SampleSetDeleteConfirmModal } from './SampleSetDeleteConfirmModal';
 
-describe("<SampleSetDeleteConfirmModal/>", () => {
-
-    test("showDependenciesLink prop", () => {
+describe('<SampleSetDeleteConfirmModal/>', () => {
+    test('showDependenciesLink prop', () => {
         const component = (
             <SampleSetDeleteConfirmModal
                 rowId={0}
@@ -35,20 +34,16 @@ describe("<SampleSetDeleteConfirmModal/>", () => {
         wrapper.unmount();
     });
 
-    test("button clicks", () => {
+    test('button clicks', () => {
         const onConfirmFn = jest.fn();
         const onCancelFn = jest.fn();
-        const component = (
-            <SampleSetDeleteConfirmModal
-                rowId={0}
-                onCancel={onCancelFn}
-                onConfirm={onConfirmFn}
-            />
-        );
+        const component = <SampleSetDeleteConfirmModal rowId={0} onCancel={onCancelFn} onConfirm={onConfirmFn} />;
 
         const wrapper = mount(component);
         const cancelBtn = wrapper.find('.modal-footer').findWhere(n => n.type() === 'button' && n.text() === 'Cancel');
-        const confirmBtn = wrapper.find('.modal-footer').findWhere(n => n.type() === 'button' && n.text() === 'Yes, Delete');
+        const confirmBtn = wrapper
+            .find('.modal-footer')
+            .findWhere(n => n.type() === 'button' && n.text() === 'Yes, Delete');
         expect(onCancelFn).toHaveBeenCalledTimes(0);
         expect(onConfirmFn).toHaveBeenCalledTimes(0);
 
@@ -66,5 +61,4 @@ describe("<SampleSetDeleteConfirmModal/>", () => {
 
         wrapper.unmount();
     });
-
 });

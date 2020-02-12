@@ -17,18 +17,28 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS, Map } from 'immutable';
+
+import { initUnitTestMocks } from '../../testHelpers';
+
 import { FORM_IDS, SampleSetDetailsPanel } from './SampleSetDetailsPanel';
-import { initUnitTestMocks } from "../../testHelpers";
 
 beforeAll(() => {
     initUnitTestMocks();
 });
 
-describe("<SampleSetDetailsPanel/>", () => {
+describe('<SampleSetDetailsPanel/>', () => {
+    test('default props', done => {
+        const tree = renderer.create(<SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()} />);
 
-    test("default props", (done) => {
+        setTimeout(() => {
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        });
+    });
+
+    test('nameExpressionInfoUrl', done => {
         const tree = renderer.create(
-            <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()}/>
+            <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()} nameExpressionInfoUrl="#anything" />
         );
 
         setTimeout(() => {
@@ -37,25 +47,10 @@ describe("<SampleSetDetailsPanel/>", () => {
         });
     });
 
-    test("nameExpressionInfoUrl", (done) => {
-        const tree = renderer.create(
-            <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()}
-               nameExpressionInfoUrl={'#anything'}
-            />
-        );
-
-        setTimeout(() => {
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
-    });
-
-    test("button clicks", () => {
+    test('button clicks', () => {
         const onCompleteFn = jest.fn();
         const onCancelFn = jest.fn();
-        const component = (
-            <SampleSetDetailsPanel onCancel={onCancelFn} onComplete={onCompleteFn}/>
-        );
+        const component = <SampleSetDetailsPanel onCancel={onCancelFn} onComplete={onCompleteFn} />;
 
         const wrapper = mount(component);
         const cancelBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Cancel');
@@ -76,10 +71,8 @@ describe("<SampleSetDetailsPanel/>", () => {
         wrapper.unmount();
     });
 
-    test("valid name", () => {
-        const component = (
-            <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()}/>
-        );
+    test('valid name', () => {
+        const component = <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()} />;
 
         const wrapper = mount(component);
 
@@ -90,30 +83,28 @@ describe("<SampleSetDetailsPanel/>", () => {
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
 
         // simulate Name input value change by updating the component state
-        wrapper.setState({formValues: {[FORM_IDS.NAME]: 'test'}});
+        wrapper.setState({ formValues: { [FORM_IDS.NAME]: 'test' } });
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeFalsy();
 
         // change name to empty string and expect button to be disabled again
-        wrapper.setState({formValues: {[FORM_IDS.NAME]: ''}});
+        wrapper.setState({ formValues: { [FORM_IDS.NAME]: '' } });
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
 
         wrapper.unmount();
     });
 
-    test("existing sample set", () => {
+    test('existing sample set', () => {
         const nameExpVal = 'S-${genId}';
         const descVal = 'My sample set description.';
-        const data = Map<string, any>(fromJS({
-            rowId: 1,
-            nameExpression: nameExpVal,
-            description: descVal
-        }));
-
-        const component = (
-            <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()}
-                data={data}
-            />
+        const data = Map<string, any>(
+            fromJS({
+                rowId: 1,
+                nameExpression: nameExpVal,
+                description: descVal,
+            })
         );
+
+        const component = <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()} data={data} />;
 
         const wrapper = mount(component);
 
@@ -130,14 +121,15 @@ describe("<SampleSetDetailsPanel/>", () => {
 
         // simulate input value changes by updating the component state
         const updateSuffix = ' UPDATED';
-        wrapper.setState({formValues: {
-            [FORM_IDS.NAME_EXPRESSION]: nameExpVal + updateSuffix,
-            [FORM_IDS.DESCRIPTION]: descVal + updateSuffix
-        }});
+        wrapper.setState({
+            formValues: {
+                [FORM_IDS.NAME_EXPRESSION]: nameExpVal + updateSuffix,
+                [FORM_IDS.DESCRIPTION]: descVal + updateSuffix,
+            },
+        });
         expect(wrapper.find('input#' + FORM_IDS.NAME_EXPRESSION).props().value).toBe(nameExpVal + updateSuffix);
         expect(wrapper.find('textarea#' + FORM_IDS.DESCRIPTION).props().value).toBe(descVal + updateSuffix);
 
         wrapper.unmount();
     });
-
 });

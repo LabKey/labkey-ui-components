@@ -17,11 +17,12 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
+import { createMockActionContext } from '../../../test/OmniboxMock';
+
+import { QueryColumn } from '../../base/models/model';
+
 import { ActionOption, Value } from './Action';
 import { FilterAction } from './Filter';
-
-import { createMockActionContext } from '../../../test/OmniboxMock';
-import { QueryColumn } from '../../base/models/model';
 
 const { columns, columnsByName, resolveColumns, resolveModel } = createMockActionContext('toyStory');
 
@@ -33,29 +34,28 @@ const testColumns = List([
             schemaName: 'alphabet',
             queryName: 'x',
             displayColumn: 'LookupX',
-            keyColumn: 'LookupX'
+            keyColumn: 'LookupX',
         },
-        shortCaption: 'A lookup'
+        shortCaption: 'A lookup',
     }),
     QueryColumn.create({
         name: 'columnAA',
         jsonType: 'string',
-        shortCaption: 'A non-lookup'
+        shortCaption: 'A non-lookup',
     }),
     QueryColumn.create({
         name: 'columnB',
         jsonType: 'int',
-        shortCaption: 'Column B'
-    })
+        shortCaption: 'Column B',
+    }),
 ]);
 
-const testColumnsByName = testColumns
-    .reduce((map, col) => {
-        if (map.has(col.name)) {
-            throw 'Invalid test data! All column name\'s must be unique'
-        }
-        return map.set(col.name, col);
-    }, Map<string, QueryColumn>());
+const testColumnsByName = testColumns.reduce((map, col) => {
+    if (map.has(col.name)) {
+        throw 'Invalid test data! All column name\'s must be unique';
+    }
+    return map.set(col.name, col);
+}, Map<string, QueryColumn>());
 
 const expectFilter = (expectedFilter: Filter.IFilter, urlParam: string, urlPrefix?: string) => {
     const filters = Filter.getFiltersFromUrl(urlParam, urlPrefix);
@@ -72,52 +72,51 @@ const expectSameFilterType = (a: Filter.IFilterType, b: Filter.IFilterType) => {
 };
 
 describe('FilterAction::completeAction', () => {
-
     const urlPrefix = undefined;
     const action = new FilterAction(resolveColumns, urlPrefix, resolveModel);
 
-    const completeAction = (tokens: Array<string>, testHandle: (value: Value) => any) => {
+    const completeAction = (tokens: string[], testHandle: (value: Value) => any) => {
         return action.completeAction(tokens).then(testHandle);
     };
 
     test('invalid tokens', () => {
         return Promise.all([
             // empty tokens
-            completeAction([], (value) => {
+            completeAction([], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
             }),
 
             // only contains column
-            completeAction(['phrase'], (value) => {
+            completeAction(['phrase'], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
             }),
 
             // only contains column and filter that requires values
-            completeAction(['phrase', '='], (value) => {
+            completeAction(['phrase', '='], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
             }),
 
             // contains invalid filter type
-            completeAction(['height', '==', '78'], (value) => {
+            completeAction(['height', '==', '78'], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
             }),
 
             // contains incomplete filter type
-            completeAction(['height', 'isblan'], (value) => {
+            completeAction(['height', 'isblan'], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
-            })
+            }),
         ]);
     });
 
     test('valid tokens', () => {
         return Promise.all([
             // valid symbol tokens
-            completeAction(['height', '=<', '10'], (value) => {
+            completeAction(['height', '=<', '10'], value => {
                 const expectedFilter = Filter.create('height', '10', Filter.Types.LESS_THAN_OR_EQUAL);
 
                 expect(value.displayValue).toEqual('Height =< 10');
@@ -125,7 +124,7 @@ describe('FilterAction::completeAction', () => {
             }),
 
             // valid urlsuffix tokens
-            completeAction(['phrase', 'isnonblank'], (value) => {
+            completeAction(['phrase', 'isnonblank'], value => {
                 const expectedFilter = Filter.create('phrase', '', Filter.Types.NONBLANK);
 
                 expect(value.displayValue).toEqual('Phrase Is Not Blank');
@@ -133,29 +132,28 @@ describe('FilterAction::completeAction', () => {
             }),
 
             // valid displayText tokens
-            completeAction(['height', 'is blank', 'foo'], (value) => {
+            completeAction(['height', 'is blank', 'foo'], value => {
                 const expectedFilter = Filter.create('height', '', Filter.Types.ISBLANK);
 
                 expect(value.displayValue).toEqual('Height Is Blank'); // sans 'foo'
                 expectFilter(expectedFilter, value.param);
-            })
+            }),
         ]);
     });
 });
 
 describe('FilterAction::fetchOptions', () => {
-
     const urlPrefix = undefined;
     const action = new FilterAction(resolveColumns, urlPrefix, resolveModel);
 
-    const fetchOptions = (tokens: Array<string>, testHandle: (options: Array<ActionOption>) => any) => {
+    const fetchOptions = (tokens: string[], testHandle: (options: ActionOption[]) => any) => {
         return action.fetchOptions(tokens).then(testHandle);
     };
 
     test('column options', () => {
         return Promise.all([
             // nothing entered -- should display all available columns
-            fetchOptions([], (options) => {
+            fetchOptions([], options => {
                 expect(options.length).toEqual(columns.size);
 
                 // none should complete the action
@@ -163,21 +161,22 @@ describe('FilterAction::fetchOptions', () => {
             }),
 
             // no matches -- should display nothing
-            fetchOptions(['qwerty'], (options) => {
+            fetchOptions(['qwerty'], options => {
                 expect(options.length).toEqual(0);
-            })
+            }),
         ]);
     });
 
     test('filter options', () => {
-        const getExpectedFilterTypes = (columnType: string): Array<Filter.IFilterType> => {
-            return Filter.getFilterTypesForType(columnType as any /* jsonType */)
-                .filter(ft => !ft.isMultiValued() && (ft.getDisplaySymbol() || ft.getURLSuffix()))
+        const getExpectedFilterTypes = (columnType: string): Filter.IFilterType[] => {
+            return Filter.getFilterTypesForType(columnType as any /* jsonType */).filter(
+                ft => !ft.isMultiValued() && (ft.getDisplaySymbol() || ft.getURLSuffix())
+            );
         };
 
         return Promise.all([
             // should display all available non-multivalue filter types
-            fetchOptions(['Phrase', ''], (options) => {
+            fetchOptions(['Phrase', ''], options => {
                 const columnType = columnsByName.getIn(['phrase', 'jsonType']);
                 const expectedFilters = getExpectedFilterTypes(columnType);
 
@@ -185,22 +184,21 @@ describe('FilterAction::fetchOptions', () => {
             }),
 
             // match against symbol
-            fetchOptions(['Phrase', '='], (options) => {
+            fetchOptions(['Phrase', '='], options => {
                 expect(options.length).toEqual(2);
             }),
 
             // match against displayText
-            fetchOptions(['Phrase', 'is '], (options) => {
+            fetchOptions(['Phrase', 'is '], options => {
                 expect(options.length).toEqual(2);
                 expect(options[0].value).toEqual(`"${Filter.Types.ISBLANK.getDisplayText().toLowerCase()}"`);
                 expect(options[1].value).toEqual(`"${Filter.Types.NONBLANK.getDisplayText().toLowerCase()}"`);
-            })
+            }),
         ]);
     });
 });
 
 describe('FilterAction::parseTokens', () => {
-
     test('empty tokens', () => {
         expect(FilterAction.parseTokens(undefined, testColumns).columnName).toBeUndefined();
         expect(FilterAction.parseTokens(null, testColumns).columnName).toBeUndefined();
@@ -242,7 +240,7 @@ describe('FilterAction::parseTokens', () => {
         const actual = context.filterTypes;
 
         expect(actual.length).toEqual(expected.length);
-        for (let i=0; i < expected.length; i++) {
+        for (let i = 0; i < expected.length; i++) {
             expectSameFilterType(actual[i], expected[i]);
         }
         expectSameFilterType(context.activeFilterType, Filter.Types.EQUAL);

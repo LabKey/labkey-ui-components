@@ -16,6 +16,13 @@
 
 import React from 'react';
 import { List } from 'immutable';
+
+import { mount } from 'enzyme';
+
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
+import toJson from 'enzyme-to-json';
+
 import {
     ATTACHMENT_TYPE,
     DATETIME_TYPE,
@@ -28,7 +35,6 @@ import {
     TEXT_TYPE,
 } from './models';
 import { DomainRow } from './DomainRow';
-import { mount } from 'enzyme';
 import {
     ATTACHMENT_RANGE_URI,
     DOMAIN_EDITABLE_DEFAULT,
@@ -48,38 +54,37 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import toJson from 'enzyme-to-json';
+
 import { createFormInputId } from './actions';
 
-const wrapDraggable = (element) => {
+const wrapDraggable = element => {
     return (
         <DragDropContext onDragEnd={jest.fn()}>
-            <Droppable droppableId='domain-form-droppable'>
-                {(provided) => (
-                    <div ref={provided.innerRef}
-                        {...provided.droppableProps}
-                    >
+            <Droppable droppableId="domain-form-droppable">
+                {provided => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
                         {element}
                         {provided.placeholder}
                     </div>
                 )}
             </Droppable>
         </DragDropContext>
-    )
-
+    );
 };
 
-const DEFAULT_OPTIONS = List<string>([ DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT ]);
+const DEFAULT_OPTIONS = List<string>([
+    DOMAIN_EDITABLE_DEFAULT,
+    DOMAIN_LAST_ENTERED_DEFAULT,
+    DOMAIN_NON_EDITABLE_DEFAULT,
+]);
 
 describe('DomainRow', () => {
-
     test('with empty domain form', () => {
         const field = DomainField.create({});
         const tree = mount(
             wrapDraggable(
                 <DomainRow
-                    key={'domain-row-key-1'}
+                    key="domain-row-key-1"
                     index={1}
                     domainIndex={1}
                     field={field}
@@ -96,7 +101,9 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
-                />));
+                />
+            )
+        );
 
         expect(toJson(tree)).toMatchSnapshot();
         tree.unmount();
@@ -112,13 +119,13 @@ describe('DomainRow', () => {
             name: _name,
             rangeURI: _propDesc.rangeURI,
             propertyId: 1,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
 
         const row = mount(
             wrapDraggable(
                 <DomainRow
-                    key={'domain-row-key-1'}
+                    key="domain-row-key-1"
                     index={_index}
                     domainIndex={_domainIndex}
                     field={field}
@@ -135,17 +142,28 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
-                />));
+                />
+            )
+        );
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
+        const type = row.find({
+            id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
+        const name = row.find({
+            id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
+        const req = row.find({
+            id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
+            bsClass: 'checkbox',
+        });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
@@ -164,13 +182,13 @@ describe('DomainRow', () => {
             rangeURI: _propDesc.rangeURI,
             propertyId: 1,
             propertyURI: 'test',
-            required: true
+            required: true,
         });
 
         const row = mount(
             wrapDraggable(
                 <DomainRow
-                    key={'domain-row-key-1'}
+                    key="domain-row-key-1"
                     index={_index}
                     domainIndex={_domainIndex}
                     field={field}
@@ -187,17 +205,28 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
-                />));
+                />
+            )
+        );
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
+        const type = row.find({
+            id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
+        const name = row.find({
+            id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
+        const req = row.find({
+            id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
+            bsClass: 'checkbox',
+        });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(true);
 
@@ -216,13 +245,13 @@ describe('DomainRow', () => {
             rangeURI: _propDesc.rangeURI,
             propertyId: 1,
             propertyURI: 'test',
-            required: false
+            required: false,
         });
 
         const row = mount(
             wrapDraggable(
                 <DomainRow
-                    key={'domain-row-key-1'}
+                    key="domain-row-key-1"
                     index={_index}
                     domainIndex={_domainIndex}
                     field={field}
@@ -239,17 +268,28 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
-                />));
+                />
+            )
+        );
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
+        const type = row.find({
+            id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
+        const name = row.find({
+            id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
+        const req = row.find({
+            id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
+            bsClass: 'checkbox',
+        });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
@@ -268,13 +308,13 @@ describe('DomainRow', () => {
             rangeURI: _propDesc.rangeURI,
             conceptURI: _propDesc.conceptURI,
             propertyId: 1,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
 
         const row = mount(
             wrapDraggable(
                 <DomainRow
-                    key={'domain-row-key-1'}
+                    key="domain-row-key-1"
                     index={_index}
                     domainIndex={_domainIndex}
                     field={field}
@@ -291,28 +331,39 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
-                />));
+                />
+            )
+        );
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
+        const type = row.find({
+            id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
+        const name = row.find({
+            id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
+        const req = row.find({
+            id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
+            bsClass: 'checkbox',
+        });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
         // Verify not expanded
-        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index)}).hostNodes();
+        const expandButton = row.find({ id: createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index) }).hostNodes();
         expect(expandButton.length).toEqual(1);
 
-        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index)}).hostNodes();
+        const deleteButton = row.find({ id: createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index) }).hostNodes();
         expect(deleteButton.length).toEqual(1);
 
-        let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index)});
+        const advButton = row.find({ id: createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index) });
         expect(advButton.length).toEqual(0);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -329,13 +380,13 @@ describe('DomainRow', () => {
             name: _name,
             rangeURI: _propDesc.rangeURI,
             propertyId: 1,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
 
         const row = mount(
             wrapDraggable(
                 <DomainRow
-                    key={'domain-row-key-1'}
+                    key="domain-row-key-1"
                     index={_index}
                     domainIndex={_domainIndex}
                     field={field}
@@ -352,33 +403,46 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
-                />));
+                />
+            )
+        );
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
+        const type = row.find({
+            id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
+        const name = row.find({
+            id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
+        const req = row.find({
+            id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
+            bsClass: 'checkbox',
+        });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
         // Verify expanded
-        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index)}).hostNodes();
+        const expandButton = row.find({ id: createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index) }).hostNodes();
         expect(expandButton.length).toEqual(1);
 
-        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index)}).hostNodes();
+        const deleteButton = row.find({ id: createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index) }).hostNodes();
         expect(deleteButton.length).toEqual(1);
 
-        let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index), bsStyle: 'default'});
+        const advButton = row.find({
+            id: createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index),
+            bsStyle: 'default',
+        });
         expect(advButton.length).toEqual(1);
 
-        let sectionLabel = row.find({className: 'domain-field-section-heading domain-field-section-hdr'});
+        const sectionLabel = row.find({ className: 'domain-field-section-heading domain-field-section-hdr' });
         expect(sectionLabel.length).toEqual(2);
-
     });
 
     test('Sample Field', () => {
@@ -393,13 +457,13 @@ describe('DomainRow', () => {
             conceptURI: _propDesc.conceptURI,
             propertyId: 1,
             propertyURI: 'test',
-            required: false
+            required: false,
         });
 
         const row = mount(
             wrapDraggable(
                 <DomainRow
-                    key={'domain-row-key-1'}
+                    key="domain-row-key-1"
                     index={_index}
                     domainIndex={_domainIndex}
                     field={field}
@@ -416,17 +480,28 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
-                />));
+                />
+            )
+        );
 
-        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index), bsClass: 'form-control'});
+        const type = row.find({
+            id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
-        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index), bsClass: 'form-control'});
+        const name = row.find({
+            id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
+            bsClass: 'form-control',
+        });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
-        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index), bsClass: 'checkbox'});
+        const req = row.find({
+            id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
+            bsClass: 'checkbox',
+        });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
@@ -440,20 +515,23 @@ describe('DomainRow', () => {
         const domainFieldError = new DomainFieldError({
             message: FIELD_NAME_CHAR_WARNING_MSG,
             extraInfo: FIELD_NAME_CHAR_WARNING_INFO,
-            fieldName, propertyId: undefined, severity, index: 0
+            fieldName,
+            propertyId: undefined,
+            severity,
+            index: 0,
         });
 
         const field = DomainField.create({
             name: fieldName,
             rangeURI: ATTACHMENT_RANGE_URI,
-            propertyId: undefined, //new field
-            propertyURI: 'test'
+            propertyId: undefined, // new field
+            propertyURI: 'test',
         });
 
         const row = mount(
             wrapDraggable(
                 <DomainRow
-                    key={'domain-row-key-1'}
+                    key="domain-row-key-1"
                     index={1}
                     domainIndex={1}
                     field={field}
@@ -471,16 +549,21 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
-                />));
+                />
+            )
+        );
 
-        //test row highlighting for a warning
-        const warningRowClass = row.find({className: 'domain-field-row domain-row-border-warning'});
+        // test row highlighting for a warning
+        const warningRowClass = row.find({ className: 'domain-field-row domain-row-border-warning' });
         expect(warningRowClass.length).toEqual(1);
 
-        //test warning message
-        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1, 1), className: 'domain-field-details'});
+        // test warning message
+        const rowDetails = row.find({
+            id: createFormInputId(DOMAIN_FIELD_DETAILS, 1, 1),
+            className: 'domain-field-details',
+        });
         expect(rowDetails.length).toEqual(1);
-        const expected = "New field. " + severity + ": " + FIELD_NAME_CHAR_WARNING_MSG;
+        const expected = 'New field. ' + severity + ': ' + FIELD_NAME_CHAR_WARNING_MSG;
         expect(rowDetails.text()).toContain(expected);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -488,23 +571,28 @@ describe('DomainRow', () => {
     });
 
     test('server side error on reserved field', () => {
-
         const message = "'modified' is a reserved field name in 'CancerCuringStudy'";
         const fieldName = 'modified';
         const severity = SEVERITY_LEVEL_ERROR;
-        const domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index: 0});
+        const domainFieldError = new DomainFieldError({
+            message,
+            fieldName,
+            propertyId: undefined,
+            severity,
+            index: 0,
+        });
 
         const field = DomainField.create({
             name: fieldName,
             rangeURI: ATTACHMENT_RANGE_URI,
-            propertyId: undefined, //new field
-            propertyURI: 'test'
+            propertyId: undefined, // new field
+            propertyURI: 'test',
         });
 
         const row = mount(
             wrapDraggable(
                 <DomainRow
-                    key={'domain-row-key-1'}
+                    key="domain-row-key-1"
                     index={1}
                     domainIndex={1}
                     field={field}
@@ -522,21 +610,24 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
-                />));
+                />
+            )
+        );
 
-        //test row highlighting for error
-        const warningRowClass = row.find({className: 'domain-field-row domain-row-border-error'});
+        // test row highlighting for error
+        const warningRowClass = row.find({ className: 'domain-field-row domain-row-border-error' });
         expect(warningRowClass.length).toEqual(1);
 
-        //test error message
-        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1, 1), className: 'domain-field-details'});
+        // test error message
+        const rowDetails = row.find({
+            id: createFormInputId(DOMAIN_FIELD_DETAILS, 1, 1),
+            className: 'domain-field-details',
+        });
         expect(rowDetails.length).toEqual(1);
-        const expected = "New field. " + severity + ": " + message;
+        const expected = 'New field. ' + severity + ': ' + message;
         expect(rowDetails.text()).toContain(expected);
 
         expect(toJson(row)).toMatchSnapshot();
         row.unmount();
-
     });
-
 });

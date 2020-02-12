@@ -16,12 +16,11 @@
 import React from 'react';
 
 interface CustomToggleProps {
-    bsRole?: any
-    onClick?: any
+    bsRole?: any;
+    onClick?: any;
 }
 
 export class CustomToggle extends React.Component<CustomToggleProps, any> {
-
     constructor(props) {
         super(props);
 
@@ -34,10 +33,6 @@ export class CustomToggle extends React.Component<CustomToggleProps, any> {
     }
 
     render() {
-        return (
-            <span onClick={this.handleClick}>
-                {this.props.children}
-            </span>
-        )
+        return <span onClick={this.handleClick}>{this.props.children}</span>;
     }
 }

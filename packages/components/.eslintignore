@@ -8,3 +8,6 @@
 !*.tsx
 !*.css
 !*.scss
+
+# black-list files
+jest.setup.ts

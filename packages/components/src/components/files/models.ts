@@ -16,10 +16,10 @@
 import { Map } from 'immutable';
 
 export interface FileAttachmentFormModel {
-    addAttachedFile?: (any) => any
-    attachedFiles?: Map<string, File>
-    isSubmitting?: boolean
-    removeAttachedFile?: (any) => any
+    addAttachedFile?: (any) => any;
+    attachedFiles?: Map<string, File>;
+    isSubmitting?: boolean;
+    removeAttachedFile?: (any) => any;
 }
 
 export interface IFile {
@@ -55,17 +55,17 @@ export const DEFAULT_FILE: IFile = {
     isLeaf: false,
     lastModified: undefined,
     name: undefined,
-    propertiesRowId: undefined
+    propertiesRowId: undefined,
 };
 
 export interface FileSizeLimitProps {
     maxSize?: {
-        value: number
-        displayValue: string
-    }
+        value: number;
+        displayValue: string;
+    };
     maxPreviewSize?: {
-        value: number
-        displayValue: string
-    }
+        value: number;
+        displayValue: string;
+    };
 }
-export const ALL_FILES_LIMIT_KEY = "all";
+export const ALL_FILES_LIMIT_KEY = 'all';

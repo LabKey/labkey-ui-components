@@ -17,11 +17,13 @@ import { List, Map } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { ASSAY_WIZARD_MODEL } from '../../test/data/constants';
-import { AssayWizardModel, parseDataTextToRunRows } from './models';
+
 import { initQueryGridState } from '../../global';
 import { getStateQueryGridModel } from '../../models';
 import { gridInit } from '../../actions';
 import { AssayUploadTabs, QueryInfo, SchemaQuery } from '../base/models/model';
+
+import { AssayWizardModel, parseDataTextToRunRows } from './models';
 
 const DATA_TEXT = 'test1\ttest2\n1\t2';
 
@@ -34,21 +36,21 @@ beforeAll(() => {
         queryInfo: new QueryInfo(),
         loader: {
             fetch: () => {
-                return new Promise((resolve) => {
+                return new Promise(resolve => {
                     resolve({
                         data: Map<any, Map<string, any>>(),
                         dataIds: List<any>(),
                     });
                 });
-            }
-        }
+            },
+        },
     });
 
     gridInit(GRID_MODEL, true);
 });
 
 describe('AssayWizardModel', () => {
-    test("getRunName", () => {
+    test('getRunName', () => {
         let model = ASSAY_WIZARD_MODEL;
 
         // if runName is not set, use the generateNameWithTimestamp function
@@ -60,7 +62,7 @@ describe('AssayWizardModel', () => {
         expect(model.getRunName(AssayUploadTabs.Files)).toBe('testing');
     });
 
-    test("prepareFormData Files tab", () => {
+    test('prepareFormData Files tab', () => {
         let model = ASSAY_WIZARD_MODEL;
         model = model.set('dataText', DATA_TEXT) as AssayWizardModel;
         const data = model.prepareFormData(AssayUploadTabs.Files, GRID_MODEL);
@@ -71,7 +73,7 @@ describe('AssayWizardModel', () => {
         expect(data.dataRows === undefined).toBeTruthy();
     });
 
-    test("prepareFormData Copy tab", () => {
+    test('prepareFormData Copy tab', () => {
         let model = ASSAY_WIZARD_MODEL;
         model = model.set('dataText', DATA_TEXT) as AssayWizardModel;
         const data = model.prepareFormData(AssayUploadTabs.Copy, GRID_MODEL);
@@ -80,11 +82,11 @@ describe('AssayWizardModel', () => {
         expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();
         expect(data.files === undefined).toBeTruthy();
         expect(Utils.isArray(data.dataRows) && data.dataRows.length === 1).toBeTruthy();
-        expect(data.dataRows[0]['test1']).toBe('1');
-        expect(data.dataRows[0]['test2']).toBe('2');
+        expect(data.dataRows[0].test1).toBe('1');
+        expect(data.dataRows[0].test2).toBe('2');
     });
 
-    test("prepareFormData Grid tab", () => {
+    test('prepareFormData Grid tab', () => {
         let model = ASSAY_WIZARD_MODEL;
         model = model.set('dataText', DATA_TEXT) as AssayWizardModel;
         const data = model.prepareFormData(AssayUploadTabs.Grid, GRID_MODEL);
@@ -97,7 +99,7 @@ describe('AssayWizardModel', () => {
 });
 
 describe('parseDataTextToRunRows', () => {
-    test("empty", () => {
+    test('empty', () => {
         let rows = parseDataTextToRunRows(undefined);
         expect(rows).toBe(null);
         rows = parseDataTextToRunRows(null);
@@ -106,26 +108,26 @@ describe('parseDataTextToRunRows', () => {
         expect(rows).toBe(null);
     });
 
-    test("header only", () => {
+    test('header only', () => {
         const rows = parseDataTextToRunRows('test1\ttest2');
         expect(rows).toBe(null);
     });
 
-    test("one row", () => {
+    test('one row', () => {
         const rows = parseDataTextToRunRows('test1\ttest2\n1\t2');
         expect(Utils.isArray(rows) && rows.length === 1).toBeTruthy();
-        expect(rows[0]['test1']).toBe('1');
-        expect(rows[0]['test2']).toBe('2');
+        expect(rows[0].test1).toBe('1');
+        expect(rows[0].test2).toBe('2');
     });
 
-    test("multiple rows", () => {
+    test('multiple rows', () => {
         const rows = parseDataTextToRunRows('test1\ttest2\n1\t2\n\n3\n\t4');
         expect(Utils.isArray(rows) && rows.length === 3).toBeTruthy();
-        expect(rows[0]['test1']).toBe('1');
-        expect(rows[0]['test2']).toBe('2');
-        expect(rows[1]['test1']).toBe('3');
-        expect(rows[1]['test2']).toBe(undefined);
-        expect(rows[2]['test1']).toBe(undefined);
-        expect(rows[2]['test2']).toBe('4');
+        expect(rows[0].test1).toBe('1');
+        expect(rows[0].test2).toBe('2');
+        expect(rows[1].test1).toBe('3');
+        expect(rows[1].test2).toBe(undefined);
+        expect(rows[2].test1).toBe(undefined);
+        expect(rows[2].test2).toBe('4');
     });
 });

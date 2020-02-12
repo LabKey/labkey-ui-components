@@ -16,6 +16,15 @@
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 
+import { getSelected, getSelection } from '../../actions';
+import { SCHEMAS } from '../base/models/schemas';
+import { QueryColumn, SchemaQuery } from '../base/models/model';
+import { buildURL } from '../../url/ActionURL';
+import { getQueryGridModel } from '../../global';
+import { naturalSort } from '../../util/utils';
+import { selectRows } from '../../query/api';
+import { getActionErrorMessage } from '../../util/messaging';
+
 import {
     DisplayObject,
     IParentOption,
@@ -25,62 +34,52 @@ import {
     SampleSetOption,
     SampleSetParentType,
 } from './models';
-import { getSelected, getSelection } from '../../actions';
-import { SCHEMAS } from '../base/models/schemas';
-import { QueryColumn, SchemaQuery } from '../base/models/model';
-import { buildURL } from '../../url/ActionURL';
-import { getQueryGridModel } from '../../global';
-import { naturalSort } from '../../util/utils';
-import { selectRows } from '../../query/api';
-import { getActionErrorMessage } from "../../util/messaging";
 
-function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<SampleSetParentType>> {
-    return new Promise((resolve) => {
-
+function initParents(initialParents: string[], selectionKey: string): Promise<List<SampleSetParentType>> {
+    return new Promise(resolve => {
         if (selectionKey) {
             const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
             const queryGridModel = getQueryGridModel(selectionKey);
 
             if (queryGridModel && queryGridModel.selectedLoaded) {
                 return selectRows({
+                    schemaName: schemaQuery.schemaName,
+                    queryName: schemaQuery.queryName,
+                    columns: 'LSID,Name,RowId',
+                    filterArray: [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)],
+                }).then(samplesResponse => {
+                    resolve(resolveSampleSetParentTypeFromIds(schemaQuery, samplesResponse));
+                });
+            } else {
+                getSelected(selectionKey)
+                    .then(selectionResponse => {
+                        return selectRows({
                             schemaName: schemaQuery.schemaName,
                             queryName: schemaQuery.queryName,
                             columns: 'LSID,Name,RowId',
-                            filterArray: [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)]
-                        }).then((samplesResponse) => {
+                            filterArray: [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)],
+                        }).then(samplesResponse => {
                             resolve(resolveSampleSetParentTypeFromIds(schemaQuery, samplesResponse));
                         });
-            }
-            else {
-                getSelected(selectionKey).then((selectionResponse) => {
-                    return selectRows({
-                        schemaName: schemaQuery.schemaName,
-                        queryName: schemaQuery.queryName,
-                        columns: 'LSID,Name,RowId',
-                        filterArray: [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)]
-                    }).then((samplesResponse) => {
-                        resolve(resolveSampleSetParentTypeFromIds(schemaQuery, samplesResponse));
+                    })
+                    .catch(() => {
+                        console.warn('Unable to parse selectionKey', selectionKey);
+                        resolve(List<SampleSetParentType>());
                     });
-                }).catch(() => {
-                    console.warn('Unable to parse selectionKey', selectionKey);
-                    resolve(List<SampleSetParentType>());
-                });
             }
-        }
-        else if (initialParents && initialParents.length > 0) {
+        } else if (initialParents && initialParents.length > 0) {
             const parent = initialParents[0];
-            const [ schema, query, value ] = parent.toLowerCase().split(':');
+            const [schema, query, value] = parent.toLowerCase().split(':');
 
             return selectRows({
                 schemaName: schema,
                 queryName: query,
                 columns: 'LSID,Name,RowId',
-                filterArray: [Filter.create('RowId', value)]
-            }).then((samplesResponse) => {
+                filterArray: [Filter.create('RowId', value)],
+            }).then(samplesResponse => {
                 resolve(resolveSampleSetParentTypeFromIds(SchemaQuery.create(schema, query), samplesResponse));
             });
-        }
-        else {
+        } else {
             resolve(List<SampleSetParentType>());
         }
     });
@@ -92,11 +91,11 @@ function resolveSampleSetParentTypeFromIds(schemaQuery: SchemaQuery, response: a
     let data = List<DisplayObject>();
 
     // The transformation done here makes the samples compatible with the editable grid
-    orderedModels[key].forEach((id) => {
+    orderedModels[key].forEach(id => {
         const row = extractFromRow(rows.get(id));
         data = data.push({
             displayValue: row.label,
-            value: row.rowId
+            value: row.rowId,
         });
     });
 
@@ -105,8 +104,8 @@ function resolveSampleSetParentTypeFromIds(schemaQuery: SchemaQuery, response: a
             index: 1,
             schema: schemaQuery.getSchema(),
             query: schemaQuery.getQuery(),
-            value: data
-        })
+            value: data,
+        }),
     ]);
 }
 
@@ -115,31 +114,36 @@ function extractFromRow(row: Map<string, any>): ISampleSetOption {
         label: row.getIn(['Name', 'value']),
         lsid: row.getIn(['LSID', 'value']),
         rowId: row.getIn(['RowId', 'value']),
-        value: row.getIn(['Name', 'value'])
-    }
+        value: row.getIn(['Name', 'value']),
+    };
 }
 
-export function initSampleSetSelects(isUpdate: boolean, ssName: string, placeholderOption: IParentOption, prefix: string, ) :Promise<List<IParentOption>> {
+export function initSampleSetSelects(
+    isUpdate: boolean,
+    ssName: string,
+    placeholderOption: IParentOption,
+    prefix: string
+): Promise<List<IParentOption>> {
     return selectRows({
         schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
         queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-        columns: 'LSID, Name, RowId'
+        columns: 'LSID, Name, RowId',
     }).then(results => {
         const sampleSets = fromJS(results.models[results.key]);
 
         let sets = List<IParentOption>();
         sampleSets.forEach(row => {
             const name = row.getIn(['Name', 'value']);
-            let label = placeholderOption && name === ssName ? placeholderOption.label : name;
+            const label = placeholderOption && name === ssName ? placeholderOption.label : name;
             sets = sets.push({
                 value: prefix + name,
-                label: label,
+                label,
                 schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
                 query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
             });
         });
 
-        if(!isUpdate) {
+        if (!isUpdate) {
             sets = sets.push(placeholderOption);
         }
 
@@ -147,58 +151,65 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, placehol
     });
 }
 
-
-
-export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Partial<SampleIdCreationModel>> {
-    return new Promise( (resolve, reject) => {
+export function initSampleSetInsert(model: SampleIdCreationModel): Promise<Partial<SampleIdCreationModel>> {
+    return new Promise((resolve, reject) => {
         return Promise.all([
             selectRows({
                 schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
                 queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-                columns: 'LSID,Name,RowId'
+                columns: 'LSID,Name,RowId',
             }),
-            initParents(model.parents, model.selectionKey)
-        ]).then(results => {
-            let [ sampleSetResult, sampleParents ] = results;
-            const sampleSets = fromJS(sampleSetResult.models[sampleSetResult.key]);
-            const sampleCount = sampleParents.find((parent) => parent.value !== undefined) ? 1 : 0;
-            const parentOptions = sampleSets.map(row => {
-                const name = row.getIn(['Name', 'value']);
-                return {
-                    value: name.toLowerCase(),
-                    label: name,
-                    schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                    query: name // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
+            initParents(model.parents, model.selectionKey),
+        ])
+            .then(results => {
+                const [sampleSetResult, sampleParents] = results;
+                const sampleSets = fromJS(sampleSetResult.models[sampleSetResult.key]);
+                const sampleCount = sampleParents.find(parent => parent.value !== undefined) ? 1 : 0;
+                const parentOptions = sampleSets
+                    .map(row => {
+                        const name = row.getIn(['Name', 'value']);
+                        return {
+                            value: name.toLowerCase(),
+                            label: name,
+                            schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                            query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
+                        };
+                    })
+                    .toList()
+                    .sortBy(p => p.label, naturalSort);
+
+                const sampleSetOptions = sampleSets
+                    .map(row => extractFromRow(row))
+                    .sortBy(r => r.label, naturalSort)
+                    .toList();
+
+                let targetSampleSet;
+                if (model.initialSampleSet) {
+                    const setName = model.initialSampleSet.toLowerCase();
+                    const data = sampleSets.find(row => setName === row.getIn(['Name', 'value']).toLowerCase());
+
+                    if (data) {
+                        targetSampleSet = new SampleSetOption(extractFromRow(data));
+                    }
                 }
-            }).toList().sortBy(p => p.label, naturalSort);
-
-            const sampleSetOptions = sampleSets
-                .map(row => extractFromRow(row))
-                .sortBy(r => r.label, naturalSort)
-                .toList();
-
-            let targetSampleSet;
-            if (model.initialSampleSet) {
-                const setName = model.initialSampleSet.toLowerCase();
-                const data = sampleSets.find(row => setName === row.getIn(['Name', 'value']).toLowerCase());
-
-                if (data) {
-                    targetSampleSet = new SampleSetOption(extractFromRow(data));
-                }
-            }
-            resolve({
-                isInit: true,
-                parentOptions,
-                sampleCount,
-                sampleParents,
-                sampleSetOptions,
-                targetSampleSet
+                resolve({
+                    isInit: true,
+                    parentOptions,
+                    sampleCount,
+                    sampleParents,
+                    sampleSetOptions,
+                    targetSampleSet,
+                });
             })
-        })
-        .catch((reason) => {
-            console.error(reason);
-            reject(getActionErrorMessage('There was a problem initializing the sample type create page.', 'sample types'));
-        })
+            .catch(reason => {
+                console.error(reason);
+                reject(
+                    getActionErrorMessage(
+                        'There was a problem initializing the sample type create page.',
+                        'sample types'
+                    )
+                );
+            });
     });
 }
 
@@ -208,10 +219,10 @@ export function createSampleSet(config: ISampleSetDetails): Promise<any> {
             url: buildURL('experiment', 'createSampleSetApi.api'),
             method: 'POST',
             params: config,
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
             }),
         });
@@ -224,10 +235,10 @@ export function getSampleSet(config: ISampleSetDetails): Promise<any> {
             url: buildURL('experiment', 'getSampleSetApi.api'),
             method: 'GET',
             params: config,
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(Map(response));
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
             }),
         });
@@ -240,10 +251,10 @@ export function updateSampleSet(config: ISampleSetDetails): Promise<any> {
             url: buildURL('experiment', 'updateMaterialSourceApi.api'),
             method: 'POST',
             params: config,
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
             }),
         });
@@ -257,12 +268,12 @@ export function deleteSampleSet(rowId: number): Promise<any> {
             method: 'POST',
             params: {
                 singleObjectRowId: rowId,
-                forceDelete: true
+                forceDelete: true,
             },
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
             }),
         });
@@ -270,50 +281,49 @@ export function deleteSampleSet(rowId: number): Promise<any> {
 }
 
 export interface DeleteConfirmationData {
-    canDelete: Array<any>
-    cannotDelete: Array<any>
+    canDelete: any[];
+    cannotDelete: any[];
 }
 
-export function getSampleDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>) : Promise<DeleteConfirmationData> {
+export function getSampleDeleteConfirmationData(
+    selectionKey: string,
+    rowIds?: string[]
+): Promise<DeleteConfirmationData> {
     return new Promise((resolve, reject) => {
-       let params;
-       if (selectionKey) {
-           params = {
-               dataRegionSelectionKey: selectionKey
-           }
-       }
-       else {
-           params = {
-               rowIds
-           }
-       }
-       return Ajax.request({
-           url: buildURL('experiment', "getMaterialDeleteConfirmationData.api", params),
-           method: "GET",
-           success: Utils.getCallbackWrapper((response) => {
-               if (response.success) {
-                   resolve(response.data);
-               }
-               else {
-                   reject(response.exception);
-               }
-           }),
-           failure: Utils.getCallbackWrapper((response) => {
-               reject(response ? response.exception : 'Unknown error getting sample delete confirmation data.');
-           })
-       })
+        let params;
+        if (selectionKey) {
+            params = {
+                dataRegionSelectionKey: selectionKey,
+            };
+        } else {
+            params = {
+                rowIds,
+            };
+        }
+        return Ajax.request({
+            url: buildURL('experiment', 'getMaterialDeleteConfirmationData.api', params),
+            method: 'GET',
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    resolve(response.data);
+                } else {
+                    reject(response.exception);
+                }
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                reject(response ? response.exception : 'Unknown error getting sample delete confirmation data.');
+            }),
+        });
     });
 }
 
 export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
-    return getSelection(location).then((selection) => {
+    return getSelection(location).then(selection => {
         if (selection.resolved && selection.schemaQuery && selection.selected.length) {
             return selectRows({
                 schemaName: selection.schemaQuery.schemaName,
                 queryName: selection.schemaQuery.queryName,
-                filterArray: [
-                    Filter.create('RowId', selection.selected, Filter.Types.IN)
-                ]
+                filterArray: [Filter.create('RowId', selection.selected, Filter.Types.IN)],
             }).then(response => {
                 const { key, models, orderedModels } = response;
                 const rows = fromJS(models[key]);
@@ -321,11 +331,16 @@ export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): P
 
                 // The transformation done here makes the samples compatible with the editable grid on the assay upload
                 // wizard.
-                orderedModels[key].forEach((id) => {
-                    data = data.setIn([id, sampleColumn.fieldKey], List([{
-                        displayValue: rows.getIn([id, sampleColumn.lookup.displayColumn, 'value']),
-                        value: rows.getIn([id, sampleColumn.lookup.keyColumn, 'value'])
-                    }]));
+                orderedModels[key].forEach(id => {
+                    data = data.setIn(
+                        [id, sampleColumn.fieldKey],
+                        List([
+                            {
+                                displayValue: rows.getIn([id, sampleColumn.lookup.displayColumn, 'value']),
+                                value: rows.getIn([id, sampleColumn.lookup.keyColumn, 'value']),
+                            },
+                        ])
+                    );
                 });
 
                 return data;

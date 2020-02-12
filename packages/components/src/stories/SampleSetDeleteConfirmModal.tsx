@@ -16,6 +16,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
+
 import { SampleSetDeleteConfirmModal } from '../components/samples/SampleSetDeleteConfirmModal';
 
 import './stories.scss';
@@ -23,10 +24,12 @@ import './stories.scss';
 storiesOf('SampleSetDeleteConfirmModal', module)
     .addDecorator(withKnobs)
     .add('with knobs', () => {
-        return <SampleSetDeleteConfirmModal
-            rowId={0}
-            showDependenciesLink={boolean('showDependenciesLink', false)}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
+        return (
+            <SampleSetDeleteConfirmModal
+                rowId={0}
+                showDependenciesLink={boolean('showDependenciesLink', false)}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     });

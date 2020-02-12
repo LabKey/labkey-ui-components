@@ -16,20 +16,19 @@
 import React from 'react';
 
 interface DetailPanelHeaderProps {
-    isEditable: boolean
-    canUpdate: boolean
-    editing?: boolean
-    onClickFn?: () => void
-    title?: string
-    warning?: string
-    useEditIcon: boolean
+    isEditable: boolean;
+    canUpdate: boolean;
+    editing?: boolean;
+    onClickFn?: () => void;
+    title?: string;
+    warning?: string;
+    useEditIcon: boolean;
 }
 
 export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, any> {
-
     static defaultProps = {
         title: 'Details',
-        useEditIcon: true
+        useEditIcon: true,
     };
 
     render() {
@@ -46,7 +45,7 @@ export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, a
                         </span>
                     )}
                 </div>
-            )
+            );
         }
 
         return (
@@ -55,12 +54,12 @@ export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, a
                 {isEditable && canUpdate && (
                     <>
                         <div className="detail__edit-button" onClick={onClickFn}>
-                            {useEditIcon ? <i className="fa fa-pencil-square-o"/> : 'Edit'}
+                            {useEditIcon ? <i className="fa fa-pencil-square-o" /> : 'Edit'}
                         </div>
-                        <div className="clearfix"/>
+                        <div className="clearfix" />
                     </>
                 )}
             </div>
-        )
+        );
     }
 }

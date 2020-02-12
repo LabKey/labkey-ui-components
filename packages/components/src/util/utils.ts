@@ -23,31 +23,33 @@ const emptyList = List<string>();
 
 // 36009: Case-insensitive variant of QueryKey.decodePart
 export function decodePart(s: string): string {
-    return s.replace(/\$P/ig, '.')
-        .replace(/\$C/ig, ',')
-        .replace(/\$T/ig, '~')
-        .replace(/\$B/ig, '}')
-        .replace(/\$A/ig, '&')
-        .replace(/\$S/ig, '/')
-        .replace(/\$D/ig, '$');
+    return s
+        .replace(/\$P/gi, '.')
+        .replace(/\$C/gi, ',')
+        .replace(/\$T/gi, '~')
+        .replace(/\$B/gi, '}')
+        .replace(/\$A/gi, '&')
+        .replace(/\$S/gi, '/')
+        .replace(/\$D/gi, '$');
 }
 
 // 36009: Case-insensitive variant of QueryKey.encodePart
 export function encodePart(s: string): string {
-    return s.replace(/\$/ig, '$D')
-        .replace(/\//ig, '$S')
-        .replace(/\&/ig, '$A')
-        .replace(/\}/ig, '$B')
-        .replace(/\~/ig, '$T')
-        .replace(/\,/ig, '$C')
-        .replace(/\./ig, '$P');
+    return s
+        .replace(/\$/gi, '$D')
+        .replace(/\//gi, '$S')
+        .replace(/\&/gi, '$A')
+        .replace(/\}/gi, '$B')
+        .replace(/\~/gi, '$T')
+        .replace(/\,/gi, '$C')
+        .replace(/\./gi, '$P');
 }
 
 export function resolveKey(schema: string, query: string): string {
     return [encodePart(schema), encodePart(query)].join('/').toLowerCase();
 }
 
-export function resolveKeyFromJson(json: {schemaName: Array<string>, queryName: string}): string {
+export function resolveKeyFromJson(json: { schemaName: string[]; queryName: string }): string {
     return resolveKey(json.schemaName.join('.'), json.queryName);
 }
 
@@ -59,7 +61,7 @@ export function resolveSchemaQuery(schemaQuery: SchemaQuery): string {
 }
 
 export function getSchemaQuery(encodedKey: string): SchemaQuery {
-    const [ encodedSchema, encodedQuery ] = encodedKey.split('/');
+    const [encodedSchema, encodedQuery] = encodedKey.split('/');
     return SchemaQuery.create(decodePart(encodedSchema), decodePart(encodedQuery));
 }
 
@@ -76,16 +78,29 @@ export function naturalSort(aso: string, bso: string): number {
     if (aso === undefined || aso === null || aso === '') return 1;
     if (bso === undefined || bso === null || bso === '') return -1;
 
-    let a, b, a1, b1, i = 0, n, L,
-        rx=/(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.\D+)|(\.$)/g;
+    let a,
+        b,
+        a1,
+        b1,
+        i = 0,
+        n,
+        L,
+        rx = /(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.\D+)|(\.$)/g;
 
-    a = aso.toString().toLowerCase().match(rx);
-    b = bso.toString().toLowerCase().match(rx);
+    a = aso
+        .toString()
+        .toLowerCase()
+        .match(rx);
+    b = bso
+        .toString()
+        .toLowerCase()
+        .match(rx);
 
     L = a.length;
     while (i < L) {
         if (!b[i]) return 1;
-        a1 = a[i]; b1 = b[i++];
+        a1 = a[i];
+        b1 = b[i++];
         if (a1 !== b1) {
             n = a1 - b1;
             if (!isNaN(n)) return n;
@@ -97,7 +112,7 @@ export function naturalSort(aso: string, bso: string): number {
 
 // Case insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
-export function caseInsensitive(obj: Object, prop: string): any {
+export function caseInsensitive(obj: Record<string, any>, prop: string): any {
     if (obj === undefined || obj === null) {
         return undefined;
     }
@@ -105,7 +120,7 @@ export function caseInsensitive(obj: Object, prop: string): any {
     if (Utils.isString(prop)) {
         const lower = prop.toLowerCase();
 
-        for (let p in obj) {
+        for (const p in obj) {
             if (obj.hasOwnProperty(p) && p.toLowerCase() === lower) {
                 return obj[p];
             }
@@ -138,7 +153,7 @@ export function intersect(a: List<string>, b: List<string>): List<string> {
  */
 export function capitalizeFirstChar(value: string): string {
     if (value && typeof value === 'string' && value.length > 1) {
-        return [value.substr(0,1).toUpperCase(), value.substr(1)].join('');
+        return [value.substr(0, 1).toUpperCase(), value.substr(1)].join('');
     }
     return value;
 }
@@ -166,7 +181,7 @@ function toLowerReducer(s: Set<string>, v: string) {
 }
 
 export function not(predicate: (...args: any[]) => boolean): (...args: any[]) => boolean {
-    return function () {
+    return function() {
         return !predicate.apply(this, arguments);
     };
 }
@@ -208,9 +223,10 @@ export function generateId(prefix?: string): string {
 // http://davidwalsh.name/javascript-debounce-function
 export function debounce(func, wait, immediate?: boolean) {
     let timeout: number;
-    return function () {
-        const context = this, args = arguments;
-        const later = function () {
+    return function() {
+        const context = this,
+            args = arguments;
+        const later = function() {
             timeout = null;
             if (!immediate) func.apply(context, args);
         };
@@ -228,15 +244,14 @@ export function debounce(func, wait, immediate?: boolean) {
  * @param perms the list of permission strings (See models/constants)
  * @param checkIsAdmin boolean indicating if user.isAdmin should be used as a fallback check
  */
-export function hasAllPermissions(user: User, perms: Array<string>, checkIsAdmin = true): boolean {
-
+export function hasAllPermissions(user: User, perms: string[], checkIsAdmin = true): boolean {
     let allow = false;
 
     if (perms) {
         const allPerms = user.get('permissionsList');
 
         let hasAll = true;
-        for (let i=0; i < perms.length; i++) {
+        for (let i = 0; i < perms.length; i++) {
             if (allPerms.indexOf(perms[i]) === -1) {
                 hasAll = false;
                 break;
@@ -302,9 +317,8 @@ export function similaritySortFactory(token: string, caseSensitive?: boolean): (
  * @param array1
  * @param array2
  */
-export function unorderedEqual(array1: Array<any>, array2: Array<any>) : boolean {
-    if (array1.length !== array2.length)
-        return false;
+export function unorderedEqual(array1: any[], array2: any[]): boolean {
+    if (array1.length !== array2.length) return false;
 
     const sortedA1 = array1.sort();
     const sortedA2 = array2.sort();
@@ -320,11 +334,9 @@ export function unorderedEqual(array1: Array<any>, array2: Array<any>) : boolean
  * Returns true if value is undefined, an empty string, or an empty array.  Otherwise returns false.
  * @param value
  */
-export function valueIsEmpty(value) : boolean {
-    if (!value)
-        return true;
-    if (typeof value === 'string' && value === '')
-        return true;
+export function valueIsEmpty(value): boolean {
+    if (!value) return true;
+    if (typeof value === 'string' && value === '') return true;
     return Array.isArray(value) && value.length === 0;
 }
 
@@ -338,48 +350,48 @@ export function valueIsEmpty(value) : boolean {
  *
  * @param data Map between ids and a map of data for the ids (i.e, a row of data for that id)
  */
-export function getCommonDataValues(data: Map<any, any>) : any {
-    let valueMap = Map<string, any>();  // map from fields to the value shared by all rows
+export function getCommonDataValues(data: Map<any, any>): any {
+    let valueMap = Map<string, any>(); // map from fields to the value shared by all rows
     let fieldsInConflict = Set<string>();
     let emptyFields = Set<string>(); // those fields that are empty
     data.map((rowData, id) => {
         // const rowData = data.get(id);
         if (rowData) {
             rowData.forEach((data, key) => {
-                if (!fieldsInConflict.has(key)) { // skip fields that are already in conflict
+                if (!fieldsInConflict.has(key)) {
+                    // skip fields that are already in conflict
                     const value = Iterable.isIterable(data) ? data.get('value') : data;
                     const currentValueEmpty = valueIsEmpty(value);
                     const havePreviousValue = valueMap.has(key);
-                    const arrayNotEqual = Array.isArray(value) && (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
+                    const arrayNotEqual =
+                        Array.isArray(value) &&
+                        (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
 
-                    if (!currentValueEmpty) { // non-empty value, so let's see if we have the same value
+                    if (!currentValueEmpty) {
+                        // non-empty value, so let's see if we have the same value
                         if (emptyFields.contains(key)) {
                             fieldsInConflict = fieldsInConflict.add(key);
-                        }
-                        else if (!havePreviousValue) {
+                        } else if (!havePreviousValue) {
                             valueMap = valueMap.set(key, value);
                         }
                         if (arrayNotEqual) {
                             fieldsInConflict = fieldsInConflict.add(key);
                             valueMap = valueMap.delete(key);
-                        }
-                        else if (valueMap.get(key) !== value) {
+                        } else if (valueMap.get(key) !== value) {
                             fieldsInConflict = fieldsInConflict.add(key);
                             valueMap = valueMap.delete(key);
                         }
-                    }
-                    else if (havePreviousValue) { // some row had a value, but this row does not
+                    } else if (havePreviousValue) {
+                        // some row had a value, but this row does not
                         fieldsInConflict = fieldsInConflict.add(key);
                         valueMap = valueMap.delete(key);
-                    }
-                    else {
+                    } else {
                         emptyFields = emptyFields.add(key);
                     }
                 }
             });
-        }
-        else {
-            console.error("Unable to find data for selection id " + id);
+        } else {
+            console.error('Unable to find data for selection id ' + id);
         }
     });
     return valueMap.toObject();
@@ -394,28 +406,25 @@ export function getCommonDataValues(data: Map<any, any>) : any {
  * @param updatedValues an object mapping fieldKeys to values that are being updated
  * @param primaryKeys the list of primary fieldKey names
  */
-export function getUpdatedData(originalData: Map<string, any>, updatedValues: any, primaryKeys: List<string>) : Array<any> {
-    let updateValuesMap = Map<any, any>(updatedValues);
-    let updatedData = originalData.map( (originalRowMap) => {
+export function getUpdatedData(originalData: Map<string, any>, updatedValues: any, primaryKeys: List<string>): any[] {
+    const updateValuesMap = Map<any, any>(updatedValues);
+    const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
             if (fieldValueMap && fieldValueMap.has('value')) {
                 if (primaryKeys.indexOf(key) > -1) {
                     return m.set(key, fieldValueMap.get('value'));
-                }
-                else if (updateValuesMap.has(key) && updateValuesMap.get(key) !== fieldValueMap.get('value')) {
+                } else if (updateValuesMap.has(key) && updateValuesMap.get(key) !== fieldValueMap.get('value')) {
                     return m.set(key, updateValuesMap.get(key));
                 } else {
                     return m;
                 }
-            }
-            else
-                return m;
+            } else return m;
         }, Map<any, any>());
     });
     // we want the rows that contain more than just the primaryKeys
     return updatedData
-        .filter((rowData) => rowData.size > primaryKeys.size)
-        .map(rowData => rowData.toJS() )
+        .filter(rowData => rowData.size > primaryKeys.size)
+        .map(rowData => rowData.toJS())
         .toArray();
 }
 
@@ -427,11 +436,15 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
  * @param editorRows An array of Maps from field keys to values
  * @param idField the fieldKey in the editorRow objects that is the id field that is the key for originalGridData
  */
-export function getUpdatedDataFromGrid(originalGridData: Map<string, Map<string, any>>, editorRows: Array<Map<string, any>>, idField: string) : Array<any> {
-    let updatedRows = [];
+export function getUpdatedDataFromGrid(
+    originalGridData: Map<string, Map<string, any>>,
+    editorRows: Array<Map<string, any>>,
+    idField: string
+): any[] {
+    const updatedRows = [];
     editorRows.forEach((editedRow, index) => {
-        let id = editedRow.get(idField);
-        let originalRow = originalGridData.get(id.toString());
+        const id = editedRow.get(idField);
+        const originalRow = originalGridData.get(id.toString());
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
                 let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
@@ -447,11 +460,10 @@ export function getUpdatedDataFromGrid(originalGridData: Map<string, Map<string,
             }, {});
             if (!Utils.isEmptyObj(row)) {
                 row[idField] = id;
-                updatedRows.push(row)
+                updatedRows.push(row);
             }
-        }
-        else {
-            console.error("Unable to find original row for id " + id);
+        } else {
+            console.error('Unable to find original row for id ' + id);
         }
     });
     return updatedRows;

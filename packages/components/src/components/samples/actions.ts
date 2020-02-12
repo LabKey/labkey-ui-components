@@ -19,12 +19,12 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 import {
     DisplayObject,
     IParentOption,
-    ISampleSetDetails,
-    ISampleSetOption,
-    SampleIdCreationModel,
-    SampleSetOption,
-    SampleSetParentType,
-} from './models';
+    IEntityTypeDetails,
+    IEntityTypeOption,
+    EntityIdCreationModel,
+    EntityTypeOption,
+    EntityParentType,
+} from '../entities/models';
 import { getSelected, getSelection } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
@@ -34,7 +34,7 @@ import { naturalSort } from '../../util/utils';
 import { selectRows } from '../../query/api';
 import { getActionErrorMessage } from "../../util/messaging";
 
-function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<SampleSetParentType>> {
+function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<EntityParentType>> {
     return new Promise((resolve) => {
 
         if (selectionKey) {
@@ -63,7 +63,7 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
                     });
                 }).catch(() => {
                     console.warn('Unable to parse selectionKey', selectionKey);
-                    resolve(List<SampleSetParentType>());
+                    resolve(List<EntityParentType>());
                 });
             }
         }
@@ -81,12 +81,12 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
             });
         }
         else {
-            resolve(List<SampleSetParentType>());
+            resolve(List<EntityParentType>());
         }
     });
 }
 
-function resolveSampleSetParentTypeFromIds(schemaQuery: SchemaQuery, response: any): List<SampleSetParentType> {
+function resolveSampleSetParentTypeFromIds(schemaQuery: SchemaQuery, response: any): List<EntityParentType> {
     const { key, models, orderedModels } = response;
     const rows = fromJS(models[key]);
     let data = List<DisplayObject>();
@@ -100,8 +100,8 @@ function resolveSampleSetParentTypeFromIds(schemaQuery: SchemaQuery, response: a
         });
     });
 
-    return List<SampleSetParentType>([
-        SampleSetParentType.create({
+    return List<EntityParentType>([
+        EntityParentType.create({
             index: 1,
             schema: schemaQuery.getSchema(),
             query: schemaQuery.getQuery(),
@@ -110,7 +110,7 @@ function resolveSampleSetParentTypeFromIds(schemaQuery: SchemaQuery, response: a
     ]);
 }
 
-function extractFromRow(row: Map<string, any>): ISampleSetOption {
+function extractFromRow(row: Map<string, any>): IEntityTypeOption {
     return {
         label: row.getIn(['Name', 'value']),
         lsid: row.getIn(['LSID', 'value']),
@@ -149,7 +149,7 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, placehol
 
 
 
-export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Partial<SampleIdCreationModel>> {
+export function initSampleSetInsert(model: EntityIdCreationModel)  : Promise<Partial<EntityIdCreationModel>> {
     return new Promise( (resolve, reject) => {
         return Promise.all([
             selectRows({
@@ -178,21 +178,21 @@ export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Par
                 .toList();
 
             let targetSampleSet;
-            if (model.initialSampleSet) {
-                const setName = model.initialSampleSet.toLowerCase();
+            if (model.initialEntityType) {
+                const setName = model.initialEntityType.toLowerCase();
                 const data = sampleSets.find(row => setName === row.getIn(['Name', 'value']).toLowerCase());
 
                 if (data) {
-                    targetSampleSet = new SampleSetOption(extractFromRow(data));
+                    targetSampleSet = new EntityTypeOption(extractFromRow(data));
                 }
             }
             resolve({
                 isInit: true,
                 parentOptions,
-                sampleCount,
-                sampleParents,
-                sampleSetOptions,
-                targetSampleSet
+                entityCount: sampleCount,
+                entityParents: sampleParents,
+                entityTypeOptions: sampleSetOptions,
+                targetEntityType: targetSampleSet
             })
         })
         .catch((reason) => {
@@ -202,7 +202,7 @@ export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Par
     });
 }
 
-export function createSampleSet(config: ISampleSetDetails): Promise<any> {
+export function createSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('experiment', 'createSampleSetApi.api'),
@@ -218,7 +218,7 @@ export function createSampleSet(config: ISampleSetDetails): Promise<any> {
     });
 }
 
-export function getSampleSet(config: ISampleSetDetails): Promise<any> {
+export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {
         return Ajax.request({
             url: buildURL('experiment', 'getSampleSetApi.api'),
@@ -234,7 +234,7 @@ export function getSampleSet(config: ISampleSetDetails): Promise<any> {
     });
 }
 
-export function updateSampleSet(config: ISampleSetDetails): Promise<any> {
+export function updateSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('experiment', 'updateMaterialSourceApi.api'),

@@ -24,19 +24,20 @@ import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
 import { generateId } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
+import { EntityDataType } from './constants';
 
-export interface SampleInputProps {
+export interface EntityInputProps {
     role: string
     rowId: number
 }
 
 export interface IDerivePayload {
-    dataInputs?: Array<SampleInputProps>
+    dataInputs?: Array<EntityInputProps>
     materialDefault?: any
-    materialInputs?: Array<SampleInputProps>
+    materialInputs?: Array<EntityInputProps>
     materialOutputCount?: number
     materialOutputs?: Array<{[key: string]: any}>
-    targetSampleSet: string
+    targetType: string
 }
 
 export interface IParentOption extends Option {
@@ -49,7 +50,7 @@ export interface DisplayObject {
     value: any
 }
 
-export class SampleSetParentType extends Record({
+export class EntityParentType extends Record({
     index: undefined,
     key: undefined,
     query: undefined,
@@ -69,22 +70,22 @@ export class SampleSetParentType extends Record({
     static create(values: any) {
         if (!values.key)
             values.key = generateId('parent-type-');
-        return new SampleSetParentType(values);
+        return new EntityParentType(values);
     }
 }
 
-export interface ISampleSetOption extends Option {
+export interface IEntityTypeOption extends Option {
     lsid: string
     rowId: number
 }
 
-export class SampleSetOption implements ISampleSetOption {
+export class EntityTypeOption implements IEntityTypeOption {
     label: string;
     lsid: string;
     rowId: number;
     value: any;
 
-    constructor(props?: Partial<SampleSetOption>) {
+    constructor(props?: Partial<EntityTypeOption>) {
         if (props) {
             for (let k in props) {
                 this[k] = props[k];
@@ -105,7 +106,7 @@ interface MaterialOutput {
     sampleSet: any
 }
 
-export class GenerateSampleResponse extends Record( {
+export class GenerateEntityResponse extends Record( {
     data: undefined,
     message: undefined,
     success: false
@@ -122,12 +123,12 @@ export class GenerateSampleResponse extends Record( {
         super(values);
     }
 
-    // Get all of the rowIds of the newly generated sampleIds (or the runs)
+    // Get all of the rowIds of the newly generated entity Ids (or the runs)
     getFilter(): Filter.IFilter {
         let filterColumn: string,
             filterValue;
 
-        // data.id is the run rowId. If provided, create a filter based off the run instead of sampleIds.
+        // data.id is the run rowId. If provided, create a filter based off the run instead of entityIds.
         if (this.data.id) {
             filterColumn = 'Run/RowId';
             filterValue = [this.data.id];
@@ -135,7 +136,7 @@ export class GenerateSampleResponse extends Record( {
         } else {
             filterColumn = 'RowId';
 
-            // if a run id was not included, filter based on generated sample Ids.
+            // if a run id was not included, filter based on generated entity Ids.
             filterValue = this.data.materialOutputs.map(val => val.id);
         }
 
@@ -143,53 +144,79 @@ export class GenerateSampleResponse extends Record( {
     }
 }
 
-export class SampleIdCreationModel extends Record({
+export class EntityIdCreationModel extends Record({
     errors: undefined,
-    initialSampleSet: undefined,
+    initialEntityType: undefined,
     isError: false,
     isInit: false,
     parents: Array<string>(),
     parentOptions: List<IParentOption>(),
-    sampleParents: List<SampleSetParentType>(),
-    sampleSetData: Map<string, any>(),
-    sampleSetOptions: List<ISampleSetOption>(),
+    entityParents: List<EntityParentType>(),
+    entityTypeData: Map<string, any>(),
+    entityTypeOptions: List<IEntityTypeOption>(),
     selectionKey: undefined,
-    targetSampleSet: undefined,
-    sampleCount: 0
+    targetEntityType: undefined,
+    entityCount: 0,
+    entityDataType: EntityDataType.Sample
 }) {
     errors: Array<any>;
-    initialSampleSet: any;
+    initialEntityType: any;
     isError: boolean;
     isInit: boolean;
     parents: Array<string>; // TODO should be 'originalParents'
     parentOptions: List<IParentOption>;
-    sampleParents: List<SampleSetParentType>;
-    sampleSetData: Map<string, any>;
-    sampleSetOptions: List<ISampleSetOption>;
+    entityParents: List<EntityParentType>;
+    entityTypeData: Map<string, any>;
+    entityTypeOptions: List<IEntityTypeOption>;
     selectionKey: string;
-    targetSampleSet: SampleSetOption;
-    sampleCount: number;
+    targetEntityType: EntityTypeOption;
+    entityCount: number;
+    entityDataType: EntityDataType;
 
     constructor(values?: any) {
         super(values);
     }
 
-    hasTargetSampleSet() : boolean {
-        return this.targetSampleSet && this.targetSampleSet.value
+    static revertParentInputSchema(inputColumn: QueryColumn): SchemaQuery {
+        if (inputColumn.isExpInput()) {
+            const fieldKey = inputColumn.fieldKey.toLowerCase().split('/');
+            if (fieldKey.length === 2) {
+                let schemaName: string;
+                if (fieldKey[0] === QueryColumn.DATA_INPUTS.toLowerCase()) {
+                    schemaName = SCHEMAS.DATA_CLASSES.SCHEMA;
+                }
+                else if (fieldKey[0] === QueryColumn.MATERIAL_INPUTS.toLowerCase()) {
+                    schemaName = SCHEMAS.SAMPLE_SETS.SCHEMA;
+                }
+                else {
+                    throw new Error('Invalid inputColumn fieldKey. "' + fieldKey[0] + '"');
+                }
+
+                return SchemaQuery.create(schemaName, fieldKey[1]);
+            }
+
+            throw new Error('invalid inputColumn fieldKey length.');
+        }
+
+        throw new Error('Invalid inputColumn.');
     }
 
-    getTargetSampleSetName() : string {
-        return this.hasTargetSampleSet() ? this.targetSampleSet.value : undefined;
+    hasTargetEntityType() : boolean {
+        return this.targetEntityType && this.targetEntityType.value
     }
 
-    getSampleInputs(): {
-        dataInputs: Array<SampleInputProps>,
-        materialInputs: Array<SampleInputProps>
+    getTargetEntityTypeName() : string {
+        return this.hasTargetEntityType() ? this.targetEntityType.value : undefined;
+    }
+
+    getEntityInputs(): {
+        dataInputs: Array<EntityInputProps>,
+        materialInputs: Array<EntityInputProps>
     } {
-        let dataInputs: Array<SampleInputProps> = [],
-            materialInputs: Array<SampleInputProps> = [];
+        let dataInputs: Array<EntityInputProps> = [],
+            materialInputs: Array<EntityInputProps> = [];
 
-        this.sampleParents.forEach((parent, index) => {
+        this.entityParents.forEach((parent, index) => {
             if (parent.value) {
                 const isData = parent.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
                 const isSample = parent.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
@@ -210,7 +237,7 @@ export class SampleIdCreationModel extends Record({
                             }
                         }
                         else {
-                            console.warn('SampleSet/actions/getSampleInputs -- Unable to parse rowId from "' + option.value + '" for ' + role + '.');
+                            console.warn('Unable to parse rowId from "' + option.value + '" for ' + role + '.');
                         }
                     });
                 }
@@ -224,7 +251,7 @@ export class SampleIdCreationModel extends Record({
     }
 
     getSaveValues(): IDerivePayload {
-        const { dataInputs, materialInputs } = this.getSampleInputs();
+        const { dataInputs, materialInputs } = this.getEntityInputs();
 
         let materialDefault = {};
 
@@ -232,7 +259,7 @@ export class SampleIdCreationModel extends Record({
             dataInputs,
             materialDefault,
             materialInputs,
-            targetSampleSet: this.targetSampleSet.lsid
+            targetType: this.targetEntityType.lsid
         };
     }
 
@@ -240,7 +267,7 @@ export class SampleIdCreationModel extends Record({
         // exclude options that have already been selected, except the current selection for this input
         return this.parentOptions
             .filter(o => (
-                this.sampleParents.every(parent => {
+                this.entityParents.every(parent => {
                     const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
                     const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
                     return notParentMatch || matchesCurrent;
@@ -250,8 +277,8 @@ export class SampleIdCreationModel extends Record({
     }
 
     // Make the call to the Derive API
-    deriveSamples(materialOutputCount: number): Promise<GenerateSampleResponse> {
-        const { dataInputs, materialInputs, materialOutputs,  materialDefault, targetSampleSet } = this.getSaveValues();
+    deriveEntities(entityOutputCount: number, entityDataType: EntityDataType): Promise<GenerateEntityResponse> {
+        const { dataInputs, materialInputs, materialOutputs,  materialDefault, targetType } = this.getSaveValues();
 
         return new Promise((resolve, reject) => {
             Ajax.request({
@@ -259,13 +286,15 @@ export class SampleIdCreationModel extends Record({
                 jsonData: {
                     dataInputs,
                     materialInputs,
-                    targetSampleSet,
-                    materialOutputCount,
+                    targetSampleSet: entityDataType === EntityDataType.Sample ? targetType : undefined,
+                    targetDataClass: entityDataType === EntityDataType.DataClass ? targetType : undefined,
+                    materialOutputCount : entityDataType === EntityDataType.Sample ? entityOutputCount : undefined,
+                    dataOutputCount : entityDataType === EntityDataType.DataClass ? entityOutputCount : undefined,
                     materialOutputs,
                     materialDefault
                 },
                 success: Utils.getCallbackWrapper((response) => {
-                    resolve(new GenerateSampleResponse(response));
+                    resolve(new GenerateEntityResponse(response));
                 }),
                 failure: Utils.getCallbackWrapper((error) => {
                     console.error(error);
@@ -276,12 +305,11 @@ export class SampleIdCreationModel extends Record({
     }
 
     getSchemaQuery() {
-        const sampleSetName = this.getTargetSampleSetName();
-        return sampleSetName ? SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSetName) : undefined;
+        const entityTypeName = this.getTargetEntityTypeName();
+        return entityTypeName ? SchemaQuery.create(this.entityDataType === EntityDataType.Sample ? SCHEMAS.SAMPLE_SETS.SCHEMA : SCHEMAS.DATA_CLASSES.SCHEMA, entityTypeName) : undefined;
     }
 
-
-    postSampleGrid(queryGridModel: QueryGridModel) : Promise<any>  {
+    postEntityGrid(queryGridModel: QueryGridModel) : Promise<any>  {
         const editorModel = getEditorModel(queryGridModel.getId());
         if (!editorModel) {
             gridShowError(queryGridModel, {
@@ -301,34 +329,10 @@ export class SampleIdCreationModel extends Record({
         })
     };
 
-    static revertParentInputSchema(inputColumn: QueryColumn): SchemaQuery {
-        if (inputColumn.isExpInput()) {
-            const fieldKey = inputColumn.fieldKey.toLowerCase().split('/');
-            if (fieldKey.length === 2) {
-                let schemaName: string;
-                if (fieldKey[0] === QueryColumn.DATA_INPUTS.toLowerCase()) {
-                    schemaName = SCHEMAS.DATA_CLASSES.SCHEMA;
-                }
-                else if (fieldKey[0] === QueryColumn.MATERIAL_INPUTS.toLowerCase()) {
-                    schemaName = SCHEMAS.SAMPLE_SETS.SCHEMA;
-                }
-                else {
-                    throw new Error('SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn fieldKey. "' + fieldKey[0] + '"');
-                }
-
-                return SchemaQuery.create(schemaName, fieldKey[1]);
-            }
-
-            throw new Error('SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn fieldKey length.');
-        }
-
-        throw new Error('SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn.');
-    }
-
     getGridValues(queryInfo: QueryInfo): Map<any, any> {
         let data = List<Map<string, any>>();
 
-        for (let i = 0; i < this.sampleCount; i++) {
+        for (let i = 0; i < this.entityCount; i++) {
             let values = Map<string, any>();
 
             queryInfo
@@ -338,10 +342,10 @@ export class SampleIdCreationModel extends Record({
 
                     if (col.isExpInput()) {
                         // Convert parent values into appropriate column names
-                        const sq = SampleIdCreationModel.revertParentInputSchema(col);
+                        const sq = EntityIdCreationModel.revertParentInputSchema(col);
 
                         // should be only one parent with the matching schema and query name
-                        const selected = this.sampleParents.find((parent) => parent.schema === sq.schemaName && parent.query === sq.queryName);
+                        const selected = this.entityParents.find((parent) => parent.schema === sq.schemaName && parent.query === sq.queryName);
                         if (selected && selected.value) {
                             values = values.set(colName, selected.value);
                         }
@@ -355,7 +359,7 @@ export class SampleIdCreationModel extends Record({
     }
 }
 
-export interface ISampleSetDetails {
+export interface IEntityTypeDetails {
     isUpdate?: boolean
     rowId?: number
     name?: string
@@ -373,7 +377,7 @@ export interface IParentAlias {
     ignoreSelectError: boolean
 }
 
-export const enum SampleInsertPanelTabs {
+export const enum EntityInsertPanelTabs {
     Grid = 1,
     File = 2
 }

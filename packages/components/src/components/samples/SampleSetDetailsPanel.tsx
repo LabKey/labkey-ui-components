@@ -3,7 +3,7 @@ import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { createSampleSet, initSampleSetSelects, updateSampleSet } from './actions';
-import { IParentAlias, IParentOption, ISampleSetDetails } from './models';
+import { IParentAlias, IParentOption, IEntityTypeDetails } from '../entities/models';
 import { LabelOverlay } from '../../components/forms/LabelOverlay';
 import { SampleSetParentAliasRow } from '../../components/samples/SampleSetParentAliasRow';
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../constants';
@@ -33,7 +33,7 @@ interface Props {
 }
 
 interface State {
-    formValues: ISampleSetDetails
+    formValues: IEntityTypeDetails
     parentOptions: Array<IParentOption>
     parentAliases: Map<string, IParentAlias>
     error: React.ReactNode
@@ -93,7 +93,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 this.setState((state) => ({
                     formValues: {
                         ...state.formValues
-                    } as ISampleSetDetails,
+                    } as IEntityTypeDetails,
                     parentOptions: options,
                     parentAliases
                 }));
@@ -117,7 +117,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             formValues: {
                 ...state.formValues,
                 [id]: value
-            } as ISampleSetDetails
+            } as IEntityTypeDetails
         }));
     };
 
@@ -140,7 +140,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 description: this.getDescriptionValue(),
                 importAliasKeys,
                 importAliasValues,
-            } as ISampleSetDetails;
+            } as IEntityTypeDetails;
 
             updateSampleSet(config)
                 .then((response) => this.onFinishSuccess(config))
@@ -156,7 +156,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 description: this.getDescriptionValue(),
                 importAliasKeys,
                 importAliasValues,
-            } as ISampleSetDetails;
+            } as IEntityTypeDetails;
 
             createSampleSet(config)
                 .then((response) => this.onFinishSuccess(config))
@@ -314,7 +314,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         this.setState((state) => ({
             formValues: {
                 ...state.formValues,
-            } as ISampleSetDetails,
+            } as IEntityTypeDetails,
             parentAliases,
         }));
     };

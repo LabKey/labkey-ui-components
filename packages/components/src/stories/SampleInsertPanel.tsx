@@ -15,18 +15,22 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import {boolean, withKnobs} from '@storybook/addon-knobs';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { Location } from '../util/URL';
 
-import { SampleInsertPanel } from '../components/samples/SampleInsertPanel';
+import { EntityInsertPanel } from '../components/entities/EntityInsertPanel';
 
 import './stories.scss';
+import { EntityDataType } from '..';
 
-storiesOf('SampleInsertPanel', module)
+storiesOf('EntityInsertPanel', module)
     .addDecorator(withKnobs)
     .add("No target sample set", () => {
-        return <SampleInsertPanel
-            canEditSampleTypeDetails={boolean('canEditSampleTypeDetails', true)}
+        return <EntityInsertPanel
+            entityDataType={EntityDataType.Sample}
+            canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
+            nounSingular={text("Singular noun", "sample")}
+            nounPlural={text("Plural noun", "samples")}
         />;
 
     })
@@ -36,8 +40,9 @@ storiesOf('SampleInsertPanel', module)
                 target: "Sample Set 2"
             }
         };
-        return <SampleInsertPanel
-            canEditSampleTypeDetails={boolean('canEditSampleTypeDetails', true)}
+        return <EntityInsertPanel
+            entityDataType={EntityDataType.Sample}
+            canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
             location={location}
         />;
     })

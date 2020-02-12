@@ -1,5 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* Re-parameterize and rename SampleInsertPanel to EntityInsertPanel for use with Data classes as well
 
 ### version TBD
 *Released*: TBD

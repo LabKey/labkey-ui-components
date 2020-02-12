@@ -1,6 +1,6 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom'
-import { IParentAlias, IParentOption } from './models';
+import { IParentAlias, IParentOption } from '../entities/models';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import { SelectInput } from '../forms/input/SelectInput';

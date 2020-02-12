@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+
+import { faCaretDown, faCaretUp, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { createFormInputId, createFormInputName, getNameFromId } from '../actions';
 import {
     DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR,
@@ -10,52 +12,54 @@ import {
     DOMAIN_VALIDATOR_REMOVE,
     DOMAIN_VALIDATOR_STRIKETHROUGH,
 } from '../constants';
-import { faCaretDown, faCaretUp, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { PropDescType, PropertyValidator } from '../models';
+
+import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Filters } from './Filters';
 import { CompactPicker } from 'react-color';
-import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 interface ConditionalFormatOptionsProps {
-    validator: any
-    index: number
-    domainIndex: number
-    validatorIndex: number
-    mvEnabled: boolean
-    expanded: boolean
-    dataType: PropDescType
-    onExpand: (index: number) => any
-    onChange: (validator: PropertyValidator, index: number) => any
-    onDelete: (index: number) => any
+    validator: any;
+    index: number;
+    domainIndex: number;
+    validatorIndex: number;
+    mvEnabled: boolean;
+    expanded: boolean;
+    dataType: PropDescType;
+    onExpand: (index: number) => any;
+    onChange: (validator: PropertyValidator, index: number) => any;
+    onDelete: (index: number) => any;
 }
 
 interface ConditionalFormatState {
-    showTextColor: boolean
-    showFillColor: boolean
+    showTextColor: boolean;
+    showFillColor: boolean;
 }
 
-export class ConditionalFormatOptions extends React.PureComponent<ConditionalFormatOptionsProps, ConditionalFormatState> {
-
+export class ConditionalFormatOptions extends React.PureComponent<
+    ConditionalFormatOptionsProps,
+    ConditionalFormatState
+> {
     constructor(props) {
         super(props);
 
         this.state = {
             showTextColor: false,
-            showFillColor: false
+            showFillColor: false,
         };
     }
 
     static isValid = (validator: PropertyValidator) => {
-
-        return (Filters.isValid(validator.get("formatFilter"), DOMAIN_CONDITIONAL_FORMAT_PREFIX));
+        return Filters.isValid(validator.get('formatFilter'), DOMAIN_CONDITIONAL_FORMAT_PREFIX);
     };
 
     renderRemoveValidator() {
         const { validatorIndex, domainIndex } = this.props;
 
         return (
-            <Row className='domain-validator-color-row'>
+            <Row className="domain-validator-color-row">
                 <Col xs={12}>
                     <Button
                         className="domain-validation-delete"
@@ -66,7 +70,7 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
                     </Button>
                 </Col>
             </Row>
-        )
+        );
     }
 
     onDelete = () => {
@@ -75,14 +79,18 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
         onDelete(validatorIndex);
     };
 
-    onFieldChange = (evt) => {
+    onFieldChange = evt => {
         const { onChange, validator, validatorIndex } = this.props;
 
         let value = evt.target.value;
-        let name = getNameFromId(evt.target.id);
+        const name = getNameFromId(evt.target.id);
 
         let newValidator;
-        if (name === DOMAIN_VALIDATOR_BOLD || name === DOMAIN_VALIDATOR_STRIKETHROUGH || name === DOMAIN_VALIDATOR_ITALIC) {
+        if (
+            name === DOMAIN_VALIDATOR_BOLD ||
+            name === DOMAIN_VALIDATOR_STRIKETHROUGH ||
+            name === DOMAIN_VALIDATOR_ITALIC
+        ) {
             value = evt.target.checked;
         }
 
@@ -93,10 +101,10 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
     onFilterChange = (expression: string) => {
         const { validator, validatorIndex, onChange } = this.props;
 
-        onChange(validator.set('formatFilter', expression), validatorIndex)
+        onChange(validator.set('formatFilter', expression), validatorIndex);
     };
 
-    expandValidator = (evt) => {
+    expandValidator = evt => {
         const { onExpand, validatorIndex } = this.props;
 
         if (onExpand) {
@@ -105,21 +113,24 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
     };
 
     firstFilterTooltipText = () => {
-        return 'Add a condition to this format rule that will be tested against the value for this field.'
+        return 'Add a condition to this format rule that will be tested against the value for this field.';
     };
 
     firstFilterTooltip = () => {
-        return (<LabelHelpTip title='First Condition' body={this.firstFilterTooltipText} required={true}/>)
+        return <LabelHelpTip title="First Condition" body={this.firstFilterTooltipText} required={true} />;
     };
 
     renderCollapsed = () => {
         const { validator } = this.props;
 
-        return(
-            <div>{(validator.formatFilter ? Filters.describeExpression(validator.formatFilter, DOMAIN_CONDITIONAL_FORMAT_PREFIX) : 'Missing condition') }
-                <div className='domain-validator-collapse-icon' onClick={this.expandValidator}><FontAwesomeIcon icon={faPencilAlt}/></div>
+        return (
+            <div>
+                {validator.formatFilter
+                    ? Filters.describeExpression(validator.formatFilter, DOMAIN_CONDITIONAL_FORMAT_PREFIX)
+                    : 'Missing condition'}
+                <div className="domain-validator-collapse-icon" onClick={this.expandValidator}><FontAwesomeIcon icon={faPencilAlt}/></div>
             </div>
-        )
+        );
     };
 
     renderDisplayCheckbox(name: string, label: string, value: boolean) {
@@ -127,19 +138,20 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
 
         return (
             <Row>
-                <Col xs={12} className='domain-validation-display-checkbox-row'>
+                <Col xs={12} className="domain-validation-display-checkbox-row">
                     <Checkbox
                         id={createFormInputId(name, domainIndex, validatorIndex)}
                         name={createFormInputName(name)}
                         checked={value}
-                        onChange={this.onFieldChange}
-                    >{label}</Checkbox>
+                        onChange={this.onFieldChange}>
+                        {label}
+                    </Checkbox>
                 </Col>
             </Row>
-        )
+        );
     }
 
-    onColorShow = (evt) => {
+    onColorShow = evt => {
         const { showTextColor, showFillColor } = this.state;
         let name = getNameFromId(evt.target.id);
 
@@ -154,19 +166,19 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
         }
 
         if (name === DOMAIN_CONDITION_FORMAT_TEXT_COLOR) {
-            this.setState(() => ({showTextColor: !showTextColor, showFillColor: false}))
+            this.setState(() => ({ showTextColor: !showTextColor, showFillColor: false }));
         }
 
         if (name === DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR) {
-            this.setState(() => ({showFillColor: !showFillColor, showTextColor: false}))
+            this.setState(() => ({ showFillColor: !showFillColor, showTextColor: false }));
         }
     };
 
-    onColorChange = (color) => {
+    onColorChange = color => {
         const { onChange, validator, validatorIndex } = this.props;
         const { showTextColor } = this.state;
 
-        let name = (showTextColor ? DOMAIN_CONDITION_FORMAT_TEXT_COLOR : DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR);
+        const name = showTextColor ? DOMAIN_CONDITION_FORMAT_TEXT_COLOR : DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR;
 
         let newValidator;
         newValidator = validator.set(name, color.hex.substring(1)); // LK does not save the #
@@ -181,51 +193,75 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
         const fillColor = validator.backgroundColor ? '#' + validator.backgroundColor : 'white';
 
         return (
-            <Row className='domain-validator-color-row'>
+            <Row className="domain-validator-color-row">
                 <Col xs={4}>
-                    {this.getColorPickerButton(DOMAIN_CONDITION_FORMAT_TEXT_COLOR, "Text Color", textColor, showTextColor)}
+                    {this.getColorPickerButton(
+                        DOMAIN_CONDITION_FORMAT_TEXT_COLOR,
+                        'Text Color',
+                        textColor,
+                        showTextColor
+                    )}
                 </Col>
                 <Col xs={4}>
-                    {this.getColorPickerButton(DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR, "Fill Color", fillColor, showFillColor)}
+                    {this.getColorPickerButton(
+                        DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR,
+                        'Fill Color',
+                        fillColor,
+                        showFillColor
+                    )}
                 </Col>
                 <Col xs={1} />
                 <Col xs={3}>
                     <FormControl
-                        type='text'
+                        type="text"
                         id={'domain-validator-preview-' + validatorIndex}
-                        defaultValue='Preview Text'
-                        style={{fontSize: '12px', width: '100px', color: textColor, backgroundColor: fillColor,
-                            fontWeight: (validator.bold?'bold':'normal'),
-                            fontStyle: (validator.italic?'italic':'normal'),
-                            textDecoration: (validator.strikethrough?'line-through':'')
+                        defaultValue="Preview Text"
+                        style={{
+                            fontSize: '12px',
+                            width: '100px',
+                            color: textColor,
+                            backgroundColor: fillColor,
+                            fontWeight: validator.bold ? 'bold' : 'normal',
+                            fontStyle: validator.italic ? 'italic' : 'normal',
+                            textDecoration: validator.strikethrough ? 'line-through' : '',
                         }}
                     />
                 </Col>
             </Row>
-        )
+        );
     }
 
     getColorPickerButton(name: string, label: string, color: string, showColorPicker: boolean) {
         const { validatorIndex, domainIndex } = this.props;
 
         return (
-            <div style={{width:'100%'}}>
+            <div style={{ width: '100%' }}>
                 <Button
                     id={createFormInputId(name, domainIndex, validatorIndex)}
                     key={createFormInputId(name, domainIndex, validatorIndex)}
                     name={createFormInputName(name)}
                     onClick={this.onColorShow}
-                    className='domain-color-picker-btn'
-                >{label}<FontAwesomeIcon className='domain-color-caret' size='lg' icon={showColorPicker ? faCaretUp : faCaretDown}/></Button>
-                {showColorPicker &&
-                <div className='domain-validator-color-popover'>
-                    <div className='domain-validator-color-cover' id={createFormInputId(name, domainIndex, validatorIndex)} onClick={this.onColorShow}/>
-                    <CompactPicker onChangeComplete={this.onColorChange} color={color}/>
-                </div>
-                }
-                <div className='domain-color-preview' style={{backgroundColor: color}} />
+                    className="domain-color-picker-btn"
+                    {label}
+                    <FontAwesomeIcon
+                        className="domain-color-caret"
+                        size="lg"
+                        icon={showColorPicker ? faCaretUp : faCaretDown}
+                    />
+                </Button>
+                {showColorPicker && (
+                    <div className="domain-validator-color-popover">
+                        <div
+                            className="domain-validator-color-cover"
+                            id={createFormInputId(name, domainIndex, validatorIndex)}
+                            onClick={this.onColorShow}
+                        />
+                        <CompactPicker onChangeComplete={this.onColorChange} color={color} />
+                    </div>
+                )}
+                <div className="domain-color-preview" style={{backgroundColor: color}} />
             </div>
-        )
+        );
     }
 
     render() {
@@ -234,36 +270,35 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
         // Needs to be able to take string values for between syntax, but keep as date if that is the selected type (issue 39193)
         const type = dataType.getJsonType() === 'date' ? dataType.getJsonType() : 'string';
 
-        return(
-            <div className='domain-validator-panel' id={"domain-condition-format-" + validatorIndex}>
-                {expanded &&
-                <div>
-                    <Filters validatorIndex={validatorIndex}
-                             domainIndex={domainIndex}
-                             onChange={this.onFilterChange}
-                             type={type}
-                             mvEnabled={mvEnabled}
-                             expression={validator.formatFilter}
-                             prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}
-                             firstFilterTooltip={this.firstFilterTooltip()}
-                    />
-                    <div className='domain-validation-subtitle'>Display Options</div>
-                    {this.renderDisplayCheckbox(DOMAIN_VALIDATOR_BOLD, 'Bold', validator.bold)}
-                    {this.renderDisplayCheckbox(DOMAIN_VALIDATOR_ITALIC, 'Italics', validator.italic)}
-                    {this.renderDisplayCheckbox(DOMAIN_VALIDATOR_STRIKETHROUGH, 'Strikethrough', validator.strikethrough)}
+        return (
+            <div className="domain-validator-panel" id={'domain-condition-format-' + validatorIndex}>
+                {expanded && (
+                    <div>
+                        <Filters
+                            validatorIndex={validatorIndex}
+                            domainIndex={domainIndex}
+                            onChange={this.onFilterChange}
+                            type={type}
+                            mvEnabled={mvEnabled}
+                            expression={validator.formatFilter}
+                            prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}
+                            firstFilterTooltip={this.firstFilterTooltip()}
+                        />
+                        <div className="domain-validation-subtitle">Display Options</div>
+                        {this.renderDisplayCheckbox(DOMAIN_VALIDATOR_BOLD, 'Bold', validator.bold)}
+                        {this.renderDisplayCheckbox(DOMAIN_VALIDATOR_ITALIC, 'Italics', validator.italic)}
+                        {this.renderDisplayCheckbox(
+                            DOMAIN_VALIDATOR_STRIKETHROUGH,
+                            'Strikethrough',
+                            validator.strikethrough
+                        )}
 
-                    {this.renderColorPickers()}
-                    {this.renderRemoveValidator()}
-
-                </div>
-                }
-                {!expanded &&
-                <div>
-                    {this.renderCollapsed()}
-                </div>
-                }
+                        {this.renderColorPickers()}
+                        {this.renderRemoveValidator()}
+                    </div>
+                )}
+                {!expanded && <div>{this.renderCollapsed()}</div>}
             </div>
-
-        )
+        );
     }
 }

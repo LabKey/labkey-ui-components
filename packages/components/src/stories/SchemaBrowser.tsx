@@ -25,26 +25,23 @@ import { Page } from '../components/base/Page';
 
 storiesOf('SchemaBrowser', module)
     .addDecorator(withKnobs)
-    .add("schema listing", () => {
+    .add('schema listing', () => {
         return (
             <Page>
-                <PageHeader title={"Schemas"}/>
-                <SchemaListing
-                    asPanel={boolean('asPanel', false)}
-                    title={text('title', undefined)}
-                />
+                <PageHeader title="Schemas" />
+                <SchemaListing asPanel={boolean('asPanel', false)} title={text('title', undefined)} />
             </Page>
-        )
+        );
     })
-    .add("queries listing", () => {
+    .add('queries listing', () => {
         return (
             <Page>
-                <PageHeader title={"Assay Schemas"}/>
+                <PageHeader title="Assay Schemas" />
                 <QueriesListing
-                    schemaName={'assay'}
+                    schemaName="assay"
                     asPanel={boolean('asPanel', true)}
                     title={text('title', undefined)}
                 />
             </Page>
-        )
+        );
     });

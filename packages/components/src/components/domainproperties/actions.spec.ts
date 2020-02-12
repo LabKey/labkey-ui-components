@@ -15,6 +15,8 @@
  */
 import { List } from 'immutable';
 
+import { QueryColumn } from '../base/models/model';
+
 import { createFormInputId, getBannerMessages, setDomainFields, updateDomainException } from './actions';
 import {
     DATETIME_TYPE,
@@ -35,20 +37,18 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
 } from './constants';
-import { QueryColumn } from '../base/models/model';
 
-describe("domain properties actions", () => {
-
-    test("test create id", () => {
-        return expect(createFormInputId("marty", 0, 100)).toBe(DOMAIN_FIELD_PREFIX + "-marty-0-100");
+describe('domain properties actions', () => {
+    test('test create id', () => {
+        return expect(createFormInputId('marty', 0, 100)).toBe(DOMAIN_FIELD_PREFIX + '-marty-0-100');
     });
 
-    test("test get field type", () => {
+    test('test get field type', () => {
         const field1 = DomainField.create({
             name: 'field1name',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
         expect(field1.dataType.rangeURI).toBe(INT_RANGE_URI);
 
@@ -57,7 +57,7 @@ describe("domain properties actions", () => {
             rangeURI: STRING_RANGE_URI,
             conceptURI: FLAG_CONCEPT_URI,
             propertyId: 0,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
         expect(field2.dataType.name).toBe('flag');
 
@@ -67,7 +67,7 @@ describe("domain properties actions", () => {
             lookupSchema: 'core',
             lookupQuery: 'users',
             propertyId: 0,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
         expect(field3.dataType.name).toBe('users');
     });
@@ -80,32 +80,32 @@ describe("domain properties actions", () => {
         fields.push({
             name: field1,
             rangeURI: INT_RANGE_URI,
-            propertyId: 1, //simulate existing field
-            propertyURI: 'test'
+            propertyId: 1, // simulate existing field
+            propertyURI: 'test',
         });
 
         fields.push({
             name: field1,
             rangeURI: INT_RANGE_URI,
-            propertyId: undefined, //new field with duplicate column name
-            propertyURI: 'test'
+            propertyId: undefined, // new field with duplicate column name
+            propertyURI: 'test',
         });
 
         let message = "The field name 'column1' is already taken. Please provide a unique name for each field.";
-        let domainFieldError = [];
-        domainFieldError.push({message, field: field1, id: 0});
-        let rawModel = {exception: message, success: false, errors: domainFieldError};
+        const domainFieldError = [];
+        domainFieldError.push({ message, field: field1, id: 0 });
+        let rawModel = { exception: message, success: false, errors: domainFieldError };
         let domainException = DomainException.create(rawModel, SEVERITY_LEVEL_ERROR);
 
         let domain = DomainDesign.create({
-            name: "CancerCuringStudy",
-            schemaName : 'Study',
-            queryName : 'CancerCuringStudy',
+            name: 'CancerCuringStudy',
+            schemaName: 'Study',
+            queryName: 'CancerCuringStudy',
             description: 'description',
             domainURI: 'test',
             domainId: 123,
-            fields: fields,
-            indices: []
+            fields,
+            indices: [],
         });
         let badDomain = domain.set('domainException', domainException);
 
@@ -113,28 +113,29 @@ describe("domain properties actions", () => {
         expect(getBannerMessages(badDomain).get(0).message).toBe(message);
 
         fields.push({
-            name: field2,//reserved field
+            name: field2, // reserved field
             rangeURI: INT_RANGE_URI,
             propertyId: undefined,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
 
-        let multipleErrorMsg = "Multiple fields contain issues that need to be fixed. Review the red highlighted fields above for more information.";
+        const multipleErrorMsg =
+            'Multiple fields contain issues that need to be fixed. Review the red highlighted fields above for more information.';
 
         message = "'modified' is a reserved field name in 'CancerCuringStudy'";
-        domainFieldError.push({message, field: field2, id: 1});
-        rawModel = {exception: message, success: false, errors: domainFieldError};
+        domainFieldError.push({ message, field: field2, id: 1 });
+        rawModel = { exception: message, success: false, errors: domainFieldError };
         domainException = DomainException.create(rawModel, SEVERITY_LEVEL_ERROR);
 
         domain = DomainDesign.create({
-            name: "CancerCuringStudy",
-            schemaName : 'Study',
-            queryName : 'CancerCuringStudy',
+            name: 'CancerCuringStudy',
+            schemaName: 'Study',
+            queryName: 'CancerCuringStudy',
             description: 'description',
             domainURI: 'test',
             domainId: 123,
-            fields: fields,
-            indices: []
+            fields,
+            indices: [],
         });
         badDomain = domain.set('domainException', domainException);
 
@@ -147,39 +148,51 @@ describe("domain properties actions", () => {
             name: '#column#',
             rangeURI: INT_RANGE_URI,
             propertyId: undefined,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
 
-        let fieldName = '#column#';
-        let domainFieldError = [];
-        domainFieldError.push({message: FIELD_NAME_CHAR_WARNING_MSG, extraInfo: FIELD_NAME_CHAR_WARNING_INFO, fieldName, propertyId: undefined, severity: SEVERITY_LEVEL_WARN});
+        const fieldName = '#column#';
+        const domainFieldError = [];
+        domainFieldError.push({
+            message: FIELD_NAME_CHAR_WARNING_MSG,
+            extraInfo: FIELD_NAME_CHAR_WARNING_INFO,
+            fieldName,
+            propertyId: undefined,
+            severity: SEVERITY_LEVEL_WARN,
+        });
 
-        let domain = DomainDesign.create({
-            name: "CancerCuringStudy",
-            description: 'description',
-            domainURI: 'test',
-            domainId: 123,
-            fields: fields,
-            indices: []
-        }, undefined);
+        const domain = DomainDesign.create(
+            {
+                name: 'CancerCuringStudy',
+                description: 'description',
+                domainURI: 'test',
+                domainId: 123,
+                fields,
+                indices: [],
+            },
+            undefined
+        );
 
-        let updatedDomain = updateDomainException(domain, 0, domainFieldError);
+        const updatedDomain = updateDomainException(domain, 0, domainFieldError);
         expect(updatedDomain.domainException.get('errors').get(0)[0].message).toBe(FIELD_NAME_CHAR_WARNING_MSG);
     });
 
     test('setDomainFields', () => {
-        const initDomain = DomainDesign.create({name: 'Foo', fields: [
-                {name:'text', rangeURI: TEXT_TYPE.rangeURI},
-                {name:'int', rangeURI: INTEGER_TYPE.rangeURI}
-            ]});
+        const initDomain = DomainDesign.create({
+            name: 'Foo',
+            fields: [
+                { name: 'text', rangeURI: TEXT_TYPE.rangeURI },
+                { name: 'int', rangeURI: INTEGER_TYPE.rangeURI },
+            ],
+        });
         expect(initDomain.fields.size).toBe(2);
         expect(initDomain.fields.get(0).rangeURI).toBe(TEXT_TYPE.rangeURI);
         expect(initDomain.fields.get(1).rangeURI).toBe(INTEGER_TYPE.rangeURI);
 
         const newFields = [
-            QueryColumn.create({name:'text', rangeURI: TEXT_TYPE.rangeURI}),
-            QueryColumn.create({name:'dbl', rangeURI: DOUBLE_TYPE.rangeURI}),
-            QueryColumn.create({name:'dt', rangeURI: DATETIME_TYPE.rangeURI})
+            QueryColumn.create({ name: 'text', rangeURI: TEXT_TYPE.rangeURI }),
+            QueryColumn.create({ name: 'dbl', rangeURI: DOUBLE_TYPE.rangeURI }),
+            QueryColumn.create({ name: 'dt', rangeURI: DATETIME_TYPE.rangeURI }),
         ];
 
         const updatedDomain = setDomainFields(initDomain, List<QueryColumn>(newFields));

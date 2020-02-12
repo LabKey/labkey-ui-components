@@ -1,19 +1,20 @@
 import { Ajax, Utils } from '@labkey/api';
-import { buildURL } from "../../url/ActionURL";
+
+import { buildURL } from '../../url/ActionURL';
 
 export function signOut() {
-    const startUrl = buildURL('project', 'start', undefined, {returnURL: false});
+    const startUrl = buildURL('project', 'start', undefined, { returnURL: false });
 
     Ajax.request({
         url: buildURL('login', 'logoutAPI.api'),
         method: 'POST',
-        success: Utils.getCallbackWrapper((response) => {
+        success: Utils.getCallbackWrapper(response => {
             window.location.href = startUrl;
         }),
-        failure: Utils.getCallbackWrapper((response) => {
+        failure: Utils.getCallbackWrapper(response => {
             console.error(response);
             window.location.href = startUrl;
-        }, false)
+        }, false),
     });
 }
 

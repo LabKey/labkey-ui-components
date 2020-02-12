@@ -5,43 +5,43 @@
 import React from 'react';
 import { List } from 'immutable';
 
-import { loadSampleStatsIfNeeded } from './actions';
-import { Lineage } from './models';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Grid, GridColumn } from '../base/Grid';
 import { Alert } from '../base/Alert';
 
+import { Lineage } from './models';
+import { loadSampleStatsIfNeeded } from './actions';
+
 const columns = List([
     new GridColumn({
         index: 'name',
-        title: 'Sample Type'
+        title: 'Sample Type',
     }),
     new GridColumn({
         index: 'sampleCount',
-        title: 'Number of Samples'
+        title: 'Number of Samples',
     }),
     new GridColumn({
         index: 'modified',
-        title: 'Most Recent (Date)'
-    })
+        title: 'Most Recent (Date)',
+    }),
 ]);
 
 interface Props {
-    seed: string
+    seed: string;
 }
 
 interface State {
-    lineage: Lineage
+    lineage: Lineage;
 }
 
 export class SampleTypeLineageCounts extends React.Component<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            lineage: undefined
-        }
+            lineage: undefined,
+        };
     }
 
     componentDidMount() {
@@ -55,25 +55,22 @@ export class SampleTypeLineageCounts extends React.Component<Props, State> {
     }
 
     init(seed: string) {
-        loadSampleStatsIfNeeded(seed)
-            .then(lineage => {
-                this.setState(() => ({lineage}));
-            });
+        loadSampleStatsIfNeeded(seed).then(lineage => {
+            this.setState(() => ({ lineage }));
+        });
     }
 
     render() {
         const { lineage } = this.state;
 
         if (!lineage) {
-            return <LoadingSpinner/>
+            return <LoadingSpinner />;
         }
 
         if (lineage.error) {
-            return <Alert>{lineage.error}</Alert>
+            return <Alert>{lineage.error}</Alert>;
         }
 
-        return (
-            <Grid data={lineage.sampleStats} columns={columns}/>
-        )
+        return <Grid data={lineage.sampleStats} columns={columns} />;
     }
 }

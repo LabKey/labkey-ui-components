@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
+exports['AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1'] = `
 <AssayPropertiesPanel
   appPropertiesOnly={true}
   asPanel={false}
@@ -1015,7 +1015,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
 </AssayPropertiesPanel>
 `;
 
-exports[`AssayPropertiesPanel default properties 1`] = `
+exports['AssayPropertiesPanel default properties 1'] = `
 <AssayPropertiesPanel
   appPropertiesOnly={false}
   asPanel={true}
@@ -2412,7 +2412,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
 </AssayPropertiesPanel>
 `;
 
-exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
+exports['AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1'] = `
 <AssayPropertiesPanel
   appPropertiesOnly={false}
   asPanel={true}
@@ -3810,7 +3810,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
 </AssayPropertiesPanel>
 `;
 
-exports[`AssayPropertiesPanel with initial model 1`] = `
+exports['AssayPropertiesPanel with initial model 1'] = `
 <AssayPropertiesPanel
   appPropertiesOnly={false}
   asPanel={true}
@@ -4902,7 +4902,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
 </AssayPropertiesPanel>
 `;
 
-exports[`AssayPropertiesPanel without helpTopic 1`] = `
+exports['AssayPropertiesPanel without helpTopic 1'] = `
 <AssayPropertiesPanel
   appPropertiesOnly={true}
   asPanel={true}

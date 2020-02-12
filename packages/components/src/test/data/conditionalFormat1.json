@@ -1,8 +1,8 @@
 {
-  "formatFilter" : "format.column~startswith=0&format.column~doesnotstartwith=1",
-  "bold" : true,
-  "italic" : false,
-  "strikethrough" : false,
-  "textColor" : "FF6347",
-  "backgroundColor" : "000080"
+    "formatFilter": "format.column~startswith=0&format.column~doesnotstartwith=1",
+    "bold": true,
+  'italic' : false,
+  'strikethrough' : false,
+  'textColor' : 'FF6347',
+    "backgroundColor": "000080"
 }

@@ -32,9 +32,9 @@ function copyProps(src, target) {
     Object.defineProperties(target, props);
 }
 
-global['window'] = window;
-global['document'] = window.document;
-global['navigator'] = {
+global.window = window;
+global.document = window.document;
+global.navigator = {
     userAgent: 'node.js',
 };
 copyProps(window, global);

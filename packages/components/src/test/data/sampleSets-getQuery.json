@@ -1,182 +1,193 @@
 {
-  "schemaName" : [ "exp" ],
-  "queryName" : "SampleSets",
-  "metaData" : {
-    "importTemplates" : [ {
-      "label" : "Download Template",
-      "url" : "/labkey/Sample%20Management%202/query-exportExcelTemplate.view?schemaName=exp&query.queryName=SampleSets&headerType=DisplayFieldKey"
-    } ],
-    "root" : "rows",
-    "totalProperty" : "rowCount",
-    "description" : "Contains a row per sample set, a collection of samples.",
-    "id" : "RowId",
-    "fields" : [ {
-      "fieldKey" : [ "LSID" ],
-      "description" : "Contains a life sciences identifier for this protocol",
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "lsidtype",
-      "defaultValue" : null,
-      "scale" : 300,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : true,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : true,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "LSID",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "LSID"
-    }, {
-      "fieldKey" : [ "Name" ],
-      "description" : "Contains a short name for this sample set",
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "varchar",
-      "defaultValue" : null,
-      "scale" : 100,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Name",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Name"
-    }, {
-      "fieldKey" : [ "RowId" ],
-      "description" : "Contains a unique id for this sample set",
-      "friendlyType" : "Integer",
-      "type" : "int",
-      "jsonType" : "int",
-      "sqlType" : "serial",
-      "defaultValue" : null,
-      "scale" : 10,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : true,
-      "hidden" : true,
-      "keyField" : true,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : true,
-      "userEditable" : false,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : false,
-      "shownInUpdateView" : false,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 10,
-      "shortCaption" : "Row Id",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Row Id"
-    } ],
-    "title" : "SampleSets",
-    "importMessage" : null
-  },
-  "rows" : [ {
-    "data" : {
-      "LSID" : {
-        "value" : "urn:lsid:labkey.com:SampleSet.Folder-60:Name+Expression+Set"
-      },
-      "RowId" : {
-        "value" : 110
-      },
-      "Name" : {
-        "value" : "Name Expression Set",
-        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=110"
-      }
-    }
-  }, {
-    "data" : {
-      "LSID" : {
-        "value" : "urn:lsid:labkey.com:SampleSet.Folder-60:Sample+Set+2"
-      },
-      "RowId" : {
-        "value" : 111
-      },
-      "Name" : {
-        "value" : "Sample Set 2",
-        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=111"
-      }
-    }
-  }, {
-    "data" : {
-      "LSID" : {
-        "value" : "urn:lsid:labkey.com:SampleSet.Folder-60:Sample+Set+Error"
-      },
-      "RowId" : {
-        "value" : 113
-      },
-      "Name" : {
-        "value" : "Sample Set Error",
-        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=113"
-      }
-    }
-  }, {
-    "data" : {
-      "LSID" : {
-        "value" : "urn:lsid:labkey.com:SampleSet.Folder-60:Fruits"
-      },
-      "RowId" : {
-        "value" : 114
-      },
-      "Name" : {
-        "value" : "Fruits",
-        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=114"
-      }
-    }
-  } ],
-  "rowCount" : 4
+    "schemaName": ["exp"],
+    "queryName": "SampleSets",
+    "metaData": {
+        "importTemplates": [
+            {
+                "label": "Download Template",
+      'url' : '/labkey/Sample%20Management%202/query-exportExcelTemplate.view?schemaName=exp&query.queryName=SampleSets&headerType=DisplayFieldKey'
+            }
+        ],
+        "root": "rows",
+        "totalProperty": "rowCount",
+        "description": "Contains a row per sample set, a collection of samples.",
+        "id": "RowId",
+        "fields": [
+            {
+                "fieldKey": ["LSID"],
+                "description": "Contains a life sciences identifier for this protocol",
+      'friendlyType' : 'Text (String)',
+      'type' : 'string',
+                "jsonType": "string",
+      'sqlType' : 'lsidtype',
+                "defaultValue": null,
+      'scale' : 300,
+                "align": "left",
+      'sortable' : true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : true,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": false,
+      'readOnly' : true,
+                "userEditable": true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+                "measure": false,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+                "cols": 40,
+      'shortCaption' : 'LSID',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'LSID'
+            },
+            {
+      'fieldKey' : [ 'Name' ],
+                "description": "Contains a short name for this sample set",
+      'friendlyType' : 'Text (String)',
+                "type": "string",
+      'jsonType' : 'string',
+                "sqlType": "varchar",
+      'defaultValue' : null,
+                "scale": 100,
+                "align": "left",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+                "nullable": false,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+      'measure' : false,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+                "conceptURI": null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "Name",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Name"
+            },
+            {
+                "fieldKey": ["RowId"],
+                "description": "Contains a unique id for this sample set",
+                "friendlyType": "Integer",
+      'type' : 'int',
+                "jsonType": "int",
+      'sqlType' : 'serial',
+                "defaultValue": null,
+                "scale": 10,
+      'align' : 'right',
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": true,
+      'hidden' : true,
+                "keyField": true,
+      'mvEnabled' : false,
+      'nullable' : false,
+                "readOnly": true,
+      'userEditable' : false,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+      'shownInInsertView' : false,
+      'shownInUpdateView' : false,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": false,
+                "recommendedVariable": false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 10,
+      'shortCaption' : 'Row Id',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Row Id'
+            }
+        ],
+        "title": "SampleSets",
+        "importMessage": null
+    },
+    "rows": [
+        {
+            "data": {
+                "LSID": {
+                    "value": "urn:lsid:labkey.com:SampleSet.Folder-60:Name+Expression+Set"
+                },
+      'RowId' : {
+        'value' : 110
+                },
+                "Name": {
+                    "value": "Name Expression Set",
+        'url' : '/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=110'
+                }
+            }
+        },
+        {
+            "data": {
+      'LSID' : {
+                    "value": "urn:lsid:labkey.com:SampleSet.Folder-60:Sample+Set+2"
+                },
+      'RowId' : {
+                    "value": 111
+                },
+                "Name": {
+                    "value": "Sample Set 2",
+                    "url": "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=111"
+                }
+            }
+        },
+        {
+            "data": {
+      'LSID' : {
+                    "value": "urn:lsid:labkey.com:SampleSet.Folder-60:Sample+Set+Error"
+                },
+                "RowId": {
+        'value' : 113
+                },
+                "Name": {
+                    "value": "Sample Set Error",
+        'url' : '/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=113'
+                }
+            }
+        },
+        {
+            "data": {
+                "LSID": {
+                    "value": "urn:lsid:labkey.com:SampleSet.Folder-60:Fruits"
+                },
+      'RowId' : {
+                    "value": 114
+                },
+                "Name": {
+                    "value": "Fruits",
+                    "url": "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=114"
+                }
+            }
+        }
+    ],
+    "rowCount": 4
 }

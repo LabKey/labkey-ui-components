@@ -20,9 +20,8 @@ import { Alert as BootstrapAlert, AlertProps } from 'react-bootstrap';
  * An Alert that will only display if children are available. Defaults to bsStyle "danger".
  */
 export class Alert extends React.Component<AlertProps, any> {
-
     static defaultProps = {
-        bsStyle: 'danger'
+        bsStyle: 'danger',
     };
 
     render() {

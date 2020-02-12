@@ -16,20 +16,16 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
-import { SampleDeleteConfirmModal } from './SampleDeleteConfirmModal';
 import { ConfirmModal } from '../base/ConfirmModal';
 
-describe("<SampleDeleteConfirmModal/>", () => {
+import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
+import { SampleDeleteConfirmModal } from './SampleDeleteConfirmModal';
 
-    test("Error display", () => {
-        const errorMsg = "There was an error";
+describe('<SampleDeleteConfirmModal/>', () => {
+    test('Error display', () => {
+        const errorMsg = 'There was an error';
         const component = (
-            <SampleDeleteConfirmModal
-                selectionKey={"nonesuch"}
-                onCancel={jest.fn()}
-                onConfirm={jest.fn()}
-            />
+            <SampleDeleteConfirmModal selectionKey="nonesuch" onCancel={jest.fn()} onConfirm={jest.fn()} />
         );
         const wrapper = mount(component);
         wrapper.setState({
@@ -37,28 +33,31 @@ describe("<SampleDeleteConfirmModal/>", () => {
             error: errorMsg,
         });
         const confirmModal = wrapper.find(ConfirmModal);
-        expect(confirmModal.find('Alert').first().text()).toBe(errorMsg);
-        expect(confirmModal.props().cancelButtonText).toBe("Dismiss");
+        expect(
+            confirmModal
+                .find('Alert')
+                .first()
+                .text()
+        ).toBe(errorMsg);
+        expect(confirmModal.props().cancelButtonText).toBe('Dismiss');
     });
-    test("Have confirmation data", () => {
+    test('Have confirmation data', () => {
         const component = (
-            <SampleDeleteConfirmModal
-                selectionKey={"nonesuch"}
-                onCancel={jest.fn()}
-                onConfirm={jest.fn()}
-            />
+            <SampleDeleteConfirmModal selectionKey="nonesuch" onCancel={jest.fn()} onConfirm={jest.fn()} />
         );
         const wrapper = mount(component);
         wrapper.setState({
             isLoading: false,
             confirmationData: {
-                "canDelete" : [ {
-                    "Name" : "D-2.3.1",
-                    "RowId" : 351
-                } ],
-                "cannotDelete" : [  ]
-            }
+                canDelete: [
+                    {
+                        Name: 'D-2.3.1',
+                        RowId: 351,
+                    },
+                ],
+                cannotDelete: [],
+            },
         });
         expect(wrapper.find(SampleDeleteConfirmModalDisplay)).toHaveLength(1);
-    })
+    });
 });

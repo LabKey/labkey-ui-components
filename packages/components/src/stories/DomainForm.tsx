@@ -6,6 +6,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+
 import { DomainDesign } from '../components/domainproperties/models';
 import { DomainFormImpl } from '../components/domainproperties/DomainForm';
 import { MockLookupProvider } from '../test/components/Lookup';
@@ -17,16 +18,17 @@ import exceptionDataServer from '../test/data/property-domainExceptionFromServer
 import exceptionDataClient from '../test/data/property-domainExceptionClient.json';
 import fullyLockedData from '../test/data/property-getDomainWithFullyLockedFields.json';
 import partiallyLockedData from '../test/data/property-getDomainWithPartiallyLockedFields.json';
+
 import { initMocks } from './mock';
 import './stories.scss';
 
 interface Props {
-    showInferFromFile?: boolean
-    data: {}
-    exception?: {}
-    helpNoun?: any
-    helpTopic?: any
-    appPropertiesOnly?: boolean
+    showInferFromFile?: boolean;
+    data: {};
+    exception?: {};
+    helpNoun?: any;
+    helpTopic?: any;
+    appPropertiesOnly?: boolean;
 }
 
 class DomainFormContainer extends React.PureComponent<Props, any> {
@@ -34,19 +36,19 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
         super(props);
 
         this.state = {
-            domain: DomainDesign.create(props.data, props.exception)
+            domain: DomainDesign.create(props.data, props.exception),
         };
     }
 
     onChange = (newDomain: DomainDesign) => {
         this.setState(() => ({
-            domain: newDomain
+            domain: newDomain,
         }));
     };
 
     render() {
         const { domain } = this.state;
-        const appPropertiesOnly = boolean("appPropertiesOnly", this.props.appPropertiesOnly);
+        const appPropertiesOnly = boolean('appPropertiesOnly', this.props.appPropertiesOnly);
 
         return (
             <MockLookupProvider>
@@ -58,64 +60,36 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
                     appPropertiesOnly={appPropertiesOnly}
                 />
             </MockLookupProvider>
-        )
+        );
     }
 }
 
-storiesOf("DomainForm", module)
+storiesOf('DomainForm', module)
     .addDecorator(withKnobs)
-    .add("with empty domain", () => {
+    .add('with empty domain', () => {
         return (
             <DomainFormContainer
                 data={undefined}
                 helpNoun={text('helpNoun', undefined)}
                 helpTopic={text('helpTopic', undefined)}
             />
-        )
+        );
     })
-    .add("infer from file", () => {
-        return (
-            <DomainFormContainer
-                data={undefined}
-                showInferFromFile={boolean('showInferFromFile', true)}
-            />
-        )
+    .add('infer from file', () => {
+        return <DomainFormContainer data={undefined} showInferFromFile={boolean('showInferFromFile', true)} />;
     })
-    .add("with domain properties", () => {
-        return (
-            <DomainFormContainer
-                data={domainData}
-                appPropertiesOnly={false}
-            />
-        )
+    .add('with domain properties', () => {
+        return <DomainFormContainer data={domainData} appPropertiesOnly={false} />;
     })
-    .add("with server side errors and no file or flag types", () => {
-        return (
-            <DomainFormContainer
-                data={errorData}
-                exception={exceptionDataServer}
-            />
-        )
+    .add('with server side errors and no file or flag types', () => {
+        return <DomainFormContainer data={errorData} exception={exceptionDataServer} />;
     })
-    .add("with client side warnings and no attachment types", () => {
-        return (
-            <DomainFormContainer
-                data={warningData}
-                exception={exceptionDataClient}
-            />
-        )
+    .add('with client side warnings and no attachment types', () => {
+        return <DomainFormContainer data={warningData} exception={exceptionDataClient} />;
     })
-    .add("with fully locked fields", () => {
-        return (
-            <DomainFormContainer
-                data={fullyLockedData}
-            />
-        )
+    .add('with fully locked fields', () => {
+        return <DomainFormContainer data={fullyLockedData} />;
     })
-    .add("with partially locked fields", () => {
-        return (
-            <DomainFormContainer
-                data={partiallyLockedData}
-            />
-        )
+    .add('with partially locked fields', () => {
+        return <DomainFormContainer data={partiallyLockedData} />;
     });

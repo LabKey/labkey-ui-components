@@ -6,25 +6,26 @@ import React from 'reactn';
 import { Link } from 'react-router';
 import { List } from 'immutable';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { SVGIcon } from '../base/SVGIcon';
+
 import { LineageFilter, LineageLink, LineageNode, LineageOptions, LineageResult } from './models';
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
 import { createLineageNodeCollections, getLineageNodeTitle, LineageNodeCollection } from './vis/VisGraphGenerator';
 import { loadLineageIfNeeded } from './actions';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { SVGIcon } from '../base/SVGIcon';
 
 interface Props {
-    seed: string
-    showRuns: boolean
-    highlightNode?: string
-    isNodeInGraph?: (node: LineageNode) => boolean
-    onNodeMouseOver?: (node: LineageNode) => void
-    onNodeMouseOut?: (node: LineageNode) => void
-    onNodeClick?: (node: LineageNode) => void
+    seed: string;
+    showRuns: boolean;
+    highlightNode?: string;
+    isNodeInGraph?: (node: LineageNode) => boolean;
+    onNodeMouseOver?: (node: LineageNode) => void;
+    onNodeMouseOut?: (node: LineageNode) => void;
+    onNodeClick?: (node: LineageNode) => void;
 }
 
 export class LineageSummary extends React.Component<Props, any> {
-
     componentDidMount() {
         const { seed } = this.props;
         loadLineageIfNeeded(seed, DEFAULT_LINEAGE_DISTANCE);
@@ -46,7 +47,7 @@ export class LineageSummary extends React.Component<Props, any> {
         let options: LineageOptions;
         if (!showRuns) {
             options = new LineageOptions({
-                filters: List<LineageFilter>([new LineageFilter('type', ['Sample', 'Data'])])
+                filters: List<LineageFilter>([new LineageFilter('type', ['Sample', 'Data'])]),
             });
         }
 
@@ -63,23 +64,25 @@ export class LineageSummary extends React.Component<Props, any> {
         const nodesByType = createLineageNodeCollections(nodes);
         const groups = Object.keys(nodesByType).sort();
 
-        const title = direction === LINEAGE_DIRECTIONS.Parent ? "Parents" : "Children";
+        const title = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
 
-        return <>
-            {groups.map(groupName =>
-                <div key={groupName}>
-                    <LineageNodeList
-                        title={groupName + " " + title}
-                        nodes={nodesByType[groupName]}
-                        highlightNode={highlightNode}
-                        isNodeInGraph={this.props.isNodeInGraph}
-                        onNodeClick={this.props.onNodeClick}
-                        onNodeMouseOver={this.props.onNodeMouseOver}
-                        onNodeMouseOut={this.props.onNodeMouseOut}
-                    />
-                </div>
-            )}
-        </>;
+        return (
+            <>
+                {groups.map(groupName => (
+                    <div key={groupName}>
+                        <LineageNodeList
+                            title={groupName + ' ' + title}
+                            nodes={nodesByType[groupName]}
+                            highlightNode={highlightNode}
+                            isNodeInGraph={this.props.isNodeInGraph}
+                            onNodeClick={this.props.onNodeClick}
+                            onNodeMouseOver={this.props.onNodeMouseOver}
+                            onNodeMouseOut={this.props.onNodeMouseOut}
+                        />
+                    </div>
+                ))}
+            </>
+        );
     }
 
     private empty(nodes?: List<LineageLink>) {
@@ -91,7 +94,7 @@ export class LineageSummary extends React.Component<Props, any> {
         const lineage = this.getLineageResult();
 
         if (!lineage) {
-            return <LoadingSpinner msg="Loading lineage..."/>
+            return <LoadingSpinner msg="Loading lineage..." />;
         }
 
         const node = lineage.nodes.get(lineage.seed);
@@ -99,41 +102,41 @@ export class LineageSummary extends React.Component<Props, any> {
         const children: List<LineageLink> = node.get('children');
 
         if (this.empty(parents) && this.empty(children)) {
-            return <div>No lineage for {node.name}</div>
+            return <div>No lineage for {node.name}</div>;
         }
 
         const hasBoth = !this.empty(parents) && !this.empty(children);
 
-        return <>
-            {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, lineage, parents, highlightNode)}
-            {hasBoth && <hr/>}
-            {this.renderNodeList(LINEAGE_DIRECTIONS.Children, lineage, children, highlightNode)}
-        </>;
+        return (
+            <>
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, lineage, parents, highlightNode)}
+                {hasBoth && <hr />}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, lineage, children, highlightNode)}
+            </>
+        );
     }
 }
 
-
 interface LineageNodeListProps {
-    title: string
-    highlightNode?: string
-    listURL?: string
-    nodes: LineageNodeCollection
+    title: string;
+    highlightNode?: string;
+    listURL?: string;
+    nodes: LineageNodeCollection;
 
-    isNodeInGraph?: (node: LineageNode) => boolean
-    onNodeMouseOver?: (node: LineageNode) => void
-    onNodeMouseOut?: (node: LineageNode) => void
-    onNodeClick?: (node: LineageNode) => void
+    isNodeInGraph?: (node: LineageNode) => boolean;
+    onNodeMouseOver?: (node: LineageNode) => void;
+    onNodeMouseOut?: (node: LineageNode) => void;
+    onNodeClick?: (node: LineageNode) => void;
 }
 
 interface LineageNodeListState {
-    expanded: boolean
+    expanded: boolean;
 }
 
 const COLLAPSED_LIST_SHOW_COUNT = 4;
 
 // TODO move the inline styles to lineage.scss
 export class LineageNodeList extends React.Component<LineageNodeListProps, LineageNodeListState> {
-
     constructor(props) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
@@ -142,8 +145,8 @@ export class LineageNodeList extends React.Component<LineageNodeListProps, Linea
         this.onExpandClicked = this.onExpandClicked.bind(this);
 
         this.state = {
-            expanded: false
-        }
+            expanded: false,
+        };
     }
 
     isNodeInGraph(node: LineageNode) {
@@ -174,13 +177,13 @@ export class LineageNodeList extends React.Component<LineageNodeListProps, Linea
 
     onCollapseClicked() {
         this.setState({
-            expanded: false
+            expanded: false,
         });
     }
 
     onExpandClicked() {
         this.setState({
-            expanded: true
+            expanded: true,
         });
     }
 
@@ -195,29 +198,38 @@ export class LineageNodeList extends React.Component<LineageNodeListProps, Linea
 
         const clickable = this.isNodeInGraph(node);
 
-        return <li key={node.lsid} title={title}
-                   className='lineage-name'
-                   style={{fontWeight: highlightNode === node.lsid ? 'bold' : 'normal'}}>
-            <SVGIcon iconDir={"_images"} iconSrc={iconURL}
-                     style={{width:"1.2em", height:"1.2em", margin: "0.1em"}} />
-            &nbsp;
-            {clickable ?
-                <a className='pointer'
-                   onMouseOver={e => this.onNodeMouseOver(node)}
-                   onMouseOut={e => this.onNodeMouseOut(node)}
-                   onClick={e => this.onNodeClick(node)}>{name}</a> :
-                <span>{name}</span>
-            }
-            &nbsp;
-            <a href={url}
-               className='show-on-hover' style={{paddingLeft: '1px', paddingRight: '1px'}}>
-                <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Overview</small>
-            </a>
-            <a href={lineageUrl}
-               className='show-on-hover' style={{paddingLeft: '5px', paddingRight: '5px'}}>
-                <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Lineage</small>
-            </a>
-        </li>;
+        return (
+            <li
+                key={node.lsid}
+                title={title}
+                className="lineage-name"
+                style={{ fontWeight: highlightNode === node.lsid ? 'bold' : 'normal' }}>
+                <SVGIcon
+                    iconDir="_images"
+                    iconSrc={iconURL}
+                    style={{ width: '1.2em', height: '1.2em', margin: '0.1em' }}
+                />
+                &nbsp;
+                {clickable ? (
+                    <a
+                        className="pointer"
+                        onMouseOver={e => this.onNodeMouseOver(node)}
+                        onMouseOut={e => this.onNodeMouseOut(node)}
+                        onClick={e => this.onNodeClick(node)}>
+                        {name}
+                    </a>
+                ) : (
+                    <span>{name}</span>
+                )}
+                &nbsp;
+                <a href={url} className="show-on-hover" style={{ paddingLeft: '1px', paddingRight: '1px' }}>
+                    <small style={{ lineHeight: 1, color: '#777', fontSize: '75%' }}>Overview</small>
+                </a>
+                <a href={lineageUrl} className="show-on-hover" style={{ paddingLeft: '5px', paddingRight: '5px' }}>
+                    <small style={{ lineHeight: 1, color: '#777', fontSize: '75%' }}>Lineage</small>
+                </a>
+            </li>
+        );
     }
 
     renderCollapseExpandNode(skipCount) {
@@ -225,13 +237,20 @@ export class LineageNodeList extends React.Component<LineageNodeListProps, Linea
 
         const callback = expanded ? this.onCollapseClicked : this.onExpandClicked;
 
-        return <li key={'__skip'}>
-            <SVGIcon iconDir={"_images"} iconSrc="default"
-                     style={{width:"1.2em", height:"1.2em", margin: "0.1em", opacity: 0}} />
-            &nbsp;
-            <a style={{cursor:'pointer'}} onClick={callback}>Show {skipCount} {expanded ? "less" : "more"}...</a>
-            &nbsp;
-        </li>
+        return (
+            <li key="__skip">
+                <SVGIcon
+                    iconDir="_images"
+                    iconSrc="default"
+                    style={{ width: '1.2em', height: '1.2em', margin: '0.1em', opacity: 0 }}
+                />
+                &nbsp;
+                <a style={{ cursor: 'pointer' }} onClick={callback}>
+                    Show {skipCount} {expanded ? 'less' : 'more'}...
+                </a>
+                &nbsp;
+            </li>
+        );
     }
 
     render() {
@@ -239,33 +258,35 @@ export class LineageNodeList extends React.Component<LineageNodeListProps, Linea
         const { expanded } = this.state;
 
         let includeCollapseExpand = false;
-        if (nodes.nodes.length > 10)
-            includeCollapseExpand = true;
+        if (nodes.nodes.length > 10) includeCollapseExpand = true;
 
         let rendered;
         if (includeCollapseExpand) {
             const skipCount = nodes.nodes.length - COLLAPSED_LIST_SHOW_COUNT;
 
-            rendered = nodes.nodes.slice(0, COLLAPSED_LIST_SHOW_COUNT).map(n  => this.renderNode(n));
+            rendered = nodes.nodes.slice(0, COLLAPSED_LIST_SHOW_COUNT).map(n => this.renderNode(n));
             rendered.push(this.renderCollapseExpandNode(skipCount));
             if (expanded) {
-                rendered = rendered.concat(nodes.nodes.slice(COLLAPSED_LIST_SHOW_COUNT).map(n  => this.renderNode(n)));
+                rendered = rendered.concat(nodes.nodes.slice(COLLAPSED_LIST_SHOW_COUNT).map(n => this.renderNode(n)));
             }
-        }
-        else {
-            rendered = nodes.nodes.map(n  => this.renderNode(n));
+        } else {
+            rendered = nodes.nodes.map(n => this.renderNode(n));
         }
 
-        return <details open={true}>
-            <summary className='lineage-name'>
-                <h6 style={{marginBottom:'0.3em'}}>{title} ({nodes.nodes.length})
-                    &nbsp;{nodes.listURL && <Link className='show-on-hover' to={nodes.listURL}>View in grid</Link>}
-                </h6>
-            </summary>
-            <ul style={{listStyleType: 'none', paddingLeft: '0', marginBottom: '1.5em'}}>
-                {rendered}
-            </ul>
-        </details>;
+        return (
+            <details open={true}>
+                <summary className="lineage-name">
+                    <h6 style={{ marginBottom: '0.3em' }}>
+                        {title} ({nodes.nodes.length}) &nbsp;
+                        {nodes.listURL && (
+                            <Link className="show-on-hover" to={nodes.listURL}>
+                                View in grid
+                            </Link>
+                        )}
+                    </h6>
+                </summary>
+                <ul style={{ listStyleType: 'none', paddingLeft: '0', marginBottom: '1.5em' }}>{rendered}</ul>
+            </details>
+        );
     }
-
 }

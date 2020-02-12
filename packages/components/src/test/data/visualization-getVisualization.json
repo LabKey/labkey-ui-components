@@ -1,16 +1,16 @@
 {
-  "visualizationConfig" : "{\"chartConfig\":{\"measures\":{\"pointClickFn\":null,\"y\":{\"displayFieldJsonType\":\"\",\"hidden\":false,\"fieldKey\":\"Arg\",\"label\":\"Arg (pM/uL)\",\"schemaName\":\"assay.General.Amino Acids\",\"type\":\"float\",\"normalizedType\":\"float\",\"yAxis\":\"left\",\"measure\":false,\"name\":\"Arg\",\"queryName\":\"Data\",\"alias\":\"Arg\",\"shortCaption\":\"Arg (pM/uL)\",\"dimension\":false}},\"scales\":{\"y\":{\"type\":\"automatic\",\"trans\":\"linear\"}},\"width\":null,\"geomOptions\":{\"binShape\":\"hex\",\"gradientColor\":\"FFFFFF\",\"pieInnerRadius\":0,\"colorRange\":\"BlueWhite\",\"colorPaletteScale\":\"ColorDiscrete\",\"lineWidth\":1,\"showPiePercentages\":true,\"pointFillColor\":\"3366FF\",\"pieOuterRadius\":80,\"binThreshold\":10000,\"hideTrendLine\":false,\"height\":null,\"binColorGroup\":\"BlueWhite\",\"chartLayout\":\"single\",\"chartSubjectSelection\":\"subjects\",\"lineColor\":\"000000\",\"binSingleColor\":\"000000\",\"label\":\"Arg Box Plot\",\"pointType\":\"all\",\"piePercentagesColor\":\"333333\",\"boxFillColor\":\"none\",\"binShapeGroup\":\"hex\",\"showOutliers\":false,\"pointSize\":4,\"pieHideWhenLessThanPercentage\":5,\"hideDataPoints\":false,\"errorBars\":\"None\",\"subtitle\":\"\",\"width\":null,\"gradientPercentage\":95,\"position\":\"jitter\",\"opacity\":0.5,\"displayIndividual\":true,\"displayAggregate\":false},\"pointType\":\"all\",\"renderType\":\"box_plot\",\"labels\":{\"subtitle\":\"\",\"y\":\"Arg (pM/uL)\",\"main\":\"Arg Box Plot\"},\"height\":null},\"queryConfig\":{\"dataRegionName\":\"Data\",\"maxRows\":-1,\"viewName\":null,\"method\":\"POST\",\"columns\":[\"Ala\",\"Arg\",\"Asn\",\"Asp\",\"Run/assayRequest\",\"Cys\",\"Gln\",\"Glu\",\"Gly\",\"His\",\"Ile\",\"Inj\",\"Leu\",\"Lys\",\"Met\",\"Phe\",\"Pro\",\"ResultID\",\"Run\",\"SampleDate\",\"SampleDescription\",\"SampleID\",\"Ser\",\"Thr\",\"Trp\",\"Tyr\",\"Val\",\"Vial\"],\"requiredVersion\":13.2,\"queryName\":\"Data\",\"queryLabel\":\"Data\",\"sort\":\"lsid\",\"schemaName\":\"assay.General.Amino Acids\",\"filterArray\":[],\"parameters\":{}}}",
-  "shared" : true,
-  "reportId" : "db:3",
-  "createdBy" : 1005,
-  "reportProps" : {
-    "thumbnailType" : "AUTO"
-  },
-  "name" : "Arg Box Plot",
-  "description" : "This is a description for my private box plot fo the Arg data.",
-  "queryName" : "Data",
-  "schemaName" : "assay.General.Amino Acids",
-  "type" : "ReportService.GenericChartReport",
-  "ownerId" : null,
-  "thumbnailURL" : "/labkey/biologics/reports-thumbnail.view?reportId=db%3A3&revision=0"
+    "visualizationConfig": "{\"chartConfig\":{\"measures\":{\"pointClickFn\":null,\"y\":{\"displayFieldJsonType\":\"\",\"hidden\":false,\"fieldKey\":\"Arg\",\"label\":\"Arg (pM/uL)\",\"schemaName\":\"assay.General.Amino Acids\",\"type\":\"float\",\"normalizedType\":\"float\",\"yAxis\":\"left\",\"measure\":false,\"name\":\"Arg\",\"queryName\":\"Data\",\"alias\":\"Arg\",\"shortCaption\":\"Arg (pM/uL)\",\"dimension\":false}},\"scales\":{\"y\":{\"type\":\"automatic\",\"trans\":\"linear\"}},\"width\":null,\"geomOptions\":{\"binShape\":\"hex\",\"gradientColor\":\"FFFFFF\",\"pieInnerRadius\":0,\"colorRange\":\"BlueWhite\",\"colorPaletteScale\":\"ColorDiscrete\",\"lineWidth\":1,\"showPiePercentages\":true,\"pointFillColor\":\"3366FF\",\"pieOuterRadius\":80,\"binThreshold\":10000,\"hideTrendLine\":false,\"height\":null,\"binColorGroup\":\"BlueWhite\",\"chartLayout\":\"single\",\"chartSubjectSelection\":\"subjects\",\"lineColor\":\"000000\",\"binSingleColor\":\"000000\",\"label\":\"Arg Box Plot\",\"pointType\":\"all\",\"piePercentagesColor\":\"333333\",\"boxFillColor\":\"none\",\"binShapeGroup\":\"hex\",\"showOutliers\":false,\"pointSize\":4,\"pieHideWhenLessThanPercentage\":5,\"hideDataPoints\":false,\"errorBars\":\"None\",\"subtitle\":\"\",\"width\":null,\"gradientPercentage\":95,\"position\":\"jitter\",\"opacity\":0.5,\"displayIndividual\":true,\"displayAggregate\":false},\"pointType\":\"all\",\"renderType\":\"box_plot\",\"labels\":{\"subtitle\":\"\",\"y\":\"Arg (pM/uL)\",\"main\":\"Arg Box Plot\"},\"height\":null},\"queryConfig\":{\"dataRegionName\":\"Data\",\"maxRows\":-1,\"viewName\":null,\"method\":\"POST\",\"columns\":[\"Ala\",\"Arg\",\"Asn\",\"Asp\",\"Run/assayRequest\",\"Cys\",\"Gln\",\"Glu\",\"Gly\",\"His\",\"Ile\",\"Inj\",\"Leu\",\"Lys\",\"Met\",\"Phe\",\"Pro\",\"ResultID\",\"Run\",\"SampleDate\",\"SampleDescription\",\"SampleID\",\"Ser\",\"Thr\",\"Trp\",\"Tyr\",\"Val\",\"Vial\"],\"requiredVersion\":13.2,\"queryName\":\"Data\",\"queryLabel\":\"Data\",\"sort\":\"lsid\",\"schemaName\":\"assay.General.Amino Acids\",\"filterArray\":[],\"parameters\":{}}}",
+    "shared": true,
+    "reportId": "db:3",
+    "createdBy": 1005,
+    "reportProps": {
+        "thumbnailType": "AUTO"
+    },
+    "name": "Arg Box Plot",
+    "description": "This is a description for my private box plot fo the Arg data.",
+    "queryName": "Data",
+    "schemaName": "assay.General.Amino Acids",
+  'type' : 'ReportService.GenericChartReport',
+    "ownerId": null,
+    "thumbnailURL": "/labkey/biologics/reports-thumbnail.view?reportId=db%3A3&revision=0"
 }

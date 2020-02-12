@@ -1,86 +1,86 @@
 {
-  "General" : {
-    "hidden" : false,
-    "schemas" : {
-      "batch_sample_assay" : {
-        "hidden" : false,
-        "description" : "Contains data about the batch_sample_assay assay definition and its associated batches and runs.",
-        "schemaName" : "batch_sample_assay",
-        "fullyQualifiedName" : "assay.General.batch_sample_assay"
-      },
-      "SEC" : {
-        "hidden" : false,
-        "description" : "Contains data about the SEC assay definition and its associated batches and runs.",
-        "schemaName" : "SEC",
-        "fullyQualifiedName" : "assay.General.SEC"
-      },
-      "run_sample_assay" : {
-        "hidden" : false,
-        "description" : "Contains data about the run_sample_assay assay definition and its associated batches and runs.",
-        "schemaName" : "run_sample_assay",
-        "fullyQualifiedName" : "assay.General.run_sample_assay"
-      },
-      "AssayWithoutIDColumn" : {
-        "hidden" : false,
-        "description" : "Contains data about the AssayWithoutIDColumn assay definition and its associated batches and runs.",
-        "schemaName" : "AssayWithoutIDColumn",
-        "fullyQualifiedName" : "assay.General.AssayWithoutIDColumn"
-      },
-      "results_sample_assay" : {
-        "hidden" : false,
-        "description" : "Contains data about the results_sample_assay assay definition and its associated batches and runs.",
-        "schemaName" : "results_sample_assay",
-        "fullyQualifiedName" : "assay.General.results_sample_assay"
-      },
-      "GPATAssay><&/\\' \"1äöüÅ" : {
-        "hidden" : false,
-        "description" : "Contains data about the GPATAssay><&/\\' \"1äöüÅ assay definition and its associated batches and runs.",
-        "schemaName" : "GPATAssay><&/\\' \"1äöüÅ",
-        "fullyQualifiedName" : "assay.General.GPATAssay><$A$S\\' \"1äöüÅ"
-      },
-      "Titer" : {
-        "hidden" : false,
-        "description" : "Contains data about the Titer assay definition and its associated batches and runs.",
-        "schemaName" : "Titer",
-        "fullyQualifiedName" : "assay.General.Titer"
-      },
-      "Amino Acids" : {
-        "hidden" : false,
-        "description" : "Contains data about the Amino Acids assay definition and its associated batches and runs.",
-        "schemaName" : "Amino Acids",
-        "fullyQualifiedName" : "assay.General.Amino Acids"
-      }
+    "General": {
+        "hidden": false,
+    'schemas' : {
+            "batch_sample_assay": {
+                "hidden": false,
+                "description": "Contains data about the batch_sample_assay assay definition and its associated batches and runs.",
+                "schemaName": "batch_sample_assay",
+                "fullyQualifiedName": "assay.General.batch_sample_assay"
+            },
+            "SEC": {
+                "hidden": false,
+                "description": "Contains data about the SEC assay definition and its associated batches and runs.",
+                "schemaName": "SEC",
+                "fullyQualifiedName": "assay.General.SEC"
+            },
+            "run_sample_assay": {
+                "hidden": false,
+                "description": "Contains data about the run_sample_assay assay definition and its associated batches and runs.",
+                "schemaName": "run_sample_assay",
+                "fullyQualifiedName": "assay.General.run_sample_assay"
+            },
+            "AssayWithoutIDColumn": {
+                "hidden": false,
+                "description": "Contains data about the AssayWithoutIDColumn assay definition and its associated batches and runs.",
+                "schemaName": "AssayWithoutIDColumn",
+                "fullyQualifiedName": "assay.General.AssayWithoutIDColumn"
+            },
+            "results_sample_assay": {
+        'hidden' : false,
+        'description' : 'Contains data about the results_sample_assay assay definition and its associated batches and runs.',
+                "schemaName": "results_sample_assay",
+                "fullyQualifiedName": "assay.General.results_sample_assay"
+            },
+            "GPATAssay><&/\\' \"1äöüÅ": {
+                "hidden": false,
+                "description": "Contains data about the GPATAssay><&/\\' \"1äöüÅ assay definition and its associated batches and runs.",
+                "schemaName": "GPATAssay><&/\\' \"1äöüÅ",
+                "fullyQualifiedName": "assay.General.GPATAssay><$A$S\\' \"1äöüÅ"
+            },
+            "Titer": {
+                "hidden": false,
+                "description": "Contains data about the Titer assay definition and its associated batches and runs.",
+                "schemaName": "Titer",
+                "fullyQualifiedName": "assay.General.Titer"
+            },
+            "Amino Acids": {
+                "hidden": false,
+                "description": "Contains data about the Amino Acids assay definition and its associated batches and runs.",
+                "schemaName": "Amino Acids",
+                "fullyQualifiedName": "assay.General.Amino Acids"
+            }
+        },
+        "description": "Contains data about all assay definitions of assay type General",
+        "schemaName": "General",
+        "fullyQualifiedName": "assay.General"
     },
-    "description" : "Contains data about all assay definitions of assay type General",
-    "schemaName" : "General",
-    "fullyQualifiedName" : "assay.General"
-  },
-  "simple" : {
-    "hidden" : false,
-    "schemas" : {
-      "FileBasedExample" : {
-        "hidden" : false,
-        "description" : "Contains data about the FileBasedExample assay definition and its associated batches and runs.",
-        "schemaName" : "FileBasedExample",
-        "fullyQualifiedName" : "assay.simple.FileBasedExample"
-      }
+  'simple' : {
+        "hidden": false,
+        "schemas": {
+      'FileBasedExample' : {
+                "hidden": false,
+                "description": "Contains data about the FileBasedExample assay definition and its associated batches and runs.",
+                "schemaName": "FileBasedExample",
+                "fullyQualifiedName": "assay.simple.FileBasedExample"
+            }
+        },
+        "description": "Contains data about all assay definitions of assay type Noblis Simple",
+        "schemaName": "simple",
+        "fullyQualifiedName": "assay.simple"
     },
-    "description" : "Contains data about all assay definitions of assay type Noblis Simple",
-    "schemaName" : "simple",
-    "fullyQualifiedName" : "assay.simple"
-  },
-  "Luminex" : {
-    "hidden" : false,
-    "schemas" : {
-      "LuminexExample" : {
-        "hidden" : false,
-        "description" : "Contains data about the LuminexExample assay definition and its associated batches and runs.",
-        "schemaName" : "LuminexExample",
-        "fullyQualifiedName" : "assay.Luminex.LuminexExample"
-      }
-    },
-    "description" : "Contains data about all assay definitions of assay type Luminex",
-    "schemaName" : "Luminex",
-    "fullyQualifiedName" : "assay.Luminex"
-  }
+    "Luminex": {
+    'hidden' : false,
+        "schemas": {
+            "LuminexExample": {
+                "hidden": false,
+                "description": "Contains data about the LuminexExample assay definition and its associated batches and runs.",
+                "schemaName": "LuminexExample",
+                "fullyQualifiedName": "assay.Luminex.LuminexExample"
+            }
+        },
+        "description": "Contains data about all assay definitions of assay type Luminex",
+        "schemaName": "Luminex",
+    'fullyQualifiedName' : 'assay.Luminex'
+    }
 }

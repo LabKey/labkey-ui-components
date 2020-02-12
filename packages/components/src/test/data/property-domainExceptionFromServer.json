@@ -1,15 +1,15 @@
 {
-  "exception": "The field name 'FieldText' is already taken. Please provide a unique name for each field.",
-  "success": false,
-  "_comment": "value for 'severity' & 'rowIndexes' is not received from the server, but it gets added during DomainException object creation on failure",
-  "severity": "Error",
-  "errors": [
-    {
-      "field": "FieldText",
-      "id": "0",
-      "message": "The field name 'FieldText' is already taken. Please provide a unique name for each field.",
-      "severity": "Error",
-      "rowIndexes" : [0, 1]
-    }
-  ]
+    'exception': "The field name 'FieldText' is already taken. Please provide a unique name for each field.",
+    'success': false,
+    '_comment': "value for 'severity' & 'rowIndexes' is not received from the server, but it gets added during DomainException object creation on failure",
+    'severity': 'Error',
+    'errors': [
+        {
+            'field': 'FieldText',
+            'id': '0',
+            'message': "The field name 'FieldText' is already taken. Please provide a unique name for each field.",
+            'severity': 'Error',
+            'rowIndexes': [0, 1]
+        }
+    ]
 }

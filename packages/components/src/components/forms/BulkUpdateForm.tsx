@@ -4,37 +4,37 @@ import { Utils } from '@labkey/api';
 
 import { getSelectedData } from '../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import { QueryInfoForm } from './QueryInfoForm';
+
 import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
 import { QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
 
+import { QueryInfoForm } from './QueryInfoForm';
 
 interface Props {
-    singularNoun?: string
-    pluralNoun?: string
-    itemLabel?: string
-    model: QueryGridModel,
-    canSubmitForEdit: boolean,
-    onCancel: () => any,
-    onError?: (message: string) => any,
-    onComplete: (data: any, submitForEdit: boolean) => any
-    onSubmitForEdit: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any
-    updateRows: (schemaQuery: SchemaQuery, rows: Array<any>) => Promise<any>
+    singularNoun?: string;
+    pluralNoun?: string;
+    itemLabel?: string;
+    model: QueryGridModel;
+    canSubmitForEdit: boolean;
+    onCancel: () => any;
+    onError?: (message: string) => any;
+    onComplete: (data: any, submitForEdit: boolean) => any;
+    onSubmitForEdit: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
+    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
 }
 
 interface State {
-    isLoadingDataForSelection: boolean
-    dataForSelection: Map<string, any>
-    dataIdsForSelection: List<any>
-    errorMsg: string
+    isLoadingDataForSelection: boolean;
+    dataForSelection: Map<string, any>;
+    dataIdsForSelection: List<any>;
+    errorMsg: string;
 }
 
 export class BulkUpdateForm extends React.Component<Props, State> {
-
     static defaultProps = {
         singularNoun: 'row',
         pluralNoun: 'rows',
-        itemLabel: 'table'
+        itemLabel: 'table',
     };
 
     constructor(props) {
@@ -44,27 +44,29 @@ export class BulkUpdateForm extends React.Component<Props, State> {
             isLoadingDataForSelection: true,
             dataForSelection: undefined,
             dataIdsForSelection: undefined,
-            errorMsg: undefined
+            errorMsg: undefined,
         };
     }
 
     componentWillMount() {
         const { model, onCancel, pluralNoun } = this.props;
 
-        getSelectedData(model).then( (response) => {
-            const { data, dataIds } = response;
-            this.setState(() => ({
-                isLoadingDataForSelection: false,
-                dataForSelection: data,
-                dataIdsForSelection: dataIds
-            }));
-        }).catch((reason) => {
-            console.error(reason);
-            if (this.props.onError) {
-                this.props.onError("There was a problem loading the data for the selected " +  pluralNoun + ".")
-            }
-            onCancel();
-        });
+        getSelectedData(model)
+            .then(response => {
+                const { data, dataIds } = response;
+                this.setState(() => ({
+                    isLoadingDataForSelection: false,
+                    dataForSelection: data,
+                    dataIdsForSelection: dataIds,
+                }));
+            })
+            .catch(reason => {
+                console.error(reason);
+                if (this.props.onError) {
+                    this.props.onError('There was a problem loading the data for the selected ' + pluralNoun + '.');
+                }
+                onCancel();
+            });
     }
 
     getSelectionCount(): number {
@@ -83,13 +85,15 @@ export class BulkUpdateForm extends React.Component<Props, State> {
 
     getUpdateQueryInfo(): QueryInfo {
         const { model } = this.props;
-        const updateColumns = model.queryInfo.columns.filter((column) => (column.shownInUpdateView));
+        const updateColumns = model.queryInfo.columns.filter(column => column.shownInUpdateView);
         return model.queryInfo.set('columns', updateColumns) as QueryInfo;
     }
 
-    bulkUpdateSelectedRows = (data) : Promise<any> => {
+    bulkUpdateSelectedRows = (data): Promise<any> => {
         const { model, updateRows } = this.props;
-        const rows = !Utils.isEmptyObj(data)? getUpdatedData(this.state.dataForSelection, data, model.queryInfo.pkCols) : [];
+        const rows = !Utils.isEmptyObj(data)
+            ? getUpdatedData(this.state.dataForSelection, data, model.queryInfo.pkCols)
+            : [];
 
         return updateRows(model.queryInfo.schemaQuery, rows);
     };
@@ -106,27 +110,27 @@ export class BulkUpdateForm extends React.Component<Props, State> {
         return (
             <div>
                 <p>
-                    Make changes to the selected {noun}.
-                    Enable a field to update or remove the value for the selected {noun}.
+                    Make changes to the selected {noun}. Enable a field to update or remove the value for the selected{' '}
+                    {noun}.
                 </p>
-                {this.getSelectionCount() > 1 &&
-                <p>
-                    To update individual {noun} in this selection group, select "Edit with Grid".
-                </p>}
+                {this.getSelectionCount() > 1 && (
+                    <p>To update individual {noun} in this selection group, select "Edit with Grid".</p>
+                )}
             </div>
-        )
+        );
     }
 
     render() {
         const { isLoadingDataForSelection, dataForSelection } = this.state;
         const { pluralNoun, model, canSubmitForEdit, onCancel, onComplete } = this.props;
-        const fieldValues = isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
+        const fieldValues =
+            isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
 
         return (
             <QueryInfoForm
                 allowFieldDisable={true}
                 canSubmitForEdit={canSubmitForEdit}
-                disableSubmitForEditMsg={"At most " + MAX_EDITABLE_GRID_ROWS + " can be edited with the grid."}
+                disableSubmitForEditMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' can be edited with the grid.'}
                 initiallyDisableFields={true}
                 isLoading={isLoadingDataForSelection}
                 fieldValues={fieldValues}
@@ -137,7 +141,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
                 includeCountField={false}
                 checkRequiredFields={false}
                 showLabelAsterisk={true}
-                submitForEditText={"Edit with Grid"}
+                submitForEditText="Edit with Grid"
                 submitText={`Update ${capitalizeFirstChar(pluralNoun)}`}
                 onHide={onCancel}
                 onCancel={onCancel}
@@ -146,6 +150,6 @@ export class BulkUpdateForm extends React.Component<Props, State> {
                 title={this.getTitle()}
                 header={this.renderBulkUpdateHeader()}
             />
-        )
+        );
     }
 }

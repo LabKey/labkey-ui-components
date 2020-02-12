@@ -1,11 +1,12 @@
 {
-  "rowsAffected" : 1,
-  "queryName" : "samples",
-  "schemaName" : "samples",
-  "containerPath" : "/testcontainer",
-  "rows" : [ {
-    "rowId" : 123,
-    "name" : "SampleId-123"
-  } ],
-  "command" : "update"
+    "rowsAffected": 1,
+  'queryName' : 'samples',
+  'schemaName' : 'samples',
+  'containerPath' : '/testcontainer',
+  'rows' : [ {
+    'rowId' : 123,
+            "name": "SampleId-123"
+        }
+    ],
+    "command": "update"
 }

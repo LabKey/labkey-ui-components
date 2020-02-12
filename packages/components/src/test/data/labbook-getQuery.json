@@ -1,376 +1,390 @@
 {
-  "schemaName" : [ "labbook" ],
-  "queryName" : "LabBookExperiment",
-  "metaData" : {
-    "importTemplates" : [ {
-      "label" : "Download Template",
-      "url" : "/labkey/biologics/query-exportExcelTemplate.view?schemaName=labbook&query.queryName=LabBookExperiment&headerType=DisplayFieldKey"
-    } ],
-    "root" : "rows",
-    "totalProperty" : "rowCount",
-    "description" : null,
-    "id" : "RowId",
-    "fields" : [ {
-      "fieldKey" : [ "RowId" ],
-      "friendlyType" : "Integer",
-      "type" : "int",
-      "jsonType" : "int",
-      "sqlType" : "serial",
-      "defaultValue" : null,
-      "scale" : 10,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : true,
-      "hidden" : false,
-      "keyField" : true,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : true,
-      "userEditable" : false,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : false,
-      "shownInUpdateView" : false,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 10,
-      "shortCaption" : "Row Id",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Row Id"
-    }, {
-      "fieldKey" : [ "Title" ],
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "varchar",
-      "defaultValue" : null,
-      "scale" : 1000,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "textarea",
-      "cols" : 60,
-      "rows" : 15,
-      "shortCaption" : "Title",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Title"
-    }, {
-      "fieldKey" : [ "numSamples" ],
-      "friendlyType" : "Integer",
-      "type" : "int",
-      "jsonType" : "int",
-      "sqlType" : "INTEGER",
-      "defaultValue" : null,
-      "scale" : 0,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : false,
-      "calculated" : true,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : false,
-      "shownInUpdateView" : false,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "shortCaption" : "Num Samples",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Num Samples"
-    }, {
-      "fieldKey" : [ "Created" ],
-      "friendlyType" : "Date and Time",
-      "type" : "date",
-      "jsonType" : "date",
-      "sqlType" : "timestamp",
-      "defaultValue" : null,
-      "scale" : 29,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : false,
-      "userEditable" : false,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "format" : "yyyy-MM-dd HH:mm",
-      "extFormatFn" : "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
-      "extFormat" : "Y-m-d H:i",
-      "inputType" : "text",
-      "cols" : 29,
-      "shortCaption" : "Created",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Created"
-    }, {
-      "fieldKey" : [ "CreatedBy" ],
-      "friendlyType" : "Integer",
-      "type" : "int",
-      "jsonType" : "int",
-      "sqlType" : "userid",
-      "defaultValue" : null,
-      "scale" : 4,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : true,
-      "userEditable" : false,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : false,
-      "shownInUpdateView" : false,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "displayField" : [ "CreatedBy", "DisplayName" ],
-      "displayFieldJsonType" : "string",
-      "inputType" : "text",
-      "cols" : 4,
-      "shortCaption" : "Created By",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Created By",
-      "lookup" : {
-        "keyColumn" : "UserId",
-        "public" : true,
-        "displayColumn" : "DisplayName",
-        "queryName" : "SiteUsers",
-        "schemaName" : [ "core" ]
-      }
-    }, {
-      "fieldKey" : [ "StartDate" ],
-      "friendlyType" : "Date and Time",
-      "type" : "date",
-      "jsonType" : "date",
-      "sqlType" : "timestamp",
-      "defaultValue" : "2019-11-04",
-      "scale" : 29,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "format" : "yyyy-MM-dd HH:mm",
-      "extFormatFn" : "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
-      "extFormat" : "Y-m-d H:i",
-      "inputType" : "text",
-      "cols" : 29,
-      "shortCaption" : "Start Date",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Start Date"
-    }, {
-      "fieldKey" : [ "EndDate" ],
-      "friendlyType" : "Date and Time",
-      "type" : "date",
-      "jsonType" : "date",
-      "sqlType" : "timestamp",
-      "defaultValue" : null,
-      "scale" : 29,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "format" : "yyyy-MM-dd HH:mm",
-      "extFormatFn" : "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
-      "extFormat" : "Y-m-d H:i",
-      "inputType" : "text",
-      "cols" : 29,
-      "shortCaption" : "End Date",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "End Date"
-    } ],
-    "title" : "LabBookExperiment",
-    "importMessage" : null
-  },
-  "rows" : [ {
-    "data" : {
-      "StartDate" : {
-        "value" : "2019-11-04 15:18:24.502",
-        "formattedValue" : "2019-11-04 15:18"
-      },
-      "RowId" : {
-        "value" : 1
-      },
-      "CreatedBy" : {
-        "value" : 1005,
-        "url" : "/labkey/biologics/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
-        "displayValue" : "alanv"
-      },
-      "numSamples" : {
-        "value" : 0
-      },
-      "Title" : {
-        "value" : "Alan's Fine Experiment",
-        "url" : "/labkey/biologics/__LBC-1/query-detailsQueryRow.view?schemaName=labbook&query.queryName=LabBookExperiment&RowId=1"
-      },
-      "EndDate" : {
-        "value" : null
-      },
-      "Created" : {
-        "value" : "2019-11-04 15:18:24.760",
-        "formattedValue" : "2019-11-04 15:18"
-      }
-    }
-  }, {
-    "data" : {
-      "StartDate" : {
-        "value" : "2019-11-04 15:18:40.942",
-        "formattedValue" : "2019-11-04 15:18"
-      },
-      "RowId" : {
-        "value" : 2
-      },
-      "CreatedBy" : {
-        "value" : 1005,
-        "url" : "/labkey/biologics/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
-        "displayValue" : "alanv"
-      },
-      "numSamples" : {
-        "value" : 0
-      },
-      "Title" : {
-        "value" : "Another Experiment",
-        "url" : "/labkey/biologics/__LBC-2/query-detailsQueryRow.view?schemaName=labbook&query.queryName=LabBookExperiment&RowId=2"
-      },
-      "EndDate" : {
-        "value" : null
-      },
-      "Created" : {
-        "value" : "2019-11-04 15:18:41.161",
-        "formattedValue" : "2019-11-04 15:18"
-      }
-    }
-  }, {
-    "data" : {
-      "StartDate" : {
-        "value" : "2019-11-04 15:18:47.776",
-        "formattedValue" : "2019-11-04 15:18"
-      },
-      "RowId" : {
-        "value" : 3
-      },
-      "CreatedBy" : {
-        "value" : 1005,
-        "url" : "/labkey/biologics/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
-        "displayValue" : "alanv"
-      },
-      "numSamples" : {
-        "value" : 0
-      },
-      "Title" : {
-        "value" : "Experiment3",
-        "url" : "/labkey/biologics/__LBC-3/query-detailsQueryRow.view?schemaName=labbook&query.queryName=LabBookExperiment&RowId=3"
-      },
-      "EndDate" : {
-        "value" : null
-      },
-      "Created" : {
-        "value" : "2019-11-04 15:18:47.959",
-        "formattedValue" : "2019-11-04 15:18"
-      }
-    }
-  } ],
-  "rowCount" : 3
+    "schemaName": ["labbook"],
+    "queryName": "LabBookExperiment",
+    "metaData": {
+        "importTemplates": [
+            {
+                "label": "Download Template",
+                "url": "/labkey/biologics/query-exportExcelTemplate.view?schemaName=labbook&query.queryName=LabBookExperiment&headerType=DisplayFieldKey"
+            }
+        ],
+        "root": "rows",
+        "totalProperty": "rowCount",
+        "description": null,
+        "id": "RowId",
+        "fields": [
+            {
+                "fieldKey": ["RowId"],
+                "friendlyType": "Integer",
+                "type": "int",
+      'jsonType' : 'int',
+                "sqlType": "serial",
+                "defaultValue": null,
+      'scale' : 10,
+                "align": "right",
+      'sortable' : true,
+      'width' : '',
+                "autoIncrement": true,
+      'hidden' : false,
+      'keyField' : true,
+                "mvEnabled": false,
+      'nullable' : false,
+                "readOnly": true,
+                "userEditable": false,
+      'calculated' : false,
+                "versionField": false,
+                "selectable": true,
+                "shownInInsertView": false,
+                "shownInUpdateView": false,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": false,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+      'cols' : 10,
+      'shortCaption' : 'Row Id',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Row Id'
+            },
+            {
+                "fieldKey": ["Title"],
+      'friendlyType' : 'Text (String)',
+                "type": "string",
+      'jsonType' : 'string',
+      'sqlType' : 'varchar',
+                "defaultValue": null,
+      'scale' : 1000,
+      'align' : 'left',
+                "sortable": true,
+      'width' : '',
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+                "dimension": false,
+      'measure' : false,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+      'inputType' : 'textarea',
+                "cols": 60,
+      'rows' : 15,
+      'shortCaption' : 'Title',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Title'
+            },
+            {
+                "fieldKey": ["numSamples"],
+      'friendlyType' : 'Integer',
+                "type": "int",
+      'jsonType' : 'int',
+                "sqlType": "INTEGER",
+                "defaultValue": null,
+      'scale' : 0,
+                "align": "right",
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": false,
+                "calculated": true,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": false,
+      'shownInUpdateView' : false,
+                "shownInDetailsView": true,
+      'dimension' : false,
+      'measure' : true,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+                "shortCaption": "Num Samples",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Num Samples"
+            },
+            {
+      'fieldKey' : [ 'Created' ],
+                "friendlyType": "Date and Time",
+      'type' : 'date',
+                "jsonType": "date",
+                "sqlType": "timestamp",
+      'defaultValue' : null,
+                "scale": 29,
+                "align": "left",
+      'sortable' : true,
+                "width": "",
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+                "mvEnabled": false,
+      'nullable' : false,
+                "readOnly": false,
+      'userEditable' : false,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+                "dimension": false,
+                "measure": false,
+                "recommendedVariable": false,
+                "defaultScale": "LINEAR",
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+                "conceptURI": null,
+                "format": "yyyy-MM-dd HH:mm",
+                "extFormatFn": "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
+                "extFormat": "Y-m-d H:i",
+                "inputType": "text",
+      'cols' : 29,
+                "shortCaption": "Created",
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Created'
+            },
+            {
+      'fieldKey' : [ 'CreatedBy' ],
+                "friendlyType": "Integer",
+                "type": "int",
+      'jsonType' : 'int',
+                "sqlType": "userid",
+      'defaultValue' : null,
+      'scale' : 4,
+                "align": "left",
+      'sortable' : true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+      'keyField' : false,
+                "mvEnabled": false,
+      'nullable' : false,
+      'readOnly' : true,
+                "userEditable": false,
+      'calculated' : false,
+                "versionField": false,
+                "selectable": true,
+      'shownInInsertView' : false,
+                "shownInUpdateView": false,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": false,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "displayField": ["CreatedBy", "DisplayName"],
+      'displayFieldJsonType' : 'string',
+                "inputType": "text",
+                "cols": 4,
+      'shortCaption' : 'Created By',
+                "facetingBehaviorType": "AUTOMATIC",
+                "caption": "Created By",
+      'lookup' : {
+                    "keyColumn": "UserId",
+        'public' : true,
+        'displayColumn' : 'DisplayName',
+                    "queryName": "SiteUsers",
+                    "schemaName": ["core"]
+                }
+            },
+            {
+      'fieldKey' : [ 'StartDate' ],
+                "friendlyType": "Date and Time",
+      'type' : 'date',
+                "jsonType": "date",
+                "sqlType": "timestamp",
+      'defaultValue' : '2019-11-04',
+                "scale": 29,
+      'align' : 'left',
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+      'hidden' : false,
+                "keyField": false,
+      'mvEnabled' : false,
+      'nullable' : false,
+                "readOnly": false,
+      'userEditable' : true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+                "measure": false,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+      'format' : 'yyyy-MM-dd HH:mm',
+      'extFormatFn' : "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
+                "extFormat": "Y-m-d H:i",
+      'inputType' : 'text',
+      'cols' : 29,
+                "shortCaption": "Start Date",
+      'facetingBehaviorType' : 'AUTOMATIC',
+      'caption' : 'Start Date'
+            },
+            {
+      'fieldKey' : [ 'EndDate' ],
+                "friendlyType": "Date and Time",
+      'type' : 'date',
+      'jsonType' : 'date',
+                "sqlType": "timestamp",
+      'defaultValue' : null,
+      'scale' : 29,
+                "align": "left",
+      'sortable' : true,
+                "width": "",
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+                "selectable": true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": false,
+      'recommendedVariable' : false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+      'conceptURI' : null,
+                "format": "yyyy-MM-dd HH:mm",
+      'extFormatFn' : "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
+                "extFormat": "Y-m-d H:i",
+                "inputType": "text",
+      'cols' : 29,
+                "shortCaption": "End Date",
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'End Date'
+            }
+        ],
+        "title": "LabBookExperiment",
+        "importMessage": null
+    },
+    "rows": [
+        {
+    'data' : {
+                "StartDate": {
+                    "value": "2019-11-04 15:18:24.502",
+                    "formattedValue": "2019-11-04 15:18"
+                },
+      'RowId' : {
+                    "value": 1
+                },
+                "CreatedBy": {
+                    "value": 1005,
+                    "url": "/labkey/biologics/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
+                    "displayValue": "alanv"
+                },
+                "numSamples": {
+        'value' : 0
+                },
+                "Title": {
+                    "value": "Alan's Fine Experiment",
+        'url' : '/labkey/biologics/__LBC-1/query-detailsQueryRow.view?schemaName=labbook&query.queryName=LabBookExperiment&RowId=1'
+                },
+                "EndDate": {
+        'value' : null
+                },
+                "Created": {
+        'value' : '2019-11-04 15:18:24.760',
+                    "formattedValue": "2019-11-04 15:18"
+                }
+            }
+        },
+        {
+            "data": {
+      'StartDate' : {
+                    "value": "2019-11-04 15:18:40.942",
+                    "formattedValue": "2019-11-04 15:18"
+                },
+      'RowId' : {
+                    "value": 2
+                },
+      'CreatedBy' : {
+                    "value": 1005,
+                    "url": "/labkey/biologics/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
+        'displayValue' : 'alanv'
+                },
+                "numSamples": {
+                    "value": 0
+                },
+                "Title": {
+        'value' : 'Another Experiment',
+                    "url": "/labkey/biologics/__LBC-2/query-detailsQueryRow.view?schemaName=labbook&query.queryName=LabBookExperiment&RowId=2"
+                },
+                "EndDate": {
+                    "value": null
+                },
+                "Created": {
+                    "value": "2019-11-04 15:18:41.161",
+                    "formattedValue": "2019-11-04 15:18"
+                }
+            }
+        },
+        {
+            "data": {
+      'StartDate' : {
+                    "value": "2019-11-04 15:18:47.776",
+        'formattedValue' : '2019-11-04 15:18'
+                },
+                "RowId": {
+                    "value": 3
+                },
+      'CreatedBy' : {
+                    "value": 1005,
+                    "url": "/labkey/biologics/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
+                    "displayValue": "alanv"
+                },
+      'numSamples' : {
+                    "value": 0
+                },
+                "Title": {
+        'value' : 'Experiment3',
+                    "url": "/labkey/biologics/__LBC-3/query-detailsQueryRow.view?schemaName=labbook&query.queryName=LabBookExperiment&RowId=3"
+                },
+      'EndDate' : {
+                    "value": null
+                },
+                "Created": {
+        'value' : '2019-11-04 15:18:47.959',
+                    "formattedValue": "2019-11-04 15:18"
+                }
+            }
+        }
+    ],
+    "rowCount": 3
 }

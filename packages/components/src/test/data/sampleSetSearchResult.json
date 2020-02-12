@@ -1,29 +1,29 @@
 {
-  "hits": [
-    {
-      "container": "e686748d-817d-1037-bb53-9caba13ba4f1",
-      "summary": "Some summary of things",
-      "data": {
-        "lsid": "urn:lsid:labkey.com:SampleSet.Folder-6:Molecule",
-        "createdBy": "ians@labkey.com",
-        "created": "2019-07-16 17:15:27.982",
-        "name": "Molecule",
-        "modified": "2019-07-17 10:40:50.285",
-        "modifiedBy": "ians@labkey.com",
-        "id": 1,
-        "type": "sampleSet"
-      },
-      "id": "materialSource:1",
-      "title": "Sample Set - Molecule",
-      "url": "/labkey/e686748d-817d-1037-bb53-9caba13ba4f1/experiment-showMaterialSource.view?rowId=1&_docid=materialSource%3A1"
-    }
-  ],
-  "metaData": {
-    "successProperty": "success",
-    "idProperty": "id",
-    "root": "hits"
-  },
-  "q": "molecule",
-  "totalHits": 1,
-  "success": true
+    "hits": [
+        {
+            "container": "e686748d-817d-1037-bb53-9caba13ba4f1",
+            "summary": "Some summary of things",
+            "data": {
+                "lsid": "urn:lsid:labkey.com:SampleSet.Folder-6:Molecule",
+                "createdBy": "ians@labkey.com",
+                "created": "2019-07-16 17:15:27.982",
+                "name": "Molecule",
+                "modified": "2019-07-17 10:40:50.285",
+        'modifiedBy': 'ians@labkey.com',
+                "id": 1,
+                "type": "sampleSet"
+            },
+            "id": "materialSource:1",
+            "title": "Sample Set - Molecule",
+            "url": "/labkey/e686748d-817d-1037-bb53-9caba13ba4f1/experiment-showMaterialSource.view?rowId=1&_docid=materialSource%3A1"
+        }
+    ],
+    "metaData": {
+        "successProperty": "success",
+        "idProperty": "id",
+        "root": "hits"
+    },
+  'q': 'molecule',
+    "totalHits": 1,
+    "success": true
 }

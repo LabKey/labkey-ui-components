@@ -1,31 +1,32 @@
 import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
+import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
+
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,
     DOMAIN_FIELD_LABEL,
-    DOMAIN_FIELD_URL
+    DOMAIN_FIELD_URL,
 } from './constants';
 import { DomainField } from './models';
-import { LabelHelpTip } from '../base/LabelHelpTip';
-import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
 interface NameAndLinkingProps {
-    index: number,
-    domainIndex: number,
-    field: DomainField,
-    onChange: (string, any) => any
+    index: number;
+    domainIndex: number;
+    field: DomainField;
+    onChange: (string, any) => any;
 }
 
 export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingProps, any> {
-
     handleChange = (evt: any) => {
         const { onChange } = this.props;
 
-        if (onChange)
-        {
+        if (onChange) {
             onChange(evt.target.id, evt.target.value);
         }
     };
@@ -34,20 +35,24 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
         return (
             <>
                 Define alternate field names to be used when importing from a file.
-                <br/><br/>
-                Multiple aliases may be separated by spaces or commas. To define an alias that contains spaces, use double-quotes (") around it.
+                <br />
+                <br />
+                Multiple aliases may be separated by spaces or commas. To define an alias that contains spaces, use
+                double-quotes (") around it.
             </>
-        )
+        );
     };
 
     getURLHelpText = () => {
         return (
             <>
-                Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
-                <br/><br/>
-                Learn more about using {helpLinkNode(URL_ENCODING_TOPIC, "URL Formatting Options")}.
+                Use this to change the display of the field value within a data grid into a link. Multiple formats are
+                supported, which allows ways to easily substitute and link to other locations in LabKey.
+                <br />
+                <br />
+                Learn more about using {helpLinkNode(URL_ENCODING_TOPIC, 'URL Formatting Options')}.
             </>
-        )
+        );
     };
 
     render() {
@@ -55,56 +60,68 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
 
         return (
             <div>
-                <Row className='domain-row-expanded'>
+                <Row className="domain-row-expanded">
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading domain-field-section-hdr'}>Name and Linking Options</div>
+                        <div className="domain-field-section-heading domain-field-section-hdr">
+                            Name and Linking Options
+                        </div>
                     </Col>
                 </Row>
-                <Row className='domain-row-expanded'>
+                <Row className="domain-row-expanded">
                     <div>
-                    <Col xs={5}>
-                        <div className={'domain-field-label'}>Description</div>
-                        <FormControl
-                            componentClass='textarea'
-                            className="form-control domain-field-textarea"
-                                     rows={4}
-                                     value={field.description || ''}
-                                  id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, domainIndex, index)}
-                                  name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
-                                  onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
-                    </Col>
-                    <Col xs={3}>
-                        <div className={'domain-field-label'}>Label</div>
-                        <FormControl type="text" value={field.label || ''}
-                                     id={createFormInputId(DOMAIN_FIELD_LABEL, domainIndex, index)}
-                                     name={createFormInputName(DOMAIN_FIELD_LABEL)}
-                                     onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
-                        <div className={'domain-field-label'}>
-                            Import Aliases
-                            <LabelHelpTip
-                                title='Import Aliases'
-                                body={this.getImportAliasHelpText}/>
-                        </div>
-                        <FormControl type="text" value={field.importAliases || ''}
-                                     id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
-                                     name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
-                                     onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
-                    </Col>
-                    <Col xs={4}>
-                        <div className={'domain-field-label'}>
-                            URL
-                            <LabelHelpTip
-                                title='URL'
-                                body={this.getURLHelpText} />
-                        </div>
-                        <FormControl type="text" value={field.URL || ''}
-                                     id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}
-                                     name={createFormInputName(DOMAIN_FIELD_URL)}
-                                     onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
-                    </Col>
+                        <Col xs={5}>
+                            <div className="domain-field-label">Description</div>
+                            <FormControl
+                                componentClass="textarea"
+                                className="form-control domain-field-textarea"
+                                rows={4}
+                                value={field.description || ''}
+                                id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
+                                onChange={this.handleChange}
+                                disabled={isFieldFullyLocked(field.lockType)}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <div className="domain-field-label">Label</div>
+                            <FormControl
+                                type="text"
+                                value={field.label || ''}
+                                id={createFormInputId(DOMAIN_FIELD_LABEL, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_LABEL)}
+                                onChange={this.handleChange}
+                                disabled={isFieldFullyLocked(field.lockType)}
+                            />
+                            <div className="domain-field-label">
+                                Import Aliases
+                                <LabelHelpTip title="Import Aliases" body={this.getImportAliasHelpText} />
+                            </div>
+                            <FormControl
+                                type="text"
+                                value={field.importAliases || ''}
+                                id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
+                                onChange={this.handleChange}
+                                disabled={isFieldFullyLocked(field.lockType)}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <div className="domain-field-label">
+                                URL
+                                <LabelHelpTip title="URL" body={this.getURLHelpText} />
+                            </div>
+                            <FormControl
+                                type="text"
+                                value={field.URL || ''}
+                                id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_URL)}
+                                onChange={this.handleChange}
+                                disabled={isFieldFullyLocked(field.lockType)}
+                            />
+                        </Col>
                     </div>
                 </Row>
             </div>
-        )
+        );
     }
 }

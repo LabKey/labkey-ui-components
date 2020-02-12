@@ -1,563 +1,734 @@
 {
-  "permissions" : [ {
-    "uniqueName" : "org.labkey.study.security.permissions.ManageNotificationsPermission",
-    "name" : "Manage Notifications",
-    "description" : "Allows management of specimen request notifications",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.ManageRequestStatusesPermission",
-    "name" : "Manage Request Statuses",
-    "description" : "Allows management of specimen request statuses",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.announcements.model.InsertMessagePermission",
-    "name" : "Insert Message",
-    "description" : "Users may insert, delete, and edit their own messages and respond to other's messages.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.CanUseSendMessageApiPermission",
-    "name" : "Use SendMessage API",
-    "description" : "Allows users to use the send message API to create email messages.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.AdminOperationsPermission",
-    "name" : "Operational Settings Administration",
-    "description" : "Users may manage operational administrative information",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.compliance.ViewSignedSnapshotsPermission",
-    "name" : "View Signed Snapshots",
-    "description" : "May view all records in Signed Snapshots table.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.admin.FolderExportPermission",
-    "name" : "Export Folder",
-    "description" : "May export a folder.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.reports.permissions.EditSharedReportPermission",
-    "name" : "Edit Shared Report",
-    "description" : "Allows editing of a shared report.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.QCAnalystPermission",
-    "name" : "QC Analyst",
-    "description" : "Can perform QC related tasks, but not manage QC configurations.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.adjudication.security.AdjudicationReviewPermission",
-    "name" : "Adjudication Review",
-    "description" : "Can review active or completed adjudication case details.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.EditSharedViewPermission",
-    "name" : "Edit Shared Query Views",
-    "description" : "Allows users to create and edit shared query custom views.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.ManageNewRequestFormPermission",
-    "name" : "Manage New Request Form",
-    "description" : "Allows management of the form shown during a new specimen request",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.ManageRequestsPermission",
-    "name" : "Manage Specimen Requests",
-    "description" : "Allows management and approval of specimen requests",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.api.data.RestrictedPHIPermission",
-    "name" : "Restricted PHI Permission",
-    "description" : "Users may view Restricted PHI.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.RequestSpecimensPermission",
-    "name" : "Request Specimens",
-    "description" : "Allows request of specimens",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.ManageStudyPermission",
-    "name" : "Manage Study",
-    "description" : "Allows access to the manage study portal.",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.SeeUserDetailsPermission",
-    "name" : "See User Details",
-    "description" : "Allows viewing email addresses and contact information of other users.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.AnalystPermission",
-    "name" : "Analyst",
-    "description" : "Can write code within a secured context. Code shared by this user can be run upon acceptance by end-user.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
-    "name" : "See Group Details",
-    "description" : "Allows viewing information about site and project security groups.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.adjudication.security.AdjudicationCaseUploadPermission",
-    "name" : "Adjudication Case Upload",
-    "description" : "Can upload adjudication case data and can add file attachments for additional information.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.adjudication.security.AdjudicationInfectionMonitorPermission",
-    "name" : "Adjudication Infection Monitor",
-    "description" : "Can monitor positive determinations.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.AdminPermission",
-    "name" : "Administrate",
-    "description" : "Users may perform general administration",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.announcements.model.SecureMessageBoardReadPermission",
-    "name" : "Secure message board read",
-    "description" : "Allows user to read any message in a secure message board",
-    "sourceModule" : "Announcements"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.PlatformDeveloperPermission",
-    "name" : "Platform Developer",
-    "description" : "Can write and deploy code that runs outside of the labkey security framework.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.vocabulary.security.DesignVocabularyPermission",
-    "name" : "Design Vocabularies",
-    "description" : "May design new vocabularies and modify designs of existing vocabularies.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.TrustedPermission",
-    "name" : "Trusted",
-    "description" : "Code written by these users may be shared (executed by others) without prompting",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.AdminReadPermission",
-    "name" : "Read-Only Administrator",
-    "description" : "Users may view administrative information",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.ManageSpecimenActorsPermission",
-    "name" : "Manage Specimen Actors",
-    "description" : "Allows management of specimen actors",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.EnableRestrictedModules",
-    "name" : "Enable Restricted Modules",
-    "description" : "Allows restricted modules to be activated",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.lists.permissions.DesignListPermission",
-    "name" : "Design Lists",
-    "description" : "May design new lists and modify designs of existing lists.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.SetSpecimenCommentsPermission",
-    "name" : "Set Specimen Comments",
-    "description" : "Allows the setting of comments on specimens",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.UpdatePermission",
-    "name" : "Update",
-    "description" : "May update information.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.DesignSampleSetPermission",
-    "name" : "Design Sample Sets",
-    "description" : "Can create and design new samples sets or change existing ones.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.reports.permissions.ShareReportPermission",
-    "name" : "Share Report",
-    "description" : "Allows sharing a report for others to view/edit.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.compliance.PatientRecordReviewerPermission",
-    "name" : "Patient Record Review",
-    "description" : "Can review patient records for completeness and PHI compliance",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.compliance.ElecSignPermission",
-    "name" : "Electronically Sign",
-    "description" : "May electronically sign snapshots of data.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.InsertPermission",
-    "name" : "Insert",
-    "description" : "May add new information.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.LockSpecimensPermission",
-    "name" : "Lock Specimens",
-    "description" : "Allows locking of specimens",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.query.EditQueriesPermission",
-    "name" : "Edit Queries",
-    "description" : "My create, edit, and delete queries",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.ManageRequestSettingsPermission",
-    "name" : "Manage Specimen Request and Tracking Settings",
-    "description" : "Allows management of specimen request and tracking settings",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.ReadSomePermission",
-    "name" : "Read Some",
-    "description" : "Users may read some information but not all.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.EditSpecimenDataPermission",
-    "name" : "Edit Specimen Data",
-    "description" : "Allows editing of specimen data",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.adjudication.security.AdjudicationPermission",
-    "name" : "Adjudication",
-    "description" : "Can make/change an adjudication determination.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.study.permissions.SharedParticipantGroupPermission",
-    "name" : "Share Participant Groups",
-    "description" : "Allows creation/management of shared participant groups.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.data.FullPHIPermission",
-    "name" : "Full PHI Permission",
-    "description" : "Users may view full PHI.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.BrowserDeveloperPermission",
-    "name" : "Browser Developer",
-    "description" : "Can write and deploy javascript code that runs in the browser.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.ManageDisplaySettingsPermission",
-    "name" : "Manage Specimen Display Settings",
-    "description" : "Allows management of display settings on the specimen request form",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.EmailNonUsersPermission",
-    "name" : "Email Non-Users",
-    "description" : "Allows users to send emails to addresses that are not associated with LabKey Server accounts.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.study.security.permissions.ManageRequestRequirementsPermission",
-    "name" : "Manage Specimen Request Default Requirements",
-    "description" : "Allows management of specimen request default requirements",
-    "sourceModule" : "Study"
-  }, {
-    "uniqueName" : "org.labkey.api.webdav.permissions.SeeFilePathsPermission",
-    "name" : "See Absolute File Paths",
-    "description" : "Users may see absolute file paths",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.data.LimitedPHIPermission",
-    "name" : "Limited PHI Permission",
-    "description" : "Users may view limited PHI.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.UserManagementPermission",
-    "name" : "User Management",
-    "description" : "Allows a role to manage users (create, delete, deactivate) for the server",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.audit.permissions.CanSeeAuditLogPermission",
-    "name" : "View audit log",
-    "description" : "Users may see the audit log.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.assay.security.DesignAssayPermission",
-    "name" : "Design Assays",
-    "description" : "May design new assays and change the designs of existing assays.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.DeletePermission",
-    "name" : "Delete",
-    "description" : "May delete information.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.announcements.model.SecureMessageBoardRespondPermission",
-    "name" : "Secure message board respond",
-    "description" : "Allows user to respond to any message in a secure message board",
-    "sourceModule" : "Announcements"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.SiteAdminPermission",
-    "name" : "Site Admin",
-    "description" : "Allows full control over the entire system.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.ApplicationAdminPermission",
-    "name" : "Application Admin",
-    "description" : "Allows control over non-operational administration settings.",
-    "sourceModule" : "Core"
-  }, {
-    "uniqueName" : "org.labkey.api.security.permissions.ReadPermission",
-    "name" : "Read",
-    "description" : "Can read information.",
-    "sourceModule" : "Core"
-  } ],
-  "roles" : [ {
-    "uniqueName" : "org.labkey.api.security.roles.SiteAdminRole",
-    "displayName" : "Site Administrator",
-    "permissions" : [ "org.labkey.study.security.permissions.ManageNotificationsPermission", "org.labkey.study.security.permissions.ManageRequestStatusesPermission", "org.labkey.announcements.model.InsertMessagePermission", "org.labkey.api.security.permissions.CanUseSendMessageApiPermission", "org.labkey.api.security.permissions.AdminOperationsPermission", "org.labkey.api.compliance.ViewSignedSnapshotsPermission", "org.labkey.api.admin.FolderExportPermission", "org.labkey.api.reports.permissions.EditSharedReportPermission", "org.labkey.api.security.permissions.QCAnalystPermission", "org.labkey.api.security.permissions.EditSharedViewPermission", "org.labkey.study.security.permissions.ManageNewRequestFormPermission", "org.labkey.study.security.permissions.ManageRequestsPermission", "org.labkey.study.security.permissions.RequestSpecimensPermission", "org.labkey.study.security.permissions.ManageStudyPermission", "org.labkey.api.security.permissions.SeeUserDetailsPermission", "org.labkey.api.security.permissions.AnalystPermission", "org.labkey.api.security.permissions.SeeGroupDetailsPermission", "org.labkey.api.security.permissions.AdminPermission", "org.labkey.announcements.model.SecureMessageBoardReadPermission", "org.labkey.api.security.permissions.PlatformDeveloperPermission", "org.labkey.api.vocabulary.security.DesignVocabularyPermission", "org.labkey.api.security.permissions.TrustedPermission", "org.labkey.api.security.permissions.AdminReadPermission", "org.labkey.study.security.permissions.ManageSpecimenActorsPermission", "org.labkey.api.security.permissions.EnableRestrictedModules", "org.labkey.api.lists.permissions.DesignListPermission", "org.labkey.study.security.permissions.SetSpecimenCommentsPermission", "org.labkey.api.security.permissions.UpdatePermission", "org.labkey.api.security.permissions.DesignSampleSetPermission", "org.labkey.api.reports.permissions.ShareReportPermission", "org.labkey.api.compliance.PatientRecordReviewerPermission", "org.labkey.api.compliance.ElecSignPermission", "org.labkey.api.security.permissions.InsertPermission", "org.labkey.study.security.permissions.LockSpecimensPermission", "org.labkey.query.EditQueriesPermission", "org.labkey.study.security.permissions.ManageRequestSettingsPermission", "org.labkey.api.security.permissions.ReadSomePermission", "org.labkey.api.security.permissions.EditSpecimenDataPermission", "org.labkey.api.study.permissions.SharedParticipantGroupPermission", "org.labkey.api.security.permissions.BrowserDeveloperPermission", "org.labkey.study.security.permissions.ManageDisplaySettingsPermission", "org.labkey.api.security.roles.EmailNonUsersPermission", "org.labkey.study.security.permissions.ManageRequestRequirementsPermission", "org.labkey.api.security.permissions.UserManagementPermission", "org.labkey.api.audit.permissions.CanSeeAuditLogPermission", "org.labkey.api.assay.security.DesignAssayPermission", "org.labkey.api.security.permissions.DeletePermission", "org.labkey.announcements.model.SecureMessageBoardRespondPermission", "org.labkey.api.security.permissions.SiteAdminPermission", "org.labkey.api.security.permissions.ApplicationAdminPermission", "org.labkey.api.security.permissions.ReadPermission" ],
-    "name" : "Site Administrator",
-    "description" : "Site Administrators have full control over the entire system.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.ApplicationAdminRole",
-    "displayName" : "Application Admin",
-    "permissions" : [ "org.labkey.study.security.permissions.ManageNotificationsPermission", "org.labkey.api.vocabulary.security.DesignVocabularyPermission", "org.labkey.study.security.permissions.ManageRequestStatusesPermission", "org.labkey.announcements.model.InsertMessagePermission", "org.labkey.api.security.permissions.AdminReadPermission", "org.labkey.study.security.permissions.ManageSpecimenActorsPermission", "org.labkey.api.security.permissions.EnableRestrictedModules", "org.labkey.api.lists.permissions.DesignListPermission", "org.labkey.study.security.permissions.SetSpecimenCommentsPermission", "org.labkey.api.security.permissions.UpdatePermission", "org.labkey.api.security.permissions.DesignSampleSetPermission", "org.labkey.api.reports.permissions.ShareReportPermission", "org.labkey.api.compliance.PatientRecordReviewerPermission", "org.labkey.api.compliance.ElecSignPermission", "org.labkey.api.compliance.ViewSignedSnapshotsPermission", "org.labkey.api.admin.FolderExportPermission", "org.labkey.api.reports.permissions.EditSharedReportPermission", "org.labkey.api.security.permissions.InsertPermission", "org.labkey.study.security.permissions.LockSpecimensPermission", "org.labkey.query.EditQueriesPermission", "org.labkey.study.security.permissions.ManageRequestSettingsPermission", "org.labkey.api.security.permissions.ReadSomePermission", "org.labkey.api.security.permissions.QCAnalystPermission", "org.labkey.api.security.permissions.EditSpecimenDataPermission", "org.labkey.api.security.permissions.EditSharedViewPermission", "org.labkey.study.security.permissions.ManageNewRequestFormPermission", "org.labkey.api.study.permissions.SharedParticipantGroupPermission", "org.labkey.study.security.permissions.ManageRequestsPermission", "org.labkey.study.security.permissions.ManageDisplaySettingsPermission", "org.labkey.study.security.permissions.RequestSpecimensPermission", "org.labkey.study.security.permissions.ManageRequestRequirementsPermission", "org.labkey.study.security.permissions.ManageStudyPermission", "org.labkey.api.security.permissions.SeeUserDetailsPermission", "org.labkey.api.security.permissions.UserManagementPermission", "org.labkey.api.audit.permissions.CanSeeAuditLogPermission", "org.labkey.api.assay.security.DesignAssayPermission", "org.labkey.api.security.permissions.SeeGroupDetailsPermission", "org.labkey.api.security.permissions.DeletePermission", "org.labkey.api.security.permissions.AdminPermission", "org.labkey.announcements.model.SecureMessageBoardRespondPermission", "org.labkey.api.security.permissions.ApplicationAdminPermission", "org.labkey.api.security.permissions.ReadPermission", "org.labkey.announcements.model.SecureMessageBoardReadPermission" ],
-    "name" : "Application Admin",
-    "description" : "Application Administrators have control over non-operational administration settings.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -2, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.ProjectAdminRole",
-    "displayName" : "Project Administrator",
-    "permissions" : [ "org.labkey.study.security.permissions.ManageNotificationsPermission", "org.labkey.api.vocabulary.security.DesignVocabularyPermission", "org.labkey.study.security.permissions.ManageRequestStatusesPermission", "org.labkey.announcements.model.InsertMessagePermission", "org.labkey.api.security.permissions.AdminReadPermission", "org.labkey.study.security.permissions.ManageSpecimenActorsPermission", "org.labkey.api.lists.permissions.DesignListPermission", "org.labkey.study.security.permissions.SetSpecimenCommentsPermission", "org.labkey.api.security.permissions.UpdatePermission", "org.labkey.api.security.permissions.DesignSampleSetPermission", "org.labkey.api.reports.permissions.ShareReportPermission", "org.labkey.api.compliance.PatientRecordReviewerPermission", "org.labkey.api.compliance.ElecSignPermission", "org.labkey.api.compliance.ViewSignedSnapshotsPermission", "org.labkey.api.admin.FolderExportPermission", "org.labkey.api.reports.permissions.EditSharedReportPermission", "org.labkey.api.security.permissions.InsertPermission", "org.labkey.study.security.permissions.LockSpecimensPermission", "org.labkey.query.EditQueriesPermission", "org.labkey.study.security.permissions.ManageRequestSettingsPermission", "org.labkey.api.security.permissions.ReadSomePermission", "org.labkey.api.security.permissions.QCAnalystPermission", "org.labkey.api.security.permissions.EditSpecimenDataPermission", "org.labkey.api.security.permissions.EditSharedViewPermission", "org.labkey.study.security.permissions.ManageNewRequestFormPermission", "org.labkey.api.study.permissions.SharedParticipantGroupPermission", "org.labkey.study.security.permissions.ManageRequestsPermission", "org.labkey.study.security.permissions.ManageDisplaySettingsPermission", "org.labkey.study.security.permissions.RequestSpecimensPermission", "org.labkey.study.security.permissions.ManageRequestRequirementsPermission", "org.labkey.study.security.permissions.ManageStudyPermission", "org.labkey.api.security.permissions.SeeUserDetailsPermission", "org.labkey.api.audit.permissions.CanSeeAuditLogPermission", "org.labkey.api.assay.security.DesignAssayPermission", "org.labkey.api.security.permissions.SeeGroupDetailsPermission", "org.labkey.api.security.permissions.DeletePermission", "org.labkey.api.security.permissions.AdminPermission", "org.labkey.announcements.model.SecureMessageBoardRespondPermission", "org.labkey.api.security.permissions.ReadPermission", "org.labkey.announcements.model.SecureMessageBoardReadPermission" ],
-    "name" : "Project Administrator",
-    "description" : "Project Administrators have full control over the project, but not the entire system.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -2, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.FolderAdminRole",
-    "displayName" : "Folder Administrator",
-    "permissions" : [ "org.labkey.study.security.permissions.ManageNotificationsPermission", "org.labkey.api.vocabulary.security.DesignVocabularyPermission", "org.labkey.study.security.permissions.ManageRequestStatusesPermission", "org.labkey.announcements.model.InsertMessagePermission", "org.labkey.api.security.permissions.AdminReadPermission", "org.labkey.study.security.permissions.ManageSpecimenActorsPermission", "org.labkey.api.lists.permissions.DesignListPermission", "org.labkey.study.security.permissions.SetSpecimenCommentsPermission", "org.labkey.api.security.permissions.UpdatePermission", "org.labkey.api.security.permissions.DesignSampleSetPermission", "org.labkey.api.reports.permissions.ShareReportPermission", "org.labkey.api.compliance.PatientRecordReviewerPermission", "org.labkey.api.compliance.ElecSignPermission", "org.labkey.api.compliance.ViewSignedSnapshotsPermission", "org.labkey.api.admin.FolderExportPermission", "org.labkey.api.reports.permissions.EditSharedReportPermission", "org.labkey.api.security.permissions.InsertPermission", "org.labkey.study.security.permissions.LockSpecimensPermission", "org.labkey.query.EditQueriesPermission", "org.labkey.study.security.permissions.ManageRequestSettingsPermission", "org.labkey.api.security.permissions.ReadSomePermission", "org.labkey.api.security.permissions.QCAnalystPermission", "org.labkey.api.security.permissions.EditSpecimenDataPermission", "org.labkey.api.security.permissions.EditSharedViewPermission", "org.labkey.study.security.permissions.ManageNewRequestFormPermission", "org.labkey.api.study.permissions.SharedParticipantGroupPermission", "org.labkey.study.security.permissions.ManageRequestsPermission", "org.labkey.study.security.permissions.ManageDisplaySettingsPermission", "org.labkey.study.security.permissions.RequestSpecimensPermission", "org.labkey.study.security.permissions.ManageRequestRequirementsPermission", "org.labkey.study.security.permissions.ManageStudyPermission", "org.labkey.api.security.permissions.SeeUserDetailsPermission", "org.labkey.api.audit.permissions.CanSeeAuditLogPermission", "org.labkey.api.assay.security.DesignAssayPermission", "org.labkey.api.security.permissions.SeeGroupDetailsPermission", "org.labkey.api.security.permissions.DeletePermission", "org.labkey.api.security.permissions.AdminPermission", "org.labkey.announcements.model.SecureMessageBoardRespondPermission", "org.labkey.api.security.permissions.ReadPermission", "org.labkey.announcements.model.SecureMessageBoardReadPermission" ],
-    "name" : "Folder Administrator",
-    "description" : "Folder Administrators have full control over their particular folder, but not others.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -2, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.EditorRole",
-    "displayName" : "Editor",
-    "permissions" : [ "org.labkey.api.study.permissions.SharedParticipantGroupPermission", "org.labkey.api.reports.permissions.ShareReportPermission", "org.labkey.api.reports.permissions.EditSharedReportPermission", "org.labkey.api.security.permissions.InsertPermission", "org.labkey.api.security.permissions.DeletePermission", "org.labkey.api.security.permissions.ReadSomePermission", "org.labkey.announcements.model.SecureMessageBoardRespondPermission", "org.labkey.api.security.permissions.UpdatePermission", "org.labkey.api.security.permissions.ReadPermission", "org.labkey.api.security.permissions.EditSharedViewPermission", "org.labkey.announcements.model.SecureMessageBoardReadPermission" ],
-    "name" : "Editor",
-    "description" : "Editors may read, add, update and delete information.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.AuthorRole",
-    "displayName" : "Author",
-    "permissions" : [ "org.labkey.api.reports.permissions.ShareReportPermission", "org.labkey.api.security.permissions.InsertPermission", "org.labkey.api.security.permissions.ReadSomePermission", "org.labkey.api.security.permissions.ReadPermission" ],
-    "name" : "Author",
-    "description" : "Authors may read and add information in some cases, but may update and delete only information they added. Supported for only Message Boards. See the online documentation for details.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.ReaderRole",
-    "displayName" : "Reader",
-    "permissions" : [ "org.labkey.api.security.permissions.ReadSomePermission", "org.labkey.api.security.permissions.ReadPermission" ],
-    "name" : "Reader",
-    "description" : "Readers may read information but may not change anything.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.RestrictedReaderRole",
-    "displayName" : "Restricted Reader",
-    "permissions" : [ "org.labkey.api.security.permissions.ReadSomePermission" ],
-    "name" : "Restricted Reader",
-    "description" : "Restricted Readers may read some information, but not all.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.SubmitterRole",
-    "displayName" : "Submitter",
-    "permissions" : [ "org.labkey.api.security.permissions.InsertPermission" ],
-    "name" : "Submitter",
-    "description" : "Submitters may submit new information, but may not read or change anything.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.TroubleshooterRole",
-    "displayName" : "Troubleshooter",
-    "permissions" : [ "org.labkey.api.security.permissions.AdminReadPermission" ],
-    "name" : "Troubleshooter",
-    "description" : "Troubleshooters may view administration settings but may not change them.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -2, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.SeeUserAndGroupDetailsRole",
-    "displayName" : "See User and Group Details",
-    "permissions" : [ "org.labkey.api.security.permissions.SeeGroupDetailsPermission", "org.labkey.api.security.permissions.SeeUserDetailsPermission" ],
-    "name" : "See User and Group Details",
-    "description" : "Allows viewing email addresses and contact information of other users as well as information about security groups.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.CanSeeAuditLogRole",
-    "displayName" : "See Audit Log Events",
-    "permissions" : [ "org.labkey.api.audit.permissions.CanSeeAuditLogPermission" ],
-    "name" : "See Audit Log Events",
-    "description" : "Allows non-administrators to view audit log events",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.SharedViewEditorRole",
-    "displayName" : "Shared View Editor",
-    "permissions" : [ "org.labkey.api.security.permissions.ReadPermission", "org.labkey.api.security.permissions.EditSharedViewPermission" ],
-    "name" : "Shared View Editor",
-    "description" : "Shared view editors may create and update shared custom grid views",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.EmailNonUsersRole",
-    "displayName" : "Email Non-Users",
-    "permissions" : [ "org.labkey.api.security.roles.EmailNonUsersPermission" ],
-    "name" : "Email Non-Users",
-    "description" : "Allows users to send emails to addresses that are not associated with LabKey Server accounts.  Use caution when enabling this if you have self-sign-on enabled.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.SeeFilePathsRole",
-    "displayName" : "See Absolute File Paths",
-    "permissions" : [ "org.labkey.api.webdav.permissions.SeeFilePathsPermission" ],
-    "name" : "See Absolute File Paths",
-    "description" : "Allows users to see absolute file paths.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.CanUseSendMessageApi",
-    "displayName" : "Use SendMessage API",
-    "permissions" : [ "org.labkey.api.security.permissions.CanUseSendMessageApiPermission" ],
-    "name" : "Use SendMessage API",
-    "description" : "Allows users to use the send message API.  This API can be used to author code which sends emails to users and potentially non-users of the system.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.PlatformDeveloperRole",
-    "displayName" : "Platform Developer",
-    "permissions" : [ "org.labkey.api.security.permissions.PlatformDeveloperPermission", "org.labkey.api.security.permissions.AnalystPermission", "org.labkey.api.security.permissions.BrowserDeveloperPermission", "org.labkey.api.security.permissions.TrustedPermission", "org.labkey.query.EditQueriesPermission" ],
-    "name" : "Platform Developer",
-    "description" : "Allows developers to write and deploy code outside the LabKey security framework.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.compliance.security.RestrictedPHIRole",
-    "displayName" : "Restricted PHI Reader",
-    "permissions" : [ "org.labkey.api.data.LimitedPHIPermission", "org.labkey.api.data.FullPHIPermission", "org.labkey.api.data.RestrictedPHIPermission" ],
-    "name" : "Restricted PHI Reader",
-    "description" : "May choose to read columns tagged as Restricted PHI, Full PHI and Limited PHI.",
-    "sourceModule" : "Compliance",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.compliance.security.FullPHIRole",
-    "displayName" : "Full PHI Reader",
-    "permissions" : [ "org.labkey.api.data.LimitedPHIPermission", "org.labkey.api.data.FullPHIPermission" ],
-    "name" : "Full PHI Reader",
-    "description" : "May choose to read columns tagged as Full PHI and Limited PHI.",
-    "sourceModule" : "Compliance",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.compliance.security.LimitedPHIRole",
-    "displayName" : "Limited PHI Reader",
-    "permissions" : [ "org.labkey.api.data.LimitedPHIPermission" ],
-    "name" : "Limited PHI Reader",
-    "description" : "May choose to read columns tagged as Limited PHI.",
-    "sourceModule" : "Compliance",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.compliance.security.PatientRecordReviewerRole",
-    "displayName" : "Patient Record Reviewer",
-    "permissions" : [ "org.labkey.api.compliance.PatientRecordReviewerPermission" ],
-    "name" : "Patient Record Reviewer",
-    "description" : "May read patient records to determine completeness and compliance with PHI rules for the application.",
-    "sourceModule" : "Compliance",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.compliance.security.ElecSignerRole",
-    "displayName" : "Electronic Signer",
-    "permissions" : [ "org.labkey.api.compliance.ElecSignPermission" ],
-    "name" : "Electronic Signer",
-    "description" : "Signers may electronically sign snapshots of data.",
-    "sourceModule" : "Compliance",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.adjudication.security.AdjudicatorRole",
-    "displayName" : "Adjudicator",
-    "permissions" : [ "org.labkey.adjudication.security.AdjudicationPermission", "org.labkey.api.security.permissions.ReadPermission" ],
-    "name" : "Adjudicator",
-    "description" : "Adjudicators may make determinations, but may not upload data or view the Admin Dashboard.",
-    "sourceModule" : "adjudication",
-    "excludedPrincipals" : [ ]
-  }, {
-    "uniqueName" : "org.labkey.adjudication.security.AdjudicationLabPersonnelRole",
-    "displayName" : "Adjudication Lab Personnel",
-    "permissions" : [ "org.labkey.adjudication.security.AdjudicationCaseUploadPermission", "org.labkey.api.security.permissions.InsertPermission", "org.labkey.adjudication.security.AdjudicationReviewPermission", "org.labkey.api.security.permissions.UpdatePermission", "org.labkey.api.security.permissions.ReadPermission" ],
-    "name" : "Adjudication Lab Personnel",
-    "description" : "Adjudication Lab Personnel may upload data and view the Admin Dashboard.",
-    "sourceModule" : "adjudication",
-    "excludedPrincipals" : [ ]
-  }, {
-    "uniqueName" : "org.labkey.adjudication.security.AdjudicationInfectionMonitorRole",
-    "displayName" : "Adjudication Infection Monitor",
-    "permissions" : [ "org.labkey.adjudication.security.AdjudicationInfectionMonitorPermission", "org.labkey.adjudication.security.AdjudicationReviewPermission", "org.labkey.api.security.permissions.ReadPermission" ],
-    "name" : "Adjudication Infection Monitor",
-    "description" : "Infection Monitors may review adjudication case details and receive notifications of case determinations but can not upload data or make determinations.",
-    "sourceModule" : "adjudication",
-    "excludedPrincipals" : [ ]
-  }, {
-    "uniqueName" : "org.labkey.adjudication.security.AdjudicationDataReviewerRole",
-    "displayName" : "Adjudication Data Reviewer",
-    "permissions" : [ "org.labkey.adjudication.security.AdjudicationReviewPermission", "org.labkey.api.security.permissions.ReadPermission" ],
-    "name" : "Adjudication Data Reviewer",
-    "description" : "Data Reviewers may review adjudication case details but can not upload data or make determinations and they do not receive notifications.",
-    "sourceModule" : "adjudication",
-    "excludedPrincipals" : [ ]
-  }, {
-    "uniqueName" : "org.labkey.assay.security.AssayDesignerRole",
-    "displayName" : "Assay Designer",
-    "permissions" : [ "org.labkey.api.assay.security.DesignAssayPermission", "org.labkey.api.lists.permissions.DesignListPermission" ],
-    "name" : "Assay Designer",
-    "description" : "Assay designers may perform several actions related to designing assays.",
-    "sourceModule" : "Assay",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.TrustedAnalystRole",
-    "displayName" : "Trusted Analyst",
-    "permissions" : [ "org.labkey.api.security.permissions.AnalystPermission", "org.labkey.api.security.permissions.BrowserDeveloperPermission", "org.labkey.api.security.permissions.TrustedPermission", "org.labkey.query.EditQueriesPermission" ],
-    "name" : "Trusted Analyst",
-    "description" : "Can write code that runs on the server in a sandbox, code may be shared with other users and is presumed to be trusted.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.AnalystRole",
-    "displayName" : "Analyst",
-    "permissions" : [ "org.labkey.api.security.permissions.AnalystPermission", "org.labkey.api.security.permissions.BrowserDeveloperPermission" ],
-    "name" : "Analyst",
-    "description" : "Can write code that runs on the server, but may not share code (e.g. may use rstudio if configured)",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.api.security.roles.QCAnalystRole",
-    "displayName" : "QC Analyst",
-    "permissions" : [ "org.labkey.api.security.permissions.QCAnalystPermission" ],
-    "name" : "QC Analyst",
-    "description" : "Can perform QC related tasks, but not manage QC configurations.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ -3 ]
-  }, {
-    "uniqueName" : "org.labkey.study.security.roles.SpecimenCoordinatorRole",
-    "displayName" : "Specimen Coordinator",
-    "permissions" : [ "org.labkey.study.security.permissions.ManageNotificationsPermission", "org.labkey.study.security.permissions.ManageRequestsPermission", "org.labkey.study.security.permissions.ManageRequestStatusesPermission", "org.labkey.study.security.permissions.ManageSpecimenActorsPermission", "org.labkey.study.security.permissions.ManageDisplaySettingsPermission", "org.labkey.study.security.permissions.RequestSpecimensPermission", "org.labkey.study.security.permissions.ManageRequestRequirementsPermission", "org.labkey.study.security.permissions.ManageStudyPermission", "org.labkey.study.security.permissions.SetSpecimenCommentsPermission", "org.labkey.study.security.permissions.LockSpecimensPermission", "org.labkey.study.security.permissions.ManageRequestSettingsPermission", "org.labkey.api.security.permissions.EditSpecimenDataPermission", "org.labkey.study.security.permissions.ManageNewRequestFormPermission", "org.labkey.api.security.permissions.EditSharedViewPermission" ],
-    "name" : "Specimen Coordinator",
-    "description" : "Specimen Coordinators may perform a number of management tasks related to specimens",
-    "sourceModule" : "Study",
-    "excludedPrincipals" : [ 0, -2, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.study.security.roles.SpecimenRequesterRole",
-    "displayName" : "Specimen Requester",
-    "permissions" : [ "org.labkey.study.security.permissions.RequestSpecimensPermission" ],
-    "name" : "Specimen Requester",
-    "description" : "Specimen Requesters may request specimen vials.",
-    "sourceModule" : "Study",
-    "excludedPrincipals" : [ 0, -3 ]
-  }, {
-    "uniqueName" : "org.labkey.announcements.model.MessageBoardContributorRole",
-    "displayName" : "Message Board Contributor",
-    "permissions" : [ "org.labkey.announcements.model.InsertMessagePermission", "org.labkey.api.security.permissions.ReadPermission" ],
-    "name" : "Message Board Contributor",
-    "description" : "Allows user to insert, delete, and edit their own messages and respond to other's messages.",
-    "sourceModule" : "Core",
-    "excludedPrincipals" : [ ]
-  } ]
+    "permissions": [
+        {
+    'uniqueName' : 'org.labkey.study.security.permissions.ManageNotificationsPermission',
+            "name": "Manage Notifications",
+    'description' : 'Allows management of specimen request notifications',
+    'sourceModule' : 'Study'
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.ManageRequestStatusesPermission",
+            "name": "Manage Request Statuses",
+            "description": "Allows management of specimen request statuses",
+            "sourceModule": "Study"
+        },
+        {
+            "uniqueName": "org.labkey.announcements.model.InsertMessagePermission",
+    'name' : 'Insert Message',
+            "description": "Users may insert, delete, and edit their own messages and respond to other's messages.",
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.CanUseSendMessageApiPermission",
+            "name": "Use SendMessage API",
+            "description": "Allows users to use the send message API to create email messages.",
+    'sourceModule' : 'Core'
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.AdminOperationsPermission',
+    'name' : 'Operational Settings Administration',
+    'description' : 'Users may manage operational administrative information',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.api.compliance.ViewSignedSnapshotsPermission",
+            "name": "View Signed Snapshots",
+            "description": "May view all records in Signed Snapshots table.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.api.admin.FolderExportPermission",
+    'name' : 'Export Folder',
+    'description' : 'May export a folder.',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.api.reports.permissions.EditSharedReportPermission",
+            "name": "Edit Shared Report",
+            "description": "Allows editing of a shared report.",
+            "sourceModule": "Core"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.QCAnalystPermission',
+            "name": "QC Analyst",
+    'description' : 'Can perform QC related tasks, but not manage QC configurations.',
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.adjudication.security.AdjudicationReviewPermission",
+            "name": "Adjudication Review",
+            "description": "Can review active or completed adjudication case details.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.EditSharedViewPermission",
+    'name' : 'Edit Shared Query Views',
+    'description' : 'Allows users to create and edit shared query custom views.',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.ManageNewRequestFormPermission",
+            "name": "Manage New Request Form",
+            "description": "Allows management of the form shown during a new specimen request",
+    'sourceModule' : 'Study'
+        },
+        {
+    'uniqueName' : 'org.labkey.study.security.permissions.ManageRequestsPermission',
+    'name' : 'Manage Specimen Requests',
+    'description' : 'Allows management and approval of specimen requests',
+    'sourceModule' : 'Study'
+        },
+        {
+    'uniqueName' : 'org.labkey.api.data.RestrictedPHIPermission',
+            "name": "Restricted PHI Permission",
+            "description": "Users may view Restricted PHI.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.RequestSpecimensPermission",
+    'name' : 'Request Specimens',
+    'description' : 'Allows request of specimens',
+    'sourceModule' : 'Study'
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.ManageStudyPermission",
+    'name' : 'Manage Study',
+            "description": "Allows access to the manage study portal.",
+            "sourceModule": "Study"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.SeeUserDetailsPermission',
+            "name": "See User Details",
+    'description' : 'Allows viewing email addresses and contact information of other users.',
+            "sourceModule": "Core"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.AnalystPermission',
+    'name' : 'Analyst',
+    'description' : 'Can write code within a secured context. Code shared by this user can be run upon acceptance by end-user.',
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
+    'name' : 'See Group Details',
+            "description": "Allows viewing information about site and project security groups.",
+    'sourceModule' : 'Core'
+        },
+        {
+    'uniqueName' : 'org.labkey.adjudication.security.AdjudicationCaseUploadPermission',
+            "name": "Adjudication Case Upload",
+    'description' : 'Can upload adjudication case data and can add file attachments for additional information.',
+    'sourceModule' : 'Core'
+        },
+        {
+    'uniqueName' : 'org.labkey.adjudication.security.AdjudicationInfectionMonitorPermission',
+            "name": "Adjudication Infection Monitor",
+    'description' : 'Can monitor positive determinations.',
+    'sourceModule' : 'Core'
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.AdminPermission',
+    'name' : 'Administrate',
+    'description' : 'Users may perform general administration',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.announcements.model.SecureMessageBoardReadPermission",
+    'name' : 'Secure message board read',
+    'description' : 'Allows user to read any message in a secure message board',
+    'sourceModule' : 'Announcements'
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.PlatformDeveloperPermission",
+            "name": "Platform Developer",
+            "description": "Can write and deploy code that runs outside of the labkey security framework.",
+            "sourceModule": "Core"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.vocabulary.security.DesignVocabularyPermission',
+            "name": "Design Vocabularies",
+    'description' : 'May design new vocabularies and modify designs of existing vocabularies.',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.TrustedPermission",
+            "name": "Trusted",
+            "description": "Code written by these users may be shared (executed by others) without prompting",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.AdminReadPermission",
+    'name' : 'Read-Only Administrator',
+    'description' : 'Users may view administrative information',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.ManageSpecimenActorsPermission",
+            "name": "Manage Specimen Actors",
+            "description": "Allows management of specimen actors",
+            "sourceModule": "Study"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.EnableRestrictedModules',
+    'name' : 'Enable Restricted Modules',
+    'description' : 'Allows restricted modules to be activated',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.api.lists.permissions.DesignListPermission",
+            "name": "Design Lists",
+            "description": "May design new lists and modify designs of existing lists.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.SetSpecimenCommentsPermission",
+    'name' : 'Set Specimen Comments',
+    'description' : 'Allows the setting of comments on specimens',
+    'sourceModule' : 'Study'
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.UpdatePermission",
+            "name": "Update",
+            "description": "May update information.",
+            "sourceModule": "Core"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.DesignSampleSetPermission',
+    'name' : 'Design Sample Sets',
+    'description' : 'Can create and design new samples sets or change existing ones.',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.api.reports.permissions.ShareReportPermission",
+            "name": "Share Report",
+            "description": "Allows sharing a report for others to view/edit.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.api.compliance.PatientRecordReviewerPermission",
+    'name' : 'Patient Record Review',
+            "description": "Can review patient records for completeness and PHI compliance",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.api.compliance.ElecSignPermission",
+            "name": "Electronically Sign",
+            "description": "May electronically sign snapshots of data.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.InsertPermission",
+    'name' : 'Insert',
+            "description": "May add new information.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.LockSpecimensPermission",
+            "name": "Lock Specimens",
+            "description": "Allows locking of specimens",
+            "sourceModule": "Study"
+        },
+        {
+            "uniqueName": "org.labkey.query.EditQueriesPermission",
+            "name": "Edit Queries",
+            "description": "My create, edit, and delete queries",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.ManageRequestSettingsPermission",
+            "name": "Manage Specimen Request and Tracking Settings",
+            "description": "Allows management of specimen request and tracking settings",
+            "sourceModule": "Study"
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.ReadSomePermission",
+    'name' : 'Read Some',
+            "description": "Users may read some information but not all.",
+            "sourceModule": "Core"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.EditSpecimenDataPermission',
+            "name": "Edit Specimen Data",
+    'description' : 'Allows editing of specimen data',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.adjudication.security.AdjudicationPermission",
+            "name": "Adjudication",
+            "description": "Can make/change an adjudication determination.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.api.study.permissions.SharedParticipantGroupPermission",
+    'name' : 'Share Participant Groups',
+    'description' : 'Allows creation/management of shared participant groups.',
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.api.data.FullPHIPermission",
+            "name": "Full PHI Permission",
+            "description": "Users may view full PHI.",
+            "sourceModule": "Core"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.BrowserDeveloperPermission',
+            "name": "Browser Developer",
+    'description' : 'Can write and deploy javascript code that runs in the browser.',
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.ManageDisplaySettingsPermission",
+            "name": "Manage Specimen Display Settings",
+            "description": "Allows management of display settings on the specimen request form",
+            "sourceModule": "Study"
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.EmailNonUsersPermission",
+    'name' : 'Email Non-Users',
+            "description": "Allows users to send emails to addresses that are not associated with LabKey Server accounts.",
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.study.security.permissions.ManageRequestRequirementsPermission",
+            "name": "Manage Specimen Request Default Requirements",
+            "description": "Allows management of specimen request default requirements",
+    'sourceModule' : 'Study'
+        },
+        {
+    'uniqueName' : 'org.labkey.api.webdav.permissions.SeeFilePathsPermission',
+    'name' : 'See Absolute File Paths',
+    'description' : 'Users may see absolute file paths',
+    'sourceModule' : 'Core'
+        },
+        {
+    'uniqueName' : 'org.labkey.api.data.LimitedPHIPermission',
+            "name": "Limited PHI Permission",
+            "description": "Users may view limited PHI.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.UserManagementPermission",
+    'name' : 'User Management',
+            "description": "Allows a role to manage users (create, delete, deactivate) for the server",
+    'sourceModule' : 'Core'
+        },
+        {
+            "uniqueName": "org.labkey.api.audit.permissions.CanSeeAuditLogPermission",
+    'name' : 'View audit log',
+            "description": "Users may see the audit log.",
+            "sourceModule": "Core"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.assay.security.DesignAssayPermission',
+    'name' : 'Design Assays',
+    'description' : 'May design new assays and change the designs of existing assays.',
+            "sourceModule": "Core"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.DeletePermission',
+            "name": "Delete",
+            "description": "May delete information.",
+            "sourceModule": "Core"
+        },
+        {
+            "uniqueName": "org.labkey.announcements.model.SecureMessageBoardRespondPermission",
+    'name' : 'Secure message board respond',
+    'description' : 'Allows user to respond to any message in a secure message board',
+    'sourceModule' : 'Announcements'
+        },
+        {
+            "uniqueName": "org.labkey.api.security.permissions.SiteAdminPermission",
+    'name' : 'Site Admin',
+            "description": "Allows full control over the entire system.",
+            "sourceModule": "Core"
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.ApplicationAdminPermission',
+            "name": "Application Admin",
+    'description' : 'Allows control over non-operational administration settings.',
+    'sourceModule' : 'Core'
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.permissions.ReadPermission',
+    'name' : 'Read',
+    'description' : 'Can read information.',
+    'sourceModule' : 'Core'
+        }
+    ],
+    "roles": [
+        {
+    'uniqueName' : 'org.labkey.api.security.roles.SiteAdminRole',
+    'displayName' : 'Site Administrator',
+    'permissions' : [ 'org.labkey.study.security.permissions.ManageNotificationsPermission', 'org.labkey.study.security.permissions.ManageRequestStatusesPermission', 'org.labkey.announcements.model.InsertMessagePermission', 'org.labkey.api.security.permissions.CanUseSendMessageApiPermission', 'org.labkey.api.security.permissions.AdminOperationsPermission', 'org.labkey.api.compliance.ViewSignedSnapshotsPermission', 'org.labkey.api.admin.FolderExportPermission', 'org.labkey.api.reports.permissions.EditSharedReportPermission', 'org.labkey.api.security.permissions.QCAnalystPermission', 'org.labkey.api.security.permissions.EditSharedViewPermission', 'org.labkey.study.security.permissions.ManageNewRequestFormPermission', 'org.labkey.study.security.permissions.ManageRequestsPermission', 'org.labkey.study.security.permissions.RequestSpecimensPermission', 'org.labkey.study.security.permissions.ManageStudyPermission', 'org.labkey.api.security.permissions.SeeUserDetailsPermission', 'org.labkey.api.security.permissions.AnalystPermission', 'org.labkey.api.security.permissions.SeeGroupDetailsPermission', 'org.labkey.api.security.permissions.AdminPermission', 'org.labkey.announcements.model.SecureMessageBoardReadPermission', 'org.labkey.api.security.permissions.PlatformDeveloperPermission', 'org.labkey.api.vocabulary.security.DesignVocabularyPermission', 'org.labkey.api.security.permissions.TrustedPermission', 'org.labkey.api.security.permissions.AdminReadPermission', 'org.labkey.study.security.permissions.ManageSpecimenActorsPermission', 'org.labkey.api.security.permissions.EnableRestrictedModules', 'org.labkey.api.lists.permissions.DesignListPermission', 'org.labkey.study.security.permissions.SetSpecimenCommentsPermission', 'org.labkey.api.security.permissions.UpdatePermission', 'org.labkey.api.security.permissions.DesignSampleSetPermission', 'org.labkey.api.reports.permissions.ShareReportPermission', 'org.labkey.api.compliance.PatientRecordReviewerPermission', 'org.labkey.api.compliance.ElecSignPermission', 'org.labkey.api.security.permissions.InsertPermission', 'org.labkey.study.security.permissions.LockSpecimensPermission', 'org.labkey.query.EditQueriesPermission', 'org.labkey.study.security.permissions.ManageRequestSettingsPermission', 'org.labkey.api.security.permissions.ReadSomePermission', 'org.labkey.api.security.permissions.EditSpecimenDataPermission', 'org.labkey.api.study.permissions.SharedParticipantGroupPermission', 'org.labkey.api.security.permissions.BrowserDeveloperPermission', 'org.labkey.study.security.permissions.ManageDisplaySettingsPermission', 'org.labkey.api.security.roles.EmailNonUsersPermission', 'org.labkey.study.security.permissions.ManageRequestRequirementsPermission', 'org.labkey.api.security.permissions.UserManagementPermission', 'org.labkey.api.audit.permissions.CanSeeAuditLogPermission', 'org.labkey.api.assay.security.DesignAssayPermission', 'org.labkey.api.security.permissions.DeletePermission', 'org.labkey.announcements.model.SecureMessageBoardRespondPermission', 'org.labkey.api.security.permissions.SiteAdminPermission', 'org.labkey.api.security.permissions.ApplicationAdminPermission', 'org.labkey.api.security.permissions.ReadPermission' ],
+    'name' : 'Site Administrator',
+            "description": "Site Administrators have full control over the entire system.",
+    'sourceModule' : 'Core',
+    'excludedPrincipals' : [ 0, -3 ]
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.ApplicationAdminRole",
+            "displayName": "Application Admin",
+            "permissions": [
+                "org.labkey.study.security.permissions.ManageNotificationsPermission",
+                "org.labkey.api.vocabulary.security.DesignVocabularyPermission",
+                "org.labkey.study.security.permissions.ManageRequestStatusesPermission",
+                "org.labkey.announcements.model.InsertMessagePermission",
+                "org.labkey.api.security.permissions.AdminReadPermission",
+                "org.labkey.study.security.permissions.ManageSpecimenActorsPermission",
+                "org.labkey.api.security.permissions.EnableRestrictedModules",
+                "org.labkey.api.lists.permissions.DesignListPermission",
+                "org.labkey.study.security.permissions.SetSpecimenCommentsPermission",
+                "org.labkey.api.security.permissions.UpdatePermission",
+                "org.labkey.api.security.permissions.DesignSampleSetPermission",
+                "org.labkey.api.reports.permissions.ShareReportPermission",
+                "org.labkey.api.compliance.PatientRecordReviewerPermission",
+                "org.labkey.api.compliance.ElecSignPermission",
+                "org.labkey.api.compliance.ViewSignedSnapshotsPermission",
+                "org.labkey.api.admin.FolderExportPermission",
+                "org.labkey.api.reports.permissions.EditSharedReportPermission",
+                "org.labkey.api.security.permissions.InsertPermission",
+                "org.labkey.study.security.permissions.LockSpecimensPermission",
+                "org.labkey.query.EditQueriesPermission",
+                "org.labkey.study.security.permissions.ManageRequestSettingsPermission",
+                "org.labkey.api.security.permissions.ReadSomePermission",
+                "org.labkey.api.security.permissions.QCAnalystPermission",
+                "org.labkey.api.security.permissions.EditSpecimenDataPermission",
+                "org.labkey.api.security.permissions.EditSharedViewPermission",
+                "org.labkey.study.security.permissions.ManageNewRequestFormPermission",
+                "org.labkey.api.study.permissions.SharedParticipantGroupPermission",
+                "org.labkey.study.security.permissions.ManageRequestsPermission",
+                "org.labkey.study.security.permissions.ManageDisplaySettingsPermission",
+                "org.labkey.study.security.permissions.RequestSpecimensPermission",
+                "org.labkey.study.security.permissions.ManageRequestRequirementsPermission",
+                "org.labkey.study.security.permissions.ManageStudyPermission",
+                "org.labkey.api.security.permissions.SeeUserDetailsPermission",
+                "org.labkey.api.security.permissions.UserManagementPermission",
+                "org.labkey.api.audit.permissions.CanSeeAuditLogPermission",
+                "org.labkey.api.assay.security.DesignAssayPermission",
+                "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
+                "org.labkey.api.security.permissions.DeletePermission",
+                "org.labkey.api.security.permissions.AdminPermission",
+                "org.labkey.announcements.model.SecureMessageBoardRespondPermission",
+                "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                "org.labkey.api.security.permissions.ReadPermission",
+                "org.labkey.announcements.model.SecureMessageBoardReadPermission"
+            ],
+    'name' : 'Application Admin',
+    'description' : 'Application Administrators have control over non-operational administration settings.',
+            "sourceModule": "Core",
+    'excludedPrincipals' : [ 0, -2, -3 ]
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.roles.ProjectAdminRole',
+    'displayName' : 'Project Administrator',
+    'permissions' : [ 'org.labkey.study.security.permissions.ManageNotificationsPermission', 'org.labkey.api.vocabulary.security.DesignVocabularyPermission', 'org.labkey.study.security.permissions.ManageRequestStatusesPermission', 'org.labkey.announcements.model.InsertMessagePermission', 'org.labkey.api.security.permissions.AdminReadPermission', 'org.labkey.study.security.permissions.ManageSpecimenActorsPermission', 'org.labkey.api.lists.permissions.DesignListPermission', 'org.labkey.study.security.permissions.SetSpecimenCommentsPermission', 'org.labkey.api.security.permissions.UpdatePermission', 'org.labkey.api.security.permissions.DesignSampleSetPermission', 'org.labkey.api.reports.permissions.ShareReportPermission', 'org.labkey.api.compliance.PatientRecordReviewerPermission', 'org.labkey.api.compliance.ElecSignPermission', 'org.labkey.api.compliance.ViewSignedSnapshotsPermission', 'org.labkey.api.admin.FolderExportPermission', 'org.labkey.api.reports.permissions.EditSharedReportPermission', 'org.labkey.api.security.permissions.InsertPermission', 'org.labkey.study.security.permissions.LockSpecimensPermission', 'org.labkey.query.EditQueriesPermission', 'org.labkey.study.security.permissions.ManageRequestSettingsPermission', 'org.labkey.api.security.permissions.ReadSomePermission', 'org.labkey.api.security.permissions.QCAnalystPermission', 'org.labkey.api.security.permissions.EditSpecimenDataPermission', 'org.labkey.api.security.permissions.EditSharedViewPermission', 'org.labkey.study.security.permissions.ManageNewRequestFormPermission', 'org.labkey.api.study.permissions.SharedParticipantGroupPermission', 'org.labkey.study.security.permissions.ManageRequestsPermission', 'org.labkey.study.security.permissions.ManageDisplaySettingsPermission', 'org.labkey.study.security.permissions.RequestSpecimensPermission', 'org.labkey.study.security.permissions.ManageRequestRequirementsPermission', 'org.labkey.study.security.permissions.ManageStudyPermission', 'org.labkey.api.security.permissions.SeeUserDetailsPermission', 'org.labkey.api.audit.permissions.CanSeeAuditLogPermission', 'org.labkey.api.assay.security.DesignAssayPermission', 'org.labkey.api.security.permissions.SeeGroupDetailsPermission', 'org.labkey.api.security.permissions.DeletePermission', 'org.labkey.api.security.permissions.AdminPermission', 'org.labkey.announcements.model.SecureMessageBoardRespondPermission', 'org.labkey.api.security.permissions.ReadPermission', 'org.labkey.announcements.model.SecureMessageBoardReadPermission' ],
+    'name' : 'Project Administrator',
+    'description' : 'Project Administrators have full control over the project, but not the entire system.',
+            "sourceModule": "Core",
+    'excludedPrincipals' : [ 0, -2, -3 ]
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.roles.FolderAdminRole',
+    'displayName' : 'Folder Administrator',
+    'permissions' : [ 'org.labkey.study.security.permissions.ManageNotificationsPermission', 'org.labkey.api.vocabulary.security.DesignVocabularyPermission', 'org.labkey.study.security.permissions.ManageRequestStatusesPermission', 'org.labkey.announcements.model.InsertMessagePermission', 'org.labkey.api.security.permissions.AdminReadPermission', 'org.labkey.study.security.permissions.ManageSpecimenActorsPermission', 'org.labkey.api.lists.permissions.DesignListPermission', 'org.labkey.study.security.permissions.SetSpecimenCommentsPermission', 'org.labkey.api.security.permissions.UpdatePermission', 'org.labkey.api.security.permissions.DesignSampleSetPermission', 'org.labkey.api.reports.permissions.ShareReportPermission', 'org.labkey.api.compliance.PatientRecordReviewerPermission', 'org.labkey.api.compliance.ElecSignPermission', 'org.labkey.api.compliance.ViewSignedSnapshotsPermission', 'org.labkey.api.admin.FolderExportPermission', 'org.labkey.api.reports.permissions.EditSharedReportPermission', 'org.labkey.api.security.permissions.InsertPermission', 'org.labkey.study.security.permissions.LockSpecimensPermission', 'org.labkey.query.EditQueriesPermission', 'org.labkey.study.security.permissions.ManageRequestSettingsPermission', 'org.labkey.api.security.permissions.ReadSomePermission', 'org.labkey.api.security.permissions.QCAnalystPermission', 'org.labkey.api.security.permissions.EditSpecimenDataPermission', 'org.labkey.api.security.permissions.EditSharedViewPermission', 'org.labkey.study.security.permissions.ManageNewRequestFormPermission', 'org.labkey.api.study.permissions.SharedParticipantGroupPermission', 'org.labkey.study.security.permissions.ManageRequestsPermission', 'org.labkey.study.security.permissions.ManageDisplaySettingsPermission', 'org.labkey.study.security.permissions.RequestSpecimensPermission', 'org.labkey.study.security.permissions.ManageRequestRequirementsPermission', 'org.labkey.study.security.permissions.ManageStudyPermission', 'org.labkey.api.security.permissions.SeeUserDetailsPermission', 'org.labkey.api.audit.permissions.CanSeeAuditLogPermission', 'org.labkey.api.assay.security.DesignAssayPermission', 'org.labkey.api.security.permissions.SeeGroupDetailsPermission', 'org.labkey.api.security.permissions.DeletePermission', 'org.labkey.api.security.permissions.AdminPermission', 'org.labkey.announcements.model.SecureMessageBoardRespondPermission', 'org.labkey.api.security.permissions.ReadPermission', 'org.labkey.announcements.model.SecureMessageBoardReadPermission' ],
+    'name' : 'Folder Administrator',
+    'description' : 'Folder Administrators have full control over their particular folder, but not others.',
+    'sourceModule' : 'Core',
+    'excludedPrincipals' : [ 0, -2, -3 ]
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.EditorRole",
+            "displayName": "Editor",
+    'permissions' : [ 'org.labkey.api.study.permissions.SharedParticipantGroupPermission', 'org.labkey.api.reports.permissions.ShareReportPermission', 'org.labkey.api.reports.permissions.EditSharedReportPermission', 'org.labkey.api.security.permissions.InsertPermission', 'org.labkey.api.security.permissions.DeletePermission', 'org.labkey.api.security.permissions.ReadSomePermission', 'org.labkey.announcements.model.SecureMessageBoardRespondPermission', 'org.labkey.api.security.permissions.UpdatePermission', 'org.labkey.api.security.permissions.ReadPermission', 'org.labkey.api.security.permissions.EditSharedViewPermission', 'org.labkey.announcements.model.SecureMessageBoardReadPermission' ],
+    'name' : 'Editor',
+    'description' : 'Editors may read, add, update and delete information.',
+    'sourceModule' : 'Core',
+    'excludedPrincipals' : [ ]
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.roles.AuthorRole',
+    'displayName' : 'Author',
+    'permissions' : [ 'org.labkey.api.reports.permissions.ShareReportPermission', 'org.labkey.api.security.permissions.InsertPermission', 'org.labkey.api.security.permissions.ReadSomePermission', 'org.labkey.api.security.permissions.ReadPermission' ],
+    'name' : 'Author',
+            "description": "Authors may read and add information in some cases, but may update and delete only information they added. Supported for only Message Boards. See the online documentation for details.",
+            "sourceModule": "Core",
+            "excludedPrincipals": []
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.ReaderRole",
+            "displayName": "Reader",
+            "permissions": [
+                "org.labkey.api.security.permissions.ReadSomePermission",
+                "org.labkey.api.security.permissions.ReadPermission"
+            ],
+            "name": "Reader",
+    'description' : 'Readers may read information but may not change anything.',
+            "sourceModule": "Core",
+            "excludedPrincipals": []
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.RestrictedReaderRole",
+            "displayName": "Restricted Reader",
+            "permissions": ["org.labkey.api.security.permissions.ReadSomePermission"],
+            "name": "Restricted Reader",
+            "description": "Restricted Readers may read some information, but not all.",
+            "sourceModule": "Core",
+            "excludedPrincipals": [0, -3]
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.SubmitterRole",
+            "displayName": "Submitter",
+            "permissions": ["org.labkey.api.security.permissions.InsertPermission"],
+    'name' : 'Submitter',
+    'description' : 'Submitters may submit new information, but may not read or change anything.',
+            "sourceModule": "Core",
+    'excludedPrincipals' : [ ]
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.TroubleshooterRole",
+    'displayName' : 'Troubleshooter',
+    'permissions' : [ 'org.labkey.api.security.permissions.AdminReadPermission' ],
+            "name": "Troubleshooter",
+            "description": "Troubleshooters may view administration settings but may not change them.",
+            "sourceModule": "Core",
+            "excludedPrincipals": [0, -2, -3]
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.roles.SeeUserAndGroupDetailsRole',
+    'displayName' : 'See User and Group Details',
+    'permissions' : [ 'org.labkey.api.security.permissions.SeeGroupDetailsPermission', 'org.labkey.api.security.permissions.SeeUserDetailsPermission' ],
+    'name' : 'See User and Group Details',
+    'description' : 'Allows viewing email addresses and contact information of other users as well as information about security groups.',
+            "sourceModule": "Core",
+    'excludedPrincipals' : [ 0, -3 ]
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.CanSeeAuditLogRole",
+            "displayName": "See Audit Log Events",
+            "permissions": ["org.labkey.api.audit.permissions.CanSeeAuditLogPermission"],
+            "name": "See Audit Log Events",
+            "description": "Allows non-administrators to view audit log events",
+            "sourceModule": "Core",
+            "excludedPrincipals": [0, -3]
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.roles.SharedViewEditorRole',
+    'displayName' : 'Shared View Editor',
+    'permissions' : [ 'org.labkey.api.security.permissions.ReadPermission', 'org.labkey.api.security.permissions.EditSharedViewPermission' ],
+    'name' : 'Shared View Editor',
+    'description' : 'Shared view editors may create and update shared custom grid views',
+            "sourceModule": "Core",
+    'excludedPrincipals' : [ 0, -3 ]
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.EmailNonUsersRole",
+            "displayName": "Email Non-Users",
+            "permissions": ["org.labkey.api.security.roles.EmailNonUsersPermission"],
+    'name' : 'Email Non-Users',
+    'description' : 'Allows users to send emails to addresses that are not associated with LabKey Server accounts.  Use caution when enabling this if you have self-sign-on enabled.',
+            "sourceModule": "Core",
+    'excludedPrincipals' : [ 0, -3 ]
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.SeeFilePathsRole",
+            "displayName": "See Absolute File Paths",
+            "permissions": ["org.labkey.api.webdav.permissions.SeeFilePathsPermission"],
+            "name": "See Absolute File Paths",
+            "description": "Allows users to see absolute file paths.",
+            "sourceModule": "Core",
+            "excludedPrincipals": [0, -3]
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.CanUseSendMessageApi",
+    'displayName' : 'Use SendMessage API',
+    'permissions' : [ 'org.labkey.api.security.permissions.CanUseSendMessageApiPermission' ],
+            "name": "Use SendMessage API",
+            "description": "Allows users to use the send message API.  This API can be used to author code which sends emails to users and potentially non-users of the system.",
+            "sourceModule": "Core",
+            "excludedPrincipals": []
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.roles.PlatformDeveloperRole',
+    'displayName' : 'Platform Developer',
+    'permissions' : [ 'org.labkey.api.security.permissions.PlatformDeveloperPermission', 'org.labkey.api.security.permissions.AnalystPermission', 'org.labkey.api.security.permissions.BrowserDeveloperPermission', 'org.labkey.api.security.permissions.TrustedPermission', 'org.labkey.query.EditQueriesPermission' ],
+    'name' : 'Platform Developer',
+            "description": "Allows developers to write and deploy code outside the LabKey security framework.",
+    'sourceModule' : 'Core',
+    'excludedPrincipals' : [ 0, -3 ]
+        },
+        {
+    'uniqueName' : 'org.labkey.compliance.security.RestrictedPHIRole',
+    'displayName' : 'Restricted PHI Reader',
+    'permissions' : [ 'org.labkey.api.data.LimitedPHIPermission', 'org.labkey.api.data.FullPHIPermission', 'org.labkey.api.data.RestrictedPHIPermission' ],
+    'name' : 'Restricted PHI Reader',
+    'description' : 'May choose to read columns tagged as Restricted PHI, Full PHI and Limited PHI.',
+            "sourceModule": "Compliance",
+    'excludedPrincipals' : [ 0, -3 ]
+        },
+        {
+    'uniqueName' : 'org.labkey.compliance.security.FullPHIRole',
+    'displayName' : 'Full PHI Reader',
+    'permissions' : [ 'org.labkey.api.data.LimitedPHIPermission', 'org.labkey.api.data.FullPHIPermission' ],
+            "name": "Full PHI Reader",
+    'description' : 'May choose to read columns tagged as Full PHI and Limited PHI.',
+            "sourceModule": "Compliance",
+            "excludedPrincipals": [0, -3]
+        },
+        {
+    'uniqueName' : 'org.labkey.compliance.security.LimitedPHIRole',
+    'displayName' : 'Limited PHI Reader',
+    'permissions' : [ 'org.labkey.api.data.LimitedPHIPermission' ],
+            "name": "Limited PHI Reader",
+            "description": "May choose to read columns tagged as Limited PHI.",
+            "sourceModule": "Compliance",
+            "excludedPrincipals": [0, -3]
+        },
+        {
+            "uniqueName": "org.labkey.compliance.security.PatientRecordReviewerRole",
+            "displayName": "Patient Record Reviewer",
+            "permissions": ["org.labkey.api.compliance.PatientRecordReviewerPermission"],
+    'name' : 'Patient Record Reviewer',
+            "description": "May read patient records to determine completeness and compliance with PHI rules for the application.",
+            "sourceModule": "Compliance",
+            "excludedPrincipals": [0, -3]
+        },
+        {
+            "uniqueName": "org.labkey.compliance.security.ElecSignerRole",
+            "displayName": "Electronic Signer",
+            "permissions": ["org.labkey.api.compliance.ElecSignPermission"],
+    'name' : 'Electronic Signer',
+    'description' : 'Signers may electronically sign snapshots of data.',
+    'sourceModule' : 'Compliance',
+    'excludedPrincipals' : [ 0, -3 ]
+        },
+        {
+            "uniqueName": "org.labkey.adjudication.security.AdjudicatorRole",
+            "displayName": "Adjudicator",
+            "permissions": [
+                "org.labkey.adjudication.security.AdjudicationPermission",
+                "org.labkey.api.security.permissions.ReadPermission"
+            ],
+            "name": "Adjudicator",
+    'description' : 'Adjudicators may make determinations, but may not upload data or view the Admin Dashboard.',
+            "sourceModule": "adjudication",
+            "excludedPrincipals": []
+        },
+        {
+            "uniqueName": "org.labkey.adjudication.security.AdjudicationLabPersonnelRole",
+            "displayName": "Adjudication Lab Personnel",
+            "permissions": [
+                "org.labkey.adjudication.security.AdjudicationCaseUploadPermission",
+                "org.labkey.api.security.permissions.InsertPermission",
+                "org.labkey.adjudication.security.AdjudicationReviewPermission",
+                "org.labkey.api.security.permissions.UpdatePermission",
+                "org.labkey.api.security.permissions.ReadPermission"
+            ],
+    'name' : 'Adjudication Lab Personnel',
+    'description' : 'Adjudication Lab Personnel may upload data and view the Admin Dashboard.',
+    'sourceModule' : 'adjudication',
+    'excludedPrincipals' : [ ]
+        },
+        {
+            "uniqueName": "org.labkey.adjudication.security.AdjudicationInfectionMonitorRole",
+    'displayName' : 'Adjudication Infection Monitor',
+    'permissions' : [ 'org.labkey.adjudication.security.AdjudicationInfectionMonitorPermission', 'org.labkey.adjudication.security.AdjudicationReviewPermission', 'org.labkey.api.security.permissions.ReadPermission' ],
+            "name": "Adjudication Infection Monitor",
+            "description": "Infection Monitors may review adjudication case details and receive notifications of case determinations but can not upload data or make determinations.",
+    'sourceModule' : 'adjudication',
+            "excludedPrincipals": []
+        },
+        {
+    'uniqueName' : 'org.labkey.adjudication.security.AdjudicationDataReviewerRole',
+    'displayName' : 'Adjudication Data Reviewer',
+    'permissions' : [ 'org.labkey.adjudication.security.AdjudicationReviewPermission', 'org.labkey.api.security.permissions.ReadPermission' ],
+    'name' : 'Adjudication Data Reviewer',
+            "description": "Data Reviewers may review adjudication case details but can not upload data or make determinations and they do not receive notifications.",
+    'sourceModule' : 'adjudication',
+            "excludedPrincipals": []
+        },
+        {
+            "uniqueName": "org.labkey.assay.security.AssayDesignerRole",
+    'displayName' : 'Assay Designer',
+    'permissions' : [ 'org.labkey.api.assay.security.DesignAssayPermission', 'org.labkey.api.lists.permissions.DesignListPermission' ],
+            "name": "Assay Designer",
+            "description": "Assay designers may perform several actions related to designing assays.",
+            "sourceModule": "Assay",
+            "excludedPrincipals": [0, -3]
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.roles.TrustedAnalystRole',
+    'displayName' : 'Trusted Analyst',
+    'permissions' : [ 'org.labkey.api.security.permissions.AnalystPermission', 'org.labkey.api.security.permissions.BrowserDeveloperPermission', 'org.labkey.api.security.permissions.TrustedPermission', 'org.labkey.query.EditQueriesPermission' ],
+            "name": "Trusted Analyst",
+            "description": "Can write code that runs on the server in a sandbox, code may be shared with other users and is presumed to be trusted.",
+            "sourceModule": "Core",
+            "excludedPrincipals": [0, -3]
+        },
+        {
+            "uniqueName": "org.labkey.api.security.roles.AnalystRole",
+            "displayName": "Analyst",
+            "permissions": [
+                "org.labkey.api.security.permissions.AnalystPermission",
+                "org.labkey.api.security.permissions.BrowserDeveloperPermission"
+            ],
+            "name": "Analyst",
+    'description' : 'Can write code that runs on the server, but may not share code (e.g. may use rstudio if configured)',
+            "sourceModule": "Core",
+            "excludedPrincipals": [0, -3]
+        },
+        {
+    'uniqueName' : 'org.labkey.api.security.roles.QCAnalystRole',
+    'displayName' : 'QC Analyst',
+    'permissions' : [ 'org.labkey.api.security.permissions.QCAnalystPermission' ],
+            "name": "QC Analyst",
+            "description": "Can perform QC related tasks, but not manage QC configurations.",
+            "sourceModule": "Core",
+            "excludedPrincipals": [-3]
+        },
+        {
+            "uniqueName": "org.labkey.study.security.roles.SpecimenCoordinatorRole",
+            "displayName": "Specimen Coordinator",
+            "permissions": [
+                "org.labkey.study.security.permissions.ManageNotificationsPermission",
+                "org.labkey.study.security.permissions.ManageRequestsPermission",
+                "org.labkey.study.security.permissions.ManageRequestStatusesPermission",
+                "org.labkey.study.security.permissions.ManageSpecimenActorsPermission",
+                "org.labkey.study.security.permissions.ManageDisplaySettingsPermission",
+                "org.labkey.study.security.permissions.RequestSpecimensPermission",
+                "org.labkey.study.security.permissions.ManageRequestRequirementsPermission",
+                "org.labkey.study.security.permissions.ManageStudyPermission",
+                "org.labkey.study.security.permissions.SetSpecimenCommentsPermission",
+                "org.labkey.study.security.permissions.LockSpecimensPermission",
+                "org.labkey.study.security.permissions.ManageRequestSettingsPermission",
+                "org.labkey.api.security.permissions.EditSpecimenDataPermission",
+                "org.labkey.study.security.permissions.ManageNewRequestFormPermission",
+                "org.labkey.api.security.permissions.EditSharedViewPermission"
+            ],
+    'name' : 'Specimen Coordinator',
+    'description' : 'Specimen Coordinators may perform a number of management tasks related to specimens',
+    'sourceModule' : 'Study',
+    'excludedPrincipals' : [ 0, -2, -3 ]
+        },
+        {
+            "uniqueName": "org.labkey.study.security.roles.SpecimenRequesterRole",
+    'displayName' : 'Specimen Requester',
+    'permissions' : [ 'org.labkey.study.security.permissions.RequestSpecimensPermission' ],
+    'name' : 'Specimen Requester',
+    'description' : 'Specimen Requesters may request specimen vials.',
+    'sourceModule' : 'Study',
+    'excludedPrincipals' : [ 0, -3 ]
+        },
+        {
+            "uniqueName": "org.labkey.announcements.model.MessageBoardContributorRole",
+            "displayName": "Message Board Contributor",
+            "permissions": [
+                "org.labkey.announcements.model.InsertMessagePermission",
+                "org.labkey.api.security.permissions.ReadPermission"
+            ],
+    'name' : 'Message Board Contributor',
+    'description' : "Allows user to insert, delete, and edit their own messages and respond to other's messages.",
+    'sourceModule' : 'Core',
+    'excludedPrincipals' : [ ]
+        }
+    ]
 }

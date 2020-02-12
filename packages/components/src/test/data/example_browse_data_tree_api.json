@@ -1,1118 +1,1118 @@
 {
-  "expanded": true,
-  "children": [
-    {
-      "expanded": true,
-      "children": [
+    "expanded": true,
+  'children': [
         {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A37"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A37",
-          "icon": "/labkey/reports/grid.gif?revision=4",
-          "runUrl": "/labkey/Biologics/assayreport-view.view?id=37",
-          "description": "From Kevin",
-          "defaultThumbnailUrl": "/labkey/report/report.jpg?revision=4",
-          "type": "Sample Comparison",
-          "defaultIconCls": "fa fa-table",
-          "modified": "2019-10-08 15:54:56.104",
-          "modifiedBy": "alanv",
-          "id": "68e786f1-cc4c-1037-a715-33650cffffb2",
-          "iconCls": "fa fa-table",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/report/report.jpg?revision=4",
-          "visible": true,
-          "reportId": "db:37",
-          "contentModified": "2019-10-08 15:54:56.104",
-          "author": "alanv",
-          "created": "2019-10-08 15:54:56.104",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Example SCR",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A13"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A13",
-          "thumbnailRevision": "2.0",
-          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A13&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
-          "type": "XY Scatter Plot",
-          "schemaName": "assay.General.SEC",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-area-chart",
-          "modified": "2019-10-07 16:06:55.402",
-          "modifiedBy": "alanv",
-          "id": "0b913912-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-area-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A13&revision=2",
-          "visible": true,
-          "reportId": "db:13",
-          "contentModified": "2019-10-07 16:06:55.398",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:55.402",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Injection Volume Comparison 2",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A14"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A14",
-          "thumbnailRevision": "1.0",
-          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A14&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
-          "type": "XY Scatter Plot",
-          "schemaName": "exp.data",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-area-chart",
-          "modified": "2019-10-07 16:06:55.478",
-          "modifiedBy": "alanv",
-          "id": "0b91393b-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-area-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A14&revision=1",
-          "visible": true,
-          "reportId": "db:14",
-          "contentModified": "2019-10-07 16:06:55.474",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:55.478",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Avg Mass vs pl",
-          "queryName": "MolecularSpecies",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A15"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A15",
-          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A15&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "description": "This is a description for my private box plot fo the Arg data.",
-          "defaultThumbnailUrl": "/labkey/visualization/images/boxplot.png?revision=4",
-          "type": "Box and Whisker Plot",
-          "schemaName": "assay.General.Amino Acids",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-sliders fa-rotate-90",
-          "modified": "2019-10-07 16:06:55.550",
-          "modifiedBy": "alanv",
-          "id": "0b91393e-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-sliders fa-rotate-90",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A15&revision=0",
-          "visible": true,
-          "reportId": "db:15",
-          "contentModified": "2019-10-07 16:06:55.546",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:55.550",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Arg Box Plot",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A16"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A16",
-          "thumbnailRevision": "1.0",
-          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A16&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/barchart.png?revision=4",
-          "type": "Bar Chart",
-          "schemaName": "assay.General.Amino Acids",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-bar-chart",
-          "modified": "2019-10-07 16:06:55.655",
-          "modifiedBy": "alanv",
-          "id": "0b913940-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-bar-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A16&revision=1",
-          "visible": true,
-          "reportId": "db:16",
-          "contentModified": "2019-10-07 16:06:55.650",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:55.655",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Bar plot of Mean Cys for Runs",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A17"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A17",
-          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A17&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/piechart.png?revision=4",
-          "type": "Pie Chart",
-          "schemaName": "assay.General.Amino Acids",
-          "thumbnailType": "NONE",
-          "defaultIconCls": "fa fa-pie-chart",
-          "modified": "2019-10-07 16:06:55.743",
-          "modifiedBy": "alanv",
-          "id": "0b913943-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-pie-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/visualization/images/piechart.png?revision=4",
-          "visible": true,
-          "reportId": "db:17",
-          "contentModified": "2019-10-07 16:06:55.740",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:55.743",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Pie chart example",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A18"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A18",
-          "thumbnailRevision": "2.0",
-          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A18&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/barchart.png?revision=4",
-          "type": "Bar Chart",
-          "schemaName": "exp.data",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-bar-chart",
-          "modified": "2019-10-07 16:06:55.858",
-          "modifiedBy": "alanv",
-          "id": "0b913945-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-bar-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A18&revision=2",
-          "visible": true,
-          "reportId": "db:18",
-          "contentModified": "2019-10-07 16:06:55.852",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:55.858",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Sum of Molecular Weight by Chemical Formula",
-          "queryName": "Ingredients",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A19"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A19",
-          "icon": "/labkey/visualization/report/timechart.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A19&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/timechart.png?revision=4",
-          "type": "XY Series Line Plot",
-          "schemaName": "assay.General.Amino Acids",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-line-chart",
-          "modified": "2019-10-07 16:06:55.962",
-          "modifiedBy": "alanv",
-          "id": "0b913948-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-line-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A19&revision=0",
-          "visible": true,
-          "reportId": "db:19",
-          "contentModified": "2019-10-07 16:06:55.958",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:55.962",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Line plot: Pro by Sample Date",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A20"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A20",
-          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A20&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/boxplot.png?revision=4",
-          "type": "Box and Whisker Plot",
-          "schemaName": "assay.General.Titer",
-          "thumbnailType": "NONE",
-          "defaultIconCls": "fa fa-sliders fa-rotate-90",
-          "modified": "2019-10-07 16:06:56.076",
-          "modifiedBy": "alanv",
-          "id": "0b91394a-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-sliders fa-rotate-90",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/visualization/images/boxplot.png?revision=4",
-          "visible": true,
-          "reportId": "db:20",
-          "contentModified": "2019-10-07 16:06:56.073",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:56.076",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "MAb Box Plot",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A21"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A21",
-          "thumbnailRevision": "1.0",
-          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A21&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/piechart.png?revision=4",
-          "type": "Pie Chart",
-          "schemaName": "samples",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-pie-chart",
-          "modified": "2019-10-07 16:06:56.201",
-          "modifiedBy": "alanv",
-          "id": "0b91394c-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-pie-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A21&revision=1",
-          "visible": true,
-          "reportId": "db:21",
-          "contentModified": "2019-10-07 16:06:56.197",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:56.201",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Distribution by Lot",
-          "queryName": "ExpressionSystemSamples",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A22"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A22",
-          "thumbnailRevision": "1.0",
-          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A22&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
-          "type": "XY Scatter Plot",
-          "schemaName": "assay.General.Amino Acids",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-area-chart",
-          "modified": "2019-10-07 16:06:56.338",
-          "modifiedBy": "alanv",
-          "id": "0b91394f-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-area-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A22&revision=1",
-          "visible": true,
-          "reportId": "db:22",
-          "contentModified": "2019-10-07 16:06:56.334",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:56.338",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Scatter: Arg vs Ala (filtered)",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A23"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A23",
-          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A23&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
-          "type": "XY Scatter Plot",
-          "schemaName": "assay.General.Amino Acids",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-area-chart",
-          "modified": "2019-10-07 16:06:56.553",
-          "modifiedBy": "alanv",
-          "id": "0b913952-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-area-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A23&revision=0",
-          "visible": true,
-          "reportId": "db:23",
-          "contentModified": "2019-10-07 16:06:56.549",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:56.553",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Scatter: Arg vs Ala",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A24"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A24",
-          "thumbnailRevision": "1.0",
-          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A24&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
-          "type": "XY Scatter Plot",
-          "schemaName": "assay.General.SEC",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-area-chart",
-          "modified": "2019-10-07 16:06:56.728",
-          "modifiedBy": "alanv",
-          "id": "0b913954-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-area-chart",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A24&revision=1",
-          "visible": true,
-          "reportId": "db:24",
-          "contentModified": "2019-10-07 16:06:56.725",
-          "author": "alanv",
-          "created": "2019-10-07 16:06:56.728",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Injection Volume Comparison",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": false,
-          "access": {
-            "label": "private",
-            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A158"
-          },
-          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A158",
-          "thumbnailRevision": "1.0",
-          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
-          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A158&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
-          "defaultThumbnailUrl": "/labkey/visualization/images/boxplot.png?revision=4",
-          "type": "Box and Whisker Plot",
-          "schemaName": "assay.General.Amino Acids",
-          "thumbnailType": "AUTO",
-          "defaultIconCls": "fa fa-sliders fa-rotate-90",
-          "modified": "2019-11-19 16:10:29.056",
-          "modifiedBy": "alanv",
-          "id": "5bde837d-ed54-1037-b066-b67e942d8e23",
-          "iconCls": "fa fa-sliders fa-rotate-90",
-          "createdByUserId": 1011,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A158&revision=1",
-          "visible": true,
-          "reportId": "db:158",
-          "contentModified": "2019-11-19 16:10:29.055",
-          "author": "alanv",
-          "created": "2019-11-19 16:10:29.056",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Private Chart",
-          "queryName": "Data",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": false,
-          "access": {
-            "label": "private"
-          },
-          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Test%20Custom%20View",
-          "icon": "/labkey/reports/icon_private_view.png?revision=4",
-          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Test%20Custom%20View",
-          "type": "Query",
-          "schemaName": "exp.data",
-          "viewName": "Test Custom View",
-          "modified": "2019-10-07 16:06:54.979",
-          "id": "0b91390e-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-lock fa-lg",
-          "createdByUserId": 1011,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=4",
-          "visible": true,
-          "reportId": null,
-          "author": "alanv",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Test Custom View",
-          "queryName": "Ingredients",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": false,
-          "access": {
-            "label": "private"
-          },
-          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=Test%20Custom%20View",
-          "icon": "/labkey/reports/icon_private_view.png?revision=4",
-          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=Test%20Custom%20View",
-          "type": "Query",
-          "schemaName": "assay.General.SEC",
-          "viewName": "Test Custom View",
-          "modified": "2019-10-07 16:06:54.977",
-          "id": "0b91390d-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-lock fa-lg",
-          "createdByUserId": 1011,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=4",
-          "visible": true,
-          "reportId": null,
-          "author": "alanv",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Test Custom View",
-          "queryName": "Data",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public"
-          },
-          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Name%20only",
-          "icon": "/labkey/reports/grid.gif?revision=4",
-          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Name%20only",
-          "type": "Query",
-          "schemaName": "samples",
-          "viewName": "Name only",
-          "modified": "2019-10-07 16:06:54.969",
-          "id": "0b91390a-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-table",
-          "createdByUserId": 1011,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=4",
-          "visible": true,
-          "reportId": null,
-          "author": "alanv",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Name only",
-          "queryName": "RawMaterials",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": false,
-          "access": {
-            "label": "private"
-          },
-          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Private%20view",
-          "icon": "/labkey/reports/icon_private_view.png?revision=4",
-          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Private%20view",
-          "type": "Query",
-          "schemaName": "exp.data",
-          "viewName": "Private view",
-          "modified": "2019-10-07 16:06:54.966",
-          "id": "0b913909-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-lock fa-lg",
-          "createdByUserId": 1011,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=4",
-          "visible": true,
-          "reportId": null,
-          "author": "alanv",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Private view",
-          "queryName": "Molecule",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public"
-          },
-          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Scientific%20Name%20only",
-          "icon": "/labkey/reports/grid.gif?revision=4",
-          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Scientific%20Name%20only",
-          "type": "Query",
-          "schemaName": "exp.data",
-          "viewName": "Scientific Name only",
-          "modified": "2019-10-07 16:06:54.981",
-          "id": "0b91390f-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-table",
-          "createdByUserId": 1011,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=4",
-          "visible": true,
-          "reportId": null,
-          "author": "alanv",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Scientific Name only",
-          "queryName": "Ingredients",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public"
-          },
-          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Name%20only",
-          "icon": "/labkey/reports/grid.gif?revision=4",
-          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Name%20only",
-          "type": "Query",
-          "schemaName": "exp.data",
-          "viewName": "Name only",
-          "modified": "2019-10-07 16:06:54.951",
-          "id": "0b913908-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-table",
-          "createdByUserId": 1011,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=4",
-          "visible": true,
-          "reportId": null,
-          "author": "alanv",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Name only",
-          "queryName": "Molecule",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": true,
-          "access": {
-            "label": "public"
-          },
-          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=SampleID%20only",
-          "icon": "/labkey/reports/grid.gif?revision=4",
-          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=SampleID%20only",
-          "type": "Query",
-          "schemaName": "assay.General.SEC",
-          "viewName": "SampleID only",
-          "modified": "2019-10-07 16:06:54.974",
-          "id": "0b91390c-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-table",
-          "createdByUserId": 1011,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=4",
-          "visible": true,
-          "reportId": null,
-          "author": "alanv",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "SampleID only",
-          "queryName": "Data",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
-        },
-        {
-          "container": "/Biologics",
-          "shared": false,
-          "access": {
-            "label": "private"
-          },
-          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Test%20Custom%20View",
-          "icon": "/labkey/reports/icon_private_view.png?revision=4",
-          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Test%20Custom%20View",
-          "type": "Query",
-          "schemaName": "samples",
-          "viewName": "Test Custom View",
-          "modified": "2019-10-07 16:06:54.971",
-          "id": "0b91390b-cb85-1037-9919-33650cffffb2",
-          "iconCls": "fa fa-lock fa-lg",
-          "createdByUserId": 1011,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=4",
-          "visible": true,
-          "reportId": null,
-          "author": "alanv",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "alanv",
-          "name": "Test Custom View",
-          "queryName": "RawMaterials",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 1,
-            "modified": "1969-12-31 16:00:00.000",
-            "modifiedBy": {
-              "displayValue": "guest",
-              "value": 0
-            },
-            "label": "Uncategorized",
-            "subCategories": [],
-            "rowid": 0
-          }
+            "expanded": true,
+            "children": [
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A37"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A37",
+                    "icon": "/labkey/reports/grid.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/assayreport-view.view?id=37",
+                    "description": "From Kevin",
+                    "defaultThumbnailUrl": "/labkey/report/report.jpg?revision=4",
+                    "type": "Sample Comparison",
+                    "defaultIconCls": "fa fa-table",
+                    "modified": "2019-10-08 15:54:56.104",
+                    "modifiedBy": "alanv",
+          'id': '68e786f1-cc4c-1037-a715-33650cffffb2',
+                    "iconCls": "fa fa-table",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/report/report.jpg?revision=4",
+                    "visible": true,
+                    "reportId": "db:37",
+          'contentModified': '2019-10-08 15:54:56.104',
+                    "author": "alanv",
+                    "created": "2019-10-08 15:54:56.104",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Example SCR",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A13"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A13",
+                    "thumbnailRevision": "2.0",
+                    "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A13&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+                    "type": "XY Scatter Plot",
+                    "schemaName": "assay.General.SEC",
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-area-chart",
+                    "modified": "2019-10-07 16:06:55.402",
+          'modifiedBy': 'alanv',
+                    "id": "0b913912-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-area-chart",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A13&revision=2",
+                    "visible": true,
+          'reportId': 'db:13',
+                    "contentModified": "2019-10-07 16:06:55.398",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:55.402",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+          'name': 'Injection Volume Comparison 2',
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A14"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A14",
+                    "thumbnailRevision": "1.0",
+                    "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A14&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+                    "type": "XY Scatter Plot",
+                    "schemaName": "exp.data",
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-area-chart",
+                    "modified": "2019-10-07 16:06:55.478",
+                    "modifiedBy": "alanv",
+                    "id": "0b91393b-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-area-chart",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A14&revision=1",
+                    "visible": true,
+                    "reportId": "db:14",
+                    "contentModified": "2019-10-07 16:06:55.474",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:55.478",
+                    "dataType": "reports",
+                    "readOnly": false,
+          'leaf': true,
+                    "createdBy": "alanv",
+                    "name": "Avg Mass vs pl",
+                    "queryName": "MolecularSpecies",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A15"
+                    },
+          'detailsUrl': '/labkey/Biologics/reports-details.view?reportId=db%3A15',
+                    "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A15&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "description": "This is a description for my private box plot fo the Arg data.",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/boxplot.png?revision=4",
+                    "type": "Box and Whisker Plot",
+                    "schemaName": "assay.General.Amino Acids",
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-sliders fa-rotate-90",
+                    "modified": "2019-10-07 16:06:55.550",
+                    "modifiedBy": "alanv",
+                    "id": "0b91393e-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-sliders fa-rotate-90",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A15&revision=0",
+                    "visible": true,
+                    "reportId": "db:15",
+                    "contentModified": "2019-10-07 16:06:55.546",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:55.550",
+                    "dataType": "reports",
+          'readOnly': false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Arg Box Plot",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+            'label': 'Uncategorized',
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A16"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A16",
+                    "thumbnailRevision": "1.0",
+                    "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A16&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/barchart.png?revision=4",
+                    "type": "Bar Chart",
+          'schemaName': 'assay.General.Amino Acids',
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-bar-chart",
+                    "modified": "2019-10-07 16:06:55.655",
+                    "modifiedBy": "alanv",
+                    "id": "0b913940-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-bar-chart",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A16&revision=1",
+                    "visible": true,
+                    "reportId": "db:16",
+                    "contentModified": "2019-10-07 16:06:55.650",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:55.655",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Bar plot of Mean Cys for Runs",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+              'displayValue': 'guest',
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+          'shared': true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A17"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A17",
+                    "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A17&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/piechart.png?revision=4",
+                    "type": "Pie Chart",
+          'schemaName': 'assay.General.Amino Acids',
+                    "thumbnailType": "NONE",
+                    "defaultIconCls": "fa fa-pie-chart",
+                    "modified": "2019-10-07 16:06:55.743",
+                    "modifiedBy": "alanv",
+                    "id": "0b913943-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-pie-chart",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/visualization/images/piechart.png?revision=4",
+                    "visible": true,
+                    "reportId": "db:17",
+                    "contentModified": "2019-10-07 16:06:55.740",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:55.743",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Pie chart example",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+          'category': {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+          'shared': true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A18"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A18",
+                    "thumbnailRevision": "2.0",
+                    "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A18&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/barchart.png?revision=4",
+                    "type": "Bar Chart",
+                    "schemaName": "exp.data",
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-bar-chart",
+                    "modified": "2019-10-07 16:06:55.858",
+                    "modifiedBy": "alanv",
+                    "id": "0b913945-cb85-1037-9919-33650cffffb2",
+          'iconCls': 'fa fa-bar-chart',
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A18&revision=2",
+                    "visible": true,
+                    "reportId": "db:18",
+                    "contentModified": "2019-10-07 16:06:55.852",
+          'author': 'alanv',
+                    "created": "2019-10-07 16:06:55.858",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Sum of Molecular Weight by Chemical Formula",
+                    "queryName": "Ingredients",
+          'allowCustomThumbnail': true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A19"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A19",
+                    "icon": "/labkey/visualization/report/timechart.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A19&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          'defaultThumbnailUrl': '/labkey/visualization/images/timechart.png?revision=4',
+                    "type": "XY Series Line Plot",
+                    "schemaName": "assay.General.Amino Acids",
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-line-chart",
+                    "modified": "2019-10-07 16:06:55.962",
+                    "modifiedBy": "alanv",
+                    "id": "0b913948-cb85-1037-9919-33650cffffb2",
+          'iconCls': 'fa fa-line-chart',
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A19&revision=0",
+                    "visible": true,
+                    "reportId": "db:19",
+                    "contentModified": "2019-10-07 16:06:55.958",
+          'author': 'alanv',
+                    "created": "2019-10-07 16:06:55.962",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Line plot: Pro by Sample Date",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A20"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A20",
+                    "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A20&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          'defaultThumbnailUrl': '/labkey/visualization/images/boxplot.png?revision=4',
+                    "type": "Box and Whisker Plot",
+                    "schemaName": "assay.General.Titer",
+                    "thumbnailType": "NONE",
+                    "defaultIconCls": "fa fa-sliders fa-rotate-90",
+                    "modified": "2019-10-07 16:06:56.076",
+                    "modifiedBy": "alanv",
+          'id': '0b91394a-cb85-1037-9919-33650cffffb2',
+                    "iconCls": "fa fa-sliders fa-rotate-90",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/visualization/images/boxplot.png?revision=4",
+                    "visible": true,
+                    "reportId": "db:20",
+                    "contentModified": "2019-10-07 16:06:56.073",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:56.076",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "MAb Box Plot",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A21"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A21",
+                    "thumbnailRevision": "1.0",
+                    "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A21&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/piechart.png?revision=4",
+                    "type": "Pie Chart",
+                    "schemaName": "samples",
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-pie-chart",
+                    "modified": "2019-10-07 16:06:56.201",
+          'modifiedBy': 'alanv',
+                    "id": "0b91394c-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-pie-chart",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A21&revision=1",
+                    "visible": true,
+          'reportId': 'db:21',
+                    "contentModified": "2019-10-07 16:06:56.197",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:56.201",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+          'name': 'Distribution by Lot',
+                    "queryName": "ExpressionSystemSamples",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A22"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A22",
+                    "thumbnailRevision": "1.0",
+                    "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A22&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+                    "type": "XY Scatter Plot",
+                    "schemaName": "assay.General.Amino Acids",
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-area-chart",
+                    "modified": "2019-10-07 16:06:56.338",
+                    "modifiedBy": "alanv",
+                    "id": "0b91394f-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-area-chart",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A22&revision=1",
+                    "visible": true,
+                    "reportId": "db:22",
+                    "contentModified": "2019-10-07 16:06:56.334",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:56.338",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+          'createdBy': 'alanv',
+                    "name": "Scatter: Arg vs Ala (filtered)",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A23"
+                    },
+          'detailsUrl': '/labkey/Biologics/reports-details.view?reportId=db%3A23',
+                    "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A23&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+                    "type": "XY Scatter Plot",
+                    "schemaName": "assay.General.Amino Acids",
+                    "thumbnailType": "AUTO",
+          'defaultIconCls': 'fa fa-area-chart',
+                    "modified": "2019-10-07 16:06:56.553",
+                    "modifiedBy": "alanv",
+                    "id": "0b913952-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-area-chart",
+                    "createdByUserId": 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A23&revision=0",
+                    "visible": true,
+                    "reportId": "db:23",
+                    "contentModified": "2019-10-07 16:06:56.549",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:56.553",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Scatter: Arg vs Ala",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+            'label': 'public',
+            'url': '/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A24'
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A24",
+                    "thumbnailRevision": "1.0",
+                    "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A24&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+                    "type": "XY Scatter Plot",
+                    "schemaName": "assay.General.SEC",
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-area-chart",
+                    "modified": "2019-10-07 16:06:56.728",
+                    "modifiedBy": "alanv",
+                    "id": "0b913954-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-area-chart",
+                    "createdByUserId": 1011,
+          'showInDashboard': true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A24&revision=1",
+                    "visible": true,
+                    "reportId": "db:24",
+                    "contentModified": "2019-10-07 16:06:56.725",
+                    "author": "alanv",
+                    "created": "2019-10-07 16:06:56.728",
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Injection Volume Comparison",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+                    "category": {
+            'parent': -1,
+            'createdBy': {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": false,
+                    "access": {
+                        "label": "private",
+                        "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A158"
+                    },
+                    "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A158",
+                    "thumbnailRevision": "1.0",
+                    "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A158&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+                    "defaultThumbnailUrl": "/labkey/visualization/images/boxplot.png?revision=4",
+                    "type": "Box and Whisker Plot",
+                    "schemaName": "assay.General.Amino Acids",
+                    "thumbnailType": "AUTO",
+                    "defaultIconCls": "fa fa-sliders fa-rotate-90",
+                    "modified": "2019-11-19 16:10:29.056",
+                    "modifiedBy": "alanv",
+                    "id": "5bde837d-ed54-1037-b066-b67e942d8e23",
+                    "iconCls": "fa fa-sliders fa-rotate-90",
+          'createdByUserId': 1011,
+                    "showInDashboard": true,
+                    "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A158&revision=1",
+                    "visible": true,
+                    "reportId": "db:158",
+                    "contentModified": "2019-11-19 16:10:29.055",
+                    "author": "alanv",
+          'created': '2019-11-19 16:10:29.056',
+                    "dataType": "reports",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Private Chart",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": true,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": false,
+                    "access": {
+                        "label": "private"
+                    },
+                    "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Test%20Custom%20View",
+                    "icon": "/labkey/reports/icon_private_view.png?revision=4",
+                    "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Test%20Custom%20View",
+                    "type": "Query",
+          'schemaName': 'exp.data',
+                    "viewName": "Test Custom View",
+                    "modified": "2019-10-07 16:06:54.979",
+                    "id": "0b91390e-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-lock fa-lg",
+                    "createdByUserId": 1011,
+                    "showInDashboard": false,
+          'thumbnail': '/labkey/query/query.png?revision=4',
+                    "visible": true,
+                    "reportId": null,
+                    "author": "alanv",
+                    "dataType": "queries",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Test Custom View",
+                    "queryName": "Ingredients",
+                    "allowCustomThumbnail": false,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": false,
+                    "access": {
+                        "label": "private"
+                    },
+                    "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=Test%20Custom%20View",
+          'icon': '/labkey/reports/icon_private_view.png?revision=4',
+                    "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=Test%20Custom%20View",
+                    "type": "Query",
+                    "schemaName": "assay.General.SEC",
+                    "viewName": "Test Custom View",
+                    "modified": "2019-10-07 16:06:54.977",
+                    "id": "0b91390d-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-lock fa-lg",
+                    "createdByUserId": 1011,
+                    "showInDashboard": false,
+                    "thumbnail": "/labkey/query/query.png?revision=4",
+                    "visible": true,
+                    "reportId": null,
+                    "author": "alanv",
+                    "dataType": "queries",
+          'readOnly': false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Test Custom View",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": false,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+          'access': {
+                        "label": "public"
+                    },
+                    "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Name%20only",
+                    "icon": "/labkey/reports/grid.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Name%20only",
+                    "type": "Query",
+                    "schemaName": "samples",
+                    "viewName": "Name only",
+                    "modified": "2019-10-07 16:06:54.969",
+                    "id": "0b91390a-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-table",
+                    "createdByUserId": 1011,
+                    "showInDashboard": false,
+                    "thumbnail": "/labkey/query/query.png?revision=4",
+                    "visible": true,
+          'reportId': null,
+                    "author": "alanv",
+                    "dataType": "queries",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Name only",
+          'queryName': 'RawMaterials',
+                    "allowCustomThumbnail": false,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": false,
+                    "access": {
+                        "label": "private"
+                    },
+                    "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Private%20view",
+                    "icon": "/labkey/reports/icon_private_view.png?revision=4",
+                    "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Private%20view",
+                    "type": "Query",
+                    "schemaName": "exp.data",
+                    "viewName": "Private view",
+                    "modified": "2019-10-07 16:06:54.966",
+                    "id": "0b913909-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-lock fa-lg",
+                    "createdByUserId": 1011,
+          'showInDashboard': false,
+                    "thumbnail": "/labkey/query/query.png?revision=4",
+                    "visible": true,
+                    "reportId": null,
+                    "author": "alanv",
+                    "dataType": "queries",
+                    "readOnly": false,
+          'leaf': true,
+                    "createdBy": "alanv",
+                    "name": "Private view",
+                    "queryName": "Molecule",
+                    "allowCustomThumbnail": false,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public"
+                    },
+                    "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Scientific%20Name%20only",
+                    "icon": "/labkey/reports/grid.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Scientific%20Name%20only",
+                    "type": "Query",
+                    "schemaName": "exp.data",
+                    "viewName": "Scientific Name only",
+                    "modified": "2019-10-07 16:06:54.981",
+          'id': '0b91390f-cb85-1037-9919-33650cffffb2',
+                    "iconCls": "fa fa-table",
+                    "createdByUserId": 1011,
+                    "showInDashboard": false,
+                    "thumbnail": "/labkey/query/query.png?revision=4",
+                    "visible": true,
+                    "reportId": null,
+                    "author": "alanv",
+          'dataType': 'queries',
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Scientific Name only",
+                    "queryName": "Ingredients",
+                    "allowCustomThumbnail": false,
+          'category': {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+          'shared': true,
+                    "access": {
+                        "label": "public"
+                    },
+                    "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Name%20only",
+                    "icon": "/labkey/reports/grid.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Name%20only",
+                    "type": "Query",
+          'schemaName': 'exp.data',
+                    "viewName": "Name only",
+                    "modified": "2019-10-07 16:06:54.951",
+                    "id": "0b913908-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-table",
+                    "createdByUserId": 1011,
+                    "showInDashboard": false,
+                    "thumbnail": "/labkey/query/query.png?revision=4",
+          'visible': true,
+                    "reportId": null,
+                    "author": "alanv",
+                    "dataType": "queries",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+          'name': 'Name only',
+                    "queryName": "Molecule",
+                    "allowCustomThumbnail": false,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+            'modifiedBy': {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": true,
+                    "access": {
+                        "label": "public"
+                    },
+                    "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=SampleID%20only",
+                    "icon": "/labkey/reports/grid.gif?revision=4",
+                    "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=SampleID%20only",
+                    "type": "Query",
+                    "schemaName": "assay.General.SEC",
+                    "viewName": "SampleID only",
+                    "modified": "2019-10-07 16:06:54.974",
+                    "id": "0b91390c-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-table",
+          'createdByUserId': 1011,
+                    "showInDashboard": false,
+                    "thumbnail": "/labkey/query/query.png?revision=4",
+                    "visible": true,
+                    "reportId": null,
+                    "author": "alanv",
+                    "dataType": "queries",
+          'readOnly': false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "SampleID only",
+                    "queryName": "Data",
+                    "allowCustomThumbnail": false,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+            'subCategories': [],
+                        "rowid": 0
+                    }
+                },
+                {
+                    "container": "/Biologics",
+                    "shared": false,
+                    "access": {
+                        "label": "private"
+                    },
+                    "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Test%20Custom%20View",
+                    "icon": "/labkey/reports/icon_private_view.png?revision=4",
+                    "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Test%20Custom%20View",
+                    "type": "Query",
+                    "schemaName": "samples",
+                    "viewName": "Test Custom View",
+          'modified': '2019-10-07 16:06:54.971',
+                    "id": "0b91390b-cb85-1037-9919-33650cffffb2",
+                    "iconCls": "fa fa-lock fa-lg",
+                    "createdByUserId": 1011,
+                    "showInDashboard": false,
+                    "thumbnail": "/labkey/query/query.png?revision=4",
+                    "visible": true,
+                    "reportId": null,
+                    "author": "alanv",
+                    "dataType": "queries",
+                    "readOnly": false,
+                    "leaf": true,
+                    "createdBy": "alanv",
+                    "name": "Test Custom View",
+                    "queryName": "RawMaterials",
+          'allowCustomThumbnail': false,
+                    "category": {
+                        "parent": -1,
+                        "createdBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "created": "1969-12-31 16:00:00.000",
+                        "displayOrder": 1,
+                        "modified": "1969-12-31 16:00:00.000",
+                        "modifiedBy": {
+                            "displayValue": "guest",
+                            "value": 0
+                        },
+                        "label": "Uncategorized",
+                        "subCategories": [],
+                        "rowid": 0
+                    }
+                }
+            ],
+            "name": "Uncategorized",
+            "icon": false,
+            "cls": "dvcategory",
+            "rowId": 0
         }
-      ],
-      "name": "Uncategorized",
-      "icon": false,
-      "cls": "dvcategory",
-      "rowId": 0
-    }
-  ],
-  "name": "."
+    ],
+    "name": "."
 }

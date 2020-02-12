@@ -1,12 +1,13 @@
 {
-"exception": "Field name contains special characters.",
-"success": null,
-"severity": "Warning",
-"errors": [{
-    "field": "#FieldText$",
-    "message": "Field name contains special characters.",
-    "extraInfo": "SQL queries, R scripts, and other code are easiest to write when field names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, SPSS, and MATLAB.",
-    "severity": "Warning",
-    "rowIndexes" : [0]
-  }]
+'exception': 'Field name contains special characters.',
+'success': null,
+'severity': 'Warning',
+'errors': [{
+            "field": "#FieldText$",
+            "message": "Field name contains special characters.",
+            "extraInfo": "SQL queries, R scripts, and other code are easiest to write when field names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, SPSS, and MATLAB.",
+            "severity": "Warning",
+    'rowIndexes' : [0]
+        }
+    ]
 }

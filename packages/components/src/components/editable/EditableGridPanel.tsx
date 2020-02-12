@@ -17,18 +17,19 @@ import React from 'reactn';
 import { Panel } from 'react-bootstrap';
 
 import { gridInit } from '../../actions';
-import { EditableGrid, EditableGridProps } from './EditableGrid';
+
 import { QueryGridModel } from '../base/models/model';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { EditableGrid, EditableGridProps } from './EditableGrid';
+
 interface Props extends EditableGridProps {
-    title?: string
-    bsStyle?: any
-    className?: string
+    title?: string;
+    bsStyle?: any;
+    className?: string;
 }
 
 export class EditableGridPanel extends React.Component<Props, any> {
-
     constructor(props: EditableGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
@@ -67,18 +68,18 @@ export class EditableGridPanel extends React.Component<Props, any> {
         const model = this.getModel();
 
         if (!model) {
-            return <LoadingSpinner/>
+            return <LoadingSpinner />;
         }
 
         if (!title) {
-            return <EditableGrid {...this.props}/>
+            return <EditableGrid {...this.props} />;
         }
 
         return (
             <Panel bsStyle={bsStyle} className={className}>
                 <Panel.Heading>{title}</Panel.Heading>
-                <Panel.Body className={'table-responsive'}>
-                    <EditableGrid {...this.props}/>
+                <Panel.Body className="table-responsive">
+                    <EditableGrid {...this.props} />
                 </Panel.Body>
             </Panel>
         );

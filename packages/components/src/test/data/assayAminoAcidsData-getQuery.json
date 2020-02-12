@@ -1,2828 +1,2880 @@
 {
-  "schemaName" : [ "assay", "General", "Amino Acids" ],
-  "queryName" : "Data",
-  "metaData" : {
-    "importTemplates" : [ {
-      "label" : "Download Template",
-      "url" : "/labkey/Biologics/query-exportExcelTemplate.view?schemaName=assay.General.Amino%20Acids&query.queryName=Data&headerType=DisplayFieldKey"
-    } ],
-    "root" : "rows",
-    "totalProperty" : "rowCount",
-    "description" : "Contains all of the results (and may contain raw data as well) for the Amino Acids assay definition",
-    "id" : "RowId",
-    "fields" : [ {
-      "fieldKey" : [ "RowId" ],
-      "friendlyType" : "Integer",
-      "type" : "int",
-      "jsonType" : "int",
-      "sqlType" : "serial",
-      "defaultValue" : null,
-      "scale" : 10,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : true,
-      "hidden" : true,
-      "keyField" : true,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : true,
-      "userEditable" : false,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : false,
-      "shownInUpdateView" : false,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 10,
-      "shortCaption" : "Row Id",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Row Id"
-    }, {
-      "fieldKey" : [ "SampleID" ],
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "varchar",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : true,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "displayField" : [ "SampleID", "Name" ],
-      "displayFieldJsonType" : "string",
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Sample ID",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Sample ID",
-      "lookup" : {
-        "keyColumn" : "RowId",
-        "public" : true,
-        "displayColumn" : "Name",
-        "queryName" : "Samples",
-        "schemaName" : [ "samples" ]
-      }
-    }, {
-      "fieldKey" : [ "SampleDate" ],
-      "friendlyType" : "Date and Time",
-      "type" : "date",
-      "jsonType" : "date",
-      "sqlType" : "timestamp",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : "http://cpas.labkey.com/Study#VisitId",
-      "format" : "yyyy-MM-dd HH:mm",
-      "extFormatFn" : "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
-      "extFormat" : "Y-m-d H:i",
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Sample Date",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Sample Date"
-    }, {
-      "fieldKey" : [ "SampleDescription" ],
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "varchar",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Sample Description",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Sample Description"
-    }, {
-      "fieldKey" : [ "Inj" ],
-      "friendlyType" : "Integer",
-      "type" : "int",
-      "jsonType" : "int",
-      "sqlType" : "int4",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Inj",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Inj"
-    }, {
-      "fieldKey" : [ "Vial" ],
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "varchar",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Vial",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Vial"
-    }, {
-      "fieldKey" : [ "ResultID" ],
-      "friendlyType" : "Integer",
-      "type" : "int",
-      "jsonType" : "int",
-      "sqlType" : "int4",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Result ID",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Result ID"
-    }, {
-      "fieldKey" : [ "His" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "His (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "His (pM/uL)"
-    }, {
-      "fieldKey" : [ "Asn" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Asn (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Asn (pM/uL)"
-    }, {
-      "fieldKey" : [ "Ser" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Ser (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Ser (pM/uL)"
-    }, {
-      "fieldKey" : [ "Gln" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Gln (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Gln (pM/uL)"
-    }, {
-      "fieldKey" : [ "Arg" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Arg (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Arg (pM/uL)"
-    }, {
-      "fieldKey" : [ "Gly" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Gly (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Gly (pM/uL)"
-    }, {
-      "fieldKey" : [ "Asp" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Asp (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Asp (pM/uL)"
-    }, {
-      "fieldKey" : [ "Glu" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Glu (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Glu (pM/uL)"
-    }, {
-      "fieldKey" : [ "Thr" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Thr (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Thr (pM/uL)"
-    }, {
-      "fieldKey" : [ "Ala" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Ala (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Ala (pM/uL)"
-    }, {
-      "fieldKey" : [ "Pro" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Pro (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Pro (pM/uL)"
-    }, {
-      "fieldKey" : [ "Cys" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Cys (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Cys (pM/uL)"
-    }, {
-      "fieldKey" : [ "Lys" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Lys (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Lys (pM/uL)"
-    }, {
-      "fieldKey" : [ "Tyr" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Tyr (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Tyr (pM/uL)"
-    }, {
-      "fieldKey" : [ "Met" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Met (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Met (pM/uL)"
-    }, {
-      "fieldKey" : [ "Val" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Val (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Val (pM/uL)"
-    }, {
-      "fieldKey" : [ "Ile" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Ile (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Ile (pM/uL)"
-    }, {
-      "fieldKey" : [ "Leu" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Leu (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Leu (pM/uL)"
-    }, {
-      "fieldKey" : [ "Phe" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Phe (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Phe (pM/uL)"
-    }, {
-      "fieldKey" : [ "Trp" ],
-      "friendlyType" : "Number (Double)",
-      "type" : "float",
-      "jsonType" : "float",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : true,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Trp (pM/uL)",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Trp (pM/uL)"
-    }, {
-      "fieldKey" : [ "Run", "assayRequest" ],
-      "friendlyType" : "Integer",
-      "type" : "int",
-      "jsonType" : "int",
-      "sqlType" : "float8",
-      "defaultValue" : null,
-      "scale" : 4000,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : true,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "displayField" : [ "Run", "assayRequest", "Title" ],
-      "displayFieldJsonType" : "string",
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Assay Request",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Assay Request",
-      "lookup" : {
-        "keyColumn" : "IssueId",
-        "public" : true,
-        "displayColumn" : "Title",
-        "queryName" : "assayrequests",
-        "schemaName" : [ "issues" ]
-      }
-    } ],
-    "title" : "Data",
-    "importMessage" : null
-  },
-  "rows" : [ {
-    "data" : {
-      "Val" : {
-        "value" : 7.4
-      },
-      "Ser" : {
-        "value" : 29.8
-      },
-      "RowId" : {
-        "value" : 67
-      },
-      "Ile" : {
-        "value" : 13.1
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 3.3
-      },
-      "SampleDate" : {
-        "value" : "2016-02-25 00:00:00.000",
-        "formattedValue" : "2016-02-25 00:00"
-      },
-      "Pro" : {
-        "value" : 5.9
-      },
-      "Phe" : {
-        "value" : 5.5
-      },
-      "ResultID" : {
-        "value" : 13778
-      },
-      "Glu" : {
-        "value" : 10.7
-      },
-      "Trp" : {
-        "value" : 3.9
-      },
-      "Gly" : {
-        "value" : 26.8
-      },
-      "Vial" : {
-        "value" : "2:C,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 2.0
-      },
-      "Asn" : {
-        "value" : 7.4
-      },
-      "Asp" : {
-        "value" : 14.5
-      },
-      "Thr" : {
-        "value" : 36.8
-      },
-      "Lys" : {
-        "value" : 14.3
-      },
-      "Tyr" : {
-        "value" : 9.3
-      },
-      "His" : {
-        "value" : 6.1
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 24.8
-      },
-      "Ala" : {
-        "value" : 21.3
-      },
-      "Met" : {
-        "value" : 8.3
-      },
-      "Leu" : {
-        "value" : 19.3
-      },
-      "SampleID" : {
-        "value" : "2016_02_24-C6-44-B6-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=356"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 24.0
-      },
-      "Ser" : {
-        "value" : 24.4
-      },
-      "RowId" : {
-        "value" : 68
-      },
-      "Ile" : {
-        "value" : 16.9
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.9
-      },
-      "SampleDate" : {
-        "value" : "2016-06-25 00:00:00.000",
-        "formattedValue" : "2016-06-25 00:00"
-      },
-      "Pro" : {
-        "value" : 18.9
-      },
-      "Phe" : {
-        "value" : 16.5
-      },
-      "ResultID" : {
-        "value" : 13779
-      },
-      "Glu" : {
-        "value" : 11.2
-      },
-      "Trp" : {
-        "value" : 7.7
-      },
-      "Gly" : {
-        "value" : 12.5
-      },
-      "Vial" : {
-        "value" : "2:D,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 3.2
-      },
-      "Asn" : {
-        "value" : 13.2
-      },
-      "Asp" : {
-        "value" : 9.8
-      },
-      "Thr" : {
-        "value" : 24.6
-      },
-      "Lys" : {
-        "value" : 20.4
-      },
-      "Tyr" : {
-        "value" : 13.9
-      },
-      "His" : {
-        "value" : 13.6
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 20.4
-      },
-      "Ala" : {
-        "value" : 19.5
-      },
-      "Met" : {
-        "value" : 10.4
-      },
-      "Leu" : {
-        "value" : 24.8
-      },
-      "SampleID" : {
-        "value" : "2016_06_24-C2-50-B2-02",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=357"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 9.3
-      },
-      "Ser" : {
-        "value" : 21.2
-      },
-      "RowId" : {
-        "value" : 69
-      },
-      "Ile" : {
-        "value" : 10.4
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 1.3
-      },
-      "SampleDate" : {
-        "value" : "2016-07-28 00:00:00.000",
-        "formattedValue" : "2016-07-28 00:00"
-      },
-      "Pro" : {
-        "value" : 14.8
-      },
-      "Phe" : {
-        "value" : 5.3
-      },
-      "ResultID" : {
-        "value" : 13780
-      },
-      "Glu" : {
-        "value" : 14.1
-      },
-      "Trp" : {
-        "value" : 4.1
-      },
-      "Gly" : {
-        "value" : 19.3
-      },
-      "Vial" : {
-        "value" : "2:E,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 1.6
-      },
-      "Asn" : {
-        "value" : 1.9
-      },
-      "Asp" : {
-        "value" : 11.9
-      },
-      "Thr" : {
-        "value" : 28.4
-      },
-      "Lys" : {
-        "value" : 9.8
-      },
-      "Tyr" : {
-        "value" : 7.1
-      },
-      "His" : {
-        "value" : 6.4
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 13.9
-      },
-      "Ala" : {
-        "value" : 23.1
-      },
-      "Met" : {
-        "value" : 8.2
-      },
-      "Leu" : {
-        "value" : 14.6
-      },
-      "SampleID" : {
-        "value" : "2016_07_27-C4-12-B4-01",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=358"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 9.8
-      },
-      "Ser" : {
-        "value" : 8.1
-      },
-      "RowId" : {
-        "value" : 70
-      },
-      "Ile" : {
-        "value" : 6.5
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 0.9
-      },
-      "SampleDate" : {
-        "value" : "2016-02-16 00:00:00.000",
-        "formattedValue" : "2016-02-16 00:00"
-      },
-      "Pro" : {
-        "value" : 14.4
-      },
-      "Phe" : {
-        "value" : 6.3
-      },
-      "ResultID" : {
-        "value" : 13781
-      },
-      "Glu" : {
-        "value" : 12.5
-      },
-      "Trp" : {
-        "value" : 4.4
-      },
-      "Gly" : {
-        "value" : 7.9
-      },
-      "Vial" : {
-        "value" : "2:F,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 2.2
-      },
-      "Asn" : {
-        "value" : 0.6
-      },
-      "Asp" : {
-        "value" : 6.5
-      },
-      "Thr" : {
-        "value" : 10.3
-      },
-      "Lys" : {
-        "value" : 3.0
-      },
-      "Tyr" : {
-        "value" : 5.7
-      },
-      "His" : {
-        "value" : 6.5
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 3.0
-      },
-      "Ala" : {
-        "value" : 19.2
-      },
-      "Met" : {
-        "value" : 7.4
-      },
-      "Leu" : {
-        "value" : 6.7
-      },
-      "SampleID" : {
-        "value" : "2016_02_15-C5-14-B6-02",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=359"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 29.9
-      },
-      "Ser" : {
-        "value" : 30.0
-      },
-      "RowId" : {
-        "value" : 71
-      },
-      "Ile" : {
-        "value" : 21.8
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.9
-      },
-      "SampleDate" : {
-        "value" : "2016-07-24 00:00:00.000",
-        "formattedValue" : "2016-07-24 00:00"
-      },
-      "Pro" : {
-        "value" : 23.4
-      },
-      "Phe" : {
-        "value" : 19.0
-      },
-      "ResultID" : {
-        "value" : 13782
-      },
-      "Glu" : {
-        "value" : 14.8
-      },
-      "Trp" : {
-        "value" : 8.9
-      },
-      "Gly" : {
-        "value" : 15.1
-      },
-      "Vial" : {
-        "value" : "2:G,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 3.8
-      },
-      "Asn" : {
-        "value" : 19.7
-      },
-      "Asp" : {
-        "value" : 14.1
-      },
-      "Thr" : {
-        "value" : 29.7
-      },
-      "Lys" : {
-        "value" : 27.6
-      },
-      "Tyr" : {
-        "value" : 15.2
-      },
-      "His" : {
-        "value" : 15.5
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 24.4
-      },
-      "Ala" : {
-        "value" : 21.4
-      },
-      "Met" : {
-        "value" : 12.5
-      },
-      "Leu" : {
-        "value" : 31.3
-      },
-      "SampleID" : {
-        "value" : "2016_07_23-C1-79-B9-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=360"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 10.5
-      },
-      "Ser" : {
-        "value" : 9.6
-      },
-      "RowId" : {
-        "value" : 72
-      },
-      "Ile" : {
-        "value" : 8.3
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.2
-      },
-      "SampleDate" : {
-        "value" : "2016-08-29 00:00:00.000",
-        "formattedValue" : "2016-08-29 00:00"
-      },
-      "Pro" : {
-        "value" : 6.7
-      },
-      "Phe" : {
-        "value" : 7.2
-      },
-      "ResultID" : {
-        "value" : 13783
-      },
-      "Glu" : {
-        "value" : 12.6
-      },
-      "Trp" : {
-        "value" : 4.0
-      },
-      "Gly" : {
-        "value" : 10.8
-      },
-      "Vial" : {
-        "value" : "2:H,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 2.5
-      },
-      "Asn" : {
-        "value" : 2.5
-      },
-      "Asp" : {
-        "value" : 8.6
-      },
-      "Thr" : {
-        "value" : 9.2
-      },
-      "Lys" : {
-        "value" : 6.5
-      },
-      "Tyr" : {
-        "value" : 6.0
-      },
-      "His" : {
-        "value" : 5.9
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 7.1
-      },
-      "Ala" : {
-        "value" : 27.6
-      },
-      "Met" : {
-        "value" : 7.1
-      },
-      "Leu" : {
-        "value" : 8.5
-      },
-      "SampleID" : {
-        "value" : "2016_08_28-C1-71-B7-02",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=361"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 18.3
-      },
-      "Ser" : {
-        "value" : 22.5
-      },
-      "RowId" : {
-        "value" : 73
-      },
-      "Ile" : {
-        "value" : 12.4
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.4
-      },
-      "SampleDate" : {
-        "value" : "2016-03-18 00:00:00.000",
-        "formattedValue" : "2016-03-18 00:00"
-      },
-      "Pro" : {
-        "value" : 26.0
-      },
-      "Phe" : {
-        "value" : 9.4
-      },
-      "ResultID" : {
-        "value" : 13784
-      },
-      "Glu" : {
-        "value" : 20.7
-      },
-      "Trp" : {
-        "value" : 5.8
-      },
-      "Gly" : {
-        "value" : 9.4
-      },
-      "Vial" : {
-        "value" : "2:I,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 2.5
-      },
-      "Asn" : {
-        "value" : 3.4
-      },
-      "Asp" : {
-        "value" : 13.6
-      },
-      "Thr" : {
-        "value" : 16.9
-      },
-      "Lys" : {
-        "value" : 7.6
-      },
-      "Tyr" : {
-        "value" : 9.3
-      },
-      "His" : {
-        "value" : 9.3
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 4.3
-      },
-      "Ala" : {
-        "value" : 28.5
-      },
-      "Met" : {
-        "value" : 9.7
-      },
-      "Leu" : {
-        "value" : 18.3
-      },
-      "SampleID" : {
-        "value" : "2016_03_17-C1-26-B3-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=362"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 13.3
-      },
-      "Ser" : {
-        "value" : 13.5
-      },
-      "RowId" : {
-        "value" : 74
-      },
-      "Ile" : {
-        "value" : 10.1
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 3.8
-      },
-      "SampleDate" : {
-        "value" : "2016-06-17 00:00:00.000",
-        "formattedValue" : "2016-06-17 00:00"
-      },
-      "Pro" : {
-        "value" : 7.8
-      },
-      "Phe" : {
-        "value" : 9.9
-      },
-      "ResultID" : {
-        "value" : 13785
-      },
-      "Glu" : {
-        "value" : 15.8
-      },
-      "Trp" : {
-        "value" : 5.3
-      },
-      "Gly" : {
-        "value" : 11.9
-      },
-      "Vial" : {
-        "value" : "2:J,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 3.5
-      },
-      "Asn" : {
-        "value" : 6.1
-      },
-      "Asp" : {
-        "value" : 11.4
-      },
-      "Thr" : {
-        "value" : 11.5
-      },
-      "Lys" : {
-        "value" : 7.3
-      },
-      "Tyr" : {
-        "value" : 8.7
-      },
-      "His" : {
-        "value" : 8.5
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 8.8
-      },
-      "Ala" : {
-        "value" : 26.6
-      },
-      "Met" : {
-        "value" : 9.1
-      },
-      "Leu" : {
-        "value" : 11.6
-      },
-      "SampleID" : {
-        "value" : "2016_06_16-C4-31-B9-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=363"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 6.6
-      },
-      "Ser" : {
-        "value" : 19.2
-      },
-      "RowId" : {
-        "value" : 75
-      },
-      "Ile" : {
-        "value" : 9.4
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.3
-      },
-      "SampleDate" : {
-        "value" : "2015-06-26 00:00:00.000",
-        "formattedValue" : "2015-06-26 00:00"
-      },
-      "Pro" : {
-        "value" : 4.5
-      },
-      "Phe" : {
-        "value" : 4.3
-      },
-      "ResultID" : {
-        "value" : 13786
-      },
-      "Glu" : {
-        "value" : 8.5
-      },
-      "Trp" : {
-        "value" : 2.5
-      },
-      "Gly" : {
-        "value" : 14.7
-      },
-      "Vial" : {
-        "value" : "2:K,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 1.4
-      },
-      "Asn" : {
-        "value" : 7.2
-      },
-      "Asp" : {
-        "value" : 10.5
-      },
-      "Thr" : {
-        "value" : 21.2
-      },
-      "Lys" : {
-        "value" : 10.1
-      },
-      "Tyr" : {
-        "value" : 6.0
-      },
-      "His" : {
-        "value" : 4.4
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 13.7
-      },
-      "Ala" : {
-        "value" : 13.5
-      },
-      "Met" : {
-        "value" : 5.7
-      },
-      "Leu" : {
-        "value" : 13.9
-      },
-      "SampleID" : {
-        "value" : "2015_06_25-C2-12-B8-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=364"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 21.8
-      },
-      "Ser" : {
-        "value" : 23.5
-      },
-      "RowId" : {
-        "value" : 76
-      },
-      "Ile" : {
-        "value" : 15.4
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.5
-      },
-      "SampleDate" : {
-        "value" : "2015-02-28 00:00:00.000",
-        "formattedValue" : "2015-02-28 00:00"
-      },
-      "Pro" : {
-        "value" : 16.4
-      },
-      "Phe" : {
-        "value" : 14.2
-      },
-      "ResultID" : {
-        "value" : 13787
-      },
-      "Glu" : {
-        "value" : 12.0
-      },
-      "Trp" : {
-        "value" : 6.4
-      },
-      "Gly" : {
-        "value" : 10.1
-      },
-      "Vial" : {
-        "value" : "2:L,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 3.0
-      },
-      "Asn" : {
-        "value" : 16.2
-      },
-      "Asp" : {
-        "value" : 10.2
-      },
-      "Thr" : {
-        "value" : 21.1
-      },
-      "Lys" : {
-        "value" : 17.5
-      },
-      "Tyr" : {
-        "value" : 12.2
-      },
-      "His" : {
-        "value" : 11.9
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 16.4
-      },
-      "Ala" : {
-        "value" : 16.9
-      },
-      "Met" : {
-        "value" : 9.5
-      },
-      "Leu" : {
-        "value" : 22.8
-      },
-      "SampleID" : {
-        "value" : "2015_02_27-C1-30-B4-01",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=365"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 11.2
-      },
-      "Ser" : {
-        "value" : 22.3
-      },
-      "RowId" : {
-        "value" : 77
-      },
-      "Ile" : {
-        "value" : 11.1
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.0
-      },
-      "SampleDate" : {
-        "value" : "2015-01-22 00:00:00.000",
-        "formattedValue" : "2015-01-22 00:00"
-      },
-      "Pro" : {
-        "value" : 13.0
-      },
-      "Phe" : {
-        "value" : 6.6
-      },
-      "ResultID" : {
-        "value" : 13788
-      },
-      "Glu" : {
-        "value" : 15.1
-      },
-      "Trp" : {
-        "value" : 4.3
-      },
-      "Gly" : {
-        "value" : 15.0
-      },
-      "Vial" : {
-        "value" : "2:M,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 2.1
-      },
-      "Asn" : {
-        "value" : 3.6
-      },
-      "Asp" : {
-        "value" : 12.8
-      },
-      "Thr" : {
-        "value" : 24.4
-      },
-      "Lys" : {
-        "value" : 9.6
-      },
-      "Tyr" : {
-        "value" : 8.6
-      },
-      "His" : {
-        "value" : 7.2
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 12.5
-      },
-      "Ala" : {
-        "value" : 22.8
-      },
-      "Met" : {
-        "value" : 8.4
-      },
-      "Leu" : {
-        "value" : 16.0
-      },
-      "SampleID" : {
-        "value" : "2015_01_21-C4-75-B8-02",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=366"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 8.2
-      },
-      "Ser" : {
-        "value" : 8.6
-      },
-      "RowId" : {
-        "value" : 78
-      },
-      "Ile" : {
-        "value" : 5.8
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 1.2
-      },
-      "SampleDate" : {
-        "value" : "2015-08-11 00:00:00.000",
-        "formattedValue" : "2015-08-11 00:00"
-      },
-      "Pro" : {
-        "value" : 8.9
-      },
-      "Phe" : {
-        "value" : 5.5
-      },
-      "ResultID" : {
-        "value" : 13789
-      },
-      "Glu" : {
-        "value" : 9.6
-      },
-      "Trp" : {
-        "value" : 3.4
-      },
-      "Gly" : {
-        "value" : 4.9
-      },
-      "Vial" : {
-        "value" : "2:N,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 1.8
-      },
-      "Asn" : {
-        "value" : 1.3
-      },
-      "Asp" : {
-        "value" : 5.7
-      },
-      "Thr" : {
-        "value" : 7.4
-      },
-      "Lys" : {
-        "value" : 3.0
-      },
-      "Tyr" : {
-        "value" : 5.6
-      },
-      "His" : {
-        "value" : 5.2
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 2.9
-      },
-      "Ala" : {
-        "value" : 15.0
-      },
-      "Met" : {
-        "value" : 5.5
-      },
-      "Leu" : {
-        "value" : 7.0
-      },
-      "SampleID" : {
-        "value" : "2015_08_10-C8-33-B8-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=367"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 20.4
-      },
-      "Ser" : {
-        "value" : 22.3
-      },
-      "RowId" : {
-        "value" : 79
-      },
-      "Ile" : {
-        "value" : 14.9
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.5
-      },
-      "SampleDate" : {
-        "value" : "2016-07-23 00:00:00.000",
-        "formattedValue" : "2016-07-23 00:00"
-      },
-      "Pro" : {
-        "value" : 15.2
-      },
-      "Phe" : {
-        "value" : 14.4
-      },
-      "ResultID" : {
-        "value" : 13790
-      },
-      "Glu" : {
-        "value" : 11.0
-      },
-      "Trp" : {
-        "value" : 6.9
-      },
-      "Gly" : {
-        "value" : 9.1
-      },
-      "Vial" : {
-        "value" : "2:O,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 3.0
-      },
-      "Asn" : {
-        "value" : 17.9
-      },
-      "Asp" : {
-        "value" : 9.5
-      },
-      "Thr" : {
-        "value" : 19.5
-      },
-      "Lys" : {
-        "value" : 15.6
-      },
-      "Tyr" : {
-        "value" : 12.1
-      },
-      "His" : {
-        "value" : 11.7
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 16.2
-      },
-      "Ala" : {
-        "value" : 13.0
-      },
-      "Met" : {
-        "value" : 9.3
-      },
-      "Leu" : {
-        "value" : 21.6
-      },
-      "SampleID" : {
-        "value" : "2016_07_22-C8-25-B2-02",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=368"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 11.0
-      },
-      "Ser" : {
-        "value" : 11.0
-      },
-      "RowId" : {
-        "value" : 80
-      },
-      "Ile" : {
-        "value" : 8.6
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.8
-      },
-      "SampleDate" : {
-        "value" : "2016-03-20 00:00:00.000",
-        "formattedValue" : "2016-03-20 00:00"
-      },
-      "Pro" : {
-        "value" : 6.3
-      },
-      "Phe" : {
-        "value" : 7.8
-      },
-      "ResultID" : {
-        "value" : 13791
-      },
-      "Glu" : {
-        "value" : 12.8
-      },
-      "Trp" : {
-        "value" : 4.1
-      },
-      "Gly" : {
-        "value" : 8.8
-      },
-      "Vial" : {
-        "value" : "2:P,11"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 2.7
-      },
-      "Asn" : {
-        "value" : 4.6
-      },
-      "Asp" : {
-        "value" : 9.1
-      },
-      "Thr" : {
-        "value" : 9.1
-      },
-      "Lys" : {
-        "value" : 6.2
-      },
-      "Tyr" : {
-        "value" : 7.1
-      },
-      "His" : {
-        "value" : 6.6
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 6.9
-      },
-      "Ala" : {
-        "value" : 22.5
-      },
-      "Met" : {
-        "value" : 7.2
-      },
-      "Leu" : {
-        "value" : 9.8
-      },
-      "SampleID" : {
-        "value" : "2016_03_19-C8-54-B4-02",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=369"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 8.6
-      },
-      "Ser" : {
-        "value" : 8.9
-      },
-      "RowId" : {
-        "value" : 81
-      },
-      "Ile" : {
-        "value" : 5.4
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 0.9
-      },
-      "SampleDate" : {
-        "value" : "2016-03-18 00:00:00.000",
-        "formattedValue" : "2016-03-18 00:00"
-      },
-      "Pro" : {
-        "value" : 22.8
-      },
-      "Phe" : {
-        "value" : 4.4
-      },
-      "ResultID" : {
-        "value" : 13792
-      },
-      "Glu" : {
-        "value" : 8.4
-      },
-      "Trp" : {
-        "value" : 3.7
-      },
-      "Gly" : {
-        "value" : 9.4
-      },
-      "Vial" : {
-        "value" : "2:A,12"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 0.6
-      },
-      "Asn" : {
-        "value" : 0.4
-      },
-      "Asp" : {
-        "value" : 4.0
-      },
-      "Thr" : {
-        "value" : 10.7
-      },
-      "Lys" : {
-        "value" : 2.8
-      },
-      "Tyr" : {
-        "value" : 3.3
-      },
-      "His" : {
-        "value" : 4.5
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 0.4
-      },
-      "Ala" : {
-        "value" : 14.7
-      },
-      "Met" : {
-        "value" : 5.1
-      },
-      "Leu" : {
-        "value" : 7.5
-      },
-      "SampleID" : {
-        "value" : "2016_03_17-C5-39-B3-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=370"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 6.7
-      },
-      "Ser" : {
-        "value" : 6.5
-      },
-      "RowId" : {
-        "value" : 82
-      },
-      "Ile" : {
-        "value" : 5.1
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 1.6
-      },
-      "SampleDate" : {
-        "value" : "2015-05-14 00:00:00.000",
-        "formattedValue" : "2015-05-14 00:00"
-      },
-      "Pro" : {
-        "value" : 5.8
-      },
-      "Phe" : {
-        "value" : 6.3
-      },
-      "ResultID" : {
-        "value" : 13793
-      },
-      "Glu" : {
-        "value" : 8.2
-      },
-      "Trp" : {
-        "value" : 4.0
-      },
-      "Gly" : {
-        "value" : 12.8
-      },
-      "Vial" : {
-        "value" : "2:B,12"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 1.9
-      },
-      "Asn" : {
-        "value" : 0.8
-      },
-      "Asp" : {
-        "value" : 4.9
-      },
-      "Thr" : {
-        "value" : 7.4
-      },
-      "Lys" : {
-        "value" : 4.0
-      },
-      "Tyr" : {
-        "value" : 3.9
-      },
-      "His" : {
-        "value" : 5.0
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 6.6
-      },
-      "Ala" : {
-        "value" : 23.6
-      },
-      "Met" : {
-        "value" : 6.2
-      },
-      "Leu" : {
-        "value" : 4.2
-      },
-      "SampleID" : {
-        "value" : "2015_05_13-C4-66-B8-02",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=371"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 3.6
-      },
-      "Ser" : {
-        "value" : 24.1
-      },
-      "RowId" : {
-        "value" : 83
-      },
-      "Ile" : {
-        "value" : 10.3
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 1.9
-      },
-      "SampleDate" : {
-        "value" : "2015-02-21 00:00:00.000",
-        "formattedValue" : "2015-02-21 00:00"
-      },
-      "Pro" : {
-        "value" : 4.3
-      },
-      "Phe" : {
-        "value" : 2.9
-      },
-      "ResultID" : {
-        "value" : 13794
-      },
-      "Glu" : {
-        "value" : 7.2
-      },
-      "Trp" : {
-        "value" : 2.7
-      },
-      "Gly" : {
-        "value" : 26.3
-      },
-      "Vial" : {
-        "value" : "2:C,12"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 0.9
-      },
-      "Asn" : {
-        "value" : 3.6
-      },
-      "Asp" : {
-        "value" : 11.9
-      },
-      "Thr" : {
-        "value" : 34.1
-      },
-      "Lys" : {
-        "value" : 13.2
-      },
-      "Tyr" : {
-        "value" : 5.7
-      },
-      "His" : {
-        "value" : 3.7
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 22.7
-      },
-      "Ala" : {
-        "value" : 18.3
-      },
-      "Met" : {
-        "value" : 6.1
-      },
-      "Leu" : {
-        "value" : 15.0
-      },
-      "SampleID" : {
-        "value" : "2015_02_20-C5-12-B2-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=372"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 22.2
-      },
-      "Ser" : {
-        "value" : 21.2
-      },
-      "RowId" : {
-        "value" : 84
-      },
-      "Ile" : {
-        "value" : 15.6
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 2.6
-      },
-      "SampleDate" : {
-        "value" : "2015-03-12 00:00:00.000",
-        "formattedValue" : "2015-03-12 00:00"
-      },
-      "Pro" : {
-        "value" : 19.2
-      },
-      "Phe" : {
-        "value" : 15.7
-      },
-      "ResultID" : {
-        "value" : 13795
-      },
-      "Glu" : {
-        "value" : 8.0
-      },
-      "Trp" : {
-        "value" : 7.5
-      },
-      "Gly" : {
-        "value" : 13.4
-      },
-      "Vial" : {
-        "value" : "2:D,12"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 2.2
-      },
-      "Asn" : {
-        "value" : 8.0
-      },
-      "Asp" : {
-        "value" : 7.6
-      },
-      "Thr" : {
-        "value" : 24.4
-      },
-      "Lys" : {
-        "value" : 21.0
-      },
-      "Tyr" : {
-        "value" : 12.4
-      },
-      "His" : {
-        "value" : 12.6
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 20.8
-      },
-      "Ala" : {
-        "value" : 18.5
-      },
-      "Met" : {
-        "value" : 9.2
-      },
-      "Leu" : {
-        "value" : 22.6
-      },
-      "SampleID" : {
-        "value" : "2015_03_11-C8-51-B4-02",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=373"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 4.8
-      },
-      "Ser" : {
-        "value" : 15.2
-      },
-      "RowId" : {
-        "value" : 85
-      },
-      "Ile" : {
-        "value" : 7.3
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 0.8
-      },
-      "SampleDate" : {
-        "value" : "2016-06-29 00:00:00.000",
-        "formattedValue" : "2016-06-29 00:00"
-      },
-      "Pro" : {
-        "value" : 15.1
-      },
-      "Phe" : {
-        "value" : 2.5
-      },
-      "ResultID" : {
-        "value" : 13796
-      },
-      "Glu" : {
-        "value" : 10.1
-      },
-      "Trp" : {
-        "value" : 3.2
-      },
-      "Gly" : {
-        "value" : 22.9
-      },
-      "Vial" : {
-        "value" : "2:E,12"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 0.7
-      },
-      "Asn" : {
-        "value" : 0.7
-      },
-      "Asp" : {
-        "value" : 8.3
-      },
-      "Thr" : {
-        "value" : 29.7
-      },
-      "Lys" : {
-        "value" : 8.5
-      },
-      "Tyr" : {
-        "value" : 3.6
-      },
-      "His" : {
-        "value" : 3.9
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 14.0
-      },
-      "Ala" : {
-        "value" : 15.5
-      },
-      "Met" : {
-        "value" : 6.5
-      },
-      "Leu" : {
-        "value" : 9.4
-      },
-      "SampleID" : {
-        "value" : "2016_06_28-C5-11-B3-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=374"
-      }
-    }
-  }, {
-    "data" : {
-      "Val" : {
-        "value" : 4.7
-      },
-      "Ser" : {
-        "value" : 3.6
-      },
-      "RowId" : {
-        "value" : 86
-      },
-      "Ile" : {
-        "value" : 2.7
-      },
-      "Inj" : {
-        "value" : 1
-      },
-      "Gln" : {
-        "value" : 0.6
-      },
-      "SampleDate" : {
-        "value" : "2016-05-29 00:00:00.000",
-        "formattedValue" : "2016-05-29 00:00"
-      },
-      "Pro" : {
-        "value" : 12.5
-      },
-      "Phe" : {
-        "value" : 3.7
-      },
-      "ResultID" : {
-        "value" : 13797
-      },
-      "Glu" : {
-        "value" : 6.1
-      },
-      "Trp" : {
-        "value" : 3.1
-      },
-      "Gly" : {
-        "value" : 6.1
-      },
-      "Vial" : {
-        "value" : "2:F,12"
-      },
-      "SampleDescription" : {
-        "value" : null
-      },
-      "Cys" : {
-        "value" : 0.9
-      },
-      "Asn" : {
-        "value" : 0.1
-      },
-      "Asp" : {
-        "value" : 2.5
-      },
-      "Thr" : {
-        "value" : 7.1
-      },
-      "Lys" : {
-        "value" : 1.2
-      },
-      "Tyr" : {
-        "value" : 2.2
-      },
-      "His" : {
-        "value" : 3.9
-      },
-      "Run/assayRequest" : {
-        "value" : null
-      },
-      "Arg" : {
-        "value" : 1.4
-      },
-      "Ala" : {
-        "value" : 11.5
-      },
-      "Met" : {
-        "value" : 4.9
-      },
-      "Leu" : {
-        "value" : 2.0
-      },
-      "SampleID" : {
-        "value" : "2016_05_28-C8-14-B1-03",
-        "url" : "/labkey/Biologics/experiment-showMaterial.view?rowId=375"
-      }
-    }
-  } ],
-  "rowCount" : 34
+    "schemaName": ["assay", "General", "Amino Acids"],
+    "queryName": "Data",
+    "metaData": {
+        "importTemplates": [
+            {
+                "label": "Download Template",
+      'url' : '/labkey/Biologics/query-exportExcelTemplate.view?schemaName=assay.General.Amino%20Acids&query.queryName=Data&headerType=DisplayFieldKey'
+            }
+        ],
+        "root": "rows",
+        "totalProperty": "rowCount",
+        "description": "Contains all of the results (and may contain raw data as well) for the Amino Acids assay definition",
+        "id": "RowId",
+        "fields": [
+            {
+                "fieldKey": ["RowId"],
+      'friendlyType' : 'Integer',
+                "type": "int",
+      'jsonType' : 'int',
+                "sqlType": "serial",
+      'defaultValue' : null,
+      'scale' : 10,
+                "align": "right",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : true,
+                "hidden": true,
+                "keyField": true,
+      'mvEnabled' : false,
+                "nullable": false,
+      'readOnly' : true,
+                "userEditable": false,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": false,
+                "shownInUpdateView": false,
+      'shownInDetailsView' : true,
+      'dimension' : false,
+                "measure": false,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 10,
+      'shortCaption' : 'Row Id',
+                "facetingBehaviorType": "AUTOMATIC",
+                "caption": "Row Id"
+            },
+            {
+                "fieldKey": ["SampleID"],
+                "friendlyType": "Text (String)",
+                "type": "string",
+      'jsonType' : 'string',
+                "sqlType": "varchar",
+      'defaultValue' : null,
+                "scale": 4000,
+                "align": "left",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+      'mvEnabled' : false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+                "selectable": true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": true,
+                "measure": false,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+      'displayField' : [ 'SampleID', 'Name' ],
+      'displayFieldJsonType' : 'string',
+                "inputType": "text",
+                "cols": 40,
+      'shortCaption' : 'Sample ID',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Sample ID',
+                "lookup": {
+                    "keyColumn": "RowId",
+                    "public": true,
+                    "displayColumn": "Name",
+        'queryName' : 'Samples',
+                    "schemaName": ["samples"]
+                }
+            },
+            {
+      'fieldKey' : [ 'SampleDate' ],
+                "friendlyType": "Date and Time",
+      'type' : 'date',
+                "jsonType": "date",
+      'sqlType' : 'timestamp',
+                "defaultValue": null,
+      'scale' : 4000,
+      'align' : 'left',
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+      'userEditable' : true,
+                "calculated": false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+      'measure' : false,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                "format": "yyyy-MM-dd HH:mm",
+      'extFormatFn' : "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
+                "extFormat": "Y-m-d H:i",
+      'inputType' : 'text',
+                "cols": 40,
+                "shortCaption": "Sample Date",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Sample Date"
+            },
+            {
+                "fieldKey": ["SampleDescription"],
+      'friendlyType' : 'Text (String)',
+                "type": "string",
+      'jsonType' : 'string',
+                "sqlType": "varchar",
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "left",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+      'hidden' : false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": false,
+                "recommendedVariable": false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 40,
+      'shortCaption' : 'Sample Description',
+                "facetingBehaviorType": "AUTOMATIC",
+                "caption": "Sample Description"
+            },
+            {
+                "fieldKey": ["Inj"],
+      'friendlyType' : 'Integer',
+                "type": "int",
+      'jsonType' : 'int',
+                "sqlType": "int4",
+      'defaultValue' : null,
+                "scale": 4000,
+                "align": "right",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+                "selectable": true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+                "dimension": false,
+      'measure' : true,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+                "cols": 40,
+      'shortCaption' : 'Inj',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Inj'
+            },
+            {
+      'fieldKey' : [ 'Vial' ],
+                "friendlyType": "Text (String)",
+      'type' : 'string',
+                "jsonType": "string",
+                "sqlType": "varchar",
+      'defaultValue' : null,
+                "scale": 4000,
+      'align' : 'left',
+                "sortable": true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+      'nullable' : true,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+      'measure' : false,
+                "recommendedVariable": false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+      'cols' : 40,
+      'shortCaption' : 'Vial',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Vial'
+            },
+            {
+      'fieldKey' : [ 'ResultID' ],
+                "friendlyType": "Integer",
+      'type' : 'int',
+                "jsonType": "int",
+      'sqlType' : 'int4',
+      'defaultValue' : null,
+                "scale": 4000,
+      'align' : 'right',
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+      'measure' : false,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+      'conceptURI' : null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "Result ID",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Result ID"
+            },
+            {
+      'fieldKey' : [ 'His' ],
+      'friendlyType' : 'Number (Double)',
+      'type' : 'float',
+                "jsonType": "float",
+      'sqlType' : 'float8',
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "right",
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+      'userEditable' : true,
+                "calculated": false,
+      'versionField' : false,
+      'selectable' : true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": true,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "His (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "His (pM/uL)"
+            },
+            {
+                "fieldKey": ["Asn"],
+      'friendlyType' : 'Number (Double)',
+                "type": "float",
+                "jsonType": "float",
+      'sqlType' : 'float8',
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "right",
+      'sortable' : true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+                "readOnly": false,
+      'userEditable' : true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": true,
+      'recommendedVariable' : false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 40,
+                "shortCaption": "Asn (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Asn (pM/uL)"
+            },
+            {
+                "fieldKey": ["Ser"],
+      'friendlyType' : 'Number (Double)',
+                "type": "float",
+      'jsonType' : 'float',
+                "sqlType": "float8",
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "right",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+      'dimension' : false,
+                "measure": true,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 40,
+      'shortCaption' : 'Ser (pM/uL)',
+                "facetingBehaviorType": "AUTOMATIC",
+                "caption": "Ser (pM/uL)"
+            },
+            {
+                "fieldKey": ["Gln"],
+                "friendlyType": "Number (Double)",
+                "type": "float",
+      'jsonType' : 'float',
+                "sqlType": "float8",
+      'defaultValue' : null,
+                "scale": 4000,
+                "align": "right",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+      'mvEnabled' : false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+                "selectable": true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+                "measure": true,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+      'inputType' : 'text',
+                "cols": 40,
+      'shortCaption' : 'Gln (pM/uL)',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Gln (pM/uL)'
+            },
+            {
+                "fieldKey": ["Arg"],
+                "friendlyType": "Number (Double)",
+      'type' : 'float',
+      'jsonType' : 'float',
+                "sqlType": "float8",
+      'defaultValue' : null,
+                "scale": 4000,
+      'align' : 'right',
+                "sortable": true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+      'measure' : true,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "Arg (pM/uL)",
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Arg (pM/uL)'
+            },
+            {
+      'fieldKey' : [ 'Gly' ],
+                "friendlyType": "Number (Double)",
+      'type' : 'float',
+                "jsonType": "float",
+      'sqlType' : 'float8',
+                "defaultValue": null,
+                "scale": 4000,
+      'align' : 'right',
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+      'userEditable' : true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+                "dimension": false,
+      'measure' : true,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "Gly (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+      'caption' : 'Gly (pM/uL)'
+            },
+            {
+      'fieldKey' : [ 'Asp' ],
+                "friendlyType": "Number (Double)",
+      'type' : 'float',
+                "jsonType": "float",
+      'sqlType' : 'float8',
+                "defaultValue": null,
+      'scale' : 4000,
+      'align' : 'right',
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+      'userEditable' : true,
+                "calculated": false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+      'measure' : true,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "Asp (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Asp (pM/uL)"
+            },
+            {
+      'fieldKey' : [ 'Glu' ],
+      'friendlyType' : 'Number (Double)',
+                "type": "float",
+      'jsonType' : 'float',
+      'sqlType' : 'float8',
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "right",
+      'sortable' : true,
+                "width": "",
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+                "readOnly": false,
+      'userEditable' : true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+      'shownInInsertView' : true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": true,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 40,
+                "shortCaption": "Glu (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Glu (pM/uL)"
+            },
+            {
+                "fieldKey": ["Thr"],
+      'friendlyType' : 'Number (Double)',
+                "type": "float",
+      'jsonType' : 'float',
+                "sqlType": "float8",
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "right",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+      'hidden' : false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": true,
+                "recommendedVariable": false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 40,
+      'shortCaption' : 'Thr (pM/uL)',
+                "facetingBehaviorType": "AUTOMATIC",
+                "caption": "Thr (pM/uL)"
+            },
+            {
+                "fieldKey": ["Ala"],
+      'friendlyType' : 'Number (Double)',
+                "type": "float",
+      'jsonType' : 'float',
+                "sqlType": "float8",
+      'defaultValue' : null,
+                "scale": 4000,
+                "align": "right",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+      'versionField' : false,
+                "selectable": true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+                "dimension": false,
+      'measure' : true,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+                "cols": 40,
+      'shortCaption' : 'Ala (pM/uL)',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Ala (pM/uL)'
+            },
+            {
+      'fieldKey' : [ 'Pro' ],
+                "friendlyType": "Number (Double)",
+      'type' : 'float',
+                "jsonType": "float",
+                "sqlType": "float8",
+      'defaultValue' : null,
+                "scale": 4000,
+      'align' : 'right',
+                "sortable": true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+      'nullable' : true,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+      'measure' : true,
+                "recommendedVariable": false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+      'cols' : 40,
+      'shortCaption' : 'Pro (pM/uL)',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Pro (pM/uL)'
+            },
+            {
+      'fieldKey' : [ 'Cys' ],
+                "friendlyType": "Number (Double)",
+      'type' : 'float',
+                "jsonType": "float",
+      'sqlType' : 'float8',
+      'defaultValue' : null,
+                "scale": 4000,
+      'align' : 'right',
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+      'measure' : true,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "Cys (pM/uL)",
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Cys (pM/uL)'
+            },
+            {
+      'fieldKey' : [ 'Lys' ],
+      'friendlyType' : 'Number (Double)',
+      'type' : 'float',
+                "jsonType": "float",
+      'sqlType' : 'float8',
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "right",
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+      'userEditable' : true,
+                "calculated": false,
+      'versionField' : false,
+      'selectable' : true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": true,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "Lys (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Lys (pM/uL)"
+            },
+            {
+                "fieldKey": ["Tyr"],
+      'friendlyType' : 'Number (Double)',
+                "type": "float",
+                "jsonType": "float",
+      'sqlType' : 'float8',
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "right",
+      'sortable' : true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+                "readOnly": false,
+      'userEditable' : true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": true,
+      'recommendedVariable' : false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 40,
+                "shortCaption": "Tyr (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Tyr (pM/uL)"
+            },
+            {
+                "fieldKey": ["Met"],
+      'friendlyType' : 'Number (Double)',
+                "type": "float",
+      'jsonType' : 'float',
+                "sqlType": "float8",
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "right",
+      'sortable' : true,
+                "width": "",
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+      'dimension' : false,
+                "measure": true,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 40,
+      'shortCaption' : 'Met (pM/uL)',
+                "facetingBehaviorType": "AUTOMATIC",
+                "caption": "Met (pM/uL)"
+            },
+            {
+                "fieldKey": ["Val"],
+                "friendlyType": "Number (Double)",
+                "type": "float",
+      'jsonType' : 'float',
+                "sqlType": "float8",
+      'defaultValue' : null,
+                "scale": 4000,
+                "align": "right",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+      'mvEnabled' : false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+                "selectable": true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+                "measure": true,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+      'inputType' : 'text',
+                "cols": 40,
+      'shortCaption' : 'Val (pM/uL)',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Val (pM/uL)'
+            },
+            {
+                "fieldKey": ["Ile"],
+                "friendlyType": "Number (Double)",
+      'type' : 'float',
+      'jsonType' : 'float',
+                "sqlType": "float8",
+      'defaultValue' : null,
+                "scale": 4000,
+      'align' : 'right',
+                "sortable": true,
+                "width": "",
+      'autoIncrement' : false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+      'shownInDetailsView' : true,
+                "dimension": false,
+      'measure' : true,
+                "recommendedVariable": false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+                "cols": 40,
+      'shortCaption' : 'Ile (pM/uL)',
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'Ile (pM/uL)'
+            },
+            {
+      'fieldKey' : [ 'Leu' ],
+                "friendlyType": "Number (Double)",
+      'type' : 'float',
+                "jsonType": "float",
+      'sqlType' : 'float8',
+                "defaultValue": null,
+                "scale": 4000,
+      'align' : 'right',
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+                "hidden": false,
+      'keyField' : false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+      'userEditable' : true,
+      'calculated' : false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+                "dimension": false,
+      'measure' : true,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "Leu (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+      'caption' : 'Leu (pM/uL)'
+            },
+            {
+      'fieldKey' : [ 'Phe' ],
+                "friendlyType": "Number (Double)",
+      'type' : 'float',
+                "jsonType": "float",
+      'sqlType' : 'float8',
+                "defaultValue": null,
+      'scale' : 4000,
+      'align' : 'right',
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+                "mvEnabled": false,
+      'nullable' : true,
+                "readOnly": false,
+      'userEditable' : true,
+                "calculated": false,
+                "versionField": false,
+      'selectable' : true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+      'measure' : true,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+                "inputType": "text",
+      'cols' : 40,
+                "shortCaption": "Phe (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Phe (pM/uL)"
+            },
+            {
+      'fieldKey' : [ 'Trp' ],
+      'friendlyType' : 'Number (Double)',
+                "type": "float",
+                "jsonType": "float",
+      'sqlType' : 'float8',
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "right",
+                "sortable": true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+                "readOnly": false,
+      'userEditable' : true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+      'shownInInsertView' : true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+                "measure": true,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+                "phi": "NotPHI",
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+      'inputType' : 'text',
+                "cols": 40,
+                "shortCaption": "Trp (pM/uL)",
+      'facetingBehaviorType' : 'AUTOMATIC',
+                "caption": "Trp (pM/uL)"
+            },
+            {
+                "fieldKey": ["Run", "assayRequest"],
+      'friendlyType' : 'Integer',
+                "type": "int",
+      'jsonType' : 'int',
+                "sqlType": "float8",
+                "defaultValue": null,
+      'scale' : 4000,
+                "align": "left",
+      'sortable' : true,
+                "width": "",
+      'autoIncrement' : false,
+      'hidden' : false,
+                "keyField": false,
+      'mvEnabled' : false,
+                "nullable": true,
+      'readOnly' : false,
+                "userEditable": true,
+                "calculated": false,
+      'versionField' : false,
+                "selectable": true,
+      'shownInInsertView' : true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+      'dimension' : true,
+                "measure": false,
+                "recommendedVariable": false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+      'excludeFromShifting' : false,
+                "conceptURI": null,
+      'displayField' : [ 'Run', 'assayRequest', 'Title' ],
+                "displayFieldJsonType": "string",
+      'inputType' : 'text',
+                "cols": 40,
+      'shortCaption' : 'Assay Request',
+                "facetingBehaviorType": "AUTOMATIC",
+                "caption": "Assay Request",
+      'lookup' : {
+        'keyColumn' : 'IssueId',
+                    "public": true,
+        'displayColumn' : 'Title',
+                    "queryName": "assayrequests",
+                    "schemaName": ["issues"]
+                }
+            }
+        ],
+        "title": "Data",
+        "importMessage": null
+    },
+    "rows": [
+        {
+            "data": {
+                "Val": {
+                    "value": 7.4
+                },
+      'Ser' : {
+                    "value": 29.8
+                },
+                "RowId": {
+        'value' : 67
+                },
+                "Ile": {
+                    "value": 13.1
+                },
+      'Inj' : {
+                    "value": 1
+                },
+                "Gln": {
+        'value' : 3.3
+                },
+      'SampleDate' : {
+                    "value": "2016-02-25 00:00:00.000",
+        'formattedValue' : '2016-02-25 00:00'
+                },
+      'Pro' : {
+                    "value": 5.9
+                },
+                "Phe": {
+        'value' : 5.5
+                },
+                "ResultID": {
+                    "value": 13778
+                },
+      'Glu' : {
+                    "value": 10.7
+                },
+                "Trp": {
+                    "value": 3.9
+                },
+                "Gly": {
+                    "value": 26.8
+                },
+      'Vial' : {
+                    "value": "2:C,11"
+                },
+                "SampleDescription": {
+        'value' : null
+                },
+                "Cys": {
+                    "value": 2.0
+                },
+      'Asn' : {
+                    "value": 7.4
+                },
+                "Asp": {
+        'value' : 14.5
+                },
+      'Thr' : {
+                    "value": 36.8
+                },
+      'Lys' : {
+        'value' : 14.3
+                },
+                "Tyr": {
+        'value' : 9.3
+                },
+      'His' : {
+                    "value": 6.1
+                },
+                "Run/assayRequest": {
+                    "value": null
+                },
+                "Arg": {
+        'value' : 24.8
+                },
+      'Ala' : {
+                    "value": 21.3
+                },
+                "Met": {
+        'value' : 8.3
+                },
+                "Leu": {
+                    "value": 19.3
+                },
+      'SampleID' : {
+                    "value": "2016_02_24-C6-44-B6-03",
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=356"
+                }
+            }
+        },
+        {
+            "data": {
+      'Val' : {
+                    "value": 24.0
+                },
+                "Ser": {
+                    "value": 24.4
+                },
+                "RowId": {
+                    "value": 68
+                },
+      'Ile' : {
+                    "value": 16.9
+                },
+                "Inj": {
+        'value' : 1
+                },
+                "Gln": {
+                    "value": 2.9
+                },
+      'SampleDate' : {
+                    "value": "2016-06-25 00:00:00.000",
+                    "formattedValue": "2016-06-25 00:00"
+                },
+      'Pro' : {
+                    "value": 18.9
+                },
+                "Phe": {
+        'value' : 16.5
+                },
+      'ResultID' : {
+                    "value": 13779
+                },
+                "Glu": {
+        'value' : 11.2
+                },
+                "Trp": {
+                    "value": 7.7
+                },
+      'Gly' : {
+                    "value": 12.5
+                },
+                "Vial": {
+                    "value": "2:D,11"
+                },
+                "SampleDescription": {
+                    "value": null
+                },
+      'Cys' : {
+                    "value": 3.2
+                },
+                "Asn": {
+        'value' : 13.2
+                },
+                "Asp": {
+                    "value": 9.8
+                },
+      'Thr' : {
+                    "value": 24.6
+                },
+                "Lys": {
+        'value' : 20.4
+                },
+      'Tyr' : {
+                    "value": 13.9
+                },
+      'His' : {
+        'value' : 13.6
+                },
+                "Run/assayRequest": {
+        'value' : null
+                },
+      'Arg' : {
+                    "value": 20.4
+                },
+      'Ala' : {
+                    "value": 19.5
+                },
+                "Met": {
+        'value' : 10.4
+                },
+      'Leu' : {
+                    "value": 24.8
+                },
+                "SampleID": {
+        'value' : '2016_06_24-C2-50-B2-02',
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=357"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Val": {
+        'value' : 9.3
+                },
+                "Ser": {
+                    "value": 21.2
+                },
+      'RowId' : {
+                    "value": 69
+                },
+                "Ile": {
+                    "value": 10.4
+                },
+                "Inj": {
+                    "value": 1
+                },
+      'Gln' : {
+        'value' : 1.3
+                },
+                "SampleDate": {
+        'value' : '2016-07-28 00:00:00.000',
+        'formattedValue' : '2016-07-28 00:00'
+                },
+                "Pro": {
+        'value' : 14.8
+                },
+      'Phe' : {
+                    "value": 5.3
+                },
+      'ResultID' : {
+                    "value": 13780
+                },
+                "Glu": {
+        'value' : 14.1
+                },
+      'Trp' : {
+                    "value": 4.1
+                },
+                "Gly": {
+        'value' : 19.3
+                },
+                "Vial": {
+                    "value": "2:E,11"
+                },
+                "SampleDescription": {
+                    "value": null
+                },
+                "Cys": {
+                    "value": 1.6
+                },
+                "Asn": {
+                    "value": 1.9
+                },
+      'Asp' : {
+                    "value": 11.9
+                },
+                "Thr": {
+        'value' : 28.4
+                },
+                "Lys": {
+                    "value": 9.8
+                },
+      'Tyr' : {
+                    "value": 7.1
+                },
+                "His": {
+        'value' : 6.4
+                },
+      'Run/assayRequest' : {
+                    "value": null
+                },
+      'Arg' : {
+        'value' : 13.9
+                },
+                "Ala": {
+        'value' : 23.1
+                },
+      'Met' : {
+                    "value": 8.2
+                },
+      'Leu' : {
+                    "value": 14.6
+                },
+                "SampleID": {
+        'value' : '2016_07_27-C4-12-B4-01',
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=358"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Val": {
+        'value' : 9.8
+                },
+      'Ser' : {
+                    "value": 8.1
+                },
+                "RowId": {
+        'value' : 70
+                },
+                "Ile": {
+                    "value": 6.5
+                },
+      'Inj' : {
+                    "value": 1
+                },
+                "Gln": {
+        'value' : 0.9
+                },
+      'SampleDate' : {
+                    "value": "2016-02-16 00:00:00.000",
+        'formattedValue' : '2016-02-16 00:00'
+                },
+      'Pro' : {
+                    "value": 14.4
+                },
+      'Phe' : {
+        'value' : 6.3
+                },
+                "ResultID": {
+        'value' : 13781
+                },
+      'Glu' : {
+                    "value": 12.5
+                },
+      'Trp' : {
+                    "value": 4.4
+                },
+                "Gly": {
+        'value' : 7.9
+                },
+      'Vial' : {
+                    "value": "2:F,11"
+                },
+                "SampleDescription": {
+        'value' : null
+                },
+                "Cys": {
+                    "value": 2.2
+                },
+      'Asn' : {
+                    "value": 0.6
+                },
+                "Asp": {
+                    "value": 6.5
+                },
+                "Thr": {
+                    "value": 10.3
+                },
+      'Lys' : {
+        'value' : 3.0
+                },
+                "Tyr": {
+        'value' : 5.7
+                },
+      'His' : {
+                    "value": 6.5
+                },
+                "Run/assayRequest": {
+                    "value": null
+                },
+                "Arg": {
+        'value' : 3.0
+                },
+      'Ala' : {
+                    "value": 19.2
+                },
+                "Met": {
+        'value' : 7.4
+                },
+                "Leu": {
+                    "value": 6.7
+                },
+      'SampleID' : {
+                    "value": "2016_02_15-C5-14-B6-02",
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=359"
+                }
+            }
+        },
+        {
+            "data": {
+      'Val' : {
+                    "value": 29.9
+                },
+                "Ser": {
+                    "value": 30.0
+                },
+                "RowId": {
+                    "value": 71
+                },
+      'Ile' : {
+                    "value": 21.8
+                },
+                "Inj": {
+        'value' : 1
+                },
+      'Gln' : {
+                    "value": 2.9
+                },
+      'SampleDate' : {
+                    "value": "2016-07-24 00:00:00.000",
+                    "formattedValue": "2016-07-24 00:00"
+                },
+      'Pro' : {
+                    "value": 23.4
+                },
+                "Phe": {
+        'value' : 19.0
+                },
+      'ResultID' : {
+                    "value": 13782
+                },
+                "Glu": {
+        'value' : 14.8
+                },
+                "Trp": {
+                    "value": 8.9
+                },
+      'Gly' : {
+                    "value": 15.1
+                },
+                "Vial": {
+                    "value": "2:G,11"
+                },
+                "SampleDescription": {
+                    "value": null
+                },
+      'Cys' : {
+                    "value": 3.8
+                },
+                "Asn": {
+        'value' : 19.7
+                },
+                "Asp": {
+                    "value": 14.1
+                },
+      'Thr' : {
+                    "value": 29.7
+                },
+                "Lys": {
+        'value' : 27.6
+                },
+      'Tyr' : {
+                    "value": 15.2
+                },
+      'His' : {
+        'value' : 15.5
+                },
+                "Run/assayRequest": {
+        'value' : null
+                },
+      'Arg' : {
+                    "value": 24.4
+                },
+      'Ala' : {
+                    "value": 21.4
+                },
+                "Met": {
+        'value' : 12.5
+                },
+      'Leu' : {
+                    "value": 31.3
+                },
+                "SampleID": {
+        'value' : '2016_07_23-C1-79-B9-03',
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=360"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Val": {
+        'value' : 10.5
+                },
+                "Ser": {
+                    "value": 9.6
+                },
+      'RowId' : {
+                    "value": 72
+                },
+                "Ile": {
+                    "value": 8.3
+                },
+      'Inj' : {
+                    "value": 1
+                },
+      'Gln' : {
+        'value' : 2.2
+                },
+                "SampleDate": {
+        'value' : '2016-08-29 00:00:00.000',
+        'formattedValue' : '2016-08-29 00:00'
+                },
+                "Pro": {
+        'value' : 6.7
+                },
+      'Phe' : {
+                    "value": 7.2
+                },
+      'ResultID' : {
+                    "value": 13783
+                },
+                "Glu": {
+        'value' : 12.6
+                },
+      'Trp' : {
+                    "value": 4.0
+                },
+                "Gly": {
+        'value' : 10.8
+                },
+                "Vial": {
+                    "value": "2:H,11"
+                },
+                "SampleDescription": {
+                    "value": null
+                },
+                "Cys": {
+                    "value": 2.5
+                },
+                "Asn": {
+                    "value": 2.5
+                },
+      'Asp' : {
+                    "value": 8.6
+                },
+                "Thr": {
+        'value' : 9.2
+                },
+                "Lys": {
+                    "value": 6.5
+                },
+      'Tyr' : {
+                    "value": 6.0
+                },
+                "His": {
+        'value' : 5.9
+                },
+      'Run/assayRequest' : {
+                    "value": null
+                },
+      'Arg' : {
+        'value' : 7.1
+                },
+                "Ala": {
+        'value' : 27.6
+                },
+      'Met' : {
+                    "value": 7.1
+                },
+      'Leu' : {
+                    "value": 8.5
+                },
+                "SampleID": {
+        'value' : '2016_08_28-C1-71-B7-02',
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=361"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Val": {
+        'value' : 18.3
+                },
+      'Ser' : {
+                    "value": 22.5
+                },
+                "RowId": {
+        'value' : 73
+                },
+                "Ile": {
+                    "value": 12.4
+                },
+      'Inj' : {
+                    "value": 1
+                },
+                "Gln": {
+        'value' : 2.4
+                },
+      'SampleDate' : {
+                    "value": "2016-03-18 00:00:00.000",
+        'formattedValue' : '2016-03-18 00:00'
+                },
+      'Pro' : {
+                    "value": 26.0
+                },
+      'Phe' : {
+        'value' : 9.4
+                },
+                "ResultID": {
+        'value' : 13784
+                },
+      'Glu' : {
+                    "value": 20.7
+                },
+      'Trp' : {
+                    "value": 5.8
+                },
+                "Gly": {
+        'value' : 9.4
+                },
+      'Vial' : {
+                    "value": "2:I,11"
+                },
+                "SampleDescription": {
+        'value' : null
+                },
+                "Cys": {
+                    "value": 2.5
+                },
+      'Asn' : {
+                    "value": 3.4
+                },
+                "Asp": {
+                    "value": 13.6
+                },
+                "Thr": {
+                    "value": 16.9
+                },
+      'Lys' : {
+                    "value": 7.6
+                },
+                "Tyr": {
+        'value' : 9.3
+                },
+                "His": {
+                    "value": 9.3
+                },
+                "Run/assayRequest": {
+                    "value": null
+                },
+                "Arg": {
+        'value' : 4.3
+                },
+      'Ala' : {
+                    "value": 28.5
+                },
+      'Met' : {
+        'value' : 9.7
+                },
+                "Leu": {
+        'value' : 18.3
+                },
+      'SampleID' : {
+                    "value": "2016_03_17-C1-26-B3-03",
+        'url' : '/labkey/Biologics/experiment-showMaterial.view?rowId=362'
+                }
+            }
+        },
+        {
+            "data": {
+      'Val' : {
+                    "value": 13.3
+                },
+      'Ser' : {
+                    "value": 13.5
+                },
+                "RowId": {
+        'value' : 74
+                },
+      'Ile' : {
+                    "value": 10.1
+                },
+                "Inj": {
+        'value' : 1
+                },
+                "Gln": {
+                    "value": 3.8
+                },
+      'SampleDate' : {
+                    "value": "2016-06-17 00:00:00.000",
+                    "formattedValue": "2016-06-17 00:00"
+                },
+      'Pro' : {
+                    "value": 7.8
+                },
+                "Phe": {
+        'value' : 9.9
+                },
+      'ResultID' : {
+                    "value": 13785
+                },
+      'Glu' : {
+        'value' : 15.8
+                },
+                "Trp": {
+        'value' : 5.3
+                },
+      'Gly' : {
+                    "value": 11.9
+                },
+      'Vial' : {
+                    "value": "2:J,11"
+                },
+                "SampleDescription": {
+        'value' : null
+                },
+      'Cys' : {
+                    "value": 3.5
+                },
+                "Asn": {
+        'value' : 6.1
+                },
+                "Asp": {
+                    "value": 11.4
+                },
+      'Thr' : {
+                    "value": 11.5
+                },
+                "Lys": {
+                    "value": 7.3
+                },
+                "Tyr": {
+                    "value": 8.7
+                },
+      'His' : {
+                    "value": 8.5
+                },
+                "Run/assayRequest": {
+        'value' : null
+                },
+                "Arg": {
+                    "value": 8.8
+                },
+      'Ala' : {
+                    "value": 26.6
+                },
+                "Met": {
+        'value' : 9.1
+                },
+      'Leu' : {
+                    "value": 11.6
+                },
+      'SampleID' : {
+        'value' : '2016_06_16-C4-31-B9-03',
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=363"
+                }
+            }
+        },
+        {
+            "data": {
+      'Val' : {
+        'value' : 6.6
+                },
+                "Ser": {
+        'value' : 19.2
+                },
+      'RowId' : {
+                    "value": 75
+                },
+                "Ile": {
+                    "value": 9.4
+                },
+                "Inj": {
+                    "value": 1
+                },
+      'Gln' : {
+                    "value": 2.3
+                },
+                "SampleDate": {
+        'value' : '2015-06-26 00:00:00.000',
+                    "formattedValue": "2015-06-26 00:00"
+                },
+                "Pro": {
+        'value' : 4.5
+                },
+                "Phe": {
+                    "value": 4.3
+                },
+      'ResultID' : {
+                    "value": 13786
+                },
+                "Glu": {
+        'value' : 8.5
+                },
+      'Trp' : {
+                    "value": 2.5
+                },
+      'Gly' : {
+        'value' : 14.7
+                },
+                "Vial": {
+        'value' : '2:K,11'
+                },
+      'SampleDescription' : {
+                    "value": null
+                },
+      'Cys' : {
+                    "value": 1.4
+                },
+                "Asn": {
+        'value' : 7.2
+                },
+      'Asp' : {
+                    "value": 10.5
+                },
+                "Thr": {
+        'value' : 21.2
+                },
+                "Lys": {
+                    "value": 10.1
+                },
+      'Tyr' : {
+                    "value": 6.0
+                },
+                "His": {
+                    "value": 4.4
+                },
+                "Run/assayRequest": {
+                    "value": null
+                },
+      'Arg' : {
+                    "value": 13.7
+                },
+                "Ala": {
+        'value' : 13.5
+                },
+                "Met": {
+                    "value": 5.7
+                },
+      'Leu' : {
+                    "value": 13.9
+                },
+                "SampleID": {
+        'value' : '2015_06_25-C2-12-B8-03',
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=364"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Val": {
+        'value' : 21.8
+                },
+      'Ser' : {
+                    "value": 23.5
+                },
+      'RowId' : {
+        'value' : 76
+                },
+                "Ile": {
+                    "value": 15.4
+                },
+      'Inj' : {
+                    "value": 1
+                },
+                "Gln": {
+                    "value": 2.5
+                },
+                "SampleDate": {
+                    "value": "2015-02-28 00:00:00.000",
+                    "formattedValue": "2015-02-28 00:00"
+                },
+                "Pro": {
+                    "value": 16.4
+                },
+      'Phe' : {
+                    "value": 14.2
+                },
+                "ResultID": {
+        'value' : 13787
+                },
+                "Glu": {
+                    "value": 12.0
+                },
+      'Trp' : {
+                    "value": 6.4
+                },
+                "Gly": {
+        'value' : 10.1
+                },
+      'Vial' : {
+                    "value": "2:L,11"
+                },
+      'SampleDescription' : {
+        'value' : null
+                },
+                "Cys": {
+        'value' : 3.0
+                },
+      'Asn' : {
+                    "value": 16.2
+                },
+      'Asp' : {
+                    "value": 10.2
+                },
+                "Thr": {
+        'value' : 21.1
+                },
+      'Lys' : {
+                    "value": 17.5
+                },
+                "Tyr": {
+        'value' : 12.2
+                },
+                "His": {
+                    "value": 11.9
+                },
+                "Run/assayRequest": {
+                    "value": null
+                },
+                "Arg": {
+                    "value": 16.4
+                },
+                "Ala": {
+                    "value": 16.9
+                },
+      'Met' : {
+                    "value": 9.5
+                },
+                "Leu": {
+        'value' : 22.8
+                },
+                "SampleID": {
+                    "value": "2015_02_27-C1-30-B4-01",
+        'url' : '/labkey/Biologics/experiment-showMaterial.view?rowId=365'
+                }
+            }
+        },
+        {
+            "data": {
+                "Val": {
+                    "value": 11.2
+                },
+      'Ser' : {
+                    "value": 22.3
+                },
+                "RowId": {
+        'value' : 77
+                },
+      'Ile' : {
+                    "value": 11.1
+                },
+                "Inj": {
+        'value' : 1
+                },
+                "Gln": {
+                    "value": 2.0
+                },
+      'SampleDate' : {
+                    "value": "2015-01-22 00:00:00.000",
+                    "formattedValue": "2015-01-22 00:00"
+                },
+      'Pro' : {
+                    "value": 13.0
+                },
+                "Phe": {
+                    "value": 6.6
+                },
+                "ResultID": {
+                    "value": 13788
+                },
+      'Glu' : {
+                    "value": 15.1
+                },
+                "Trp": {
+        'value' : 4.3
+                },
+                "Gly": {
+                    "value": 15.0
+                },
+      'Vial' : {
+                    "value": "2:M,11"
+                },
+                "SampleDescription": {
+        'value' : null
+                },
+      'Cys' : {
+                    "value": 2.1
+                },
+      'Asn' : {
+        'value' : 3.6
+                },
+                "Asp": {
+        'value' : 12.8
+                },
+      'Thr' : {
+                    "value": 24.4
+                },
+      'Lys' : {
+                    "value": 9.6
+                },
+                "Tyr": {
+        'value' : 8.6
+                },
+      'His' : {
+                    "value": 7.2
+                },
+                "Run/assayRequest": {
+        'value' : null
+                },
+                "Arg": {
+                    "value": 12.5
+                },
+      'Ala' : {
+                    "value": 22.8
+                },
+                "Met": {
+                    "value": 8.4
+                },
+                "Leu": {
+                    "value": 16.0
+                },
+      'SampleID' : {
+                    "value": "2015_01_21-C4-75-B8-02",
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=366"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Val' : {
+                    "value": 8.2
+                },
+                "Ser": {
+        'value' : 8.6
+                },
+                "RowId": {
+                    "value": 78
+                },
+      'Ile' : {
+                    "value": 5.8
+                },
+                "Inj": {
+        'value' : 1
+                },
+      'Gln' : {
+                    "value": 1.2
+                },
+                "SampleDate": {
+        'value' : '2015-08-11 00:00:00.000',
+                    "formattedValue": "2015-08-11 00:00"
+                },
+                "Pro": {
+        'value' : 8.9
+                },
+                "Phe": {
+                    "value": 5.5
+                },
+      'ResultID' : {
+                    "value": 13789
+                },
+                "Glu": {
+                    "value": 9.6
+                },
+                "Trp": {
+                    "value": 3.4
+                },
+      'Gly' : {
+                    "value": 4.9
+                },
+                "Vial": {
+        'value' : '2:N,11'
+                },
+                "SampleDescription": {
+                    "value": null
+                },
+      'Cys' : {
+                    "value": 1.8
+                },
+                "Asn": {
+        'value' : 1.3
+                },
+      'Asp' : {
+                    "value": 5.7
+                },
+      'Thr' : {
+        'value' : 7.4
+                },
+                "Lys": {
+        'value' : 3.0
+                },
+      'Tyr' : {
+                    "value": 5.6
+                },
+      'His' : {
+                    "value": 5.2
+                },
+                "Run/assayRequest": {
+        'value' : null
+                },
+      'Arg' : {
+                    "value": 2.9
+                },
+                "Ala": {
+        'value' : 15.0
+                },
+                "Met": {
+                    "value": 5.5
+                },
+      'Leu' : {
+                    "value": 7.0
+                },
+                "SampleID": {
+                    "value": "2015_08_10-C8-33-B8-03",
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=367"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Val": {
+                    "value": 20.4
+                },
+                "Ser": {
+                    "value": 22.3
+                },
+      'RowId' : {
+        'value' : 79
+                },
+                "Ile": {
+        'value' : 14.9
+                },
+      'Inj' : {
+                    "value": 1
+                },
+      'Gln' : {
+                    "value": 2.5
+                },
+                "SampleDate": {
+        'value' : '2016-07-23 00:00:00.000',
+                    "formattedValue": "2016-07-23 00:00"
+                },
+                "Pro": {
+        'value' : 15.2
+                },
+      'Phe' : {
+                    "value": 14.4
+                },
+                "ResultID": {
+        'value' : 13790
+                },
+                "Glu": {
+                    "value": 11.0
+                },
+      'Trp' : {
+                    "value": 6.9
+                },
+                "Gly": {
+                    "value": 9.1
+                },
+                "Vial": {
+                    "value": "2:O,11"
+                },
+      'SampleDescription' : {
+                    "value": null
+                },
+                "Cys": {
+        'value' : 3.0
+                },
+                "Asn": {
+                    "value": 17.9
+                },
+      'Asp' : {
+                    "value": 9.5
+                },
+                "Thr": {
+        'value' : 19.5
+                },
+      'Lys' : {
+                    "value": 15.6
+                },
+      'Tyr' : {
+        'value' : 12.1
+                },
+                "His": {
+        'value' : 11.7
+                },
+      'Run/assayRequest' : {
+                    "value": null
+                },
+      'Arg' : {
+                    "value": 16.2
+                },
+                "Ala": {
+        'value' : 13.0
+                },
+      'Met' : {
+                    "value": 9.3
+                },
+                "Leu": {
+        'value' : 21.6
+                },
+                "SampleID": {
+                    "value": "2016_07_22-C8-25-B2-02",
+        'url' : '/labkey/Biologics/experiment-showMaterial.view?rowId=368'
+                }
+            }
+        },
+        {
+    'data' : {
+                "Val": {
+                    "value": 11.0
+                },
+      'Ser' : {
+                    "value": 11.0
+                },
+                "RowId": {
+        'value' : 80
+                },
+      'Ile' : {
+                    "value": 8.6
+                },
+      'Inj' : {
+        'value' : 1
+                },
+                "Gln": {
+        'value' : 2.8
+                },
+      'SampleDate' : {
+                    "value": "2016-03-20 00:00:00.000",
+        'formattedValue' : '2016-03-20 00:00'
+                },
+      'Pro' : {
+                    "value": 6.3
+                },
+      'Phe' : {
+                    "value": 7.8
+                },
+                "ResultID": {
+        'value' : 13791
+                },
+      'Glu' : {
+                    "value": 12.8
+                },
+                "Trp": {
+        'value' : 4.1
+                },
+                "Gly": {
+                    "value": 8.8
+                },
+      'Vial' : {
+                    "value": "2:P,11"
+                },
+                "SampleDescription": {
+                    "value": null
+                },
+                "Cys": {
+                    "value": 2.7
+                },
+      'Asn' : {
+                    "value": 4.6
+                },
+                "Asp": {
+        'value' : 9.1
+                },
+                "Thr": {
+                    "value": 9.1
+                },
+      'Lys' : {
+                    "value": 6.2
+                },
+                "Tyr": {
+        'value' : 7.1
+                },
+      'His' : {
+                    "value": 6.6
+                },
+      'Run/assayRequest' : {
+        'value' : null
+                },
+                "Arg": {
+        'value' : 6.9
+                },
+      'Ala' : {
+                    "value": 22.5
+                },
+      'Met' : {
+                    "value": 7.2
+                },
+                "Leu": {
+        'value' : 9.8
+                },
+      'SampleID' : {
+                    "value": "2016_03_19-C8-54-B4-02",
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=369"
+                }
+            }
+        },
+        {
+            "data": {
+      'Val' : {
+                    "value": 8.6
+                },
+                "Ser": {
+        'value' : 8.9
+                },
+                "RowId": {
+                    "value": 81
+                },
+      'Ile' : {
+                    "value": 5.4
+                },
+                "Inj": {
+        'value' : 1
+                },
+      'Gln' : {
+                    "value": 0.9
+                },
+      'SampleDate' : {
+        'value' : '2016-03-18 00:00:00.000',
+                    "formattedValue": "2016-03-18 00:00"
+                },
+      'Pro' : {
+        'value' : 22.8
+                },
+                "Phe": {
+        'value' : 4.4
+                },
+      'ResultID' : {
+                    "value": 13792
+                },
+      'Glu' : {
+                    "value": 8.4
+                },
+                "Trp": {
+        'value' : 3.7
+                },
+      'Gly' : {
+                    "value": 9.4
+                },
+                "Vial": {
+        'value' : '2:A,12'
+                },
+                "SampleDescription": {
+                    "value": null
+                },
+      'Cys' : {
+                    "value": 0.6
+                },
+                "Asn": {
+                    "value": 0.4
+                },
+                "Asp": {
+                    "value": 4.0
+                },
+      'Thr' : {
+                    "value": 10.7
+                },
+                "Lys": {
+        'value' : 2.8
+                },
+                "Tyr": {
+                    "value": 3.3
+                },
+      'His' : {
+                    "value": 4.5
+                },
+                "Run/assayRequest": {
+        'value' : null
+                },
+      'Arg' : {
+                    "value": 0.4
+                },
+      'Ala' : {
+        'value' : 14.7
+                },
+                "Met": {
+        'value' : 5.1
+                },
+      'Leu' : {
+                    "value": 7.5
+                },
+      'SampleID' : {
+                    "value": "2016_03_17-C5-39-B3-03",
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=370"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Val' : {
+                    "value": 6.7
+                },
+                "Ser": {
+                    "value": 6.5
+                },
+      'RowId' : {
+                    "value": 82
+                },
+                "Ile": {
+        'value' : 5.1
+                },
+                "Inj": {
+                    "value": 1
+                },
+      'Gln' : {
+                    "value": 1.6
+                },
+                "SampleDate": {
+        'value' : '2015-05-14 00:00:00.000',
+                    "formattedValue": "2015-05-14 00:00"
+                },
+                "Pro": {
+        'value' : 5.8
+                },
+      'Phe' : {
+                    "value": 6.3
+                },
+      'ResultID' : {
+        'value' : 13793
+                },
+                "Glu": {
+        'value' : 8.2
+                },
+      'Trp' : {
+                    "value": 4.0
+                },
+      'Gly' : {
+                    "value": 12.8
+                },
+                "Vial": {
+        'value' : '2:B,12'
+                },
+      'SampleDescription' : {
+                    "value": null
+                },
+                "Cys": {
+        'value' : 1.9
+                },
+                "Asn": {
+                    "value": 0.8
+                },
+      'Asp' : {
+                    "value": 4.9
+                },
+                "Thr": {
+                    "value": 7.4
+                },
+                "Lys": {
+                    "value": 4.0
+                },
+      'Tyr' : {
+                    "value": 3.9
+                },
+                "His": {
+        'value' : 5.0
+                },
+                "Run/assayRequest": {
+                    "value": null
+                },
+      'Arg' : {
+                    "value": 6.6
+                },
+                "Ala": {
+        'value' : 23.6
+                },
+      'Met' : {
+                    "value": 6.2
+                },
+      'Leu' : {
+        'value' : 4.2
+                },
+                "SampleID": {
+        'value' : '2015_05_13-C4-66-B8-02',
+        'url' : '/labkey/Biologics/experiment-showMaterial.view?rowId=371'
+                }
+            }
+        },
+        {
+    'data' : {
+                "Val": {
+        'value' : 3.6
+                },
+      'Ser' : {
+                    "value": 24.1
+                },
+                "RowId": {
+                    "value": 83
+                },
+                "Ile": {
+                    "value": 10.3
+                },
+      'Inj' : {
+                    "value": 1
+                },
+                "Gln": {
+        'value' : 1.9
+                },
+                "SampleDate": {
+                    "value": "2015-02-21 00:00:00.000",
+        'formattedValue' : '2015-02-21 00:00'
+                },
+                "Pro": {
+                    "value": 4.3
+                },
+      'Phe' : {
+                    "value": 2.9
+                },
+                "ResultID": {
+        'value' : 13794
+                },
+      'Glu' : {
+                    "value": 7.2
+                },
+      'Trp' : {
+        'value' : 2.7
+                },
+                "Gly": {
+        'value' : 26.3
+                },
+      'Vial' : {
+                    "value": "2:C,12"
+                },
+                "SampleDescription": {
+                    "value": null
+                },
+                "Cys": {
+        'value' : 0.9
+                },
+      'Asn' : {
+                    "value": 3.6
+                },
+                "Asp": {
+        'value' : 11.9
+                },
+                "Thr": {
+                    "value": 34.1
+                },
+      'Lys' : {
+                    "value": 13.2
+                },
+                "Tyr": {
+                    "value": 5.7
+                },
+                "His": {
+                    "value": 3.7
+                },
+      'Run/assayRequest' : {
+                    "value": null
+                },
+                "Arg": {
+        'value' : 22.7
+                },
+                "Ala": {
+                    "value": 18.3
+                },
+      'Met' : {
+                    "value": 6.1
+                },
+                "Leu": {
+        'value' : 15.0
+                },
+      'SampleID' : {
+                    "value": "2015_02_20-C5-12-B2-03",
+        'url' : '/labkey/Biologics/experiment-showMaterial.view?rowId=372'
+                }
+            }
+        },
+        {
+            "data": {
+      'Val' : {
+                    "value": 22.2
+                },
+                "Ser": {
+        'value' : 21.2
+                },
+                "RowId": {
+                    "value": 84
+                },
+      'Ile' : {
+                    "value": 15.6
+                },
+                "Inj": {
+                    "value": 1
+                },
+                "Gln": {
+                    "value": 2.6
+                },
+      'SampleDate' : {
+                    "value": "2015-03-12 00:00:00.000",
+                    "formattedValue": "2015-03-12 00:00"
+                },
+      'Pro' : {
+                    "value": 19.2
+                },
+                "Phe": {
+        'value' : 15.7
+                },
+                "ResultID": {
+                    "value": 13795
+                },
+      'Glu' : {
+                    "value": 8.0
+                },
+                "Trp": {
+        'value' : 7.5
+                },
+      'Gly' : {
+                    "value": 13.4
+                },
+      'Vial' : {
+        'value' : '2:D,12'
+                },
+                "SampleDescription": {
+        'value' : null
+                },
+      'Cys' : {
+                    "value": 2.2
+                },
+      'Asn' : {
+                    "value": 8.0
+                },
+                "Asp": {
+        'value' : 7.6
+                },
+      'Thr' : {
+                    "value": 24.4
+                },
+                "Lys": {
+        'value' : 21.0
+                },
+                "Tyr": {
+                    "value": 12.4
+                },
+      'His' : {
+                    "value": 12.6
+                },
+                "Run/assayRequest": {
+                    "value": null
+                },
+                "Arg": {
+                    "value": 20.8
+                },
+      'Ala' : {
+                    "value": 18.5
+                },
+                "Met": {
+        'value' : 9.2
+                },
+                "Leu": {
+                    "value": 22.6
+                },
+      'SampleID' : {
+                    "value": "2015_03_11-C8-51-B4-02",
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=373"
+                }
+            }
+        },
+        {
+            "data": {
+      'Val' : {
+                    "value": 4.8
+                },
+                "Ser": {
+        'value' : 15.2
+                },
+      'RowId' : {
+                    "value": 85
+                },
+                "Ile": {
+        'value' : 7.3
+                },
+                "Inj": {
+                    "value": 1
+                },
+      'Gln' : {
+                    "value": 0.8
+                },
+                "SampleDate": {
+                    "value": "2016-06-29 00:00:00.000",
+                    "formattedValue": "2016-06-29 00:00"
+                },
+                "Pro": {
+                    "value": 15.1
+                },
+                "Phe": {
+                    "value": 2.5
+                },
+      'ResultID' : {
+                    "value": 13796
+                },
+                "Glu": {
+        'value' : 10.1
+                },
+                "Trp": {
+                    "value": 3.2
+                },
+      'Gly' : {
+                    "value": 22.9
+                },
+                "Vial": {
+        'value' : '2:E,12'
+                },
+      'SampleDescription' : {
+                    "value": null
+                },
+      'Cys' : {
+        'value' : 0.7
+                },
+                "Asn": {
+        'value' : 0.7
+                },
+      'Asp' : {
+                    "value": 8.3
+                },
+      'Thr' : {
+                    "value": 29.7
+                },
+                "Lys": {
+        'value' : 8.5
+                },
+      'Tyr' : {
+                    "value": 3.6
+                },
+                "His": {
+        'value' : 3.9
+                },
+                "Run/assayRequest": {
+                    "value": null
+                },
+      'Arg' : {
+                    "value": 14.0
+                },
+                "Ala": {
+                    "value": 15.5
+                },
+                "Met": {
+                    "value": 6.5
+                },
+      'Leu' : {
+                    "value": 9.4
+                },
+                "SampleID": {
+        'value' : '2016_06_28-C5-11-B3-03',
+                    "url": "/labkey/Biologics/experiment-showMaterial.view?rowId=374"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Val": {
+        'value' : 4.7
+                },
+      'Ser' : {
+                    "value": 3.6
+                },
+      'RowId' : {
+                    "value": 86
+                },
+                "Ile": {
+        'value' : 2.7
+                },
+      'Inj' : {
+                    "value": 1
+                },
+                "Gln": {
+        'value' : 0.6
+                },
+                "SampleDate": {
+                    "value": "2016-05-29 00:00:00.000",
+        'formattedValue' : '2016-05-29 00:00'
+                },
+                "Pro": {
+                    "value": 12.5
+                },
+      'Phe' : {
+                    "value": 3.7
+                },
+                "ResultID": {
+                    "value": 13797
+                },
+                "Glu": {
+                    "value": 6.1
+                },
+      'Trp' : {
+                    "value": 3.1
+                },
+                "Gly": {
+        'value' : 6.1
+                },
+                "Vial": {
+                    "value": "2:F,12"
+                },
+                "SampleDescription": {
+                    "value": null
+                },
+                "Cys": {
+        'value' : 0.9
+                },
+      'Asn' : {
+                    "value": 0.1
+                },
+                "Asp": {
+        'value' : 2.5
+                },
+                "Thr": {
+                    "value": 7.1
+                },
+      'Lys' : {
+                    "value": 1.2
+                },
+                "Tyr": {
+                    "value": 2.2
+                },
+                "His": {
+                    "value": 3.9
+                },
+      'Run/assayRequest' : {
+                    "value": null
+                },
+                "Arg": {
+        'value' : 1.4
+                },
+                "Ala": {
+                    "value": 11.5
+                },
+      'Met' : {
+                    "value": 4.9
+                },
+                "Leu": {
+        'value' : 2.0
+                },
+      'SampleID' : {
+                    "value": "2016_05_28-C8-14-B1-03",
+        'url' : '/labkey/Biologics/experiment-showMaterial.view?rowId=375'
+                }
+            }
+        }
+    ],
+    "rowCount": 34
 }

@@ -15,25 +15,20 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
+
+import { SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../../test/data/constants';
+
 import { CreateUsersModal } from './CreateUsersModal';
-import { SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from "../../test/data/constants";
 
 const ROLE_OPTIONS = [
-    {id: SECURITY_ROLE_READER, label: "Reader (default)"},
-    {id: SECURITY_ROLE_AUTHOR, label: "Author"},
-    {id: SECURITY_ROLE_EDITOR, label: "Editor"}
+    { id: SECURITY_ROLE_READER, label: 'Reader (default)' },
+    { id: SECURITY_ROLE_AUTHOR, label: 'Author' },
+    { id: SECURITY_ROLE_EDITOR, label: 'Editor' },
 ];
 
-describe("<CreateUsersModal/>", () => {
-
-    test("default prop", () => {
-        const component = (
-            <CreateUsersModal
-                show={true}
-                onCancel={jest.fn()}
-                onComplete={jest.fn()}
-            />
-        );
+describe('<CreateUsersModal/>', () => {
+    test('default prop', () => {
+        const component = <CreateUsersModal show={true} onCancel={jest.fn()} onComplete={jest.fn()} />;
 
         const wrapper = mount(component);
         expect(wrapper.find('Alert')).toHaveLength(0);
@@ -50,14 +45,9 @@ describe("<CreateUsersModal/>", () => {
         wrapper.unmount();
     });
 
-    test("with roleOptions", () => {
+    test('with roleOptions', () => {
         const component = (
-            <CreateUsersModal
-                roleOptions={ROLE_OPTIONS}
-                show={true}
-                onCancel={jest.fn()}
-                onComplete={jest.fn()}
-            />
+            <CreateUsersModal roleOptions={ROLE_OPTIONS} show={true} onCancel={jest.fn()} onComplete={jest.fn()} />
         );
 
         const wrapper = mount(component);
@@ -76,14 +66,9 @@ describe("<CreateUsersModal/>", () => {
         wrapper.unmount();
     });
 
-    test("with state", () => {
+    test('with state', () => {
         const component = (
-            <CreateUsersModal
-                roleOptions={ROLE_OPTIONS}
-                show={true}
-                onCancel={jest.fn()}
-                onComplete={jest.fn()}
-            />
+            <CreateUsersModal roleOptions={ROLE_OPTIONS} show={true} onCancel={jest.fn()} onComplete={jest.fn()} />
         );
 
         const wrapper = mount(component);
@@ -93,7 +78,7 @@ describe("<CreateUsersModal/>", () => {
             optionalMessage: 'TestOptionalMessage',
             role: ROLE_OPTIONS[1].id,
             isSubmitting: true,
-            error: 'TestError'
+            error: 'TestError',
         });
 
         expect(wrapper.find('Alert')).toHaveLength(2);
@@ -110,5 +95,4 @@ describe("<CreateUsersModal/>", () => {
         expect(wrapper.find('.btn-success').props().disabled).toBe(true);
         wrapper.unmount();
     });
-
 });

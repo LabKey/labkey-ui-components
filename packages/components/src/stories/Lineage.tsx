@@ -27,24 +27,22 @@ import './stories.scss';
 
 storiesOf('Lineage', module)
     .addDecorator(withKnobs)
-    .add("LineageGraph", () => {
+    .add('LineageGraph', () => {
         return (
             <LineageGraph
-                lsid={'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2'}
-                grouping={{generations: LINEAGE_GROUPING_GENERATIONS.Specific}}
+                lsid="urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2"
+                grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
                 filters={List([new LineageFilter('type', ['Sample', 'Data'])])}
-                navigate={(node) => console.log(node)}
+                navigate={node => console.log(node)}
             />
-        )
+        );
     })
-    .add("LineageGrid", () => {
+    .add('LineageGrid', () => {
         return (
             <Panel>
                 <Panel.Body>
-                    <LineageGrid
-                        lsid={'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2'}
-                    />
+                    <LineageGrid lsid="urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2" />
                 </Panel.Body>
             </Panel>
-        )
+        );
     });

@@ -1,1903 +1,2005 @@
 {
-  "schemaName" : [ "core" ],
-  "queryName" : "core_temp_240",
-  "metaData" : {
-    "importTemplates" : [ {
-      "label" : "Download Template",
-      "url" : "/labkey/Sample%20Manager/query-exportExcelTemplate.view?schemaName=core&query.queryName=core_temp_240&headerType=DisplayFieldKey"
-    } ],
-    "root" : "rows",
-    "totalProperty" : "rowCount",
-    "description" : null,
-    "fields" : [ {
-      "fieldKey" : [ "UserId" ],
-      "description" : "The unique id of this principal.",
-      "friendlyType" : "Integer",
-      "type" : "int",
-      "jsonType" : "int",
-      "sqlType" : "USERID identity",
-      "defaultValue" : null,
-      "scale" : 10,
-      "align" : "right",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : true,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : true,
-      "userEditable" : false,
-      "calculated" : true,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : false,
-      "shownInUpdateView" : false,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 10,
-      "shortCaption" : "User Id",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "User Id"
-    }, {
-      "fieldKey" : [ "Name" ],
-      "description" : "The name of this principal.",
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "nvarchar",
-      "defaultValue" : null,
-      "scale" : 255,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : true,
-      "userEditable" : true,
-      "calculated" : true,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Name",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Name"
-    }, {
-      "fieldKey" : [ "Type" ],
-      "description" : "The type of this principal (u=user; g=project group; r=role; m=module-defined group)",
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "char",
-      "defaultValue" : null,
-      "scale" : 1,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : true,
-      "userEditable" : true,
-      "calculated" : true,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 1,
-      "shortCaption" : "Type",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Type"
-    }, {
-      "fieldKey" : [ "Container" ],
-      "description" : "The container in which this principal is defined. For users this is null, but for project groups, this is the id of the project in which the group is defined.",
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "ENTITYID",
-      "defaultValue" : null,
-      "scale" : 36,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : true,
-      "readOnly" : true,
-      "userEditable" : false,
-      "calculated" : true,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : true,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "displayField" : [ "Container", "DisplayName" ],
-      "displayFieldJsonType" : "string",
-      "inputType" : "text",
-      "cols" : 36,
-      "shortCaption" : "Container",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Container"
-    }, {
-      "fieldKey" : [ "DisplayName" ],
-      "description" : "The user's display name.",
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "nvarchar",
-      "defaultValue" : null,
-      "scale" : 64,
-      "align" : "left",
-      "sortable" : true,
-      "width" : "",
-      "autoIncrement" : false,
-      "hidden" : false,
-      "keyField" : false,
-      "mvEnabled" : false,
-      "nullable" : false,
-      "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : true,
-      "versionField" : false,
-      "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
-      "dimension" : false,
-      "measure" : false,
-      "recommendedVariable" : false,
-      "defaultScale" : "LINEAR",
-      "phi" : "NotPHI",
-      "excludeFromShifting" : false,
-      "conceptURI" : null,
-      "inputType" : "text",
-      "cols" : 40,
-      "shortCaption" : "Display Name",
-      "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Display Name"
-    } ],
-    "title" : "core_temp_240",
-    "importMessage" : null
-  },
-  "rows" : [ {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : -4
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "Developers"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : -3
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "Guests"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : -2
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "Users"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : -1
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "Administrators"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 1004
-      },
-      "DisplayName" : {
-        "value" : "cnathe"
-      },
-      "Name" : {
-        "value" : "cnathe@labkey.com"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 2300
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "troubleshooter@test.com"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 2556
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "author_user@report.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 3039
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "termsofuse_user2@termsofuse.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 3325
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "user3_issuetest@issues.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 3420
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "user1_searchtest@search.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 3635
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "brother@pipelinebvt.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 3636
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "momma@pipelinebvt.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 3887
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "nabreader1@security.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 4970
-      },
-      "DisplayName" : {
-        "value" : "admin4970"
-      },
-      "Name" : {
-        "value" : "admin@localhost.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 4971
-      },
-      "DisplayName" : {
-        "value" : "editor"
-      },
-      "Name" : {
-        "value" : "editor@localhost.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 4972
-      },
-      "DisplayName" : {
-        "value" : "author"
-      },
-      "Name" : {
-        "value" : "author@localhost.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 4973
-      },
-      "DisplayName" : {
-        "value" : "ReaderDisplayName"
-      },
-      "Name" : {
-        "value" : "reader@localhost.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 5335
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "abstractor1nlpautoassignmentresultstestproject@nlpui.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 5601
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "team_lead@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 5602
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "lab_technician@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 5603
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "study_researcher@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 5604
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "reviewer@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 6398
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "appadmin@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 6402
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "projectadmin@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 6409
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "appuser1@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 6410
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "appuser2@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 6411
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "appuser3@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 6412
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "appuser4@local.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9782
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "reader@qctrendreport.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9783
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "reader_assaydesigner@qctrendreport.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9784
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "author@qctrendreport.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9785
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "author_assaydesigner@qctrendreport.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9786
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "editor@qctrendreport.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9787
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "editor_assaydesigner@qctrendreport.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9797
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "pathology_report_user@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9798
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "non_pathology_report_user@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9825
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "investigator@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9826
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "investigator_principal@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9866
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "Simple LDAP Developers"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9867
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "One Member"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9868
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "Simple LDAP Others"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9869
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "admin@simpleldapserver.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9870
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "dev@simpleldapserver.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 9871
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "someone@simpleldapserver.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10008
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "user4nonempty@flowfoldermanagement.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10302
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "issue35894@test.com"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10643
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "ehr_user@labkey.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10644
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "ehr_finance@labkey.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10673
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "ehr_user2@labkey.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10682
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "editor_survey@survey.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10684
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "abstractor1ncitestproject@nlpui.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10685
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "absrevncitestproject@nlpui.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10686
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "abstractionadminncitestproject@nlpui.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10697
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "reader@securityapi.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10726
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "qcuser@targetedms.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10942
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "admin@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10943
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "requester@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10944
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "basicsubmitter@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10945
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "fullsubmitter@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10946
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "full_updater@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 10947
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "request_admin@ehrstudy.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11046
-      },
-      "DisplayName" : {
-        "value" : "assaydesigner11046"
-      },
-      "Name" : {
-        "value" : "assaydesigner@localhost.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11242
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "developer_user1@report.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11246
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "reader@linkedschema.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11537
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "sender@clientapi.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11538
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "recipient1@clientapi.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11539
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "recipient2@clientapi.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11540
-      },
-      "DisplayName" : {
-        "value" : "autocomplete1"
-      },
-      "Name" : {
-        "value" : "autocomplete1@clientapi.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11664
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "ops@labkey.com"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11673
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "testuser1@securityapi.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11674
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "testuser2@securityapi.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11678
-      },
-      "DisplayName" : {
-        "value" : "security-api"
-      },
-      "Name" : {
-        "value" : "security-api@clientapi.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11693
-      },
-      "DisplayName" : {
-        "value" : "admin11693"
-      },
-      "Name" : {
-        "value" : "admin@usertable.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11694
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "user_info_viewer@usertable.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11695
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "impersonated_user@usertable.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11696
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "checked_user@usertable.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11762
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "maverick@labkey.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11763
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "goose@labkey.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11771
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "pi1@security.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11772
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "labtech1@security.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11802
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "reader1@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11803
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "reader2@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11804
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "reader3@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11805
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "lab.personnel@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11806
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "inf.monitor@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11807
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "data.reviewer@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11808
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "adjudicator1@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11809
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "adjudicator2@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11810
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "adjudicator3@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11811
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "adjudicator4@adjudication.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "u"
-      },
-      "Container" : {
-        "value" : null
-      },
-      "UserId" : {
-        "value" : 11837
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "normal_user@user.test"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : "AECB96A8-EEA7-1037-A650-59E03C1CD480",
-        "displayValue" : "Sample Manager",
-        "url" : "/labkey/Sample%20Manager/project-begin.view?"
-      },
-      "UserId" : {
-        "value" : 11840
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "Users"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : "AECB96A8-EEA7-1037-A650-59E03C1CD480",
-        "displayValue" : "Sample Manager",
-        "url" : "/labkey/Sample%20Manager/project-begin.view?"
-      },
-      "UserId" : {
-        "value" : 11841
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "Reader User Group"
-      }
-    }
-  }, {
-    "data" : {
-      "Type" : {
-        "value" : "g"
-      },
-      "Container" : {
-        "value" : "AECB96A8-EEA7-1037-A650-59E03C1CD480",
-        "displayValue" : "Sample Manager",
-        "url" : "/labkey/Sample%20Manager/project-begin.view?"
-      },
-      "UserId" : {
-        "value" : 11842
-      },
-      "DisplayName" : {
-        "value" : null
-      },
-      "Name" : {
-        "value" : "Editor User Group"
-      }
-    }
-  } ],
-  "rowCount" : 94
+    "schemaName": ["core"],
+    "queryName": "core_temp_240",
+    "metaData": {
+        "importTemplates": [
+            {
+                "label": "Download Template",
+                "url": "/labkey/Sample%20Manager/query-exportExcelTemplate.view?schemaName=core&query.queryName=core_temp_240&headerType=DisplayFieldKey"
+            }
+        ],
+    'root' : 'rows',
+        "totalProperty": "rowCount",
+        "description": null,
+        "fields": [
+            {
+                "fieldKey": ["UserId"],
+                "description": "The unique id of this principal.",
+      'friendlyType' : 'Integer',
+      'type' : 'int',
+                "jsonType": "int",
+      'sqlType' : 'USERID identity',
+      'defaultValue' : null,
+      'scale' : 10,
+      'align' : 'right',
+      'sortable' : true,
+      'width' : '',
+      'autoIncrement' : true,
+                "hidden": false,
+                "keyField": false,
+                "mvEnabled": false,
+                "nullable": false,
+                "readOnly": true,
+                "userEditable": false,
+                "calculated": true,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": false,
+      'shownInUpdateView' : false,
+      'shownInDetailsView' : true,
+      'dimension' : false,
+      'measure' : false,
+      'recommendedVariable' : false,
+      'defaultScale' : 'LINEAR',
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+                "conceptURI": null,
+                "inputType": "text",
+                "cols": 10,
+                "shortCaption": "User Id",
+                "facetingBehaviorType": "AUTOMATIC",
+      'caption' : 'User Id'
+            },
+            {
+                "fieldKey": ["Name"],
+      'description' : 'The name of this principal.',
+      'friendlyType' : 'Text (String)',
+      'type' : 'string',
+      'jsonType' : 'string',
+      'sqlType' : 'nvarchar',
+      'defaultValue' : null,
+                "scale": 255,
+                "align": "left",
+                "sortable": true,
+                "width": "",
+                "autoIncrement": false,
+                "hidden": false,
+      'keyField' : false,
+      'mvEnabled' : false,
+                "nullable": true,
+                "readOnly": true,
+                "userEditable": true,
+      'calculated' : true,
+      'versionField' : false,
+      'selectable' : true,
+      'shownInInsertView' : true,
+      'shownInUpdateView' : true,
+                "shownInDetailsView": true,
+                "dimension": false,
+                "measure": false,
+                "recommendedVariable": false,
+                "defaultScale": "LINEAR",
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+      'conceptURI' : null,
+                "inputType": "text",
+                "cols": 40,
+      'shortCaption' : 'Name',
+      'facetingBehaviorType' : 'AUTOMATIC',
+      'caption' : 'Name'
+            },
+            {
+      'fieldKey' : [ 'Type' ],
+                "description": "The type of this principal (u=user; g=project group; r=role; m=module-defined group)",
+      'friendlyType' : 'Text (String)',
+                "type": "string",
+                "jsonType": "string",
+                "sqlType": "char",
+                "defaultValue": null,
+                "scale": 1,
+                "align": "left",
+      'sortable' : true,
+      'width' : '',
+                "autoIncrement": false,
+      'hidden' : false,
+      'keyField' : false,
+      'mvEnabled' : false,
+      'nullable' : true,
+      'readOnly' : true,
+      'userEditable' : true,
+                "calculated": true,
+                "versionField": false,
+                "selectable": true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+      'dimension' : false,
+      'measure' : false,
+                "recommendedVariable": false,
+      'defaultScale' : 'LINEAR',
+      'phi' : 'NotPHI',
+      'excludeFromShifting' : false,
+      'conceptURI' : null,
+      'inputType' : 'text',
+      'cols' : 1,
+                "shortCaption": "Type",
+                "facetingBehaviorType": "AUTOMATIC",
+                "caption": "Type"
+            },
+            {
+                "fieldKey": ["Container"],
+                "description": "The container in which this principal is defined. For users this is null, but for project groups, this is the id of the project in which the group is defined.",
+      'friendlyType' : 'Text (String)',
+                "type": "string",
+                "jsonType": "string",
+                "sqlType": "ENTITYID",
+                "defaultValue": null,
+      'scale' : 36,
+      'align' : 'left',
+      'sortable' : true,
+      'width' : '',
+      'autoIncrement' : false,
+                "hidden": false,
+                "keyField": false,
+                "mvEnabled": false,
+                "nullable": true,
+                "readOnly": true,
+                "userEditable": false,
+                "calculated": true,
+      'versionField' : false,
+                "selectable": true,
+                "shownInInsertView": true,
+      'shownInUpdateView' : true,
+      'shownInDetailsView' : true,
+      'dimension' : true,
+      'measure' : false,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+                "phi": "NotPHI",
+                "excludeFromShifting": false,
+                "conceptURI": null,
+                "displayField": ["Container", "DisplayName"],
+                "displayFieldJsonType": "string",
+      'inputType' : 'text',
+                "cols": 36,
+                "shortCaption": "Container",
+      'facetingBehaviorType' : 'AUTOMATIC',
+      'caption' : 'Container'
+            },
+            {
+      'fieldKey' : [ 'DisplayName' ],
+      'description' : "The user's display name.",
+                "friendlyType": "Text (String)",
+                "type": "string",
+                "jsonType": "string",
+                "sqlType": "nvarchar",
+                "defaultValue": null,
+                "scale": 64,
+                "align": "left",
+      'sortable' : true,
+                "width": "",
+                "autoIncrement": false,
+      'hidden' : false,
+      'keyField' : false,
+      'mvEnabled' : false,
+      'nullable' : false,
+      'readOnly' : false,
+                "userEditable": true,
+                "calculated": true,
+                "versionField": false,
+                "selectable": true,
+                "shownInInsertView": true,
+                "shownInUpdateView": true,
+                "shownInDetailsView": true,
+                "dimension": false,
+      'measure' : false,
+      'recommendedVariable' : false,
+                "defaultScale": "LINEAR",
+      'phi' : 'NotPHI',
+      'excludeFromShifting' : false,
+      'conceptURI' : null,
+      'inputType' : 'text',
+      'cols' : 40,
+      'shortCaption' : 'Display Name',
+                "facetingBehaviorType": "AUTOMATIC",
+                "caption": "Display Name"
+            }
+        ],
+        "title": "core_temp_240",
+        "importMessage": null
+    },
+  'rows' : [ {
+    'data' : {
+      'Type' : {
+                    "value": "g"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : -4
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "Developers"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "g"
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": -3
+                },
+                "DisplayName": {
+                    "value": null
+                },
+      'Name' : {
+        'value' : 'Guests'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "g"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": -2
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "Users"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "g"
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": -1
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+                    "value": "Administrators"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 1004
+                },
+      'DisplayName' : {
+        'value' : 'cnathe'
+                },
+      'Name' : {
+        'value' : 'cnathe@labkey.com'
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 2300
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "troubleshooter@test.com"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+        'value' : null
+                },
+                "UserId": {
+                    "value": 2556
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'author_user@report.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 3039
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "termsofuse_user2@termsofuse.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 3325
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'user3_issuetest@issues.test'
+                }
+            }
+        },
+        {
+            "data": {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 3420
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "user1_searchtest@search.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+        'value' : 3635
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "brother@pipelinebvt.test"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 3636
+                },
+                "DisplayName": {
+                    "value": null
+                },
+      'Name' : {
+        'value' : 'momma@pipelinebvt.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+      'UserId' : {
+        'value' : 3887
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+                "Name": {
+                    "value": "nabreader1@security.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 4970
+                },
+                "DisplayName": {
+                    "value": "admin4970"
+                },
+      'Name' : {
+        'value' : 'admin@localhost.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 4971
+                },
+                "DisplayName": {
+        'value' : 'editor'
+                },
+      'Name' : {
+                    "value": "editor@localhost.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+        'value' : 4972
+                },
+      'DisplayName' : {
+                    "value": "author"
+                },
+                "Name": {
+                    "value": "author@localhost.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 4973
+                },
+                "DisplayName": {
+        'value' : 'ReaderDisplayName'
+                },
+      'Name' : {
+        'value' : 'reader@localhost.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+      'UserId' : {
+        'value' : 5335
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "abstractor1nlpautoassignmentresultstestproject@nlpui.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 5601
+                },
+                "DisplayName": {
+                    "value": null
+                },
+      'Name' : {
+        'value' : 'team_lead@local.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 5602
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "lab_technician@local.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+        'value' : 5603
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+                    "value": "study_researcher@local.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 5604
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "reviewer@local.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 6398
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "appadmin@local.test"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 6402
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'projectadmin@local.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 6409
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+                "Name": {
+                    "value": "appuser1@local.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 6410
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'appuser2@local.test'
+                }
+            }
+        },
+        {
+            "data": {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 6411
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "appuser3@local.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+      'UserId' : {
+        'value' : 6412
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "appuser4@local.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 9782
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'reader@qctrendreport.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+      'UserId' : {
+        'value' : 9783
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "reader_assaydesigner@qctrendreport.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 9784
+                },
+                "DisplayName": {
+                    "value": null
+                },
+      'Name' : {
+        'value' : 'author@qctrendreport.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 9785
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "author_assaydesigner@qctrendreport.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+        'value' : 9786
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+                    "value": "editor@qctrendreport.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 9787
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+        'value' : 'editor_assaydesigner@qctrendreport.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 9797
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "pathology_report_user@ehrstudy.test"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 9798
+                },
+                "DisplayName": {
+                    "value": null
+                },
+      'Name' : {
+                    "value": "non_pathology_report_user@ehrstudy.test"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 9825
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "investigator@ehrstudy.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 9826
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+                    "value": "investigator_principal@ehrstudy.test"
+                }
+            }
+        },
+        {
+            "data": {
+      'Type' : {
+        'value' : 'g'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 9866
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+        'value' : 'Simple LDAP Developers'
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "g"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 9867
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "One Member"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'g'
+                },
+      'Container' : {
+        'value' : null
+                },
+                "UserId": {
+                    "value": 9868
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'Simple LDAP Others'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+      'UserId' : {
+        'value' : 9869
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "admin@simpleldapserver.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 9870
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'dev@simpleldapserver.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 9871
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "someone@simpleldapserver.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+        'value' : 10008
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "user4nonempty@flowfoldermanagement.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 10302
+                },
+                "DisplayName": {
+                    "value": null
+                },
+      'Name' : {
+        'value' : 'issue35894@test.com'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 10643
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "ehr_user@labkey.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 10644
+                },
+                "DisplayName": {
+                    "value": null
+                },
+      'Name' : {
+        'value' : 'ehr_finance@labkey.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 10673
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "ehr_user2@labkey.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 10682
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+                    "value": "editor_survey@survey.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 10684
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+        'value' : 'abstractor1ncitestproject@nlpui.test'
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 10685
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "absrevncitestproject@nlpui.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 10686
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+                    "value": "abstractionadminncitestproject@nlpui.test"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 10697
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "reader@securityapi.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 10726
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'qcuser@targetedms.test'
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 10942
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "admin@ehrstudy.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+        'value' : 10943
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "requester@ehrstudy.test"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 10944
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'basicsubmitter@ehrstudy.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 10945
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+                "Name": {
+                    "value": "fullsubmitter@ehrstudy.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 10946
+                },
+                "DisplayName": {
+                    "value": null
+                },
+      'Name' : {
+        'value' : 'full_updater@ehrstudy.test'
+                }
+            }
+        },
+        {
+            "data": {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 10947
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "request_admin@ehrstudy.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+        'value' : 11046
+                },
+      'DisplayName' : {
+                    "value": "assaydesigner11046"
+                },
+                "Name": {
+                    "value": "assaydesigner@localhost.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 11242
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+        'value' : 'developer_user1@report.test'
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+      'UserId' : {
+        'value' : 11246
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "reader@linkedschema.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 11537
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'sender@clientapi.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 11538
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "recipient1@clientapi.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 11539
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+                    "value": "recipient2@clientapi.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 11540
+                },
+      'DisplayName' : {
+        'value' : 'autocomplete1'
+                },
+      'Name' : {
+                    "value": "autocomplete1@clientapi.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 11664
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "ops@labkey.com"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+        'value' : null
+                },
+                "UserId": {
+                    "value": 11673
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'testuser1@securityapi.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 11674
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "testuser2@securityapi.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 11678
+                },
+                "DisplayName": {
+                    "value": "security-api"
+                },
+                "Name": {
+                    "value": "security-api@clientapi.test"
+                }
+            }
+        },
+        {
+            "data": {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 11693
+                },
+                "DisplayName": {
+        'value' : 'admin11693'
+                },
+      'Name' : {
+                    "value": "admin@usertable.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 11694
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "user_info_viewer@usertable.test"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 11695
+                },
+                "DisplayName": {
+        'value' : null
+                },
+                "Name": {
+        'value' : 'impersonated_user@usertable.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+      'UserId' : {
+        'value' : 11696
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "checked_user@usertable.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "u"
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 11762
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'maverick@labkey.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 11763
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "goose@labkey.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+        'value' : 11771
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "pi1@security.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 11772
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+        'value' : 'labtech1@security.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 11802
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "reader1@adjudication.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'u'
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 11803
+                },
+                "DisplayName": {
+                    "value": null
+                },
+      'Name' : {
+        'value' : 'reader2@adjudication.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 11804
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "reader3@adjudication.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 11805
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+                    "value": "lab.personnel@adjudication.test"
+                }
+            }
+        },
+        {
+            "data": {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 11806
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+        'value' : 'inf.monitor@adjudication.test'
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+        'value' : 11807
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "data.reviewer@adjudication.test"
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+      'Container' : {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 11808
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'adjudicator1@adjudication.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+                    "value": "u"
+                },
+                "Container": {
+                    "value": null
+                },
+      'UserId' : {
+        'value' : 11809
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+                "Name": {
+                    "value": "adjudicator2@adjudication.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+                    "value": 11810
+                },
+                "DisplayName": {
+                    "value": null
+                },
+                "Name": {
+        'value' : 'adjudicator3@adjudication.test'
+                }
+            }
+        },
+        {
+    'data' : {
+      'Type' : {
+        'value' : 'u'
+                },
+                "Container": {
+                    "value": null
+                },
+                "UserId": {
+                    "value": 11811
+                },
+                "DisplayName": {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "adjudicator4@adjudication.test"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "u"
+                },
+                "Container": {
+        'value' : null
+                },
+      'UserId' : {
+        'value' : 11837
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "normal_user@user.test"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'g'
+                },
+      'Container' : {
+                    "value": "AECB96A8-EEA7-1037-A650-59E03C1CD480",
+                    "displayValue": "Sample Manager",
+                    "url": "/labkey/Sample%20Manager/project-begin.view?"
+                },
+                "UserId": {
+        'value' : 11840
+                },
+      'DisplayName' : {
+                    "value": null
+                },
+                "Name": {
+                    "value": "Users"
+                }
+            }
+        },
+        {
+    'data' : {
+                "Type": {
+        'value' : 'g'
+                },
+      'Container' : {
+        'value' : 'AECB96A8-EEA7-1037-A650-59E03C1CD480',
+                    "displayValue": "Sample Manager",
+                    "url": "/labkey/Sample%20Manager/project-begin.view?"
+                },
+      'UserId' : {
+        'value' : 11841
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "Reader User Group"
+                }
+            }
+        },
+        {
+            "data": {
+                "Type": {
+                    "value": "g"
+                },
+                "Container": {
+        'value' : 'AECB96A8-EEA7-1037-A650-59E03C1CD480',
+                    "displayValue": "Sample Manager",
+                    "url": "/labkey/Sample%20Manager/project-begin.view?"
+                },
+                "UserId": {
+                    "value": 11842
+                },
+      'DisplayName' : {
+        'value' : null
+                },
+      'Name' : {
+                    "value": "Editor User Group"
+                }
+            }
+        }
+    ],
+  'rowCount' : 94
 }

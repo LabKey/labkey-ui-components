@@ -20,39 +20,48 @@ import './stories.scss';
 import { SampleDeleteConfirmModal } from '..';
 
 storiesOf('SampleDeleteConfirmModal', module)
-    .add("Loading", () => {
-        return <SampleDeleteConfirmModal
-            selectionKey={'nonesuch'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
-    })
-    .add("Cannot delete any", () => {
-        return <SampleDeleteConfirmModal
-            selectionKey={'deleteNone'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
+    .add('Loading', () => {
+        return (
+            <SampleDeleteConfirmModal
+                selectionKey="nonesuch"
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
             />
+        );
     })
-    .add("Can delete one", () => {
-        return <SampleDeleteConfirmModal
-            selectionKey={'deleteOne'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
+    .add('Cannot delete any', () => {
+        return (
+            <SampleDeleteConfirmModal
+                selectionKey="deleteNone"
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     })
-    .add("Can delete all", () => {
-        return <SampleDeleteConfirmModal
-            selectionKey={'deleteAll'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
+    .add('Can delete one', () => {
+        return (
+            <SampleDeleteConfirmModal
+                selectionKey="deleteOne"
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     })
-    .add("Can delete some", () => {
-        return <SampleDeleteConfirmModal
-            selectionKey={'deleteSome'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
+    .add('Can delete all', () => {
+        return (
+            <SampleDeleteConfirmModal
+                selectionKey="deleteAll"
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     })
-;
+    .add('Can delete some', () => {
+        return (
+            <SampleDeleteConfirmModal
+                selectionKey="deleteSome"
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
+    });

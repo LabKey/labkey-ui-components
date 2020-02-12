@@ -1,20 +1,16 @@
 {
-  "cellMessages": {
-
-  },
-  "cellValues": {
-
-  },
-  "colCount": 5,
-  "id": "insert-samples|samples\/sample set 2",
-  "isPasting": false,
-  "focusColIdx": -1,
-  "focusRowIdx": -1,
-  "numPastedRows": 0,
-  "rowCount": 1,
-  "selectedColIdx": -1,
-  "selectedRowIdx": -1,
-  "selectionCells": [
+    "cellMessages": {},
+    "cellValues": {},
+    "colCount": 5,
+  'id': 'insert-samples|samples\/sample set 2',
+  'isPasting': false,
+  'focusColIdx': -1,
+    "focusRowIdx": -1,
+    "numPastedRows": 0,
+    "rowCount": 1,
+    "selectedColIdx": -1,
+    "selectedRowIdx": -1,
+  'selectionCells': [
 
   ]
 }

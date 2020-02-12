@@ -17,38 +17,45 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+
 import { SearchResultCard } from '../components/search/SearchResultCard';
 import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
 import { SearchResultsModel } from '../components/search/models';
 import entitiesJSON from '../test/data/searchResults.json';
-import { ICON_URL } from "./mock";
+
+import { ICON_URL } from './mock';
 import './stories.scss';
 
 storiesOf('SearchResults', module)
     .addDecorator(withKnobs)
-    .add("search result card", () => {
+    .add('search result card', () => {
         return (
             <SearchResultCard
                 iconUrl={ICON_URL}
                 title={text('title', 'Sample - 20190101.123')}
                 summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
                 url={text('url', '#samples')}
-                data={Map(fromJS({sampleSet: {name: 'Sample Type 1'}}))}
+                data={Map(fromJS({ sampleSet: { name: 'Sample Type 1' } }))}
             />
-        )
+        );
     })
-    .add("search result panel", () => {
+    .add('search result panel', () => {
         const model = SearchResultsModel.create({
             isLoading: boolean('isLoading', false),
             error: text('error', ''),
-            entities: Map(fromJS(entitiesJSON))
+            entities: Map(fromJS(entitiesJSON)),
         });
 
         return (
             <SearchResultsPanel
                 iconUrl={ICON_URL}
                 model={model}
-                useSampleType={boolean('useSampleType', false) /*Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps*/ }
+                useSampleType={
+                    boolean(
+                        'useSampleType',
+                        false
+                    ) /* Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps*/
+                }
             />
-        )
+        );
     });

@@ -44,9 +44,9 @@ storiesOf('SubMenuItem', module)
             const disableItem = boolean('Disable second item?', false, disabledGroup);
             const disabledItemMsg = text('Disabled item text', undefined, disabledGroup);
             if (disableItem) {
-                allItems[1].disabled = true;
+                allItems[1]['disabled'] = true;
                 if (disabledItemMsg) {
-                    allItems[1].disabledMsg = disabledItemMsg;
+                    allItems[1]['disabledMsg'] = disabledItemMsg;
                 }
             }
         }

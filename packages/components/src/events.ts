@@ -26,12 +26,12 @@ export function cancelEvent(event: React.SyntheticEvent<any>): void {
 
 export function getPasteValue(event: React.ClipboardEvent<any>): string {
     if (isEvent(event)) {
-        return (event.clipboardData || window.clipboardData).getData('text');
+        return (event.clipboardData || window['clipboardData']).getData('text');
     }
 }
 
 export function isCopy(event: React.KeyboardEvent<any>): boolean {
-    return isEvent(event) && event.keyCode === KEYS.C && (event.ctrlKey || event.metaKey);
+    return isEvent(event) && (event.keyCode === KEYS.C && (event.ctrlKey || event.metaKey));
 }
 
 function isEvent(event: React.SyntheticEvent<any>): boolean {
@@ -39,16 +39,16 @@ function isEvent(event: React.SyntheticEvent<any>): boolean {
 }
 
 export function isPaste(event: React.KeyboardEvent<any>): boolean {
-    return isEvent(event) && event.keyCode === KEYS.V && (event.ctrlKey || event.metaKey);
+    return isEvent(event) && (event.keyCode === KEYS.V && (event.ctrlKey || event.metaKey));
 }
 
 export function isSelectAll(event: React.KeyboardEvent<any>): boolean {
-    return isEvent(event) && event.keyCode === KEYS.A && (event.ctrlKey || event.metaKey);
+    return isEvent(event) && (event.keyCode === KEYS.A && (event.ctrlKey || event.metaKey));
 }
 
 export function setCopyValue(event: any, value: string): boolean {
     if (isEvent(event)) {
-        (event.clipboardData || window.clipboardData).setData('text/plain', value);
+        (event.clipboardData || window['clipboardData']).setData('text/plain', value);
         return true;
     }
 

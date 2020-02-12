@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 import React from 'react';
-
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface AddEntityButtonProps {
-    buttonClass?: string;
-    containerClass?: string;
-    entity?: string;
-    onClick: () => void;
-    helperTitle?: string;
-    helperBody?: any;
+    buttonClass?: string
+    containerClass?: string
+    entity?: string
+    onClick: () => void
+    helperTitle?:string
+    helperBody?: any
 }
 
 export class AddEntityButton extends React.Component<AddEntityButtonProps, any> {
+
     static defaultProps = {
         containerClass: 'form-group',
         helperTitle: 'More Info',
@@ -39,9 +39,9 @@ export class AddEntityButton extends React.Component<AddEntityButtonProps, any> 
             <div className={containerClass}>
                 <div className={buttonClass}>
                     <span className="container--action-button btn btn-default" onClick={onClick}>
-                        <i className="fa fa-plus-circle container--addition-icon" /> Add {entity}
+                        <i className="fa fa-plus-circle container--addition-icon"/> Add {entity}
                     </span>
-                    {helperBody ? <LabelHelpTip body={helperBody} title={helperTitle} /> : ''}
+                    {helperBody ? <LabelHelpTip body={helperBody} title={helperTitle}/> : '' }
                 </div>
             </div>
         );

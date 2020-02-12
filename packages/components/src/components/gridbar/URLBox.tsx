@@ -35,28 +35,31 @@ const urlActions = {
     filter: FilterAction,
     search: SearchAction,
     sort: SortAction,
-    view: ViewAction,
+    view: ViewAction
 };
 
 function isLocationEqual(locationA: Location, locationB: Location): boolean {
-    return locationA && locationB && locationA.pathname === locationB.pathname && locationA.search === locationB.search;
+    return locationA && locationB &&
+        locationA.pathname === locationB.pathname &&
+        locationA.search === locationB.search;
 }
 
 interface URLBoxProps {
-    actions?: string[];
-    queryModel: QueryGridModel;
+    actions?: Array<string>
+    queryModel: QueryGridModel
 }
 
 interface URLBoxState {
-    changeLock?: boolean;
-    location: Location;
+    changeLock?: boolean,
+    location: Location
 }
 
 export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
+
     static defaultProps = {
         // TODO: There is only one consumer of URLBox (QueryGridPanel) and it never overrides this. Does it need to be
         //  a prop? Probably not. We can probably simplify some code in this component if we remove it.
-        actions: ['filter', 'search', 'sort', 'view'],
+        actions: ['filter', 'search', 'sort', 'view']
     };
 
     constructor(props: URLBoxProps) {
@@ -69,7 +72,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
         this.state = {
             changeLock: false,
-            location: getLocation(),
+            location: getLocation()
         };
     }
 
@@ -90,27 +93,24 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         return queryModel.getDisplayColumns();
     }
 
-    onOmniBoxChange(actionValueCollection: ActionValueCollection[], boxActions: Action[]) {
+    onOmniBoxChange(actionValueCollection: Array<ActionValueCollection>, boxActions: Array<Action>) {
         const queryModel = this.getQueryModel();
         const location = getLocation();
 
-        const params = Map<string, string>().asMutable();
+        let params = Map<string, string>().asMutable();
 
         if (actionValueCollection.length > 0) {
-            for (let i = 0; i < actionValueCollection.length; i++) {
-                const actionParams = actionValueCollection[i].action.buildParams(actionValueCollection[i].values);
-                for (let p = 0; p < actionParams.length; p++) {
-                    params.set(
-                        encodeURIComponent(actionParams[p].paramKey),
-                        encodeURIComponent(actionParams[p].paramValue)
-                    );
+            for (let i=0; i < actionValueCollection.length; i++) {
+                let actionParams = actionValueCollection[i].action.buildParams(actionValueCollection[i].values);
+                for (let p=0; p < actionParams.length; p++) {
+                    params.set(encodeURIComponent(actionParams[p].paramKey), encodeURIComponent(actionParams[p].paramValue));
                 }
             }
         }
 
         if (location && location.query) {
             location.query.map((value, key) => {
-                for (let i = 0; i < boxActions.length; i++) {
+                for (let i=0; i < boxActions.length; i++) {
                     if (!params.has(key) && boxActions[i].matchParam(key, value)) {
                         params.set(key, undefined);
                     }
@@ -129,41 +129,39 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         //  version of it. It is entirely plausible that changeLock is still false, by the time we call updateURL, and
         //  even by the time we set changeLock to false again.
         this.setState({
-            changeLock: true,
+            changeLock: true
         });
 
         replaceParameters(location, params.asImmutable());
 
         this.setState({
             changeLock: false,
-            location: getLocation(),
+            location: getLocation()
         });
     }
 
-    mapParamsToActionValues(): { actions: Action[]; values: ActionValue[] } {
+    mapParamsToActionValues(): {actions: Array<Action>, values: Array<ActionValue>} {
         const queryModel = this.getQueryModel();
         const location = getLocation();
         const urlPrefix = queryModel ? queryModel.urlPrefix : undefined;
         const queryInfo = queryModel ? queryModel.queryInfo : undefined;
 
-        const actions: Action[] = [];
-        const actionValues = [];
-        const actionsProp = this.props.actions;
+        let actions: Array<Action> = [];
+        let actionValues = [];
+        let actionsProp = this.props.actions;
 
         // setup known URL actions
-        for (let i = 0; i < actionsProp.length; i++) {
+        for (let i=0; i < actionsProp.length; i++) {
             if (actionsProp[i].toLowerCase() in urlActions) {
                 const actionName = actionsProp[i].toLowerCase();
-                if (actionName === ViewAction.NAME && queryInfo) {
-                    const { views } = queryInfo;
-                    if (
-                        !queryModel.showViewSelector ||
-                        (views && views.filter(v => !v.name.startsWith('~~')).size === 0)
-                    )
+                if (actionName === ViewAction.NAME && queryInfo)
+                {
+                    const {views} = queryInfo;
+                    if (!queryModel.showViewSelector || (views && views.filter(v => !v.name.startsWith('~~')).size === 0))
                         continue;
                 }
 
-                const urlAction = urlActions[actionName];
+                let urlAction = urlActions[actionName];
                 actions.push(new urlAction(this.requestColumns, urlPrefix, this.requestModel));
             }
         }
@@ -171,32 +169,32 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         // match each parameter against an action
         if (location && location.query) {
             location.query.map((value: any, key) => {
-                let paramValues: string[];
+                let paramValues: Array<string>;
 
                 if (value instanceof Array) {
                     paramValues = value;
-                } else {
+                }
+                else {
                     paramValues = [value];
                 }
 
-                for (let a = 0; a < actions.length; a++) {
-                    for (let p = 0; p < paramValues.length; p++) {
+                for (let a=0; a < actions.length; a++) {
+                    for (let p=0; p < paramValues.length; p++) {
                         const decodedParamVals = decodeURIComponent(paramValues[p]);
                         if (actions[a].matchParam(key, decodedParamVals)) {
-                            const values = actions[a].parseParam(key, decodedParamVals, this.getColumns(true));
+                            let values = actions[a].parseParam(key, decodedParamVals, this.getColumns(true));
 
-                            for (let v = 0; v < values.length; v++) {
+                            for (let v=0; v < values.length; v++) {
                                 if (typeof values[v] === 'string') {
                                     actionValues.push({
                                         action: actions[a],
-                                        value: values[v],
-                                    });
-                                } else {
-                                    actionValues.push(
-                                        Object.assign({}, values[v], {
-                                            action: actions[a],
-                                        })
-                                    );
+                                        value: values[v]
+                                    })
+                                }
+                                else {
+                                    actionValues.push(Object.assign({}, values[v], {
+                                        action: actions[a]
+                                    }));
                                 }
                             }
                         }
@@ -207,8 +205,8 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
         return {
             actions,
-            values: actionValues,
-        };
+            values: actionValues
+        }
     }
 
     requestColumns(allColumns?: boolean): Promise<List<QueryColumn>> {
@@ -237,6 +235,6 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
                 values={values}
                 disabled={queryModel && queryModel.isError}
             />
-        );
+        )
     }
 }

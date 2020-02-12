@@ -17,21 +17,20 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { Input } from 'formsy-react-components';
 
-import { QueryColumn } from '../base/models/model';
-
-import { generateId } from '../../util/utils';
-
 import { LabelOverlay } from './LabelOverlay';
 import { SelectInput } from './input/SelectInput';
+import { QueryColumn } from '../base/models/model';
+import { generateId } from '../../util/utils';
 
 interface AliasInputProps {
-    col: QueryColumn;
-    editing?: boolean;
-    value?: string;
-    allowDisable?: boolean;
+    col: QueryColumn
+    editing?: boolean
+    value?: string
+    allowDisable?: boolean
 }
 
 class AliasInput extends React.Component<AliasInputProps, any> {
+
     _id: string;
 
     constructor(props: AliasInputProps) {
@@ -43,78 +42,54 @@ class AliasInput extends React.Component<AliasInputProps, any> {
     render() {
         const { allowDisable, col, editing, value } = this.props;
 
-        return (
-            <SelectInput
-                allowDisable={allowDisable}
-                showLabel={true}
-                addLabelText="Press enter to add '{label}'"
-                allowCreate={true}
-                id={this._id}
-                inputClass={editing ? 'col-sm-12' : undefined}
-                joinValues={true}
-                label={col.caption}
-                required={col.required}
-                multiple={true}
-                name={col.name}
-                noResultsText="Enter alias name(s)"
-                placeholder="Enter alias name(s)"
-                promptTextCreator={(text: string) => `Create alias "${text}"`}
-                saveOnBlur={true}
-                value={value}
-            />
-        );
+        return <SelectInput
+            allowDisable={allowDisable}
+            showLabel={true}
+            addLabelText="Press enter to add '{label}'"
+            allowCreate={true}
+            id={this._id}
+            inputClass={editing ? 'col-sm-12' : undefined}
+            joinValues={true}
+            label={col.caption}
+            required={col.required}
+            multiple={true}
+            name={col.name}
+            noResultsText="Enter alias name(s)"
+            placeholder="Enter alias name(s)"
+            promptTextCreator={(text: string) => `Create alias "${text}"`}
+            saveOnBlur={true}
+            value={value}
+        />;
     }
 }
 
 export function resolveRenderer(column: QueryColumn) {
+
     let inputRenderer;
 
     if (column && column.inputRenderer) {
         switch (column.inputRenderer.toLowerCase()) {
             case 'experimentalias':
-                inputRenderer = (
-                    col: QueryColumn,
-                    key: any,
-                    value?: string,
-                    editing?: boolean,
-                    allowFieldDisable = false
-                ) => {
-                    return (
-                        <AliasInput
-                            col={col}
-                            editing={editing}
-                            key={key}
-                            value={value}
-                            allowDisable={allowFieldDisable}
-                        />
-                    );
+                inputRenderer = (col: QueryColumn, key: any, value?: string, editing?: boolean, allowFieldDisable: boolean = false) => {
+                    return <AliasInput col={col} editing={editing} key={key} value={value} allowDisable={allowFieldDisable}/>;
                 };
                 break;
             case 'appendunitsinput':
-                inputRenderer = (
-                    col: QueryColumn,
-                    key: any,
-                    val?: string,
-                    editing?: boolean,
-                    allowFieldDisable = false
-                ) => {
-                    return (
-                        <Input
-                            allowDisable={allowFieldDisable}
-                            addonAfter={<span>{col.units}</span>}
-                            changeDebounceInterval={0}
-                            elementWrapperClassName={editing ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}
-                            id={col.name}
-                            key={key}
-                            label={<LabelOverlay column={col} inputId={col.name} />}
-                            labelClassName="control-label text-left"
-                            name={col.name}
-                            required={col.required}
-                            type="text"
-                            value={val}
-                            validations="isNumericWithError"
-                        />
-                    );
+                inputRenderer = (col: QueryColumn, key: any, val?: string, editing?: boolean, allowFieldDisable: boolean = false) => {
+                    return <Input
+                                allowDisable={allowFieldDisable}
+                                addonAfter={<span>{col.units}</span>}
+                                changeDebounceInterval={0}
+                                elementWrapperClassName={editing ? [{"col-sm-9": false}, "col-sm-12"] : undefined}
+                                id={col.name}
+                                key={key}
+                                label={<LabelOverlay column={col} inputId={col.name}/>}
+                                labelClassName="control-label text-left"
+                                name={col.name}
+                                required={col.required}
+                                type="text"
+                                value={val}
+                                validations='isNumericWithError'/>;
                 };
                 break;
             default:
@@ -126,28 +101,28 @@ export function resolveRenderer(column: QueryColumn) {
 }
 
 function findValue(data: Map<string, any>, lookup?: boolean) {
-    return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value');
+    return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')
 }
 
-export function resolveDetailFieldValue(data: any, lookup?: boolean): string | string[] {
+export function resolveDetailFieldValue(data: any, lookup?: boolean): string | Array<string> {
     let value;
 
     if (data) {
         if (List.isList(data) && data.size) {
-            value = data
-                .map(d => {
-                    if (d.has('formattedValue')) {
-                        return d.get('formattedValue');
-                    }
+            value = data.map(d => {
+                if (d.has('formattedValue')) {
+                    return d.get('formattedValue');
+                }
 
-                    const o = findValue(d, lookup);
-                    return o !== null && o !== undefined ? o : undefined;
-                })
-                .toArray();
-        } else if (data.has('formattedValue')) {
+                let o = findValue(d, lookup);
+                return o !== null && o !== undefined ? o : undefined;
+            }).toArray();
+        }
+        else if (data.has('formattedValue')) {
             value = data.get('formattedValue');
-        } else {
-            const o = findValue(data, lookup);
+        }
+        else {
+            let o = findValue(data, lookup);
             value = o !== null && o !== undefined ? o : undefined;
         }
     }

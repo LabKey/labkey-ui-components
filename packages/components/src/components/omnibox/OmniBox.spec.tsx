@@ -27,48 +27,46 @@ export class HelloWorldAction implements Action {
     optionalLabel: 'world';
     param = 'hello';
 
-    completeAction(tokens: string[]): Promise<Value> {
+    completeAction(tokens: Array<string>): Promise<Value> {
         return Promise.resolve({
             value: 'world',
-            param: 'hello',
+            param: 'hello'
         });
-    }
+    };
 
-    fetchOptions(tokens: string[]): Promise<ActionOption[]> {
+    fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
         const option: ActionOption = {
-            label: 'World!!!',
+            label: 'World!!!'
         };
 
         return Promise.resolve([option]);
-    }
+    };
 
-    buildParams(actionValues: ActionValue[]): Array<{ paramKey: string; paramValue: string }> {
-        let value = '',
-            sep = '';
+    buildParams(actionValues: Array<ActionValue>): Array<{paramKey: string; paramValue: string}> {
+        let value = '', sep = '';
 
-        for (let i = 0; i < actionValues.length; i++) {
+        for (let i=0; i < actionValues.length; i++) {
             value += sep + actionValues[i].value;
             sep = ';';
         }
 
-        return [
-            {
-                paramKey: this.param,
-                paramValue: value,
-            },
-        ];
+        return [{
+            paramKey: this.param,
+            paramValue: value
+        }];
     }
 
     matchParam(paramKey: string, paramValue: any): boolean {
         return paramKey && paramKey.toLowerCase() === this.param;
     }
 
-    parseParam(paramKey: string, paramValue: any): string[] | Value[] {
+    parseParam(paramKey: string, paramValue: any): Array<string> | Array<Value> {
         return paramValue.split(';');
     }
 }
 
 describe('OmniBox component', () => {
+
     const actions = [new HelloWorldAction()];
 
     test('requires only an action', () => {
@@ -84,9 +82,9 @@ describe('OmniBox component', () => {
 
         expect(openControlElement.length).toEqual(1);
 
-        openControlElement.simulate('mousedown', { button: 0 });
+        openControlElement.simulate('mousedown', {button: 0});
 
-        const openState: OmniBoxState = openComponent.state();
+        const openState : OmniBoxState = openComponent.state();
         expect(openState.isOpen).toBe(true);
         expect(openState.options.length).toBe(1);
         // False
@@ -95,8 +93,8 @@ describe('OmniBox component', () => {
         const closedControlElement = closedComponent.find('.OmniBox-control');
 
         expect(closedControlElement.length).toEqual(1);
-        const closedState: OmniBoxState = closedComponent.state();
-        closedControlElement.simulate('mousedown', { button: 0 });
+        const closedState : OmniBoxState = closedComponent.state();
+        closedControlElement.simulate('mousedown', {button: 0});
 
         expect(closedState.isOpen).toBe(false);
         expect(closedState.options.length).toBe(0);
@@ -104,6 +102,7 @@ describe('OmniBox component', () => {
 });
 
 describe('OmniBox stripKeyword', () => {
+
     const strip = OmniBox.stripKeyword;
     const action = new HelloWorldAction();
     const empty = '';
@@ -120,15 +119,18 @@ describe('OmniBox stripKeyword', () => {
 });
 
 describe('OmniBox stripLastToken', () => {
+
     const parser = OmniBox.stripLastToken;
     const empty = '';
     test('handles empty', () => {
+
         expect(parser(undefined)).toBe(empty);
         expect(parser(null)).toBe(empty);
         expect(parser('')).toBe(empty);
     });
 
     test('handles last space', () => {
+
         expect(parser(' ')).toEqual(' ');
         expect(parser('filter ')).toEqual('filter ');
         expect(parser('filter "Molecule Set" ')).toEqual('filter "Molecule Set" ');
@@ -145,6 +147,7 @@ describe('OmniBox stripLastToken', () => {
 });
 
 describe('OmniBox tokenizer', () => {
+
     const tokenizer = OmniBox.defaultTokenizer;
     const emptyArray = [];
     test('handles empty', () => {
@@ -154,31 +157,20 @@ describe('OmniBox tokenizer', () => {
     });
 
     test('parses double quotes', () => {
+
         expect(tokenizer('"')).toEqual(emptyArray);
         expect(tokenizer('""')).toEqual(emptyArray);
         expect(tokenizer(' """')).toEqual(emptyArray);
         expect(tokenizer('"""" ')).toEqual(emptyArray);
         expect(tokenizer(' """"" ')).toEqual(emptyArray);
 
-        expect(tokenizer('the arsonist had "oddly" shaped feet')).toEqual([
-            'the',
-            'arsonist',
-            'had',
-            'oddly',
-            'shaped',
-            'feet',
-        ]);
+        expect(tokenizer('the arsonist had "oddly" shaped feet')).toEqual(
+            ["the", "arsonist", "had", "oddly", "shaped", "feet"]);
 
-        expect(tokenizer('Mary sells "sea shells" down by the "sea shore"')).toEqual([
-            'Mary',
-            'sells',
-            'sea shells',
-            'down',
-            'by',
-            'the',
-            'sea shore',
-        ]);
+        expect(tokenizer('Mary sells "sea shells" down by the "sea shore"')).toEqual(
+            ["Mary", "sells", "sea shells", "down", "by", "the", "sea shore"]);
 
-        expect(tokenizer('filter "Molecule Count" > -9')).toEqual(['filter', 'Molecule Count', '>', '-9']);
+        expect(tokenizer('filter "Molecule Count" > -9')).toEqual(
+            ["filter", "Molecule Count", ">", "-9"]);
     });
 });

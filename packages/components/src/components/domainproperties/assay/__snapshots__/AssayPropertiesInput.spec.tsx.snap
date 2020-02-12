@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['AssayPropertiesInput default properties 1'] = `
+exports[`AssayPropertiesInput default properties 1`] = `
 <div
   className="margin-top row"
 >
@@ -26,7 +26,7 @@ exports['AssayPropertiesInput default properties 1'] = `
 </div>
 `;
 
-exports['AssayPropertiesInput with custom props 1'] = `
+exports[`AssayPropertiesInput with custom props 1`] = `
 <div
   className="margin-top row"
 >

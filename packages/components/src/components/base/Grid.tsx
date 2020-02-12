@@ -18,15 +18,15 @@ import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
 interface ColumnProps {
-    align?: string;
-    cell?: (data?: any, row?: any, col?: Column, rowNumber?: number, colNumber?: number) => any;
-    format?: string;
-    index: string;
-    showHeader?: boolean;
-    raw?: any;
-    tableCell?: boolean;
-    title: string;
-    width?: any;
+    align?: string
+    cell?: (data?: any, row?: any, col?: Column, rowNumber?: number, colNumber?: number) => any
+    format?: string
+    index: string
+    showHeader?: boolean
+    raw?: any
+    tableCell?: boolean
+    title: string
+    width?: any
 }
 
 class Column implements ColumnProps {
@@ -50,7 +50,8 @@ class Column implements ColumnProps {
         // react render displays '&nbsp', see: https://facebook.github.io/react/docs/jsx-gotchas.html
         if (config.title && config.title == '&nbsp;') {
             this.title = '';
-        } else {
+        }
+        else {
             this.title = config.title;
         }
 
@@ -59,13 +60,15 @@ class Column implements ColumnProps {
 
         if (config.cell) {
             this.cell = config.cell;
-        } else {
+        }
+        else {
             this.cell = defaultCell;
         }
     }
 }
 
 export class GridColumn extends Column {
+
     constructor(config: ColumnProps) {
         super(config);
     }
@@ -74,15 +77,18 @@ export class GridColumn extends Column {
 const defaultCell = (d, row, col: Column) => {
     let display = null;
     if (d) {
-        if (typeof d === 'string' || typeof d === 'number') {
+        if (typeof(d) === 'string' || typeof(d) === 'number') {
             display = d;
-        } else if (typeof d === 'boolean') {
+        }
+        else if (typeof(d) === 'boolean') {
             display = d ? 'true' : 'false';
-        } else {
+        }
+        else {
             if (d.has('formattedValue')) {
                 display = d.get('formattedValue');
-            } else {
-                const o = d.has('displayValue') ? d.get('displayValue') : d.get('value');
+            }
+            else {
+                let o = d.has('displayValue') ? d.get('displayValue') : d.get('value');
                 display = o !== null && o !== undefined ? o.toString() : null;
             }
 
@@ -100,26 +106,26 @@ function processColumns(columns: List<any>): List<Column> {
         .map(c => {
             if (c instanceof GridColumn) {
                 return c;
-            } else if (typeof c === 'string') {
+            }
+            else if (typeof(c) === 'string') {
                 return new GridColumn({
                     index: c,
                     raw: c,
-                    title: c,
+                    title: c
                 });
             }
 
             return new GridColumn({
                 align: c.align,
                 cell: c.cell,
-                format: c.jsonType === 'float' || c.jsonType === 'int' ? c.format : undefined,
+                format: (c.jsonType === 'float' || c.jsonType === 'int') ? c.format : undefined,
                 index: c.index || c.fieldKey,
                 raw: c,
                 tableCell: c.tableCell,
                 title: c.title || c.caption,
-                width: c.width,
+                width: c.width
             });
-        })
-        .toList();
+        }).toList();
 }
 
 function processData(data: GridData): List<Map<string, any>> {
@@ -135,10 +141,10 @@ function processData(data: GridData): List<Map<string, any>> {
 }
 
 function resolveColumns(data: List<Map<string, any>>): List<Column> {
-    const columns = List<Column>().asMutable();
+    let columns = List<Column>().asMutable();
     if (data.count() > 0) {
         data.get(0).map((value, title: string) => {
-            columns.push(new Column({ index: title, title }));
+            columns.push(new Column({index: title, title: title}));
         });
     }
 
@@ -146,15 +152,16 @@ function resolveColumns(data: List<Map<string, any>>): List<Column> {
 }
 
 interface GridHeaderProps {
-    calcWidths?: boolean;
-    headerCell?: any;
-    onCellClick?: (column: Column) => any;
-    columns: List<Column>;
-    showHeader?: boolean;
-    transpose?: boolean;
+    calcWidths?: boolean
+    headerCell?: any
+    onCellClick?: (column: Column) => any
+    columns: List<Column>
+    showHeader?: boolean
+    transpose?: boolean
 }
 
 class GridHeader extends React.PureComponent<GridHeaderProps, any> {
+
     _handleClick(column: Column, evt) {
         evt.stopPropagation();
         if (this.props.onCellClick) {
@@ -167,42 +174,41 @@ class GridHeader extends React.PureComponent<GridHeaderProps, any> {
 
         if (transpose || !showHeader) {
             // returning null here causes <noscript/> to render which is not expected
-            return <thead style={{ display: 'none' }} />;
+            return <thead style={{display: 'none'}}/>;
         }
 
         return (
             <thead>
-                <tr>
-                    {columns.map((column: Column, i: number) => {
-                        let minWidth = column.width;
-                        if (minWidth === undefined) {
-                            minWidth = calcWidths && column.title ? 30 + column.title.length * 8 : undefined;
-                        }
-                        if (minWidth !== undefined) {
-                            minWidth += 'px';
-                        }
+            <tr>
+                {columns.map((column: Column, i: number) => {
+                    let minWidth = column.width;
+                    if (minWidth === undefined) {
+                        minWidth = calcWidths && column.title ? 30 + (column.title.length * 8) : undefined;
+                    }
+                    if (minWidth !== undefined) {
+                        minWidth += 'px';
+                    }
 
-                        if (column.showHeader) {
-                            return (
-                                <th
-                                    className="grid-header-cell"
-                                    key={i}
-                                    onClick={this._handleClick.bind(this, column)}
-                                    style={{ minWidth }}>
-                                    {headerCell ? headerCell(column, i, columns.size) : column.title}
-                                </th>
-                            );
-                        }
-                        return <th key={i} style={{ minWidth }} />;
-                    }, this)}
-                </tr>
+                    if (column.showHeader) {
+                        return (
+                            <th className="grid-header-cell"
+                                key={i}
+                                onClick={this._handleClick.bind(this, column)}
+                                style={{minWidth}}>
+                                {headerCell ? headerCell(column, i, columns.size) : column.title}
+                            </th>
+                        );
+                    }
+                    return <th key={i} style={{minWidth}}/>;
+                }, this)}
+            </tr>
             </thead>
         );
     }
 }
 
 interface GridMessagesProps {
-    messages: List<Map<string, string>>;
+    messages: List<Map<string, string>>
 }
 
 class GridMessages extends React.PureComponent<GridMessagesProps, any> {
@@ -224,16 +230,17 @@ class GridMessages extends React.PureComponent<GridMessagesProps, any> {
 }
 
 interface GridBodyProps {
-    data: List<Map<string, any>>;
-    columns: List<Column>;
-    emptyText: string;
-    isLoading: boolean;
-    loadingText: React.ReactNode;
-    rowKey: any;
-    transpose: boolean;
+    data: List<Map<string, any>>
+    columns: List<Column>
+    emptyText: string
+    isLoading: boolean
+    loadingText: React.ReactNode
+    rowKey: any
+    transpose: boolean
 }
 
 class GridBody extends React.PureComponent<GridBodyProps, any> {
+
     constructor(props: GridBodyProps) {
         super(props);
 
@@ -245,7 +252,7 @@ class GridBody extends React.PureComponent<GridBodyProps, any> {
         const { columns, emptyText, isLoading, loadingText } = this.props;
 
         return (
-            <tr key="grid-default-row" className={isLoading ? 'grid-loading' : 'grid-empty'}>
+            <tr key="grid-default-row" className={isLoading ? "grid-loading" : "grid-empty"}>
                 <td colSpan={columns.count()}>{isLoading ? loadingText : emptyText}</td>
             </tr>
         );
@@ -259,17 +266,15 @@ class GridBody extends React.PureComponent<GridBodyProps, any> {
         // "textAlign" property correctly for <td> elements.
         return (
             <tr key={key}>
-                {columns.map((column: Column, c: number) =>
-                    column.tableCell ? (
-                        column.cell(row.get(column.index), row, column, r, c)
-                    ) : (
-                        <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
+                {columns.map((column: Column, c: number) => (
+                    column.tableCell ? column.cell(row.get(column.index), row, column, r, c) : (
+                        <td key={column.index} style={{textAlign: column.align || 'left'} as any}>
                             {column.cell(row.get(column.index), row, column, r, c)}
                         </td>
                     )
-                )}
+                ))}
             </tr>
-        );
+        )
     }
 
     renderRowTranspose(row: any, r: number): any {
@@ -277,14 +282,12 @@ class GridBody extends React.PureComponent<GridBodyProps, any> {
         let counter = 0;
         const key = rowKey ? row.get(rowKey) : r;
 
-        return columns
-            .map((column: Column, c: number) => (
-                <tr key={[key, counter++].join('_')} style={c === 0 ? { backgroundColor: '#eee' } : undefined}>
-                    <td>{column.title}</td>
-                    <td>{column.cell(row.get(column.index), row, column, r, c)}</td>
-                </tr>
-            ))
-            .toArray();
+        return columns.map((column: Column, c: number) => (
+            <tr key={[key, counter++].join('_')} style={c === 0 ? {backgroundColor: '#eee'} : undefined}>
+                <td>{column.title}</td>
+                <td>{column.cell(row.get(column.index), row, column, r, c)}</td>
+            </tr>
+        )).toArray();
     }
 
     render() {
@@ -295,32 +298,32 @@ class GridBody extends React.PureComponent<GridBodyProps, any> {
     }
 }
 
-export type GridData = Array<Record<string, any>> | List<Map<string, any>>;
+export type GridData = Array<Object> | List<Map<string, any>>;
 
 export interface GridProps {
-    bordered?: boolean;
-    calcWidths?: boolean;
-    cellular?: boolean;
-    condensed?: boolean;
-    columns?: List<any>;
-    data?: GridData;
-    emptyText?: string;
-    gridId?: string;
-    headerCell?: any;
-    isLoading?: boolean;
-    loadingText?: React.ReactNode;
-    messages?: List<Map<string, string>>;
-    responsive?: boolean;
+    bordered?: boolean
+    calcWidths?: boolean
+    cellular?: boolean
+    condensed?: boolean
+    columns?: List<any>
+    data?: GridData
+    emptyText?: string
+    gridId?: string
+    headerCell?: any
+    isLoading?: boolean
+    loadingText?: React.ReactNode
+    messages?: List<Map<string, string>>
+    responsive?: boolean
 
     /**
      * If a rowKey is specified the <Grid> will use it as a lookup key into each row. The associated value
      * will be used as the React.Key for the row.
      */
-    rowKey?: any; // a valid React key
-    showHeader?: boolean;
-    striped?: boolean;
-    tableRef?: React.RefObject<HTMLTableElement>;
-    transpose?: boolean;
+    rowKey?: any // a valid React key
+    showHeader?: boolean
+    striped?: boolean
+    tableRef?: React.RefObject<HTMLTableElement>
+    transpose?: boolean
 }
 
 export class Grid extends React.PureComponent<GridProps, any> {
@@ -338,7 +341,7 @@ export class Grid extends React.PureComponent<GridProps, any> {
         showHeader: true,
         striped: true,
         tableRef: undefined,
-        transpose: false,
+        transpose: false
     };
 
     render() {
@@ -360,7 +363,7 @@ export class Grid extends React.PureComponent<GridProps, any> {
             showHeader,
             striped,
             tableRef,
-            transpose,
+            transpose
         } = this.props;
 
         const gridData = processData(data);
@@ -371,7 +374,7 @@ export class Grid extends React.PureComponent<GridProps, any> {
             columns: gridColumns,
             headerCell,
             showHeader,
-            transpose,
+            transpose
         };
 
         const bodyProps: GridBodyProps = {
@@ -381,19 +384,19 @@ export class Grid extends React.PureComponent<GridProps, any> {
             isLoading,
             loadingText,
             rowKey,
-            transpose,
+            transpose
         };
 
         const tableClasses = classNames({
-            table: !cellular,
+            'table': !cellular,
             'table-cellular': cellular,
             'table-striped': striped,
             'table-bordered': bordered,
-            'table-condensed': condensed,
+            'table-condensed': condensed
         });
 
         const wrapperClasses = classNames({
-            'table-responsive': responsive,
+            'table-responsive': responsive
         });
 
         return (

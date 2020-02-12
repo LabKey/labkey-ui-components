@@ -17,10 +17,11 @@ import React from 'react';
 import { Map } from 'immutable';
 
 interface AssayRunReferenceRendererProps {
-    data: Map<any, any>;
+    data: Map<any, any>
 }
 
 export class AssayRunReferenceRenderer extends React.Component<AssayRunReferenceRendererProps, any> {
+
     render() {
         const { data } = this.props;
         const displayValue = data && data.size > 0 ? data.get('displayValue') : undefined;
@@ -34,9 +35,11 @@ export class AssayRunReferenceRenderer extends React.Component<AssayRunReference
 
             return (
                 <div>
-                    <a href={'#/rd/assayrun/' + value}>{displayStr}</a>
+                    <a href={"#/rd/assayrun/" + value}>
+                        {displayStr}
+                    </a>
                 </div>
-            );
+            )
         }
 
         return null;

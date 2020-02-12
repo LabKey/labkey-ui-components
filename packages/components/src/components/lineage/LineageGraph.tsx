@@ -7,28 +7,7 @@ import React from 'reactn';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
-import { getStateQueryGridModel } from '../../models';
-import { gridInit } from '../../actions';
-import { getQueryGridModel } from '../../global';
-import { Detail } from '../forms/detail/Detail';
-
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { AppURL } from '../../url/AppURL';
-import { Alert } from '../base/Alert';
-import { QueryGridModel, SchemaQuery } from '../base/models/model';
-import { SVGIcon, Theme } from '../base/SVGIcon';
-
-import { loadLineageIfNeeded } from './actions';
-import { VisGraph } from './vis/VisGraph';
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
-import {
-    createLineageNodeCollections,
-    LineageNodeCollection,
-    VisGraphClusterNode,
-    VisGraphCombinedNode,
-    VisGraphNode,
-    VisGraphOptions,
-} from './vis/VisGraphGenerator';
+import { LineageNodeList, LineageSummary } from './LineageSummary';
 import {
     ILineageGroupingOptions,
     Lineage,
@@ -37,23 +16,43 @@ import {
     LineageNode,
     LineageOptions,
 } from './models';
-import { LineageNodeList, LineageSummary } from './LineageSummary';
+import {
+    createLineageNodeCollections,
+    LineageNodeCollection,
+    VisGraphClusterNode,
+    VisGraphCombinedNode,
+    VisGraphNode,
+    VisGraphOptions,
+} from './vis/VisGraphGenerator';
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
+import { VisGraph } from './vis/VisGraph';
+import { getStateQueryGridModel } from '../../models';
+import { gridInit } from '../../actions';
+import { getQueryGridModel } from '../../global';
+import { Detail } from '../forms/detail/Detail';
+import { loadLineageIfNeeded } from './actions';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { AppURL } from '../../url/AppURL';
+import { Alert } from '../base/Alert';
+import { QueryGridModel, SchemaQuery } from '../base/models/model';
+import { SVGIcon, Theme } from '../base/SVGIcon';
 
 const omittedColumns = List(['Alias', 'Description', 'Name', 'SampleSet', 'DataClass']);
 const requiredColumns = List(['Run']);
 
 interface LinageGraphProps {
-    lsid: string;
-    navigate: (node: VisGraphNode) => any;
-    members?: LINEAGE_DIRECTIONS;
-    distance?: number;
-    filters?: List<LineageFilter>;
-    filterIn?: boolean;
-    grouping?: ILineageGroupingOptions;
-    hideLegacyLinks?: boolean;
+    lsid: string
+    navigate: (node: VisGraphNode) => any
+    members?: LINEAGE_DIRECTIONS,
+    distance?: number,
+    filters?: List<LineageFilter>
+    filterIn?: boolean
+    grouping?: ILineageGroupingOptions
+    hideLegacyLinks?: boolean
 }
 
 export class LineageGraph extends React.Component<LinageGraphProps, any> {
+
     componentWillMount() {
         loadLineageIfNeeded(this.props.lsid, this.props.distance);
     }
@@ -70,24 +69,25 @@ export class LineageGraph extends React.Component<LinageGraphProps, any> {
     }
 
     render() {
-        return <LineageGraphDisplay {...this.props} lineage={this.getLineage()} />;
+        return <LineageGraphDisplay {...this.props} lineage={this.getLineage()}/>
     }
 }
 
 interface LineageGraphDisplayProps extends LinageGraphProps {
-    lineage: Lineage;
+    lineage: Lineage
 }
 
 interface LineageGraphDisplayState {
-    hoverNode?: VisGraphNode | VisGraphCombinedNode;
-    hoverNodeCoords?: { top: number; left: number; bottom: number; right: number };
-    selectedNodes?: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>;
+    hoverNode?: VisGraphNode | VisGraphCombinedNode
+    hoverNodeCoords?: {top: number, left: number, bottom: number, right: number},
+    selectedNodes?: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>
 }
 
 class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, LineageGraphDisplayState> {
+
     static defaultProps = {
         filterIn: true,
-        distance: DEFAULT_LINEAGE_DISTANCE,
+        distance: DEFAULT_LINEAGE_DISTANCE
     };
 
     private readonly visGraphRef = undefined;
@@ -119,33 +119,33 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
     }
 
     onVisGraphNodeSelect(selectedVisNodes) {
-        this.setState({ selectedNodes: selectedVisNodes });
+        this.setState({selectedNodes: selectedVisNodes});
     }
 
     onVisGraphNodeDeselect(selectedVisNodes, previousSelectedVisNodes) {
-        this.setState({ selectedNodes: selectedVisNodes });
+        this.setState({selectedNodes: selectedVisNodes});
     }
 
     onVisGraphNodeHover(visNode: VisGraphNode, coords) {
         const hoverNode = visNode;
         this.setState({
             hoverNode,
-            hoverNodeCoords: coords,
+            hoverNodeCoords: coords
         });
     }
 
     onVisGraphNodeBlur() {
-        this.setState({ hoverNode: undefined, hoverNodeCoords: undefined });
+        this.setState({hoverNode: undefined, hoverNodeCoords: undefined});
     }
 
     // if the node is in the graph, it is clickable in the summary panel
     isNodeInGraph(node: LineageNode) {
-        const lsid = node.get('lsid');
+        let lsid = node.get('lsid');
 
         const visGraph = this.visGraphRef.current;
         if (visGraph) {
-            const network = visGraph.getNetwork();
-            const clusterIds = network.findNode(lsid);
+            let network = visGraph.getNetwork();
+            let clusterIds = network.findNode(lsid);
             return clusterIds.length > 0;
         }
     }
@@ -154,7 +154,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         // clear the hoverNode so the popover will hide
         this.setState({
             hoverNode: undefined,
-            hoverNodeCoords: undefined,
+            hoverNodeCoords: undefined
         });
 
         const visGraph = this.visGraphRef.current;
@@ -164,7 +164,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
     }
 
     onSummaryNodeMouseOut(node: LineageNode) {
-        this.setState({ hoverNode: undefined, hoverNodeCoords: undefined });
+        this.setState({hoverNode: undefined, hoverNodeCoords: undefined});
 
         const visGraph = this.visGraphRef.current;
         if (visGraph) {
@@ -177,7 +177,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         const visGraph = this.visGraphRef.current;
         if (visGraph) {
             // select the node
-            const lsid = node.get('lsid');
+            let lsid = node.get('lsid');
             visGraph.selectNodes([lsid]);
         }
     }
@@ -187,21 +187,19 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
 
         if (!selectedNodes || selectedNodes.length == 0) {
             return <em>Select a node from the graph to view the details.</em>;
-        } else if (selectedNodes.length === 1) {
-            const hoverNodeLsid =
-                hoverNode && hoverNode.kind === 'node' && hoverNode.lineageNode && hoverNode.lineageNode.lsid;
+        }
+        else if (selectedNodes.length === 1) {
+            const hoverNodeLsid = hoverNode && hoverNode.kind === 'node' && hoverNode.lineageNode && hoverNode.lineageNode.lsid;
             const selectedNode = selectedNodes[0];
             switch (selectedNode.kind) {
-                case 'node':
-                    return this.renderSelectedGraphNode(seed, hoverNodeLsid, selectedNode);
-                case 'combined':
-                    return this.renderSelectedCombinedNode(seed, hoverNodeLsid, selectedNode);
-                case 'cluster':
-                    return this.renderSelectedClusterNode(seed, hoverNodeLsid, selectedNode);
+                case 'node':     return this.renderSelectedGraphNode(seed, hoverNodeLsid, selectedNode);
+                case 'combined': return this.renderSelectedCombinedNode(seed, hoverNodeLsid, selectedNode);
+                case 'cluster':  return this.renderSelectedClusterNode(seed, hoverNodeLsid, selectedNode);
                 default:
                     throw new Error('unknown node kind');
             }
-        } else {
+        }
+        else {
             return <div>multiple selected nodes</div>;
         }
     }
@@ -210,65 +208,51 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         const lineageNode = node.lineageNode;
         const model = this.getNodeGridDataModel(lineageNode);
 
-        return (
-            <SelectedNodeDetail
-                seed={seed}
-                node={lineageNode}
-                entityModel={model}
-                highlightNode={hoverNodeLsid}
-                isNodeInGraph={this.isNodeInGraph}
-                onNodeMouseOver={this.onSummaryNodeMouseOver}
-                onNodeMouseOut={this.onSummaryNodeMouseOut}
-                onNodeClick={this.onSummaryNodeClick}
-                hideLegacyLinks={this.props.hideLegacyLinks}
-            />
-        );
+        return <SelectedNodeDetail
+            seed={seed}
+            node={lineageNode}
+            entityModel={model}
+            highlightNode={hoverNodeLsid}
+            isNodeInGraph={this.isNodeInGraph}
+            onNodeMouseOver={this.onSummaryNodeMouseOver}
+            onNodeMouseOut={this.onSummaryNodeMouseOut}
+            onNodeClick={this.onSummaryNodeClick}
+            hideLegacyLinks={this.props.hideLegacyLinks}
+        />;
     }
 
     renderSelectedClusterNode(seed: string, hoverNodeLsid: string, node: VisGraphClusterNode) {
         // LineageNodes in the cluster
         const nodes = node.nodesInCluster.map(n => n.kind === 'node' && n.lineageNode);
 
-        return (
-            <ClusterNodeDetail
-                nodes={nodes}
-                nodesByType={undefined}
-                highlightNode={hoverNodeLsid}
-                onNodeMouseOver={this.onSummaryNodeMouseOver}
-                onNodeMouseOut={this.onSummaryNodeMouseOut}
-                onNodeClick={this.onSummaryNodeClick}
-            />
-        );
+        return <ClusterNodeDetail nodes={nodes}
+                                  nodesByType={undefined}
+                                  highlightNode={hoverNodeLsid}
+                                  onNodeMouseOver={this.onSummaryNodeMouseOver}
+                                  onNodeMouseOut={this.onSummaryNodeMouseOut}
+                                  onNodeClick={this.onSummaryNodeClick} />;
     }
 
     renderSelectedCombinedNode(seed: string, hoverNodeLsid: string, node: VisGraphCombinedNode) {
         const { lineage } = this.props;
-        if (!lineage && !lineage.result) return;
+        if (!lineage && !lineage.result)
+            return;
 
-        return (
-            <ClusterNodeDetail
-                nodes={node.containedNodes}
-                nodesByType={node.containedNodesByType}
-                highlightNode={hoverNodeLsid}
-                onNodeMouseOver={this.onSummaryNodeMouseOver}
-                onNodeMouseOut={this.onSummaryNodeMouseOut}
-                onNodeClick={this.onSummaryNodeClick}
-            />
-        );
+        return <ClusterNodeDetail nodes={node.containedNodes}
+                                  nodesByType={node.containedNodesByType}
+                                  highlightNode={hoverNodeLsid}
+                                  onNodeMouseOver={this.onSummaryNodeMouseOver}
+                                  onNodeMouseOut={this.onSummaryNodeMouseOut}
+                                  onNodeClick={this.onSummaryNodeClick} />;
     }
 
-    getNodeGridDataModel(node: LineageNode): QueryGridModel | undefined {
+    getNodeGridDataModel(node: LineageNode): QueryGridModel|undefined {
         if (node.schemaName && node.queryName && node.rowId) {
-            return getStateQueryGridModel(
-                'lineage-selected',
-                SchemaQuery.create(node.schemaName, node.queryName),
-                {
-                    allowSelection: false,
-                    omittedColumns,
-                    requiredColumns,
-                },
-                node.rowId
-            );
+            return getStateQueryGridModel('lineage-selected', SchemaQuery.create(node.schemaName, node.queryName), {
+                allowSelection: false,
+                omittedColumns,
+                requiredColumns
+            }, node.rowId);
         }
     }
 
@@ -277,26 +261,26 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
 
         if (lineage) {
             if (lineage.error) {
-                return <Alert>{lineage.error}</Alert>;
+                return <Alert>{lineage.error}</Alert>
             }
 
             const options = new LineageOptions({
                 filters,
                 filterIn,
-                grouping: grouping ? new LineageGroupingOptions(grouping) : undefined,
+                grouping: grouping ? new LineageGroupingOptions(grouping): undefined,
             });
             const graph = lineage.generateGraph(options);
 
             const lineageGridHref = AppURL.create('lineage')
                 .addParams({
                     seeds: lineage.getSeed(),
-                    distance: this.props.distance,
+                    distance: this.props.distance
                 })
                 .toHref();
 
             return (
-                <div className="row">
-                    <div className="col-md-8">
+                <div className='row'>
+                    <div className='col-md-8'>
                         <VisGraph
                             ref={this.visGraphRef}
                             lineageGridHref={lineageGridHref}
@@ -309,31 +293,33 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
                             seed={lineage.getSeed()}
                         />
                     </div>
-                    <div className="col-md-4" style={{ borderLeft: '1px solid #ddd' }}>
+                    <div className='col-md-4' style={{borderLeft: '1px solid #ddd'}}>
                         {this.renderSelectedNodes(lineage.getSeed(), graph)}
                     </div>
                 </div>
-            );
+            )
         }
 
-        return <LoadingSpinner msg="Loading lineage..." />;
+        return <LoadingSpinner msg="Loading lineage..."/>;
     }
 }
 
+
 interface SelectedNodeProps {
-    seed: string;
-    node: LineageNode;
-    highlightNode?: string;
-    entityModel?: QueryGridModel;
-    isNodeInGraph?: (node: LineageNode) => boolean;
-    onNodeMouseOver?: (node: LineageNode) => void;
-    onNodeMouseOut?: (node: LineageNode) => void;
-    onNodeClick?: (node: LineageNode) => void;
-    hideLegacyLinks?: boolean;
+    seed: string,
+    node: LineageNode,
+    highlightNode?: string,
+    entityModel?: QueryGridModel,
+    isNodeInGraph?: (node: LineageNode) => boolean
+    onNodeMouseOver?: (node: LineageNode) => void
+    onNodeMouseOut?: (node: LineageNode) => void
+    onNodeClick?: (node: LineageNode) => void
+    hideLegacyLinks?: boolean
 }
 
 // TODO: Refactor and share with ComponentDetailHOCImpl?
 class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
+
     constructor(props) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
@@ -415,7 +401,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
 
         const model = this.getQueryGridModel();
         if (!model || !model.isLoaded) {
-            return <LoadingSpinner msg="Loading details..." />;
+            return <LoadingSpinner msg="Loading details..."/>
         }
 
         const queryInfo = model.queryInfo;
@@ -430,112 +416,96 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
             });
 
             // see DotGraph.TYPECODE_* constants
-            const typePrefix = node.type === 'Sample' ? 'M' : node.type === 'Data' ? 'D' : 'A';
-            legacyDetailsLineageUrl = ActionURL.buildURL(
-                'experiment',
-                'showRunGraphDetail.view',
-                LABKEY.container.path,
-                {
-                    rowId: runId,
-                    detail: true,
-                    focus: typePrefix + node.rowId,
-                }
-            );
+            const typePrefix =
+                node.type === 'Sample' ? 'M' :
+                    node.type === 'Data' ? 'D' : 'A';
+            legacyDetailsLineageUrl = ActionURL.buildURL('experiment', 'showRunGraphDetail.view', LABKEY.container.path, {
+                rowId: runId,
+                detail: true,
+                focus: typePrefix + node.rowId
+            });
         }
 
-        return (
-            <>
-                <div className="margin-bottom" style={{ display: 'inline-block', width: '100%' }}>
-                    <i className="component-detail--child--img">
-                        <SVGIcon
-                            iconDir="_images"
-                            theme={Theme.ORANGE}
-                            iconSrc={queryInfo.getIconURL()}
-                            height="50px"
-                            width="50px"
-                        />
-                    </i>
-                    <div className="text__truncate">
-                        <div className="lineage-name">
-                            <h4 className="no-margin-top" style={{ display: 'inline' }}>
-                                {(lineageUrl && !isSeed && (
-                                    <a href={lineageUrl} onClick={this.handleLinkClick}>
-                                        {name}
-                                    </a>
-                                )) ||
-                                    name}
-                                <div className="pull-right">
-                                    <a
-                                        href={url}
-                                        style={{ paddingLeft: '1px', paddingRight: '1px' }}
-                                        onClick={this.handleLinkClick}>
-                                        <small style={{ lineHeight: 1, color: '#777', fontSize: '75%' }}>
-                                            Overview
-                                        </small>
-                                    </a>
-                                    <a
-                                        href={lineageUrl}
-                                        style={{ paddingLeft: '5px', paddingRight: '5px' }}
-                                        onClick={this.handleLinkClick}>
-                                        <small style={{ lineHeight: 1, color: '#777', fontSize: '75%' }}>Lineage</small>
-                                    </a>
-                                </div>
-                            </h4>
-                        </div>
-                        {displayType && <small>{displayType}</small>}
-                        {aliases && (
-                            <div>
-                                <small>{aliases.join(', ')}</small>
+        return <>
+            <div className="margin-bottom" style={{display: 'inline-block', width: '100%'}}>
+                <i className="component-detail--child--img">
+                    <SVGIcon
+                        iconDir={'_images'}
+                        theme={Theme.ORANGE}
+                        iconSrc={queryInfo.getIconURL()}
+                        height="50px"
+                        width="50px"/>
+                </i>
+                <div className="text__truncate">
+                    <div className='lineage-name'>
+                        <h4 className="no-margin-top" style={{display: 'inline'}}>
+                            {(lineageUrl && !isSeed) &&
+                            <a href={lineageUrl} onClick={this.handleLinkClick}>{name}</a>
+                            ||
+                            name
+                            }
+                            <div className='pull-right'>
+                                <a href={url}
+                                   style={{paddingLeft: '1px', paddingRight: '1px'}}
+                                   onClick={this.handleLinkClick}>
+                                    <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Overview</small>
+                                </a>
+                                <a href={lineageUrl}
+                                   style={{paddingLeft: '5px', paddingRight: '5px'}}
+                                   onClick={this.handleLinkClick}>
+                                    <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Lineage</small>
+                                </a>
                             </div>
-                        )}
-                        {description && <small title={description}>{description}</small>}
+                        </h4>
                     </div>
-                </div>
-
-                {!hideLegacyLinks && LABKEY.user && LABKEY.user.isAdmin && legacyRunLineageUrl && (
-                    <div className="pull-right">
-                        <small title="(admin only) old school lineage graphs, opens in new window">
-                            <em>
-                                Legacy:&nbsp;
-                                <a target="_blank" href={legacyRunLineageUrl} onClick={this.handleLinkClick}>
-                                    run
-                                </a>
-                                &nbsp;|&nbsp;
-                                <a target="_blank" href={legacyDetailsLineageUrl} onClick={this.handleLinkClick}>
-                                    details
-                                </a>
-                            </em>
+                    {displayType && <small>{displayType}</small>}
+                    {aliases && <div>
+                        <small>
+                            {aliases.join(', ')}
                         </small>
-                    </div>
-                )}
+                    </div>}
+                    {description && <small title={description}>{description}</small>}
+                </div>
+            </div>
 
-                <Detail queryModel={model} />
+            {!hideLegacyLinks && LABKEY.user && LABKEY.user.isAdmin && legacyRunLineageUrl && <div className="pull-right">
+                <small title='(admin only) old school lineage graphs, opens in new window'><em>
+                    Legacy:&nbsp;
+                    <a target='_blank' href={legacyRunLineageUrl} onClick={this.handleLinkClick}>run</a>
+                    &nbsp;|&nbsp;
+                    <a target='_blank' href={legacyDetailsLineageUrl} onClick={this.handleLinkClick}>details</a>
+                </em></small>
+            </div>}
 
-                <LineageSummary
-                    seed={node.lsid}
-                    showRuns={false}
-                    highlightNode={highlightNode}
-                    isNodeInGraph={this.isNodeInGraph}
-                    onNodeMouseOver={this.onNodeMouseOver}
-                    onNodeMouseOut={this.onNodeMouseOut}
-                    onNodeClick={this.onNodeClick}
-                />
-            </>
-        );
+            <Detail queryModel={model} />
+
+            <LineageSummary
+                seed={node.lsid}
+                showRuns={false}
+                highlightNode={highlightNode}
+                isNodeInGraph={this.isNodeInGraph}
+                onNodeMouseOver={this.onNodeMouseOver}
+                onNodeMouseOut={this.onNodeMouseOut}
+                onNodeClick={this.onNodeClick}
+            />
+
+        </>;
     }
 }
 
+
 interface ClusterNodeDetailProps {
-    nodes: LineageNode[];
-    nodesByType: { [key: string]: LineageNodeCollection };
-    highlightNode?: string;
-    isNodeInGraph?: (node: LineageNode) => boolean;
-    onNodeMouseOver?: (node: LineageNode) => void;
-    onNodeMouseOut?: (node: LineageNode) => void;
-    onNodeClick?: (node: LineageNode) => void;
+    nodes: Array<LineageNode>,
+    nodesByType: {[key:string]: LineageNodeCollection},
+    highlightNode?: string,
+    isNodeInGraph?: (node: LineageNode) => boolean
+    onNodeMouseOver?: (node: LineageNode) => void
+    onNodeMouseOut?: (node: LineageNode) => void
+    onNodeClick?: (node: LineageNode) => void
 }
 
 class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
+
     constructor(props) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
@@ -574,10 +544,11 @@ class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
     render() {
         const { nodes, highlightNode } = this.props;
 
-        let nodesByType: { [key: string]: LineageNodeCollection };
+        let nodesByType: {[key:string]: LineageNodeCollection};
         if (this.props.nodesByType) {
             nodesByType = this.props.nodesByType;
-        } else {
+        }
+        else {
             nodesByType = createLineageNodeCollections(nodes);
         }
 
@@ -588,40 +559,47 @@ class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
         if (groups.length === 1) {
             title = nodes.length + ' ' + groups[0];
             iconURL = nodes[0].meta.iconURL;
-        } else {
+        }
+        else {
             title = nodes.length + ' items of different types';
             iconURL = 'default';
         }
 
-        return (
-            <>
-                <div className="margin-bottom" style={{ display: 'inline-block', width: '100%' }}>
-                    <i className="component-detail--child--img">
-                        <SVGIcon iconDir="_images" theme={Theme.ORANGE} iconSrc={iconURL} height="50px" width="50px" />
-                    </i>
-                    <div className="text__truncate">
-                        <div className="lineage-name">
-                            <h4 className="no-margin-top" style={{ display: 'inline' }}>
-                                {title}
-                            </h4>
-                        </div>
+        return <>
+            <div className="margin-bottom" style={{display: 'inline-block', width: '100%'}}>
+                <i className="component-detail--child--img">
+                    <SVGIcon
+                        iconDir={'_images'}
+                        theme={Theme.ORANGE}
+                        iconSrc={iconURL}
+                        height="50px"
+                        width="50px"/>
+                </i>
+                <div className="text__truncate">
+                    <div className='lineage-name'>
+                        <h4 className="no-margin-top" style={{display: 'inline'}}>
+                            {title}
+                        </h4>
                     </div>
                 </div>
+            </div>
 
-                {groups.map(groupName => (
-                    <div key={groupName}>
-                        <LineageNodeList
-                            title={groupName}
-                            nodes={nodesByType[groupName]}
-                            onNodeClick={this.onNodeClick}
-                            onNodeMouseOut={this.onNodeMouseOut}
-                            onNodeMouseOver={this.onNodeMouseOver}
-                            isNodeInGraph={this.isNodeInGraph}
-                            highlightNode={highlightNode}
-                        />
-                    </div>
-                ))}
-            </>
-        );
+            {groups.map(groupName =>
+                <div key={groupName}>
+                    <LineageNodeList
+                        title={groupName}
+                        nodes={nodesByType[groupName]}
+                        onNodeClick={this.onNodeClick}
+                        onNodeMouseOut={this.onNodeMouseOut}
+                        onNodeMouseOver={this.onNodeMouseOver}
+                        isNodeInGraph={this.isNodeInGraph}
+                        highlightNode={highlightNode}
+                    />
+                </div>
+            )}
+
+        </>;
     }
+
+
 }

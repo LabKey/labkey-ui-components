@@ -20,42 +20,43 @@ import { MenuItem, MenuItemProps, OverlayTrigger, Popover } from 'react-bootstra
 const emptyFn = () => {};
 
 export interface ISubItem extends MenuItemProps {
-    disabledMsg?: string;
-    disabledOverlayPlacement?: 'top' | 'right' | 'bottom' | 'left';
-    text: string;
-    href?: string;
+    disabledMsg?: string
+    disabledOverlayPlacement?: 'top' | 'right' | 'bottom' | 'left'
+    text: string
+    href?: string
 }
 
 export interface SubMenuItemProps {
-    allowFilter?: boolean;
-    disabled?: boolean;
-    filterPlaceholder?: string;
-    icon?: string;
-    items?: ISubItem[];
-    itemsCls?: string;
-    maxWithoutFilter?: number;
-    onMouseOut?: any;
-    onMouseOver?: any;
-    text?: string;
+    allowFilter?: boolean
+    disabled?: boolean
+    filterPlaceholder?: string
+    icon?: string
+    items?: Array<ISubItem>
+    itemsCls?: string
+    maxWithoutFilter?: number
+    onMouseOut?: any
+    onMouseOver?: any
+    text?: string
 }
 
 interface SubMenuItemState {
-    activeIdx?: number;
-    expanded?: boolean;
-    filterInput?: string;
-    filterItems?: ISubItem[];
+    activeIdx?: number
+    expanded?: boolean
+    filterInput?: string
+    filterItems?: Array<ISubItem>
 }
 
 export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemState> {
+
     static defaultProps = {
         allowFilter: true,
         filterPlaceholder: 'Filter...',
         itemsCls: 'well',
-        maxWithoutFilter: 5,
+        maxWithoutFilter: 5
     };
 
     refs: {
-        filter: any;
+        filter: any
     };
 
     constructor(props: SubMenuItemProps) {
@@ -71,7 +72,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
         this.state = {
             activeIdx: 0,
             expanded: false,
-            filterItems: this.props.items,
+            filterItems: this.props.items
         };
     }
 
@@ -81,7 +82,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
 
     onItemEnter(activeIdx: number) {
         this.setState(() => ({
-            activeIdx,
+            activeIdx
         }));
     }
 
@@ -89,6 +90,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
         switch (evt.keyCode) {
             case 13: // enter key
                 this.toggle();
+                return;
         }
     }
 
@@ -99,16 +101,17 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                 return;
             case 38: // up arrow
                 this.setState(() => ({
-                    activeIdx: this.state.activeIdx === 0 ? this.props.items.length - 1 : this.state.activeIdx - 1,
+                    activeIdx: this.state.activeIdx === 0 ? this.props.items.length - 1 : this.state.activeIdx - 1
                 }));
                 evt.preventDefault();
                 return;
             case 40: // down arrow
                 const upperBound = this.props.items.length - 1;
                 this.setState(() => ({
-                    activeIdx: this.state.activeIdx >= upperBound ? 0 : this.state.activeIdx + 1,
+                    activeIdx: this.state.activeIdx >= upperBound ? 0 : this.state.activeIdx + 1
                 }));
                 evt.preventDefault();
+                return;
         }
     }
 
@@ -125,7 +128,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
         this.setState(() => ({
             activeIdx: 0,
             filterInput,
-            filterItems,
+            filterItems
         }));
     }
 
@@ -153,8 +156,8 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                 activeIdx: 0,
                 expanded,
                 filterInput: undefined,
-                filterItems: this.props.items,
-            };
+                filterItems: this.props.items
+            }
         });
 
         if (expanded) {
@@ -168,10 +171,10 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
         const itemSet = filter ? this.state.filterItems : this.props.items;
 
         if (itemSet && itemSet.length) {
-            const activeIdx = this.state.activeIdx;
+            let activeIdx = this.state.activeIdx;
 
             return itemSet.map((item, i) => {
-                const itemProps = Object.assign({}, item);
+                let itemProps = Object.assign({}, item);
 
                 // remove ISubItem specific props
                 delete itemProps.text;
@@ -190,7 +193,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                 if (item.disabledMsg && item.disabled) {
                     const overlay = <Popover id="attach-submenu-warning">{item.disabledMsg}</Popover>;
                     return (
-                        <OverlayTrigger overlay={overlay} placement={item.disabledOverlayPlacement || 'right'} key={i}>
+                        <OverlayTrigger overlay={overlay} placement={item.disabledOverlayPlacement || "right"} key={i}>
                             {menuItem}
                         </OverlayTrigger>
                     );
@@ -205,9 +208,10 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
     onMouseOut() {
         const { onMouseOut } = this.props;
         this.setState(() => ({
-            activeIdx: undefined,
+            activeIdx: undefined
         }));
-        if (onMouseOut) onMouseOut();
+        if (onMouseOut)
+            onMouseOut();
     }
 
     render() {
@@ -219,28 +223,21 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
             className: classNames('dropdown-submenu', { disabled }),
             onMouseOut: this.onMouseOut,
             onMouseOver: this.props.onMouseOver,
-            role: 'presentation',
+            role: 'presentation'
         };
 
         return (
             <li {...menuItemProps}>
-                <a
-                    onClick={disabled ? emptyFn : this.onClick}
-                    onKeyDown={disabled ? emptyFn : this.onKeyDown}
-                    role="menuitem"
-                    tabIndex={-1}>
+                <a onClick={disabled ? emptyFn : this.onClick} onKeyDown={disabled ? emptyFn : this.onKeyDown} role="menuitem" tabIndex={-1}>
                     {icon && <span className={`fa fa-${icon}`}>&nbsp;</span>}
                     {text}
                 </a>
-                <i
-                    onClick={disabled ? emptyFn : this.onClick}
-                    className={`fa fa-chevron-${expanded ? 'up' : 'down'}`}
-                />
+                <i onClick={disabled ? emptyFn : this.onClick} className={`fa fa-chevron-${expanded ? 'up' : 'down'}`}/>
                 {expanded && (
                     <ul className={itemsCls}>
                         {filterActive && (
-                            <li role="presentation">
-                                <a role="menuitem">
+                            <li role={'presentation'}>
+                                <a role={'menuitem'}>
                                     <input
                                         onChange={this.onFilterChange}
                                         onKeyDown={this.onKeyDownInput}
@@ -255,6 +252,6 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                     </ul>
                 )}
             </li>
-        );
+        )
     }
 }

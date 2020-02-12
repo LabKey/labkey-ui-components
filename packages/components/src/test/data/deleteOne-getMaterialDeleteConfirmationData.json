@@ -1,17 +1,14 @@
 {
-    "data": {
-        "canDelete": [
-            {
-      'Name' : 'D-2.3.1',
-                "RowId": 351
-            }
-        ],
-        "cannotDelete": [
-            {
-                "Name": "D-2.3",
-                "RowId": 350
-            }
-        ]
-    },
-    "success": true
+  "data" : {
+    "canDelete" : [ {
+      "Name" : "D-2.3.1",
+      "RowId" : 351
+    }
+    ],
+    "cannotDelete" : [ {
+      "Name" : "D-2.3",
+      "RowId" : 350
+    } ]
+  },
+  "success" : true
 }

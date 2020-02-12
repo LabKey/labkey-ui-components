@@ -1,5 +1,5 @@
 {
-    "duplicate": false,
-  'runNamesPerFile' : [ [ ] ],
-    "newFileNames": [""]
+  "duplicate" : false,
+  "runNamesPerFile" : [ [ ] ],
+  "newFileNames" : [ "" ]
 }

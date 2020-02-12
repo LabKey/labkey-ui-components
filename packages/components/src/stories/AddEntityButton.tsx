@@ -6,29 +6,30 @@ import './stories.scss';
 import { AddEntityButton } from '..';
 
 interface State {
-    added: string[];
+    added: Array<string>
 }
 
-class WrappedAddEntityButton extends React.Component<any, State> {
+class WrappedAddEntityButton extends React.Component<any, State>
+{
     constructor(props: any) {
         super(props);
 
         this.state = {
-            added: [],
-        };
+            added: []
+        }
     }
 
     onClick = (e: string) => {
-        const { added } = this.state;
-        added.push('Another');
-        this.setState(() => ({ added }));
+        const {added} = this.state;
+        added.push("Another");
+        this.setState(() => ({added}));
     };
 
     renderValues() {
-        const { added } = this.state;
-        return added.map((val: string, index: number) => {
-            return <div key={index}>{val}</div>;
-        });
+        const {added} = this.state;
+        return (added.map( (val: string, index:number) => {
+            return (<div key={index}>{val}</div>);
+        }));
     }
 
     render() {
@@ -43,22 +44,22 @@ class WrappedAddEntityButton extends React.Component<any, State> {
                     buttonClass={buttonClass}
                     containerClass={containerClass}
                     helperTitle={helperTitle}
-                    helperBody={getHelperBody}
-                />
+                    helperBody={getHelperBody} />
             </>
         );
     }
 }
 
-storiesOf('AddEntityButton', module)
+storiesOf("AddEntityButton", module)
     .addDecorator(withKnobs)
-    .add('with knobs', () => {
-        const entity = text('Entity', 'Entity', 'Entity');
+    .add("with knobs", () => {
+        const entity = text("Entity", 'Entity', 'Entity');
         const helperId = 'ToolTip';
         const showHelper = boolean('Show tooltip', true, helperId);
-        const helperBody = text('HelperBody', 'https://www.labkey.org', helperId);
+        const helperBody = text('HelperBody', "https://www.labkey.org", helperId);
         const getHelperBody = showHelper ? () => helperBody : undefined;
         const helperTitle = text('HelperTitle', undefined, helperId);
 
-        return <WrappedAddEntityButton entity={entity} helperTitle={helperTitle} getHelperBody={getHelperBody} />;
-    });
+        return <WrappedAddEntityButton entity={entity} helperTitle={helperTitle} getHelperBody={getHelperBody} />
+    })
+;

@@ -14,14 +14,16 @@ import { createMockActionContext } from '../test/OmniboxMock';
 import './stories.scss';
 import { OmniBox } from '../components/omnibox/OmniBox';
 import { Grid } from '../components/base/Grid';
-import { ViewAction } from '../components/omnibox/actions/View';
+import {ViewAction} from "../components/omnibox/actions/View";
 
 const { model, resolveColumns, resolveModel } = createMockActionContext('toyStory');
 
-storiesOf('Omnibox', module)
+storiesOf("Omnibox", module)
     .addDecorator(withKnobs)
-    .add('search (only)', () => {
-        const actions = [new SearchAction(undefined, 'q')];
+    .add("search (only)", () => {
+        const actions = [
+            new SearchAction(undefined, 'q')
+        ];
 
         return (
             <>
@@ -30,8 +32,10 @@ storiesOf('Omnibox', module)
             </>
         );
     })
-    .add('filter (only)', () => {
-        const actions = [new FilterAction(resolveColumns, 'f', resolveModel)];
+    .add("filter (only)", () => {
+        const actions = [
+            new FilterAction(resolveColumns, 'f', resolveModel)
+        ];
 
         return (
             <>
@@ -40,8 +44,10 @@ storiesOf('Omnibox', module)
             </>
         );
     })
-    .add('sort (only)', () => {
-        const actions = [new SortAction(resolveColumns, 's')];
+    .add("sort (only)", () => {
+        const actions = [
+            new SortAction(resolveColumns, 's')
+        ];
 
         return (
             <>
@@ -55,7 +61,7 @@ storiesOf('Omnibox', module)
             new SearchAction(undefined, 'q'),
             new FilterAction(resolveColumns, 'f', resolveModel),
             new SortAction(resolveColumns, 's'),
-            new ViewAction(resolveColumns, 'v', resolveModel),
+            new ViewAction(resolveColumns, 'v', resolveModel)
         ];
 
         return (

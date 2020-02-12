@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config-base",
-  "version": "0.0.5",
+  "version": "0.0.5-fb-shared-comp-lint.1",
   "description": "shareable eslint config for typescript",
   "main": "index.js",
   "files": [

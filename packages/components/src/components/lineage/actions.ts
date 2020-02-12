@@ -5,18 +5,6 @@
 import { fromJS, Iterable, List, Map, Seq } from 'immutable';
 import { Ajax, Filter, Utils } from '@labkey/api';
 
-import { ISelectRowsResult, selectRows } from '../../query/api';
-import { getLineageResult, updateLineageResult } from '../../global';
-import { Location } from '../../util/URL';
-
-import { SCHEMAS } from '../base/models/schemas';
-import { AppURL } from '../../url/AppURL';
-import { buildURL } from '../../url/ActionURL';
-import { GridColumn } from '../base/Grid';
-import { SchemaQuery } from '../base/models/model';
-
-import { getLineageDepthFirstNodeList } from './utils';
-import { LINEAGE_DIRECTIONS } from './constants';
 import {
     Lineage,
     LineageFilter,
@@ -26,16 +14,26 @@ import {
     LineageOptions,
     LineageResult,
 } from './models';
+import { ISelectRowsResult, selectRows } from '../../query/api';
+import { getLineageResult, updateLineageResult } from '../../global';
+import { Location } from '../../util/URL';
+import { LINEAGE_DIRECTIONS } from './constants';
+import { getLineageDepthFirstNodeList } from './utils';
+import { SCHEMAS } from '../base/models/schemas';
+import { AppURL } from '../../url/AppURL';
+import { buildURL } from '../../url/ActionURL';
+import { GridColumn } from '../base/Grid';
+import { SchemaQuery } from '../base/models/model';
 
 const LINEAGE_METADATA_COLUMNS = List(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
 export function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
         // query for both parents and children to facilitate showing counts within the grid links
-        const params: any = {
+        let params: any = {
             children: true,
             lsid: seed,
-            parents: true,
+            parents: true
         };
 
         if (!isNaN(distance)) {
@@ -46,69 +44,74 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
 
         Ajax.request({
             url: buildURL('experiment', 'lineage.api', params),
-            success: Utils.getCallbackWrapper(lineage => {
+            success: Utils.getCallbackWrapper((lineage) => {
                 resolve(LineageResult.create(lineage));
             }),
-            failure: function() {
-                // TODO: Handle how we hand back error
+            failure: function() { // TODO: Handle how we hand back error
                 reject({
                     seed,
-                    message: 'Something went wrong retrieving lineage for seed ' + seed + '.',
+                    message: 'Something went wrong retrieving lineage for seed ' + seed + '.'
                 });
-            },
+            }
         });
     });
 }
 
 function fetchSampleSetData(sampleSet: string, nodes: List<LineageNode>): Promise<ISelectRowsResult> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         return selectRows({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             queryName: sampleSet,
             columns: LINEAGE_METADATA_COLUMNS.join(','),
-            filterArray: [Filter.create('rowId', nodes.map(n => n.get('rowId')).toArray(), Filter.Types.IN)],
-        }).then(result => resolve(result));
+            filterArray: [
+                Filter.create("rowId", nodes.map(n => n.get('rowId')).toArray(), Filter.Types.IN),
+            ]
+        }).then((result) =>
+            resolve(result)
+        );
     });
 }
 
 function fetchDataClassData(schemaQuery: SchemaQuery, nodes: List<LineageNode>): Promise<ISelectRowsResult> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         return selectRows({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             columns: LINEAGE_METADATA_COLUMNS.join(','),
-            filterArray: [Filter.create('rowId', nodes.map(n => n.get('rowId')).toArray(), Filter.Types.IN)],
-        }).then(result => resolve(result));
+            filterArray: [
+                Filter.create("rowId", nodes.map(n => n.get('rowId')).toArray(), Filter.Types.IN),
+            ]
+        }).then((result) =>
+            resolve(result)
+        );
     });
 }
 
 // get the lineage nodes filtered by nodeType then grouped by their queryName
-function getDataTypeMap(lineage: LineageResult, nodeType: string): Seq.Keyed<any, Iterable<string, LineageNode>> {
-    const dataNodes = lineage.nodes.filter(node => node.get('type') === nodeType);
+function getDataTypeMap(lineage: LineageResult, nodeType: string) : Seq.Keyed<any, Iterable<string, LineageNode>> {
+    let dataNodes = lineage.nodes.filter(node => node.get('type') === nodeType);
     return dataNodes.groupBy(n => n.get('queryName'));
 }
 
 export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageResult> {
-    return new Promise(resolve => {
-        const promises: Array<Promise<ISelectRowsResult>> = [];
+    return new Promise((resolve) => {
+        let promises: Array<Promise<ISelectRowsResult>> = [];
 
         getDataTypeMap(lineage, 'Sample').forEach((nodeList, sampleSet) => {
             promises.push(fetchSampleSetData(sampleSet, nodeList.toList()));
         });
 
         getDataTypeMap(lineage, 'Data').forEach((nodeList, dataType) => {
-            promises.push(
-                fetchDataClassData(SchemaQuery.create(SCHEMAS.DATA_CLASSES.SCHEMA, dataType), nodeList.toList())
-            );
+            promises.push(fetchDataClassData(SchemaQuery.create(SCHEMAS.DATA_CLASSES.SCHEMA, dataType), nodeList.toList()));
         });
 
         return Promise.all(promises)
-            .then(results => {
-                const metadata = {};
+            .then((results) => {
+                let metadata = {};
                 results.forEach((result: ISelectRowsResult) => {
                     const queryInfo = result.queries[result.key];
                     const model = fromJS(result.models[result.key]);
-                    model.forEach(data => {
+                    model.forEach((data) => {
                         const lsid = data.getIn(['LSID', 'value']);
                         metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
                     });
@@ -116,16 +119,16 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
 
                 const nodes = lineage.nodes.reduce((prev, node, key) => {
                     const lsid = node.lsid;
-                    const meta = metadata[lsid];
+                    let meta = metadata[lsid];
                     node = node.set('meta', meta);
                     return prev.set(key, node);
                 }, Map<string, LineageNode>());
 
                 return lineage.set('nodes', nodes) as LineageResult;
             })
-            .then(result => {
+            .then((result) => {
                 resolve(result);
-            });
+            })
     });
 }
 
@@ -145,10 +148,11 @@ export function loadLineageIfNeeded(seed: string, distance?: number): Promise<Li
             if (lineage) {
                 lineage = new Lineage({
                     ...lineage,
-                    result: updatedResult,
+                    result: updatedResult
                 });
-            } else {
-                lineage = new Lineage({ result: updatedResult });
+            }
+            else {
+                lineage = new Lineage({result: updatedResult});
             }
 
             updateLineageResult(seed, lineage);
@@ -156,7 +160,7 @@ export function loadLineageIfNeeded(seed: string, distance?: number): Promise<Li
         })
         .catch(reason => {
             console.error(reason);
-            const lineage = new Lineage({ error: reason.message });
+            const lineage = new Lineage({error: reason.message});
             updateLineageResult(seed, lineage);
             return lineage;
         });
@@ -168,16 +172,19 @@ export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promis
         return Promise.resolve(existing);
     }
 
-    return Promise.all([loadLineageIfNeeded(seed, distance), fetchSampleSets()]).then(values => {
+    return Promise.all([
+        loadLineageIfNeeded(seed, distance),
+        fetchSampleSets()
+    ]).then(values => {
         const lineage = values[0];
         const sampleSets = values[1];
         const seed = lineage.getSeed();
         const sampleStats = computeSampleCounts(lineage, sampleSets);
 
-        const updatedLineage = new Lineage({
+        let updatedLineage = new Lineage({
             result: lineage.result,
             error: lineage.error,
-            sampleStats,
+            sampleStats
         });
 
         updateLineageResult(seed, updatedLineage);
@@ -187,52 +194,54 @@ export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promis
 
 // TODO add jest test coverage for this function
 function computeSampleCounts(lineage: Lineage, sampleSets: any) {
+
     const { key, models } = sampleSets;
     const nodes = lineage.result.nodes.toJS();
 
-    const rows = [];
-    const sampleRowIds = {};
+    let rows = [];
+    let sampleRowIds = {};
 
-    for (const lsid in nodes) {
+    for (let lsid in nodes) {
         if (nodes.hasOwnProperty(lsid) && nodes[lsid].cpasType) {
             const cpas = nodes[lsid].cpasType,
                 rowId = nodes[lsid].rowId;
             // Add the rowId to an array to use as a URL filter
             if (sampleRowIds[cpas]) {
                 sampleRowIds[cpas].push(rowId);
-            } else {
+            }
+            else {
                 sampleRowIds[cpas] = [rowId];
             }
         }
     }
 
-    for (const row in models[key]) {
+    for (let row in models[key]) {
         if (models[key].hasOwnProperty(row)) {
             const _row = models[key][row];
 
             let count = 0,
                 filteredURL;
-            const name = _row.Name.value,
-                ids = sampleRowIds[_row.LSID.value];
+            let name = _row['Name'].value,
+                ids = sampleRowIds[_row['LSID'].value];
 
             // if there were related samples, use the array of RowIds as a count and to build an AppURL and filter
             if (ids) {
                 count = ids.length;
 
-                filteredURL = AppURL.create('samples', name)
-                    .addFilters(Filter.create('RowId', ids, Filter.Types.IN))
-                    .toHref();
+                filteredURL = AppURL.create('samples', name).addFilters(
+                    Filter.create('RowId', ids, Filter.Types.IN)
+                ).toHref();
             }
 
             rows.push({
                 name: {
-                    value: _row.Name.value,
-                    url: filteredURL,
+                    value: _row['Name'].value,
+                    url: filteredURL
                 },
                 sampleCount: {
-                    value: count,
+                    value: count
                 },
-                modified: count > 0 ? _row.Modified : undefined,
+                modified: count > 0 ? _row['Modified'] : undefined
             });
         }
     }
@@ -243,23 +252,24 @@ function computeSampleCounts(lineage: Lineage, sampleSets: any) {
 function fetchSampleSets() {
     return selectRows({
         schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
     });
 }
 
 // TODO add jest test coverage for this function
 function resolveResultURLs(result: LineageResult): LineageResult {
-    const resolvedNodes = result.nodes.map(node => {
+    const resolvedNodes = result.nodes.map((node) => {
         if (node.type === 'Sample' || node.type === 'Data') {
+
             let route = 'samples';
             if (node.type === 'Data') {
                 route = 'registry';
             }
 
             if (node.cpasType) {
-                const parts = node.cpasType.split(':');
-                const namespace = parts[parts.length - 2];
-                let name = parts[parts.length - 1];
+                let parts = node.cpasType.split(':');
+                let namespace = parts[parts.length-2];
+                let name = parts[parts.length-1];
 
                 // TODO: we ought to be using the urlResolver here instead
                 // Lsid strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
@@ -267,7 +277,7 @@ function resolveResultURLs(result: LineageResult): LineageResult {
 
                 return node.merge({
                     listURL: [route, name.toLowerCase()].join('/'),
-                    url: ['#', route, name.toLowerCase(), node.get('rowId')].join('/'),
+                    url: ['#', route, name.toLowerCase(), node.get('rowId')].join('/')
                 });
             }
         }
@@ -284,7 +294,7 @@ export function getLocationString(location: Location): string {
     if (location) {
         let sep = '';
         // all properties on the URL that are respected by LineagePageModel
-        ['distance', 'members', 'p', 'seeds'].forEach(key => {
+        ['distance', 'members', 'p', 'seeds'].forEach((key) => {
             if (location.query.has(key)) {
                 loc += sep + key + '=' + location.query.get(key);
                 sep = '&';
@@ -295,26 +305,19 @@ export function getLocationString(location: Location): string {
     return loc;
 }
 
-export function createGridModel(
-    lineage: Lineage,
-    members: LINEAGE_DIRECTIONS,
-    distance: number,
-    columns: List<string | GridColumn>,
-    pageNumber: number
-): LineageGridModel {
-    const result = lineage.filterResult(
-        new LineageOptions({
-            filters: List<LineageFilter>([new LineageFilter('type', ['Sample', 'Data'])]),
-        })
-    );
+export function createGridModel(lineage: Lineage, members: LINEAGE_DIRECTIONS, distance: number, columns: List<string | GridColumn>, pageNumber: number): LineageGridModel {
+    const result = lineage.filterResult(new LineageOptions({
+        filters: List<LineageFilter>([new LineageFilter('type', ['Sample', 'Data'])])
+    }));
 
     const nodeList = getLineageDepthFirstNodeList(result.nodes, result.seed, members, distance);
-    const nodeCounts = Map<string, number>().asMutable();
-    nodeList.forEach(node => {
+    let nodeCounts = Map<string, number>().asMutable();
+    nodeList.forEach((node) => {
         const lsid = node.get('lsid');
         if (nodeCounts.has(lsid)) {
             nodeCounts.set(lsid, nodeCounts.get(lsid) + 1);
-        } else {
+        }
+        else {
             nodeCounts.set(lsid, 1);
         }
     });
@@ -331,7 +334,7 @@ export function createGridModel(
         nodeCounts,
         pageNumber,
         seedNode: nodeList.get(0),
-        totalRows: nodeList.size,
+        totalRows: nodeList.size
     });
 }
 

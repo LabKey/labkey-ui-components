@@ -14,30 +14,27 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Map } from 'immutable';
-
+import { Map } from "immutable";
 import { ChartSelector } from '../chart/ChartSelector';
-
-import { QueryGridModel } from '../base/models/model';
-
 import { Export } from './Export';
 import { QueryGridPaging } from './QueryGridPaging';
 import { ViewSelector } from './ViewSelector';
 import { URLBox } from './URLBox';
 import { GridSelectionBanner } from './GridSelectionBanner';
-import { PageSizeSelector } from './PageSizeSelector';
+import { QueryGridModel } from '../base/models/model';
+import { PageSizeSelector } from "./PageSizeSelector";
 
 type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;
 export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;
 
 interface QueryGridBarProps {
-    buttons?: QueryGridBarButtons;
-    model: QueryGridModel;
-    showSampleComparisonReports?: boolean;
-    onReportClicked?: Function;
-    onCreateReportClicked?: Function;
-    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any;
-    advancedExportOption?: Record<string, any>;
+    buttons?: QueryGridBarButtons,
+    model: QueryGridModel,
+    showSampleComparisonReports?: boolean,
+    onReportClicked?: Function,
+    onCreateReportClicked?: Function,
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+    advancedExportOption?: Object
 }
 
 /**
@@ -52,40 +49,45 @@ interface QueryGridBarProps {
  */
 export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
     render() {
-        const {
-            buttons,
-            model,
-            showSampleComparisonReports,
-            onReportClicked,
-            onCreateReportClicked,
-            onSelectionChange,
-            advancedExportOption,
-        } = this.props;
+        const { buttons, model, showSampleComparisonReports, onReportClicked, onCreateReportClicked, onSelectionChange, advancedExportOption } = this.props;
         let buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
 
         if (buttons) {
-            buttonsNode = <div className="btn-group gridbar-buttons">{buttonsNode}</div>;
+            buttonsNode = (
+                <div className="btn-group gridbar-buttons">
+                    {buttonsNode}
+                </div>
+            );
         }
 
-        const box = model && model.showSearchBox ? <URLBox key={model.getId()} queryModel={model} /> : null;
+        const box = model && model.showSearchBox ? (
+            <URLBox key={model.getId()} queryModel={model}/>
+        ) : null;
 
-        const paging = model && model.isPaged ? <QueryGridPaging model={model} /> : null;
+        const paging = model && model.isPaged ? (
+            <QueryGridPaging model={model}/>
+        ) : null;
 
-        const pageSizeBtn = model && model.isPaged ? <PageSizeSelector model={model} /> : null;
+        const pageSizeBtn = model && model.isPaged ? (
+            <PageSizeSelector model={model} />
+        ) : null;
 
-        const exportBtn = model ? <Export model={model} advancedOption={advancedExportOption} /> : null;
+        const exportBtn = model ? (
+            <Export model={model} advancedOption={advancedExportOption}/>
+        ) : null;
 
-        const chart =
-            model && model.showChartSelector ? (
-                <ChartSelector
-                    model={model}
-                    showSampleComparisonReports={showSampleComparisonReports}
-                    onReportClicked={onReportClicked}
-                    onCreateReportClicked={onCreateReportClicked}
-                />
-            ) : null;
+        const chart = model && model.showChartSelector ? (
+            <ChartSelector
+                model={model}
+                showSampleComparisonReports={showSampleComparisonReports}
+                onReportClicked={onReportClicked}
+                onCreateReportClicked={onCreateReportClicked}
+            />
+        ) : null;
 
-        const view = model && model.showViewSelector ? <ViewSelector model={model} /> : null;
+        const view = model && model.showViewSelector ? (
+            <ViewSelector model={model} />
+        ) : null;
 
         let leftContent;
 
@@ -119,7 +121,9 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
                 </div>
 
                 <div className="row QueryGrid-bottom-spacing">
-                    <div className="col-md-12 col-xs-12">{box}</div>
+                    <div className="col-md-12 col-xs-12">
+                        {box}
+                    </div>
                 </div>
 
                 <div className="row">
@@ -132,6 +136,6 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }

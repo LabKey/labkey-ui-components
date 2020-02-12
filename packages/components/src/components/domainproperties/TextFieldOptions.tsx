@@ -1,37 +1,32 @@
 import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
-
-import { LabelHelpTip } from '../base/LabelHelpTip';
-
 import { createFormInputId, createFormInputName, getNameFromId } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { DOMAIN_FIELD_CUSTOM_LENGTH, DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH } from './constants';
 import { ITypeDependentProps } from './models';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface TextFieldProps extends ITypeDependentProps {
-    scale: number;
+    scale: number
 }
 
 export interface TextFieldState {
-    radio: string;
+    radio: string
 }
 
 export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFieldState> {
+
     constructor(props) {
         super(props);
 
         this.state = {
-            radio: DOMAIN_FIELD_MAX_LENGTH,
+            radio: DOMAIN_FIELD_MAX_LENGTH
         };
     }
 
     componentDidMount(): void {
-        this.setState({
-            radio:
-                !this.props.scale || this.props.scale === MAX_TEXT_LENGTH
-                    ? DOMAIN_FIELD_MAX_LENGTH
-                    : DOMAIN_FIELD_CUSTOM_LENGTH,
-        });
+        this.setState({radio: (!this.props.scale || this.props.scale === MAX_TEXT_LENGTH
+                ? DOMAIN_FIELD_MAX_LENGTH : DOMAIN_FIELD_CUSTOM_LENGTH)})
     }
 
     handleChange = (event: any) => {
@@ -46,10 +41,11 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
 
         // If handling radio button
         if (fieldName !== DOMAIN_FIELD_SCALE) {
-            this.setState({ radio: value }); // set local state
-            scaleId = createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index); // updating scale
-            value = MAX_TEXT_LENGTH; // set scale back to MAX_TEXT_LENGTH
-        } else {
+            this.setState({radio: value});  // set local state
+            scaleId = createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index);  // updating scale
+            value = MAX_TEXT_LENGTH;  // set scale back to MAX_TEXT_LENGTH
+        }
+        else {
             value = parseInt(value);
         }
 
@@ -63,7 +59,11 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
     };
 
     getMaxCountHelpText = () => {
-        return <div>Sets the maximum character count for a text field.</div>;
+        return (
+            <div>
+                Sets the maximum character count for a text field.
+            </div>
+        )
     };
 
     render() {
@@ -72,58 +72,56 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
 
         return (
             <div>
-                <Row className="domain-row-expanded">
+                <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className="domain-field-section-heading">{label}</div>
+                        <div className={'domain-field-section-heading'}>{label}</div>
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded ">
+                <Row className='domain-row-expanded '>
                     <Col xs={12}>
-                        <div className="domain-field-label">
+                        <div className={'domain-field-label'}>
                             Maximum Text Length
-                            <LabelHelpTip title="Max Text Length" body={this.getMaxCountHelpText} />
+                            <LabelHelpTip
+                                title="Max Text Length"
+                                body={this.getMaxCountHelpText}
+                            />
                         </div>
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
-                    <Col xs={12} className="domain-text-options-col">
-                        <FormControl
-                            type="radio"
-                            className="domain-text-options-radio1 domain-field-float-left"
-                            value={DOMAIN_FIELD_MAX_LENGTH}
-                            checked={radio === DOMAIN_FIELD_MAX_LENGTH}
-                            onChange={this.handleChange}
-                            id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, domainIndex, index)}
-                            disabled={isFieldFullyLocked(lockType)}
+                <Row className='domain-row-expanded'>
+                    <Col xs={12} className='domain-text-options-col'>
+                        <FormControl type='radio'
+                               className='domain-text-options-radio1 domain-field-float-left'
+                               value={DOMAIN_FIELD_MAX_LENGTH}
+                               checked={radio === DOMAIN_FIELD_MAX_LENGTH}
+                               onChange={this.handleChange}
+                               id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, domainIndex, index)}
+                               disabled={isFieldFullyLocked(lockType)}
                         />
-                        <div className="domain-text-label">Unlimited</div>
+                        <div className='domain-text-label'>Unlimited</div>
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <FormControl
-                            type="radio"
-                            className="domain-text-options-radio2 domain-field-float-left"
-                            value={DOMAIN_FIELD_CUSTOM_LENGTH}
-                            checked={radio === DOMAIN_FIELD_CUSTOM_LENGTH}
-                            onChange={this.handleChange}
-                            id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, domainIndex, index)}
+                        <FormControl type='radio'
+                               className='domain-text-options-radio2 domain-field-float-left'
+                               value={DOMAIN_FIELD_CUSTOM_LENGTH}
+                               checked={radio === DOMAIN_FIELD_CUSTOM_LENGTH}
+                               onChange={this.handleChange}
+                               id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, domainIndex, index)}
                         />
-                        <span className="domain-text-options-length domain-field-float-left domain-text-label">
-                            No longer than X characters
-                        </span>
-                        <FormControl
-                            type="number"
-                            id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_SCALE)}
-                            className="domain-text-length-field"
-                            value={typeof scale !== 'undefined' && radio === DOMAIN_FIELD_CUSTOM_LENGTH ? scale : 4000}
-                            onChange={this.handleChange}
-                            disabled={isFieldFullyLocked(lockType) || radio === DOMAIN_FIELD_MAX_LENGTH}
+                        <span className='domain-text-options-length domain-field-float-left domain-text-label'>No longer than X characters</span>
+                        <FormControl type="number"
+                                     id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
+                                     name={createFormInputName(DOMAIN_FIELD_SCALE)}
+                                     className='domain-text-length-field'
+                                     value={typeof scale !== "undefined" && radio === DOMAIN_FIELD_CUSTOM_LENGTH ? scale : 4000}
+                                     onChange={this.handleChange}
+                                     disabled={isFieldFullyLocked(lockType) || radio === DOMAIN_FIELD_MAX_LENGTH}
                         />
                     </Col>
                 </Row>
             </div>
-        );
+        )
     }
 }

@@ -1,266 +1,256 @@
 {
-    "schemaName": ["exp"],
-  'queryName' : 'SampleSetHeatMap',
-    "metaData": {
-        "importTemplates": [
-            {
-                "label": "Download Template",
-                "url": "/labkey/BiologicsAssayTest%20Project/query-exportExcelTemplate.view?schemaName=exp&query.queryName=SampleSetHeatMap&headerType=DisplayFieldKey"
-            }
-        ],
-        "root": "rows",
-        "totalProperty": "rowCount",
-        "description": null,
-    'fields' : [ {
-      'fieldKey' : [ 'Protocol' ],
-                "description": "If this sample is a member of a sample set, contains a reference to the sample set",
-                "friendlyType": "Text (String)",
-                "type": "string",
-                "jsonType": "string",
-                "sqlType": "nvarchar",
-                "defaultValue": null,
-                "scale": 200,
-                "align": "left",
-                "sortable": true,
-                "width": "",
-                "autoIncrement": false,
-                "hidden": false,
-                "keyField": false,
-                "mvEnabled": false,
-                "nullable": true,
-                "readOnly": true,
-                "userEditable": true,
-                "calculated": true,
-                "versionField": false,
-                "selectable": true,
-                "shownInInsertView": false,
-                "shownInUpdateView": true,
-                "shownInDetailsView": true,
-      'dimension' : true,
-      'measure' : false,
-      'recommendedVariable' : false,
-      'defaultScale' : 'LINEAR',
-      'phi' : 'NotPHI',
-      'excludeFromShifting' : false,
-      'conceptURI' : null,
-      'displayField' : [ 'Protocol', 'Name' ],
-                "displayFieldJsonType": "string",
-                "inputType": "text",
-                "cols": 40,
-                "shortCaption": "Protocol",
-                "facetingBehaviorType": "AUTOMATIC",
-                "caption": "Protocol",
-                "lookup": {
-        'keyColumn' : 'RowId',
-        'public' : true,
-                    "displayColumn": "Name",
-                    "queryName": "SampleSets",
-                    "schemaName": ["exp"]
-                }
-            },
-            {
-                "fieldKey": ["2019-2::MonthCount"],
-                "friendlyType": "Integer",
-                "type": "int",
-                "jsonType": "int",
-                "sqlType": "INTEGER",
-                "defaultValue": null,
-                "scale": 0,
-                "align": "right",
-                "sortable": true,
-                "width": "",
-                "autoIncrement": false,
-                "hidden": false,
-                "keyField": false,
-                "mvEnabled": false,
-                "nullable": true,
-                "readOnly": false,
-                "userEditable": false,
-                "calculated": true,
-                "versionField": false,
-                "selectable": true,
-                "shownInInsertView": false,
-                "shownInUpdateView": false,
-                "shownInDetailsView": true,
-                "dimension": false,
-                "measure": true,
-                "recommendedVariable": false,
-                "defaultScale": "LINEAR",
-                "phi": "NotPHI",
-                "excludeFromShifting": false,
-                "conceptURI": null,
-                "inputType": "text",
-                "shortCaption": "2019-2",
-                "facetingBehaviorType": "AUTOMATIC",
-                "crosstabColumnMember": {
-                    "dimensionFieldKey": ["YearMonth"],
-        'caption' : '2019-2',
-        'value' : '2019-2'
-                },
-      'crosstabColumnDimension' : [ 'MonthCount' ],
-      'caption' : '2019-2'
-            },
-            {
-                "fieldKey": ["2019-5::MonthCount"],
-      'friendlyType' : 'Integer',
-      'type' : 'int',
-      'jsonType' : 'int',
-      'sqlType' : 'INTEGER',
-      'defaultValue' : null,
-      'scale' : 0,
-      'align' : 'right',
-      'sortable' : true,
-      'width' : '',
-      'autoIncrement' : false,
-      'hidden' : false,
-      'keyField' : false,
-      'mvEnabled' : false,
-      'nullable' : true,
-      'readOnly' : false,
-      'userEditable' : false,
-      'calculated' : true,
-      'versionField' : false,
-      'selectable' : true,
-      'shownInInsertView' : false,
-      'shownInUpdateView' : false,
-      'shownInDetailsView' : true,
-      'dimension' : false,
-      'measure' : true,
-      'recommendedVariable' : false,
-      'defaultScale' : 'LINEAR',
-      'phi' : 'NotPHI',
-      'excludeFromShifting' : false,
-                "conceptURI": null,
-                "inputType": "text",
-                "shortCaption": "2019-5",
-                "facetingBehaviorType": "AUTOMATIC",
-                "crosstabColumnMember": {
-        'dimensionFieldKey' : [ 'YearMonth' ],
-                    "caption": "2019-5",
-                    "value": "2019-5"
-                },
-                "crosstabColumnDimension": ["MonthCount"],
-                "caption": "2019-5"
-            },
-            {
-                "fieldKey": ["CompleteCount"],
-                "friendlyType": "Integer",
-                "type": "int",
-                "jsonType": "int",
-                "sqlType": "INTEGER",
-                "defaultValue": null,
-                "scale": 0,
-                "align": "right",
-                "sortable": true,
-                "width": "",
-                "autoIncrement": false,
-                "hidden": false,
-                "keyField": false,
-                "mvEnabled": false,
-                "nullable": true,
-                "readOnly": false,
-                "userEditable": false,
-                "calculated": true,
-                "versionField": false,
-                "selectable": true,
-                "shownInInsertView": false,
-                "shownInUpdateView": false,
-                "shownInDetailsView": true,
-                "dimension": false,
-                "measure": true,
-                "recommendedVariable": false,
-                "defaultScale": "LINEAR",
-                "phi": "NotPHI",
-                "excludeFromShifting": false,
-                "conceptURI": null,
-                "inputType": "text",
-                "shortCaption": "Complete Count",
-                "facetingBehaviorType": "AUTOMATIC",
-                "caption": "Complete Count"
-            },
-            {
-      'fieldKey' : [ 'InRangeCount' ],
-      'friendlyType' : 'Integer',
-      'type' : 'int',
-      'jsonType' : 'int',
-      'sqlType' : 'INTEGER',
-      'defaultValue' : null,
-      'scale' : 0,
-      'align' : 'right',
-      'sortable' : true,
-      'width' : '',
-      'autoIncrement' : false,
-      'hidden' : false,
-      'keyField' : false,
-      'mvEnabled' : false,
-      'nullable' : true,
-      'readOnly' : false,
-      'userEditable' : false,
-      'calculated' : true,
-      'versionField' : false,
-      'selectable' : true,
-      'shownInInsertView' : false,
-      'shownInUpdateView' : false,
-      'shownInDetailsView' : true,
-      'dimension' : false,
-      'measure' : true,
-      'recommendedVariable' : false,
-      'defaultScale' : 'LINEAR',
-      'phi' : 'NotPHI',
-      'excludeFromShifting' : false,
-      'conceptURI' : null,
-      'inputType' : 'text',
-      'shortCaption' : 'In Range Count',
-      'facetingBehaviorType' : 'AUTOMATIC',
-      'caption' : 'In Range Count'
-            }
-        ],
-        "title": "SampleSetHeatMap",
-        "importMessage": null
-    },
-    "rows": [
-        {
-            "data": {
-                "2019-5::MonthCount": {
-                    "value": 500
-                },
-                "InRangeCount": {
-                    "value": 525
-                },
-                "Protocol": {
-                    "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterialSource.view?rowId=399",
-                    "value": "urn:lsid:labkey.com:SampleSet.Folder-8914:ExpressionSystemSamples",
-        'displayValue' : 'ExpressionSystemSamples'
-                },
-      '2019-2::MonthCount' : {
-        'value' : 25
-                },
-      'CompleteCount' : {
-        'value' : 525
-                }
-            }
-        },
-        {
-    'data' : {
-      '2019-5::MonthCount' : {
-        'value' : 10
-                },
-      'InRangeCount' : {
-        'value' : 118
-                },
-      'Protocol' : {
-        'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterialSource.view?rowId=398',
-                    "value": "urn:lsid:labkey.com:SampleSet.Folder-8914:Samples",
-                    "displayValue": "Samples"
-                },
-                "2019-2::MonthCount": {
-                    "value": 108
-                },
-                "CompleteCount": {
-                    "value": 118
-                }
-            }
-        }
-    ],
-    "rowCount": 2
+  "schemaName" : [ "exp" ],
+  "queryName" : "SampleSetHeatMap",
+  "metaData" : {
+    "importTemplates" : [ {
+      "label" : "Download Template",
+      "url" : "/labkey/BiologicsAssayTest%20Project/query-exportExcelTemplate.view?schemaName=exp&query.queryName=SampleSetHeatMap&headerType=DisplayFieldKey"
+    } ],
+    "root" : "rows",
+    "totalProperty" : "rowCount",
+    "description" : null,
+    "fields" : [ {
+      "fieldKey" : [ "Protocol" ],
+      "description" : "If this sample is a member of a sample set, contains a reference to the sample set",
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "nvarchar",
+      "defaultValue" : null,
+      "scale" : 200,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : true,
+      "userEditable" : true,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : true,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "displayField" : [ "Protocol", "Name" ],
+      "displayFieldJsonType" : "string",
+      "inputType" : "text",
+      "cols" : 40,
+      "shortCaption" : "Protocol",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Protocol",
+      "lookup" : {
+        "keyColumn" : "RowId",
+        "public" : true,
+        "displayColumn" : "Name",
+        "queryName" : "SampleSets",
+        "schemaName" : [ "exp" ]
+      }
+    }, {
+      "fieldKey" : [ "2019-2::MonthCount" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "INTEGER",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : true,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "2019-2",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "crosstabColumnMember" : {
+        "dimensionFieldKey" : [ "YearMonth" ],
+        "caption" : "2019-2",
+        "value" : "2019-2"
+      },
+      "crosstabColumnDimension" : [ "MonthCount" ],
+      "caption" : "2019-2"
+    }, {
+      "fieldKey" : [ "2019-5::MonthCount" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "INTEGER",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : true,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "2019-5",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "crosstabColumnMember" : {
+        "dimensionFieldKey" : [ "YearMonth" ],
+        "caption" : "2019-5",
+        "value" : "2019-5"
+      },
+      "crosstabColumnDimension" : [ "MonthCount" ],
+      "caption" : "2019-5"
+    }, {
+      "fieldKey" : [ "CompleteCount" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "INTEGER",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : true,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "Complete Count",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Complete Count"
+    }, {
+      "fieldKey" : [ "InRangeCount" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "INTEGER",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : true,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "In Range Count",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "In Range Count"
+    } ],
+    "title" : "SampleSetHeatMap",
+    "importMessage" : null
+  },
+  "rows" : [ {
+    "data" : {
+      "2019-5::MonthCount" : {
+        "value" : 500
+      },
+      "InRangeCount" : {
+        "value" : 525
+      },
+      "Protocol" : {
+        "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterialSource.view?rowId=399",
+        "value" : "urn:lsid:labkey.com:SampleSet.Folder-8914:ExpressionSystemSamples",
+        "displayValue" : "ExpressionSystemSamples"
+      },
+      "2019-2::MonthCount" : {
+        "value" : 25
+      },
+      "CompleteCount" : {
+        "value" : 525
+      }
+    }
+  }, {
+    "data" : {
+      "2019-5::MonthCount" : {
+        "value" : 10
+      },
+      "InRangeCount" : {
+        "value" : 118
+      },
+      "Protocol" : {
+        "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterialSource.view?rowId=398",
+        "value" : "urn:lsid:labkey.com:SampleSet.Folder-8914:Samples",
+        "displayValue" : "Samples"
+      },
+      "2019-2::MonthCount" : {
+        "value" : 108
+      },
+      "CompleteCount" : {
+        "value" : 118
+      }
+    }
+  } ],
+  "rowCount" : 2
 }

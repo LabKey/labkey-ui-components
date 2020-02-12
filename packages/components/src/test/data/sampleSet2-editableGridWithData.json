@@ -1,53 +1,55 @@
 {
-    "cellMessages": {
-        "1-0": "description 1 message"
-    },
-    "cellValues": {
-    '0-0': [
-            {
-                "display": "S-1",
-                "raw": "S-1"
-            }
-        ],
-        "0-1": [
-            {
-                "display": "S-2",
-                "raw": "S-2"
-            }
-        ],
-        "0-2": [
-            {
-                "display": "S-3",
-                "raw": "S-3"
-            }
-        ],
-        "1-0": [
-            {
-                "display": "Description 1",
-                "raw": "Description 1"
-            }
-        ],
-        "1-1": [
-            {
-                "display": "Description 2",
-                "raw": "Description 2"
-            }
-        ],
-        "1-2": [
-            {
-                "display": "Description 3",
-                "raw": "Description 3"
-            }
-        ]
-    },
-  'colCount': 5,
-    "id": "insert-samples|samples/sample set 2",
-    "isPasting": false,
-  'focusColIdx': 1,
-    "focusRowIdx": 1,
-    "numPastedRows": 0,
-  'rowCount': 3,
-    "selectedColIdx": 1,
-    "selectedRowIdx": 1,
-    "selectionCells": []
+  "cellMessages": {
+    "1-0": "description 1 message"
+  },
+  "cellValues": {
+    "0-0": [
+      {
+        "display": "S-1",
+        "raw": "S-1"
+      }
+    ],
+    "0-1": [
+      {
+        "display": "S-2",
+        "raw": "S-2"
+      }
+    ],
+    "0-2": [
+      {
+        "display": "S-3",
+        "raw": "S-3"
+      }
+    ],
+    "1-0": [
+      {
+        "display": "Description 1",
+        "raw": "Description 1"
+      }
+    ],
+    "1-1": [
+      {
+        "display": "Description 2",
+        "raw": "Description 2"
+      }
+    ],
+    "1-2": [
+      {
+        "display": "Description 3",
+        "raw": "Description 3"
+      }
+    ]
+  },
+  "colCount": 5,
+  "id": "insert-samples|samples\/sample set 2",
+  "isPasting": false,
+  "focusColIdx": 1,
+  "focusRowIdx": 1,
+  "numPastedRows": 0,
+  "rowCount": 3,
+  "selectedColIdx": 1,
+  "selectedRowIdx": 1,
+  "selectionCells": [
+
+  ]
 }

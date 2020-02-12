@@ -15,7 +15,6 @@
  */
 import mock, { proxy, delay } from 'xhr-mock';
 import { fromJS } from 'immutable';
-
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixtureTypesQueryInfo from '../test/data/mixtureTypes-getQueryDetails.json';
 import mixtureTypesQuery from '../test/data/mixtureTypes-getQuery.json';
@@ -71,9 +70,9 @@ import usersQueryInfo from '../test/data/users-getQueryDetails.json';
 import usersQuery from '../test/data/users-getQuery.json';
 import userPropsInfo from '../test/data/user-getUserProps.json';
 import getMaxPhiLevelJson from '../test/data/security-GetMaxPhiLevel.json';
-import getRolesJson from '../test/data/security-getRoles.json';
-import getPrincipalsJson from '../test/data/security-getPrincipals.json';
-import getQueryDetailsPrincipalsJson from '../test/data/security-getQueryDetailsPrincipals.json';
+import getRolesJson from "../test/data/security-getRoles.json";
+import getPrincipalsJson from "../test/data/security-getPrincipals.json";
+import getQueryDetailsPrincipalsJson from "../test/data/security-getQueryDetailsPrincipals.json";
 import inferDomainJson from '../test/data/property-inferDomain.json';
 import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTargets.json';
 import browseData from '../test/data/example_browse_data_tree_api.json';
@@ -84,96 +83,96 @@ export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/c
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {
-        runs: assayRunsWithQCFlagsQueryInfo,
-        data: assayAminoAcidsDataQueryInfo,
+        'runs': assayRunsWithQCFlagsQueryInfo,
+        'data': assayAminoAcidsDataQueryInfo,
     },
     'assay.general.gpat 1': {
-        data: assayGpatDataQueryInfo,
-        runs: assayGpatRunsQueryInfo,
-        emptyruns: assayGpatRunsQueryInfo,
+        'data': assayGpatDataQueryInfo,
+        'runs': assayGpatRunsQueryInfo,
+        'emptyruns': assayGpatRunsQueryInfo,
     },
     'assay.general.imagefieldassay': {
-        runs: assayImageFieldRunsQueryInfo,
+        'runs': assayImageFieldRunsQueryInfo,
     },
-    core: {
-        users: usersQueryInfo,
-        core_temp_240: getQueryDetailsPrincipalsJson,
+    'core': {
+        'users': usersQueryInfo,
+        'core_temp_240': getQueryDetailsPrincipalsJson,
     },
-    exp: {
-        samplesetheatmap: sampleSetHeatMapQueryInfo,
-        assaysheatmap: assaysHeatMapQueryInfo,
-        samplesets: sampleSetsQueryInfo,
+    'exp': {
+        'samplesetheatmap': sampleSetHeatMapQueryInfo,
+        'assaysheatmap': assaysHeatMapQueryInfo,
+        'samplesets': sampleSetsQueryInfo,
     },
     'exp.data': {
-        mixtures: mixturesQueryInfo,
-        mixturespaging: mixturesQueryInfo,
-        expressionsystem: expressionsystemQueryInfo,
+        'mixtures': mixturesQueryInfo,
+        'mixturespaging': mixturesQueryInfo,
+        'expressionsystem': expressionsystemQueryInfo,
     },
-    labbook: {
-        labbookexperiment: labbookQueryInfo,
+    'labbook': {
+        'labbookexperiment': labbookQueryInfo,
     },
-    lists: {
-        mixturetypes: mixtureTypesQueryInfo,
-        lookuplist: lookuplistQueryInfo,
+    'lists': {
+        'mixturetypes': mixtureTypesQueryInfo,
+        'lookuplist': lookuplistQueryInfo,
     },
-    samples: {
-        samples: sampleSetQueryInfo,
+    'samples': {
+        'samples': sampleSetQueryInfo,
         'sample set 2': sampleSet2QueryInfo,
-        expressionsystemsamples: expressionsystemsamplesQueryInfo,
-        samplesetwithallfieldtypes: sampleSetAllFieldTypesQueryInfo,
+        'expressionsystemsamples': expressionsystemsamplesQueryInfo,
+        'samplesetwithallfieldtypes': sampleSetAllFieldTypesQueryInfo,
         'name expression set': nameExpressionQueryInfo,
         'name%20expression%20set': nameExpressionQueryInfo,
     },
-    schema: {
-        gridwithoutdata: mixturesQueryInfo,
-    },
+    'schema': {
+        'gridwithoutdata': mixturesQueryInfo,
+    }
 });
 
 const QUERY_RESPONSES = fromJS({
     'assay.general.amino acids': {
-        runs: assayRunsWithQCFlagsQuery,
-        data: assayAminoAcidsDataQuery,
+        'runs': assayRunsWithQCFlagsQuery,
+        'data': assayAminoAcidsDataQuery,
     },
     'assay.general.gpat 1': {
-        runs: assayGpatRunData,
-        emptyruns: {
+        'runs': assayGpatRunData,
+        'emptyruns': {
             ...assayGpatRunData,
             rows: [],
             rowCount: 0,
         },
     },
     'assay.general.imagefieldassay': {
-        runs: assayImageFieldRunsQuery,
+        'runs': assayImageFieldRunsQuery,
     },
-    core: {
-        users: usersQuery,
+    'core': {
+        'users': usersQuery,
     },
-    exp: {
-        samplesetheatmap: sampleSetHeatMapQuery,
-        assaysheatmap: assaysHeatMapQuery,
-        samplesets: sampleSetsQuery,
+    'exp': {
+        'samplesetheatmap': sampleSetHeatMapQuery,
+        'assaysheatmap': assaysHeatMapQuery,
+        'samplesets': sampleSetsQuery,
     },
     'exp.data': {
-        mixtures: mixturesQuery,
-        mixturespaging: mixturesQueryPaging,
-        expressionsystem: expSystemLineageQuery,
+        'mixtures': mixturesQuery,
+        'mixturespaging': mixturesQueryPaging,
+        'expressionsystem': expSystemLineageQuery
     },
-    labbook: {
-        labbookexperiment: labbookQuery,
+    'labbook': {
+        'labbookexperiment': labbookQuery,
     },
-    lists: {
-        mixturetypes: mixtureTypesQuery,
-        lookuplist: lookuplistQuery,
+    'lists': {
+        'mixturetypes': mixtureTypesQuery,
+        'lookuplist': lookuplistQuery,
     },
-    samples: {
-        samples: sampleDetailsQuery,
-        expressionsystemsamples: expSystemSamplesLineageQuery,
-        samplesetwithallfieldtypes: samplesLineageQuery,
+    'samples': {
+        'samples': sampleDetailsQuery,
+        'expressionsystemsamples': expSystemSamplesLineageQuery,
+        'samplesetwithallfieldtypes': samplesLineageQuery,
         'name expression set': nameExpressionSelectedQuery,
     },
-    schema: {
-        gridwithoutdata: noDataQuery,
-    },
+    'schema': {
+        'gridwithoutdata': noDataQuery,
+    }
 });
 
 export function initMocks() {
@@ -183,12 +182,12 @@ export function initMocks() {
     initLineageMocks();
     initUserPropsMocks();
 
-    mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
+    mock.post(/.*\/query\/?.*\/executeSql.*/,  (req, res) => {
         const body = decodeURIComponent(req.body());
 
         let responseBody;
         if (body.indexOf('"core"') > -1 && body.indexOf('FROM Principals') > -1) {
-            responseBody = getPrincipalsJson;
+            responseBody = getPrincipalsJson
         }
 
         if (!responseBody) {
@@ -197,7 +196,7 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 
@@ -213,7 +212,7 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 
@@ -227,35 +226,35 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 
-    mock.post(/.*\/query\/?.*\/updateRows.*/, (req, res) => {
+    mock.post(/.*\/query\/?.*\/updateRows.*/,  (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
 
-        if (bodyParams.indexOf('"queryname":"samples"') > -1) {
+        if (bodyParams.indexOf("\"queryname\":\"samples\"") > -1) {
             responseBody = samplesUpdate;
         }
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 
-    // TODO conditionalize based on queryName
+    //TODO conditionalize based on queryName
     mock.post(/.*\/query\/?.*\/insertRows.*/, {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(samplesInsert),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(samplesInsert)
     });
 
     mock.get(/.*ConfirmationData.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
-        const selectionKey = queryParams.dataRegionSelectionKey;
+        let selectionKey = queryParams.dataRegionSelectionKey;
         if (selectionKey === 'deleteNone') {
             responseBody = deleteNoneConfirmation;
         } else if (selectionKey === 'deleteOne') {
@@ -268,7 +267,7 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 
@@ -276,73 +275,68 @@ export function initMocks() {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
 
-        if (bodyParams.indexOf('.csv') > -1 || bodyParams.indexOf('.tsv') > -1) {
+        if ((bodyParams.indexOf(".csv") > -1) || (bodyParams.indexOf('.tsv') > -1)) {
             responseBody = assayFileDuplicateCheck;
-        } else if (bodyParams.indexOf('.xls') > -1) {
-            responseBody = assayFileNoDuplicateCheck;
+        } else if (bodyParams.indexOf(".xls") > -1) {
+            responseBody= assayFileNoDuplicateCheck;
         }
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
-            .body(JSON.stringify(responseBody));
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody))
     });
 
     mock.get(/.*getFilePreview.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
 
-        if (queryParams.file === '1949' || queryParams.file === '2010') {
+        if (queryParams.file === "1949" || queryParams.file === "2010") {
             responseBody = filePreviewData;
         }
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 
     mock.post(/.*\/visualization\/?.*\/getVisualization.*/, {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(visualizationConfig),
     });
 
     mock.post(/.*\/property\/inferDomain.*/, {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(inferDomainJson),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(inferDomainJson)
     });
 
     mock.get(/.*\/security\/GetMaxPhiLevel.*/, {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(getMaxPhiLevelJson),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(getMaxPhiLevelJson)
     });
 
     mock.get(/.*\/security\/?.*\/getRoles.*/, {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(getRolesJson),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(getRolesJson)
     });
 
     mock.get(/.*\/assay\/getValidPublishTargets.*/, {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(getValidPublishTargetsJson),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(getValidPublishTargetsJson)
     });
 
-    mock.get(
-        /.*browseData.*/,
-        delay(
-            {
-                status: 200,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(browseData),
-            },
-            1000
-        )
-    );
+
+    mock.get(/.*browseData.*/, delay({
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(browseData),
+    }, 1000));
 
     mock.use(proxy);
 }
@@ -356,18 +350,16 @@ export function initQueryGridMocks() {
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 
-    mock.post(/.*\/query\/?.*\/getQuery.*/, (req, res) => {
-        const params = decodeURIComponent(req.body())
-            .split('&')
-            .reduce((result, param) => {
-                const [name, value] = param.split('=');
-                result[name] = value;
-                return result;
-            }, {}) as any;
+    mock.post(/.*\/query\/?.*\/getQuery.*/,  (req, res) => {
+        const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
+            const [name, value] = param.split('=');
+            result[name] = value;
+            return result;
+        }, {}) as any;
         const queryName = params['query.queryName'].toLowerCase();
         const schemaName = params.schemaName.toLowerCase();
         let responseBody = QUERY_RESPONSES.getIn([schemaName, queryName]);
@@ -381,8 +373,7 @@ export function initQueryGridMocks() {
             responseBody = samplesLineageQuery;
         }
 
-        let maxRows = params['query.maxRows'],
-            offset = params['query.offset'] || 0;
+        let maxRows = params['query.maxRows'], offset = params['query.offset'] || 0;
         if (maxRows !== undefined) {
             maxRows = parseInt(maxRows);
             offset = parseInt(offset);
@@ -391,7 +382,7 @@ export function initQueryGridMocks() {
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 
@@ -400,7 +391,7 @@ export function initQueryGridMocks() {
         const key = queryParams.key;
         let responseBody;
 
-        if (key && key.toLowerCase() === 'sample-set-name%20expression%20set|samples/name%20expression%20set') {
+        if (key && key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
             responseBody = nameExpressionSelected;
         } else {
             responseBody = mixturesSelected;
@@ -408,22 +399,22 @@ export function initQueryGridMocks() {
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 
-    // TODO response JSON?
+    //TODO response JSON?
     mock.post(/.*\/query\/?.*\/setSelected.*/, {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({}),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({})
     });
 
-    // TODO conditionalize based on queryName
+    //TODO conditionalize based on queryName
     mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(mixturesReportInfos),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(mixturesReportInfos)
     });
 }
 
@@ -437,16 +428,16 @@ export function initLineageMocks() {
 
         return res
             .status(200)
-            .headers({ 'Content-Type': 'application/json' })
+            .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
     });
 }
 
 export function initUserPropsMocks() {
-    // TODO conditionalize based on userId
+    //TODO conditionalize based on userId
     mock.get(/.*\/user\/getUserProps.*/, {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userPropsInfo),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(userPropsInfo)
     });
 }

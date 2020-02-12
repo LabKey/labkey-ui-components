@@ -17,20 +17,21 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
-
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 
 interface ProductMenuProps {
-    model: ProductMenuModel;
-    sectionConfigs?: List<Map<string, MenuSectionConfig>>;
-    maxColumns?: number;
+    model: ProductMenuModel
+    sectionConfigs?: List<Map<string, MenuSectionConfig>>
+    maxColumns?: number
 }
 
 export class ProductMenu extends React.Component<ProductMenuProps, any> {
+
     static defaultProps = {
-        maxColumns: 5,
+        maxColumns: 5
     };
 
     constructor(props: ProductMenuProps) {
@@ -39,17 +40,17 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
         this.toggleMenu = this.toggleMenu.bind(this);
 
         this.state = {
-            menuOpen: false,
-        };
+            menuOpen : false
+        }
     }
 
     toggleMenu() {
-        this.setState({
-            menuOpen: !this.state.menuOpen,
+        this.setState( {
+            menuOpen: !this.state.menuOpen
         });
     }
 
-    getSectionModel(key: string): MenuSectionModel {
+    getSectionModel(key: string) : MenuSectionModel {
         return this.props.model.sections.find(section => section.key === key);
     }
 
@@ -59,16 +60,14 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
 
         let containerCls = 'product-menu-content ';
         let menuSectionCls = 'menu-section col-' + model.sections.size;
-        let inside = (
-            <div className={menuSectionCls + ' menu-loading'}>
-                <LoadingSpinner />
-            </div>
-        );
+        let inside = <div className={menuSectionCls + " menu-loading"}><LoadingSpinner/></div>;
         if (model && model.isLoaded) {
             if (model.isError) {
                 containerCls += ' error';
-                inside = <span>{model.message}</span>;
-            } else if (sectionConfigs) {
+                inside = <span>{model.message}</span>
+            }
+            else if (sectionConfigs)
+            {
                 menuSectionCls = 'menu-section col-' + sectionConfigs.size;
 
                 inside = (
@@ -76,32 +75,31 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
                         {sectionConfigs.map((sectionConfig, ind) => {
                             return (
                                 <div key={ind} className={menuSectionCls}>
-                                    {sectionConfig.entrySeq().map(([key, menuConfig]) => {
-                                        return (
-                                            <ProductMenuSection
-                                                key={key}
-                                                productId={productId}
-                                                section={this.getSectionModel(key)}
-                                                config={menuConfig}
-                                            />
-                                        );
-                                    })}
+                                    {
+                                        sectionConfig.entrySeq().map(([key, menuConfig]) => {
+                                            return (
+                                                <ProductMenuSection
+                                                    key={key}
+                                                    productId={productId}
+                                                    section={this.getSectionModel(key)}
+                                                    config={menuConfig}
+                                                />
+                                            );
+                                        })
+                                    }
                                 </div>
                             );
                         })}
                     </>
                 );
-            } else {
+            }
+            else {
                 inside = (
                     <>
                         {model.sections.map(section => {
                             return (
                                 <div key={section.key} className={menuSectionCls}>
-                                    <ProductMenuSection
-                                        productId={model.productId}
-                                        section={section}
-                                        config={new MenuSectionConfig()}
-                                    />
+                                    <ProductMenuSection productId={model.productId} section={section} config={new MenuSectionConfig()}/>
                                 </div>
                             );
                         })}
@@ -113,16 +111,17 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
             <DropdownButton
                 id="product-menu"
                 title="Menu"
-                className="product-menu-button"
+                className='product-menu-button'
                 open={this.state.menuOpen}
-                onToggle={this.toggleMenu}>
+                onToggle={this.toggleMenu}
+            >
                 <div className={containerCls} onClick={this.toggleMenu}>
                     <div>
-                        <div className="navbar-connector" />
+                        <div className="navbar-connector"/>
                         {inside}
                     </div>
                 </div>
             </DropdownButton>
-        );
+        )
     }
 }

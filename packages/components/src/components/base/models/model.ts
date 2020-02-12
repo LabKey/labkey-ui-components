@@ -16,6 +16,7 @@
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
 import { ActionURL, Filter, Utils } from '@labkey/api';
 
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
 import {
     decodePart,
     getSchemaQuery,
@@ -27,22 +28,12 @@ import {
 import { AppURL } from '../../../url/AppURL';
 import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
-
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
 const emptyRow = Map<string, any>();
 
-export enum QueryInfoStatus {
-    ok,
-    notFound,
-    unknown,
-}
-export enum MessageLevel {
-    info,
-    warning,
-    error,
-}
+export enum QueryInfoStatus { ok, notFound, unknown }
+export enum MessageLevel { info, warning, error }
 
 /**
  * Model for org.labkey.api.data.Container as returned by Container.toJSON()
@@ -60,7 +51,7 @@ export class Container extends Record({
     path: '',
     sortOrder: 0,
     title: '',
-    type: '',
+    type: ''
 }) {
     activeModules: List<string>;
     folderType: string;
@@ -76,31 +67,31 @@ export class Container extends Record({
     title: string;
     type: string;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 }
 
 interface IUserProps {
-    id: number;
+    id: number
 
-    canDelete: boolean;
-    canDeleteOwn: boolean;
-    canInsert: boolean;
-    canUpdate: boolean;
-    canUpdateOwn: boolean;
+    canDelete: boolean
+    canDeleteOwn: boolean
+    canInsert: boolean
+    canUpdate: boolean
+    canUpdateOwn: boolean
 
-    displayName: string;
-    email: string;
-    phone: string;
-    avatar: string;
+    displayName: string
+    email: string
+    phone: string
+    avatar: string
 
-    isAdmin: boolean;
-    isGuest: boolean;
-    isSignedIn: boolean;
-    isSystemAdmin: boolean;
+    isAdmin: boolean
+    isGuest: boolean
+    isSignedIn: boolean
+    isSystemAdmin: boolean
 
-    permissionsList: List<string>;
+    permissionsList: List<string>
 }
 
 const defaultUser: IUserProps = {
@@ -122,7 +113,7 @@ const defaultUser: IUserProps = {
     isSignedIn: false,
     isSystemAdmin: false,
 
-    permissionsList: List(),
+    permissionsList: List()
 };
 
 /**
@@ -153,14 +144,14 @@ export class User extends Record(defaultUser) implements IUserProps {
         return new User(defaultUser);
     }
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 }
 
 export interface IParsedSelectionKey {
-    keys: string;
-    schemaQuery: SchemaQuery;
+    keys: string
+    schemaQuery: SchemaQuery
 }
 
 const APP_SELECTION_PREFIX = 'appkey';
@@ -168,17 +159,18 @@ const APP_SELECTION_PREFIX = 'appkey';
 export class SchemaQuery extends Record({
     schemaName: undefined,
     queryName: undefined,
-    viewName: undefined,
+    viewName: undefined
 }) {
-    static create(schemaName: string, queryName: string, viewName?: string): SchemaQuery {
-        return new SchemaQuery({ schemaName, queryName, viewName });
+
+    static create(schemaName: string, queryName: string, viewName?: string) : SchemaQuery {
+        return new SchemaQuery({schemaName, queryName, viewName});
     }
 
     schemaName: string;
     queryName: string;
     viewName: string;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
@@ -214,16 +206,20 @@ export class SchemaQuery extends Record({
     }
 
     static parseSelectionKey(selectionKey: string): IParsedSelectionKey {
-        const [appkey /* not used */, schemaQueryKey, keys] = selectionKey.split('|');
+        const [ appkey /* not used */, schemaQueryKey, keys ] = selectionKey.split('|');
 
         return {
             keys,
-            schemaQuery: getSchemaQuery(schemaQueryKey),
+            schemaQuery: getSchemaQuery(schemaQueryKey)
         };
     }
 
-    static createAppSelectionKey(targetSQ: SchemaQuery, keys: any[]): string {
-        return [APP_SELECTION_PREFIX, resolveSchemaQuery(targetSQ), keys.join(';')].join('|');
+    static createAppSelectionKey(targetSQ: SchemaQuery, keys: Array<any>): string {
+        return [
+            APP_SELECTION_PREFIX,
+            resolveSchemaQuery(targetSQ),
+            keys.join(';')
+        ].join('|');
     }
 }
 
@@ -266,7 +262,7 @@ export class QueryColumn extends Record({
     // mvEnabled: undefined,
     name: undefined,
     // nullable: undefined,
-    protected: undefined,
+    'protected': undefined,
     rangeURI: undefined,
     readOnly: undefined,
     // recommendedVariable: undefined,
@@ -288,7 +284,7 @@ export class QueryColumn extends Record({
     inputRenderer: undefined,
     removeFromViews: false,
     sorts: undefined,
-    units: undefined,
+    units: undefined
 }) {
     align: string;
     // autoIncrement: boolean;
@@ -304,7 +300,7 @@ export class QueryColumn extends Record({
     // ext: any;
     // facetingBehaviorType: string;
     fieldKey: string;
-    fieldKeyArray: string[];
+    fieldKeyArray: Array<string>;
     // fieldKeyPath: string;
     format: string;
     // friendlyType: string;
@@ -353,20 +349,18 @@ export class QueryColumn extends Record({
 
     static create(rawColumn): QueryColumn {
         if (rawColumn && rawColumn.lookup !== undefined) {
-            return new QueryColumn(
-                Object.assign({}, rawColumn, {
-                    lookup: new QueryLookup(rawColumn.lookup),
-                })
-            );
+            return new QueryColumn(Object.assign({}, rawColumn, {
+                lookup: new QueryLookup(rawColumn.lookup)
+            }));
         }
 
         return new QueryColumn(rawColumn);
     }
 
-    static DATA_INPUTS = 'DataInputs';
-    static MATERIAL_INPUTS = 'MaterialInputs';
+    static DATA_INPUTS: string = 'DataInputs';
+    static MATERIAL_INPUTS: string = 'MaterialInputs';
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
@@ -423,143 +417,141 @@ export class QueryLookup extends Record({
     multiValued: undefined,
     queryName: undefined,
     schemaName: undefined,
-    table: undefined,
+    table: undefined
 }) {
     displayColumn: string;
     isPublic: boolean;
     junctionLookup: string; // name of the column on the junction table that is also a lookup
     keyColumn: string;
     multiValued: string; // can be "junction", "value" or undefined. Server only support "junction" at this time
-    // public: boolean; -- NOT ALLOWING DUE TO KEYWORD -- USE isPublic
+    //public: boolean; -- NOT ALLOWING DUE TO KEYWORD -- USE isPublic
     queryName: string;
-    // schema: string; -- NOT ALLOWING -- USE schemaName
+    //schema: string; -- NOT ALLOWING -- USE schemaName
     schemaName: string;
-    // table: string; -- NOT ALLOWING -- USE queryName
+    //table: string; -- NOT ALLOWING -- USE queryName
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 }
 
 export interface IQueryGridModel {
-    id?: string;
-    schema?: string;
-    query?: string;
-    allowSelection?: boolean;
-    baseFilters?: List<Filter.IFilter>;
-    bindURL?: boolean;
-    containerPath?: string;
-    containerFilter?: string; // TODO why can't I use the @labkey/api enum def of containerFilter?
-    data?: Map<any, Map<string, any>>;
-    dataIds?: List<any>;
-    displayColumns?: List<string>;
-    editable?: boolean;
-    editing?: boolean;
-    filterArray?: List<Filter.IFilter>;
-    isError?: boolean;
-    isLoaded?: boolean;
-    isLoading?: boolean;
-    isPaged?: boolean;
-    keyValue?: any;
-    loader?: IGridLoader;
-    maxRows?: number;
-    message?: string;
-    offset?: number;
-    omittedColumns?: List<string>;
-    pageNumber?: number;
-    queryInfo?: QueryInfo;
-    queryParameters?: any;
-    requiredColumns?: List<string>;
-    showSearchBox?: boolean;
-    showViewSelector?: boolean;
-    hideEmptyViewSelector?: boolean;
-    showChartSelector?: boolean;
-    hideEmptyChartSelector?: boolean;
-    sortable?: boolean;
-    sorts?: string;
-    selectedIds?: List<string>;
-    selectedLoaded?: boolean;
-    selectedState?: GRID_CHECKBOX_OPTIONS;
-    selectedQuantity?: number;
-    title?: string;
-    totalRows?: number;
-    urlParams?: List<string>;
-    urlParamValues?: Map<string, any>;
-    urlPrefix?: string;
-    view?: string;
+    id?: string
+    schema?: string
+    query?: string
+    allowSelection?: boolean
+    baseFilters?: List<Filter.IFilter>
+    bindURL?: boolean
+    containerPath?: string
+    containerFilter?: string // TODO why can't I use the @labkey/api enum def of containerFilter?
+    data?: Map<any, Map<string, any>>
+    dataIds?: List<any>
+    displayColumns?: List<string>
+    editable?: boolean
+    editing?: boolean
+    filterArray?: List<Filter.IFilter>
+    isError?: boolean
+    isLoaded?: boolean
+    isLoading?: boolean
+    isPaged?: boolean
+    keyValue?: any
+    loader?: IGridLoader
+    maxRows?: number
+    message?: string
+    offset?: number
+    omittedColumns?: List<string>
+    pageNumber?: number
+    queryInfo?: QueryInfo
+    queryParameters?: any
+    requiredColumns?: List<string>
+    showSearchBox?: boolean
+    showViewSelector?: boolean
+    hideEmptyViewSelector?: boolean
+    showChartSelector?: boolean
+    hideEmptyChartSelector?: boolean
+    sortable?: boolean
+    sorts?: string
+    selectedIds?: List<string>
+    selectedLoaded?: boolean
+    selectedState?: GRID_CHECKBOX_OPTIONS
+    selectedQuantity?: number
+    title?: string
+    totalRows?: number
+    urlParams?: List<string>
+    urlParamValues?: Map<string, any>
+    urlPrefix?: string
+    view?: string
 }
 
 export interface IGridLoader {
-    fetch: (model: QueryGridModel) => Promise<IGridResponse>;
-    fetchSelection?: (model: QueryGridModel) => Promise<IGridSelectionResponse>;
+    fetch: (model: QueryGridModel) => Promise<IGridResponse>
+    fetchSelection?: (model: QueryGridModel) => Promise<IGridSelectionResponse>
 }
 
 export interface IGridResponse {
-    data: Map<any, any>;
-    dataIds: List<any>;
-    totalRows?: number;
-    messages?: List<Map<string, string>>;
+    data: Map<any, any>,
+    dataIds: List<any>,
+    totalRows?: number,
+    messages?: List<Map<string, string>>,
 }
 
 export interface IGridSelectionResponse {
-    selectedIds: List<any>;
+    selectedIds: List<any>
 }
 
-export class QueryGridModel
-    extends Record({
-        id: undefined,
-        schema: undefined,
-        query: undefined,
-        queryParameters: undefined, // These are the parameters used as input to a parameterized query
+export class QueryGridModel extends Record({
+    id: undefined,
+    schema: undefined,
+    query: undefined,
+    queryParameters: undefined, // These are the parameters used as input to a parameterized query
 
-        allowSelection: true,
-        baseFilters: List<Filter.IFilter>(),
-        bindURL: true,
-        containerPath: undefined,
-        containerFilter: undefined,
-        data: Map<any, Map<string, any>>(),
-        dataIds: List<any>(),
-        displayColumns: undefined,
-        editable: false,
-        editing: false,
-        filterArray: List<Filter.IFilter>(),
-        isError: false,
-        isLoaded: false,
-        isLoading: false,
-        isPaged: false,
-        keyValue: undefined,
-        loader: undefined,
-        maxRows: 20,
-        // message is a client-only attribute used to store error messages encountered when trying to load a model. It does
-        // not come from a LK server response.
-        message: undefined,
-        // messages comes from LK Server via the metadata object in the selectRows response. At the moment it is only used
-        // to notify users that they are looking at a subset of rows due to QC Flags State.
-        messages: undefined,
-        offset: 0,
-        omittedColumns: emptyList,
-        pageNumber: 1,
-        queryInfo: undefined,
-        requiredColumns: emptyList,
-        selectedIds: emptyList,
-        selectedLoaded: false,
-        selectedState: GRID_CHECKBOX_OPTIONS.NONE,
-        selectedQuantity: 0,
-        showSearchBox: true,
-        showViewSelector: true,
-        hideEmptyViewSelector: false,
-        showChartSelector: true,
-        hideEmptyChartSelector: false,
-        sortable: true,
-        sorts: undefined,
-        title: undefined,
-        totalRows: 0,
-        urlParams: List<string>(['p', 'reportId']), // page number and reportId parameters
-        urlParamValues: Map<string, any>(),
-        urlPrefix: undefined, // TODO we should give each new model a default prefix?
-        view: undefined,
-    })
-    implements IQueryGridModel {
+    allowSelection: true,
+    baseFilters: List<Filter.IFilter>(),
+    bindURL: true,
+    containerPath: undefined,
+    containerFilter: undefined,
+    data: Map<any, Map<string, any>>(),
+    dataIds: List<any>(),
+    displayColumns: undefined,
+    editable: false,
+    editing: false,
+    filterArray: List<Filter.IFilter>(),
+    isError: false,
+    isLoaded: false,
+    isLoading: false,
+    isPaged: false,
+    keyValue: undefined,
+    loader: undefined,
+    maxRows: 20,
+    // message is a client-only attribute used to store error messages encountered when trying to load a model. It does
+    // not come from a LK server response.
+    message: undefined,
+    // messages comes from LK Server via the metadata object in the selectRows response. At the moment it is only used
+    // to notify users that they are looking at a subset of rows due to QC Flags State.
+    messages: undefined,
+    offset: 0,
+    omittedColumns: emptyList,
+    pageNumber: 1,
+    queryInfo: undefined,
+    requiredColumns: emptyList,
+    selectedIds: emptyList,
+    selectedLoaded: false,
+    selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+    selectedQuantity: 0,
+    showSearchBox: true,
+    showViewSelector: true,
+    hideEmptyViewSelector: false,
+    showChartSelector: true,
+    hideEmptyChartSelector: false,
+    sortable: true,
+    sorts: undefined,
+    title: undefined,
+    totalRows: 0,
+    urlParams: List<string>(['p', 'reportId']), // page number and reportId parameters
+    urlParamValues: Map<string, any>(),
+    urlPrefix: undefined, // TODO we should give each new model a default prefix?
+    view: undefined,
+}) implements IQueryGridModel {
     id: string;
     schema: string;
     query: string;
@@ -610,7 +602,7 @@ export class QueryGridModel
     static EMPTY_SELECTION = {
         selectedQuantity: 0,
         selectedIds: emptyList,
-        selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+        selectedState: GRID_CHECKBOX_OPTIONS.NONE
     };
 
     constructor(values?: IQueryGridModel) {
@@ -618,14 +610,10 @@ export class QueryGridModel
 
         if (LABKEY.devMode) {
             // ensure that requiredColumns and omittedColumns do not intersect
-            const i = intersect(this.requiredColumns, this.omittedColumns);
+            let i = intersect(this.requiredColumns, this.omittedColumns);
             if (i.size > 0) {
                 console.log('Intersection', i.toJS());
-                throw new Error(
-                    'Required and omitted columns cannot intersect. Model id: "' +
-                        this.id +
-                        '". See console for colliding columns.'
-                );
+                throw new Error('Required and omitted columns cannot intersect. Model id: "' + this.id + '". See console for colliding columns.');
             }
         }
     }
@@ -636,7 +624,7 @@ export class QueryGridModel
     }
 
     createParam(param: string, useDefault?: string): string {
-        return this.urlPrefix ? [this.urlPrefix, param].join('.') : useDefault ? [useDefault, param].join('.') : param;
+        return this.urlPrefix ? [this.urlPrefix, param].join('.') : (useDefault ? [useDefault, param].join('.') : param);
     }
 
     getColumn(fieldKey: string): QueryColumn {
@@ -656,7 +644,8 @@ export class QueryGridModel
      * @returns {List<QueryColumn>}
      */
     getDisplayColumns(): List<QueryColumn> {
-        if (this.queryInfo) return this.queryInfo.getDisplayColumns(this.view, this.omittedColumns);
+        if (this.queryInfo)
+            return this.queryInfo.getDisplayColumns(this.view, this.omittedColumns);
 
         return emptyColumns;
     }
@@ -692,10 +681,11 @@ export class QueryGridModel
     }
 
     getColumnIndex(fieldKey: string): number {
-        if (!fieldKey) return -1;
+        if (!fieldKey)
+            return -1;
 
         const lcFieldKey = fieldKey.toLowerCase();
-        return this.queryInfo.columns.keySeq().findIndex(column => column.toLowerCase() === lcFieldKey);
+        return this.queryInfo.columns.keySeq().findIndex((column) => (column.toLowerCase() === lcFieldKey));
     }
 
     getAllColumns(): List<QueryColumn> {
@@ -707,7 +697,7 @@ export class QueryGridModel
         // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for
         // additional context.
         return List<QueryColumn>(this.queryInfo.columns.values()).reduce((result, rawColumn) => {
-            if (!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
+            if(!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
                 return result.push(rawColumn);
             }
 
@@ -716,21 +706,20 @@ export class QueryGridModel
     }
 
     getData(): List<any> {
-        return this.dataIds
-            .map(i => {
-                if (this.allowSelection) {
-                    const isChecked = this.selectedIds.indexOf(i) !== -1;
-                    if (isChecked) {
-                        // only set if row is currently checked, otherwise defaults to false
-                        return this.data.get(i).merge({
-                            [GRID_SELECTION_INDEX]: isChecked,
-                        });
-                    }
+        return this.dataIds.map((i) => {
+            if (this.allowSelection) {
+                const isChecked = this.selectedIds.indexOf(i) !== -1;
+                if (isChecked) {
+                    // only set if row is currently checked, otherwise defaults to false
+                    return this.data.get(i).merge({
+                        [GRID_SELECTION_INDEX]: isChecked
+                    });
                 }
+            }
 
-                return this.data.get(i);
-            })
-            .toList();
+            return this.data.get(i);
+
+        }).toList();
     }
 
     /**
@@ -738,7 +727,7 @@ export class QueryGridModel
      */
     getSelectedData(): Map<any, Map<string, any>> {
         let dataMap = Map<any, Map<string, any>>();
-        this.selectedIds.forEach(id => {
+        this.selectedIds.forEach((id) => {
             if (this.data.has(id)) {
                 dataMap = dataMap.set(id, this.data.get(id));
             }
@@ -746,46 +735,43 @@ export class QueryGridModel
         return dataMap;
     }
 
-    getPkData(id): any {
-        const data = {};
+    getPkData(id) : any {
+        let data = {};
         const queryData = this.data.get(id);
-        this.queryInfo.getPkCols().forEach(pkCol => {
-            const pkVal = queryData.getIn([pkCol.fieldKey]);
+        this.queryInfo.getPkCols().forEach((pkCol) => {
+            let pkVal = queryData.getIn([pkCol.fieldKey]);
 
             if (pkVal !== undefined && pkVal !== null) {
                 // when backing an editable grid, the data is a simple value, but when
                 // backing a grid, it is a Map, which has type 'object'.
-                data[pkCol.fieldKey] = typeof pkVal === 'object' ? pkVal.get('value') : pkVal;
-            } else {
-                console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
+                data[pkCol.fieldKey] = (typeof pkVal === 'object') ? pkVal.get('value') : pkVal;
+            }
+            else {
+                console.warn('Unable to find value for pkCol \"' + pkCol.fieldKey + '\"');
             }
         });
         return data;
     }
 
-    getSelectedDataWithKeys(data: any): any[] {
+    getSelectedDataWithKeys(data: any)  : Array<any> {
         let rows = [];
         if (!Utils.isEmptyObj(data)) {
             // walk though all the selected rows and construct an update row for each
             // using the primary keys from the original data
-            rows = this.selectedIds
-                .map(id => {
-                    return { ...this.getPkData(id), ...data };
-                })
-                .toArray();
+            rows = this.selectedIds.map((id) => {
+                return {...this.getPkData(id), ...data};
+            }).toArray();
         }
         return rows;
     }
 
     getExportColumnsString(): string {
         // does not include required columns -- app only
-        return this.getDisplayColumns()
-            .map(c => c.fieldKey)
-            .join(',');
+        return this.getDisplayColumns().map(c => c.fieldKey).join(',');
     }
 
     isFiltered(): boolean {
-        return !this.getFilters().isEmpty();
+        return !this.getFilters().isEmpty()
     }
 
     getFilters(): List<Filter.IFilter> {
@@ -793,20 +779,17 @@ export class QueryGridModel
         if (this.queryInfo) {
             if (this.keyValue !== undefined) {
                 if (this.queryInfo.pkCols.size === 1) {
-                    filterList = filterList.push(Filter.create(this.queryInfo.pkCols.first(), this.keyValue));
-                } else {
-                    console.warn(
-                        'Too many keys. Unable to filter for specific keyValue.',
-                        this.queryInfo.pkCols.toJS()
+                    filterList = filterList.push(
+                        Filter.create(this.queryInfo.pkCols.first(), this.keyValue)
                     );
+                } else {
+                    console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
                 }
             }
             // if a keyValue if provided, we may still have baseFilters to apply in the case that the default
             // filter on a query view is a limiting filter and we want to expand the set of values returned (e.g., for assay runs
             // that may have been replaced)
-            return filterList
-                .concat(this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray))
-                .toList();
+            return filterList.concat(this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray)).toList();
         }
 
         return this.baseFilters.concat(this.filterArray).toList();
@@ -816,11 +799,13 @@ export class QueryGridModel
         return this.id;
     }
 
-    getInsertColumnIndex(fieldKey): number {
-        if (!fieldKey) return -1;
+    getInsertColumnIndex(fieldKey) : number {
+        if (!fieldKey)
+            return -1;
 
         const lcFieldKey = fieldKey.toLowerCase();
-        return this.getInsertColumns().findIndex(column => column.fieldKey.toLowerCase() === lcFieldKey);
+        return this.getInsertColumns()
+            .findIndex((column) => (column.fieldKey.toLowerCase() === lcFieldKey));
     }
 
     getInsertColumns(): List<QueryColumn> {
@@ -845,7 +830,7 @@ export class QueryGridModel
     }
 
     getMaxRowIndex() {
-        const max = this.pageNumber > 1 ? this.pageNumber * this.maxRows : this.maxRows;
+        let max = this.pageNumber > 1 ? this.pageNumber * this.maxRows : this.maxRows;
 
         if (max > this.totalRows) {
             return this.totalRows;
@@ -897,11 +882,11 @@ export class QueryGridModel
 
     getSorts(): string {
         if (this.view && this.queryInfo) {
-            const sorts = this.queryInfo.getSorts(this.view);
+            let sorts = this.queryInfo.getSorts(this.view);
 
             if (sorts.size > 0) {
                 // user sorts are respected over built-in view sorts
-                const allSorts = OrderedSet<string>(this.sorts ? this.sorts.split(',') : []).asMutable();
+                let allSorts = OrderedSet<string>(this.sorts ? this.sorts.split(',') : []).asMutable();
                 sorts.forEach(sort => {
                     allSorts.add(sort.dir === '-' ? '-' + sort.fieldKey : sort.fieldKey);
                 });
@@ -925,11 +910,11 @@ export class QueryGridModel
      * it can return any part that is desired (e.g. "displayValue" or "formattedValue") by specifying the "part" argument.
      */
     getValue(column: QueryColumn | string, dataId: string, part?: string): any {
-        if (!column || dataId === null || dataId === undefined) {
+        if (!column || (dataId === null || dataId === undefined)) {
             return undefined;
         }
 
-        const col: QueryColumn = typeof column === 'string' ? this.getColumn(column) : column;
+        const col: QueryColumn = (typeof column === 'string') ? this.getColumn(column) : column;
 
         // assumes QueryColumn fieldKey casing is same as data fieldKey casing
         return this.data.getIn([dataId, col.fieldKey, part ? part : 'value']);
@@ -943,13 +928,13 @@ export class QueryGridModel
         if (query) {
             return Map({
                 canImport: query.showInsertNewButton && query.importUrl && !query.importUrlDisabled,
-                importUrl: query.importUrl,
+                importUrl: query.importUrl
             });
         }
 
         return Map({
             canImport: false,
-            importUrl: undefined,
+            importUrl: undefined
         });
     }
 
@@ -961,29 +946,27 @@ export class QueryGridModel
         if (query) {
             return Map({
                 canInsert: query.showInsertNewButton && query.insertUrl && !query.insertUrlDisabled,
-                insertUrl: query.insertUrl,
+                insertUrl: query.insertUrl
             });
         }
         return Map({
             canInsert: false,
-            insertUrl: false,
+            insertUrl: false
         });
     }
 
     getDataEdit(): List<Map<string, any>> {
-        return this.dataIds
-            .map(i => {
-                if (this.data.has(i)) {
-                    return this.data.get(i).merge({
-                        [GRID_EDIT_INDEX]: i,
-                    });
-                }
-
-                return Map<string, any>({
-                    [GRID_EDIT_INDEX]: i,
+        return this.dataIds.map(i => {
+            if (this.data.has(i)) {
+                return this.data.get(i).merge({
+                    [GRID_EDIT_INDEX]: i
                 });
+            }
+
+            return Map<string, any>({
+                [GRID_EDIT_INDEX]: i
             })
-            .toList();
+        }).toList();
     }
 
     getRowIdsList(useSelectedIds: boolean): List<Map<string, any>> {
@@ -991,12 +974,13 @@ export class QueryGridModel
         //  that method looks to be unused.
         let rows = List<Map<string, any>>();
         if (!useSelectedIds) {
-            this.getData().forEach(data => {
-                rows = rows.push(Map(fromJS({ rowId: data.getIn(['RowId', 'value']) })));
+            this.getData().forEach( (data) => {
+                rows = rows.push(Map(fromJS({rowId: data.getIn(['RowId', 'value'])})));
             });
-        } else {
-            this.selectedIds.forEach(rowId => {
-                rows = rows.push(Map(fromJS({ rowId })));
+        }
+        else {
+            this.selectedIds.forEach( (rowId) => {
+                rows = rows.push(Map(fromJS({rowId})));
             });
         }
 
@@ -1056,7 +1040,7 @@ export class QueryInfo extends Record({
     schemaQuery: undefined,
     showInsertNewButton: true, // opt out
     singular: undefined, // defaults to value of queryLabel
-    plural: undefined, // defaults to value of queryLabel
+    plural: undefined  // defaults to value of queryLabel
 }) {
     private appEditableTable: boolean; // use isAppEditable()
     // canEdit: boolean;
@@ -1102,11 +1086,9 @@ export class QueryInfo extends Record({
             schemaQuery = SchemaQuery.create(rawQueryInfo.schemaName, rawQueryInfo.name);
         }
 
-        return new QueryInfo(
-            Object.assign({}, rawQueryInfo, {
-                schemaQuery,
-            })
-        );
+        return new QueryInfo(Object.assign({}, rawQueryInfo, {
+            schemaQuery
+        }));
     }
 
     /**
@@ -1115,27 +1097,25 @@ export class QueryInfo extends Record({
      *
      * @param queryInfoJson
      */
-    static fromJSON(queryInfoJson: any): QueryInfo {
+    static fromJSON(queryInfoJson: any) : QueryInfo {
         let schemaQuery: SchemaQuery;
 
         if (queryInfoJson.schemaName && queryInfoJson.name) {
             schemaQuery = SchemaQuery.create(queryInfoJson.schemaName, queryInfoJson.name);
         }
         let columns = OrderedMap<string, QueryColumn>();
-        Object.keys(queryInfoJson.columns).forEach(columnKey => {
-            const rawColumn = queryInfoJson.columns[columnKey];
-            columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn));
+        Object.keys(queryInfoJson.columns).forEach((columnKey) => {
+            let rawColumn = queryInfoJson.columns[columnKey];
+            columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn))
         });
 
-        return QueryInfo.create(
-            Object.assign({}, queryInfoJson, {
-                columns,
-                schemaQuery,
-            })
-        );
+        return QueryInfo.create(Object.assign({}, queryInfoJson, {
+            columns,
+            schemaQuery
+        }))
     }
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
@@ -1157,41 +1137,43 @@ export class QueryInfo extends Record({
     }
 
     getDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
+
         if (!view) {
             view = ViewInfo.DEFAULT_NAME;
         }
 
         let lowerOmit;
-        if (omittedColumns) lowerOmit = toLowerSafe(omittedColumns);
+        if (omittedColumns)
+            lowerOmit = toLowerSafe(omittedColumns);
 
-        const colFilter = c => {
+        const colFilter = (c) => {
             if (lowerOmit && lowerOmit.size > 0) {
                 return c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase());
             }
             return true;
         };
 
-        const viewInfo = this.getView(view);
+        let viewInfo = this.getView(view);
         if (viewInfo) {
-            return viewInfo.columns.filter(colFilter).reduce((list, col) => {
-                let c = this.getColumn(col.fieldKey);
+            return viewInfo.columns
+                .filter(colFilter)
+                .reduce((list, col) => {
+                    let c = this.getColumn(col.fieldKey);
 
-                if (c !== undefined) {
-                    if (col.title !== undefined) {
-                        c = c.merge({
-                            caption: col.title,
-                            shortCaption: col.title,
-                        }) as QueryColumn;
+                    if (c !== undefined) {
+                        if (col.title !== undefined) {
+                            c = c.merge({
+                                caption: col.title,
+                                shortCaption: col.title
+                            }) as QueryColumn;
+                        }
+
+                        return list.push(c);
                     }
 
-                    return list.push(c);
-                }
-
-                console.warn(
-                    `Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`
-                );
-                return list;
-            }, List<QueryColumn>());
+                    console.warn(`Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`);
+                    return list;
+                }, List<QueryColumn>());
         }
 
         console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');
@@ -1200,18 +1182,22 @@ export class QueryInfo extends Record({
 
     getInsertColumns(): List<QueryColumn> {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
-        return this.columns.filter(insertColumnFilter).toList();
+        return this.columns
+            .filter(insertColumnFilter)
+            .toList();
     }
 
     getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
+
         return this.columns
-            .filter(column => {
+            .filter((column) => {
                 return updateColumnFilter(column) || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
             })
-            .map(column => {
+            .map((column) => {
                 if (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1) {
                     return column.set('readOnly', true) as QueryColumn;
-                } else {
+                }
+                else {
                     return column;
                 }
             })
@@ -1220,7 +1206,7 @@ export class QueryInfo extends Record({
 
     getFilters(view?: string): List<Filter.IFilter> {
         if (view) {
-            const viewInfo = this.getView(view);
+            let viewInfo = this.getView(view);
 
             if (viewInfo) {
                 return viewInfo.filters;
@@ -1247,7 +1233,7 @@ export class QueryInfo extends Record({
 
     getSorts(view?: string): List<QuerySort> {
         if (view) {
-            const viewInfo = this.getView(view);
+            let viewInfo = this.getView(view);
 
             if (viewInfo) {
                 return viewInfo.sorts;
@@ -1282,11 +1268,13 @@ export class QueryInfo extends Record({
      * @param queryColumns the (ordered) set of columns
      * @returns a new set of columns when the given columns inserted
      */
-    insertColumns(colIndex: number, queryColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
-        if (colIndex < 0 || colIndex > this.columns.size) return this.columns;
+    insertColumns(colIndex: number, queryColumns: OrderedMap<string, QueryColumn>) : OrderedMap<string, QueryColumn> {
+        if (colIndex < 0 || colIndex > this.columns.size)
+            return this.columns;
 
         // put them at the end
-        if (colIndex === this.columns.size) return this.columns.merge(queryColumns);
+        if (colIndex === this.columns.size)
+            return this.columns.merge(queryColumns);
 
         let columns = OrderedMap<string, QueryColumn>();
         let index = 0;
@@ -1318,12 +1306,12 @@ export class QueryInfo extends Record({
 
 export class QuerySort extends Record({
     dir: '',
-    fieldKey: undefined,
+    fieldKey: undefined
 }) {
     dir: string;
     fieldKey: string;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 }
@@ -1333,7 +1321,7 @@ export class SchemaDetails extends Record({
     fullyQualifiedName: undefined,
     hidden: true,
     schemaName: undefined,
-    schemas: List<string>(),
+    schemas: List<string>()
 }) {
     description: string;
     fullyQualifiedName: string;
@@ -1342,11 +1330,11 @@ export class SchemaDetails extends Record({
     schemas: List<string>;
 
     static create(schema): SchemaDetails {
-        const copy = Object.assign({}, schema);
-        const schemas = List<string>().asMutable();
+        let copy = Object.assign({}, schema);
+        let schemas = List<string>().asMutable();
 
         if (schema.schemas) {
-            for (const s in schema.schemas) {
+            for (let s in schema.schemas) {
                 if (schema.schemas.hasOwnProperty(s)) {
                     schemas.push(schema.schemas[s].fullyQualifiedName.toLowerCase());
                 }
@@ -1357,7 +1345,7 @@ export class SchemaDetails extends Record({
         return new SchemaDetails(copy);
     }
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
@@ -1371,10 +1359,10 @@ export class SchemaDetails extends Record({
 }
 
 interface IViewInfoColumn {
-    fieldKey: string;
-    key: string;
-    name: string;
-    title?: string;
+    fieldKey: string
+    key: string
+    name: string
+    title?: string
 }
 
 // commented out attributes are not used in app
@@ -1394,7 +1382,7 @@ export class ViewInfo extends Record({
     // savable: false,
     // session: false,
     shared: false,
-    sorts: List<QuerySort>(),
+    sorts: List<QuerySort>()
 }) {
     // aggregates: List<any>;
     // analyticsProviders: List<any>;
@@ -1421,30 +1409,30 @@ export class ViewInfo extends Record({
     static BIO_DETAIL_NAME = 'BiologicsDetails';
 
     static create(rawViewInfo): ViewInfo {
+
         // prepare name and isDefault
         let label = rawViewInfo.label;
         let name = '';
-        const isDefault = rawViewInfo.default === true;
+        let isDefault = rawViewInfo['default'] === true;
         if (isDefault) {
             name = ViewInfo.DEFAULT_NAME;
             label = 'Default';
-        } else {
+        }
+        else {
             name = rawViewInfo.name;
         }
 
-        return new ViewInfo(
-            Object.assign({}, rawViewInfo, {
-                columns: List<IViewInfoColumn>(rawViewInfo.columns),
-                filters: getFiltersFromView(rawViewInfo),
-                isDefault,
-                label,
-                name,
-                sorts: getSortsFromView(rawViewInfo),
-            })
-        );
+        return new ViewInfo(Object.assign({}, rawViewInfo, {
+            columns: List<IViewInfoColumn>(rawViewInfo.columns),
+            filters: getFiltersFromView(rawViewInfo),
+            isDefault,
+            label,
+            name,
+            sorts: getSortsFromView(rawViewInfo)
+        }))
     }
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 }
@@ -1453,31 +1441,31 @@ export class LastActionStatus extends Record({
     type: undefined,
     date: undefined,
     level: MessageLevel.info,
-    message: undefined,
+    message: undefined
 }) {
     type: string;
     date: Date;
     level: MessageLevel;
     message: string;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 }
 
 function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
-    const filters = List<Filter.IFilter>().asMutable();
+    let filters = List<Filter.IFilter>().asMutable();
 
     // notice, in the raw version it is raw.filter (no s)
     if (rawViewInfo && rawViewInfo.filter) {
         const rawFilters: Array<{
-            fieldKey: string;
-            value: any;
-            op: string;
+            fieldKey: string
+            value: any
+            op: string
         }> = rawViewInfo.filter;
 
-        for (let i = 0; i < rawFilters.length; i++) {
-            const filter = rawFilters[i];
+        for (let i=0; i < rawFilters.length; i++) {
+            let filter = rawFilters[i];
             filters.push(Filter.create(filter.fieldKey, filter.value, Filter.getFilterTypeForURLSuffix(filter.op)));
         }
     }
@@ -1486,8 +1474,9 @@ function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
 }
 
 function getSortsFromView(rawViewInfo): List<QuerySort> {
+
     if (rawViewInfo && rawViewInfo.sort && rawViewInfo.sort.length > 0) {
-        const sorts = List<QuerySort>().asMutable();
+        let sorts = List<QuerySort>().asMutable();
         rawViewInfo.sort.forEach(sort => {
             sorts.push(new QuerySort(sort));
         });
@@ -1531,7 +1520,7 @@ export enum AssayLink {
     IMPORT = 'import',
     RESULT = 'result',
     RESULTS = 'results',
-    RUNS = 'runs',
+    RUNS = 'runs'
 }
 
 interface ScopedSampleColumn {
@@ -1542,7 +1531,7 @@ interface ScopedSampleColumn {
 export const enum AssayUploadTabs {
     Files = 1,
     Copy = 2,
-    Grid = 3,
+    Grid = 3
 }
 
 export class AssayDefinitionModel extends Record({
@@ -1558,7 +1547,7 @@ export class AssayDefinitionModel extends Record({
     projectLevel: undefined,
     protocolSchemaName: undefined,
     templateLink: undefined,
-    type: undefined,
+    type: undefined
 }) {
     containerPath: string;
     description: string;
@@ -1606,7 +1595,7 @@ export class AssayDefinitionModel extends Record({
         });
     }
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
@@ -1623,9 +1612,10 @@ export class AssayDefinitionModel extends Record({
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
         if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
             url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
-            if (dataTab) url = url.addParam('dataTab', dataTab);
+            if (dataTab)
+                url = url.addParam('dataTab', dataTab);
             if (filterList && !filterList.isEmpty()) {
-                filterList.forEach(filter => {
+                filterList.forEach((filter) => {
                     // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it here
                     // CONSIDER:  Applications might want to be able to register their own filter types
                     const urlSuffix = filter.getFilterType().getURLSuffix();
@@ -1634,10 +1624,12 @@ export class AssayDefinitionModel extends Record({
                     }
                 });
             }
-            if (selectionKey) url = url.addParam('selectionKey', selectionKey);
+            if (selectionKey)
+                url = url.addParam('selectionKey', selectionKey);
             url = url.toHref();
-        } else {
-            url = this.links.get(AssayLink.IMPORT);
+        }
+        else {
+            url = this.links.get(AssayLink.IMPORT)
         }
         return url;
     }
@@ -1648,7 +1640,7 @@ export class AssayDefinitionModel extends Record({
 
     hasLookup(targetSQ: SchemaQuery): boolean {
         const isSampleSet = targetSQ.hasSchema('samples');
-        const findLookup = col => {
+        const findLookup = (col) => {
             if (col.isLookup()) {
                 const lookupSQ = SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName);
                 const isMatch = targetSQ.isEqual(lookupSQ);
@@ -1691,13 +1683,13 @@ export class AssayDefinitionModel extends Record({
      * get all sample lookup columns found in the result, run, and batch domains.
      */
     getSampleColumns(): List<ScopedSampleColumn> {
-        const ret = [];
+        let ret = [];
         // The order matters here, we care about result, run, and batch in that order.
         for (const domain of [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH]) {
             const column = this.getSampleColumnByDomain(domain);
 
             if (column) {
-                ret.push({ column, domain });
+                ret.push({column, domain});
             }
         }
 
@@ -1723,7 +1715,7 @@ export class AssayDefinitionModel extends Record({
         } else if (sampleCol.domain == AssayDomainTypes.BATCH) {
             return `Run/Batch/${sampleCol.column.fieldKey}`;
         }
-        throw new Error('Unexpected assay domain type: ' + sampleCol.domain);
+        throw new Error("Unexpected assay domain type: " + sampleCol.domain);
     }
 
     /**
@@ -1734,27 +1726,17 @@ export class AssayDefinitionModel extends Record({
         return List(sampleCols.map(this.sampleColumnFieldKey));
     }
 
-    createSampleFilter(
-        sampleColumns: List<string>,
-        value,
-        singleFilter: Filter.IFilterType,
-        whereClausePart: (fieldKey, value) => string
-    ) {
+    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string) {
         if (sampleColumns.size == 1) {
             // generate simple equals filter
-            const sampleColumn = sampleColumns.get(0);
+            let sampleColumn = sampleColumns.get(0);
             return Filter.create(`${sampleColumn}/RowId`, value, singleFilter);
         } else {
             // generate an OR filter to include all sample columns
-            const whereClause =
-                '(' +
-                sampleColumns
-                    .map(sampleCol => {
-                        const fieldKey = (sampleCol + '/RowId').replace(/\//g, '.');
-                        return whereClausePart(fieldKey, value);
-                    })
-                    .join(' OR ') +
-                ')';
+            let whereClause = '(' + sampleColumns.map(sampleCol => {
+                let fieldKey = (sampleCol + '/RowId').replace(/\//g, '.');
+                return whereClausePart(fieldKey, value);
+            }).join(' OR ') + ')';
             return Filter.create('*', whereClause, WHERE_FILTER_TYPE);
         }
     }
@@ -1778,7 +1760,7 @@ export class AssayDefinitionModel extends Record({
 
 export class InferDomainResponse extends Record({
     data: List<any>(),
-    fields: List<QueryColumn>(),
+    fields: List<QueryColumn>()
 }) {
     data: List<any>;
     fields: List<QueryColumn>;
@@ -1793,13 +1775,13 @@ export class InferDomainResponse extends Record({
             }
 
             if (rawModel.fields) {
-                fields = List(rawModel.fields.map(field => QueryColumn.create(field)));
+                fields = List(rawModel.fields.map((field) => QueryColumn.create(field)));
             }
         }
 
         return new InferDomainResponse({
             data,
-            fields,
+            fields
         });
     }
 }

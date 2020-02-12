@@ -1,29 +1,23 @@
 {
-    "data": {
-        "canDelete": [
-            {
-                "Name": "D-3",
-      'RowId' : 36
-            },
-            {
-      'Name' : 'D-4',
-                "RowId": 35
-            },
-            {
-                "Name": "D-5",
-      'RowId' : 32
-            }
-        ],
-        "cannotDelete": [
-            {
-      'Name' : 'D-2.3.1',
-                "RowId": 351
-            },
-            {
-                "Name": "D-2.3",
-                "RowId": 350
-            }
-        ]
-    },
-    "success": true
+  "data" : {
+    "canDelete" : [ {
+      "Name" : "D-3",
+      "RowId" : 36
+    },{
+      "Name" : "D-4",
+      "RowId" : 35
+    }, {
+      "Name" : "D-5",
+      "RowId" : 32
+      }
+    ],
+    "cannotDelete" : [ {
+      "Name" : "D-2.3.1",
+      "RowId" : 351
+    },{
+      "Name" : "D-2.3",
+      "RowId" : 350
+    } ]
+  },
+  "success" : true
 }

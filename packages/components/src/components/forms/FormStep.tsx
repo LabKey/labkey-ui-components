@@ -6,10 +6,10 @@ import React from 'react';
 import classNames from 'classnames';
 
 interface IFormStepContext {
-    currentStep?: number;
-    furthestStep?: number;
-    hasDependentSteps?: boolean;
-    selectStep?: (requestedStep?: number) => boolean;
+    currentStep?: number
+    furthestStep?: number
+    hasDependentSteps?: boolean
+    selectStep?: (requestedStep?: number) => boolean
 }
 
 const FormStepContext = React.createContext<IFormStepContext>(undefined);
@@ -17,12 +17,13 @@ const FormStepContextProvider = FormStepContext.Provider;
 const FormStepContextConsumer = FormStepContext.Consumer;
 
 interface ActiveStepProps {
-    active?: boolean;
+    active?: boolean
 }
 
 class ActiveStep extends React.Component<ActiveStepProps, any> {
+
     static defaultProps = {
-        active: true,
+        active: true
     };
 
     shouldComponentUpdate(nextProps: ActiveStepProps) {
@@ -35,13 +36,14 @@ class ActiveStep extends React.Component<ActiveStepProps, any> {
 }
 
 interface FormStepProps {
-    stepIndex: number;
-    trackActive?: boolean;
+    stepIndex: number
+    trackActive?: boolean
 }
 
 export class FormStep extends React.Component<FormStepProps, any> {
+
     static defaultProps = {
-        trackActive: true,
+        trackActive: true
     };
 
     render() {
@@ -60,7 +62,7 @@ export class FormStep extends React.Component<FormStepProps, any> {
                             <div className={classNames('form-step', { active })}>
                                 {trackActive ? <ActiveStep active={active}>{children}</ActiveStep> : children}
                             </div>
-                        );
+                        )
                     }
 
                     return null;
@@ -71,11 +73,12 @@ export class FormStep extends React.Component<FormStepProps, any> {
 }
 
 interface FormTabsProps {
-    onTabChange?: (stepIndex?: number) => any;
-    tabs: string[];
+    onTabChange?: (stepIndex?: number) => any
+    tabs: Array<string>
 }
 
 export class FormTabs extends React.Component<FormTabsProps, any> {
+
     render() {
         const { onTabChange, tabs } = this.props;
 
@@ -88,41 +91,32 @@ export class FormTabs extends React.Component<FormTabsProps, any> {
                     return (
                         <div className="row">
                             <div className="col-sm-12">
-                                <ul className="list-group clearfix" style={{ listStyle: 'none' }}>
+                                <ul className="list-group clearfix" style={{listStyle: 'none'}}>
                                     {tabs.map((title, i) => {
                                         const step = i + 1;
-                                        const disabled =
-                                            furthestStep === undefined
-                                                ? true
-                                                : hasDependentSteps
-                                                ? step > currentStep
-                                                : furthestStep < step;
+                                        const disabled = furthestStep === undefined ? true : (hasDependentSteps ? step > currentStep : furthestStep < step);
 
                                         return (
                                             <li
                                                 className={classNames('list-group-item form-step-tab', {
-                                                    active: currentStep === step,
-                                                    disabled,
+                                                    'active': currentStep === step,
+                                                    disabled
                                                 })}
                                                 key={step}
-                                                onClick={
-                                                    disabled
-                                                        ? undefined
-                                                        : () => {
-                                                              if (selectStep(step) !== false && onTabChange) {
-                                                                  onTabChange(step);
-                                                              }
-                                                          }
-                                                }>
+                                                onClick={disabled ? undefined : () => {
+                                                    if (selectStep(step) !== false && onTabChange) {
+                                                        onTabChange(step);
+                                                    }
+                                                }}>
                                                 {title}
                                             </li>
-                                        );
+                                        )
                                     })}
                                 </ul>
-                                <div className="clearfix" />
+                                <div className="clearfix"/>
                             </div>
                         </div>
-                    );
+                    )
                 }}
             </FormStepContextConsumer>
         );
@@ -130,19 +124,20 @@ export class FormTabs extends React.Component<FormTabsProps, any> {
 }
 
 export interface WithFormStepsState {
-    currentStep?: number;
-    furthestStep?: number;
-    hasDependentSteps?: boolean;
-    selectStep?: (requestedStep?: number) => boolean;
+    currentStep?: number
+    furthestStep?: number
+    hasDependentSteps?: boolean
+    selectStep?: (requestedStep?: number) => boolean
 }
 
 export interface WithFormStepsProps extends WithFormStepsState {
-    nextStep: () => any;
-    previousStep: () => any;
+    nextStep: () => any
+    previousStep: () => any
 }
 
-export const withFormSteps = (Component: any, defaultState?: WithFormStepsState) =>
+export const withFormSteps = (Component: any, defaultState?: WithFormStepsState) => (
     class WithFormSteps extends React.Component<any, any> {
+
         constructor(props) {
             super(props);
 
@@ -153,11 +148,8 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
             this.state = {
                 currentStep: defaultState && defaultState.currentStep !== undefined ? defaultState.currentStep : 1,
                 furthestStep: defaultState && defaultState.furthestStep !== undefined ? defaultState.furthestStep : 1,
-                hasDependentSteps:
-                    defaultState && defaultState.hasDependentSteps !== undefined
-                        ? defaultState.hasDependentSteps
-                        : true,
-                selectStep: this.selectStep,
+                hasDependentSteps: defaultState && defaultState.hasDependentSteps !== undefined ? defaultState.hasDependentSteps : true,
+                selectStep: this.selectStep
             };
         }
 
@@ -166,7 +158,7 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
 
             this.setState({
                 currentStep: currentStep + 1,
-                furthestStep: currentStep + 1 >= furthestStep ? currentStep + 1 : furthestStep,
+                furthestStep: (currentStep + 1 >= furthestStep) ? currentStep + 1 : furthestStep
             });
         }
 
@@ -174,7 +166,7 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
             const { currentStep } = this.state;
 
             this.setState({
-                currentStep: currentStep - 1,
+                currentStep: currentStep - 1
             });
         }
 
@@ -183,7 +175,7 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
 
             if (furthestStep >= requestedStep && currentStep !== requestedStep) {
                 this.setState({
-                    currentStep: requestedStep,
+                    currentStep: requestedStep
                 });
 
                 return true;
@@ -200,9 +192,9 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
                         {...this.state}
                         nextStep={this.nextStep}
                         previousStep={this.previousStep}
-                        selectStep={this.selectStep}
-                    />
+                        selectStep={this.selectStep} />
                 </FormStepContextProvider>
-            );
+            )
         }
-    };
+    }
+);

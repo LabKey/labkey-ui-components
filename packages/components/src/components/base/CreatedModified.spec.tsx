@@ -16,78 +16,68 @@
 import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { mount } from 'enzyme';
-
-import { JEST_SITE_ADMIN_USER_ID } from '../../test/data/constants';
-
 import { CreatedModified } from './CreatedModified';
+import { JEST_SITE_ADMIN_USER_ID } from "../../test/data/constants";
 
-const createdRow = Map<string, any>(
-    fromJS({
-        Created: {
-            formattedValue: '2019-05-15 19:45',
-            value: '2019-05-15 19:45:40.593',
-        },
-        CreatedBy: {
-            displayValue: 'username',
-            url: '#/q/core/siteusers/' + JEST_SITE_ADMIN_USER_ID,
-            value: 1001,
-        },
-    })
-);
+const createdRow = Map<string, any>(fromJS({
+   Created: {
+      formattedValue: "2019-05-15 19:45",
+      value: "2019-05-15 19:45:40.593"
+   },
+   CreatedBy: {
+      displayValue: "username",
+      url: "#/q/core/siteusers/" + JEST_SITE_ADMIN_USER_ID,
+      value: 1001
+   }
+}));
 
-const createdModifiedRow = Map<string, any>(
-    fromJS({
-        Created: {
-            formattedValue: '2019-05-15 19:45',
-            value: '2019-05-15 19:45:40.593',
-        },
-        CreatedBy: {
-            displayValue: 'username',
-            url: '#/q/core/siteusers/1001',
-            value: 1001,
-        },
-        Modified: {
-            formattedValue: '2019-05-16 19:45',
-            value: '2019-05-16 19:45:40.593',
-        },
-        ModifiedBy: {
-            displayValue: 'username2',
-            url: '#/q/core/siteusers/1002',
-            value: 1002,
-        },
-    })
-);
+const createdModifiedRow = Map<string, any>(fromJS({
+   Created: {
+      formattedValue: "2019-05-15 19:45",
+      value: "2019-05-15 19:45:40.593"
+   },
+   CreatedBy: {
+      displayValue: "username",
+      url: "#/q/core/siteusers/1001",
+      value: 1001
+   },
+   Modified: {
+      formattedValue: "2019-05-16 19:45",
+      value: "2019-05-16 19:45:40.593"
+   },
+   ModifiedBy: {
+      displayValue: "username2",
+      url: "#/q/core/siteusers/1002",
+      value: 1002
+   }
+}));
 
-describe('<CreatedModified/>', () => {
-    test('with created row', () => {
-        const component = <CreatedModified row={createdRow} useServerDate={false} />;
+describe("<CreatedModified/>", () => {
 
-        const wrapper = mount(component);
-        expect(wrapper.text()).toContain('Created ');
+   test("with created row", () => {
+      const component = (<CreatedModified row={createdRow} useServerDate={false}/>);
 
-        const titleAttr = wrapper
-            .find('span')
-            .getDOMNode()
-            .getAttribute('title');
-        expect(titleAttr).toContain('Created by: username');
-        expect(titleAttr.indexOf('Modified')).toBe(-1);
+      const wrapper = mount(component);
+      expect(wrapper.text()).toContain('Created ');
 
-        wrapper.unmount();
-    });
+      const titleAttr = wrapper.find('span').getDOMNode().getAttribute('title');
+      expect(titleAttr).toContain('Created by: username');
+      expect(titleAttr.indexOf('Modified')).toBe(-1);
 
-    test('with modified row', () => {
-        const component = <CreatedModified row={createdModifiedRow} useServerDate={false} />;
+      wrapper.unmount();
+   });
 
-        const wrapper = mount(component);
-        expect(wrapper.text()).toContain('Modified ');
+   test("with modified row", () => {
+      const component = (<CreatedModified row={createdModifiedRow} useServerDate={false}/>);
 
-        const titleAttr = wrapper
-            .find('span')
-            .getDOMNode()
-            .getAttribute('title');
-        expect(titleAttr).toContain('Created by: username');
-        expect(titleAttr).toContain('Modified by: username2');
+      const wrapper = mount(component);
+      expect(wrapper.text()).toContain('Modified ');
 
-        wrapper.unmount();
-    });
+      const titleAttr = wrapper.find('span').getDOMNode().getAttribute('title');
+      expect(titleAttr).toContain('Created by: username');
+      expect(titleAttr).toContain('Modified by: username2');
+
+      wrapper.unmount();
+   });
+
 });

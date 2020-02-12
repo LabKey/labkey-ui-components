@@ -20,15 +20,15 @@
  * app construct (e.g. container, user).
  */
 type LabKey = {
-    defaultHeaders: any;
-    devMode: boolean;
-    container: any; // use core/model/Container instead
-    contextPath: string;
-    moduleContext: any;
-    user: any; // use core/model/User instead
-    vis: any;
-    helpLinkPrefix: string;
-    getModuleContext: Function;
+    defaultHeaders: any
+    devMode: boolean
+    container: any // use core/model/Container instead
+    contextPath: string
+    moduleContext: any
+    user: any // use core/model/User instead
+    vis: any
+    helpLinkPrefix: string
+    getModuleContext: Function
 };
 
 /* App globals */

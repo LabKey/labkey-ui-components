@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 import React from 'react';
-
 import { SCHEMAS } from '../base/models/schemas';
 import { SVGIcon } from '../base/SVGIcon';
 
 interface SearchResultProps {
-    category?: string;
-    title: string;
-    summary: string;
-    url: string;
-    data?: any;
-    iconUrl?: string;
-    useSampleType?: boolean; // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
+    category?: string
+    title: string
+    summary: string
+    url: string
+    data?: any
+    iconUrl?: string
+    useSampleType?: boolean  // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
 }
 
 export class SearchResultCard extends React.Component<SearchResultProps, any> {
+
     resolveType() {
         const { data } = this.props;
 
@@ -36,7 +36,8 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
         if (data) {
             if (data.getIn(['dataClass', 'name'])) {
                 typeName = data.getIn(['dataClass', 'name']);
-            } else if (data.getIn(['sampleSet', 'name'])) {
+            }
+            else if (data.getIn(['sampleSet', 'name'])) {
                 typeName = data.getIn(['sampleSet', 'name']);
             }
 
@@ -46,7 +47,7 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
                         <strong>Type: </strong>
                         {typeName}
                     </div>
-                );
+                )
             }
         }
     }
@@ -55,7 +56,7 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
         const { category, data, iconUrl, useSampleType } = this.props;
 
         if (iconUrl) {
-            return <img className="search-result__card-icon" src={iconUrl} />;
+            return <img className="search-result__card-icon" src={iconUrl}/>
         }
 
         let iconSrc = '';
@@ -63,7 +64,8 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
         if (data) {
             if (data.getIn(['dataClass', 'name'])) {
                 iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
-            } else if (data.getIn(['sampleSet', 'name'])) {
+            }
+            else if (data.getIn(['sampleSet', 'name'])) {
                 const sampleSetName = data.getIn(['sampleSet', 'name']).toLowerCase();
 
                 switch (sampleSetName) {
@@ -77,15 +79,18 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
                         iconSrc = 'samples';
                         break;
                 }
-            } else if (data.get('type') === 'sampleSet') {
+            }
+            else if (data.get('type') === 'sampleSet') {
                 iconSrc = 'sample_set';
                 altText = useSampleType ? 'sample_type-icon' : undefined;
-            } else if (data.get('type')) {
-                iconSrc = data.get('type').toLowerCase();
+            }
+            else if (data.get('type')) {
+                iconSrc=data.get('type').toLowerCase();
             }
         }
         if (!iconSrc && category) {
-            switch (category) {
+            switch (category)
+            {
                 case 'workflowJob':
                     iconSrc = 'workflow';
                     break;
@@ -95,27 +100,33 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
             }
         }
 
-        return <SVGIcon iconDir="_images" iconSrc={iconSrc} alt={altText} className="search-result__card-icon" />;
+        return <SVGIcon
+            iconDir={'_images'}
+            iconSrc={iconSrc}
+            alt={altText}
+            className="search-result__card-icon"/>
     }
 
     /**
      * Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
      */
     resolveTitle = () => {
-        const { data, title, useSampleType } = this.props;
-        if (!data) return title;
+        const {data, title, useSampleType} = this.props;
+        if (!data)
+            return title;
 
         let titleText = title;
-        const type = data.get('type');
-        if (type && type === 'sampleSet' && useSampleType) {
-            const name = data.get('name');
-            titleText = 'Sample Type - ' + name;
+        const type = data.get("type");
+        if (type && type === "sampleSet" && useSampleType)
+        {
+            const name = data.get("name");
+            titleText = "Sample Type - " + name;
         }
         return titleText;
     };
 
-    render() {
-        const { summary, url } = this.props;
+    render () {
+        const { summary, url, } = this.props;
 
         return (
             <a href={url}>
@@ -125,20 +136,17 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
                     </div>
                     <div className="col-md-10 col-sm-12">
                         <div>
-                            <h4 className="text-capitalize">{this.resolveTitle()}</h4>
+                            <h4 className="text-capitalize">
+                                {this.resolveTitle()}
+                            </h4>
                         </div>
                         {this.resolveType()}
                         <div title={summary}>
-                            <strong>Summary: </strong>{' '}
-                            {summary.length
-                                ? summary.length <= 35
-                                    ? summary
-                                    : summary.substr(0, 35) + '...'
-                                : 'No summary provided'}
+                            <strong>Summary: </strong> {summary.length ? ( summary.length <= 35 ? summary : summary.substr(0, 35) + "..." ): 'No summary provided'}
                         </div>
                     </div>
                 </div>
             </a>
-        );
+        )
     }
 }

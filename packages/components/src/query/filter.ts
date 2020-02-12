@@ -39,7 +39,8 @@ export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter
         if (f.getURLParameterName() !== s.getURLParameterName()) {
             isEqual = false;
             return false;
-        } else if (JSON.stringify(f.getURLParameterValue()) !== JSON.stringify(s.getURLParameterValue())) {
+        }
+        else if (JSON.stringify(f.getURLParameterValue()) !== JSON.stringify(s.getURLParameterValue())) {
             isEqual = false;
             return false;
         }

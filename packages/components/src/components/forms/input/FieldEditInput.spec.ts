@@ -16,6 +16,7 @@
 import { cleanProps } from './FieldEditInput';
 
 describe('clearProps', () => {
+
     test('Empty values', () => {
         const emptyObj = {};
         expect(cleanProps(undefined)).toBeUndefined();
@@ -23,10 +24,10 @@ describe('clearProps', () => {
     });
 
     test('Remove values', () => {
-        let props = { a: 1, b: 2, c: 3 };
-        expect(cleanProps(props, 'd', 'e', 'f')).toMatchObject({ a: 1, b: 2, c: 3 });
+        let props = {a: 1, b: 2, c: 3};
+        expect(cleanProps(props, 'd', 'e', 'f')).toMatchObject({a: 1, b: 2, c: 3});
 
-        props = { a: 1, b: 2, c: 3 };
-        expect(cleanProps(props, 'a', 'e', 'f')).toMatchObject({ b: 2, c: 3 });
+        props = {a: 1, b: 2, c: 3};
+        expect(cleanProps(props, 'a', 'e', 'f')).toMatchObject({b: 2, c: 3});
     });
 });

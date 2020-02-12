@@ -18,22 +18,19 @@ import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
 import { is } from 'immutable';
 
+import { AssayPropertiesPanelProps } from './models';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 import { LabelOverlay } from '../forms/LabelOverlay';
 
-import { AssayPropertiesPanelProps } from './models';
+const ASSAY_ID_LABEL = <LabelOverlay
+    label="Assay Id"
+    description="The assay/experiment ID that uniquely identifies this assay run."
+    type="Text (String)"/>;
 
-const ASSAY_ID_LABEL = (
-    <LabelOverlay
-        label="Assay Id"
-        description="The assay/experiment ID that uniquely identifies this assay run."
-        type="Text (String)"
-    />
-);
-
-const COMMENT_LABEL = (
-    <LabelOverlay label="Comments" description="Contains comments about this run" type="Text (String)" />
-);
+const COMMENT_LABEL = <LabelOverlay
+    label="Comments"
+    description="Contains comments about this run"
+    type="Text (String)"/>;
 
 export class RunPropertiesPanel extends React.Component<AssayPropertiesPanelProps, any> {
     shouldComponentUpdate(nextProps: AssayPropertiesPanelProps) {
@@ -51,7 +48,9 @@ export class RunPropertiesPanel extends React.Component<AssayPropertiesPanelProp
 
         return (
             <div className="panel panel-default">
-                <div className="panel-heading">{panelTitle}</div>
+                <div className="panel-heading">
+                    {panelTitle}
+                </div>
                 <div className="panel-body">
                     <Formsy className="form-horizontal" onChange={onChange}>
                         <Input
@@ -60,8 +59,7 @@ export class RunPropertiesPanel extends React.Component<AssayPropertiesPanelProp
                             labelClassName="text-left"
                             name="runname"
                             type="text"
-                            value={model.runName}
-                        />
+                            value={model.runName}/>
                         <Textarea
                             changeDebounceInterval={0}
                             cols={60}
@@ -69,8 +67,7 @@ export class RunPropertiesPanel extends React.Component<AssayPropertiesPanelProp
                             labelClassName="text-left"
                             name="comment"
                             rows={2}
-                            value={model.comment}
-                        />
+                            value={model.comment}/>
                         {model.runColumns.size !== 0 && (
                             <QueryFormInputs
                                 renderFileInputs={true}

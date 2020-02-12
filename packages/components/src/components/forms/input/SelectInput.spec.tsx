@@ -19,70 +19,69 @@ import { mount, shallow } from 'enzyme';
 import { SelectInputImpl } from './SelectInput';
 
 describe('SelectInput', () => {
+
     const formsyProps = {
         formsy: true,
         getErrorMessage: () => {},
         getValue: () => {},
-        setValue: () => {},
+        setValue: () => {}
     };
 
     test('Should apply css classes', () => {
         const containerCls = 'container-class-test';
         const inputCls = 'input-class-test';
 
-        const component = shallow(
-            <SelectInputImpl {...formsyProps} containerClass={containerCls} inputClass={inputCls} />
-        );
+        let component = shallow(<SelectInputImpl {...formsyProps} containerClass={containerCls} inputClass={inputCls} />);
         expect(component.find('.' + containerCls).length).toBe(1);
         expect(component.find('.' + inputCls).length).toBe(1);
     });
 
     test('Should saveOnBlur - creatable', () => {
+
         const setValue = jest.fn();
 
-        const selectProps = Object.assign({}, formsyProps, {
+        let selectProps = Object.assign({}, formsyProps, {
             allowCreate: true,
             saveOnBlur: true,
-            setValue,
+            setValue
         });
 
-        const component = mount(<SelectInputImpl {...selectProps} />);
+        let component = mount(<SelectInputImpl {...selectProps} />);
 
-        component
-            .find('input')
+        component.find('input')
             .simulate('focus')
-            .simulate('change', { target: { value: 'Hello' } })
+            .simulate('change', { target: { value: 'Hello' }})
             .simulate('blur');
 
         expect(setValue.mock.calls.length).toBe(1);
-        const state = component.state() as any;
+        const state  = component.state() as any;
         expect(state.selectedOptions).toHaveProperty('value', 'Hello');
     });
 
     test('Should saveOnBlur - async', () => {
+
         const setValue = jest.fn();
 
-        const selectProps = Object.assign({}, formsyProps, {
+        let selectProps = Object.assign({}, formsyProps, {
             loadOptions: (input, callback) => {
                 callback(null, {
                     options: [
                         { value: 'one', label: 'One' },
-                        { value: 'two', label: 'Two' },
+                        { value: 'two', label: 'Two' }
                     ],
-                    complete: true,
+                    complete: true
                 });
             },
             multiple: true,
             saveOnBlur: true,
-            setValue,
+            setValue
         });
 
-        const component = mount(<SelectInputImpl {...selectProps} />);
+        let component = mount(<SelectInputImpl {...selectProps} />);
 
-        component
-            .find('input')
+        component.find('input')
             .simulate('focus')
-            .simulate('change', { target: { value: 'Two' } })
+            .simulate('change', { target: { value: 'Two' }})
             .simulate('blur');
 
         expect(setValue.mock.calls.length).toBe(1);

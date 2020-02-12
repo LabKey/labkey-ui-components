@@ -1,48 +1,42 @@
 import React from 'react';
 import { Utils } from '@labkey/api';
-
-import { List } from 'immutable';
-
 import { ConfirmModal } from '../base/ConfirmModal';
-
-import { Alert } from '../base/Alert';
+import { deleteUsers } from "./actions";
+import { Alert } from "../base/Alert";
+import { List } from "immutable";
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { deleteUsers } from './actions';
-
 interface Props {
-    userIds: List<number>;
-    onComplete: (response: any) => any;
-    onCancel: () => any;
+    userIds: List<number>
+    onComplete: (response: any) => any
+    onCancel: () => any
 }
 
 interface State {
-    submitting: boolean;
-    error: React.ReactNode;
+    submitting: boolean
+    error: React.ReactNode
 }
 
 export class UserDeleteConfirmModal extends React.Component<Props, State> {
+
     constructor(props: Props) {
         super(props);
 
         this.state = {
             submitting: false,
-            error: undefined,
-        };
+            error: undefined
+        }
     }
 
     onConfirm = () => {
         const { userIds, onComplete } = this.props;
 
-        this.setState(() => ({ submitting: true }));
+        this.setState(() => ({submitting: true}));
         deleteUsers(userIds)
             .then(onComplete)
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({
-                    error: resolveErrorMessage(error, 'user', 'users', 'delete'),
-                    submitting: false,
-                }));
+                this.setState(() => ({error: resolveErrorMessage(error, "user", "users", "delete"), submitting: false}));
             });
     };
 
@@ -53,7 +47,7 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
 
         return (
             <ConfirmModal
-                title={'Delete ' + Utils.pluralBasic(userCount, 'User') + '?'}
+                title={'Delete ' + Utils.pluralBasic(userCount, 'User') +  '?'}
                 msg={
                     <>
                         <p>
@@ -68,17 +62,19 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
                                 <li>cannot be reactivated</li>
                             </ul>
                         </p>
-                        <p>{Utils.pluralBasic(userCount, 'user')} will be deleted. Do you want to proceed?</p>
+                        <p>
+                            {Utils.pluralBasic(userCount, 'user')} will be deleted. Do you want to proceed?
+                        </p>
                         {error && <Alert>{error}</Alert>}
                     </>
                 }
                 onConfirm={this.onConfirm}
                 onCancel={onCancel}
-                confirmVariant="danger"
-                confirmButtonText="Yes, Permanently Delete"
-                cancelButtonText="Cancel"
+                confirmVariant={'danger'}
+                confirmButtonText={'Yes, Permanently Delete'}
+                cancelButtonText={'Cancel'}
                 submitting={submitting}
             />
-        );
+        )
     }
 }

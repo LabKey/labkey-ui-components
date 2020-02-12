@@ -17,26 +17,27 @@ import React from 'react';
 import { Modal, ProgressBar } from 'react-bootstrap';
 
 interface Props {
-    delay?: number;
-    estimate?: number;
-    modal?: boolean;
-    title?: React.ReactNode;
-    toggle: boolean;
-    updateIncrement?: number;
+    delay?: number
+    estimate?: number
+    modal?: boolean
+    title?: React.ReactNode
+    toggle: boolean
+    updateIncrement?: number
 }
 
 interface State {
-    duration?: number;
-    percent?: number;
-    show?: boolean;
+    duration?: number
+    percent?: number
+    show?: boolean
 }
 
 export class Progress extends React.Component<Props, State> {
+
     static defaultProps = {
         delay: 350,
         estimate: 500,
         modal: false,
-        updateIncrement: 50,
+        updateIncrement: 50
     };
 
     delayTimer: number;
@@ -51,7 +52,7 @@ export class Progress extends React.Component<Props, State> {
         this.state = {
             duration: 0,
             percent: 0,
-            show: false,
+            show: false
         };
     }
 
@@ -66,22 +67,24 @@ export class Progress extends React.Component<Props, State> {
                     this.cycle(true);
                     this.start();
                 }, this.props.delay);
-            } else {
+            }
+            else {
                 this.start();
             }
-        } else if (this.props.toggle && !nextProps.toggle) {
+        }
+        else if (this.props.toggle && !nextProps.toggle) {
             this.end();
         }
     }
 
     cycle(fromDelay?: boolean) {
         const newDuration = this.state.duration + (fromDelay ? this.props.delay : this.props.updateIncrement);
-        const newPercent = Math.ceil((newDuration / this.props.estimate) * 100);
+        let newPercent = Math.ceil((newDuration / this.props.estimate) * 100);
 
         this.setState({
             duration: newDuration,
             percent: newPercent > 100 ? 100 : newPercent,
-            show: true,
+            show: true
         });
     }
 
@@ -92,7 +95,7 @@ export class Progress extends React.Component<Props, State> {
         if (fromUnmount !== true) {
             this.setState({
                 percent: 0,
-                show: false,
+                show: false
             });
         }
     }
@@ -111,7 +114,7 @@ export class Progress extends React.Component<Props, State> {
         const { show } = this.state;
         let element = null;
         const indicator = show && (
-            <ProgressBar active now={this.state.percent} bsStyle={this.state.percent === 100 ? 'success' : undefined} />
+            <ProgressBar active now={this.state.percent} bsStyle={this.state.percent === 100 ? "success" : undefined}/>
         );
 
         if (modal) {
@@ -127,8 +130,9 @@ export class Progress extends React.Component<Props, State> {
                         {indicator}
                     </Modal.Body>
                 </Modal>
-            );
-        } else if (show) {
+            )
+        }
+        else if (show) {
             element = indicator;
         }
 

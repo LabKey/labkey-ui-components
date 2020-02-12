@@ -15,39 +15,38 @@
  */
 import React from 'react';
 import { fromJS, List, Map } from 'immutable';
-
+import { FileAttachmentForm } from './FileAttachmentForm';
 import { mount, shallow } from 'enzyme';
 
-import { FileAttachmentForm } from './FileAttachmentForm';
+describe("<FileAttachmentForm/>", () => {
 
-describe('<FileAttachmentForm/>', () => {
     test('no props', () => {
-        const wrapper = shallow(<FileAttachmentForm />);
+        const wrapper = shallow(<FileAttachmentForm/>);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('with attributes', () => {
-        const wrapper = shallow(
-            <FileAttachmentForm
-                acceptedFormats=".tsv, .xls, .xlsx"
-                allowDirectories={false}
-                allowMultiple={false}
-                label="file attachment"
-                templateUrl="#downloadtemplateurl"
-            />
-        );
+        const wrapper = shallow(<FileAttachmentForm
+            acceptedFormats={'.tsv, .xls, .xlsx'}
+            allowDirectories={false}
+            allowMultiple={false}
+            label={'file attachment'}
+            templateUrl={'#downloadtemplateurl'}
+        />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('buttons with attachedFiles', () => {
-        const wrapper = mount(<FileAttachmentForm showButtons={true} />);
+        const wrapper = mount(<FileAttachmentForm
+            showButtons={true}
+        />);
 
         let btn = wrapper.find('button.file-form-submit-btn');
         expect(btn).toHaveLength(1);
         expect(btn.props().disabled).toBe(true);
 
         wrapper.setState({
-            attachedFiles: fromJS({ file1: new Blob(['text'], { type: 'text/plain' }) }),
+            attachedFiles: fromJS({'file1': new Blob(['text'], {type : 'text/plain'})})
         });
 
         btn = wrapper.find('button.file-form-submit-btn');
@@ -58,20 +57,18 @@ describe('<FileAttachmentForm/>', () => {
     });
 
     test('with previewGridProps', () => {
-        const wrapper = mount(
-            <FileAttachmentForm
-                previewGridProps={{
-                    previewCount: 1,
-                }}
-            />
-        );
+        const wrapper = mount(<FileAttachmentForm
+            previewGridProps={{
+                previewCount: 1
+            }}
+        />);
         expect(wrapper.find('FilePreviewGrid')).toHaveLength(0);
         expect(wrapper.find('LoadingSpinner')).toHaveLength(0);
 
         wrapper.setState({
             previewStatus: 'With preview status',
             errorMessage: undefined,
-            previewData: undefined,
+            previewData: undefined
         });
         expect(wrapper.find('FilePreviewGrid')).toHaveLength(0);
         expect(wrapper.find('LoadingSpinner')).toHaveLength(1);
@@ -79,7 +76,7 @@ describe('<FileAttachmentForm/>', () => {
         wrapper.setState({
             previewStatus: undefined,
             errorMessage: 'With error message',
-            previewData: undefined,
+            previewData: undefined
         });
         expect(wrapper.find('FilePreviewGrid')).toHaveLength(1);
         expect(wrapper.find('LoadingSpinner')).toHaveLength(0);
@@ -87,7 +84,7 @@ describe('<FileAttachmentForm/>', () => {
         wrapper.setState({
             previewStatus: undefined,
             errorMessage: undefined,
-            previewData: List<Map<string, any>>(),
+            previewData: List<Map<string, any>>()
         });
         expect(wrapper.find('FilePreviewGrid')).toHaveLength(1);
         expect(wrapper.find('LoadingSpinner')).toHaveLength(0);

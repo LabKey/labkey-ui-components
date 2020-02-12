@@ -1,1578 +1,1267 @@
 {
-    "nodes": {
-        "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "ES-1.201",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
-            "queryName": "ExpressionSystemSamples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176708",
-            "parents": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e',
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176708
-        },
-        "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.202": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "ES-1.202",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
-            "queryName": "ExpressionSystemSamples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176709",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176709
-        },
-    'urn:lsid:labkey.com:Sample.9273.Samples:2016_03_13-C2-13-B2-01' : {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e',
-        'role' : 'no role'
-                }
-            ],
-            "name": "2016_03_13-C2-13-B2-01",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176741",
-      'parents' : [ {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176741
-        },
-        "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.205": {
-            "relatedChildSample": true,
-            "children": [],
-            "name": "ES-1.205",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
-            "queryName": "ExpressionSystemSamples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176712",
-            "parents": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e',
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176712
-        },
-        "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.203": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "ES-1.203",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
-            "queryName": "ExpressionSystemSamples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176710",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176710
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_20-C8-77-B5-02": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e',
-        'role' : 'no role'
-                }
-            ],
-            "name": "2016_07_20-C8-77-B5-02",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176726",
-      'parents' : [ {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176726
-        },
-        "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.204": {
-            "relatedChildSample": true,
-            "children": [],
-            "name": "ES-1.204",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
-            "queryName": "ExpressionSystemSamples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176711",
-            "parents": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e',
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176711
-        },
-        "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.1": {
-            "relatedChildSample": false,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb64-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "ES-1.1",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
-            "queryName": "ExpressionSystemSamples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176700",
-      'parents' : [ {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb5e-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176700
-        },
-        "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2": {
-            "relatedChildSample": false,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "ES-1.2",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
-            "queryName": "ExpressionSystemSamples",
-      'type' : 'Sample',
-            "schemaName": "samples",
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176707',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb66-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176707
-        },
-        "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd66-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-      'name' : 'ES-1.3',
-      'cpasType' : 'urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples',
-            "queryName": "ExpressionSystemSamples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176713",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176713
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_03_28-C9-19-B3-03": {
-            "relatedChildSample": true,
-            "children": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e',
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2015_03_28-C9-19-B3-03",
-      'cpasType' : 'urn:lsid:labkey.com:SampleSet.Folder-9273:Samples',
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176729",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176729
-        },
-        "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e": {
-            "children": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3',
-                    "role": "no role"
-                }
-            ],
-      'name' : 'Derive sample from ES-1.202, ES-1.201, ES-1.203',
-            "cpasType": "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
-            "type": "Run",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18577",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.203",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.202",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 18577
-        },
-        "urn:lsid:labkey.com:Data.Folder-9273:a50adac7-a194-1037-a047-595602e5f80e": {
-      'children' : [ {
-        'lsid' : 'urn:lsid:labkey.com:Run.Folder-9273:a50adb5e-a194-1037-a047-595602e5f80e',
-        'role' : 'no role'
-                }
-            ],
-            "nearestParentData": true,
-            "name": "ES-1",
-            "cpasType": "urn:lsid:labkey.com:DataClass.Folder-9273:ExpressionSystem",
-            "queryName": "ExpressionSystem",
-            "type": "Data",
-            "schemaName": "exp.data",
-      'url' : null,
-            "parents": [],
-      'rowId' : 51304
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_13-C3-16-B7-03": {
-            "relatedChildSample": true,
-      'children' : [ {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2015_01_13-C3-16-B7-03",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176735",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-      'rowId' : 176735
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_17-C6-25-B9-03": {
-            "relatedChildSample": true,
-      'children' : [ {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-      'name' : '2015_06_17-C6-25-B9-03',
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176728",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176728
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_27-C2-65-B5-01": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-      'name' : '2015_08_27-C2-65-B5-01',
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176733",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176733
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_26-C4-26-B4-03": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2015_06_26-C4-26-B4-03",
-      'cpasType' : 'urn:lsid:labkey.com:SampleSet.Folder-9273:Samples',
-      'queryName' : 'Samples',
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176727",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176727
-        },
-        "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e": {
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.204",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.203",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.202",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.205",
-        'role' : 'no role'
-                }
-            ],
-            "name": "Derive 5 samples from ES-1.2",
-            "cpasType": "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
-      'type' : 'Run',
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18576',
-            "parents": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2',
-                    "role": "no role"
-                }
-            ],
-            "rowId": 18576
-        },
-    'urn:lsid:labkey.com:Sample.9273.Samples:2015_06_19-C5-29-B9-01' : {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2015_06_19-C5-29-B9-01",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176731",
-      'parents' : [ {
-        'lsid' : 'urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e',
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176731
-        },
-    'urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001' : {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2015_01_08_A001",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-      'queryName' : 'Samples',
-            "type": "Sample",
-            "schemaName": "samples",
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176718',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd66-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176718
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_11-C4-61-B7-02": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2015_06_11-C4-61-B7-02",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-      'type' : 'Sample',
-      'schemaName' : 'samples',
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176730',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176730
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_07_12-C5-39-B4-02": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2015_07_12-C5-39-B4-02",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-      'type' : 'Sample',
-      'schemaName' : 'samples',
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176725',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176725
-        },
-    'urn:lsid:labkey.com:Sample.9273.Samples:2016_02_22-C8-48-B4-01' : {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2016_02_22-C8-48-B4-01",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176736",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176736
-        },
-    'urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e' : {
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_08_21-C2-74-B2-03",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C6-19-B1-01",
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_02_19-C3-54-B6-01',
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_22-C1-63-B3-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_20-C7-44-B4-03",
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_03_17-C1-69-B5-03',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_11-C6-70-B4-03",
-        'role' : 'no role'
-                }
-            ],
-            "name": "Derive 7 samples from 2015_01_08_B002",
-      'cpasType' : 'urn:lsid:labkey.org:Protocol:SampleDerivationProtocol',
-            "type": "Run",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18585",
-            "parents": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002',
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 18585
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_06_17-C8-31-B2-02": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2016_06_17-C8-31-B2-02",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-      'schemaName' : 'samples',
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176743",
-            "parents": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e',
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176743
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_26-C1-74-B6-01": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2016_07_26-C1-74-B6-01",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176742',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176742
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_18-C4-73-B4-03": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2015_06_18-C4-73-B4-03",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176740',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176740
-        },
-        "urn:lsid:labkey.com:Run.Folder-9273:a50adb66-a194-1037-a047-595602e5f80e": {
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2",
-        'role' : 'no role'
-                }
-            ],
-            "name": "Derive sample from ES-1.101",
-            "cpasType": "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
-            "type": "Run",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18575",
-      'parents' : [ {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.101',
-                    "role": "no role"
-                }
-            ],
-            "rowId": 18575
-        },
-        "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e": {
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:AssayRunTSVData.Folder-9273:b4abe5b1-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "Run01_SEC.tsv",
-            "cpasType": "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-9273:SEC",
-            "type": "GeneralAssayRun",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18592",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_22-C1-63-B3-01",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_22-C3-12-B9-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_27-C2-65-B5-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_11-C6-70-B4-03",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_03_28-C9-19-B3-03",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_26-C6-59-B9-01",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_06_19-C5-29-B9-01',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_07_12-C5-39-B4-02",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_14-C5-16-B1-02",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_25-C7-71-B7-02",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C6-19-B1-01',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_08_21-C2-74-B2-03",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_20-C7-44-B4-03",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_03_17-C1-69-B5-03',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_06_17-C8-31-B2-02",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_17-C6-25-B9-03",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C5-40-B6-02",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_06_26-C4-26-B4-03',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_11-C4-61-B7-02",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_20-C8-77-B5-02",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_13-C3-16-B7-03",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_24-C2-35-B2-03",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_13-C2-13-B2-01",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_02_17-C9-72-B8-01",
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_02_22-C8-48-B4-01',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_18-C4-73-B4-03",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_04_21-C7-73-B6-02",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_19-C3-54-B6-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_26-C1-74-B6-01",
-                    "role": "no role"
-                }
-            ],
-      'rowId' : 18592
-        },
-        "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e": {
-            "children": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_01_24-C2-35-B2-03',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_06_17-C8-31-B2-02",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_13-C3-16-B7-03",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_22-C3-12-B9-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_26-C1-74-B6-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_18-C4-73-B4-03",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_06_17-C6-25-B9-03',
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_06_11-C4-61-B7-02',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_13-C2-13-B2-01",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_19-C5-29-B9-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_03_28-C9-19-B3-03",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_26-C6-59-B9-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_07_12-C5-39-B4-02",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_06_26-C4-26-B4-03',
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_08_27-C2-65-B5-01',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_20-C8-77-B5-02",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_02_17-C9-72-B8-01",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C5-40-B6-02",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_22-C8-48-B4-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_04_21-C7-73-B6-02",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_14-C5-16-B1-02",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_25-C7-71-B7-02",
-        'role' : 'no role'
-                }
-            ],
-            "name": "Derive 22 samples from 2015_01_08_A001",
-            "cpasType": "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
-            "type": "Run",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18584",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 18584
-        },
-        "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.101": {
-            "relatedChildSample": false,
-            "children": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Run.Folder-9273:a50adb66-a194-1037-a047-595602e5f80e',
-                    "role": "no role"
-                }
-            ],
-      'name' : 'ES-1.101',
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
-            "queryName": "ExpressionSystemSamples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176703",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:a50adb64-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-      'rowId' : 176703
-        },
-        "urn:lsid:labkey.com:Run.Folder-9273:a50adb5e-a194-1037-a047-595602e5f80e": {
-            "children": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.1',
-        'role' : 'no role'
-                }
-            ],
-            "name": "Derive sample from ES-1",
-            "cpasType": "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
-            "type": "Run",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18571",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Data.Folder-9273:a50adac7-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 18571
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_02_17-C9-72-B8-01": {
-            "relatedChildSample": true,
-            "children": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e',
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2015_02_17-C9-72-B8-01",
-      'cpasType' : 'urn:lsid:labkey.com:SampleSet.Folder-9273:Samples',
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176739",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176739
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_20-C7-44-B4-03": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2016_02_20-C7-44-B4-03",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-      'queryName' : 'Samples',
-            "type": "Sample",
-            "schemaName": "samples",
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176749',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176749
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_22-C3-12-B9-01": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2016_01_22-C3-12-B9-01",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-      'queryName' : 'Samples',
-            "type": "Sample",
-            "schemaName": "samples",
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176723',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176723
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_25-C7-71-B7-02": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2015_04_25-C7-71-B7-02",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-      'type' : 'Sample',
-      'schemaName' : 'samples',
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176744',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176744
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_11-C6-70-B4-03": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2015_04_11-C6-70-B4-03",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-      'type' : 'Sample',
-      'schemaName' : 'samples',
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176747',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176747
-        },
-    'urn:lsid:labkey.com:Run.Folder-9273:a50adb64-a194-1037-a047-595602e5f80e' : {
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.101",
-        'role' : 'no role'
-                }
-            ],
-            "name": "Derive 4 samples from ES-1.1",
-            "cpasType": "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
-            "type": "Run",
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18574',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.1",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 18574
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C6-19-B1-01": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e',
-                    "role": "no role"
-                }
-            ],
-            "name": "2016_07_12-C6-19-B1-01",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-      'schemaName' : 'samples',
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176748',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176748
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_04_21-C7-73-B6-02": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2016_04_21-C7-73-B6-02",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176724",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176724
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_22-C1-63-B3-01": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2015_08_22-C1-63-B3-01",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176751",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176751
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_19-C3-54-B6-01": {
-      'relatedChildSample' : true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2016_02_19-C3-54-B6-01",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176746",
-            "parents": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e',
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176746
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_17-C1-69-B5-03": {
-      'relatedChildSample' : true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2016_03_17-C1-69-B5-03",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176750",
-            "parents": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e',
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176750
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_26-C6-59-B9-01": {
-            "relatedChildSample": true,
-      'children' : [ {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2015_08_26-C6-59-B9-01",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176732",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-      'rowId' : 176732
-        },
-        "urn:lsid:labkey.com:AssayRunTSVData.Folder-9273:b4abe5b1-a194-1037-a047-595602e5f80e": {
-            "children": [],
-            "nearestParentData": false,
-      'name' : 'Run01_SEC.tsv',
-            "cpasType": "Data",
-            "type": "AssayRunTSVData",
-            "url": null,
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 51433
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C5-40-B6-02": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2016_07_12-C5-40-B6-02",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-      'type' : 'Sample',
-      'schemaName' : 'samples',
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176737',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176737
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_08_21-C2-74-B2-03": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2016_08_21-C2-74-B2-03",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-      'type' : 'Sample',
-      'schemaName' : 'samples',
-      'url' : '/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176745',
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176745
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_24-C2-35-B2-03": {
-            "relatedChildSample": true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "name": "2016_01_24-C2-35-B2-03",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176734",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 176734
-        },
-    'urn:lsid:labkey.com:Run.Folder-9273:b4abdd66-a194-1037-a047-595602e5f80e' : {
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001",
-                    "role": "no role"
-                }
-            ],
-            "name": "Derive 2 samples from ES-1.3",
-            "cpasType": "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
-            "type": "Run",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18581",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 18581
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_14-C5-16-B1-02": {
-      'relatedChildSample' : true,
-            "children": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e',
-        'role' : 'no role'
-                }
-            ],
-            "name": "2015_04_14-C5-16-B1-02",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176738",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-      'rowId' : 176738
-        },
-        "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002": {
-            "relatedChildSample": true,
-      'children' : [ {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
-                    "role": "no role"
-                }
-            ],
-            "name": "2015_01_08_B002",
-            "cpasType": "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
-            "queryName": "Samples",
-            "type": "Sample",
-            "schemaName": "samples",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176719",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Run.Folder-9273:b4abdd66-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-            "rowId": 176719
-        },
-        "urn:lsid:labkey.com:AssayRunTSVData.Folder-9273:b4abe4fd-a194-1037-a047-595602e5f80e": {
-            "children": [],
-            "nearestParentData": false,
-            "name": "Run01_AA.tsv",
-            "cpasType": "Data",
-            "type": "AssayRunTSVData",
-            "url": null,
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
-        'role' : 'no role'
-                }
-            ],
-      'rowId' : 51430
-        },
-        "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e": {
-            "children": [
-                {
-        'lsid' : 'urn:lsid:labkey.com:AssayRunTSVData.Folder-9273:b4abe4fd-a194-1037-a047-595602e5f80e',
-                    "role": "no role"
-                }
-            ],
-            "name": "Run01_AA.tsv",
-            "cpasType": "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-9273:Amino+Acids",
-            "type": "GeneralAssayRun",
-            "url": "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18589",
-            "parents": [
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_03_28-C9-19-B3-03",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_08_26-C6-59-B9-01',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_26-C4-26-B4-03",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_13-C3-16-B7-03",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_06_17-C8-31-B2-02",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_01_24-C2-35-B2-03',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_17-C1-69-B5-03",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_17-C6-25-B9-03",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_04_11-C6-70-B4-03',
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C5-40-B6-02',
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_08_21-C2-74-B2-03",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_20-C7-44-B4-03",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_04_14-C5-16-B1-02',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_25-C7-71-B7-02",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_07_12-C5-39-B4-02",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_20-C8-77-B5-02",
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2015_06_11-C4-61-B7-02',
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_19-C5-29-B9-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_27-C2-65-B5-01",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_01_22-C3-12-B9-01',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_18-C4-73-B4-03",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C6-19-B1-01",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_13-C2-13-B2-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_02_17-C9-72-B8-01",
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_22-C8-48-B4-01",
-        'role' : 'no role'
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_02_19-C3-54-B6-01',
-                    "role": "no role"
-                },
-                {
-        'lsid' : 'urn:lsid:labkey.com:Sample.9273.Samples:2016_07_26-C1-74-B6-01',
-                    "role": "no role"
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_22-C1-63-B3-01",
-        'role' : 'no role'
-                },
-                {
-                    "lsid": "urn:lsid:labkey.com:Sample.9273.Samples:2016_04_21-C7-73-B6-02",
-                    "role": "no role"
-                }
-            ],
-            "rowId": 18589
-        }
+  "nodes" : {
+    "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "ES-1.201",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
+      "queryName" : "ExpressionSystemSamples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176708",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176708
     },
-  'seed' : 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2'
+    "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.202" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "ES-1.202",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
+      "queryName" : "ExpressionSystemSamples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176709",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176709
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_13-C2-13-B2-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_03_13-C2-13-B2-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176741",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176741
+    },
+    "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.205" : {
+      "relatedChildSample" : true,
+      "children" : [ ],
+      "name" : "ES-1.205",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
+      "queryName" : "ExpressionSystemSamples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176712",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176712
+    },
+    "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.203" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "ES-1.203",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
+      "queryName" : "ExpressionSystemSamples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176710",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176710
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_20-C8-77-B5-02" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_07_20-C8-77-B5-02",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176726",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176726
+    },
+    "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.204" : {
+      "relatedChildSample" : true,
+      "children" : [ ],
+      "name" : "ES-1.204",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
+      "queryName" : "ExpressionSystemSamples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176711",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176711
+    },
+    "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.1" : {
+      "relatedChildSample" : false,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb64-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "ES-1.1",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
+      "queryName" : "ExpressionSystemSamples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176700",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb5e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176700
+    },
+    "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2" : {
+      "relatedChildSample" : false,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "ES-1.2",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
+      "queryName" : "ExpressionSystemSamples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176707",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb66-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176707
+    },
+    "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd66-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "ES-1.3",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
+      "queryName" : "ExpressionSystemSamples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176713",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176713
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_03_28-C9-19-B3-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_03_28-C9-19-B3-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176729",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176729
+    },
+    "urn:lsid:labkey.com:Run.Folder-9273:a50adb6a-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3",
+        "role" : "no role"
+      } ],
+      "name" : "Derive sample from ES-1.202, ES-1.201, ES-1.203",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18577",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.203",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.202",
+        "role" : "no role"
+      } ],
+      "rowId" : 18577
+    },
+    "urn:lsid:labkey.com:Data.Folder-9273:a50adac7-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb5e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "nearestParentData" : true,
+      "name" : "ES-1",
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-9273:ExpressionSystem",
+      "queryName" : "ExpressionSystem",
+      "type" : "Data",
+      "schemaName" : "exp.data",
+      "url" : null,
+      "parents" : [ ],
+      "rowId" : 51304
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_13-C3-16-B7-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_01_13-C3-16-B7-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176735",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176735
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_17-C6-25-B9-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_06_17-C6-25-B9-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176728",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176728
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_27-C2-65-B5-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_08_27-C2-65-B5-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176733",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176733
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_26-C4-26-B4-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_06_26-C4-26-B4-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176727",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176727
+    },
+    "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.204",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.203",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.202",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.205",
+        "role" : "no role"
+      } ],
+      "name" : "Derive 5 samples from ES-1.2",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18576",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2",
+        "role" : "no role"
+      } ],
+      "rowId" : 18576
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_19-C5-29-B9-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_06_19-C5-29-B9-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176731",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176731
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_01_08_A001",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176718",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd66-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176718
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_11-C4-61-B7-02" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_06_11-C4-61-B7-02",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176730",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176730
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_07_12-C5-39-B4-02" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_07_12-C5-39-B4-02",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176725",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176725
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_22-C8-48-B4-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_02_22-C8-48-B4-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176736",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176736
+    },
+    "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_08_21-C2-74-B2-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C6-19-B1-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_19-C3-54-B6-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_22-C1-63-B3-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_20-C7-44-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_17-C1-69-B5-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_11-C6-70-B4-03",
+        "role" : "no role"
+      } ],
+      "name" : "Derive 7 samples from 2015_01_08_B002",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18585",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002",
+        "role" : "no role"
+      } ],
+      "rowId" : 18585
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_06_17-C8-31-B2-02" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_06_17-C8-31-B2-02",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176743",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176743
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_26-C1-74-B6-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_07_26-C1-74-B6-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176742",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176742
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_18-C4-73-B4-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_06_18-C4-73-B4-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176740",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176740
+    },
+    "urn:lsid:labkey.com:Run.Folder-9273:a50adb66-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2",
+        "role" : "no role"
+      } ],
+      "name" : "Derive sample from ES-1.101",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18575",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.101",
+        "role" : "no role"
+      } ],
+      "rowId" : 18575
+    },
+    "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-9273:b4abe5b1-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "Run01_SEC.tsv",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-9273:SEC",
+      "type" : "GeneralAssayRun",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18592",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_22-C1-63-B3-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_22-C3-12-B9-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_27-C2-65-B5-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_11-C6-70-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_03_28-C9-19-B3-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_26-C6-59-B9-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_19-C5-29-B9-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_07_12-C5-39-B4-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_14-C5-16-B1-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_25-C7-71-B7-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C6-19-B1-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_08_21-C2-74-B2-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_20-C7-44-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_17-C1-69-B5-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_06_17-C8-31-B2-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_17-C6-25-B9-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C5-40-B6-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_26-C4-26-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_11-C4-61-B7-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_20-C8-77-B5-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_13-C3-16-B7-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_24-C2-35-B2-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_13-C2-13-B2-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_02_17-C9-72-B8-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_22-C8-48-B4-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_18-C4-73-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_04_21-C7-73-B6-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_19-C3-54-B6-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_26-C1-74-B6-01",
+        "role" : "no role"
+      } ],
+      "rowId" : 18592
+    },
+    "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_24-C2-35-B2-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_06_17-C8-31-B2-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_13-C3-16-B7-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_22-C3-12-B9-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_26-C1-74-B6-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_18-C4-73-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_17-C6-25-B9-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_11-C4-61-B7-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_13-C2-13-B2-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_19-C5-29-B9-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_03_28-C9-19-B3-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_26-C6-59-B9-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_07_12-C5-39-B4-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_26-C4-26-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_27-C2-65-B5-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_20-C8-77-B5-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_02_17-C9-72-B8-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C5-40-B6-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_22-C8-48-B4-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_04_21-C7-73-B6-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_14-C5-16-B1-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_25-C7-71-B7-02",
+        "role" : "no role"
+      } ],
+      "name" : "Derive 22 samples from 2015_01_08_A001",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18584",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001",
+        "role" : "no role"
+      } ],
+      "rowId" : 18584
+    },
+    "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.101" : {
+      "relatedChildSample" : false,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb66-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "ES-1.101",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:ExpressionSystemSamples",
+      "queryName" : "ExpressionSystemSamples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176703",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:a50adb64-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176703
+    },
+    "urn:lsid:labkey.com:Run.Folder-9273:a50adb5e-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.1",
+        "role" : "no role"
+      } ],
+      "name" : "Derive sample from ES-1",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18571",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-9273:a50adac7-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 18571
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_02_17-C9-72-B8-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_02_17-C9-72-B8-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176739",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176739
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_20-C7-44-B4-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_02_20-C7-44-B4-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176749",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176749
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_22-C3-12-B9-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_01_22-C3-12-B9-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176723",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176723
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_25-C7-71-B7-02" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_04_25-C7-71-B7-02",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176744",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176744
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_11-C6-70-B4-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_04_11-C6-70-B4-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176747",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176747
+    },
+    "urn:lsid:labkey.com:Run.Folder-9273:a50adb64-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.101",
+        "role" : "no role"
+      } ],
+      "name" : "Derive 4 samples from ES-1.1",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18574",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.1",
+        "role" : "no role"
+      } ],
+      "rowId" : 18574
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C6-19-B1-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_07_12-C6-19-B1-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176748",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176748
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_04_21-C7-73-B6-02" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_04_21-C7-73-B6-02",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176724",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176724
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_22-C1-63-B3-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_08_22-C1-63-B3-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176751",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176751
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_19-C3-54-B6-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_02_19-C3-54-B6-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176746",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176746
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_17-C1-69-B5-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_03_17-C1-69-B5-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176750",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176750
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_26-C6-59-B9-01" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_08_26-C6-59-B9-01",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176732",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176732
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-9273:b4abe5b1-a194-1037-a047-595602e5f80e" : {
+      "children" : [ ],
+      "nearestParentData" : false,
+      "name" : "Run01_SEC.tsv",
+      "cpasType" : "Data",
+      "type" : "AssayRunTSVData",
+      "url" : null,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 51433
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C5-40-B6-02" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_07_12-C5-40-B6-02",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176737",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176737
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_08_21-C2-74-B2-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_08_21-C2-74-B2-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176745",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176745
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_24-C2-35-B2-03" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2016_01_24-C2-35-B2-03",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176734",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176734
+    },
+    "urn:lsid:labkey.com:Run.Folder-9273:b4abdd66-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001",
+        "role" : "no role"
+      } ],
+      "name" : "Derive 2 samples from ES-1.3",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18581",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3",
+        "role" : "no role"
+      } ],
+      "rowId" : 18581
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_14-C5-16-B1-02" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe5a6-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_04_14-C5-16-B1-02",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176738",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6c-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176738
+    },
+    "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002" : {
+      "relatedChildSample" : true,
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd6e-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "2015_01_08_B002",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-9273:Samples",
+      "queryName" : "Samples",
+      "type" : "Sample",
+      "schemaName" : "samples",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showMaterial.view?rowId=176719",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-9273:b4abdd66-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 176719
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-9273:b4abe4fd-a194-1037-a047-595602e5f80e" : {
+      "children" : [ ],
+      "nearestParentData" : false,
+      "name" : "Run01_AA.tsv",
+      "cpasType" : "Data",
+      "type" : "AssayRunTSVData",
+      "url" : null,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "rowId" : 51430
+    },
+    "urn:lsid:labkey.com:GeneralAssayRun.Folder-9273:b4abe4fb-a194-1037-a047-595602e5f80e" : {
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-9273:b4abe4fd-a194-1037-a047-595602e5f80e",
+        "role" : "no role"
+      } ],
+      "name" : "Run01_AA.tsv",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-9273:Amino+Acids",
+      "type" : "GeneralAssayRun",
+      "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18589",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_03_28-C9-19-B3-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_26-C6-59-B9-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_26-C4-26-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_01_13-C3-16-B7-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_06_17-C8-31-B2-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_24-C2-35-B2-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_17-C1-69-B5-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_17-C6-25-B9-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_11-C6-70-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C5-40-B6-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_08_21-C2-74-B2-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_20-C7-44-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_14-C5-16-B1-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_04_25-C7-71-B7-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_07_12-C5-39-B4-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_20-C8-77-B5-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_11-C4-61-B7-02",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_19-C5-29-B9-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_27-C2-65-B5-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_01_22-C3-12-B9-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_06_18-C4-73-B4-03",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_12-C6-19-B1-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_03_13-C2-13-B2-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_02_17-C9-72-B8-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_22-C8-48-B4-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_02_19-C3-54-B6-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_07_26-C1-74-B6-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2015_08_22-C1-63-B3-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.9273.Samples:2016_04_21-C7-73-B6-02",
+        "role" : "no role"
+      } ],
+      "rowId" : 18589
+    }
+  },
+  "seed" : "urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2"
 }

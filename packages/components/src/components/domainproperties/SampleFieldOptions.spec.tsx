@@ -1,28 +1,23 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-
-import { MockLookupProvider } from '../../test/components/Lookup';
-
 import { ITargetTableSelectImplState, TargetTableSelectProps } from './Lookup/Fields';
 import { DomainField } from './models';
 import { createFormInputId, createFormInputName } from './actions';
 import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_SAMPLE_TYPE, INT_RANGE_URI, SAMPLE_TYPE_CONCEPT_URI } from './constants';
 import { SampleFieldOptions } from './SampleFieldOptions';
+import { MockLookupProvider } from '../../test/components/Lookup';
 
 describe('SampleFieldOptions', () => {
-    const waitForLoad = jest.fn(field => Promise.resolve(!field.state().loading));
 
-    const sampleFieldSelector = (
-        field: ReactWrapper<any>,
-        domainIndex: number,
-        index: number
-    ): ReactWrapper<TargetTableSelectProps, ITargetTableSelectImplState> => {
+    const waitForLoad = jest.fn((field) => Promise.resolve(!field.state().loading));
+
+    const sampleFieldSelector = (field: ReactWrapper<any>, domainIndex: number, index: number): ReactWrapper<TargetTableSelectProps, ITargetTableSelectImplState> => {
         const config = {
             id: createFormInputId(DOMAIN_FIELD_SAMPLE_TYPE, domainIndex, index),
             name: createFormInputName(DOMAIN_FIELD_SAMPLE_TYPE),
         };
 
-        return field.find(config).not({ bsClass: 'form-control' });
+        return field.find(config).not({bsClass: 'form-control'});
     };
 
     // Tests
@@ -38,7 +33,7 @@ describe('SampleFieldOptions', () => {
             conceptURI: SAMPLE_TYPE_CONCEPT_URI,
             rangeURI: INT_RANGE_URI,
             propertyId: 1,
-            propertyURI: 'test',
+            propertyURI: 'test'
         });
 
         const sampleField = mount(
@@ -49,8 +44,7 @@ describe('SampleFieldOptions', () => {
                     domainIndex={_domainIndex}
                     container={_container}
                     onChange={jest.fn()}
-                    label={_label}
-                    lockType={DOMAIN_FIELD_NOT_LOCKED}
+                    label={_label} lockType={DOMAIN_FIELD_NOT_LOCKED}
                 />
             </MockLookupProvider>
         );
@@ -61,10 +55,11 @@ describe('SampleFieldOptions', () => {
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_label);
 
-        return waitForLoad(sampleField).then(() => {
-            const selectorField = sampleFieldSelector(sampleField, _domainIndex, _index);
-            expect(selectorField.props().value).toEqual(_allSamples); // Verify default
-            sampleField.unmount();
-        });
+        return waitForLoad(sampleField)
+            .then(() => {
+                let selectorField = sampleFieldSelector(sampleField, _domainIndex, _index);
+                expect(selectorField.props().value).toEqual(_allSamples); //Verify default
+                sampleField.unmount();
+            })
     });
 });

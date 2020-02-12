@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['AssayDesignerPanels appPropertiesOnly for new assay 1'] = `
+exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
 <AssayDesignerPanels
   appPropertiesOnly={true}
   initModel={
@@ -3457,7 +3457,7 @@ exports['AssayDesignerPanels appPropertiesOnly for new assay 1'] = `
 </AssayDesignerPanels>
 `;
 
-exports['AssayDesignerPanels appPropertiesOnly with initModel 1'] = `
+exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
 <AssayDesignerPanels
   appPropertiesOnly={true}
   initModel={
@@ -15512,7 +15512,7 @@ exports['AssayDesignerPanels appPropertiesOnly with initModel 1'] = `
 </AssayDesignerPanels>
 `;
 
-exports['AssayDesignerPanels default properties 1'] = `
+exports[`AssayDesignerPanels default properties 1`] = `
 <AssayDesignerPanels
   initModel={
     Immutable.Record {
@@ -19271,7 +19271,7 @@ exports['AssayDesignerPanels default properties 1'] = `
 </AssayDesignerPanels>
 `;
 
-exports['AssayDesignerPanels hideEmptyBatchDomain for new assay 1'] = `
+exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
 <AssayDesignerPanels
   hideEmptyBatchDomain={true}
   initModel={
@@ -22344,7 +22344,7 @@ exports['AssayDesignerPanels hideEmptyBatchDomain for new assay 1'] = `
 </AssayDesignerPanels>
 `;
 
-exports['AssayDesignerPanels hideEmptyBatchDomain with initModel 1'] = `
+exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
 <AssayDesignerPanels
   hideEmptyBatchDomain={true}
   initModel={
@@ -34915,7 +34915,7 @@ exports['AssayDesignerPanels hideEmptyBatchDomain with initModel 1'] = `
 </AssayDesignerPanels>
 `;
 
-exports['AssayDesignerPanels initModel 1'] = `
+exports[`AssayDesignerPanels initModel 1`] = `
 <AssayDesignerPanels
   initModel={
     Immutable.Record {

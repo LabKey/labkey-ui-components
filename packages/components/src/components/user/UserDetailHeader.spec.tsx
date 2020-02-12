@@ -1,29 +1,33 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { fromJS } from 'immutable';
-
+import { UserDetailHeader } from './UserDetailHeader';
+import { ASSAYDESIGNER, READER } from '../../test/data/users';
 import { Button } from 'react-bootstrap';
 
-import { ASSAYDESIGNER, READER } from '../../test/data/users';
 
-import { UserDetailHeader } from './UserDetailHeader';
+describe("<UserDetailHeader/>", () => {
 
-describe('<UserDetailHeader/>', () => {
-    test('default properties', () => {
+    test("default properties", () => {
         const component = (
-            <UserDetailHeader title="Title" user={READER} userProperties={fromJS({})} dateFormat={undefined} />
+            <UserDetailHeader
+                title={'Title'}
+                user={READER}
+                userProperties={fromJS({})}
+                dateFormat={undefined}
+            />
         );
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test('custom properties', () => {
+    test("custom properties", () => {
         const component = (
             <UserDetailHeader
-                title="Title (Custom)"
+                title={'Title (Custom)'}
                 user={ASSAYDESIGNER}
-                userProperties={fromJS({ lastLogin: '2019-11-15 13:50:17.987' })}
-                dateFormat="YYYY-MM-DD"
+                userProperties={fromJS({lastLogin: '2019-11-15 13:50:17.987'})}
+                dateFormat={'YYYY-MM-DD'}
                 renderButtons={() => <Button>Test</Button>}
             />
         );
@@ -31,17 +35,18 @@ describe('<UserDetailHeader/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('custom description', () => {
+    test("custom description", () => {
         const component = (
             <UserDetailHeader
-                title="Title"
+                title={'Title'}
                 user={ASSAYDESIGNER}
                 userProperties={fromJS({})}
                 dateFormat={undefined}
-                description="My custom description"
+                description={'My custom description'}
             />
         );
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
+
 });

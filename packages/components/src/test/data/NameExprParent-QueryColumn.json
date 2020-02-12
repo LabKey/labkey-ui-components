@@ -1,25 +1,27 @@
 {
-    "caption": "NameExpr Parents",
-    "conceptURI": null,
-  'defaultValue': null,
-    "description": "Contains optional parent entity for this NameExpr",
-  'fieldKey': 'MaterialInputs\/NameExpr',
-    "fieldKeyArray": ["MaterialInputs/NameExpr"],
-  'lookup': {
-        "displayColumn": "Name",
-        "isPublic": true,
-        "keyColumn": "RowId",
-    'multiValued': 'junction',
-        "queryName": "NameExpr",
-        "schemaName": "samples",
-        "table": "MaterialInputs"
-    },
-    "multiValue": false,
-    "name": "MaterialInputs/NameExpr",
-    "required": false,
-    "shownInInsertView": true,
-    "sortable": true,
-    "type": "Text (String)",
-    "userEditable": true,
-    "removeFromViews": false
+  "caption": "NameExpr Parents",
+  "conceptURI": null,
+  "defaultValue": null,
+  "description": "Contains optional parent entity for this NameExpr",
+  "fieldKey": "MaterialInputs\/NameExpr",
+  "fieldKeyArray": [
+    "MaterialInputs\/NameExpr"
+  ],
+  "lookup": {
+    "displayColumn": "Name",
+    "isPublic": true,
+    "keyColumn": "RowId",
+    "multiValued": "junction",
+    "queryName": "NameExpr",
+    "schemaName": "samples",
+    "table": "MaterialInputs"
+  },
+  "multiValue": false,
+  "name": "MaterialInputs\/NameExpr",
+  "required": false,
+  "shownInInsertView": true,
+  "sortable": true,
+  "type": "Text (String)",
+  "userEditable": true,
+  "removeFromViews": false
 }

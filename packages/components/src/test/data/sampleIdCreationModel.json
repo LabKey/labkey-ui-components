@@ -1,50 +1,52 @@
 {
-    "initialSampleSet": "Sample Set 2",
-    "isError": false,
-    "isInit": true,
-    "isLoading": false,
-    "isSubmitting": false,
-  'isValid': false,
-    "parentOptions": [
-        {
-            "value": "name expression set",
-            "label": "Name Expression Set",
-            "schema": "samples",
-      'query': 'Name Expression Set'
-        },
-        {
-            "value": "sample set 2",
-            "label": "Sample Set 2",
-      'schema': 'samples',
-            "query": "Sample Set 2"
-        }
-    ],
-    "sampleParents": [
-        {
-            "index": 1,
-            "key": "parent-type-0"
-        }
-    ],
-    "sampleSetData": {},
-    "sampleSetOptions": [
-        {
-            "label": "Name Expression Set",
-            "lsid": "urn:lsid:labkey.com:SampleSet.Folder-60:Name+Expression+Set",
-            "rowId": 110,
-            "value": "Name Expression Set"
-        },
-        {
-            "label": "Sample Set 2",
-            "lsid": "urn:lsid:labkey.com:SampleSet.Folder-60:Sample+Set+2",
-            "rowId": 111,
-            "value": "Sample Set 2"
-        }
-    ],
-    "targetSampleSet": {
-        "label": "Sample Set 2",
-        "lsid": "urn:lsid:labkey.com:SampleSet.Folder-60:Sample+Set+2",
-        "rowId": 111,
-        "value": "Sample Set 2"
+  "initialSampleSet": "Sample Set 2",
+  "isError": false,
+  "isInit": true,
+  "isLoading": false,
+  "isSubmitting": false,
+  "isValid": false,
+  "parentOptions": [
+    {
+      "value": "name expression set",
+      "label": "Name Expression Set",
+      "schema": "samples",
+      "query": "Name Expression Set"
     },
-    "sampleCount": 1
+    {
+      "value": "sample set 2",
+      "label": "Sample Set 2",
+      "schema": "samples",
+      "query": "Sample Set 2"
+    }
+  ],
+  "sampleParents": [
+    {
+      "index": 1,
+      "key": "parent-type-0"
+    }
+  ],
+  "sampleSetData": {
+
+  },
+  "sampleSetOptions": [
+    {
+      "label": "Name Expression Set",
+      "lsid": "urn:lsid:labkey.com:SampleSet.Folder-60:Name+Expression+Set",
+      "rowId": 110,
+      "value": "Name Expression Set"
+    },
+    {
+      "label": "Sample Set 2",
+      "lsid": "urn:lsid:labkey.com:SampleSet.Folder-60:Sample+Set+2",
+      "rowId": 111,
+      "value": "Sample Set 2"
+    }
+  ],
+  "targetSampleSet": {
+    "label": "Sample Set 2",
+    "lsid": "urn:lsid:labkey.com:SampleSet.Folder-60:Sample+Set+2",
+    "rowId": 111,
+    "value": "Sample Set 2"
+  },
+  "sampleCount": 1
 }

@@ -17,13 +17,12 @@ import React from 'react';
 import { Link } from 'react-router';
 import { List } from 'immutable';
 
+import { SchemaListing } from './SchemaListing';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AppURL } from '../../url/AppURL';
 import { Grid, GridColumn } from '../base/Grid';
 import { fetchGetQueries } from '../base/models/schemas';
 import { QueryInfo } from '../base/models/model';
-
-import { SchemaListing } from './SchemaListing';
 
 const columns = List([
     new GridColumn({
@@ -31,35 +30,40 @@ const columns = List([
         title: 'Name',
         cell: (name: string, info: QueryInfo) => {
             if (name && info) {
-                return <Link to={AppURL.create('q', info.schemaName, info.name).toString()}>{info.title}</Link>;
+                return (
+                    <Link to={AppURL.create('q', info.schemaName, info.name).toString()}>
+                        {info.title}
+                    </Link>
+                );
             }
             return name;
-        },
+        }
     }),
     new GridColumn({
         index: 'description',
-        title: 'Description',
-    }),
+        title: 'Description'
+    })
 ]);
 
 interface QueriesListingProps {
-    schemaName: string;
-    hideEmpty?: boolean;
-    asPanel?: boolean;
-    title?: string;
+    schemaName: string
+    hideEmpty?: boolean
+    asPanel?: boolean
+    title?: string
 }
 
 interface QueriesListingState {
-    queries: List<QueryInfo>;
+    queries: List<QueryInfo>
 }
 
 export class QueriesListing extends React.Component<QueriesListingProps, QueriesListingState> {
+
     constructor(props: QueriesListingProps) {
         super(props);
 
         this.state = {
-            queries: undefined,
-        };
+            queries: undefined
+        }
     }
 
     componentWillMount() {
@@ -74,8 +78,8 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
     }
 
     loadQueries(schemaName: string) {
-        fetchGetQueries(schemaName).then(queries => {
-            this.setState(() => ({ queries }));
+        fetchGetQueries(schemaName).then((queries) => {
+            this.setState(() => ({queries}));
         });
     }
 
@@ -86,32 +90,41 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
         if (queries) {
             return (
                 <>
-                    <SchemaListing schemaName={schemaName} hideEmpty={true} asPanel={true} title="Nested Schemas" />
-                    {hideEmpty && queries.count() === 0 ? null : asPanel ? (
-                        <div className="panel panel-default">
-                            <div className="panel-heading">{title || 'Queries'}</div>
-                            <div className="panel-body">
-                                <QueriesListingDisplay queries={queries} />
+                    <SchemaListing
+                        schemaName={schemaName}
+                        hideEmpty={true}
+                        asPanel={true}
+                        title={'Nested Schemas'}
+                    />
+                    {hideEmpty && queries.count() === 0
+                        ? null
+                        : asPanel ?
+                            <div className="panel panel-default">
+                                <div className="panel-heading">
+                                    {title || 'Queries'}
+                                </div>
+                                <div className="panel-body">
+                                    <QueriesListingDisplay queries={queries}/>
+                                </div>
                             </div>
-                        </div>
-                    ) : (
-                        <QueriesListingDisplay queries={queries} />
-                    )}
+                            : <QueriesListingDisplay queries={queries}/>
+                    }
                 </>
             );
         }
 
-        return <LoadingSpinner />;
+        return <LoadingSpinner/>;
     }
 }
 
 interface QueriesListingDisplayProps {
-    queries: List<QueryInfo>;
+    queries: List<QueryInfo>
 }
 
 export class QueriesListingDisplay extends React.Component<QueriesListingDisplayProps, any> {
+
     render() {
         const { queries } = this.props;
-        return <Grid data={queries} columns={columns} />;
+        return <Grid data={queries} columns={columns}/>
     }
 }

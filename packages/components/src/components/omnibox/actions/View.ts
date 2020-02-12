@@ -15,12 +15,11 @@
  */
 import { List } from 'immutable';
 
+import { Action, ActionOption, ActionValue, Value } from './Action';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 
-import { Action, ActionOption, ActionValue, Value } from './Action';
-
 export class ViewAction implements Action {
-    static NAME = 'view';
+    static NAME:string = 'view';
     iconCls = 'table';
     param = ViewAction.NAME;
     keyword = ViewAction.NAME;
@@ -31,64 +30,69 @@ export class ViewAction implements Action {
     singleton = true;
     urlPrefix: string;
 
-    constructor(
-        resolveColumns: () => Promise<List<QueryColumn>>,
-        urlPrefix: string,
-        resolveModel: () => Promise<QueryGridModel>
-    ) {
+    constructor(resolveColumns: () => Promise<List<QueryColumn>>, urlPrefix: string, resolveModel: () => Promise<QueryGridModel>) {
         this.resolveColumns = resolveColumns;
         this.resolveModel = resolveModel;
         this.urlPrefix = urlPrefix;
     }
 
-    completeAction(tokens: string[]): Promise<Value> {
-        return new Promise(resolve => {
-            return this.resolveModel().then(model => {
+    completeAction(tokens: Array<string>): Promise<Value> {
+
+        return new Promise((resolve) => {
+
+            return this.resolveModel().then((model) => {
+
                 const { queryInfo } = model;
                 let found = false;
                 const name = tokens.join(' ').toLowerCase();
 
                 queryInfo.views
-                    .filter(
-                        view => !view.isDefault && view.name.indexOf('~~') !== 0 && view.name.toLowerCase() === name
-                    )
-                    .forEach(view => {
+                    .filter((view) => (
+                        !view.isDefault &&
+                        view.name.indexOf('~~') !== 0 &&
+                        view.name.toLowerCase() === name
+                    ))
+                    .forEach((view) => {
                         found = true;
                         resolve({
                             param: this.getParamPrefix() + '=' + view.name,
-                            value: view.name,
+                            value: view.name
                         });
                     });
 
                 if (!found) {
                     resolve({
                         isValid: false,
-                        value: name,
+                        value: name
                     });
                 }
             });
         });
     }
 
-    fetchOptions(tokens: string[]): Promise<ActionOption[]> {
-        return new Promise(resolve => {
-            return this.resolveModel().then(model => {
+    fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
+
+        return new Promise((resolve) => {
+
+            return this.resolveModel().then((model) => {
+
                 const { queryInfo } = model;
                 const name = tokens.join(' ').toLowerCase();
 
-                let views = queryInfo.views.filter(view => !view.isDefault && view.name.indexOf('~~') !== 0);
+                let views = queryInfo.views
+                    .filter((view) => !view.isDefault && view.name.indexOf('~~') !== 0);
 
                 if (name) {
-                    views = views.filter(view => view.label.toLowerCase().indexOf(name) >= 0);
+                    views = views.filter((view) => view.label.toLowerCase().indexOf(name) >= 0);
                 }
 
-                const results: ActionOption[] = views.reduce((arr, view) => {
+                const results: Array<ActionOption> = views.reduce((arr, view) => {
                     arr.push({
                         appendValue: false,
                         isComplete: true,
                         label: view.label,
                         selectable: true,
-                        value: view.name,
+                        value: view.name
                     });
                     return arr;
                 }, []);
@@ -98,7 +102,7 @@ export class ViewAction implements Action {
                         label: '',
                         nextLabel: 'no views available',
                         selectable: false,
-                        value: undefined,
+                        value: undefined
                     });
                 }
 
@@ -115,13 +119,13 @@ export class ViewAction implements Action {
         return this.param;
     }
 
-    buildParams(actionValues: ActionValue[]): Array<{ paramKey: string; paramValue: string }> {
-        return actionValues.map(actionValue => {
-            const [paramKey, paramValue] = actionValue.param.split('=');
+    buildParams(actionValues: Array<ActionValue>): Array<{paramKey: string; paramValue: string}> {
+        return actionValues.map((actionValue) => {
+            const [ paramKey, paramValue ] = actionValue.param.split('=');
 
             return {
                 paramKey,
-                paramValue,
+                paramValue
             };
         });
     }
@@ -130,13 +134,13 @@ export class ViewAction implements Action {
         return paramKey && paramKey.toLowerCase() === this.param;
     }
 
-    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): string[] | Value[] {
-        const results: Value[] = [];
+    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): Array<string> | Array<Value> {
+        let results: Array<Value> = [];
 
         if (paramValue) {
             results.push({
                 param: `${paramKey}=${paramValue}`,
-                value: paramValue,
+                value: paramValue
             });
         }
 

@@ -1,19 +1,19 @@
 import React from 'react';
 import { Map } from 'immutable';
-
 import { ConfirmModal } from '../base/ConfirmModal';
 import { buildURL } from '../../url/ActionURL';
 
 interface Props {
-    onConfirm: () => any;
-    onCancel: () => any;
-    showDependenciesLink: boolean;
-    rowId: number;
+    onConfirm: () => any
+    onCancel: () => any
+    showDependenciesLink: boolean
+    rowId: number
 }
 
 export class SampleSetDeleteConfirmModal extends React.Component<Props, any> {
+
     static defaultProps = {
-        showDependenciesLink: false,
+        showDependenciesLink: false
     };
 
     render() {
@@ -28,21 +28,20 @@ export class SampleSetDeleteConfirmModal extends React.Component<Props, any> {
 
         return (
             <ConfirmModal
-                title="Permanently delete sample type?"
+                title={'Permanently delete sample type?'}
                 msg={
                     <span>
                         The sample type and all of its {dependencies} will be permanently deleted.&nbsp;
-                        <p className="top-spacing">
-                            <strong>Deletion cannot be undone.</strong>&nbsp; Do you want to proceed?
-                        </p>
+                        <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>&nbsp;
+                            Do you want to proceed?</p>
                     </span>
                 }
                 onConfirm={onConfirm}
                 onCancel={onCancel}
-                confirmVariant="danger"
-                confirmButtonText="Yes, Delete"
-                cancelButtonText="Cancel"
+                confirmVariant='danger'
+                confirmButtonText='Yes, Delete'
+                cancelButtonText='Cancel'
             />
-        );
+        )
     }
 }

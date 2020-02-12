@@ -44,7 +44,6 @@ module.exports = {
       plugins: ['jest']
     }
   ],
-  // ignorePatterns: ["*.snap"],
   rules: {
 
     // Possible Errors (http://eslint.org/docs/rules/#possible-errors)

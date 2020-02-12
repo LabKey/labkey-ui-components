@@ -16,7 +16,6 @@
 import moment from 'moment-jdateformatparser';
 import 'moment-timezone';
 import numeral from 'numeral';
-
 import { QueryColumn } from '../components/base/models/model';
 
 export function datePlaceholder(col: QueryColumn): string {
@@ -29,9 +28,11 @@ export function datePlaceholder(col: QueryColumn): string {
         // note Created and Modified columns do not include the rangeURI information
         if (rangeURI.indexOf('datetime') > -1) {
             placeholder = getDateTimeFormat();
-        } else if (rangeURI.indexOf('date') > -1) {
+        }
+        else if (rangeURI.indexOf('date') > -1) {
             placeholder = getDateFormat();
-        } else {
+        }
+        else {
             placeholder = getDateTimeFormat();
         }
     }
@@ -75,26 +76,32 @@ function getFormattedDateTime(d) {
     return d ? moment(d, getDateTimeFormat()) : d;
 }
 
-export function parseDate(dateStr: string, dateFormat?: string) {
-    if (!dateStr) return null;
+export function parseDate(dateStr: string, dateFormat?: string)  {
+    if (!dateStr)
+        return null;
 
-    const date = moment(dateStr, dateFormat ? dateFormat : getDateFormat());
-    if (date) return date.toDate();
+    let date = moment(dateStr, dateFormat ? dateFormat : getDateFormat());
+    if (date)
+        return date.toDate();
 
     return null;
 }
 
-export function formatDate(date: Date, timezone?: string, dateFormat?: string) {
-    if (!date) return null;
+export function formatDate(date : Date, timezone?: string, dateFormat?: string) {
+    if (!date)
+        return null;
     let _date = moment(date);
-    if (timezone) _date = _date.tz(timezone);
+    if (timezone)
+        _date = _date.tz(timezone);
     return _date.formatWithJDF(dateFormat ? dateFormat : getDateFormat());
 }
 
-export function formatDateTime(date: Date, timezone?: string) {
-    if (!date) return null;
+export function formatDateTime(date : Date, timezone?: string) {
+    if (!date)
+        return null;
     let _date = moment(date);
-    if (timezone) _date = _date.tz(timezone);
+    if (timezone)
+        _date = _date.tz(timezone);
     return _date.formatWithJDF(getDateTimeFormat());
 }
 

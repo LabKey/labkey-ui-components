@@ -17,12 +17,10 @@ import { fromJS } from 'immutable';
 
 import { initQueryGridState } from '../global';
 import { initBrowserHistoryState } from '../util/global';
-
+import { initMocks } from './mock';
 import { FileColumnRenderer } from '../renderers/FileColumnRenderer';
 import { SCHEMAS } from '../components/base/models/schemas';
 import { initNotificationsState } from '../components/notifications/global';
-
-import { initMocks } from './mock';
 
 const QUERY_METADATA = fromJS({
     // hideEmptyChartSelector: true,
@@ -31,13 +29,13 @@ const QUERY_METADATA = fromJS({
         'http://www.labkey.org/exp/xml#alias': {
             inputRenderer: 'ExperimentAlias',
             columnRenderer: 'AliasRenderer',
-            detailRenderer: 'AliasRenderer',
-        },
+            detailRenderer: 'AliasRenderer'
+        }
     },
     columnDefaults: {
         flag: {
-            removeFromViews: true,
-        },
+            removeFromViews: true
+        }
     },
     schema: {
         [SCHEMAS.SAMPLE_SETS.SCHEMA]: {
@@ -45,17 +43,17 @@ const QUERY_METADATA = fromJS({
                 name: {
                     caption: 'Sample ID',
                     shownInUpdateView: false,
-                    shownInDetailsView: false,
+                    shownInDetailsView: false
                 },
                 run: {
-                    shownInDetailsView: false,
-                },
+                    shownInDetailsView: false
+                }
             },
             queryDefaults: {
-                appEditableTable: true,
-            },
-        },
-    },
+                appEditableTable: true
+            }
+        }
+    }
 });
 
 const COLUMN_RENDERERS = fromJS({

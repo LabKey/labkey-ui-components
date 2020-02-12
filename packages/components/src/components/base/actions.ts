@@ -16,28 +16,27 @@
 import { List } from 'immutable';
 import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
 
-import { buildURL } from '../../url/ActionURL';
-
 import { AssayDefinitionModel, InferDomainResponse } from './models/model';
+import { buildURL } from '../../url/ActionURL';
 
 export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
     return new Promise((res, rej) => {
         Assay.getAll({
             parameters: {
-                type,
+                type
             },
-            success: (rawModels: any[]) => {
-                const models = List<AssayDefinitionModel>().asMutable();
+            success: (rawModels: Array<any>) => {
+                let models = List<AssayDefinitionModel>().asMutable();
                 rawModels.forEach(rawModel => {
                     models.push(AssayDefinitionModel.create(rawModel));
                 });
                 res(models.asImmutable());
             },
-            failure: error => {
+            failure: (error) => {
                 rej(error);
-            },
+            }
         });
-    });
+    })
 }
 
 export function importGeneralAssayRun(assayId: number, file: File, name?: string, comment?: string): Promise<any> {
@@ -47,19 +46,19 @@ export function importGeneralAssayRun(assayId: number, file: File, name?: string
             name,
             comment,
             files: [file],
-            success: response => {
-                resolve(response);
+            success: (response) => {
+                resolve(response)
             },
-            failure: error => {
+            failure: (error) => {
                 reject(error.exception);
-            },
+            }
         });
     });
 }
 
-export function inferDomainFromFile(file: File, numLinesToInclude: number): Promise<InferDomainResponse> {
+export function inferDomainFromFile(file: File, numLinesToInclude: number) : Promise<InferDomainResponse> {
     return new Promise((resolve, reject) => {
-        const form = new FormData();
+        let form = new FormData();
         form.append('file', file);
         form.append('numLinesToInclude', numLinesToInclude ? (numLinesToInclude + 1).toString() : undefined);
 
@@ -67,17 +66,15 @@ export function inferDomainFromFile(file: File, numLinesToInclude: number): Prom
             url: buildURL('property', 'inferDomain'),
             method: 'POST',
             form,
-            success: Utils.getCallbackWrapper(response => {
+            success: Utils.getCallbackWrapper((response) => {
                 resolve(InferDomainResponse.create(response));
             }),
-            failure: Utils.getCallbackWrapper(error => {
+            failure: Utils.getCallbackWrapper((error) => {
                 console.error(error);
-                reject(
-                    'There was a problem determining the fields in the uploaded file.  Please check the format of the file.'
-                );
-            }),
+                reject("There was a problem determining the fields in the uploaded file.  Please check the format of the file.");
+            })
         });
-    });
+    })
 }
 
 /**
@@ -85,43 +82,40 @@ export function inferDomainFromFile(file: File, numLinesToInclude: number): Prom
  * @param file  This can be a rowId for the file, or a path to the file
  * @param numLinesToInclude: the number of lines of data to include (excludes the header)
  */
-export function getServerFilePreview(file: string, numLinesToInclude: number): Promise<InferDomainResponse> {
+export function getServerFilePreview(file: string, numLinesToInclude: number) : Promise<InferDomainResponse>{
     return new Promise((resolve, reject) => {
+
         Ajax.request({
-            url: buildURL('property', 'getFilePreview.api'),
-            method: 'GET',
-            params: {
-                file,
-                numLinesToInclude: numLinesToInclude ? numLinesToInclude + 1 : undefined, // add one to account for the header
-            },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(InferDomainResponse.create(response));
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                reject('There was a problem retrieving the preview data.');
-                console.error(response);
-            }),
-        });
-    });
+                url: buildURL('property', 'getFilePreview.api'),
+                method: 'GET',
+                params: {
+                    file,
+                    numLinesToInclude: numLinesToInclude ? (numLinesToInclude + 1) : undefined // add one to account for the header
+                },
+                success: Utils.getCallbackWrapper((response) => {
+                    resolve(InferDomainResponse.create(response));
+                }),
+                failure: Utils.getCallbackWrapper((response) => {
+                    reject("There was a problem retrieving the preview data.");
+                    console.error(response);
+                })
+            }
+        )
+    })
 }
 
 export function getUserProperties(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL(
-                'user',
-                'getUserProps.api',
-                { userId },
-                {
-                    container: '/', // always use root container for this API call
-                }
-            ),
-            success: Utils.getCallbackWrapper(response => {
+            url: buildURL('user', 'getUserProps.api', {userId}, {
+                container: '/' // always use root container for this API call
+            }),
+            success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(response => {
+            failure: Utils.getCallbackWrapper((response) => {
                 reject(response);
-            }),
+            })
         });
     });
 }

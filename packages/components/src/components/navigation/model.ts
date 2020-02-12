@@ -15,17 +15,16 @@
  */
 import { List, Record } from 'immutable';
 import { ActionURL, Ajax, Utils } from '@labkey/api';
-
 import { AppURL } from '../../url/AppURL';
 import { buildURL } from '../../url/ActionURL';
 
-export class MenuSectionModel extends Record({
+export class MenuSectionModel extends Record( {
     label: undefined,
     url: undefined,
     items: List<MenuItemModel>(),
     totalCount: 0,
     itemLimit: undefined,
-    key: undefined,
+    key: undefined
 }) {
     label: string;
     url: string;
@@ -34,7 +33,7 @@ export class MenuSectionModel extends Record({
     itemLimit: number;
     key: string;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
@@ -46,24 +45,22 @@ export class MenuSectionModel extends Record({
                 items = rawData.items.map(i => MenuItemModel.create(i, rawData.key));
             }
 
-            return new MenuSectionModel(
-                Object.assign({}, rawData, {
-                    items: List(items),
-                })
-            );
+            return new MenuSectionModel(Object.assign({}, rawData, {
+                items: List(items)
+            }));
         }
 
         return new MenuSectionModel();
     }
 }
 
-export class MenuItemModel extends Record({
+export class MenuItemModel extends Record ({
     id: undefined,
     key: undefined,
     label: undefined,
     url: undefined,
     orderNum: undefined,
-    requiresLogin: false,
+    requiresLogin: false
 }) {
     id: number;
     key: string;
@@ -72,45 +69,47 @@ export class MenuItemModel extends Record({
     orderNum: number;
     requiresLogin: boolean;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
-    static create(rawData, sectionKey: string): MenuItemModel {
+    static create(rawData, sectionKey: string) : MenuItemModel {
         if (rawData) {
-            if (rawData.key && sectionKey !== 'user') {
-                const parts = rawData.key.split('?');
-                const subParts = parts[0].split('/').filter(val => val !== '');
+            if (rawData.key && sectionKey !== "user") {
+                const parts = rawData.key.split("?");
+                const subParts = parts[0]
+                    .split("/")
+                    .filter(val => val !== '');
 
                 let url = AppURL.create(sectionKey, ...subParts);
                 if (parts.length > 1 && parts[1]) {
                     url = url.addParams(ActionURL.getParameters(rawData.key));
                 }
 
-                return new MenuItemModel(
-                    Object.assign({}, rawData, {
-                        url,
-                    })
-                );
-            } else {
+                return new MenuItemModel(Object.assign({}, rawData, {
+                    url: url
+                }));
+            }
+            else {
                 return new MenuItemModel(rawData);
             }
         }
         return new MenuItemModel();
     }
 
-    getUrlString(): string {
-        return typeof this.url === 'string' ? this.url : this.url.toHref();
+    getUrlString() : string {
+        return typeof this.url === 'string' ? this.url : this.url.toHref()
     }
 }
 
-export class ProductMenuModel extends Record({
+export class ProductMenuModel extends Record( {
     isError: false,
     isLoaded: false,
     isLoading: false,
     sections: List<MenuSectionModel>(),
     message: undefined,
-    productId: undefined,
+    productId: undefined
+
 }) {
     isError: boolean;
     isLoaded: boolean;
@@ -119,21 +118,20 @@ export class ProductMenuModel extends Record({
     sections: List<MenuSectionModel>;
     productId: string;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key: string]: any}) {
         super(values);
     }
 
     init() {
         if (!this.isLoaded && !this.isLoading) {
+
             this.getMenuSections()
                 .then(sections => {
                     return this.setLoadedSections(sections.asImmutable());
                 })
                 .catch(reason => {
-                    console.error('Problem retrieving product menu data.', reason);
-                    return this.setError(
-                        'Error in retrieving product menu data. Please contact your site administrator.'
-                    );
+                    console.error("Problem retrieving product menu data.", reason);
+                    return this.setError('Error in retrieving product menu data. Please contact your site administrator.');
                 });
         }
     }
@@ -141,48 +139,51 @@ export class ProductMenuModel extends Record({
     /**
      * Retrieve the product menu sections for this productId
      */
-    getMenuSections(): Promise<List<MenuSectionModel>> {
-        return new Promise((resolve, reject) => {
-            return Ajax.request({
+    getMenuSections() : Promise<List<MenuSectionModel>> {
+        return new Promise((resolve, reject) =>  {
+
+            return Ajax.request( {
                 url: buildURL('product', 'menuSections.api'),
                 method: 'GET',
                 params: Object.assign({
-                    productId: this.productId,
+                    productId: this.productId
                 }),
-                success: Utils.getCallbackWrapper(response => {
-                    const sections = List<MenuSectionModel>().asMutable();
+                success: Utils.getCallbackWrapper((response) => {
+                    let sections = List<MenuSectionModel>().asMutable();
                     response.forEach(sectionData => {
                         sections.push(MenuSectionModel.create(sectionData));
                     });
                     resolve(sections.asImmutable());
                 }),
-                failure: Utils.getCallbackWrapper(response => {
+                failure: Utils.getCallbackWrapper((response) => {
                     reject(response);
-                }),
+                })
             });
         });
     }
 
-    setLoadedSections(sections: List<MenuSectionModel>): ProductMenuModel {
-        return this.merge({
+    setLoadedSections(sections: List<MenuSectionModel> ) : ProductMenuModel {
+        return this.merge( {
             isLoaded: true,
             isLoading: false,
-            sections,
+            sections
         }) as ProductMenuModel;
     }
 
-    setError(message: string): ProductMenuModel {
+    setError( message: string) : ProductMenuModel {
         return this.merge({
             isLoading: false,
             isLoaded: true,
             isError: true,
-            message,
+            message
         }) as ProductMenuModel;
     }
 
     getSection(key: string): MenuSectionModel {
         if (this.sections.size > 0) {
-            return this.sections.filter(section => section.key.toLowerCase() === key.toLowerCase()).first();
+            return this.sections
+                .filter((section) => section.key.toLowerCase() === key.toLowerCase())
+                .first();
         }
     }
 

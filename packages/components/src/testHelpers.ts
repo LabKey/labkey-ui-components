@@ -1,6 +1,5 @@
 import { Map } from 'immutable';
-import mock, { proxy } from 'xhr-mock';
-
+import mock, { proxy } from "xhr-mock";
 import { initQueryGridState } from './global';
 import { initQueryGridMocks, initLineageMocks, initUserPropsMocks } from './stories/mock';
 
@@ -10,12 +9,12 @@ import { initQueryGridMocks, initLineageMocks, initUserPropsMocks } from './stor
  */
 export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?: Map<string, any>) {
     LABKEY.container = {
-        path: 'testContainer',
+        path: "testContainer",
         formats: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm',
-            numberFormat: null,
-        },
+            dateFormat: "yyyy-MM-dd",
+            dateTimeFormat: "yyyy-MM-dd HH:mm",
+            numberFormat: null
+        }
     };
     LABKEY.contextPath = 'labkey';
 

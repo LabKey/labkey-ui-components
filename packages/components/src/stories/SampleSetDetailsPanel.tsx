@@ -17,7 +17,6 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
-
 import { SampleSetDetailsPanel } from '../components/samples/SampleSetDetailsPanel';
 
 import './stories.scss';
@@ -25,37 +24,31 @@ import './stories.scss';
 storiesOf('SampleSetDetailsPanel', module)
     .addDecorator(withKnobs)
     .add('for create', () => {
-        return (
-            <SampleSetDetailsPanel
-                onCancel={() => console.log('Cancel clicked')}
-                onComplete={() => console.log('Create clicked')}
-                nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org')}
-                nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
-            />
-        );
+        return <SampleSetDetailsPanel
+            onCancel={() => console.log('Cancel clicked')}
+            onComplete={() => console.log('Create clicked')}
+            nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org')}
+            nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+        />
     })
     .add('for update', () => {
-        const data = Map<string, any>(
-            fromJS({
-                lsid: 'urn:lsid:labkey.com:SampleSet.Folder-6:Fruits',
-                importAliases: {
-                    banana: 'materialInputs/Fruits',
-                    apples: 'materialInputs/Fruits',
-                },
-                name: 'Fruits',
-                description: 'This is only a test...',
-                nameExpression: 'S-${genId}-${randomId}',
-                rowId: 1,
-            })
-        );
+        const data = Map<string, any>(fromJS({
+            "lsid": "urn:lsid:labkey.com:SampleSet.Folder-6:Fruits",
+            "importAliases": {
+                "banana": "materialInputs/Fruits",
+                "apples": "materialInputs/Fruits"
+            },
+            "name": "Fruits",
+            "description": 'This is only a test...',
+            "nameExpression": 'S-${genId}-${randomId}',
+            "rowId": 1,
+        }));
 
-        return (
-            <SampleSetDetailsPanel
-                data={data}
-                onCancel={() => console.log('Cancel clicked')}
-                onComplete={() => console.log('Create clicked')}
-                nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
-                nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
-            />
-        );
+        return <SampleSetDetailsPanel
+            data={data}
+            onCancel={() => console.log('Cancel clicked')}
+            onComplete={() => console.log('Create clicked')}
+            nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
+            nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+        />
     });

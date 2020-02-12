@@ -17,9 +17,8 @@ import React from 'react';
 import Formsy from 'formsy-react';
 import { is } from 'immutable';
 
-import { QueryFormInputs } from '../forms/QueryFormInputs';
-
 import { AssayPropertiesPanelProps } from './models';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 export class BatchPropertiesPanel extends React.Component<AssayPropertiesPanelProps, any> {
     shouldComponentUpdate(nextProps: AssayPropertiesPanelProps) {
@@ -40,7 +39,9 @@ export class BatchPropertiesPanel extends React.Component<AssayPropertiesPanelPr
 
             return (
                 <div className="panel panel-default">
-                    <div className="panel-heading">{panelTitle}</div>
+                    <div className="panel-heading">
+                        {panelTitle}
+                    </div>
 
                     <div className="panel-body">
                         <Formsy className="form-horizontal" onChange={onChange} disabled={disabled}>

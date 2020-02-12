@@ -1,27 +1,26 @@
 import React from 'react';
-import * as ReactDOM from 'react-dom';
-
+import * as ReactDOM from 'react-dom'
+import { IParentAlias, IParentOption } from './models';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
-
-import classNames from 'classnames';
 
 import { SelectInput } from '../forms/input/SelectInput';
 
+import classNames from 'classnames';
 import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 
-import { IParentAlias, IParentOption } from './models';
 
 interface IParentAliasRow {
-    id: string;
-    parentAlias: IParentAlias;
-    parentOptions?: IParentOption[];
-    onAliasChange: (id: string, alias: string, newValue: any) => void;
-    onRemove: (index: string) => void;
+    id: string
+    parentAlias: IParentAlias
+    parentOptions?: Array<IParentOption>
+    onAliasChange: (id:string, alias:string, newValue: any) => void
+    onRemove: (index: string) => void
 }
 
 export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
+
     private nameInput: React.RefObject<FormControl>;
 
     constructor(props) {
@@ -30,8 +29,9 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
     }
 
     componentDidMount(): void {
-        const { parentAlias } = this.props;
-        if (!(parentAlias && parentAlias.alias)) this.focusNameInput();
+        const {parentAlias} = this.props;
+        if (!(parentAlias && parentAlias.alias))
+            this.focusNameInput();
     }
 
     focusNameInput = () => {
@@ -51,7 +51,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
     };
 
     removeParentAlias = (): void => {
-        const { id } = this.props;
+        const {id} = this.props;
         this.props.onRemove(id);
     };
 
@@ -64,50 +64,51 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
     };
 
     render() {
-        const { id, parentAlias, parentOptions } = this.props;
-        if (!parentOptions) return null;
+        const {id, parentAlias, parentOptions,} = this.props;
+        if (!parentOptions)
+            return null;
 
-        const { alias, parentValue, ignoreAliasError, ignoreSelectError } = parentAlias;
+        const {alias, parentValue, ignoreAliasError, ignoreSelectError} = parentAlias;
 
         const aliasBlank = !alias || alias.trim().length === 0;
 
         return (
-            <Row key={id}>
-                <Col xs={3}>
-                    {' '}
-                    {/* TODO:Error/validation styling on label {className={classNames('parent-alias-label', {'has-error': aliasBlank || !optionValue})}> */}
+            <Row key={id} >
+                <Col xs={3}> {/* TODO:Error/validation styling on label {className={classNames('parent-alias-label', {'has-error': aliasBlank || !optionValue})}> */}
                     <LabelOverlay
-                        label="Parent Alias *"
+                        label={'Parent Alias *'}
                         description={PARENT_ALIAS_HELPER_TEXT}
                         required={true}
                         canMouseOverTooltip={true}
                     />
                 </Col>
-                <Col xs={3} className={classNames({ 'has-error': !ignoreAliasError && aliasBlank })}>
+                <Col xs={3} className={classNames({'has-error': !ignoreAliasError && aliasBlank})}>
                     <FormControl
-                        ref={this.nameInput}
-                        name="alias"
+                        ref = {this.nameInput}
+                        name={"alias"}
                         type="text"
-                        placeholder="Enter an alias for import"
+                        placeholder={'Enter an alias for import'}
                         value={alias}
                         onChange={this.onChange}
                         onBlur={this.onAliasBlur}
                     />
                 </Col>
-                <Col xs={5} className={classNames({ 'has-error': !ignoreSelectError && !parentValue })}>
+                <Col xs={5} className={classNames({'has-error': !ignoreSelectError && !parentValue})}>
                     <SelectInput
                         formsy={false}
-                        inputClass="sampleset-insert--parent-select"
-                        name="parentValue"
+                        inputClass={"sampleset-insert--parent-select"}
+                        name={"parentValue"}
                         onChange={this.onSelectChange}
                         options={parentOptions}
-                        placeholder="Select a sample type..."
-                        value={parentValue ? parentValue.value : undefined}
+                        placeholder={'Select a sample type...'}
+                        value={parentValue ? parentValue.value : undefined }
                         onBlur={this.onSelectBlur}
                     />
                 </Col>
                 <Col>
-                    <RemoveEntityButton labelClass="sample-insert--remove-parent" onClick={this.removeParentAlias} />
+                    <RemoveEntityButton
+                        labelClass={'sample-insert--remove-parent'}
+                        onClick={this.removeParentAlias}/>
                 </Col>
             </Row>
         );

@@ -19,66 +19,67 @@ import { Filter } from '@labkey/api';
 export class AppURL extends Record({
     _baseUrl: undefined,
     _filters: undefined,
-    _params: undefined,
+    _params: undefined
 }) {
     _baseUrl: string;
     _filters: List<Filter.IFilter>;
     _params: Map<string, any>;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
     static create(...parts): AppURL {
+
         let baseUrl = '';
-        for (let i = 0; i < parts.length; i++) {
+        for (let i=0; i < parts.length; i++) {
             if (parts[i] === undefined || parts[i] === null || parts[i] === '') {
                 let sep = '';
-                throw 'AppURL: Unable to create URL with empty parts. Parts are [' +
-                    parts.reduce((str, part) => {
-                        str += sep + part;
-                        sep = ', ';
-                        return str;
-                    }, '') +
-                    '].';
+                throw 'AppURL: Unable to create URL with empty parts. Parts are [' + parts.reduce((str, part) => {
+                    str += sep + part;
+                    sep = ', ';
+                    return str;
+                }, '') + '].';
             }
 
             const stringPart = parts[i].toString();
-            const newPart = encodeURIComponent(stringPart);
+            let newPart = encodeURIComponent(stringPart);
 
             if (i == 0) {
                 if (stringPart.indexOf('/') === 0) {
                     baseUrl += newPart;
-                } else {
+                }
+                else {
                     baseUrl += '/' + newPart;
                 }
-            } else {
+            }
+            else {
                 baseUrl += '/' + newPart;
             }
         }
 
         // TODO: Stop toLowerCase as it can break case-sensitive keys (e.g. /q/lists/someList/myKeyField)
         return new AppURL({
-            _baseUrl: baseUrl.toLowerCase(),
-        });
+            _baseUrl: baseUrl.toLowerCase()
+        })
     }
 
-    addFilters(...filters: Filter.IFilter[]): AppURL {
+    addFilters(...filters: Array<Filter.IFilter>): AppURL {
         return this.merge({
-            _filters: this._filters ? this._filters.concat(filters) : List(filters),
+            _filters: this._filters ? this._filters.concat(filters) : List(filters)
         }) as AppURL;
     }
 
     addParam(key: string, value: any): AppURL {
         return this.addParams({
-            [key]: value,
+            [key]: value
         });
     }
 
     addParams(params: any): AppURL {
         if (params) {
             return this.merge({
-                _params: this._params ? this._params.merge(params) : Map(params),
+                _params: this._params ? this._params.merge(params) : Map(params)
             }) as AppURL;
         }
 
@@ -89,8 +90,8 @@ export class AppURL extends Record({
         return '#' + this.toString(urlPrefix);
     }
 
-    toQuery(urlPrefix?: string): { [key: string]: any } {
-        const query = {};
+    toQuery(urlPrefix?: string): {[key: string]: any} {
+        let query = {};
 
         if (this._params) {
             this._params.forEach((value: any, key: string) => {
@@ -99,7 +100,7 @@ export class AppURL extends Record({
         }
 
         if (this._filters) {
-            this._filters.forEach(f => {
+            this._filters.forEach((f) => {
                 query[f.getURLParameterName(urlPrefix)] = f.getURLParameterValue();
             });
         }
@@ -108,8 +109,8 @@ export class AppURL extends Record({
     }
 
     toString(urlPrefix?: string): string {
-        const url = this._baseUrl;
-        const parts = [];
+        let url = this._baseUrl;
+        let parts = [];
 
         if (this._params) {
             this._params.forEach((value: any, key: string) => {
@@ -118,13 +119,13 @@ export class AppURL extends Record({
         }
 
         if (this._filters) {
-            this._filters.forEach(f => {
+            this._filters.forEach((f) => {
                 parts.push(f.getURLParameterName(urlPrefix) + '=' + f.getURLParameterValue());
             });
         }
 
         return url + (parts.length > 0 ? '?' + parts.join('&') : '');
-    }
+    };
 }
 
 /**
@@ -141,10 +142,10 @@ export class AppURL extends Record({
  * @param numToReplace - how far in the "parts" to replace (default is 1)
  * @returns {AppURL}
  */
-export function spliceURL(parts: any[], newParts: any[], startIndex: number, numToReplace?: number): AppURL {
-    parts.splice(startIndex, numToReplace === undefined ? 1 : numToReplace, ...newParts);
-    const decodedParts = [];
-    for (var i = 0; i < parts.length; i++) {
+export function spliceURL(parts: Array<any>, newParts: Array<any>, startIndex: number, numToReplace?: number): AppURL {
+    parts.splice(startIndex, (numToReplace === undefined ? 1 : numToReplace), ...newParts);
+    let decodedParts = [];
+    for (var i=0; i < parts.length; i++) {
         decodedParts.push(decodeURIComponent(parts[i]));
     }
     return AppURL.create(...decodedParts);

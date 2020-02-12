@@ -1,359 +1,343 @@
 {
-    "schemaName": ["exp"],
-    "queryName": "AssaysHeatMap",
-    "metaData": {
-        "importTemplates": [
-            {
-      'label' : 'Download Template',
-      'url' : '/labkey/BiologicsAssayTest%20Project/query-exportExcelTemplate.view?schemaName=exp&query.queryName=AssaysHeatMap&headerType=DisplayFieldKey'
-            }
-        ],
-    'root' : 'rows',
-        "totalProperty": "rowCount",
-        "description": null,
-        "fields": [
-            {
-                "fieldKey": ["Protocol"],
-      'description' : 'Contains the protocol that this run follows',
-                "friendlyType": "Text (String)",
-      'type' : 'string',
-                "jsonType": "string",
-      'sqlType' : 'LSIDtype',
-                "defaultValue": null,
-      'scale' : 300,
-                "align": "left",
-      'sortable' : true,
-                "width": "",
-      'autoIncrement' : false,
-                "hidden": false,
-      'keyField' : false,
-                "mvEnabled": false,
-                "nullable": false,
-                "readOnly": false,
-      'userEditable' : false,
-      'calculated' : true,
-                "versionField": false,
-      'selectable' : true,
-                "shownInInsertView": false,
-      'shownInUpdateView' : false,
-                "shownInDetailsView": true,
-      'dimension' : true,
-                "measure": false,
-                "recommendedVariable": false,
-                "defaultScale": "LINEAR",
-      'phi' : 'NotPHI',
-                "excludeFromShifting": false,
-      'conceptURI' : null,
-                "displayField": ["Protocol", "Name"],
-                "displayFieldJsonType": "string",
-      'inputType' : 'text',
-      'cols' : 40,
-                "shortCaption": "Protocol",
-      'facetingBehaviorType' : 'AUTOMATIC',
-                "caption": "Protocol",
-      'lookup' : {
-                    "keyColumn": "RowId",
-                    "public": true,
-                    "displayColumn": "Name",
-        'queryName' : 'Protocols',
-        'schemaName' : [ 'exp' ]
-                }
-            },
-            {
-                "fieldKey": ["Provider"],
-      'friendlyType' : 'Text (String)',
-                "type": "string",
-      'jsonType' : 'string',
-                "sqlType": "NVARCHAR",
-      'defaultValue' : null,
-                "scale": 0,
-      'align' : 'left',
-                "sortable": true,
-      'width' : '',
-                "autoIncrement": false,
-      'hidden' : false,
-                "keyField": false,
-      'mvEnabled' : false,
-                "nullable": true,
-      'readOnly' : false,
-                "userEditable": false,
-      'calculated' : true,
-                "versionField": false,
-      'selectable' : true,
-                "shownInInsertView": false,
-                "shownInUpdateView": false,
-                "shownInDetailsView": true,
-      'dimension' : false,
-                "measure": false,
-                "recommendedVariable": false,
-                "defaultScale": "LINEAR",
-      'phi' : 'NotPHI',
-                "excludeFromShifting": false,
-                "conceptURI": null,
-      'inputType' : 'text',
-                "shortCaption": "Name",
-      'facetingBehaviorType' : 'AUTOMATIC',
-                "caption": "Provider"
-            },
-            {
-                "fieldKey": ["2019-2::MonthCount"],
-                "friendlyType": "Integer",
-      'type' : 'int',
-                "jsonType": "int",
-      'sqlType' : 'INTEGER',
-                "defaultValue": null,
-      'scale' : 0,
-                "align": "right",
-                "sortable": true,
-                "width": "",
-      'autoIncrement' : false,
-                "hidden": false,
-                "keyField": false,
-                "mvEnabled": false,
-      'nullable' : true,
-      'readOnly' : false,
-                "userEditable": false,
-      'calculated' : true,
-                "versionField": false,
-      'selectable' : true,
-                "shownInInsertView": false,
-      'shownInUpdateView' : false,
-                "shownInDetailsView": true,
-      'dimension' : false,
-                "measure": true,
-      'recommendedVariable' : false,
-                "defaultScale": "LINEAR",
-      'phi' : 'NotPHI',
-                "excludeFromShifting": false,
-      'conceptURI' : null,
-                "inputType": "text",
-      'shortCaption' : '2019-2',
-                "facetingBehaviorType": "AUTOMATIC",
-      'crosstabColumnMember' : {
-                    "dimensionFieldKey": ["YearMonth"],
-                    "caption": "2019-2",
-                    "value": "2019-2"
-                },
-      'crosstabColumnDimension' : [ 'MonthCount' ],
-      'caption' : '2019-2'
-            },
-            {
-      'fieldKey' : [ 'CompleteCount' ],
-                "friendlyType": "Integer",
-      'type' : 'int',
-                "jsonType": "int",
-      'sqlType' : 'INTEGER',
-                "defaultValue": null,
-      'scale' : 0,
-                "align": "right",
-      'sortable' : true,
-                "width": "",
-      'autoIncrement' : false,
-                "hidden": false,
-      'keyField' : false,
-                "mvEnabled": false,
-      'nullable' : true,
-                "readOnly": false,
-      'userEditable' : false,
-                "calculated": true,
-      'versionField' : false,
-                "selectable": true,
-      'shownInInsertView' : false,
-                "shownInUpdateView": false,
-                "shownInDetailsView": true,
-                "dimension": false,
-      'measure' : true,
-                "recommendedVariable": false,
-                "defaultScale": "LINEAR",
-      'phi' : 'NotPHI',
-                "excludeFromShifting": false,
-      'conceptURI' : null,
-                "inputType": "text",
-      'shortCaption' : 'Complete Count',
-                "facetingBehaviorType": "AUTOMATIC",
-      'caption' : 'Complete Count'
-            },
-            {
-                "fieldKey": ["InRangeCount"],
-      'friendlyType' : 'Integer',
-                "type": "int",
-      'jsonType' : 'int',
-                "sqlType": "INTEGER",
-      'defaultValue' : null,
-                "scale": 0,
-      'align' : 'right',
-                "sortable": true,
-                "width": "",
-                "autoIncrement": false,
-      'hidden' : false,
-      'keyField' : false,
-                "mvEnabled": false,
-      'nullable' : true,
-                "readOnly": false,
-      'userEditable' : false,
-                "calculated": true,
-      'versionField' : false,
-                "selectable": true,
-                "shownInInsertView": false,
-                "shownInUpdateView": false,
-      'shownInDetailsView' : true,
-                "dimension": false,
-      'measure' : true,
-                "recommendedVariable": false,
-      'defaultScale' : 'LINEAR',
-                "phi": "NotPHI",
-      'excludeFromShifting' : false,
-                "conceptURI": null,
-      'inputType' : 'text',
-                "shortCaption": "In Range Count",
-                "facetingBehaviorType": "AUTOMATIC",
-                "caption": "In Range Count"
-            }
-        ],
-        "title": "AssaysHeatMap",
-        "importMessage": null
-    },
-    "rows": [
-        {
-    'data' : {
-                "InRangeCount": {
-        'value' : 4
-                },
-                "Protocol": {
-        'value' : 'urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:Amino+Acids',
-                    "displayValue": "Amino Acids"
-                },
-                "Provider": {
-                    "value": "General"
-                },
-      '2019-2::MonthCount' : {
-                    "value": 4
-                },
-                "CompleteCount": {
-        'value' : 4
-                }
-            }
-        },
-        {
-            "data": {
-                "InRangeCount": {
-                    "value": 1
-                },
-      'Protocol' : {
-                    "value": "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:batch_sample_assay",
-                    "displayValue": "batch_sample_assay"
-                },
-      'Provider' : {
-        'value' : 'General'
-                },
-                "2019-2::MonthCount": {
-                    "value": 1
-                },
-                "CompleteCount": {
-                    "value": 1
-                }
-            }
-        },
-        {
-            "data": {
-      'InRangeCount' : {
-                    "value": 1
-                },
-                "Protocol": {
-                    "value": "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:results_sample_assay",
-        'displayValue' : 'results_sample_assay'
-                },
-      'Provider' : {
-                    "value": "General"
-                },
-                "2019-2::MonthCount": {
-        'value' : 1
-                },
-      'CompleteCount' : {
-        'value' : 1
-                }
-            }
-        },
-        {
-            "data": {
-                "InRangeCount": {
-                    "value": 1
-                },
-                "Protocol": {
-                    "value": "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:run_sample_assay",
-                    "displayValue": "run_sample_assay"
-                },
-                "Provider": {
-                    "value": "General"
-                },
-                "2019-2::MonthCount": {
-        'value' : 1
-                },
-                "CompleteCount": {
-                    "value": 1
-                }
-            }
-        },
-        {
-    'data' : {
-                "InRangeCount": {
-                    "value": 4
-                },
-      'Protocol' : {
-        'value' : 'urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:SEC',
-                    "displayValue": "SEC"
-                },
-                "Provider": {
-        'value' : 'General'
-                },
-                "2019-2::MonthCount": {
-                    "value": 4
-                },
-                "CompleteCount": {
-                    "value": 4
-                }
-            }
-        },
-        {
-    'data' : {
-                "InRangeCount": {
-        'value' : 3
-                },
-      'Protocol' : {
-                    "value": "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:Titer",
-                    "displayValue": "Titer"
-                },
-      'Provider' : {
-                    "value": "General"
-                },
-      '2019-2::MonthCount' : {
-                    "value": 3
-                },
-                "CompleteCount": {
-        'value' : 3
-                }
-            }
-        },
-        {
-            "data": {
-                "InRangeCount": {
-                    "value": 1
-                },
-      'Protocol' : {
-                    "value": "urn:lsid:labkey.com:Noblis+SimpleProtocol.Folder-8914:FileBasedExample",
-        'displayValue' : 'FileBasedExample'
-                },
-      'Provider' : {
-                    "value": "Noblis Simple"
-                },
-                "2019-2::MonthCount": {
-                    "value": 1
-                },
-                "CompleteCount": {
-                    "value": 1
-                }
-            }
-        }
-    ],
-    "rowCount": 7
+  "schemaName" : [ "exp" ],
+  "queryName" : "AssaysHeatMap",
+  "metaData" : {
+    "importTemplates" : [ {
+      "label" : "Download Template",
+      "url" : "/labkey/BiologicsAssayTest%20Project/query-exportExcelTemplate.view?schemaName=exp&query.queryName=AssaysHeatMap&headerType=DisplayFieldKey"
+    } ],
+    "root" : "rows",
+    "totalProperty" : "rowCount",
+    "description" : null,
+    "fields" : [ {
+      "fieldKey" : [ "Protocol" ],
+      "description" : "Contains the protocol that this run follows",
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "LSIDtype",
+      "defaultValue" : null,
+      "scale" : 300,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : true,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "displayField" : [ "Protocol", "Name" ],
+      "displayFieldJsonType" : "string",
+      "inputType" : "text",
+      "cols" : 40,
+      "shortCaption" : "Protocol",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Protocol",
+      "lookup" : {
+        "keyColumn" : "RowId",
+        "public" : true,
+        "displayColumn" : "Name",
+        "queryName" : "Protocols",
+        "schemaName" : [ "exp" ]
+      }
+    }, {
+      "fieldKey" : [ "Provider" ],
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "NVARCHAR",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "Name",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Provider"
+    }, {
+      "fieldKey" : [ "2019-2::MonthCount" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "INTEGER",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : true,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "2019-2",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "crosstabColumnMember" : {
+        "dimensionFieldKey" : [ "YearMonth" ],
+        "caption" : "2019-2",
+        "value" : "2019-2"
+      },
+      "crosstabColumnDimension" : [ "MonthCount" ],
+      "caption" : "2019-2"
+    }, {
+      "fieldKey" : [ "CompleteCount" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "INTEGER",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : true,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "Complete Count",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Complete Count"
+    }, {
+      "fieldKey" : [ "InRangeCount" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "INTEGER",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : true,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "In Range Count",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "In Range Count"
+    } ],
+    "title" : "AssaysHeatMap",
+    "importMessage" : null
+  },
+  "rows" : [ {
+    "data" : {
+      "InRangeCount" : {
+        "value" : 4
+      },
+      "Protocol" : {
+        "value" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:Amino+Acids",
+        "displayValue" : "Amino Acids"
+      },
+      "Provider" : {
+        "value" : "General"
+      },
+      "2019-2::MonthCount" : {
+        "value" : 4
+      },
+      "CompleteCount" : {
+        "value" : 4
+      }
+    }
+  }, {
+    "data" : {
+      "InRangeCount" : {
+        "value" : 1
+      },
+      "Protocol" : {
+        "value" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:batch_sample_assay",
+        "displayValue" : "batch_sample_assay"
+      },
+      "Provider" : {
+        "value" : "General"
+      },
+      "2019-2::MonthCount" : {
+        "value" : 1
+      },
+      "CompleteCount" : {
+        "value" : 1
+      }
+    }
+  }, {
+    "data" : {
+      "InRangeCount" : {
+        "value" : 1
+      },
+      "Protocol" : {
+        "value" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:results_sample_assay",
+        "displayValue" : "results_sample_assay"
+      },
+      "Provider" : {
+        "value" : "General"
+      },
+      "2019-2::MonthCount" : {
+        "value" : 1
+      },
+      "CompleteCount" : {
+        "value" : 1
+      }
+    }
+  }, {
+    "data" : {
+      "InRangeCount" : {
+        "value" : 1
+      },
+      "Protocol" : {
+        "value" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:run_sample_assay",
+        "displayValue" : "run_sample_assay"
+      },
+      "Provider" : {
+        "value" : "General"
+      },
+      "2019-2::MonthCount" : {
+        "value" : 1
+      },
+      "CompleteCount" : {
+        "value" : 1
+      }
+    }
+  }, {
+    "data" : {
+      "InRangeCount" : {
+        "value" : 4
+      },
+      "Protocol" : {
+        "value" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:SEC",
+        "displayValue" : "SEC"
+      },
+      "Provider" : {
+        "value" : "General"
+      },
+      "2019-2::MonthCount" : {
+        "value" : 4
+      },
+      "CompleteCount" : {
+        "value" : 4
+      }
+    }
+  }, {
+    "data" : {
+      "InRangeCount" : {
+        "value" : 3
+      },
+      "Protocol" : {
+        "value" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-8914:Titer",
+        "displayValue" : "Titer"
+      },
+      "Provider" : {
+        "value" : "General"
+      },
+      "2019-2::MonthCount" : {
+        "value" : 3
+      },
+      "CompleteCount" : {
+        "value" : 3
+      }
+    }
+  }, {
+    "data" : {
+      "InRangeCount" : {
+        "value" : 1
+      },
+      "Protocol" : {
+        "value" : "urn:lsid:labkey.com:Noblis+SimpleProtocol.Folder-8914:FileBasedExample",
+        "displayValue" : "FileBasedExample"
+      },
+      "Provider" : {
+        "value" : "Noblis Simple"
+      },
+      "2019-2::MonthCount" : {
+        "value" : 1
+      },
+      "CompleteCount" : {
+        "value" : 1
+      }
+    }
+  } ],
+  "rowCount" : 7
 }

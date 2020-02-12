@@ -15,14 +15,13 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import { List } from 'immutable';
-
-import { QueryGridModel } from '../base/models/model';
-
+import { List } from "immutable";
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
+import { QueryGridModel } from "../base/models/model";
 
-describe('<UserActivateChangeConfirmModal/>', () => {
-    test('reactivate single user selected', () => {
+describe("<UserActivateChangeConfirmModal/>", () => {
+
+    test("reactivate single user selected", () => {
         const component = (
             <UserActivateChangeConfirmModal
                 userIds={List<number>([1])}
@@ -44,7 +43,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         wrapper.unmount();
     });
 
-    test('reactivate multiple users selected', () => {
+    test("reactivate multiple users selected", () => {
         const component = (
             <UserActivateChangeConfirmModal
                 userIds={List<number>([1, 2, 3])}
@@ -66,7 +65,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         wrapper.unmount();
     });
 
-    test('reactivate with state', () => {
+    test("reactivate with state", () => {
         const component = (
             <UserActivateChangeConfirmModal
                 userIds={List<number>([1, 2, 3])}
@@ -77,7 +76,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         );
 
         const wrapper = mount(component);
-        wrapper.setState({ submitting: true, error: 'Test Error' });
+        wrapper.setState({submitting: true, error: 'Test Error'});
 
         expect(wrapper.find('Alert')).toHaveLength(2);
         expect(wrapper.find('.modal-title').text()).toBe('Reactivate 3 Users?');
@@ -90,7 +89,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         wrapper.unmount();
     });
 
-    test('deactivate single user selected', () => {
+    test("deactivate single user selected", () => {
         const component = (
             <UserActivateChangeConfirmModal
                 userIds={List<number>([1])}
@@ -112,7 +111,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         wrapper.unmount();
     });
 
-    test('deactivate multiple users selected', () => {
+    test("deactivate multiple users selected", () => {
         const component = (
             <UserActivateChangeConfirmModal
                 userIds={List<number>([1, 2, 3])}
@@ -134,7 +133,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         wrapper.unmount();
     });
 
-    test('deactivate with state', () => {
+    test("deactivate with state", () => {
         const component = (
             <UserActivateChangeConfirmModal
                 userIds={List<number>([1, 2, 3])}
@@ -145,7 +144,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         );
 
         const wrapper = mount(component);
-        wrapper.setState({ submitting: true, error: 'Test Error' });
+        wrapper.setState({submitting: true, error: 'Test Error'});
 
         expect(wrapper.find('Alert')).toHaveLength(2);
         expect(wrapper.find('.modal-title').text()).toBe('Deactivate 3 Users?');
@@ -157,4 +156,5 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         expect(wrapper.find('.btn-danger').props().disabled).toBe(true);
         wrapper.unmount();
     });
+
 });

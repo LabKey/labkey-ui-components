@@ -15,9 +15,8 @@
  */
 import { OrderedSet } from 'immutable';
 
-import { AppURL } from '../url/AppURL';
-
 import { AppRouteResolver } from './AppURLResolver';
+import { AppURL } from '../url/AppURL';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 
@@ -26,8 +25,8 @@ type RoutingTable = Map<string, string | boolean>;
 let resolvers = OrderedSet<AppRouteResolver>();
 
 export namespace URLService {
-    export function registerAppRouteResolvers(...appRouteResolvers: AppRouteResolver[]): void {
-        appRouteResolvers.forEach(resolver => {
+    export function registerAppRouteResolvers(...appRouteResolvers: Array<AppRouteResolver>): void {
+        appRouteResolvers.forEach((resolver) => {
             resolvers = resolvers.add(resolver);
         });
     }
@@ -40,48 +39,52 @@ export namespace URLService {
         if (table.has(nextRoute)) {
             if (table.get(nextRoute) === true) {
                 next();
-            } else {
+            }
+            else {
                 replace({
                     pathname: table.get(nextRoute),
-                    query,
+                    query
                 });
             }
-        } else {
+        }
+        else {
             let found = false;
-            resolvers.forEach(resolver => {
+            resolvers.forEach((resolver) => {
                 if (resolver.matches(nextRoute)) {
                     found = true;
-                    const routes = nextRoute.split('/');
+                    let routes = nextRoute.split('/');
                     routes.shift(); // account for initial '/'
-                    resolver.fetch(routes).then((fetchedRoute: AppURL | boolean) => {
-                        const toRoute = typeof fetchedRoute === 'boolean' ? fetchedRoute : fetchedRoute.toString();
+                    resolver.fetch(routes)
+                        .then((fetchedRoute: AppURL | boolean) => {
+                            let toRoute = typeof fetchedRoute === 'boolean' ? fetchedRoute : fetchedRoute.toString();
 
-                        store.dispatch({
-                            type: ADD_TABLE_ROUTE,
-                            fromRoute: nextRoute,
-                            toRoute,
-                        });
-
-                        if (typeof toRoute === 'string') {
-                            replace({
-                                pathname: toRoute,
-                                query,
+                            store.dispatch({
+                                type: ADD_TABLE_ROUTE,
+                                fromRoute: nextRoute,
+                                toRoute
                             });
-                        }
 
-                        next();
-                    });
+                            if (typeof toRoute === 'string') {
+                                replace({
+                                    pathname: toRoute,
+                                    query
+                                });
+                            }
+
+                            next();
+                        });
                     return false; // stop at this resolver
                 }
             });
 
             if (found) {
                 return;
-            } else {
+            }
+            else {
                 store.dispatch({
                     type: ADD_TABLE_ROUTE,
                     fromRoute: nextRoute,
-                    toRoute: true,
+                    toRoute: true
                 });
             }
         }

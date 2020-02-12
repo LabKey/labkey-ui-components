@@ -427,16 +427,13 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
     };
 
     applyChanges = () => {
-        const {advancedSettingsForm, modalOpen} = this.state;
+        const {modalOpen, ...advancedSettingsForm} = this.state;
 
-
-        const advancedSettings = Record(advancedSettingsForm);
-
-        this.props.saveAdvancedProperties(advancedSettings);
+        this.props.saveAdvancedProperties(advancedSettingsForm);
+        this.toggleModal(false);
     };
 
     render() {
-        const {saveAdvancedProperties} = this.props;
         const {modalOpen, discussionSetting, fileAttachmentIndex } = this.state;
         const {entireListIndex, entireListTitleSetting, entireListTitleTemplate, entireListIndexSetting, entireListBodySetting} = this.state;
         const {eachItemIndex, eachItemTitleSetting, eachItemTitleTemplate, eachItemBodySetting} = this.state;

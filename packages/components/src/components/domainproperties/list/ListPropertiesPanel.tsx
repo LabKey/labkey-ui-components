@@ -92,11 +92,10 @@ export class ListPropertiesPanel extends React.PureComponent<Props, State> {
         this.onChange(name, value);
     };
 
-    saveAdvancedProperties = (newAdvancedProperties) => {
+    saveAdvancedProperties = (advancedSettingsForm) => {
         const {model, onChange} = this.props;
 
-        console.log("saveAdvProps", typeof(model), typeof(newAdvancedProperties));
-        const newModel = model.merge(newAdvancedProperties);
+        const newModel = model.merge(advancedSettingsForm);
         onChange(newModel);
     };
     

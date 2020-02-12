@@ -5,9 +5,11 @@ import { Record } from 'immutable';
 
 import { ListModel } from '../components/domainproperties/models';
 import { ListPropertiesPanel } from '../components/domainproperties/list/ListPropertiesPanel';
+import {ListDesignerPanels} from '../components/domainproperties/list/ListDesignerPanels';
 
 import './stories.scss';
 import {AdvancedSettings} from "../components/domainproperties/list/ListPropertiesAdvancedSettings";
+
 
 const json = {
     "domainDesign" : {
@@ -754,10 +756,16 @@ class Wrapped extends React.Component<any, any> {
 
     render() {
         return(
-            <AdvancedSettings title={"Advanced Settings"} model={this.state.model} onInputChange={this.onRadioChange}/>
+            <ListDesignerPanels
+                model={this.state.model}
+
+            />
         );
     }
 }
+
+{/*<AdvancedSettings title={"Advanced Settings"} model={this.state.model} onInputChange={this.onRadioChange}/>*/}
+
 
 // class Test extends React.Component<any, any> {
 //     constructor(props) {

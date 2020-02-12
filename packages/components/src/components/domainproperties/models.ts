@@ -1619,9 +1619,10 @@ export class ListModel extends Record({
 
     static serialize(model: ListModel): any {
         // TODO: remove unrecognized fields from model before converting to json
+        const domain = DomainDesign.serialize(model.domain);
+
+        return model.merge({domain}).toJS();;
     }
-
-
 
     isNew(): boolean {
         return !this.listId;

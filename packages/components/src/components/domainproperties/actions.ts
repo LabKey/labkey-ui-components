@@ -596,8 +596,7 @@ export function fetchListDesign(domainId = null) {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('property', 'getDomainDetails.api', {
-                domainId: domainId // currently hardcoded
-                // or, queryName and schemaName
+                domainId: domainId
             }),
             success: Utils.getCallbackWrapper((data) => {
                 resolve(ListModel.create(data));
@@ -648,6 +647,19 @@ export function setAssayDomainException(model: AssayProtocolModel, exception: Do
     return updatedModel;
 }
 
+export function setListDomainException(model: ListModel, exception: DomainException): ListModel {
+    let updatedModel = model;
+
+    if (exception.domainName) {
+        updatedModel = model.set('domains', model.domain) as ListModel;
+    } else {
+        updatedModel = model.set('exception', exception.exception) as ListModel;
+    }
+    return updatedModel;
+}
+
+
+
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
@@ -676,6 +688,38 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
         });
     });
 }
+
+export function saveListDesign(model: ListModel): Promise<ListModel> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('assay', 'saveProtocol.api'),
+            jsonData: ListModel.serialize(model),
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(ListModel.create(response.data)); // I guess Binal gives me back my ListModel?
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                // todo
+                // let badModel = model;
+                //
+                // // Check for validation exception
+                // const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                // if (exception) {
+                //     if (exception.domainName) {
+                //         badModel = setAssayDomainException(model, exception);
+                //     }
+                //     else {
+                //         badModel = model.set("exception", exception.exception) as AssayProtocolModel;
+                //     }
+                // } else {
+                //     badModel = model.set("exception", error) as AssayProtocolModel;
+                // }
+                // reject(badModel);
+            }, this, false)
+        });
+    });
+
+}
+
 
 export function getValidPublishTargets(): Promise<List<Container>> {
     return new Promise((resolve, reject) => {

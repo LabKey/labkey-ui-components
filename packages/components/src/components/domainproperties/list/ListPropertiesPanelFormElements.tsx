@@ -64,7 +64,7 @@ export class Header extends React.PureComponent<any, any> {
                     'domain-panel-header-expanded': !collapsed,
                     'domain-panel-header-collapsed': collapsed,
                 })}
-                style={{backgroundColor: collapsed ? null :'#116596'}}
+                style={{backgroundColor: collapsed ? null :'#2980b9'}}
             >
                 {panelStatus && panelStatus !== 'NONE' &&
                 <ListPropertiesHeader

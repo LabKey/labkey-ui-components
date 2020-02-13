@@ -9,7 +9,7 @@ Array [
       className="panel-body"
     >
       <div
-        className="sample-insert--headerhelp"
+        className="entity-form--headerhelp"
       >
         Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.
       </div>
@@ -155,7 +155,7 @@ Array [
           >
             <input
               className="form-control"
-              id="entity-name-expression"
+              id="entity-nameExpression"
               onChange={[Function]}
               placeholder="S-\${now:date}-\${dailySampleCount}"
               type="text"
@@ -262,7 +262,7 @@ Array [
       className="panel-body"
     >
       <div
-        className="sample-insert--headerhelp"
+        className="entity-form--headerhelp"
       >
         Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.
       </div>
@@ -408,7 +408,7 @@ Array [
           >
             <input
               className="form-control"
-              id="entity-name-expression"
+              id="entity-nameExpression"
               onChange={[Function]}
               placeholder="S-\${now:date}-\${dailySampleCount}"
               type="text"

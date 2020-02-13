@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap, Record, Set } from 'immutable';
-import { Filter } from '@labkey/api';
 
 import { genCellKey } from './actions';
 import { getQueryGridModel, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
 import {
-    IGridLoader,
     IQueryGridModel,
     QueryColumn,
     QueryGridModel,
-    QueryInfo,
     SchemaQuery,
     ViewInfo,
 } from './components/base/models/model';
@@ -32,32 +29,6 @@ import { resolveSchemaQuery } from './util/utils';
 import { AppURL } from './url/AppURL';
 import { GRID_EDIT_INDEX } from './components/base/models/constants';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from './constants';
-
-const emptyList = List<string>();
-
-interface IStateModelProps {
-    allowSelection?: boolean
-    baseFilters?: List<Filter.IFilter>
-    bindURL?: boolean
-    editable?: boolean
-    isPaged?: boolean
-    loader?: IGridLoader
-    maxRows?: number
-    queryInfo?: QueryInfo
-    requiredColumns?: List<string>
-    sorts?: string
-    sortable?: boolean
-    title?: string
-    urlPrefix?: string
-    omittedColumns?: List<string>
-    showChartSelector?: boolean
-    showViewSelector?: boolean
-    showExport?: boolean
-    showSearchBox?: boolean
-    containerPath?: string
-    containerFilter?: string
-    queryParameters?: any
-}
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     let parts = [gridId, resolveSchemaQuery(schemaQuery)];
@@ -72,7 +43,7 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
     return parts.join('|').toLowerCase();
 }
 
-export type PropsInitializer = () => IStateModelProps;
+export type PropsInitializer = () => IQueryGridModel;
 
 /**
  * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
@@ -85,13 +56,14 @@ export type PropsInitializer = () => IStateModelProps;
 export function getStateQueryGridModel(
     gridId: string,
     schemaQuery: SchemaQuery,
-    initProps?: IStateModelProps | PropsInitializer,
+    initProps?: IQueryGridModel | PropsInitializer,
     keyValue?: any
 ): QueryGridModel {
     const modelId = getStateModelId(gridId, schemaQuery, keyValue);
 
     // if the model already exists in the global state, return it
     const model = getQueryGridModel(modelId);
+
     if (model) {
         return model;
     }
@@ -99,128 +71,27 @@ export function getStateQueryGridModel(
     const metadata = getQueryMetadata();
 
     let modelProps: Partial<IQueryGridModel> = {
-        allowSelection: true,
-        baseFilters: List<Filter.IFilter>(),
-        bindURL: true,
-        containerPath: undefined,
-        containerFilter: undefined,
-        editable: false,
+        keyValue,
         id: modelId,
-        isPaged: false, // Figure out how to set this to the same default value as the model
-        loader: DefaultGridLoader,
-        keyValue: undefined,
-        maxRows: 20,
+        loader: DefaultGridLoader, // Should we make this a default on the QueryGridModel class?
         schema: schemaQuery.schemaName,
         query: schemaQuery.queryName,
-        queryInfo: undefined,
-        requiredColumns: emptyList,
-        sorts: undefined,
-        sortable: true,
-        title: undefined,
-        urlPrefix: undefined,
         view: schemaQuery.viewName,
-        omittedColumns: emptyList,
         hideEmptyChartSelector: metadata.get('hideEmptyChartSelector'),
         hideEmptyViewSelector: metadata.get('hideEmptyViewSelector')
     };
 
-    if (keyValue !== undefined) {
-        modelProps.keyValue = keyValue;
-
-        if (schemaQuery.viewName === undefined) {
-            modelProps.view = ViewInfo.DETAIL_NAME;
-            modelProps.bindURL = false;
-        }
+    if (keyValue !== undefined && schemaQuery.viewName === undefined) {
+        modelProps.view = ViewInfo.DETAIL_NAME;
+        modelProps.bindURL = false;
     }
 
-    let props: IStateModelProps;
     if (initProps !== undefined) {
-        props = typeof initProps === 'function' ? initProps() : initProps;
-
-        if (props) {
-            if (props.bindURL !== undefined) {
-                modelProps.bindURL = props.bindURL === true;
-            }
-
-            if (props.containerPath !== undefined) {
-                modelProps.containerPath = props.containerPath;
-            }
-
-            if (props.containerFilter !== undefined) {
-                modelProps.containerFilter = props.containerFilter;
-            }
-
-            if (props.isPaged !== undefined) {
-                modelProps.isPaged = props.isPaged === true;
-            }
-
-            if (props.loader !== undefined) {
-                modelProps.loader = props.loader;
-            }
-
-            if (props.queryInfo !== undefined) {
-                modelProps.queryInfo = props.queryInfo;
-            }
-
-            if (props.queryParameters !== undefined) {
-                modelProps.queryParameters = props.queryParameters;
-            }
-
-            if (props.maxRows !== undefined) {
-                modelProps.maxRows = props.maxRows;
-            }
-
-            if (props.baseFilters) {
-                modelProps.baseFilters = props.baseFilters;
-            }
-
-            if (props.requiredColumns !== undefined) {
-                modelProps.requiredColumns = props.requiredColumns;
-            }
-            if (props.urlPrefix !== undefined) {
-                modelProps.urlPrefix = props.urlPrefix;
-            }
-
-            if (props.title !== undefined) {
-                modelProps.title = props.title;
-            }
-
-            if (props.allowSelection !== undefined) {
-                modelProps.allowSelection = props.allowSelection;
-            }
-
-            if (props.editable !== undefined) {
-                modelProps.editable = props.editable;
-            }
-
-            if (props.sortable !== undefined) {
-                modelProps.sortable = props.sortable;
-            }
-
-            if (props.sorts !== undefined) {
-                modelProps.sorts = props.sorts;
-            }
-
-            if (props.omittedColumns !== undefined) {
-                modelProps.omittedColumns = props.omittedColumns;
-            }
-
-            if (props.showChartSelector !== undefined) {
-                modelProps.showChartSelector = props.showChartSelector;
-            }
-
-            if (props.showViewSelector !== undefined) {
-                modelProps.showViewSelector = props.showViewSelector;
-            }
-
-            if (props.showExport !== undefined) {
-                modelProps.showExport = props.showExport;
-            }
-
-            if (props.showSearchBox !== undefined) {
-                modelProps.showSearchBox = props.showSearchBox;
-            }
-        }
+        const props = typeof initProps === 'function' ? initProps() : initProps;
+        modelProps = {
+            ...modelProps,
+            ...props,
+        };
     }
 
     return new QueryGridModel(modelProps);

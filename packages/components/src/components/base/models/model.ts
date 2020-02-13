@@ -269,6 +269,7 @@ export class QueryColumn extends Record({
     required: undefined,
     // selectable: undefined,
     shortCaption: undefined,
+    addToDisplayView: undefined,
     shownInDetailsView: undefined,
     shownInInsertView: undefined,
     shownInUpdateView: undefined,
@@ -330,6 +331,7 @@ export class QueryColumn extends Record({
     required: boolean;
     // selectable: boolean;
     shortCaption: string;
+    addToDisplayView: boolean;
     shownInDetailsView: boolean;
     shownInInsertView: boolean;
     shownInUpdateView: boolean;
@@ -1154,8 +1156,9 @@ export class QueryInfo extends Record({
         };
 
         let viewInfo = this.getView(view);
+        let displayColumns = List<QueryColumn>();
         if (viewInfo) {
-            return viewInfo.columns
+            displayColumns = viewInfo.columns
                 .filter(colFilter)
                 .reduce((list, col) => {
                     let c = this.getColumn(col.fieldKey);
@@ -1174,6 +1177,17 @@ export class QueryInfo extends Record({
                     console.warn(`Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`);
                     return list;
                 }, List<QueryColumn>());
+
+            // add addToDisplayView columns
+            const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
+                return list.push(col.fieldKey.toLowerCase());
+            }, List<string>());
+            this.columns.forEach((col) => {
+                if (col.fieldKey && col.addToDisplayView && !columnFieldKeys.includes(col.fieldKey.toLowerCase()))
+                    displayColumns = displayColumns.push(col);
+            });
+
+            return displayColumns;
         }
 
         console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');

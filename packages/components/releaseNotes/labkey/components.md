@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Add addToDisplayView to QueryColumn to allow defining additional display columns
+
 ### version 0.23.3
 *Released*: 11 February 2020
 * Issue 39524: User management: Creating new user grid filter from notification is incorrect if user already exists and is disabled

@@ -103,7 +103,7 @@ class QueryGridPanelWithMessagesWrapper extends React.Component {
             queryName: "Runs"
         });
 
-        return getStateQueryGridModel(modelId, schemaQuery, {});
+        return getStateQueryGridModel(modelId, schemaQuery);
     }
 
     render() {
@@ -137,7 +137,7 @@ class QueryGridPanelWithImagesWrapper extends React.Component {
             queryName: "Runs"
         });
 
-        return getStateQueryGridModel(modelId, schemaQuery, {});
+        return getStateQueryGridModel(modelId, schemaQuery);
     }
 
     render() {
@@ -173,7 +173,7 @@ class QueryGridPanelWithRenamedColumnsWrapper extends React.Component {
             queryName: "LabBookExperiment"
         });
 
-        return getStateQueryGridModel(modelId, schemaQuery, {});
+        return getStateQueryGridModel(modelId, schemaQuery);
     }
 
     render() {
@@ -205,15 +205,15 @@ class QueryGridPanelMultiTab extends React.Component<any, any> {
             getStateQueryGridModel("gridPanelWithData", new SchemaQuery({
                 schemaName: "exp.data",
                 queryName: "mixtures"
-            }), {}),
+            })),
             getStateQueryGridModel("gridPanelWithImages", new SchemaQuery({
                 schemaName: "assay.General.ImageFieldAssay",
                 queryName: "Runs"
-            }), {}),
+            })),
             getStateQueryGridModel("gridPanelWithRenamedColumns",  new SchemaQuery({
                 schemaName: "labbook",
                 queryName: "LabBookExperiment"
-            }), {})
+            }))
         ]);
     }
 
@@ -242,7 +242,7 @@ class QueryGridPanelWithSampleComparisonWrapper extends React.Component {
             queryName: "Data"
         });
 
-        return getStateQueryGridModel(modelId, schemaQuery, {});
+        return getStateQueryGridModel(modelId, schemaQuery);
     }
 
     render() {

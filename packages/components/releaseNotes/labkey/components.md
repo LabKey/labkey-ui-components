@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 6835: Changes to support Data Class Designer in Sample Manager and LKS
+    - Factor out EntityDetailsForm.tsx from SampleSetDetailsPanel.tsx
+    - Factor out CollapsiblePanelHeader.tsx for reuse and put back into AssayPropertiesPanel.tsx and DomainForm.tsx
+    - DataClassDesigner.tsx and DataClassPropertiesPanel.tsx
+    - Move AssayProtocolModel to domainproperties/assay/models.ts
+
 ### version 0.23.3
 *Released*: 11 February 2020
 * Issue 39524: User management: Creating new user grid filter from notification is incorrect if user already exists and is disabled

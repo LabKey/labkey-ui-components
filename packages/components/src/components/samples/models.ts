@@ -24,7 +24,7 @@ import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
 import { generateId } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
-import { IEntityDetails } from '../entities/models';
+import { IEntityDetails } from '../domainproperties/entities/models';
 
 export interface SampleInputProps {
     role: string

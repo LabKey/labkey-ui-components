@@ -2,19 +2,14 @@ import React from 'react';
 import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { IEntityDetails } from './models';
-import { LabelOverlay } from '../../components/forms/LabelOverlay';
+import { LabelOverlay } from '../../../components/forms/LabelOverlay';
 import { getEntityDescriptionValue, getEntityNameExpressionValue, isExistingEntity } from "./actions";
-
-export const FORM_IDS = {
-    NAME: 'entity-name',
-    NAME_EXPRESSION: 'entity-name-expression',
-    DESCRIPTION: 'entity-description',
-};
+import { ENTITY_FORM_IDS } from "./constants";
 
 interface Props {
     noun: string
-    formValues: IEntityDetails
     onFormChange: (evt: any) => any
+    formValues?: IEntityDetails
     data?: Map<string, any>
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
@@ -42,7 +37,7 @@ export class EntityDetailsForm extends React.PureComponent<Props, any> {
                     </Col>
                     <Col xs={9}>
                         <FormControl
-                            id={FORM_IDS.NAME}
+                            id={ENTITY_FORM_IDS.NAME}
                             type="text"
                             placeholder={`Enter a name for this ${noun.toLowerCase()}`}
                             onChange={onFormChange}
@@ -61,7 +56,7 @@ export class EntityDetailsForm extends React.PureComponent<Props, any> {
                     <Col xs={9}>
                         <textarea
                             className="form-control textarea-noresize"
-                            id={FORM_IDS.DESCRIPTION}
+                            id={ENTITY_FORM_IDS.DESCRIPTION}
                             onChange={onFormChange}
                             value={getEntityDescriptionValue(formValues, data)}
                         />
@@ -79,7 +74,7 @@ export class EntityDetailsForm extends React.PureComponent<Props, any> {
                     </Col>
                     <Col xs={9}>
                         <FormControl
-                            id={FORM_IDS.NAME_EXPRESSION}
+                            id={ENTITY_FORM_IDS.NAME_EXPRESSION}
                             type="text"
                             placeholder={nameExpressionPlaceholder}
                             onChange={onFormChange}

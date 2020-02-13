@@ -15,9 +15,14 @@
  */
 import { Map } from 'immutable';
 import { IEntityDetails } from "./models";
-import { FORM_IDS } from "./EntityDetailsForm";
+import { ENTITY_FORM_ID_PREFIX, ENTITY_FORM_IDS } from "./constants";
 
-function getEntityFormDataValue(key: string, propName: string, defaultValue: any, formValues: IEntityDetails, data: Map<string, any>): any {
+export function getFormNameFromId(id: string): string {
+    return id.substring(id.indexOf(ENTITY_FORM_ID_PREFIX) + ENTITY_FORM_ID_PREFIX.length);
+}
+
+export function getEntityFormDataValue(key: string, propName: string, defaultValue: any, formValues: IEntityDetails, data: Map<string, any>): any {
+    console.log(key, propName, defaultValue, formValues, data);
     if (key && formValues && formValues[key] !== undefined) {
         return formValues[key] || defaultValue;
     }
@@ -29,7 +34,7 @@ function getEntityFormDataValue(key: string, propName: string, defaultValue: any
 }
 
 export function isEntityFormValid(formValues: IEntityDetails, data: Map<string, any>): boolean {
-    const hasValidName = formValues !== undefined && formValues[FORM_IDS.NAME] !== undefined && formValues[FORM_IDS.NAME].length > 0;
+    const hasValidName = formValues !== undefined && formValues[ENTITY_FORM_IDS.NAME] !== undefined && formValues[ENTITY_FORM_IDS.NAME].length > 0;
     return isExistingEntity(formValues, data) || hasValidName;
 }
 
@@ -38,13 +43,13 @@ export function isExistingEntity(formValues: IEntityDetails, data: Map<string, a
 }
 
 export function getEntityNameValue(formValues: IEntityDetails, data: Map<string, any>): string {
-    return getEntityFormDataValue(FORM_IDS.NAME, 'name', '', formValues, data);
+    return getEntityFormDataValue(ENTITY_FORM_IDS.NAME, 'name', '', formValues, data);
 }
 
 export function getEntityNameExpressionValue(formValues: IEntityDetails, data: Map<string, any>): string {
-    return getEntityFormDataValue(FORM_IDS.NAME_EXPRESSION, 'nameExpression', '', formValues, data);
+    return getEntityFormDataValue(ENTITY_FORM_IDS.NAME_EXPRESSION, 'nameExpression', '', formValues, data);
 }
 
 export function getEntityDescriptionValue(formValues: IEntityDetails, data: Map<string, any>): string {
-    return getEntityFormDataValue(FORM_IDS.DESCRIPTION, 'description', '', formValues, data);
+    return getEntityFormDataValue(ENTITY_FORM_IDS.DESCRIPTION, 'description', '', formValues, data);
 }

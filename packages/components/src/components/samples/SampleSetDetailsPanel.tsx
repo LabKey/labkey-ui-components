@@ -12,14 +12,14 @@ import { generateId } from '../../util/utils';
 import { Alert } from '../base/Alert';
 import { getActionErrorMessage, resolveErrorMessage } from "../../util/messaging";
 import { DERIVE_SAMPLES_ALIAS_TOPIC, helpLinkNode } from '../../util/helpLinks';
-import { EntityDetailsForm, FORM_IDS } from "../entities/EntityDetailsForm";
+import { EntityDetailsForm } from "../domainproperties/entities/EntityDetailsForm";
 import {
     getEntityDescriptionValue,
     getEntityNameExpressionValue,
     getEntityNameValue,
     isEntityFormValid,
     isExistingEntity
-} from "../entities/actions";
+} from "../domainproperties/entities/actions";
 
 const CREATE_ERROR = getActionErrorMessage(`There was a problem creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
 const UPDATE_ERROR = getActionErrorMessage(`There was a problem updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
@@ -313,7 +313,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 {error && <Alert>{error}</Alert>}
                 <Panel>
                     <Panel.Body>
-                        <div className={'sample-insert--headerhelp'}>
+                        <div className={'entity-form--headerhelp'}>
                             Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.
                         </div>
                         <EntityDetailsForm

@@ -7,7 +7,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 
-import { AssayProtocolModel } from '../components/domainproperties/models';
+import { AssayProtocolModel } from '../components/domainproperties/assay/models';
 import { AssayPropertiesPanel } from '../components/domainproperties/assay/AssayPropertiesPanel';
 import generalAssayTemplate from '../test/data/assay-getProtocolGeneralTemplate.json';
 import generalAssaySaved from '../test/data/assay-getProtocolGeneral.json';

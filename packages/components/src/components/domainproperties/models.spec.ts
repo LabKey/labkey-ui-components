@@ -15,7 +15,6 @@
  */
 import { List } from 'immutable';
 import {
-    AssayProtocolModel,
     ATTACHMENT_TYPE,
     BOOLEAN_TYPE,
     DATETIME_TYPE,
@@ -34,6 +33,7 @@ import {
     USERS_TYPE,
 } from './models';
 import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED } from './constants';
+import { AssayProtocolModel } from './assay/models';
 
 describe('PropDescType', () => {
     test("isInteger", () => {

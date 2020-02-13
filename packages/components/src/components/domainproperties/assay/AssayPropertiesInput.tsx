@@ -3,7 +3,7 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
-import { AssayProtocolModel } from '../models';
+import { AssayProtocolModel } from '../assay/models';
 import { FORM_IDS } from './AssayPropertiesPanel';
 import { getSplitSentence, getValidPublishTargets } from '../actions';
 import { LabelHelpTip } from '../../base/LabelHelpTip';

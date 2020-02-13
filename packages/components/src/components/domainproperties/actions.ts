@@ -29,7 +29,6 @@ import {
 } from './constants';
 
 import {
-    AssayProtocolModel,
     decodeLookup,
     DomainDesign,
     DomainException,
@@ -42,6 +41,7 @@ import {
     QueryInfoLite,
     updateSampleField,
 } from './models';
+import { AssayProtocolModel } from './assay/models';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../util/utils';
 import { processSchemas } from '../base/models/schemas';

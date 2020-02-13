@@ -1,11 +1,12 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 
-import { AssayProtocolModel, DomainDesign, DomainPanelStatus, HeaderRenderer } from '../models';
+import { DomainDesign, DomainPanelStatus, HeaderRenderer } from '../models';
+import { AssayProtocolModel } from '../assay/models';
 import { saveAssayDesign } from '../actions';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
 import DomainForm, { DomainFormImpl } from '../DomainForm';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { SEVERITY_LEVEL_ERROR } from '../constants';
 import { Alert } from '../../base/Alert';
 

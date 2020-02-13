@@ -1,7 +1,8 @@
 import React from 'react';
 import { Col, Form, Panel, Row } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
-import { AssayProtocolModel, DomainPanelStatus } from '../models';
+import { DomainPanelStatus } from '../models';
+import { AssayProtocolModel } from '../assay/models';
 import {
     AutoCopyDataInput,
     BackgroundUploadInput,

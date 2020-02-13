@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {List, Map, Record} from 'immutable';
-import {WebDavFile} from "./WebDav";
-import {DomainField} from "../..";
-import {DomainException, DomainIndex} from "../domainproperties/models";
+import { Map } from 'immutable';
 
 export interface FileAttachmentFormModel {
     addAttachedFile?: (any) => any

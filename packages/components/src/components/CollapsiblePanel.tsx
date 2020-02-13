@@ -1,80 +1,75 @@
-import * as React from "react";
+import React from 'react';
 import { Panel } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 
-import '../theme/index.scss';
-import { LabelHelpTip } from "./base/LabelHelpTip";
+import { LabelHelpTip } from './base/LabelHelpTip';
 
 interface CollapsiblePanelProps {
-    title: string
-    helpTitle?: string
-    helpBody?: () => any
-    bodyClass?: string
-    initCollapsed?: boolean
+    title: string;
+    helpTitle?: string;
+    helpBody?: () => any;
+    bodyClass?: string;
+    initCollapsed?: boolean;
 }
 
 interface CollapsiblePanelState {
-    collapsed: boolean
+    collapsed: boolean;
 }
 
 export class CollapsiblePanel extends React.PureComponent<CollapsiblePanelProps, CollapsiblePanelState> {
-
     constructor(props) {
         super(props);
 
         this.state = {
-            collapsed: !!props.initCollapsed
+            collapsed: !!props.initCollapsed,
         };
     }
 
-    togglePanel = () => {
-        this.setState((state) => ({collapsed: !state.collapsed}))      ;
+    togglePanel = (): void => {
+        this.setState(state => ({ collapsed: !state.collapsed }));
     };
 
-    renderHeaderContent() {
+    renderHeaderContent = (): React.ReactFragment => {
         const { title, helpTitle, helpBody } = this.props;
         const { collapsed } = this.state;
 
         return (
-            <>
-                {/*Header name*/}
+            <div className="collapsible-panel-header-container">
+                {/* Header name*/}
                 <span>{title}</span>
 
-                {helpTitle && helpBody &&
-                    <LabelHelpTip placement={'top'} title={helpTitle} body={helpBody}/>
-                }
+                {helpTitle && helpBody && <LabelHelpTip placement="top" title={helpTitle} body={helpBody} />}
 
-                {/*Expand/Collapse Icon*/}
-                {collapsed &&
-                    <span className={'pull-right'}>
-                        <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"collapsible-panel-expand-btn"}/>
+                {/* Expand/Collapse Icon*/}
+                {collapsed && (
+                    <span className="pull-right">
+                        <FontAwesomeIcon size="lg" icon={faPlusSquare} className="collapsible-panel-expand-btn" />
                     </span>
-                }
-                {!collapsed &&
-                    <span className={'pull-right'}>
-                        <FontAwesomeIcon size={'lg'} icon={faMinusSquare} className={"collapsible-panel-expand-btn"}/>
+                )}
+                {!collapsed && (
+                    <span className="pull-right">
+                        <FontAwesomeIcon size="lg" icon={faMinusSquare} className="collapsible-panel-expand-btn" />
                     </span>
-                }
-            </>
-        )
-    }
+                )}
+            </div>
+        );
+    };
 
-    render() {
+    render(): React.ReactNode {
         const { children, bodyClass } = this.props;
         const { collapsed } = this.state;
 
-        return(
+        return (
             <Panel expanded={!collapsed}>
-                <Panel.Heading onClick={this.togglePanel} className='collapsible-panel-header'>
+                <Panel.Heading onClick={this.togglePanel} className="collapsible-panel-header">
                     {this.renderHeaderContent()}
                 </Panel.Heading>
                 <Panel.Body collapsible={true} className={bodyClass ? bodyClass : ''}>
-                    { children }
+                    {children}
                 </Panel.Body>
             </Panel>
-        )
+        );
     }
-
 }

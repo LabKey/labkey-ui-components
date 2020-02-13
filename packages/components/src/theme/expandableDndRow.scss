@@ -7,10 +7,11 @@
 .expandablednd-row-container-main {
     height: 50px;
     width: 100%;
+    display: inline-flex;
 }
 
 .expandablednd-row-expanded-container {
-    display: inline-flex;
+    display: table;
 }
 
 .expandablednd-row-handle-expanded {
@@ -20,6 +21,7 @@
     width: 29px;
     height: 100%;
     background-color: $gray-shadow;
+    display: table-cell;
 }
 
 .expandablednd-row-handle {

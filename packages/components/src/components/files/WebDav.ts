@@ -1,7 +1,7 @@
-
 import { Map, Record } from 'immutable';
 import { ActionURL, Ajax, Utils } from '@labkey/api';
-import {DEFAULT_FILE, FileAttachmentFormModel, IFile} from "./models";
+
+import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './models';
 
 export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     contentLength: number;
@@ -32,7 +32,7 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
      * @param values
      */
     static create(values): WebDavFile {
-        let props = {};
+        const props = {};
 
         if (values['collection'])
             props['isCollection'] = values['collection'];
@@ -65,51 +65,60 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
 }
 
 export interface WebDavContainer extends FileAttachmentFormModel {
-    containerPath: string
-    isLoading: boolean
-    uploadedFiles: Map<string, WebDavFile>
+    containerPath: string;
+    isLoading: boolean;
+    uploadedFiles: Map<string, WebDavFile>;
 }
 
 export class WebDav extends Record({
-    containerPath: undefined
+    containerPath: undefined,
 }) {
     containerPath: string;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(containerPath: string): WebDav {
         return new WebDav({
-            containerPath
+            containerPath,
         });
     }
 
-    getWebDavBaseUrl() : string {
-        return ActionURL.getContextPath() + '/_webdav' + ActionURL.encodePath(this.containerPath) + "/" + encodeURIComponent("@files");
+    getWebDavBaseUrl(): string {
+        return (
+            ActionURL.getContextPath() +
+            '/_webdav' +
+            ActionURL.encodePath(this.containerPath) +
+            '/' +
+            encodeURIComponent('@files')
+        );
     }
 
     // N.B.  We don't actually retrieve any of the custom properties here (since we won't display them), but need the
     // rowId to be able to update descriptions reliably.
-    getCustomProperties(webDavFiles: Map<string, WebDavFile>) : Promise<Map<string, WebDavFile>> {
+    getCustomProperties(webDavFiles: Map<string, WebDavFile>): Promise<Map<string, WebDavFile>> {
         return new Promise((resolve, reject) => {
             return Ajax.request({
                 url: ActionURL.buildURL('fileContent', 'getCustomProperties.api', this.containerPath),
-                method: "GET",
-                success: Utils.getCallbackWrapper((response) => {
-                    let updatedFiles = webDavFiles.asMutable();
-                    response.rows.forEach((row) => {
-                        if (updatedFiles.has(row['name'])) {
-                            updatedFiles.setIn([row['name'], 'propertiesRowId'], row['rowId']);
+                method: 'GET',
+                success: Utils.getCallbackWrapper(response => {
+                    const updatedFiles = webDavFiles.asMutable();
+                    response.rows.forEach(row => {
+                        if (updatedFiles.has(row.name)) {
+                            updatedFiles.setIn([row.name, 'propertiesRowId'], row.rowId);
                         }
                     });
                     resolve(updatedFiles.asImmutable());
                 }),
-                failure: Utils.getCallbackWrapper((response) => {
-                    console.error("Problem retrieving file content custom properties for container " + this.containerPath, response);
-                    reject(response)
-                }, null, false)
-            })
+                failure: Utils.getCallbackWrapper(
+                    response => {
+                        console.error(
+                            'Problem retrieving file content custom properties for container ' + this.containerPath,
+                            response
+                        );
+                        reject(response);
+                    },
+                    null,
+                    false
+                ),
+            });
         });
     }
 
@@ -118,166 +127,170 @@ export class WebDav extends Record({
             let url = this.getWebDavBaseUrl();
 
             if (directory) {
-                url  += ("/" + directory);
+                url += '/' + directory;
             }
 
             return Ajax.request({
-                url: url + "?method=JSON",
-                method: "GET",
-                success: Utils.getCallbackWrapper((response) => {
-                    let filteredFiles = Map<string, WebDavFile>().asMutable();
-                    response.files.forEach((file) => {
-                        let webDavFile = WebDavFile.create(file);
+                url: url + '?method=JSON',
+                method: 'GET',
+                success: Utils.getCallbackWrapper(response => {
+                    const filteredFiles = Map<string, WebDavFile>().asMutable();
+                    response.files.forEach(file => {
+                        const webDavFile = WebDavFile.create(file);
                         if (includeDirectories || !webDavFile.isCollection) {
                             filteredFiles.set(webDavFile.name, webDavFile);
                         }
                     });
                     resolve(filteredFiles.asImmutable());
                 }),
-                failure: Utils.getCallbackWrapper((response) => {
-                    console.error("Problem retrieving webDav files for container " + this.containerPath);
-                    reject(response)
-                }, null, false)
-            })
+                failure: Utils.getCallbackWrapper(
+                    response => {
+                        console.error('Problem retrieving webDav files for container ' + this.containerPath);
+                        reject(response);
+                    },
+                    null,
+                    false
+                ),
+            });
         });
     }
 
     getFiles(includeDirectories?: boolean): Promise<Map<string, WebDavFile>> {
-        return new Promise((resolve, reject) => {
-            return this.getWebDavFiles(undefined, includeDirectories)
-                .then(response =>
-                    this.getCustomProperties(response)
-                        .then( updates => resolve(updates)));
+        return new Promise(resolve => {
+            return this.getWebDavFiles(undefined, includeDirectories).then(response =>
+                this.getCustomProperties(response).then(updates => resolve(updates))
+            );
         });
     }
 
     getDownloadUrl(files: Map<string, WebDavFile>, zipName?: string): string {
-        if (!files || files.size === 0)
-            return undefined;
+        if (!files || files.size === 0) return undefined;
 
         let url;
         if (files.size === 1) {
             url = files.first().downloadUrl;
-        }
-        else {
-            url = this.getWebDavBaseUrl() + "?method=zip&depth=1";
-            files.forEach((file) => {
-                url += "&file=" + encodeURIComponent(file.name);
+        } else {
+            url = this.getWebDavBaseUrl() + '?method=zip&depth=1';
+            files.forEach(file => {
+                url += '&file=' + encodeURIComponent(file.name);
             });
-            if (zipName)
-                url += "&zipName=" + encodeURIComponent(zipName);
+            if (zipName) url += '&zipName=' + encodeURIComponent(zipName);
         }
         return url;
     }
 
-    downloadFiles(fileNames: Map<string, WebDavFile>, zipName?: string) {
+    downloadFiles(fileNames: Map<string, WebDavFile>, zipName?: string): void {
         const downloadUrl = this.getDownloadUrl(fileNames, zipName);
-        if (downloadUrl)
-            window.location.href = downloadUrl;
+        if (downloadUrl) window.location.href = downloadUrl;
     }
 
-    uploadFile(file: File, directory?: string, createIntermediates?: boolean) : Promise<string> {
+    uploadFile(file: File, directory?: string, createIntermediates?: boolean): Promise<string> {
         return new Promise((resolve, reject) => {
-            let form = new FormData();
+            const form = new FormData();
             form.append('file', file);
 
             let url = this.getWebDavBaseUrl();
 
             if (directory) {
-                url  += ("/" + encodeURIComponent(directory));
+                url += '/' + encodeURIComponent(directory);
             }
 
-            if (createIntermediates)
-                url += '?createIntermediates=' + createIntermediates;
+            if (createIntermediates) url += '?createIntermediates=' + createIntermediates;
 
             Ajax.request({
-                url: url,
+                url,
                 method: 'POST',
                 form,
-                success: Utils.getCallbackWrapper((response) => {
+                success: Utils.getCallbackWrapper(() => {
                     resolve(file.name);
                 }),
-                failure: Utils.getCallbackWrapper((response) => {
-                    console.error('failure uploading file ' + file.name);
-                    reject(file.name)
-                }, null, false)
+                failure: Utils.getCallbackWrapper(
+                    () => {
+                        console.error('failure uploading file ' + file.name);
+                        reject(file.name);
+                    },
+                    null,
+                    false
+                ),
             });
-        })
+        });
     }
 
-    uploadFiles(files: Map<string, File>, onSuccess?: () => any, onFailure?: (any) => any) {
+    uploadFiles(files: Map<string, File>, onSuccess?: () => any, onFailure?: (any) => any): void {
+        if (!files || files.size === 0) return;
 
-        if (!files || files.size == 0)
-            return;
-
-        let promises = [];
+        const promises = [];
         // DavController does not support multiple file uploads, so we do one at a time...
-        files.forEach((file) => {
+        files.forEach(file => {
             promises.push(this.uploadFile(file));
         });
-        Promise.all(promises).then(response => {
-            if (onSuccess)
-                onSuccess();
-        }).catch(reason => {
-            if (onFailure)
-                onFailure(reason);
+        Promise.all(promises)
+            .then(() => {
+                if (onSuccess) onSuccess();
+            })
+            .catch(reason => {
+                if (onFailure) onFailure(reason);
+            });
+    }
+
+    deleteWebDavFile(fileName: string, onDelete?: (fileName) => any, onFailure?: (fileName) => any): void {
+        // http://localhost:8080/labkey/_webdav/Biologics/__LBC-1/%40files/C3CB102.csv?method=DELETE
+        Ajax.request({
+            url: this.getWebDavBaseUrl() + '/' + encodeURIComponent(fileName) + '?method=DELETE',
+            method: 'POST',
+            success: Utils.getCallbackWrapper(() => {
+                if (onDelete) onDelete(fileName);
+            }),
+            failure: Utils.getCallbackWrapper(() => {
+                console.error('Problem deleting file ', fileName);
+                if (onFailure) onFailure(fileName);
+            }),
         });
     }
 
-    deleteWebDavFile(fileName: string, onDelete?: (fileName) => any, onFailure?: (fileName) => any) {
-        // http://localhost:8080/labkey/_webdav/Biologics/__LBC-1/%40files/C3CB102.csv?method=DELETE
-        Ajax.request({
-            url: this.getWebDavBaseUrl() + "/" + encodeURIComponent(fileName) + "?method=DELETE",
-            method: 'POST',
-            success: Utils.getCallbackWrapper((responses) => {
-                if (onDelete)
-                    onDelete(fileName);
-            }),
-            failure: Utils.getCallbackWrapper((response) => {
-                console.error("Problem deleting file ", fileName);
-                if (onFailure)
-                    onFailure(fileName);
-            })
-        })
-    }
-
-    updateFileDescription(file: WebDavFile, description: string, onSuccess?: (file: WebDavFile) => any, onFailure?: (file: WebDavFile) => any) {
-        let fileObject = {
+    updateFileDescription(
+        file: WebDavFile,
+        description: string,
+        onSuccess?: (file: WebDavFile) => any,
+        onFailure?: (file: WebDavFile) => any
+    ): void {
+        const fileObject = {
             Name: file.name,
             id: file.href, // yeah, I don't get it either.  Why not id?
-            'Flag/Comment': description
+            'Flag/Comment': description,
         };
-        if (file.propertiesRowId)
+        if (file.propertiesRowId) {
             fileObject['RowId'] = file.propertiesRowId;
-        else
+        }
+        else {
             fileObject['DataFileURL'] = file.dataFileUrl;
+        }
 
         const payload = {
-            files: [fileObject]
+            files: [fileObject],
         };
         Ajax.request({
             url: ActionURL.buildURL('filecontent', 'updateFileProps.api', this.containerPath),
             method: 'POST',
             jsonData: payload,
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 if (!response.success) {
                     console.error('Problem updating description for file', file, response);
                     if (onFailure) {
                         onFailure(file);
                     }
-                }
-                else {
+                } else {
                     if (onSuccess) {
                         onSuccess(file);
                     }
                 }
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 console.error('Problem updating description for file', file, response);
                 if (onFailure) {
                     onFailure(file);
                 }
-            })
-        })
+            }),
+        });
     }
 }

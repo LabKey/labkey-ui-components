@@ -9,7 +9,10 @@ storiesOf('FileTree', module)
     .addDecorator(withKnobs)
     .add('With basic data', () =>
         <div>
-            <FileTree loadData={fetchFileTestTree}/>
+            <FileTree
+                loadData={fetchFileTestTree}
+                onFileSelect={(name: string, path: string, checked: boolean, isDirectory: boolean) => {}}
+            />
         </div>
     )
 

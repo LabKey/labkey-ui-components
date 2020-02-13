@@ -1,57 +1,53 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 
-import { LabelOverlay } from '../components/forms/LabelOverlay';
 import './stories.scss';
-import {ExpandableDndRow} from "..";
-import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
+import { ExpandableDndRow } from '..';
 
 interface RowState {
-    expanded?: number
+    expanded?: number;
 }
 
-class WrappedExpandableDndRow extends React.Component<any, RowState>
-{
+class WrappedExpandableDndRow extends React.Component<any, RowState> {
     constructor(props) {
         super(props);
 
         this.state = {
-            expanded: undefined
+            expanded: undefined,
         };
     }
 
-    onExpand = (index: number) => {
-
+    onExpand = (index: number): void => {
         if (this.state.expanded === index) {
-            this.setState({expanded: undefined});
+            this.setState({ expanded: undefined });
+        } else {
+            this.setState({ expanded: index });
         }
-        else {
-            this.setState({expanded: index})
-        }
     };
 
-    renderMainRow = () => {
+    renderMainRow = (): React.ReactFragment => {
+        return <span style={{ marginTop: '15px', marginLeft: '30px' }}>This is the main row</span>;
+    };
+
+    renderExpandedSection = (): React.ReactFragment => {
         return (
-            <span>This is the main row</span>
-        )
+            <span style={{ height: '100px', paddingLeft: '30px', display: 'table-cell', verticalAlign: 'middle' }}>
+                This is the expanded section
+            </span>
+        );
     };
 
-    renderExpandedSection = () => {
-        return (
-            <span>This is the expanded section</span>
-        )
-    };
-
-    render() {
+    render(): React.ReactNode {
         const { expanded } = this.state;
 
         return (
             <DragDropContext onDragEnd={() => {}}>
-                <Droppable droppableId='domain-form-droppable'>
-                    {(provided) => (
-                        <div ref={provided.innerRef}
-                             {...provided.droppableProps}>
+                <Droppable droppableId="domain-form-droppable">
+                    {provided => (
+                        <div ref={provided.innerRef} {...provided.droppableProps}>
                             <ExpandableDndRow
                                 index={1}
                                 isDragDisabled={false}
@@ -65,14 +61,12 @@ class WrappedExpandableDndRow extends React.Component<any, RowState>
                     )}
                 </Droppable>
             </DragDropContext>
-        )
+        );
     }
 }
 
 storiesOf('ExpandableDndRow', module)
     .addDecorator(withKnobs)
-    .add("expandable row", () => {
-        return (
-            <WrappedExpandableDndRow />
-        )
+    .add('expandable row', () => {
+        return <WrappedExpandableDndRow />;
     });

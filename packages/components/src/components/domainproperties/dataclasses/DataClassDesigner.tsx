@@ -3,10 +3,11 @@ import { Button } from "react-bootstrap";
 import { List } from 'immutable';
 import { DataClassModel } from "./models";
 import { Alert } from "../../base/Alert";
-import { DomainDesign, DomainPanelStatus } from "../models";
+import { DomainDesign } from "../models";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import DomainForm, { DomainFormImpl } from "../DomainForm";
 import { DataClassPropertiesPanel } from "./DataClassPropertiesPanel";
+import { getDomainBottomErrorMessage, getDomainPanelStatus } from "../actions";
 
 interface Props {
     noun?: string
@@ -18,7 +19,7 @@ interface Props {
     onCancel: () => void
     beforeFinish?: (model: DataClassModel) => void
     onComplete: (model: DataClassModel) => void
-    initModel: DataClassModel
+    initModel?: DataClassModel
     containerTop?: number // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean
     useTheme?: boolean
@@ -28,7 +29,7 @@ interface Props {
 interface State {
     submitting: boolean
     currentPanelIndex: number
-    currentModel: DataClassModel
+    model: DataClassModel
     visitedPanels: List<number>
     validatePanel: number
     firstState: boolean
@@ -42,14 +43,14 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
         this.state = {
             submitting: false,
             currentPanelIndex: 0,
-            currentModel: props.initModel,
+            model: props.initModel || DataClassModel.create({}),
             visitedPanels: List<number>([0]),
             validatePanel: undefined,
             firstState: true
         }
     }
 
-    // TODO good candidate to share with Assay
+    // TODO factor this out to remove duplicate code from AssayDesignerPanels.tsx
     onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
         const { visitedPanels, currentPanelIndex } = this.state;
 
@@ -74,7 +75,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
     };
 
     onFinish = () => {
-        const { currentModel } = this.state;
+        const { model } = this.state;
         const { beforeFinish } = this.props;
 
         // This first setState forces the current expanded panel to validate its fields and display and errors
@@ -84,43 +85,35 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                 if (this.isValid()) {
                     this.setState(() => ({submitting: true}));
                     if (beforeFinish) {
-                        beforeFinish(currentModel);
+                        beforeFinish(model);
                     }
 
                     console.log('TIME TO SAVE THE DATA CLASS MODEL');
                     // saveAssayDesign(protocolModel)
-                    //     .then((response) => this.onFinishSuccess(response))
-                    //     .catch((protocolModel) => this.onFinishFailure(protocolModel));
+                    //     .then((response) => {
+                    //         this.setState(() => ({protocolModel, submitting: false}));
+                    //         this.props.onComplete(response);
+                    //     })
+                    //     .catch((protocolModel) => {
+                    //         this.setState(() => ({protocolModel, submitting: false}));
+                    //     });
                 }
-                console.log('NOT VALID');
-            })
-
+            });
         });
-
     };
 
-    onFinishSuccess(currentModel: DataClassModel) {
-        this.setState(() => ({currentModel, submitting: false}));
-        this.props.onComplete(currentModel);
-    }
-
-    // TODO this could be done in a finally I believe
-    onFinishFailure(currentModel: DataClassModel) {
-        this.setState(() => ({currentModel, submitting: false}));
-    }
-
     isValid(): boolean {
-        return DataClassModel.isValid(this.state.currentModel);
+        return DataClassModel.isValid(this.state.model);
     }
 
     onDomainChange = (domain: DomainDesign) => {
         const { onChange } = this.props;
 
         this.setState((state) => ({
-            currentModel: state.currentModel.merge({domain}) as DataClassModel
+            model: state.model.merge({domain}) as DataClassModel
         }), () => {
             if (onChange) {
-                onChange(this.state.currentModel);
+                onChange(this.state.model);
             }
         });
     };
@@ -128,69 +121,23 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
     onPropertiesChange = (model: DataClassModel) => {
         const { onChange } = this.props;
 
-        this.setState(() => ({
-            currentModel: model
-        }), () => {
+        this.setState(() => ({model}), () => {
             if (onChange) {
                 onChange(model);
             }
         });
     };
 
-    // TODO good candidate to share with Assay
-    getPanelStatus = (index: number): DomainPanelStatus => {
-        const { currentPanelIndex, visitedPanels, firstState } = this.state;
-
-        if (index === 0 && firstState) {
-            return 'NONE';
-        }
-
-        if (currentPanelIndex === index) {
-            return 'INPROGRESS';
-        }
-
-        if (visitedPanels.contains(index)) {
-            return 'COMPLETE';
-        }
-
-        return 'TODO';
-    };
-
-    // TODO good candidate to share with Assay
-    getBottomErrorBanner = (errorDomains: List<string>) => {
-        const { visitedPanels, currentModel } = this.state;
-
-        let message;
-        // if (currentModel.exception) {
-        //     message = currentModel.exception;
-        // }
-        if (errorDomains.size > 1 || (errorDomains.size > 0 && !currentModel.hasValidProperties())) {
-            message = "Please correct errors above before saving.";
-        }
-        else if (visitedPanels.size > 1 && !currentModel.hasValidProperties()) {
-            message = "Please correct errors in the Properties panel before saving.";
-        }
-        else if (errorDomains.size == 1) {
-            message = "Please correct errors in " + errorDomains.get(0) + " before saving.";
-        }
-
-        if (message) {
-            return (
-                <Alert bsStyle="danger">{message}</Alert>
-            )
-        }
-
-        return undefined;
-    };
-
     render() {
         const { onCancel, appPropertiesOnly, containerTop, useTheme, noun, nameExpressionInfoUrl, nameExpressionPlaceholder, headerText, successBsStyle } = this.props;
-        const { currentModel, currentPanelIndex, validatePanel } = this.state;
+        const { model, currentPanelIndex, validatePanel, visitedPanels, firstState } = this.state;
 
         let errorDomains = List<string>();
-        if (currentModel.domain.hasException() && currentModel.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
-            errorDomains = errorDomains.push(DomainFormImpl.getHeaderName(currentModel.domain.name, undefined, currentModel.name));
+        if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
+            errorDomains = errorDomains.push(DomainFormImpl.getHeaderName(model.domain.name, undefined, model.name));
         }
+
+        const bottomErrorMsg = getDomainBottomErrorMessage(undefined, errorDomains, model.hasValidProperties(), visitedPanels);
 
         return (
             <>
@@ -199,25 +146,25 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     headerText={headerText}
-                    model={currentModel}
+                    model={model}
                     onChange={this.onPropertiesChange}
                     controlledCollapse={true}
                     initCollapsed={currentPanelIndex !== 0 }
-                    panelStatus={currentModel.isNew() ? this.getPanelStatus(0) : "COMPLETE"}
+                    panelStatus={model.isNew() ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState) : "COMPLETE"}
                     validate={validatePanel === 0}
                     appPropertiesOnly={appPropertiesOnly}
                     onToggle={(collapsed, callback) => {this.onTogglePanel(0, collapsed, callback);}}
                     useTheme={useTheme}
                 />
                 <DomainForm
-                    key={currentModel.domain.domainId || 0}
+                    key={model.domain.domainId || 0}
                     domainIndex={0}
-                    domain={currentModel.domain}
-                    headerPrefix={currentModel.name}
+                    domain={model.domain}
+                    headerPrefix={model.name}
                     controlledCollapse={true}
                     initCollapsed={currentPanelIndex !== 1}
                     validate={validatePanel === 1}
-                    panelStatus={currentModel.isNew() ? this.getPanelStatus(1) : "COMPLETE"}
+                    panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : "COMPLETE"}
                     showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.onDomainChange}
@@ -225,13 +172,14 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
-                >
-                    {currentModel.domain.description && <div>{currentModel.domain.description}</div>}
-                </DomainForm>
-                <div className={'domain-form-panel'}>
-                    {this.getBottomErrorBanner(errorDomains)}
-                </div>
-                <div className={'domain-form-panel domain-assay-buttons'}>
+                    helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
+                />
+                {bottomErrorMsg &&
+                    <div className={'domain-form-panel'}>
+                        <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
+                    </div>
+                }
+                <div className={'domain-form-panel domain-designer-buttons'}>
                     <Button onClick={onCancel}>Cancel</Button>
                     <Button className='pull-right' bsStyle={successBsStyle || 'success'} disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
                 </div>

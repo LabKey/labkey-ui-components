@@ -22,7 +22,6 @@ export function getFormNameFromId(id: string): string {
 }
 
 export function getEntityFormDataValue(key: string, propName: string, defaultValue: any, formValues: IEntityDetails, data: Map<string, any>): any {
-    console.log(key, propName, defaultValue, formValues, data);
     if (key && formValues && formValues[key] !== undefined) {
         return formValues[key] || defaultValue;
     }

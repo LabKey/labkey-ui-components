@@ -15,7 +15,6 @@
  */
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
-
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -27,13 +26,13 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
-
 import {
     decodeLookup,
     DomainDesign,
     DomainException,
     DomainField,
     DomainFieldError,
+    DomainPanelStatus,
     IBannerMessage,
     IDomainField,
     IFieldChange,
@@ -696,4 +695,35 @@ export function getSplitSentence(label: string, lastWord: boolean): string {
             return words.slice(0, words.length -1).join(" ") + " ";
         }
     }
-};
+}
+
+export function getDomainPanelStatus(panelIndex: number, currentIndex: number, visitedPanels: List<number>, firstState: boolean): DomainPanelStatus {
+    if (panelIndex === 0 && firstState) {
+        return 'NONE';
+    }
+    else if (currentIndex === panelIndex) {
+        return 'INPROGRESS';
+    }
+    else if (visitedPanels.contains(panelIndex)) {
+        return 'COMPLETE';
+    }
+
+    return 'TODO';
+}
+
+export function getDomainBottomErrorMessage(exception: string, errorDomains: List<string>, validProperties: boolean, visitedPanels: List<number>): string {
+    if (exception) {
+        return exception;
+    }
+    else if (errorDomains.size > 1 || (errorDomains.size > 0 && !validProperties)) {
+        return "Please correct errors above before saving.";
+    }
+    else if (visitedPanels.size > 1 && !validProperties) {
+        return "Please correct errors in the properties panel before saving.";
+    }
+    else if (errorDomains.size == 1) {
+        return "Please correct errors in " + errorDomains.get(0) + " before saving.";
+    }
+
+    return undefined;
+}

@@ -158,7 +158,7 @@ describe('AssayDesignerPanels', () => {
         expect(wrapper.find('.domain-form-add-btn').hostNodes()).toHaveLength(2);
         expect(wrapper.find('.domain-form-add-link').hostNodes()).toHaveLength(1);
         expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
-        expect(wrapper.find('.domain-assay-buttons').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.domain-designer-buttons').hostNodes()).toHaveLength(1);
         wrapper.unmount();
     });
 

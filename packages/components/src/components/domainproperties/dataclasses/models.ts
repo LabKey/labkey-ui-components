@@ -69,7 +69,6 @@ export class DataClassModel extends Record({
 
     static isValid(model: DataClassModel): boolean {
         const errDomain = !!model.domain.domainException && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR;
-        console.log(errDomain, model.hasValidProperties())
         return !errDomain && model.hasValidProperties();
     }
 

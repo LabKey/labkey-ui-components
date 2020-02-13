@@ -62,7 +62,7 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
                 useTheme={false}
                 successBsStyle={text('successBsStyle', 'success')}
                 onChange={(model: AssayProtocolModel) => {
-                    console.log('change', model.toJS());
+                    // console.log('change', model.toJS());
                 }}
                 onComplete={(model: AssayProtocolModel) => {
                     console.log('complete clicked', model.toJS());

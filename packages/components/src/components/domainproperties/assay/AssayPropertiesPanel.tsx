@@ -19,8 +19,9 @@ import {
 } from './AssayPropertiesInput';
 import { createFormInputName } from '../actions';
 import { Alert } from '../../base/Alert';
-import { DEFINE_ASSAY_SCHEMA_TOPIC, helpLinkNode } from '../../../util/helpLinks';
+import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
+import { HelpTopicURL } from "../HelpTopicURL";
 
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
@@ -286,7 +287,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     };
 
     renderPanel() {
-        const { collapsible, controlledCollapse, model, panelStatus, useTheme } = this.props;
+        const { collapsible, controlledCollapse, model, panelStatus, useTheme, helpTopic } = this.props;
         const { collapsed, validProperties } = this.state;
 
         return (
@@ -306,7 +307,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                         iconHelpMsg={ERROR_MSG}
                     />
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
-                        {this.props.helpTopic && <HelpURL helpTopic={this.props.helpTopic}/>}
+                        {helpTopic && <HelpTopicURL nounPlural={'assays'} helpTopic={helpTopic}/>}
                         {this.renderForm()}
                     </Panel.Body>
                 </Panel>
@@ -341,20 +342,6 @@ function SectionHeading(props: SectionHeadingProps) {
                 <div className={'domain-field-section-heading'}>
                     {props.title}
                 </div>
-            </Col>
-        </Row>
-    )
-}
-
-interface HelpURLProps {
-    helpTopic: string
-}
-
-function HelpURL(props: HelpURLProps) {
-    return (
-        <Row>
-            <Col xs={12}>
-                {helpLinkNode(props.helpTopic, 'Learn more about designing assays', 'domain-field-float-right')}
             </Col>
         </Row>
     )

@@ -392,6 +392,17 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         });
     }
 
+    onReset(selectSeed: boolean) {
+        if (selectSeed) {
+            this.selectNodes(this.props.options.initialSelection);
+        }
+        this.fitGraph();
+    }
+
+    getNetwork(): Network {
+        return this.network;
+    }
+
     private generateGraph(props: VisGraphProps) {
         // console.log('VisGraph.generateGraph');
         const { fitOnResize, options } = props;
@@ -447,7 +458,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
                         left: rect.left + topLeftDOM.x,
                         bottom: rect.top + bottomRightDOM.y,
                         right: rect.left + bottomRightDOM.x
-                    }
+                    };
                     this.props.onNodeHover(node, coords);
                 }
             }
@@ -492,16 +503,6 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         }
 
         this.fitGraph();
-    }
-
-    getNetwork(): Network {
-        return this.network;
-    }
-
-    onReset(selectSeed: boolean) {
-        if (selectSeed) {
-            this.selectNodes(this.props.options.initialSelection);
-        }
     }
 
     render() {

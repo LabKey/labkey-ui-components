@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.24.0
+*Released*: 13 February 2020
+* Issue 39529: Make reset view in lineage graph operational
+* Use URLResolver for resolving links returned from lineage query
+* Rename and re-parameterize SampleDeleteConfirmModal to EntityDeleteConfirmModal (and move to entities instead of samples) for reuse with data class objects
+* Issue 39252: Show initial seed node details on lineage panel while lineage is loading.
+
 ### version 0.23.3
 *Released*: 11 February 2020
 * Issue 39524: User management: Creating new user grid filter from notification is incorrect if user already exists and is disabled

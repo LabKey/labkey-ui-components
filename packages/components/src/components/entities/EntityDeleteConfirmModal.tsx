@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 import React from 'react';
-import { DeleteConfirmationData, getSampleDeleteConfirmationData } from './actions';
-import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from "../base/Alert";
+import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
+import { DeleteConfirmationData, getDeleteConfirmationData } from './actions';
+import { EntityDataType } from './constants';
 
 interface Props {
     onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
     onCancel: () => any
+    entityDataType: EntityDataType
+    nounSingular: string
+    nounPlural: string
+    dependencyText: string
+    helpLinkTopic: string
     rowIds?: Array<string>
     selectionKey?: string
 }
@@ -34,9 +40,9 @@ interface State {
 }
 
 /**
- * The higher-order component that wraps SampleDeleteConfirmModal or displays a loading modal or eror modal.
+ * The higher-order component that wraps DeleteConfirmModalDisplay or displays a loading modal or error modal.
  */
-export class SampleDeleteConfirmModal extends React.Component<Props, State> {
+export class EntityDeleteConfirmModal extends React.Component<Props, State> {
 
     // This is used because a user may cancel during the loading phase, in which case we don't want to update state
     private _mounted : boolean;
@@ -65,7 +71,7 @@ export class SampleDeleteConfirmModal extends React.Component<Props, State> {
     }
 
     init(props: Props) {
-        getSampleDeleteConfirmationData(props.selectionKey, props.rowIds )
+        getDeleteConfirmationData(props.selectionKey, props.entityDataType, props.rowIds)
             .then((confirmationData) => {
                 if (this._mounted) {
                     this.setState(() => ({isLoading: false, confirmationData}));
@@ -84,7 +90,6 @@ export class SampleDeleteConfirmModal extends React.Component<Props, State> {
 
     render() {
         const { onConfirm, onCancel } = this.props;
-
 
         if (this.state.isLoading) {
             return (
@@ -110,10 +115,14 @@ export class SampleDeleteConfirmModal extends React.Component<Props, State> {
         }
 
         return (
-            <SampleDeleteConfirmModalDisplay
+            <EntityDeleteConfirmModalDisplay
                 confirmationData={this.state.confirmationData}
                 onConfirm={onConfirm}
                 onCancel={onCancel}
+                nounSingular={this.props.nounSingular}
+                nounPlural={this.props.nounPlural}
+                dependencyText={this.props.dependencyText}
+                helpLinkTopic={this.props.helpLinkTopic}
             />
         )
     }

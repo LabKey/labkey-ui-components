@@ -1490,6 +1490,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         showFilePropertyType={true}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -2188,6 +2189,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         showFilePropertyType={true}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -2886,6 +2888,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         showFilePropertyType={false}
         showHeader={true}
         showInferFromFile={true}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -6981,6 +6984,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         showFilePropertyType={true}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -8478,6 +8482,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         showFilePropertyType={false}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -9277,6 +9282,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   onExpand={[Function]}
                                                   showDefaultValueSettings={false}
                                                   showFilePropertyType={false}
+                                                  successBsStyle="success"
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -9432,6 +9438,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                               onHide={[Function]}
                                                               show={false}
                                                               showDefaultValueSettings={false}
+                                                              successBsStyle="success"
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -9987,6 +9994,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                 onChange={[Function]}
                                                                 onMultiChange={[Function]}
                                                                 showingModal={[Function]}
+                                                                successBsStyle="success"
                                                               >
                                                                 <div
                                                                   className="domain-row-container"
@@ -10890,6 +10898,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                           index={0}
                                                                           onChange={[Function]}
                                                                           showingModal={[Function]}
+                                                                          successBsStyle="success"
                                                                         >
                                                                           <div>
                                                                             <Row
@@ -11337,6 +11346,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   onExpand={[Function]}
                                                   showDefaultValueSettings={false}
                                                   showFilePropertyType={false}
+                                                  successBsStyle="success"
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -11492,6 +11502,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                               onHide={[Function]}
                                                               show={false}
                                                               showDefaultValueSettings={false}
+                                                              successBsStyle="success"
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -12047,6 +12058,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                 onChange={[Function]}
                                                                 onMultiChange={[Function]}
                                                                 showingModal={[Function]}
+                                                                successBsStyle="success"
                                                               >
                                                                 <div
                                                                   className="domain-row-container"
@@ -12932,6 +12944,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                           index={1}
                                                                           onChange={[Function]}
                                                                           showingModal={[Function]}
+                                                                          successBsStyle="success"
                                                                         >
                                                                           <div>
                                                                             <Row
@@ -13535,6 +13548,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   onExpand={[Function]}
                                                   showDefaultValueSettings={false}
                                                   showFilePropertyType={false}
+                                                  successBsStyle="success"
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -13690,6 +13704,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                               onHide={[Function]}
                                                               show={false}
                                                               showDefaultValueSettings={false}
+                                                              successBsStyle="success"
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -14245,6 +14260,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                 onChange={[Function]}
                                                                 onMultiChange={[Function]}
                                                                 showingModal={[Function]}
+                                                                successBsStyle="success"
                                                               >
                                                                 <div
                                                                   className="domain-row-container"
@@ -15095,6 +15111,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                           index={2}
                                                                           onChange={[Function]}
                                                                           showingModal={[Function]}
+                                                                          successBsStyle="success"
                                                                         >
                                                                           <div>
                                                                             <Row
@@ -17380,6 +17397,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         showFilePropertyType={true}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -18077,6 +18095,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         showFilePropertyType={true}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -18774,6 +18793,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         showFilePropertyType={false}
         showHeader={true}
         showInferFromFile={true}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -21181,6 +21201,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         showFilePropertyType={true}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -21878,6 +21899,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         showFilePropertyType={false}
         showHeader={true}
         showInferFromFile={true}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -27418,6 +27440,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         showFilePropertyType={false}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -28217,6 +28240,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   onExpand={[Function]}
                                                   showDefaultValueSettings={false}
                                                   showFilePropertyType={false}
+                                                  successBsStyle="success"
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -28372,6 +28396,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                               onHide={[Function]}
                                                               show={false}
                                                               showDefaultValueSettings={false}
+                                                              successBsStyle="success"
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -28957,6 +28982,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                 onChange={[Function]}
                                                                 onMultiChange={[Function]}
                                                                 showingModal={[Function]}
+                                                                successBsStyle="success"
                                                               >
                                                                 <div
                                                                   className="domain-row-container"
@@ -29860,6 +29886,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                           index={0}
                                                                           onChange={[Function]}
                                                                           showingModal={[Function]}
+                                                                          successBsStyle="success"
                                                                         >
                                                                           <div>
                                                                             <Row
@@ -30463,6 +30490,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   onExpand={[Function]}
                                                   showDefaultValueSettings={false}
                                                   showFilePropertyType={false}
+                                                  successBsStyle="success"
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -30618,6 +30646,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                               onHide={[Function]}
                                                               show={false}
                                                               showDefaultValueSettings={false}
+                                                              successBsStyle="success"
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -31203,6 +31232,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                 onChange={[Function]}
                                                                 onMultiChange={[Function]}
                                                                 showingModal={[Function]}
+                                                                successBsStyle="success"
                                                               >
                                                                 <div
                                                                   className="domain-row-container"
@@ -32088,6 +32118,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                           index={1}
                                                                           onChange={[Function]}
                                                                           showingModal={[Function]}
+                                                                          successBsStyle="success"
                                                                         >
                                                                           <div>
                                                                             <Row
@@ -32847,6 +32878,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   onExpand={[Function]}
                                                   showDefaultValueSettings={false}
                                                   showFilePropertyType={false}
+                                                  successBsStyle="success"
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -33002,6 +33034,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                               onHide={[Function]}
                                                               show={false}
                                                               showDefaultValueSettings={false}
+                                                              successBsStyle="success"
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -33587,6 +33620,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                 onChange={[Function]}
                                                                 onMultiChange={[Function]}
                                                                 showingModal={[Function]}
+                                                                successBsStyle="success"
                                                               >
                                                                 <div
                                                                   className="domain-row-container"
@@ -34437,6 +34471,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                           index={2}
                                                                           onChange={[Function]}
                                                                           showingModal={[Function]}
+                                                                          successBsStyle="success"
                                                                         >
                                                                           <div>
                                                                             <Row
@@ -39553,6 +39588,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         showFilePropertyType={true}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -41049,6 +41085,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         showFilePropertyType={false}
         showHeader={true}
         showInferFromFile={false}
+        successBsStyle="success"
         validate={false}
       >
         <Uncontrolled(Panel)
@@ -41848,6 +41885,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   onExpand={[Function]}
                                                   showDefaultValueSettings={false}
                                                   showFilePropertyType={false}
+                                                  successBsStyle="success"
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -42003,6 +42041,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                               onHide={[Function]}
                                                               show={false}
                                                               showDefaultValueSettings={false}
+                                                              successBsStyle="success"
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -42588,6 +42627,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                 onChange={[Function]}
                                                                 onMultiChange={[Function]}
                                                                 showingModal={[Function]}
+                                                                successBsStyle="success"
                                                               >
                                                                 <div
                                                                   className="domain-row-container"
@@ -43491,6 +43531,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                           index={0}
                                                                           onChange={[Function]}
                                                                           showingModal={[Function]}
+                                                                          successBsStyle="success"
                                                                         >
                                                                           <div>
                                                                             <Row
@@ -44094,6 +44135,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   onExpand={[Function]}
                                                   showDefaultValueSettings={false}
                                                   showFilePropertyType={false}
+                                                  successBsStyle="success"
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -44249,6 +44291,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                               onHide={[Function]}
                                                               show={false}
                                                               showDefaultValueSettings={false}
+                                                              successBsStyle="success"
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -44834,6 +44877,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                 onChange={[Function]}
                                                                 onMultiChange={[Function]}
                                                                 showingModal={[Function]}
+                                                                successBsStyle="success"
                                                               >
                                                                 <div
                                                                   className="domain-row-container"
@@ -45719,6 +45763,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                           index={1}
                                                                           onChange={[Function]}
                                                                           showingModal={[Function]}
+                                                                          successBsStyle="success"
                                                                         >
                                                                           <div>
                                                                             <Row
@@ -46478,6 +46523,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   onExpand={[Function]}
                                                   showDefaultValueSettings={false}
                                                   showFilePropertyType={false}
+                                                  successBsStyle="success"
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -46633,6 +46679,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                               onHide={[Function]}
                                                               show={false}
                                                               showDefaultValueSettings={false}
+                                                              successBsStyle="success"
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -47218,6 +47265,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                 onChange={[Function]}
                                                                 onMultiChange={[Function]}
                                                                 showingModal={[Function]}
+                                                                successBsStyle="success"
                                                               >
                                                                 <div
                                                                   className="domain-row-container"
@@ -48068,6 +48116,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                           index={2}
                                                                           onChange={[Function]}
                                                                           showingModal={[Function]}
+                                                                          successBsStyle="success"
                                                                         >
                                                                           <div>
                                                                             <Row

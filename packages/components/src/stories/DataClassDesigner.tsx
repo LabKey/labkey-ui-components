@@ -32,6 +32,7 @@ storiesOf('DataClassDesigner', module)
             headerText={text('headerText', undefined)}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
             nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+            successBsStyle={text('successBsStyle', 'success')}
         />
     })
     .add('DataClassDesignerPanels - update', () => {
@@ -44,5 +45,6 @@ storiesOf('DataClassDesigner', module)
             headerText={text('headerText', 'Use source types to connect your samples to their biological or physical origins.')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org/Documentation')}
             nameExpressionPlaceholder={text('nameExpressionPlaceholder', 'Enter your source type naming patter here...')}
+            successBsStyle={text('successBsStyle', 'success')}
         />
     });

@@ -22,6 +22,7 @@ interface Props {
     appDomainHeaders?: Map<string, HeaderRenderer>
     appIsValidMsg?: (model: AssayProtocolModel) => string
     useTheme?: boolean
+    successBsStyle?: string
 }
 
 interface State {
@@ -222,7 +223,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { onCancel, appPropertiesOnly, containerTop, useTheme } = this.props;
+        const { onCancel, appPropertiesOnly, containerTop, useTheme, successBsStyle } = this.props;
         const { protocolModel, currentPanelIndex, validatePanel } = this.state;
 
         let errorDomains = List<string>();
@@ -281,6 +282,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                             useTheme={useTheme}
                             appPropertiesOnly={appPropertiesOnly}
                             showFilePropertyType={showFilePropertyType}
+                            successBsStyle={successBsStyle}
                         >
                             <div>{domain.description}</div>
                         </DomainForm>
@@ -291,7 +293,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                 </div>
                 <div className={'domain-form-panel domain-assay-buttons'}>
                     <Button onClick={onCancel}>Cancel</Button>
-                    <Button className='pull-right' bsStyle='success' disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
+                    <Button className='pull-right' bsStyle={successBsStyle || 'success'} disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
                 </div>
             </>
         )

@@ -22,6 +22,7 @@ interface Props {
     containerTop?: number // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean
     useTheme?: boolean
+    successBsStyle?: string
 }
 
 interface State {
@@ -183,7 +184,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { onCancel, appPropertiesOnly, containerTop, useTheme, noun, nameExpressionInfoUrl, nameExpressionPlaceholder, headerText } = this.props;
+        const { onCancel, appPropertiesOnly, containerTop, useTheme, noun, nameExpressionInfoUrl, nameExpressionPlaceholder, headerText, successBsStyle } = this.props;
         const { currentModel, currentPanelIndex, validatePanel } = this.state;
 
         let errorDomains = List<string>();
@@ -223,6 +224,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                     onToggle={(collapsed, callback) => {this.onTogglePanel(1, collapsed, callback);}}
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
+                    successBsStyle={successBsStyle}
                 >
                     {currentModel.domain.description && <div>{currentModel.domain.description}</div>}
                 </DomainForm>
@@ -231,7 +233,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                 </div>
                 <div className={'domain-form-panel domain-assay-buttons'}>
                     <Button onClick={onCancel}>Cancel</Button>
-                    <Button className='pull-right' bsStyle='success' disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
+                    <Button className='pull-right' bsStyle={successBsStyle || 'success'} disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
                 </div>
             </>
         )

@@ -79,6 +79,7 @@ interface IDomainFormInput {
     appPropertiesOnly?: boolean //Flag to indicate if LKS specific types should be shown (false) or not (true)
     showFilePropertyType?: boolean //Flag to indicate if the File property type should be allowed
     domainIndex?: number
+    successBsStyle?: string
 }
 
 interface IDomainFormState {
@@ -114,7 +115,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         initCollapsed: false,
         isNew: false,
         appPropertiesOnly: false,
-        domainIndex: 0
+        domainIndex: 0,
+        successBsStyle: 'success'
     };
 
     constructor(props) {
@@ -695,7 +697,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm() {
-        const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex } = this.props;
+        const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex, successBsStyle } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
@@ -743,6 +745,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 defaultValueOptions={domain.defaultValueOptions}
                                                 appPropertiesOnly={appPropertiesOnly}
                                                 showFilePropertyType={showFilePropertyType}
+                                                successBsStyle={successBsStyle}
                                             />
                                         }))}
                                         {provided.placeholder}
@@ -818,7 +821,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme } = this.props;
-        const { collapsed } = this.state;
         const headerId = domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header';
         const title = DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
@@ -831,7 +833,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <CollapsiblePanelHeader
                             id={headerId}
                             title={title}
-                            collapsed={collapsed}
+                            collapsed={!(this.isPanelExpanded() && controlledCollapse)}
                             collapsible={collapsible}
                             controlledCollapse={controlledCollapse}
                             headerDetails={headerDetails}

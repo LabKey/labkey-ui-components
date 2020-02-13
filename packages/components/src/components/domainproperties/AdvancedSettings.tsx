@@ -45,6 +45,7 @@ interface AdvancedSettingsProps {
     onApply: (any) => any
     showDefaultValueSettings: boolean
     domainIndex: number
+    successBsStyle?: string
 }
 
 interface AdvancedSettingsState {
@@ -423,7 +424,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     render() {
-        const { show, label } = this.props;
+        const { show, label, successBsStyle } = this.props;
 
         return (
             <Modal show={show}
@@ -441,13 +442,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.handleClose} bsClass='btn'
-                            className='domain-adv-footer domain-adv-cancel-btn'>
+                    <Button onClick={this.handleClose} className='domain-adv-footer domain-adv-cancel-btn'>
                         Cancel
                     </Button>
                     {helpLinkNode(ADVANCED_FIELD_EDITOR_TOPIC, "Get help with field designer settings", 'domain-adv-footer domain-adv-link')}
-                    <Button onClick={this.handleApply} bsClass='btn btn-success'
-                            className='domain-adv-footer domain-adv-apply-btn'>
+                    <Button onClick={this.handleApply} bsStyle={successBsStyle || 'success'} className='domain-adv-footer domain-adv-apply-btn'>
                         Apply
                     </Button>
                 </Modal.Footer>

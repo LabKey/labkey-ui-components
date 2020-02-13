@@ -1,9 +1,6 @@
 import React from 'react';
 import { Col, Form, Panel, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { Utils } from '@labkey/api';
-
 import { AssayProtocolModel, DomainPanelStatus } from '../models';
 import {
     AutoCopyDataInput,
@@ -21,9 +18,11 @@ import {
     TransformScriptsInput,
 } from './AssayPropertiesInput';
 import { createFormInputName } from '../actions';
-import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Alert } from '../../base/Alert';
-import { DEFINE_ASSAY_SCHEMA_TOPIC, getHelpLink, helpLinkNode } from '../../../util/helpLinks';
+import { DEFINE_ASSAY_SCHEMA_TOPIC, helpLinkNode } from '../../../util/helpLinks';
+import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
+
+const ERROR_MSG = 'Contains errors or is missing required values.';
 
 const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {
@@ -47,7 +46,7 @@ const BOOLEAN_FIELDS = [
 
 interface Props {
     model: AssayProtocolModel
-    onChange: (model: any) => any
+    onChange: (model: AssayProtocolModel) => any
     appPropertiesOnly: boolean
     asPanel: boolean
     initCollapsed: boolean
@@ -167,26 +166,12 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         const valid = (newModel.hasValidProperties() === true ? true : this.state.validProperties);
 
         this.setState((state) => (
-                // Only clear validation errors here. New errors found on collapse or submit.
-                {validProperties: valid}),
-            () => {
-                this.props.onChange(newModel);
-            });
-
+            // Only clear validation errors here. New errors found on collapse or submit.
+            {validProperties: valid}),
+        () => {
+            this.props.onChange(newModel);
+        });
     };
-
-    getPanelHeaderClass(): string {
-        const { collapsible, controlledCollapse, useTheme } = this.props;
-        const { collapsed } = this.state;
-
-        let classes = 'domain-panel-header ' + ((collapsible || controlledCollapse) ? 'domain-heading-collapsible' : '');
-        classes += (!collapsed ? ' domain-panel-header-expanded' : ' domain-panel-header-collapsed');
-        if (!collapsed) {
-            classes += (useTheme ? ' labkey-page-nav' : ' domain-panel-header-no-theme');
-        }
-
-        return classes;
-    }
 
     renderBasicProperties() {
         const { model, appPropertiesOnly, helpTopic } = this.props;
@@ -258,56 +243,6 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         )
     }
 
-    getHeaderIconClass = () => {
-        const { panelStatus } = this.props;
-        const { collapsed, validProperties } = this.state;
-        let classes = 'domain-panel-status-icon';
-
-        if (collapsed) {
-            if (validProperties && panelStatus === 'COMPLETE') {
-                return classes + ' domain-panel-status-icon-green';
-            }
-            return (classes + ' domain-panel-status-icon-blue');
-        }
-
-        return classes;
-    };
-
-    getHeaderIcon = () => {
-        const { panelStatus } = this.props;
-        const { validProperties } = this.state;
-
-        if (!validProperties || panelStatus === 'TODO') {
-            return faExclamationCircle;
-        }
-
-        return faCheckCircle;
-    };
-
-    getHeaderIconComponent = () => {
-
-        return (
-            <span className={this.getHeaderIconClass()}>
-                <FontAwesomeIcon icon={this.getHeaderIcon()}/>
-            </span>
-        )
-    };
-
-    getHeaderIconHelpMsg = () => {
-        const { panelStatus } = this.props;
-        const { validProperties } = this.state;
-
-        if (!validProperties) {
-            return "This section has errors."
-        }
-
-        if (panelStatus === 'TODO') {
-            return "This section does not contain any user defined fields.  You may want to review."
-        }
-
-        return undefined;
-    };
-
     getPanelClass = () => {
         const { collapsed } = this.state;
         const { useTheme } = this.props;
@@ -350,56 +285,36 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         return classes;
     };
 
-    renderHeader() {
-        const { name } = this.props.model;
-        const { panelStatus, controlledCollapse, collapsible } = this.props;
-        const { collapsed } = this.state;
-
-        const iconHelpMsg = ((panelStatus && panelStatus !== 'NONE') ? this.getHeaderIconHelpMsg() : undefined);
-
-        return (
-            <>
-                {/*Setup header help icon if applicable*/}
-                {iconHelpMsg &&
-                    <LabelHelpTip title={'Assay Properties'} body={() => (iconHelpMsg)} placement="top" iconComponent={this.getHeaderIconComponent}/>
-                }
-                {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
-
-                <span className={'domain-panel-title'}>{(name ? name + ' - ' : '') + 'Assay Properties'}</span>
-                {(controlledCollapse || collapsible) && collapsed &&
-                <span className={'pull-right'}>
-                            <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"domain-form-expand-btn"}/>
-                        </span>
-                }
-                {(controlledCollapse || collapsible) && !collapsed &&
-                <span className={'pull-right'}>
-                            <FontAwesomeIcon size={'lg'} icon={faMinusSquare} className={"domain-form-collapse-btn"}/>
-                        </span>
-                }
-            </>
-        )
-    }
-
     renderPanel() {
-        const { collapsible, controlledCollapse } = this.props;
+        const { collapsible, controlledCollapse, model, panelStatus, useTheme } = this.props;
         const { collapsed, validProperties } = this.state;
 
         return (
             <>
-            <Panel className={this.getPanelClass()} expanded={!collapsed} onToggle={function(){}}>
-                <Panel.Heading onClick={this.togglePanel} className={this.getPanelHeaderClass()} id={createFormInputName('assay-properties-hdr')}>
-                    {this.renderHeader()}
-                </Panel.Heading>
-                <Panel.Body collapsible={collapsible || controlledCollapse}>
-                    {this.props.helpTopic && <HelpURL helpTopic={this.props.helpTopic}/>}
-                    {this.renderForm()}
-                </Panel.Body>
-            </Panel>
-            {!validProperties &&
-                <div onClick={this.togglePanel} className={this.getAlertClasses()}>
-                    <Alert bsStyle="danger">Contains errors or is missing required values.</Alert>
-                </div>
-            }
+                <Panel className={this.getPanelClass()} expanded={!collapsed}>
+                    <CollapsiblePanelHeader
+                        id={createFormInputName('assay-properties-hdr')}
+                        title={'Assay Properties'}
+                        titlePrefix={model.name}
+                        collapsed={collapsed}
+                        collapsible={collapsible}
+                        controlledCollapse={controlledCollapse}
+                        panelStatus={panelStatus}
+                        togglePanel={this.togglePanel}
+                        useTheme={useTheme}
+                        isValid={validProperties}
+                        iconHelpMsg={ERROR_MSG}
+                    />
+                    <Panel.Body collapsible={collapsible || controlledCollapse}>
+                        {this.props.helpTopic && <HelpURL helpTopic={this.props.helpTopic}/>}
+                        {this.renderForm()}
+                    </Panel.Body>
+                </Panel>
+                {!validProperties &&
+                    <div onClick={this.togglePanel} className={this.getAlertClasses()}>
+                        <Alert bsStyle="danger">{ERROR_MSG}</Alert>
+                    </div>
+                }
             </>
         )
     }

@@ -73,33 +73,9 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         });
     };
 
-    shouldSkipStep(stepIndex: number): boolean {
-        const { protocolModel } = this.state;
-        const index = stepIndex - 1; // subtract 1 because the first step is not a domain step (i.e. Assay Properties panel)
-        const domain = protocolModel.domains.get(index);
-
-        return this.shouldSkipBatchDomain(domain);
-    }
-
     shouldSkipBatchDomain(domain: DomainDesign): boolean {
         return this.props.hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch') && domain.fields.size === 0;
     }
-
-    onPrevious = () => {
-        if (this.state.currentPanelIndex !== 0) {
-            const step = this.shouldSkipStep(this.state.currentPanelIndex - 1) ? 2 : 1;
-            const nextStepIndex = this.state.currentPanelIndex - step;
-            this.setState(() => ({currentPanelIndex: nextStepIndex}));
-        }
-    };
-
-    onNext = () => {
-        if (!this.isLastStep()) {
-            const step = this.shouldSkipStep(this.state.currentPanelIndex + 1) ? 2 : 1;
-            const nextStepIndex = this.state.currentPanelIndex + step;
-            this.setState(() => ({currentPanelIndex: nextStepIndex}));
-        }
-    };
 
     onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
         const { visitedPanels, currentPanelIndex } = this.state;

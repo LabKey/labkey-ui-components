@@ -34,9 +34,6 @@ import {
     PropDescType,
 } from './models';
 import { Sticky, StickyContainer } from 'react-sticky';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-
 import { DomainRow } from './DomainRow';
 import {
     addDomainField,
@@ -48,16 +45,15 @@ import {
     removeField,
     setDomainFields,
 } from './actions';
-
 import { LookupProvider } from './Lookup/Context';
 import { EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR, } from './constants';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { InferDomainResponse } from '../base/models/model';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
-import { FIELD_EDITOR_TOPIC, getHelpLink, helpLinkNode } from '../../util/helpLinks';
+import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
+import { CollapsiblePanelHeader } from "./CollapsiblePanelHeader";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -97,7 +93,6 @@ interface IDomainFormState {
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
-
     render() {
         return (
             <LookupProvider>
@@ -780,66 +775,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return updatedName;
     }
 
-    getPanelHeaderClass(): string {
-        const { collapsible, controlledCollapse, useTheme } = this.props;
-
-        let classes = 'domain-panel-header ' + ((collapsible || controlledCollapse) ? 'domain-heading-collapsible' : '');
-        classes += ((this.isPanelExpanded() && controlledCollapse) ? ' domain-panel-header-expanded' : ' domain-panel-header-collapsed');
-        if (this.isPanelExpanded() && controlledCollapse) {
-            classes += (useTheme ? ' labkey-page-nav' : ' domain-panel-header-no-theme');
-        }
-
-        return classes;
-    }
-
-    getHeaderIconClass = () => {
-        const { panelStatus, domain } = this.props;
-        const { collapsed } = this.state;
-        let classes = 'domain-panel-status-icon';
-
-        if (collapsed) {
-            if (!domain.hasException() && panelStatus === 'COMPLETE') {
-                return classes + ' domain-panel-status-icon-green';
-            }
-            return (classes + ' domain-panel-status-icon-blue');
-        }
-
-        return classes;
-    };
-
-    getHeaderIcon = () => {
-        const { domain, panelStatus } = this.props;
-
-        if (domain.hasException() || panelStatus === 'TODO') {
-            return faExclamationCircle;
-        }
-
-        return faCheckCircle;
-    };
-
-    getHeaderIconComponent = () => {
-
-        return (
-            <span className={this.getHeaderIconClass()}>
-                <FontAwesomeIcon icon={this.getHeaderIcon()}/>
-            </span>
-        )
-    };
-
-    getHeaderIconHelpMsg = () => {
-        const { panelStatus, domain } = this.props;
-
-        if (domain.hasException()) {
-            return domain.domainException.exception;
-        }
-
-        if (panelStatus === 'TODO') {
-            return "This section does not contain any user defined fields.  You may want to review."
-        }
-
-        return undefined;
-    };
-
     getPanelClass = () => {
         const { collapsed } = this.state;
         const { useTheme, controlledCollapse } = this.props;
@@ -881,59 +816,33 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return classes;
     };
 
-    renderHeaderContent() {
-        const { collapsible, controlledCollapse, panelStatus, children, domain, headerTitle, headerPrefix } = this.props;
-        const { collapsed } = this.state;
-
-        const iconHelpMsg = ((panelStatus && panelStatus !== 'NONE') ? this.getHeaderIconHelpMsg() : undefined);
-
-        return (
-            <>
-                {/*Setup header help icon if applicable*/}
-                {iconHelpMsg &&
-                    <LabelHelpTip title={DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)} body={() => (iconHelpMsg)} placement="top" iconComponent={this.getHeaderIconComponent}/>
-                }
-                {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
-
-                {/*Header name*/}
-                <span className={'domain-panel-title'}>{DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)}</span>
-
-                {/*Expand/Collapse Icon*/}
-                {(collapsible || controlledCollapse) && collapsed &&
-                    <span className={'pull-right'}>
-                        <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"domain-form-expand-btn"}/>
-                    </span>
-                }
-                {(collapsible || controlledCollapse) && !collapsed &&
-                    <span className={'pull-right'}>
-                        <FontAwesomeIcon size={'lg'} icon={faMinusSquare} className={"domain-form-collapse-btn"}/>
-                    </span>
-                }
-
-                {/*Help tip*/}
-                {children &&
-                    <LabelHelpTip customStyle={{verticalAlign: 'top', marginLeft: '5px'}} placement={'top'} title={DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)} body={() => (children)}/>
-                }
-
-                {/*Number of fields*/}
-                {controlledCollapse && (domain.fields.size > 0) &&
-                    <span className='domain-panel-header-fields-defined'>{'' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined'}</span>
-                }
-            </>
-        )
-    }
-
     render() {
-        const { domain, showHeader, collapsible, controlledCollapse } = this.props;
+        const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme } = this.props;
+        const { collapsed } = this.state;
+        const headerId = domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header';
+        const title = DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix);
+        const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
 
         return (
             <>
                 {this.state.confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
                 <Panel className={this.getPanelClass()} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
-                        <Panel.Heading onClick={this.togglePanel} className={this.getPanelHeaderClass()} id={domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header'}>
-                            {this.renderHeaderContent()}
-                        </Panel.Heading>
+                        <CollapsiblePanelHeader
+                            id={headerId}
+                            title={title}
+                            collapsed={collapsed}
+                            collapsible={collapsible}
+                            controlledCollapse={controlledCollapse}
+                            headerDetails={headerDetails}
+                            panelStatus={panelStatus}
+                            togglePanel={this.togglePanel}
+                            useTheme={useTheme}
+                            isValid={!domain.hasException()}
+                            iconHelpMsg={domain.hasException() ? domain.domainException.exception : undefined}
+                        >
+                            {children}
+                        </CollapsiblePanelHeader>
                     }
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         {this.domainExists(domain)

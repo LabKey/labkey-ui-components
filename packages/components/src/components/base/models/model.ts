@@ -452,6 +452,8 @@ export interface IQueryGridModel {
     editable?: boolean
     editing?: boolean
     filterArray?: List<Filter.IFilter>
+    includeDetailsColumn?: boolean,
+    includeUpdateColumn?: boolean,
     isError?: boolean
     isLoaded?: boolean
     isLoading?: boolean
@@ -519,6 +521,8 @@ export class QueryGridModel extends Record({
     editable: false,
     editing: false,
     filterArray: List<Filter.IFilter>(),
+    includeDetailsColumn: false,
+    includeUpdateColumn: false,
     isError: false,
     isLoaded: false,
     isLoading: false,
@@ -571,6 +575,8 @@ export class QueryGridModel extends Record({
     editable: boolean;
     editing: boolean;
     filterArray: List<Filter.IFilter>;
+    includeDetailsColumn?: boolean;
+    includeUpdateColumn?: boolean;
     isError: boolean;
     isLoaded: boolean;
     isLoading: boolean;

@@ -3457,10 +3457,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     </LookupProvider>
   </DomainForm>
   <div
-    className="domain-form-panel"
-  />
-  <div
-    className="domain-form-panel domain-assay-buttons"
+    className="domain-form-panel domain-designer-buttons"
   >
     <Button
       active={false}
@@ -15559,10 +15556,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
     </LookupProvider>
   </DomainForm>
   <div
-    className="domain-form-panel"
-  />
-  <div
-    className="domain-form-panel domain-assay-buttons"
+    className="domain-form-panel domain-designer-buttons"
   >
     <Button
       active={false}
@@ -19362,10 +19356,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
     </LookupProvider>
   </DomainForm>
   <div
-    className="domain-form-panel"
-  />
-  <div
-    className="domain-form-panel domain-assay-buttons"
+    className="domain-form-panel domain-designer-buttons"
   >
     <Button
       active={false}
@@ -22468,10 +22459,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
     </LookupProvider>
   </DomainForm>
   <div
-    className="domain-form-panel"
-  />
-  <div
-    className="domain-form-panel domain-assay-buttons"
+    className="domain-form-panel domain-designer-buttons"
   >
     <Button
       active={false}
@@ -35075,10 +35063,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
     </LookupProvider>
   </DomainForm>
   <div
-    className="domain-form-panel"
-  />
-  <div
-    className="domain-form-panel domain-assay-buttons"
+    className="domain-form-panel domain-designer-buttons"
   >
     <Button
       active={false}
@@ -48720,10 +48705,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
     </LookupProvider>
   </DomainForm>
   <div
-    className="domain-form-panel"
-  />
-  <div
-    className="domain-form-panel domain-assay-buttons"
+    className="domain-form-panel domain-designer-buttons"
   >
     <Button
       active={false}

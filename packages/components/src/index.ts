@@ -377,7 +377,6 @@ export {
     SiteUsersGridPanel,
 
     // samples-related
-    EntityInsertPanel,
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
@@ -451,8 +450,11 @@ export {
     invalidateLineageResults,
     getSampleDeleteConfirmationData,
     getDataDeleteConfirmationData,
+
+    // entities
     EntityDeleteConfirmModal,
     EntityDataType,
+    EntityInsertPanel,
 
     // Navigation
     MenuSectionConfig,

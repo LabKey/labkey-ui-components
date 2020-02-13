@@ -45,7 +45,6 @@ import {
     IEntityTypeOption,
     IParentOption,
 } from './models';
-import { initSampleSetInsert } from '../samples/actions';
 import { Progress } from '../base/Progress';
 import { SCHEMAS } from '../base/models/schemas';
 import { AppURL } from '../../url/AppURL';
@@ -67,7 +66,7 @@ import { PlacementType } from "../editable/Controls";
 import {
     DATA_IMPORT_TOPIC,
     EntityDataType,
-    FileAttachmentForm,
+    FileAttachmentForm, getActionErrorMessage,
     helpLinkNode,
     LabelHelpTip,
     withFormSteps,
@@ -78,6 +77,7 @@ import { FormStep, FormTabs } from '../forms/FormStep';
 import { FileSizeLimitProps } from "../files/models";
 import { Link } from "react-router";
 import { resolveErrorMessage } from '../../util/messaging';
+import { initEntityTypeInsert } from './actions';
 
 const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
 
@@ -182,6 +182,10 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }
     }
 
+    isSampleEntity() {
+        return this.props.entityDataType === EntityDataType.Sample;
+    }
+
     getTabs() : Array<string> {
         return ['Create ' + this.capNounPlural + ' from Grid', 'Import ' + this.capNounPlural + ' from File'];
     }
@@ -226,16 +230,20 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             initialEntityType: queryParams.target,
             selectionKey: queryParams.selectionKey,
             entityCount: 0,
+            entityDataType: props.entityDataType,
         });
 
+        const isSampleInsert = this.isSampleEntity();
         // TODO need a version of this for data classes, but also with the option for not requesting parent options
-        initSampleSetInsert(insertModel)
+        initEntityTypeInsert(insertModel,
+            isSampleInsert ? SCHEMAS.EXP_TABLES.SAMPLE_SETS : SCHEMAS.EXP_TABLES.DATA_CLASSES,
+            isSampleInsert ? SCHEMAS.SAMPLE_SETS.SCHEMA : SCHEMAS.DATA_CLASSES.SCHEMA)
             .then((partialModel) => {
                 const updatedModel = insertModel.merge(partialModel) as EntityIdCreationModel;
                 this.gridInit(updatedModel);
             })
             .catch((reason) => {
-                this.setState(() => ({error: reason}));
+                this.setState(() => ({error: getActionErrorMessage('There was a problem initializing the sample type create page.', 'sample types')}));
             });
     }
 
@@ -282,7 +290,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             const entityTypeName = insertModel ? insertModel.getTargetEntityTypeName() : undefined;
             if (entityTypeName) {
                 const queryInfoWithParents = this.getGridQueryInfo();
-                const model = getStateQueryGridModel('insert-entities', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, entityTypeName),
+                const model = getStateQueryGridModel('insert-entities', SchemaQuery.create(this.isSampleEntity() ? SCHEMAS.SAMPLE_SETS.SCHEMA : SCHEMAS.DATA_CLASSES.SCHEMA, entityTypeName),
                     {
                         editable: true,
                         loader: new EntityGridLoader(insertModel),
@@ -309,7 +317,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     getUniqueFieldKey() {
-        return  this.props.entityDataType === EntityDataType.Sample ? SAMPLE_UNIQUE_FIELD_KEY : DATA_CLASS_UNIQUE_FIELD_KEY;
+        return  this.isSampleEntity() ? SAMPLE_UNIQUE_FIELD_KEY : DATA_CLASS_UNIQUE_FIELD_KEY;
     }
 
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
@@ -859,8 +867,8 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                     there are existing {this.capIdsText} that match those being imported.
                 </p>
                 <p>
-                    When update is selected, data will be updated for matching {this.capIdsText}, and new {this.props.nounPlural}
-                    will be created for any new {this.capIdsText} provided. Data will not be changed for any columns not in the
+                    When update is selected, data will be updated for matching {this.capIdsText}, and new {this.props.nounPlural} will
+                    be created for any new {this.capIdsText} provided. Data will not be changed for any columns not in the
                     imported file.
                 </p>
                 <p>
@@ -883,7 +891,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                     className={'sm-mergeoption-checkbox'}
                     onClick={this.toggleInsertOptionChange}
                 >
-                    Update data for existing samples during this file import
+                    Update data for existing {this.props.nounPlural} during this file import
                 </span>
                 &nbsp;
                 <LabelHelpTip title={'Import Options'} body={this.importOptionHelpText}/>

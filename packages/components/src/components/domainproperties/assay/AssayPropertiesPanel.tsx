@@ -18,7 +18,7 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput,
 } from './AssayPropertiesInput';
-import { createFormInputName } from '../actions';
+import { updateDomainPanelClassList } from '../actions';
 import { Alert } from '../../base/Alert';
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
@@ -104,19 +104,12 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         }
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-        // This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
-        if (prevProps.useTheme) {
-            const el = document.getElementById(createFormInputName('assay-properties-hdr'));
-            el.classList.remove("panel-heading");
-        }
+    componentDidMount(): void {
+        updateDomainPanelClassList(this.props.useTheme, undefined, 'assay-properties-hdr');
     }
 
-    componentDidMount(): void {
-        if (this.props.useTheme) {
-            const el = document.getElementById(createFormInputName('assay-properties-hdr'));
-            el.classList.remove("panel-heading");
-        }
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+        updateDomainPanelClassList(prevProps.useTheme, undefined, 'assay-properties-hdr');
     }
 
     toggleLocalPanel = (collapsed?: boolean): void => {
@@ -293,9 +286,9 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         return (
             <>
-                <Panel className={this.getPanelClass()} expanded={!collapsed}>
+                <Panel className={this.getPanelClass()} expanded={!collapsed} onToggle={function(){}}>
                     <CollapsiblePanelHeader
-                        id={createFormInputName('assay-properties-hdr')}
+                        id={'assay-properties-hdr'}
                         title={'Assay Properties'}
                         titlePrefix={model.name}
                         collapsed={collapsed}

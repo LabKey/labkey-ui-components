@@ -38,12 +38,13 @@ import { DomainRow } from './DomainRow';
 import {
     addDomainField,
     clearAllClientValidationErrors,
-    createFormInputName,
+    getDomainPanelHeaderId,
     getIndexFromId,
     getMaxPhiLevel,
     handleDomainUpdates,
     removeField,
     setDomainFields,
+    updateDomainPanelClassList,
 } from './actions';
 import { LookupProvider } from './Lookup/Context';
 import { EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR, } from './constants';
@@ -144,16 +145,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     console.error("Unable to retrieve max PHI level.")
                 })
         }
+
+        updateDomainPanelClassList(this.props.useTheme, this.props.domain);
     }
 
     componentDidUpdate(prevProps: Readonly<IDomainFormInput>, prevState: Readonly<IDomainFormState>, snapshot?: any): void {
-        const {domain} = this.props;
-
-        // This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
-        if (prevProps.useTheme && domain && domain.name) {
-            const el = document.getElementById(createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr'));
-            el.classList.remove("panel-heading");
-        }
+        updateDomainPanelClassList(prevProps.useTheme, this.props.domain);
     }
 
     getAvailableTypes = (): List<PropDescType>  => {
@@ -821,7 +818,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme } = this.props;
-        const headerId = domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header';
         const title = DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
 
@@ -831,7 +827,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Panel className={this.getPanelClass()} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
                         <CollapsiblePanelHeader
-                            id={headerId}
+                            id={getDomainPanelHeaderId(domain)}
                             title={title}
                             collapsed={!(this.isPanelExpanded() && controlledCollapse)}
                             collapsible={collapsible}

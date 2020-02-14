@@ -206,6 +206,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     <Uncontrolled(Panel)
       className="domain-form-panel domain-panel-no-theme"
       expanded={true}
+      onToggle={[Function]}
     >
       <Panel
         bsClass="panel"
@@ -221,7 +222,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             collapsed={false}
             controlledCollapse={true}
             iconHelpMsg="Contains errors or is missing required values."
-            id="domainpropertiesrow-assay-properties-hdr"
+            id="assay-properties-hdr"
             isValid={true}
             panelStatus="NONE"
             title="Assay Properties"
@@ -231,12 +232,12 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
               bsClass="panel"
               className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme"
               componentClass="div"
-              id="domainpropertiesrow-assay-properties-hdr"
+              id="assay-properties-hdr"
               onClick={[Function]}
             >
               <div
                 className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                id="domainpropertiesrow-assay-properties-hdr"
+                id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <span
@@ -4122,6 +4123,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
     <Uncontrolled(Panel)
       className="domain-form-panel domain-panel-no-theme"
       expanded={true}
+      onToggle={[Function]}
     >
       <Panel
         bsClass="panel"
@@ -4137,7 +4139,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             collapsed={false}
             controlledCollapse={true}
             iconHelpMsg="Contains errors or is missing required values."
-            id="domainpropertiesrow-assay-properties-hdr"
+            id="assay-properties-hdr"
             isValid={true}
             panelStatus="COMPLETE"
             title="Assay Properties"
@@ -4148,12 +4150,12 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               bsClass="panel"
               className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme"
               componentClass="div"
-              id="domainpropertiesrow-assay-properties-hdr"
+              id="assay-properties-hdr"
               onClick={[Function]}
             >
               <div
                 className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                id="domainpropertiesrow-assay-properties-hdr"
+                id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <span
@@ -15802,6 +15804,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
     <Uncontrolled(Panel)
       className="domain-form-panel domain-panel-no-theme"
       expanded={true}
+      onToggle={[Function]}
     >
       <Panel
         bsClass="panel"
@@ -15817,7 +15820,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             collapsed={false}
             controlledCollapse={true}
             iconHelpMsg="Contains errors or is missing required values."
-            id="domainpropertiesrow-assay-properties-hdr"
+            id="assay-properties-hdr"
             isValid={true}
             panelStatus="NONE"
             title="Assay Properties"
@@ -15827,12 +15830,12 @@ exports[`AssayDesignerPanels default properties 1`] = `
               bsClass="panel"
               className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme"
               componentClass="div"
-              id="domainpropertiesrow-assay-properties-hdr"
+              id="assay-properties-hdr"
               onClick={[Function]}
             >
               <div
                 className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                id="domainpropertiesrow-assay-properties-hdr"
+                id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <span
@@ -19603,6 +19606,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
     <Uncontrolled(Panel)
       className="domain-form-panel domain-panel-no-theme"
       expanded={true}
+      onToggle={[Function]}
     >
       <Panel
         bsClass="panel"
@@ -19618,7 +19622,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             collapsed={false}
             controlledCollapse={true}
             iconHelpMsg="Contains errors or is missing required values."
-            id="domainpropertiesrow-assay-properties-hdr"
+            id="assay-properties-hdr"
             isValid={true}
             panelStatus="NONE"
             title="Assay Properties"
@@ -19628,12 +19632,12 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               bsClass="panel"
               className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme"
               componentClass="div"
-              id="domainpropertiesrow-assay-properties-hdr"
+              id="assay-properties-hdr"
               onClick={[Function]}
             >
               <div
                 className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                id="domainpropertiesrow-assay-properties-hdr"
+                id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <span
@@ -23124,6 +23128,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
     <Uncontrolled(Panel)
       className="domain-form-panel domain-panel-no-theme"
       expanded={true}
+      onToggle={[Function]}
     >
       <Panel
         bsClass="panel"
@@ -23139,7 +23144,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             collapsed={false}
             controlledCollapse={true}
             iconHelpMsg="Contains errors or is missing required values."
-            id="domainpropertiesrow-assay-properties-hdr"
+            id="assay-properties-hdr"
             isValid={true}
             panelStatus="COMPLETE"
             title="Assay Properties"
@@ -23150,12 +23155,12 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               bsClass="panel"
               className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme"
               componentClass="div"
-              id="domainpropertiesrow-assay-properties-hdr"
+              id="assay-properties-hdr"
               onClick={[Function]}
             >
               <div
                 className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                id="domainpropertiesrow-assay-properties-hdr"
+                id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <span
@@ -35727,6 +35732,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
     <Uncontrolled(Panel)
       className="domain-form-panel domain-panel-no-theme"
       expanded={true}
+      onToggle={[Function]}
     >
       <Panel
         bsClass="panel"
@@ -35742,7 +35748,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             collapsed={false}
             controlledCollapse={true}
             iconHelpMsg="Contains errors or is missing required values."
-            id="domainpropertiesrow-assay-properties-hdr"
+            id="assay-properties-hdr"
             isValid={true}
             panelStatus="COMPLETE"
             title="Assay Properties"
@@ -35753,12 +35759,12 @@ exports[`AssayDesignerPanels initModel 1`] = `
               bsClass="panel"
               className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme"
               componentClass="div"
-              id="domainpropertiesrow-assay-properties-hdr"
+              id="assay-properties-hdr"
               onClick={[Function]}
             >
               <div
                 className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                id="domainpropertiesrow-assay-properties-hdr"
+                id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <span

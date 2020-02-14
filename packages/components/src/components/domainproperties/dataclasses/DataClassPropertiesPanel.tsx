@@ -7,7 +7,7 @@ import { SCHEMAS } from "../../base/models/schemas";
 import { Alert } from "../../base/Alert";
 import { DEFINE_DATA_CLASS_TOPIC } from "../../../util/helpLinks";
 import { DomainPanelStatus } from "../models";
-import { createFormInputName } from "../actions";
+import { updateDomainPanelClassList } from "../actions";
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { ENTITY_FORM_ID_PREFIX } from "../entities/constants";
 import { getFormNameFromId } from "../entities/actions";
@@ -80,19 +80,12 @@ export class DataClassPropertiesPanel extends React.Component<Props, State> {
         }
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-        // This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
-        if (prevProps.useTheme) {
-            const el = document.getElementById(createFormInputName('dataclass-properties-hdr'));
-            el.classList.remove("panel-heading");
-        }
+    componentDidMount(): void {
+        updateDomainPanelClassList(this.props.useTheme, undefined, 'dataclass-properties-hdr');
     }
 
-    componentDidMount(): void {
-        if (this.props.useTheme) {
-            const el = document.getElementById(createFormInputName('dataclass-properties-hdr'));
-            el.classList.remove("panel-heading");
-        }
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+        updateDomainPanelClassList(prevProps.useTheme, undefined, 'dataclass-properties-hdr');
     }
 
     toggleLocalPanel = (collapsed?: boolean): void => {
@@ -209,7 +202,7 @@ export class DataClassPropertiesPanel extends React.Component<Props, State> {
             <>
                 <Panel className={this.getPanelClass()} expanded={!collapsed} onToggle={function(){}}>
                     <CollapsiblePanelHeader
-                        id={createFormInputName('dataclass-properties-hdr')}
+                        id={'dataclass-properties-hdr'}
                         title={noun + ' Properties'}
                         titlePrefix={model.name}
                         togglePanel={this.togglePanel}

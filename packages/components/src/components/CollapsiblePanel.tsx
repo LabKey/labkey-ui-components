@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Panel } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,7 +18,7 @@ interface CollapsiblePanelState {
     collapsed: boolean;
 }
 
-export class CollapsiblePanel extends React.PureComponent<CollapsiblePanelProps, CollapsiblePanelState> {
+export class CollapsiblePanel extends PureComponent<CollapsiblePanelProps, CollapsiblePanelState> {
     constructor(props) {
         super(props);
 

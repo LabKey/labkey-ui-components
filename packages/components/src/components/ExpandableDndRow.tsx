@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import { Collapse, Row } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,7 +32,7 @@ interface ExpandableDndRowState {
     hover: boolean;
 }
 
-export class ExpandableDndRow extends React.PureComponent<ExpandableDndRowProps, ExpandableDndRowState> {
+export class ExpandableDndRow extends PureComponent<ExpandableDndRowProps, ExpandableDndRowState> {
     constructor(props) {
         super(props);
 

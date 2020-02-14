@@ -1,6 +1,6 @@
 import { Treebeard, decorators } from 'react-treebeard';
 
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFileAlt } from '@fortawesome/free-solid-svg-icons';
@@ -87,19 +87,20 @@ const customStyle = {
 };
 
 interface FileTreeProps {
-    loadData: any;
-    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean) => any;
+    loadData: (directory?: string) => Promise<any>
+    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean) => void
 }
 
 interface FileTreeState {
-    cursor: any;
-    checked: List<string>;
-    data: any;
-    error?: string;
+    cursor: any
+    checked: List<string>
+    data: any
+    error?: string
+    loading: boolean  // Only used for testing
 }
 
-export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
-    constructor(props) {
+export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
+    constructor(props: FileTreeProps) {
         super(props);
 
         this.state = {
@@ -107,12 +108,14 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
             checked: List<string>(),
             data: [],
             error: undefined,
+            loading: false,
         };
     }
 
     componentDidMount(): void {
         const { loadData } = this.props;
 
+        this.setState(() => ({loading: true}));
         loadData()
             .then(data => {
                 let loadedData = data;
@@ -137,10 +140,10 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
                     loadedData.id = loadedData.name;
                 }
 
-                this.setState(() => ({ data: loadedData }));
+                this.setState(() => ({ data: loadedData, loading: false }));
             })
             .catch((reason: any) => {
-                this.setState(() => ({ error: reason }));
+                this.setState(() => ({ error: reason, loading: false }));
             });
     }
 
@@ -270,7 +273,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
         }
     };
 
-    // recursively toggle all child files. afterCascade used to check selection of each subfile
+    // recursively toggle all child files. afterCascade used to check selection box of each subfile
     cascadeToggle = (node, afterCascade: (any) => any): void => {
         const afterToggle = () => {
             afterCascade(node);
@@ -304,6 +307,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
     loadDirectory = (node: any, callback?: () => any): any => {
         const { loadData } = this.props;
 
+        this.setState(() => ({loading: true}));
         loadData(this.getPathFromId(node.id))
             .then(children => {
 
@@ -321,12 +325,12 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
 
                 dataNode.children = children; // This is not immutable so this is updating the data object
                 this.setState(
-                    () => ({ cursor: node, data: Object.assign({}, data), error: undefined }),
+                    () => ({ cursor: node, data: Object.assign({}, data), error: undefined, loading: false }),
                     callback
                 );
             })
             .catch((reason: any) => {
-                this.setState(() => ({ error: reason.message ? reason.message : 'Unable to fetch data' }));
+                this.setState(() => ({ error: reason.message ? reason.message : 'Unable to fetch data', loading: false }));
             });
     };
 
@@ -363,6 +367,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
         const Header = this.Header;
 
         return (
+            <>
             <div className="filetree-container">
                 {error ? (
                     <Alert bsStyle="danger">{error}</Alert>
@@ -375,6 +380,7 @@ export class FileTree extends React.Component<FileTreeProps, FileTreeState> {
                     />
                 )}
             </div>
+                </>
         );
     };
 }

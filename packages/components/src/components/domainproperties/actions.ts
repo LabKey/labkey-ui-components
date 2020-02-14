@@ -718,7 +718,7 @@ export function getDomainBottomErrorMessage(exception: string, errorDomains: Lis
     else if (errorDomains.size > 1 || (errorDomains.size > 0 && !validProperties)) {
         return "Please correct errors above before saving.";
     }
-    else if (visitedPanels.size > 1 && !validProperties) {
+    else if (visitedPanels.size > 0 && !validProperties) {
         return "Please correct errors in the properties panel before saving.";
     }
     else if (errorDomains.size == 1) {

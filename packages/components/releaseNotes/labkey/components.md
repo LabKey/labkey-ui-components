@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 6835: Changes to support Data Class Designer in Sample Manager and LKS
     - Factor out EntityDetailsForm.tsx from SampleSetDetailsPanel.tsx
-    - Factor out CollapsiblePanelHeader.tsx for reuse and put back into AssayPropertiesPanel.tsx and DomainForm.tsx
+    - Factor out DomainPropertiesPanelContext.tsx and CollapsiblePanelHeader.tsx for reuse and put back into AssayPropertiesPanel.tsx and DomainForm.tsx
     - DataClassDesigner.tsx and DataClassPropertiesPanel.tsx
     - Move AssayProtocolModel to domainproperties/assay/models.ts
 

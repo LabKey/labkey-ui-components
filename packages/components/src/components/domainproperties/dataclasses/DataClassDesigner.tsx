@@ -44,7 +44,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
             submitting: false,
             currentPanelIndex: 0,
             model: props.initModel || DataClassModel.create({}),
-            visitedPanels: List<number>([0]),
+            visitedPanels: List<number>(),
             validatePanel: undefined,
             firstState: true
         }
@@ -54,19 +54,27 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
     onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
         const { visitedPanels, currentPanelIndex } = this.state;
 
+        let updatedVisitedPanels = visitedPanels;
+        if (!visitedPanels.contains(index)) {
+            updatedVisitedPanels = visitedPanels.push(index);
+        }
+
         if (!collapsed) {
-            if (!visitedPanels.contains(index)) {
-                this.setState(() => ({currentPanelIndex: index,
-                    visitedPanels: visitedPanels.push(index),
-                    firstState: false}), callback());
-            }
-            else {
-                this.setState(() => ({currentPanelIndex: index, firstState: false}), callback());
-            }
+            this.setState(() => ({
+                visitedPanels: updatedVisitedPanels,
+                currentPanelIndex: index,
+                firstState: false,
+                validatePanel: currentPanelIndex
+            }), callback());
         }
         else {
             if (currentPanelIndex === index) {
-                this.setState(() => ({currentPanelIndex: undefined, firstState: false}), callback());
+                this.setState(() => ({
+                    visitedPanels: updatedVisitedPanels,
+                    currentPanelIndex: undefined,
+                    firstState: false,
+                    validatePanel: currentPanelIndex
+                }), callback());
             }
             else {
                 callback();
@@ -75,13 +83,18 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
     };
 
     onFinish = () => {
-        const { model } = this.state;
+        const { model, visitedPanels, currentPanelIndex } = this.state;
         const { beforeFinish } = this.props;
+
+        let updatedVisitedPanels = visitedPanels;
+        if (!visitedPanels.contains(currentPanelIndex)) {
+            updatedVisitedPanels = visitedPanels.push(currentPanelIndex);
+        }
 
         // This first setState forces the current expanded panel to validate its fields and display and errors
         // the callback setState then sets that to undefined so it doesn't keep validating every render
-        this.setState((state) => ({validatePanel: state.currentPanelIndex}), () => {
-            this.setState((state) => ({validatePanel: undefined}), () => {
+        this.setState((state) => ({validatePanel: state.currentPanelIndex, visitedPanels: updatedVisitedPanels}), () => {
+            this.setState(() => ({validatePanel: undefined}), () => {
                 if (this.isValid()) {
                     this.setState(() => ({submitting: true}));
                     if (beforeFinish) {

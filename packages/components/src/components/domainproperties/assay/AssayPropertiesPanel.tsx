@@ -23,6 +23,11 @@ import { Alert } from '../../base/Alert';
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { HelpTopicURL } from "../HelpTopicURL";
+import {
+    DomainPropertiesPanelContextConsumer,
+    DomainPropertiesPanelProvider,
+    IDomainPropertiesPanelContext
+} from "../DomainPropertiesPanelContext";
 
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
@@ -49,9 +54,9 @@ const BOOLEAN_FIELDS = [
 interface Props {
     model: AssayProtocolModel
     onChange: (model: AssayProtocolModel) => any
-    appPropertiesOnly: boolean
-    asPanel: boolean
-    initCollapsed: boolean
+    appPropertiesOnly?: boolean
+    asPanel?: boolean
+    initCollapsed?: boolean
     collapsible?: boolean
     controlledCollapse?: boolean
     validate?: boolean
@@ -62,11 +67,27 @@ interface Props {
 }
 
 interface State {
-    collapsed: boolean
     validProperties: boolean
 }
 
-export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
+export class AssayPropertiesPanel extends React.PureComponent<Props> {
+    render() {
+        const { controlledCollapse, collapsible, initCollapsed, onToggle } = this.props;
+
+        return (
+            <DomainPropertiesPanelProvider
+                controlledCollapse={controlledCollapse}
+                collapsible={collapsible}
+                initCollapsed={initCollapsed}
+                onToggle={onToggle}
+            >
+                <AssayPropertiesPanelImpl {...this.props} />
+            </DomainPropertiesPanelProvider>
+        )
+    }
+}
+
+class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
 
     static defaultProps = {
         appPropertiesOnly: false,
@@ -80,27 +101,14 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            collapsed: props.initCollapsed,
             validProperties: true
         };
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        const { controlledCollapse, initCollapsed, validate, model, onChange } = this.props;
-
-        // if controlled collapse, allow the prop change to update the collapsed state
-        if (controlledCollapse && nextProps.initCollapsed !== initCollapsed) {
-            this.toggleLocalPanel(nextProps.initCollapsed);
-        }
-
+        const { validate } = this.props;
         if (nextProps.validate && validate !== nextProps.validate) {
-            const valid = model.hasValidProperties();
-            this.setState(() => ({validProperties: (model && valid)}), () => {
-                if (onChange)
-                {
-                    onChange(model);
-                }
-            })
+            this.setValidProperties();
         }
     }
 
@@ -112,26 +120,15 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         updateDomainPanelClassList(prevProps.useTheme, undefined, 'assay-properties-hdr');
     }
 
-    toggleLocalPanel = (collapsed?: boolean): void => {
-        const { model } = this.props;
+    setValidProperties() {
+        const { model, onChange } = this.props;
+        const validProperties = model && model.hasValidProperties();
+        this.setState(() => ({validProperties}), () => onChange(model));
+    }
 
-        this.setState((state) => ({
-            collapsed: collapsed !== undefined ? collapsed : !state.collapsed,
-            validProperties: model && model.hasValidProperties()
-        }));
-    };
-
-    togglePanel = (evt: any, collapsed?: boolean): void => {
-        const { onToggle, collapsible, controlledCollapse } = this.props;
-
-        if (collapsible || controlledCollapse) {
-            if (onToggle) {
-                onToggle((collapsed !== undefined ? collapsed : !this.state.collapsed), this.toggleLocalPanel);
-            }
-            else {
-                this.toggleLocalPanel(collapsed)
-            }
-        }
+    toggleLocalPanel = (evt: any, context: IDomainPropertiesPanelContext): void => {
+        this.setValidProperties();
+        context.togglePanel(evt, !context.collapsed);
     };
 
     onInputChange = (evt) => {
@@ -160,7 +157,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         const valid = (newModel.hasValidProperties() === true ? true : this.state.validProperties);
 
-        this.setState((state) => (
+        this.setState(() => (
             // Only clear validation errors here. New errors found on collapse or submit.
             {validProperties: valid}),
         () => {
@@ -238,79 +235,44 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         )
     }
 
-    getPanelClass = () => {
-        const { collapsed } = this.state;
-        const { useTheme } = this.props;
-
-        let classes = 'domain-form-panel';
-
-        if (!collapsed) {
-            if (useTheme) {
-                classes += ' lk-border-theme-light';
-            }
-            else {
-                classes += ' domain-panel-no-theme';
-            }
-        }
-
-        return classes;
-    };
-
-    getAlertClasses = () => {
-        const { collapsed } = this.state;
-        const { useTheme } = this.props;
-
-        let classes = 'domain-bottom-alert panel-default';
-
-        if (!collapsed) {
-            if (useTheme) {
-                classes += ' lk-border-theme-light';
-            }
-            else {
-                classes += ' domain-bottom-alert-expanded';
-            }
-        }
-        else {
-            classes += ' panel-default';
-        }
-
-        if (!collapsed)
-            classes += ' domain-bottom-alert-top';
-
-        return classes;
-    };
-
     renderPanel() {
         const { collapsible, controlledCollapse, model, panelStatus, useTheme, helpTopic } = this.props;
-        const { collapsed, validProperties } = this.state;
+        const { validProperties } = this.state;
 
         return (
-            <>
-                <Panel className={this.getPanelClass()} expanded={!collapsed} onToggle={function(){}}>
-                    <CollapsiblePanelHeader
-                        id={'assay-properties-hdr'}
-                        title={'Assay Properties'}
-                        titlePrefix={model.name}
-                        collapsed={collapsed}
-                        collapsible={collapsible}
-                        controlledCollapse={controlledCollapse}
-                        panelStatus={panelStatus}
-                        togglePanel={this.togglePanel}
-                        useTheme={useTheme}
-                        isValid={validProperties}
-                        iconHelpMsg={ERROR_MSG}
-                    />
-                    <Panel.Body collapsible={collapsible || controlledCollapse}>
-                        {helpTopic && <HelpTopicURL nounPlural={'assays'} helpTopic={helpTopic}/>}
-                        {this.renderForm()}
-                    </Panel.Body>
-                </Panel>
-                {!validProperties &&
-                    <div onClick={this.togglePanel} className={this.getAlertClasses()}>
-                        <Alert bsStyle="danger">{ERROR_MSG}</Alert>
-                    </div>
+            <DomainPropertiesPanelContextConsumer>
+                {(context) =>
+                    <>
+                        <Panel className={context.getPanelClass(useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
+                            <CollapsiblePanelHeader
+                                id={'assay-properties-hdr'}
+                                title={'Assay Properties'}
+                                titlePrefix={model.name}
+                                collapsed={context.collapsed}
+                                collapsible={collapsible}
+                                controlledCollapse={controlledCollapse}
+                                panelStatus={panelStatus}
+                                togglePanel={(evt: any) => this.toggleLocalPanel(evt, context)}
+                                useTheme={useTheme}
+                                isValid={validProperties}
+                                iconHelpMsg={ERROR_MSG}
+                            />
+                            <Panel.Body collapsible={collapsible || controlledCollapse}>
+                                {helpTopic && <HelpTopicURL nounPlural={'assays'} helpTopic={helpTopic}/>}
+                                {this.renderForm()}
+                            </Panel.Body>
+                        </Panel>
+                        {!validProperties &&
+                            <div
+                                onClick={(evt: any) => this.toggleLocalPanel(evt, context)}
+                                className={context.getAlertClasses(useTheme)}
+                            >
+                                <Alert bsStyle="danger">{ERROR_MSG}</Alert>
+                            </div>
+                        }
+                    </>
                 }
-            </>
+            </DomainPropertiesPanelContextConsumer>
         )
     }
 

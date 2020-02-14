@@ -2,9 +2,9 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { DomainDesign, HeaderRenderer } from '../models';
 import { AssayProtocolModel } from '../assay/models';
-import { getDomainBottomErrorMessage, getDomainPanelStatus, saveAssayDesign } from '../actions';
+import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveAssayDesign } from '../actions';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
-import DomainForm, { DomainFormImpl } from '../DomainForm';
+import DomainForm from '../DomainForm';
 import { Button } from 'react-bootstrap';
 import { SEVERITY_LEVEL_ERROR } from '../constants';
 import { Alert } from '../../base/Alert';
@@ -181,7 +181,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                 return domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR
             })
             .map((domain) => {
-                return DomainFormImpl.getHeaderName(domain.name, undefined, protocolModel.name)
+                return getDomainHeaderName(domain.name, undefined, protocolModel.name)
             })
             .toList();
 

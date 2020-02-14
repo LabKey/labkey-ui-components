@@ -10,8 +10,6 @@ interface Props {
 export interface IDomainPropertiesPanelContext {
     collapsed: boolean
     togglePanel?: (evt: any, collapsed?: boolean) => void
-    getPanelClass?: (useTheme: boolean) => string
-    getAlertClasses?: (useTheme: boolean) => string
 }
 
 const DomainPropertiesPanelContext = React.createContext<IDomainPropertiesPanelContext>(undefined);
@@ -61,50 +59,10 @@ export class DomainPropertiesPanelProvider extends React.Component<Props, IDomai
         }
     };
 
-    getPanelClass = (useTheme: boolean) => {
-        const { collapsed } = this.state;
-
-        let classes = 'domain-form-panel';
-        if (!collapsed) {
-            if (useTheme) {
-                classes += ' lk-border-theme-light';
-            }
-            else {
-                classes += ' domain-panel-no-theme';
-            }
-        }
-
-        return classes;
-    };
-
-    getAlertClasses = (useTheme: boolean) => {
-        const { collapsed } = this.state;
-
-        let classes = 'domain-bottom-alert panel-default';
-        if (!collapsed) {
-            if (useTheme) {
-                classes += ' lk-border-theme-light';
-            }
-            else {
-                classes += ' domain-bottom-alert-expanded';
-            }
-        }
-        else {
-            classes += ' panel-default';
-        }
-
-        if (!collapsed)
-            classes += ' domain-bottom-alert-top';
-
-        return classes;
-    };
-
     render() {
         const context = {
             ...this.state,
-            togglePanel: this.togglePanel,
-            getPanelClass: this.getPanelClass,
-            getAlertClasses: this.getAlertClasses
+            togglePanel: this.togglePanel
         };
 
         return (

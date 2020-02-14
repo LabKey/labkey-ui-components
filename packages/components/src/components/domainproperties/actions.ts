@@ -728,6 +728,42 @@ export function getDomainBottomErrorMessage(exception: string, errorDomains: Lis
     return undefined;
 }
 
+export function getDomainPanelClass(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
+    let classes = 'domain-form-panel';
+
+    if (!collapsed && controlledCollapse) {
+        if (useTheme) {
+            classes += ' lk-border-theme-light';
+        }
+        else {
+            classes += ' domain-panel-no-theme';
+        }
+    }
+
+    return classes;
+}
+
+export function getDomainAlertClasses(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
+    let classes = 'domain-bottom-alert panel-default';
+
+    if (!collapsed && controlledCollapse) {
+        if (useTheme) {
+            classes += ' lk-border-theme-light';
+        }
+        else {
+            classes += ' domain-bottom-alert-expanded';
+        }
+    }
+    else {
+        classes += ' panel-default';
+    }
+
+    if (!collapsed)
+        classes += ' domain-bottom-alert-top';
+
+    return classes;
+}
+
 // This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
 export function updateDomainPanelClassList(useTheme: boolean, domain: DomainDesign, id?: string) {
     if (useTheme) {
@@ -744,4 +780,20 @@ export function getDomainPanelHeaderId(domain: DomainDesign, id?: string): strin
     }
 
     return id || 'domain-header';
+}
+
+export function getDomainHeaderName(name?: string, headerTitle?: string, headerPrefix?: string): string {
+    let updatedName = headerTitle || (name ? name : "Fields");
+
+    // optionally trim off a headerPrefix from the name display
+    if (headerPrefix && updatedName.indexOf(headerPrefix + ' ') === 0) {
+        updatedName = updatedName.replace(headerPrefix + ' ', '');
+    }
+
+    // prefer "Results Fields" over "Data Fields"in assay case
+    if (updatedName.endsWith('Data Fields')) {
+        updatedName = updatedName.replace('Data Fields', 'Results Fields');
+    }
+
+    return updatedName;
 }

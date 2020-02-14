@@ -18,7 +18,7 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput,
 } from './AssayPropertiesInput';
-import { updateDomainPanelClassList } from '../actions';
+import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from '../actions';
 import { Alert } from '../../base/Alert';
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
@@ -243,7 +243,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
             <DomainPropertiesPanelContextConsumer>
                 {(context) =>
                     <>
-                        <Panel className={context.getPanelClass(useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
+                        <Panel className={getDomainPanelClass(context.collapsed, true, useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
                             <CollapsiblePanelHeader
                                 id={'assay-properties-hdr'}
                                 title={'Assay Properties'}
@@ -265,7 +265,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
                         {!validProperties &&
                             <div
                                 onClick={(evt: any) => this.toggleLocalPanel(evt, context)}
-                                className={context.getAlertClasses(useTheme)}
+                                className={getDomainAlertClasses(context.collapsed, true, useTheme)}
                             >
                                 <Alert bsStyle="danger">{ERROR_MSG}</Alert>
                             </div>

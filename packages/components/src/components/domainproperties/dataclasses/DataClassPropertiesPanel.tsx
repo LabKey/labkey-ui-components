@@ -7,7 +7,7 @@ import { SCHEMAS } from "../../base/models/schemas";
 import { Alert } from "../../base/Alert";
 import { DEFINE_DATA_CLASS_TOPIC } from "../../../util/helpLinks";
 import { DomainPanelStatus } from "../models";
-import { updateDomainPanelClassList } from "../actions";
+import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { ENTITY_FORM_ID_PREFIX } from "../entities/constants";
 import { getFormNameFromId } from "../entities/actions";
@@ -159,7 +159,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
             <DomainPropertiesPanelContextConsumer>
                 {(context) =>
                     <>
-                        <Panel className={context.getPanelClass(useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
+                        <Panel className={getDomainPanelClass(context.collapsed, true, useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
                             <CollapsiblePanelHeader
                                 id={'dataclass-properties-hdr'}
                                 title={noun + ' Properties'}
@@ -195,7 +195,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                         {!isValid &&
                             <div
                                 onClick={(evt: any) => this.toggleLocalPanel(evt, context)}
-                                className={context.getAlertClasses(useTheme)}
+                                className={getDomainAlertClasses(context.collapsed, true, useTheme)}
                             >
                                 <Alert bsStyle="danger">{ERROR_MSG}</Alert>
                             </div>

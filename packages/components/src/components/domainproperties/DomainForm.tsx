@@ -38,6 +38,9 @@ import { DomainRow } from './DomainRow';
 import {
     addDomainField,
     clearAllClientValidationErrors,
+    getDomainAlertClasses,
+    getDomainHeaderName,
+    getDomainPanelClass,
     getDomainPanelHeaderId,
     getIndexFromId,
     getMaxPhiLevel,
@@ -759,72 +762,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
-    static getHeaderName(name?: string, headerTitle?: string, headerPrefix?: string): string {
-        let updatedName = headerTitle || (name ? name : "Fields");
-
-        // optionally trim off a headerPrefix from the name display
-        if (headerPrefix && updatedName.indexOf(headerPrefix + ' ') === 0) {
-            updatedName = updatedName.replace(headerPrefix + ' ', '');
-        }
-
-        // prefer "Results Fields" over "Data Fields"in assay case
-        if (updatedName.endsWith('Data Fields')) {
-            updatedName = updatedName.replace('Data Fields', 'Results Fields');
-        }
-
-        return updatedName;
-    }
-
-    getPanelClass = () => {
-        const { collapsed } = this.state;
-        const { useTheme, controlledCollapse } = this.props;
-
-        let classes = 'domain-form-panel';
-
-        if (!collapsed && controlledCollapse) {
-            if (useTheme) {
-                classes += ' lk-border-theme-light';
-            }
-            else {
-                classes += ' domain-panel-no-theme';
-            }
-        }
-
-        return classes;
-    };
-
-    getAlertClasses = () => {
-        const { collapsed } = this.state;
-        const { useTheme, controlledCollapse } = this.props;
-        let classes = 'domain-bottom-alert panel-default';
-
-        if (!collapsed && controlledCollapse) {
-            if (useTheme) {
-                classes += ' lk-border-theme-light';
-            }
-            else {
-                classes += ' domain-bottom-alert-expanded';
-            }
-        }
-        else {
-            classes += ' panel-default';
-        }
-
-        if (!collapsed)
-            classes += ' domain-bottom-alert-top';
-
-        return classes;
-    };
-
     render() {
         const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme } = this.props;
-        const title = DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix);
+        const { collapsed } = this.state;
+        const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
 
         return (
             <>
                 {this.state.confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
-                <Panel className={this.getPanelClass()} expanded={this.isPanelExpanded()} onToggle={function(){}}>
+                <Panel className={getDomainPanelClass(collapsed, controlledCollapse, useTheme)} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
                         <CollapsiblePanelHeader
                             id={getDomainPanelHeaderId(domain)}
@@ -850,7 +797,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     </Panel.Body>
                 </Panel>
                 {domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR &&
-                    <div onClick={this.togglePanel} className={this.getAlertClasses()}>
+                    <div onClick={this.togglePanel} className={getDomainAlertClasses(collapsed, controlledCollapse, useTheme)}>
                         <Alert bsStyle="danger">{domain.domainException.exception}</Alert>
                     </div>
                 }

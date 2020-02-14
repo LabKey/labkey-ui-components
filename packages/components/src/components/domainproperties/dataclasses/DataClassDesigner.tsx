@@ -5,9 +5,9 @@ import { DataClassModel } from "./models";
 import { Alert } from "../../base/Alert";
 import { DomainDesign } from "../models";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
-import DomainForm, { DomainFormImpl } from "../DomainForm";
+import DomainForm from "../DomainForm";
 import { DataClassPropertiesPanel } from "./DataClassPropertiesPanel";
-import { getDomainBottomErrorMessage, getDomainPanelStatus } from "../actions";
+import { getDomainBottomErrorMessage, getDomainPanelStatus, getDomainHeaderName } from "../actions";
 
 interface Props {
     noun?: string
@@ -147,7 +147,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
 
         let errorDomains = List<string>();
         if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
-            errorDomains = errorDomains.push(DomainFormImpl.getHeaderName(model.domain.name, undefined, model.name));
+            errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
         }
 
         const bottomErrorMsg = getDomainBottomErrorMessage(undefined, errorDomains, model.hasValidProperties(), visitedPanels);

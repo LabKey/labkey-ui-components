@@ -112,6 +112,7 @@ interface OwnProps {
     nounSingular: string
     nounPlural: string
     entityDataType: EntityDataType
+    parentDataTypes?: List<EntityDataType>
     importHelpLinkNode: React.ReactNode
 }
 
@@ -221,12 +222,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         if (insertModel
             && insertModel.getTargetEntityTypeName() === queryParams.target
             && insertModel.selectionKey === queryParams.selectionKey
-            && insertModel.parents === queryParams.parents
+            && (insertModel.parents === queryParams.parents || !props.parentDataTypes)
         )
             return;
 
         insertModel = new EntityIdCreationModel({
-            parents: queryParams.parents,
+            parents: props.parentDataTypes ? queryParams.parents : undefined,
             initialEntityType: queryParams.target,
             selectionKey: queryParams.selectionKey,
             entityCount: 0,
@@ -234,10 +235,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         });
 
         const isSampleInsert = this.isSampleEntity();
-        // TODO need a version of this for data classes, but also with the option for not requesting parent options
-        initEntityTypeInsert(insertModel,
-            isSampleInsert ? SCHEMAS.EXP_TABLES.SAMPLE_SETS : SCHEMAS.EXP_TABLES.DATA_CLASSES,
-            isSampleInsert ? SCHEMAS.SAMPLE_SETS.SCHEMA : SCHEMAS.DATA_CLASSES.SCHEMA)
+        const currentSchema = isSampleInsert ? SCHEMAS.EXP_TABLES.SAMPLE_SETS : SCHEMAS.EXP_TABLES.DATA_CLASSES;
+        // TODO the parent schema should probably be parameterized separately since the parent type doesn't have to match
+        // the entity type and more than one parent type could be allowed.
+        const parentSchema =  isSampleInsert ? SCHEMAS.SAMPLE_SETS.SCHEMA : undefined;
+
+        initEntityTypeInsert(insertModel, currentSchema, parentSchema)
             .then((partialModel) => {
                 const updatedModel = insertModel.merge(partialModel) as EntityIdCreationModel;
                 this.gridInit(updatedModel);
@@ -557,7 +560,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                                 </div>
                             )
                         }).toArray()}
-                        {parentOptions.size > entityParents.size ?
+                        {entityParents.size > 0  ? parentOptions.size > entityParents.size ?
                             <div className="sample-insert--header">
                                 <AddEntityButton
                                     entity="Parent"
@@ -566,7 +569,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                             <div className="sample-insert--header">
                                 Only {parentOptions.size} parent {parentOptions.size === 1 ? this.typeTextSingular : this.typeTextPlural} available.
                             </div>
-                        }
+                        : null}
                     </>
                 );
             }

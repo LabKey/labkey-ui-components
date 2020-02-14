@@ -1,7 +1,14 @@
 import { buildURL, EntityDataType, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
-import { DisplayObject, EntityIdCreationModel, EntityParentType, EntityTypeOption, IEntityTypeOption } from './models';
+import {
+    DisplayObject,
+    EntityIdCreationModel,
+    EntityParentType,
+    EntityTypeOption,
+    IEntityTypeOption,
+    IParentOption
+} from './models';
 
 export interface DeleteConfirmationData {
     canDelete: Array<any>
@@ -134,50 +141,59 @@ function extractFromRow(row: Map<string, any>): IEntityTypeOption {
 
 export function initEntityTypeInsert(model: EntityIdCreationModel, schema: SchemaQuery, parentSchemaName: string): Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
-        return Promise.all([
+        let promises: Array<Promise<any>> = [
             selectRows({
                 schemaName: schema.schemaName,
                 queryName: schema.queryName,
                 columns: 'LSID,Name,RowId'
-            }),
-            initParents(model.parents, model.selectionKey)
-        ]).then(results => {
-            let [entityTypeResult, entityParents] = results;
-            const entityTypes = fromJS(entityTypeResult.models[entityTypeResult.key]);
-            const entityCount = entityParents.find((parent) => parent.value !== undefined) ? 1 : 0;
-            const parentOptions = entityTypes.map(row => {
-                const name = row.getIn(['Name', 'value']);
-                return {
-                    value: name.toLowerCase(),
-                    label: name,
-                    schema: parentSchemaName,
-                    query: name // Issue 33653: query name is case-sensitive for some data inputs (parents)
-                }
-            }).toList().sortBy(p => p.label, naturalSort);
-
-            const entityTypeOptions = entityTypes
-                .map(row => extractFromRow(row))
-                .sortBy(r => r.label, naturalSort)
-                .toList();
-
-            let targetEntityType;
-            if (model.initialEntityType) {
-                const setName = model.initialEntityType.toLowerCase();
-                const data = entityTypes.find(row => setName === row.getIn(['Name', 'value']).toLowerCase());
-
-                if (data) {
-                    targetEntityType = new EntityTypeOption(extractFromRow(data));
-                }
-            }
-            resolve({
-                isInit: true,
-                parentOptions,
-                entityCount: entityCount,
-                entityParents: entityParents,
-                entityTypeOptions: entityTypeOptions,
-                targetEntityType: targetEntityType
             })
-        })
+        ];
+        if (parentSchemaName) {
+            promises.push(initParents(model.parents, model.selectionKey));
+        }
+        return Promise.all(promises)
+            .then(results => {
+                let entityTypeResult = results[0];
+                let entityParents = List<EntityParentType>();
+                let entityCount = 0;
+                if (results.length > 1) {
+                    entityParents = results[1];
+                    entityCount = entityParents.find((parent) => parent.value !== undefined) ? 1 : 0;
+                }
+                const entityTypes = fromJS(entityTypeResult.models[entityTypeResult.key]);
+                const parentOptions = parentSchemaName ? entityTypes.map(row => {
+                    const name = row.getIn(['Name', 'value']);
+                    return {
+                        value: name.toLowerCase(),
+                        label: name,
+                        schema: parentSchemaName,
+                        query: name // Issue 33653: query name is case-sensitive for some data inputs (parents)
+                    }
+                }).toList().sortBy(p => p.label, naturalSort) : List<IParentOption>();
+
+                const entityTypeOptions = entityTypes
+                    .map(row => extractFromRow(row))
+                    .sortBy(r => r.label, naturalSort)
+                    .toList();
+
+                let targetEntityType;
+                if (model.initialEntityType) {
+                    const setName = model.initialEntityType.toLowerCase();
+                    const data = entityTypes.find(row => setName === row.getIn(['Name', 'value']).toLowerCase());
+
+                    if (data) {
+                        targetEntityType = new EntityTypeOption(extractFromRow(data));
+                    }
+                }
+                resolve({
+                    isInit: true,
+                    parentOptions,
+                    entityCount,
+                    entityParents,
+                    entityTypeOptions,
+                    targetEntityType
+                })
+            })
             .catch((reason) => {
                 console.error(reason);
                 reject(reason);

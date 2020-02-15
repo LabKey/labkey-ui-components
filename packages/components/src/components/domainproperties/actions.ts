@@ -240,13 +240,13 @@ export function createFormInputName(name: string): string {
     return [DOMAIN_FIELD_PREFIX, name].join('-');
 }
 
-export function createFormInputId(name: string, index: number): string {
-    return [DOMAIN_FIELD_PREFIX, name, index].join('-');
+export function createFormInputId(name: string, domainIndex: number, rowIndex: number): string {
+    return [DOMAIN_FIELD_PREFIX, name, domainIndex, rowIndex].join('-');
 }
 
 export function getNameFromId(id: string) : string {
     const parts = id.split('-');
-    if (parts.length === 3) {
+    if (parts.length === 4) {
         return parts[1];
     }
 
@@ -255,8 +255,8 @@ export function getNameFromId(id: string) : string {
 
 export function getIndexFromId(id: string): number {
     const parts = id.split('-');
-    if (parts.length === 3) {
-        return parseInt(parts[2]);
+    if (parts.length === 4) {
+        return parseInt(parts[3]);
     }
 
     return -1;

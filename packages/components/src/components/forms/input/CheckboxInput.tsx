@@ -48,7 +48,6 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
 
     constructor(props: CheckboxInputProps) {
         super(props);
-        this.onChange = this.onChange.bind(this);
 
         this.state = {
             checked: props.value === true || props.value === "true",
@@ -56,7 +55,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         }
     }
 
-    onChange(e) {
+    onChange = (e) => {
         const checked = e.target.checked;
         this.setState(() => {
             return {
@@ -65,7 +64,19 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         });
         if (this.props.formsy && Utils.isFunction(this.props.setValue))
             this.props.setValue(checked);
-    }
+    };
+
+    toggleDisabled = () => {
+        const { value } = this.props;
+        const { checked } = this.state;
+
+        this.setState((state) => {
+            return {
+                isDisabled: !state.isDisabled,
+                checked: state.isDisabled ? checked : (value === true || value === "true"),
+            }
+        });
+    };
 
     render() {
         const {

@@ -33,23 +33,23 @@ describe('LookupFieldOptions', () => {
     const waitForLoad = jest.fn((field) => Promise.resolve(!field.state().loading));
 
     // Helper methods to select fields
-    const folderFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<FolderSelectProps, IFolderSelectImplState> => {
+    const folderFieldSelector = (field: ReactWrapper<any>, domainIndex: number, index: number): ReactWrapper<FolderSelectProps, IFolderSelectImplState> => {
         return field.find({
-            id: createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index),
+            id: createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index),
             name: createFormInputName(DOMAIN_FIELD_LOOKUP_CONTAINER)
         }).not({bsClass: 'form-control'}).not({className: "form-control"});
     };
 
-    const schemaFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<SchemaSelectProps, ISchemaSelectImplState> => {
+    const schemaFieldSelector = (field: ReactWrapper<any>, domainIndex: number, index: number): ReactWrapper<SchemaSelectProps, ISchemaSelectImplState> => {
         return field.find({
-            id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index),
+            id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index),
             name: createFormInputName(DOMAIN_FIELD_LOOKUP_SCHEMA)
         }).not({bsClass: 'form-control'}).not({className: "form-control"});
     };
 
-    const queryFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<TargetTableSelectProps, ITargetTableSelectImplState> => {
+    const queryFieldSelector = (field: ReactWrapper<any>, domainIndex: number, index: number): ReactWrapper<TargetTableSelectProps, ITargetTableSelectImplState> => {
         return field.find({
-            id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index),
+            id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index),
             name: createFormInputName(DOMAIN_FIELD_LOOKUP_QUERY)
         }).not({bsClass: 'form-control'}).not({className: "form-control"});
     };
@@ -60,6 +60,7 @@ describe('LookupFieldOptions', () => {
         const _schema = 'exp';
         const _query = 'Data';
         const _index = 1;
+        const _domainIndex = 1;
         const _label = 'Lookup Field Options';
         const _container0 = "StudyVerifyProject";
         const _container1 = "My Study";
@@ -84,7 +85,9 @@ describe('LookupFieldOptions', () => {
                     onChange={jest.fn()}
                     onMultiChange={jest.fn()}
                     index={_index}
-                    label={_label} lockType={DOMAIN_FIELD_NOT_LOCKED}/>
+                    domainIndex={_domainIndex}
+                    label={_label} lockType={DOMAIN_FIELD_NOT_LOCKED}
+                />
             </MockLookupProvider>
         );
 
@@ -94,7 +97,7 @@ describe('LookupFieldOptions', () => {
         expect(sectionLabel.text()).toEqual(_label);
 
         // Folder
-        let folderField = folderFieldSelector(lookupField, _index);
+        let folderField = folderFieldSelector(lookupField, _domainIndex, _index);
 
         expect(folderField.length).toEqual(1);
 
@@ -106,7 +109,7 @@ describe('LookupFieldOptions', () => {
                 expect(folderField.state().containers.get(1).name).toEqual(_container1);
 
                 // Schema
-                let schemaField = schemaFieldSelector(lookupField, _index);
+                let schemaField = schemaFieldSelector(lookupField, _domainIndex, _index);
 
                 expect(schemaField.length).toEqual(1);
 
@@ -118,7 +121,7 @@ describe('LookupFieldOptions', () => {
                         expect(schemaField.state().schemas.get(4).schemaName).toEqual(_schema2);
 
                         // Query
-                        let queryField = queryFieldSelector(lookupField, _index);
+                        let queryField = queryFieldSelector(lookupField, _domainIndex, _index);
 
                         return waitForLoad(queryField)
                             .then(() => {
@@ -137,6 +140,7 @@ describe('LookupFieldOptions', () => {
         const _container1 = '/StudyVerifyProject/My Study';
         const _container2 = '/StudyVerifyProject';
         const _index = 1;
+        const _domainIndex = 1;
         const _schema = 'exp';
         const _query = 'Data';
         const _label = 'Lookup Field Options';
@@ -159,19 +163,21 @@ describe('LookupFieldOptions', () => {
                     onChange={jest.fn()}
                     onMultiChange={jest.fn()}
                     index={_index}
-                    label={_label} lockType={DOMAIN_FIELD_NOT_LOCKED}/>
+                    domainIndex={_domainIndex}
+                    label={_label} lockType={DOMAIN_FIELD_NOT_LOCKED}
+                />
             </MockLookupProvider>
         );
 
         // Get container field and wait for it to populate
-        let container = folderFieldSelector(lookupField, _index);
+        let container = folderFieldSelector(lookupField, _domainIndex, _index);
 
         return waitForLoad(container)
             .then(() => {
                 expect(container.props().value).toEqual(_container1);
 
                 // Get schema field and wait for load
-                let schema = schemaFieldSelector(lookupField, _index);
+                let schema = schemaFieldSelector(lookupField, _domainIndex, _index);
 
                 return waitForLoad(schema)
                     .then(() => {
@@ -188,8 +194,10 @@ describe('LookupFieldOptions', () => {
                                     onChange={jest.fn()}
                                     onMultiChange={jest.fn()}
                                     index={_index}
+                                    domainIndex={_domainIndex}
                                     label={_label}
-                                    lockType={DOMAIN_FIELD_NOT_LOCKED}/>
+                                    lockType={DOMAIN_FIELD_NOT_LOCKED}
+                                />
                             )
                         });
 
@@ -214,6 +222,7 @@ describe('LookupFieldOptions', () => {
         const _query2 = 'Treatment';
         const _label = 'Lookup Field Options';
         const _index = 1;
+        const _domainIndex = 1;
 
         const field = DomainField.create({
             name: 'key',
@@ -232,20 +241,22 @@ describe('LookupFieldOptions', () => {
                     onChange={jest.fn()}
                     onMultiChange={jest.fn()}
                     index={_index}
+                    domainIndex={_domainIndex}
                     label={_label}
-                    lockType={DOMAIN_FIELD_NOT_LOCKED}/>
+                    lockType={DOMAIN_FIELD_NOT_LOCKED}
+                />
             </MockLookupProvider>
         );
 
         // Folder
-        let folderField = folderFieldSelector(lookupField, _index);
+        let folderField = folderFieldSelector(lookupField, _domainIndex, _index);
 
         return waitForLoad(folderField)
             .then(() => {
                 expect(folderField.props().value).toEqual(_container);
 
                 // Schema
-                let schemaField = schemaFieldSelector(lookupField, _index);
+                let schemaField = schemaFieldSelector(lookupField, _domainIndex, _index);
 
                 return waitForLoad(schemaField)
                     .then(() => {
@@ -261,13 +272,15 @@ describe('LookupFieldOptions', () => {
                                     onChange={jest.fn()}
                                     onMultiChange={jest.fn()}
                                     index={_index}
+                                    domainIndex={_domainIndex}
                                     label={_label}
-                                    lockType={DOMAIN_FIELD_NOT_LOCKED}/>
+                                    lockType={DOMAIN_FIELD_NOT_LOCKED}
+                                />
                             )
                         });
 
                         // Query
-                        let queryField = queryFieldSelector(lookupField, _index);
+                        let queryField = queryFieldSelector(lookupField, _domainIndex, _index);
 
                         return waitForLoad(queryField)
                             .then(() => {
@@ -289,6 +302,7 @@ describe('LookupFieldOptions', () => {
         const _query1 = 'Data';
         const _label = 'Lookup Field Options';
         const _index = 1;
+        const _domainIndex = 1;
 
         const field = DomainField.create({
             name: 'key',
@@ -307,13 +321,15 @@ describe('LookupFieldOptions', () => {
                     onChange={jest.fn()}
                     onMultiChange={jest.fn()}
                     index={_index}
+                    domainIndex={_domainIndex}
                     label={_label}
-                    lockType={DOMAIN_FIELD_NOT_LOCKED}/>
+                    lockType={DOMAIN_FIELD_NOT_LOCKED}
+                />
             </MockLookupProvider>
         );
 
         // Folder
-        let folderField = folderFieldSelector(lookupField, _index);
+        let folderField = folderFieldSelector(lookupField, _domainIndex, _index);
 
         return waitForLoad(folderField)
             .then(() => {
@@ -328,14 +344,16 @@ describe('LookupFieldOptions', () => {
                             original={field}
                             onChange={jest.fn()}
                             onMultiChange={jest.fn()}
-                            index={1}
+                            index={_index}
+                            domainIndex={_domainIndex}
                             label={_label}
-                            lockType={DOMAIN_FIELD_NOT_LOCKED}/>
+                            lockType={DOMAIN_FIELD_NOT_LOCKED}
+                        />
                     )
                 });
 
                 // Query
-                let queryField = queryFieldSelector(lookupField, _index);
+                let queryField = queryFieldSelector(lookupField, _domainIndex, _index);
 
                 return waitForLoad(queryField)
                     .then(() => {
@@ -358,6 +376,7 @@ describe('LookupFieldOptions', () => {
             onMultiChange: jest.fn,
             onChange: jest.fn,
             index: 0,
+            domainIndex: 0,
             label: 'Foo'
         };
 

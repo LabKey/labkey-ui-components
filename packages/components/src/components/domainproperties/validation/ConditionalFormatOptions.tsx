@@ -20,6 +20,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 interface ConditionalFormatOptionsProps {
     validator: any
     index: number
+    domainIndex: number
     validatorIndex: number
     mvEnabled: boolean
     expanded: boolean
@@ -51,7 +52,7 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
     };
 
     renderRemoveValidator() {
-        const { validatorIndex } = this.props;
+        const { validatorIndex, domainIndex } = this.props;
 
         return (
             <Row className='domain-validator-color-row'>
@@ -59,7 +60,7 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
                     <Button
                         className="domain-validation-delete"
                         name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
-                        id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, validatorIndex)}
+                        id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
                         onClick={this.onDelete}>
                         Remove Validator
                     </Button>
@@ -122,13 +123,13 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
     };
 
     renderDisplayCheckbox(name: string, label: string, value: boolean) {
-        const { validatorIndex } = this.props;
+        const { validatorIndex, domainIndex } = this.props;
 
         return (
             <Row>
                 <Col xs={12} className='domain-validation-display-checkbox-row'>
                     <Checkbox
-                        id={createFormInputId(name, validatorIndex)}
+                        id={createFormInputId(name, domainIndex, validatorIndex)}
                         name={createFormInputName(name)}
                         checked={value}
                         onChange={this.onFieldChange}
@@ -205,20 +206,20 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
     }
 
     getColorPickerButton(name: string, label: string, color: string, showColorPicker: boolean) {
-        const { validatorIndex } = this.props;
+        const { validatorIndex, domainIndex } = this.props;
 
         return (
             <div style={{width:'100%'}}>
                 <Button
-                    id={createFormInputId(name, validatorIndex)}
-                    key={createFormInputId(name, validatorIndex)}
+                    id={createFormInputId(name, domainIndex, validatorIndex)}
+                    key={createFormInputId(name, domainIndex, validatorIndex)}
                     name={createFormInputName(name)}
                     onClick={this.onColorShow}
                     className='domain-color-picker-btn'
                 >{label}<FontAwesomeIcon className='domain-color-caret' size='lg' icon={showColorPicker ? faCaretUp : faCaretDown}/></Button>
                 {showColorPicker &&
                 <div className='domain-validator-color-popover'>
-                    <div className='domain-validator-color-cover' id={createFormInputId(name, validatorIndex)} onClick={this.onColorShow}/>
+                    <div className='domain-validator-color-cover' id={createFormInputId(name, domainIndex, validatorIndex)} onClick={this.onColorShow}/>
                     <CompactPicker onChangeComplete={this.onColorChange} color={color}/>
                 </div>
                 }
@@ -228,15 +229,19 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
     }
 
     render() {
-        const { validatorIndex, expanded, dataType, validator, mvEnabled, index } = this.props;
+        const { validatorIndex, expanded, dataType, validator, mvEnabled, domainIndex } = this.props;
+
+        // Needs to be able to take string values for between syntax, but keep as date if that is the selected type (issue 39193)
+        const type = dataType.getJsonType() === 'date' ? dataType.getJsonType() : 'string';
 
         return(
             <div className='domain-validator-panel' id={"domain-condition-format-" + validatorIndex}>
                 {expanded &&
                 <div>
                     <Filters validatorIndex={validatorIndex}
+                             domainIndex={domainIndex}
                              onChange={this.onFilterChange}
-                             type={'string'} // Needs to be able to take string values for between syntax
+                             type={type}
                              mvEnabled={mvEnabled}
                              expression={validator.formatFilter}
                              prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}

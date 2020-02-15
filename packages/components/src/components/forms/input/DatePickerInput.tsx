@@ -26,6 +26,7 @@ import {datePlaceholder, formatDate, isDateTimeCol, parseDate} from '../../../ut
 
 export interface DatePickerInputProps extends DisableableInputProps {
     formsy?: boolean
+    wrapperClassName?:string
     inputClassName?: string
     inputWrapperClassName?:string
     disabled?: boolean
@@ -61,6 +62,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         allowDisable: false,
         initiallyDisabled: false,
         isClearable: true,
+        wrapperClassName: 'col-sm-9 col-md-9 col-xs-12',
         inputClassName: 'form-control',
         inputWrapperClassName: 'block',
         showLabel: true,
@@ -74,9 +76,25 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
         this.state = {
             isDisabled: props.initiallyDisabled,
-            selectedDate: props.value ? parseDate(props.value, this.getDateFormat(false)) : undefined,
+            selectedDate: this.getInitDate(props),
             selectedDateStr: props.value
         }
+    }
+
+    toggleDisabled = () => {
+        const { selectedDate } = this.state;
+
+        this.setState((state) => {
+            return {
+                isDisabled: !state.isDisabled,
+                selectedDate: state.isDisabled ? selectedDate : this.getInitDate(this.props),
+            }
+        });
+
+    };
+
+    getInitDate(props: DatePickerInputProps) {
+        return props.value ? parseDate(props.value, this.getDateFormat(false)) : undefined
     }
 
     onChange = (date) => {
@@ -128,7 +146,8 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             showLabel,
             addLabelAsterisk,
             placeholderText,
-            isClearable
+            isClearable,
+            wrapperClassName
         } = this.props;
 
        const { isDisabled, selectedDate } = this.state;
@@ -149,7 +168,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                     toggleProps = {{
                         onClick: this.toggleDisabled,
                     }}/>
-                <div className={"col-sm-9 col-md-9 col-xs-12"}>
+                <div className={wrapperClassName}>
                     <DatePicker
                         autoComplete={'off'}
                         wrapperClassName={inputWrapperClassName}

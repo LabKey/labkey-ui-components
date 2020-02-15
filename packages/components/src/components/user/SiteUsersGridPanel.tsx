@@ -24,7 +24,7 @@ import { UserDeleteConfirmModal } from "./UserDeleteConfirmModal";
 import { getSelectedUserIds } from "./actions";
 import { getSelected } from "../../actions";
 
-const OMITTED_COLUMNS = List(['phone', 'im', 'mobile', 'pager', 'groups', 'active', 'hasPassword', 'firstName', 'lastName', 'description', 'expirationDate']);
+const OMITTED_COLUMNS = List(['phone', 'im', 'mobile', 'pager', 'groups', 'hasPassword', 'firstName', 'lastName', 'description', 'expirationDate']);
 
 interface Props {
     onCreateComplete: (response: any, role: string) => any
@@ -42,7 +42,7 @@ interface Props {
 }
 
 interface State {
-    usersView: string
+    usersView: string // valid options are 'active', 'inactive', 'all'
     showDialog: string // valid options are 'create', 'deactivate', 'reactivate', 'delete', undefined
     selectedUserId: number
     unlisten: any
@@ -95,7 +95,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     }
 
     getUsersView(paramVal: string): string {
-        return paramVal === 'inactive' ? paramVal : 'active'; // default to view active users
+        return paramVal === 'inactive' || paramVal === 'all' ? paramVal : 'active'; // default to view active users
     }
 
     getUsersModel(): QueryGridModel {
@@ -104,7 +104,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         const model = getStateQueryGridModel(gridId, SCHEMAS.CORE_TABLES.USERS, {
             containerPath: '/',
             omittedColumns: OMITTED_COLUMNS,
-            baseFilters: List<Filter.IFilter>([Filter.create('active', usersView === 'active')]),
+            baseFilters: usersView === 'all' ? undefined : List<Filter.IFilter>([Filter.create('active', usersView === 'active')]),
             bindURL: true,
             isPaged: true
         });
@@ -112,10 +112,8 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         return getQueryGridModel(model.getId()) || model;
     }
 
-    toggleViewActive = () => {
-        const currentView = this.state.usersView;
-        const newView = currentView === 'active' ? 'inactive' : 'active';
-        replaceParameter(getLocation(), 'usersView', newView);
+    toggleViewActive = (viewName: string) => {
+        replaceParameter(getLocation(), 'usersView', viewName);
     };
 
     toggleDialog = (name: string, requiresSelection = false) => {
@@ -188,7 +186,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     }
 
     renderButtons = () => {
-        const viewActive = this.state.usersView === 'active';
+        const { usersView } = this.state;
 
         return (
             <>
@@ -196,7 +194,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                     Create
                 </Button>
                 <ManageDropdownButton id={'users-manage-btn'}>
-                    {viewActive &&
+                    {usersView === 'active' &&
                         <SelectionMenuItem
                             id={'deactivate-users-menu-item'}
                             text={'Deactivate Users'}
@@ -214,7 +212,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             nounPlural={"users"}
                         />
                     }
-                    {!viewActive &&
+                    {usersView === 'inactive' &&
                         <SelectionMenuItem
                             id={'reactivate-users-menu-item'}
                             text={'Reactivate Users'}
@@ -223,12 +221,21 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             nounPlural={"users"}
                         />
                     }
-                    <MenuItem
-                        id={'viewactive-users-menu-item'}
-                        onClick={this.toggleViewActive}
-                    >
-                        View {(viewActive ? 'Inactive' : 'Active') + ' Users'}
-                    </MenuItem>
+                    {usersView !== 'active' &&
+                        <MenuItem id={'viewactive-users-menu-item'} onClick={() => this.toggleViewActive('active')}>
+                            View Active Users
+                        </MenuItem>
+                    }
+                    {usersView !== 'all' &&
+                        <MenuItem id={'viewall-users-menu-item'} onClick={() => this.toggleViewActive('all')}>
+                            View All Users
+                        </MenuItem>
+                    }
+                    {usersView !== 'inactive' &&
+                        <MenuItem id={'viewinactive-users-menu-item'} onClick={() => this.toggleViewActive('inactive')}>
+                            View Inactive Users
+                        </MenuItem>
+                    }
                 </ManageDropdownButton>
             </>
         )

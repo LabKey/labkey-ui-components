@@ -111,6 +111,12 @@ export const DATETIME_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#dateTime';
 export const FILELINK_RANGE_URI = 'http://cpas.fhcrc.org/exp/xml#fileLink';
 export const ATTACHMENT_RANGE_URI = 'http://www.labkey.org/exp/xml#attachment';
 export const USER_RANGE_URI = 'http://www.labkey.org/exp/xml#int';
+export const BINARY_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#binary';
+export const DATE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#date';
+export const DECIMAL_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#decimal';
+export const FLOAT_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#float';
+export const LONG_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#long';
+export const TIME_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#time';
 export const RANGE_URIS = {
     STRING: STRING_RANGE_URI,
     MULTILINE: MULTILINE_RANGE_URI,
@@ -128,10 +134,6 @@ export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#Participa
 export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 
 export const MAX_TEXT_LENGTH = 4000;
-
-export const HIGHLIGHT_BLUE = '#2980B9';  // See $blue-border in variables.scss
-export const NOT_HIGHLIGHT_GRAY = '#999999';
-// export const HIGHLIGHT_BLUE = '#3495D2';
 
 export const PHILEVEL_NOT_PHI = "NotPHI";
 export const PHILEVEL_LIMITED_PHI = "Limited";
@@ -184,3 +186,9 @@ export const DOMAIN_FIELD_COLS = List([
         title: 'Scale'
     })
 ]);
+
+export const FIELD_NAME_CHAR_WARNING_MSG = 'Field name contains special characters.';
+export const FIELD_NAME_CHAR_WARNING_INFO = 'SQL queries, R scripts, and other code are easiest to write when field '
+    + 'names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. '
+    + 'Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, '
+    + 'SPSS, and MATLAB.';

@@ -44,6 +44,7 @@ interface AdvancedSettingsProps {
     onHide: () => any
     onApply: (any) => any
     showDefaultValueSettings: boolean
+    domainIndex: number
 }
 
 interface AdvancedSettingsState {
@@ -107,7 +108,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     handleApply = () => {
-        const { index, onApply, onHide } = this.props;
+        const { index, onApply, onHide, domainIndex } = this.props;
 
         if (onApply) {
 
@@ -116,7 +117,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             // Iterate over state values and put into list of changes
             Object.keys(this.state).forEach(function (key, i) {
                 if (key !== 'phiLevels') {
-                    changes.push({id: createFormInputId(key, index), value: this.state[key]} as IFieldChange)
+                    changes.push({id: createFormInputId(key, domainIndex, index), value: this.state[key]} as IFieldChange)
                 }
             }, this);
 
@@ -262,7 +263,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
     renderDisplayOptions = () => {
         const { hidden, shownInDetailsView, shownInInsertView, shownInUpdateView } = this.state;
-        const { index } = this.props;
+        const { index, domainIndex } = this.props;
 
         return (
             <>
@@ -270,22 +271,22 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div>These options configure how and in which views this field will be visible.</div>
                 <Checkbox checked={hidden === false} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
-                          id={createFormInputId(DOMAIN_FIELD_HIDDEN, index)}>
+                          id={createFormInputId(DOMAIN_FIELD_HIDDEN, domainIndex, index)}>
                     Show field on default view of the grid
                 </Checkbox>
                 <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, domainIndex, index)}>
                     Show on update form when updating a single row of data
                 </Checkbox>
                 <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, index)}>
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, domainIndex, index)}>
                     Show on insert form when updating a single row of data
                 </Checkbox>
                 <Checkbox checked={shownInDetailsView === true} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, domainIndex, index)}>
                     Show on details page for a single row
                 </Checkbox>
             </>
@@ -293,7 +294,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     renderDefaultValues = () => {
-        const { index, defaultValueOptions } = this.props;
+        const { index, defaultValueOptions, domainIndex } = this.props;
         const { defaultValueType, defaultDisplayValue } = this.state;
 
         return (
@@ -308,7 +309,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <FormControl
                             componentClass="select"
                             name={createFormInputName(DOMAIN_FIELD_DEFAULT_VALUE_TYPE)}
-                            id={createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, index)}
+                            id={createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, domainIndex, index)}
                             onChange={this.handleChange}
                             value={defaultValueType}
                         >
@@ -336,7 +337,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     renderMiscOptions = () => {
-        const { index, field } = this.props;
+        const { index, field, domainIndex } = this.props;
         const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting, phiLevels } = this.state;
 
         return (
@@ -350,7 +351,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <FormControl
                             componentClass="select"
                             name={createFormInputName(DOMAIN_FIELD_PHI)}
-                            id={createFormInputId(DOMAIN_FIELD_PHI, index)}
+                            id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
                             onChange={this.handleChange}
                             value={PHI}
                         >
@@ -368,7 +369,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             checked={excludeFromShifting === false}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
-                            id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, index)}
+                            id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, domainIndex, index)}
                     >
                         Exclude from "Participant Date Shifting" on export/publication
                         <LabelHelpTip title='Exclude from Date Shifting' body={this.getExcludeFromDateShiftingText}/>
@@ -379,7 +380,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             checked={measure === true}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_MEASURE)}
-                            id={createFormInputId(DOMAIN_FIELD_MEASURE, index)}
+                            id={createFormInputId(DOMAIN_FIELD_MEASURE, domainIndex, index)}
                     >
                         Make this field available as a measure
                         <LabelHelpTip title='Measure' body={this.getMeasureHelpText}/>
@@ -390,7 +391,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             checked={dimension === true}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
-                            id={createFormInputId(DOMAIN_FIELD_DIMENSION, index)}
+                            id={createFormInputId(DOMAIN_FIELD_DIMENSION, domainIndex, index)}
                     >
                         Make this field available as a dimension
                         <LabelHelpTip title='Data Dimension' body={this.getDimensionHelpText}/>
@@ -400,7 +401,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     checked={recommendedVariable === true}
                     onChange={this.handleCheckbox}
                     name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
-                    id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, index)}
+                    id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, domainIndex, index)}
                 >
                     Make this field a recommended variable
                     <LabelHelpTip title='Recommended Variable' body={this.getRecommendedVariableHelpText}/>
@@ -411,7 +412,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             checked={mvEnabled === true}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
-                            id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
+                            id={createFormInputId(DOMAIN_FIELD_MVENABLED, domainIndex, index)}
                     >
                         Track reason for missing data values
                         <LabelHelpTip title='Missing Value Indicators' body={this.getMissingValueHelpText}/>

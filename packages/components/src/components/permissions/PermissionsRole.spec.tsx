@@ -94,4 +94,23 @@ describe("<PermissionsRole/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
+    test("not editable", () => {
+        const role = ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR);
+
+        const component = (
+            <PermissionsRole
+                role={role}
+                assignments={POLICY.assignmentsByRole.get(role.uniqueName)}
+                typeToShow={undefined}
+                principals={List<Principal>()}
+                onClickAssignment={jest.fn()}
+                selectedUserId={undefined}
+                initExpanded={true}
+            />
+        );
+
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
 });

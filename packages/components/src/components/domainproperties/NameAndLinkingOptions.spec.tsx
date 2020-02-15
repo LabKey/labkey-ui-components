@@ -34,6 +34,7 @@ describe('NameAndLinkingOptions', () => {
 
         const numeric  = mount(<NameAndLinkingOptions
             index={1}
+            domainIndex={1}
             field={field}
             onChange={jest.fn()}
         />);
@@ -45,22 +46,22 @@ describe('NameAndLinkingOptions', () => {
 
         // Verify values
         // Description
-        let formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1), className: 'form-control domain-field-textarea form-control'});
+        let formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1, 1), className: 'form-control domain-field-textarea form-control'});
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_description);
 
         // Label
-        formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_LABEL, 1), className: 'form-control'});
+        formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_LABEL, 1, 1), className: 'form-control'});
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_label);
 
         // Aliases
-        formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1), className: 'form-control'});
+        formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1), className: 'form-control'});
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_importAliases);
 
         // URL
-        formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_URL, 1), className: 'form-control'});
+        formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_URL, 1, 1), className: 'form-control'});
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_URL);
 

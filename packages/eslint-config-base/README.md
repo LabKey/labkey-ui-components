@@ -2,6 +2,8 @@
 
 This package provides LabKey's base JS ESLint configuration (without React plugins) as an extensible shared config.
 
+See the [CHANGELOG](CHANGELOG.md) for changes in this version.
+
 ## Installing
 
 ```bash
@@ -14,7 +16,7 @@ You'll need to also install all of the dependencies.  On OSX or Linux, you can u
 $ npm info @labkey/eslint-config-base peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install --save-dev --save-exact --dry-run
 ```
 
-When you have inspected the output, you can remove the `--dy-run` flag to actually perform the install.
+When you have inspected the output, you can remove the `--dry-run` flag to actually perform the install.
 
 
 ## Usage

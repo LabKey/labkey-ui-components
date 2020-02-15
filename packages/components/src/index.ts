@@ -129,8 +129,8 @@ import {
     getQueryGridModelsForGridId,
     initQueryGridState,
     invalidateLineageResults,
-    removeQueryGridModel,
-    invalidateUsers
+    invalidateUsers,
+    removeQueryGridModel
 } from './global';
 import {
     deleteRows,
@@ -152,7 +152,7 @@ import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, Dat
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
-import { getHelpLink, helpLinkNode, DATA_IMPORT_TOPIC } from './util/helpLinks';
+import { DELETE_SAMPLES_TOPIC, DATA_IMPORT_TOPIC, getHelpLink, helpLinkNode } from './util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -194,17 +194,11 @@ import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
-import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
-import {
-    deleteSampleSet,
-    getSampleDeleteConfirmationData,
-    getSampleSet,
-    loadSelectedSamples,
-} from './components/samples/actions';
+import { deleteSampleSet, getSampleSet, loadSelectedSamples, } from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
@@ -235,10 +229,11 @@ import {
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants';
-import { LineageFilter } from './components/lineage/models';
+import { LineageFilter} from './components/lineage/models';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
+import { EntityDeleteConfirmModal } from './components/entities/EntityDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
@@ -285,8 +280,10 @@ import {
 import { ExpandableContainer } from './components/ExpandableContainer';
 import { PermissionAssignments } from './components/permissions/PermissionAssignments';
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
-import { PermissionsProviderProps, SecurityPolicy, SecurityRole, Principal } from './components/permissions/models';
+import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './components/permissions/models';
 import { fetchContainerSecurityPolicy } from './components/permissions/actions';
+import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
+import { EntityDataType } from './components/entities/constants';
 
 
 export {
@@ -323,7 +320,6 @@ export {
     importData,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
-    getSampleDeleteConfirmationData,
     setSelected,
 
     // editable grid related items
@@ -392,7 +388,6 @@ export {
 
     // samples-related
     SampleInsertPanel,
-    SampleDeleteConfirmModal,
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
@@ -464,6 +459,10 @@ export {
     SampleTypeLineageCounts,
     VisGraphNode,
     invalidateLineageResults,
+    getSampleDeleteConfirmationData,
+    getDataDeleteConfirmationData,
+    EntityDeleteConfirmModal,
+    EntityDataType,
 
     // Navigation
     MenuSectionConfig,
@@ -619,6 +618,7 @@ export {
     getHelpLink,
     helpLinkNode,
     DATA_IMPORT_TOPIC,
+    DELETE_SAMPLES_TOPIC,
 
     // url functions
     buildURL,

@@ -34,6 +34,7 @@ interface QueryGridBarProps {
     onReportClicked?: Function,
     onCreateReportClicked?: Function,
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+    advancedExportOption?: Object
 }
 
 /**
@@ -48,7 +49,7 @@ interface QueryGridBarProps {
  */
 export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
     render() {
-        const { buttons, model, showSampleComparisonReports, onReportClicked, onCreateReportClicked, onSelectionChange } = this.props;
+        const { buttons, model, showSampleComparisonReports, onReportClicked, onCreateReportClicked, onSelectionChange, advancedExportOption } = this.props;
         let buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
 
         if (buttons) {
@@ -67,12 +68,13 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             <QueryGridPaging model={model}/>
         ) : null;
 
-        const exportBtn = model && model.showExport ? (
-            <Export model={model} />
-        ) : null;
-
         const pageSizeBtn = model && model.isPaged ? (
             <PageSizeSelector model={model} />
+        ) : null;
+
+        const exportBtn = model ? (
+            <Export model={model} advancedOption={advancedExportOption}/>
+
         ) : null;
 
         const chart = model && model.showChartSelector ? (

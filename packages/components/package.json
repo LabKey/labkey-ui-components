@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.21.0-fb-provenance-runbuilder.16",
+  "version": "0.24.0-fb-provenance-runbuilder.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -19,7 +19,7 @@
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter && yarn run build-storybook",
     "watch:build": "watch 'yarn build' ./src",
     "watch": "npm run watch:build",
-    "build:docs": "npm run clean:docs && typedoc --out ../../docs --tsconfig tsconfig.base.json --options typedoc.js . && touch ../../docs/.nojekyll",
+    "build:docs": "npm run clean:docs && typedoc --out ../../docs --tsconfig tsconfig.json --options typedoc.js . && touch ../../docs/.nojekyll",
     "clean:docs": "rimraf ../../docs",
     "deploy:docs": "npm run build:docs && gh-pages -t -d ../../docs",
     "lint": "eslint --ext '*.ts,*.tsx'",

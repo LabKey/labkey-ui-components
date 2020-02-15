@@ -15,6 +15,20 @@
   margin-bottom: 0;
 }
 
+.file-upload--label--compact {
+    cursor: pointer;
+    color: #116596;
+    display: block;
+    font-weight: normal;
+    padding: 8px 0 8px 8px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.file-upload__label__icon {
+    margin-right: 8px;
+}
+
 .file-upload--input {
   height: 0.1px;
   width: 0.1px;
@@ -73,6 +87,10 @@
 .file-upload--error-message {
   margin-left: 7px;
   color: $brand-danger;
+}
+
+.file-upload--error-message--compact {
+    padding: 8px 0 8px 8px;
 }
 
 .cloud-logo {

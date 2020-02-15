@@ -34,30 +34,32 @@ interface IDomainRowExpandedOptionsProps {
     onMultiChange: (changes: List<IFieldChange>) => void
     showingModal: (boolean) => any
     appPropertiesOnly?: boolean
+    domainIndex: number
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
 
     typeDependentOptions = () => {
-        const { field, index, onChange, onMultiChange } = this.props;
+        const { field, index, onChange, onMultiChange, domainIndex } = this.props;
 
         switch(field.dataType.name) {
             case 'string':
-                return <TextFieldOptions index={index} label='Text Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
+                return <TextFieldOptions index={index} domainIndex={domainIndex} label='Text Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'flag':
-                return <TextFieldOptions index={index} label='Flag Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
+                return <TextFieldOptions index={index} domainIndex={domainIndex} label='Flag Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'multiLine':
-                return <TextFieldOptions index={index} label='Multi-line Text Field Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
+                return <TextFieldOptions index={index} domainIndex={domainIndex} label='Multi-line Text Field Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'boolean':
-                return <BooleanFieldOptions index={index} label='Boolean Field Options' format={field.format} onChange={onChange} lockType={field.lockType} />;
+                return <BooleanFieldOptions index={index} domainIndex={domainIndex} label='Boolean Field Options' format={field.format} onChange={onChange} lockType={field.lockType} />;
             case 'dateTime':
-                return <DateTimeFieldOptions index={index} label='Date and Time Options' format={field.format} excludeFromShifting={field.excludeFromShifting} onChange={onChange} lockType={field.lockType} />;
+                return <DateTimeFieldOptions index={index} domainIndex={domainIndex} label='Date and Time Options' format={field.format} excludeFromShifting={field.excludeFromShifting} onChange={onChange} lockType={field.lockType} />;
             case 'int':
-                return <NumericFieldOptions index={index} label='Integer Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType} />;
+                return <NumericFieldOptions index={index} domainIndex={domainIndex} label='Integer Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType} />;
             case 'double':
-                return <NumericFieldOptions index={index} label='Decimal Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType} />;
+                return <NumericFieldOptions index={index} domainIndex={domainIndex} label='Decimal Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType} />;
             case 'lookup':
                 return <LookupFieldOptions index={index}
+                                           domainIndex={domainIndex}
                                            label='Lookup Definition Options'
                                            lookupContainer={field.lookupContainer}
                                            lookupSchema={field.lookupSchema}
@@ -69,6 +71,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                            lockType={field.lockType}  />;
             case 'sample':
                 return <SampleFieldOptions index={index}
+                                           domainIndex={domainIndex}
                                            label='Sample Options'
                                            value={field.lookupQueryValue}
                                            original={field.original}
@@ -81,7 +84,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
     };
 
     render() {
-        const { field, index, onChange, showingModal, appPropertiesOnly } = this.props;
+        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex } = this.props;
 
         return(
             <div className='domain-row-container'>
@@ -91,11 +94,11 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         {this.typeDependentOptions()}
                     </Col>
                     <Col xs={12} lg={10}>
-                        <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
+                        <NameAndLinkingOptions index={index} domainIndex={domainIndex} field={field} onChange={onChange}/>
                     </Col>
                     { !isFieldFullyLocked(field.lockType) &&
                         <Col xs={12}>
-                            <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange} showingModal={showingModal} hideConditionalFormatting={appPropertiesOnly} />
+                            <ConditionalFormattingAndValidation index={index} domainIndex={domainIndex} field={field} onChange={onChange} showingModal={showingModal} hideConditionalFormatting={appPropertiesOnly} />
                         </Col>
                     }
                 </div>

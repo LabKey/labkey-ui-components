@@ -15,6 +15,7 @@ describe('BooleanFieldOptions', () => {
 
         const props = {
             index: 1,
+            domainIndex: 1,
             label: _section,
             format: _format,
             onChange: jest.fn(),
@@ -31,13 +32,13 @@ describe('BooleanFieldOptions', () => {
         expect(sectionLabel.text()).toEqual(_section);
 
         // Test format field initial value
-        let formatField = boolean.find({id: createFormInputId(DOMAIN_FIELD_FORMAT, 1), className: 'form-control'});
+        let formatField = boolean.find({id: createFormInputId(DOMAIN_FIELD_FORMAT, 1, 1), className: 'form-control'});
         expect(formatField.length).toEqual(1);
         expect(formatField.props().value).toEqual(_format);
 
         // Verify value changes with props
         boolean.setProps({format: _format2});
-        formatField = boolean.find({id: createFormInputId(DOMAIN_FIELD_FORMAT, 1), className: 'form-control'});
+        formatField = boolean.find({id: createFormInputId(DOMAIN_FIELD_FORMAT, 1, 1), className: 'form-control'});
         expect(formatField.props().value).toEqual(_format2);
 
         expect(toJson(boolean)).toMatchSnapshot();

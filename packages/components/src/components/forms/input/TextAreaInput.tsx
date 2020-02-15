@@ -35,6 +35,7 @@ interface TextAreaInputProps extends DisableableInputProps {
     initiallyDisabled?: boolean
     value?: any
     addLabelAsterisk?: boolean
+    onChange?: any
 }
 
 
@@ -76,6 +77,17 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
 
     }
 
+    onChange = (name, value) => {
+        const { onChange } = this.props;
+
+        if (this.props.allowDisable)
+            this.setState({inputValue: value});
+
+        if (onChange)
+            onChange(value);
+    };
+
+
     render() {
         const {
             cols,
@@ -95,6 +107,7 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
         return <Textarea
             changeDebounceInterval={0}
             disabled={this.state.isDisabled}
+            onChange={this.onChange}
             cols={cols}
             elementWrapperClassName={elementWrapperClassName}
             id={queryColumn.name}
@@ -105,7 +118,8 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
             rowClassName={rowClassName}
             rows={rows}
             required={queryColumn.required}
-            value={value}/>;
+            value={this.getInputValue()}
+        />;
     }
 
 }

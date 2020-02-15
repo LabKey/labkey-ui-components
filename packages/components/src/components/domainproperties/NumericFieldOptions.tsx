@@ -35,7 +35,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
     };
 
     render() {
-        const { index, label, format, defaultScale, lockType } = this.props;
+        const { index, label, format, defaultScale, lockType, domainIndex } = this.props;
 
         return (
             <div>
@@ -62,7 +62,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                         <FormControl type="text"
                                      value={format || ""}
                                      onChange={this.onFieldChange}
-                                     id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
+                                     id={createFormInputId(DOMAIN_FIELD_FORMAT, domainIndex, index)}
                                      name={createFormInputName(DOMAIN_FIELD_FORMAT)}
                                      disabled={isFieldFullyLocked(lockType)}
                         />
@@ -70,15 +70,15 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                     <Col xs={2}>
 
                         <FormControl componentClass="select"
-                                     id={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, index)}
+                                     id={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, domainIndex, index)}
                                      disabled={isFieldFullyLocked(lockType)}
                                      name={createFormInputName(DOMAIN_FIELD_DEFAULT_SCALE)}
                                      onChange={this.onFieldChange} value={defaultScale}>
                             <option
-                                key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LINEAR, index)}
+                                key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LINEAR, domainIndex, index)}
                                 value={DEFAULT_SCALE_LINEAR}>Linear</option>
                             <option
-                                key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LOG, index)}
+                                key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LOG, domainIndex, index)}
                                 value={DEFAULT_SCALE_LOG}>Log</option>
                         </FormControl>
                     </Col>

@@ -206,4 +206,10 @@ describe('SecurityPolicy model', () => {
         expect(byRole.get(SECURITY_ROLE_AUTHOR).size).toBe(1);
     });
 
+    test("isInheritFromParent", () => {
+        expect(SecurityPolicy.create({containerId: 'ABC', policy: {resourceId: 'ABC'}}).isInheritFromParent()).toBeFalsy();
+        expect(SecurityPolicy.create({containerId: 'ABC', policy: {resourceId: 'DEF'}}).isInheritFromParent()).toBeTruthy();
+        expect(SecurityPolicy.create({containerId: undefined, policy: {resourceId: 'ABC'}}).isInheritFromParent()).toBeFalsy();
+    });
+
 });

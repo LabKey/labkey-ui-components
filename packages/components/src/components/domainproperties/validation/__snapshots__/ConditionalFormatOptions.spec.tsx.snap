@@ -14,6 +14,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
       "lookupQuery": undefined,
     }
   }
+  domainIndex={1}
   expanded={true}
   index={1}
   mvEnabled={true}
@@ -38,6 +39,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
   >
     <div>
       <Filters
+        domainIndex={1}
         expression="format.column~startswith=0&format.column~doesnotstartwith=1"
         firstFilterTooltip={
           <LabelHelpTip
@@ -213,7 +215,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
-                    id="domainpropertiesrow-firstFilterType-0"
+                    id="domainpropertiesrow-firstFilterType-1-0"
                     name="domainpropertiesrow-firstFilterType"
                     onChange={[Function]}
                     required={true}
@@ -221,7 +223,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                   >
                     <select
                       className="form-control"
-                      id="domainpropertiesrow-firstFilterType-0"
+                      id="domainpropertiesrow-firstFilterType-1-0"
                       name="domainpropertiesrow-firstFilterType"
                       onChange={[Function]}
                       required={true}
@@ -394,7 +396,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                     bsClass="form-control"
                     componentClass="input"
                     disabled={false}
-                    id="domainpropertiesrow-firstFilterValue-0"
+                    id="domainpropertiesrow-firstFilterValue-1-0"
                     name="domainpropertiesrow-firstFilterValue"
                     onChange={[Function]}
                     required={true}
@@ -404,7 +406,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                     <input
                       className="form-control"
                       disabled={false}
-                      id="domainpropertiesrow-firstFilterValue-0"
+                      id="domainpropertiesrow-firstFilterValue-1-0"
                       name="domainpropertiesrow-firstFilterValue"
                       onChange={[Function]}
                       required={true}
@@ -452,14 +454,14 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
-                    id="domainpropertiesrow-secondFilterType-0"
+                    id="domainpropertiesrow-secondFilterType-1-0"
                     name="domainpropertiesrow-secondFilterType"
                     onChange={[Function]}
                     value="doesnotstartwith"
                   >
                     <select
                       className="form-control"
-                      id="domainpropertiesrow-secondFilterType-0"
+                      id="domainpropertiesrow-secondFilterType-1-0"
                       name="domainpropertiesrow-secondFilterType"
                       onChange={[Function]}
                       value="doesnotstartwith"
@@ -637,7 +639,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                     bsClass="form-control"
                     componentClass="input"
                     disabled={false}
-                    id="domainpropertiesrow-secondFilterValue-0"
+                    id="domainpropertiesrow-secondFilterValue-1-0"
                     name="domainpropertiesrow-secondFilterValue"
                     onChange={[Function]}
                     type="text"
@@ -646,7 +648,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                     <input
                       className="form-control"
                       disabled={false}
-                      id="domainpropertiesrow-secondFilterValue-0"
+                      id="domainpropertiesrow-secondFilterValue-1-0"
                       name="domainpropertiesrow-secondFilterValue"
                       onChange={[Function]}
                       type="text"
@@ -684,7 +686,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                 bsClass="checkbox"
                 checked={true}
                 disabled={false}
-                id="domainpropertiesrow-bold-0"
+                id="domainpropertiesrow-bold-1-0"
                 inline={false}
                 name="domainpropertiesrow-bold"
                 onChange={[Function]}
@@ -699,7 +701,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                     <input
                       checked={true}
                       disabled={false}
-                      id="domainpropertiesrow-bold-0"
+                      id="domainpropertiesrow-bold-1-0"
                       name="domainpropertiesrow-bold"
                       onChange={[Function]}
                       type="checkbox"
@@ -732,7 +734,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                 bsClass="checkbox"
                 checked={false}
                 disabled={false}
-                id="domainpropertiesrow-italic-0"
+                id="domainpropertiesrow-italic-1-0"
                 inline={false}
                 name="domainpropertiesrow-italic"
                 onChange={[Function]}
@@ -747,7 +749,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                     <input
                       checked={false}
                       disabled={false}
-                      id="domainpropertiesrow-italic-0"
+                      id="domainpropertiesrow-italic-1-0"
                       name="domainpropertiesrow-italic"
                       onChange={[Function]}
                       type="checkbox"
@@ -780,7 +782,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                 bsClass="checkbox"
                 checked={false}
                 disabled={false}
-                id="domainpropertiesrow-strikethrough-0"
+                id="domainpropertiesrow-strikethrough-1-0"
                 inline={false}
                 name="domainpropertiesrow-strikethrough"
                 onChange={[Function]}
@@ -795,7 +797,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                     <input
                       checked={false}
                       disabled={false}
-                      id="domainpropertiesrow-strikethrough-0"
+                      id="domainpropertiesrow-strikethrough-1-0"
                       name="domainpropertiesrow-strikethrough"
                       onChange={[Function]}
                       type="checkbox"
@@ -838,15 +840,15 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                   bsStyle="default"
                   className="domain-color-picker-btn"
                   disabled={false}
-                  id="domainpropertiesrow-textColor-0"
-                  key="domainpropertiesrow-textColor-0"
+                  id="domainpropertiesrow-textColor-1-0"
+                  key="domainpropertiesrow-textColor-1-0"
                   name="domainpropertiesrow-textColor"
                   onClick={[Function]}
                 >
                   <button
                     className="domain-color-picker-btn btn btn-default"
                     disabled={false}
-                    id="domainpropertiesrow-textColor-0"
+                    id="domainpropertiesrow-textColor-1-0"
                     name="domainpropertiesrow-textColor"
                     onClick={[Function]}
                     type="button"
@@ -935,15 +937,15 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                   bsStyle="default"
                   className="domain-color-picker-btn"
                   disabled={false}
-                  id="domainpropertiesrow-backgroundColor-0"
-                  key="domainpropertiesrow-backgroundColor-0"
+                  id="domainpropertiesrow-backgroundColor-1-0"
+                  key="domainpropertiesrow-backgroundColor-1-0"
                   name="domainpropertiesrow-backgroundColor"
                   onClick={[Function]}
                 >
                   <button
                     className="domain-color-picker-btn btn btn-default"
                     disabled={false}
-                    id="domainpropertiesrow-backgroundColor-0"
+                    id="domainpropertiesrow-backgroundColor-1-0"
                     name="domainpropertiesrow-backgroundColor"
                     onClick={[Function]}
                     type="button"
@@ -1090,14 +1092,14 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                 bsStyle="default"
                 className="domain-validation-delete"
                 disabled={false}
-                id="domainpropertiesrow-removeValidator-0"
+                id="domainpropertiesrow-removeValidator-1-0"
                 name="domainpropertiesrow-removeValidator"
                 onClick={[Function]}
               >
                 <button
                   className="domain-validation-delete btn btn-default"
                   disabled={false}
-                  id="domainpropertiesrow-removeValidator-0"
+                  id="domainpropertiesrow-removeValidator-1-0"
                   name="domainpropertiesrow-removeValidator"
                   onClick={[Function]}
                   type="button"
@@ -1128,6 +1130,7 @@ exports[`ConditionalFormatOptions Format 2 - collapsed 1`] = `
       "lookupQuery": undefined,
     }
   }
+  domainIndex={1}
   expanded={false}
   index={1}
   mvEnabled={true}

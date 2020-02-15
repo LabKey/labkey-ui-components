@@ -50,6 +50,28 @@ describe("<PermissionAssignments/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
+    test("not editable", () => {
+        const inheritPolicy = POLICY.set('containerId', 'NOT_RESOURCE_ID') as SecurityPolicy;
+
+        const component = (
+            <PermissionAssignments
+                containerId={'BOGUS'}
+                policy={inheritPolicy}
+                roles={ROLES}
+                rolesByUniqueName={ROLES_BY_NAME}
+                principals={List<Principal>()}
+                principalsById={Map<number, Principal>()}
+                inactiveUsersById={Map<number, Principal>()}
+                error={undefined}
+                onChange={jest.fn()}
+                onSuccess={jest.fn()}
+            />
+        );
+
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
     test("custom props", () => {
         const component = (
             <PermissionAssignments

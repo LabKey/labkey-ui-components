@@ -15,14 +15,13 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
+import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 
-import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
-
-describe("<SampleDeleteConfirmModal/>", () => {
+describe("<EntityDeleteConfirmModal/>", () => {
 
     test("Can delete 1", () => {
         const component = (
-            <SampleDeleteConfirmModalDisplay
+            <EntityDeleteConfirmModalDisplay
                 confirmationData = {{
                     "canDelete" : [ {
                         "Name" : "D-2.3.1",
@@ -32,6 +31,10 @@ describe("<SampleDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
+                nounSingular={"sample"}
+                nounPlural={"samples"}
+                dependencyText={"dependents"}
+                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);
@@ -41,7 +44,7 @@ describe("<SampleDeleteConfirmModal/>", () => {
 
     test ("Can delete all", () => {
         const component = (
-            <SampleDeleteConfirmModalDisplay
+            <EntityDeleteConfirmModalDisplay
                 confirmationData={{
                     "canDelete" : [ {
                         "Name" : "D-2.3.1",
@@ -57,6 +60,10 @@ describe("<SampleDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
+                nounSingular={"sample"}
+                nounPlural={"samples"}
+                dependencyText={"dependents"}
+                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);
@@ -66,7 +73,7 @@ describe("<SampleDeleteConfirmModal/>", () => {
 
     test("Can delete some", () => {
         const component = (
-            <SampleDeleteConfirmModalDisplay
+            <EntityDeleteConfirmModalDisplay
                 confirmationData={{
                     "canDelete" : [ {
                         "Name" : "D-2.3.1",
@@ -82,6 +89,10 @@ describe("<SampleDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
+                nounSingular={"sample"}
+                nounPlural={"samples"}
+                dependencyText={"dependents"}
+                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);
@@ -93,7 +104,7 @@ describe("<SampleDeleteConfirmModal/>", () => {
 
     test("Cannot delete any", () => {
         const component = (
-            <SampleDeleteConfirmModalDisplay
+            <EntityDeleteConfirmModalDisplay
                 confirmationData={ {
                     "canDelete" : [  ],
                     "cannotDelete" : [ {
@@ -109,6 +120,10 @@ describe("<SampleDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
+                nounSingular={"sample"}
+                nounPlural={"samples"}
+                dependencyText={"dependents"}
+                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);
@@ -118,7 +133,7 @@ describe("<SampleDeleteConfirmModal/>", () => {
 
     test("Cannot delete two", () => {
         const component = (
-            <SampleDeleteConfirmModalDisplay
+            <EntityDeleteConfirmModalDisplay
                 confirmationData={ {
                     "canDelete" : [  ],
                     "cannotDelete" : [ {
@@ -131,6 +146,10 @@ describe("<SampleDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
+                nounSingular={"sample"}
+                nounPlural={"samples"}
+                dependencyText={"dependents"}
+                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);
@@ -140,7 +159,7 @@ describe("<SampleDeleteConfirmModal/>", () => {
 
     test("Cannot delete one", () => {
         const component = (
-            <SampleDeleteConfirmModalDisplay
+            <EntityDeleteConfirmModalDisplay
                 confirmationData={ {
                     "canDelete" : [  ],
                     "cannotDelete" : [ {
@@ -150,6 +169,10 @@ describe("<SampleDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
+                nounSingular={"sample"}
+                nounPlural={"samples"}
+                dependencyText={"dependents"}
+                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);
@@ -161,7 +184,7 @@ describe("<SampleDeleteConfirmModal/>", () => {
         const onConfirmFn = jest.fn();
         const onCancelFn = jest.fn();
         const component = (
-            <SampleDeleteConfirmModalDisplay
+            <EntityDeleteConfirmModalDisplay
                 confirmationData={ {
                     "canDelete" : [ {
                         "Name": "D-4",
@@ -180,6 +203,10 @@ describe("<SampleDeleteConfirmModal/>", () => {
                 }}
                 onCancel={onCancelFn}
                 onConfirm={onConfirmFn}
+                nounSingular={"sample"}
+                nounPlural={"samples"}
+                dependencyText={"dependents"}
+                helpLinkTopic={"help"}
             />
         );
 

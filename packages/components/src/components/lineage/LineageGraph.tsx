@@ -14,6 +14,7 @@ import {
     LineageFilter,
     LineageGroupingOptions,
     LineageNode,
+    LineageNodeMetadata,
     LineageOptions,
 } from './models';
 import {
@@ -49,6 +50,7 @@ interface LinageGraphProps {
     filterIn?: boolean
     grouping?: ILineageGroupingOptions
     hideLegacyLinks?: boolean
+    initialModel?: QueryGridModel
 }
 
 export class LineageGraph extends React.Component<LinageGraphProps, any> {
@@ -195,6 +197,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
                 case 'node':     return this.renderSelectedGraphNode(seed, hoverNodeLsid, selectedNode);
                 case 'combined': return this.renderSelectedCombinedNode(seed, hoverNodeLsid, selectedNode);
                 case 'cluster':  return this.renderSelectedClusterNode(seed, hoverNodeLsid, selectedNode);
+                default:
                     throw new Error('unknown node kind');
             }
         }
@@ -203,21 +206,24 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         }
     }
 
-    renderSelectedGraphNode(seed: string, hoverNodeLsid: string, node: VisGraphNode) {
+    renderSelectedGraphNode(seed: string, hoverNodeLsid: string, node: VisGraphNode, showLineageSummary: boolean = true) {
         const lineageNode = node.lineageNode;
         const model = this.getNodeGridDataModel(lineageNode);
 
-        return <SelectedNodeDetail
-            seed={seed}
-            node={lineageNode}
-            entityModel={model}
-            highlightNode={hoverNodeLsid}
-            isNodeInGraph={this.isNodeInGraph}
-            onNodeMouseOver={this.onSummaryNodeMouseOver}
-            onNodeMouseOut={this.onSummaryNodeMouseOut}
-            onNodeClick={this.onSummaryNodeClick}
-            hideLegacyLinks={this.props.hideLegacyLinks}
-        />;
+        return (
+            <SelectedNodeDetail
+                seed={seed}
+                node={lineageNode}
+                entityModel={model}
+                highlightNode={hoverNodeLsid}
+                isNodeInGraph={this.isNodeInGraph}
+                onNodeMouseOver={this.onSummaryNodeMouseOver}
+                onNodeMouseOut={this.onSummaryNodeMouseOut}
+                onNodeClick={this.onSummaryNodeClick}
+                hideLegacyLinks={this.props.hideLegacyLinks}
+                showLineageSummary={showLineageSummary}
+            />
+        );
     }
 
     renderSelectedClusterNode(seed: string, hoverNodeLsid: string, node: VisGraphClusterNode) {
@@ -253,6 +259,25 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
                 requiredColumns
             }, node.rowId);
         }
+    }
+
+    createInitialLineageNode() : LineageNode {
+        const { initialModel } = this.props;
+        const row = initialModel.getRow();
+        const lsid = row.getIn(['LSID', 'value']);
+
+        return LineageNode.create(lsid, {
+            name: row.getIn(['Name', 'value']),
+            schemaName: initialModel.schema,
+            queryName: initialModel.query,
+            rowId: row.getIn(['RowId', 'value']),
+            url: row.getIn(['RowId', 'url']),
+            meta: new LineageNodeMetadata({
+                displayType: initialModel.queryInfo.title,
+                description: row.getIn(['Description', 'value'])
+            }),
+            lsid: lsid
+        })
     }
 
     render() {
@@ -292,14 +317,31 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
                             seed={lineage.getSeed()}
                         />
                     </div>
-                    <div className='col-md-4' style={{borderLeft: '1px solid #ddd'}}>
+                    <div className='col-md-4 lineage-node-detail-container'>
                         {this.renderSelectedNodes(lineage.getSeed(), graph)}
                     </div>
                 </div>
             )
         }
-
-        return <LoadingSpinner msg="Loading lineage..."/>;
+        else {
+            return (
+                <div className='row'>
+                    <div className='col-md-8'>
+                        <div className='top-spacing'>
+                            <LoadingSpinner  msg="Loading lineage..."/>
+                        </div>
+                    </div>
+                    <div className='col-md-4 lineage-node-detail-container'>
+                        {this.props.initialModel ? this.renderSelectedGraphNode(this.props.lsid, undefined, {
+                            id: this.props.lsid,
+                            cid: 0,
+                            kind: 'node',
+                            lineageNode: this.createInitialLineageNode()
+                        }, false) : <LoadingSpinner msg={"Loading details..."}/>}
+                    </div>
+                </div>
+            )
+        }
     }
 }
 
@@ -314,10 +356,15 @@ interface SelectedNodeProps {
     onNodeMouseOut?: (node: LineageNode) => void
     onNodeClick?: (node: LineageNode) => void
     hideLegacyLinks?: boolean
+    showLineageSummary?: boolean
 }
 
 // TODO: Refactor and share with ComponentDetailHOCImpl?
 class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
+
+    static defaultProps = {
+        showLineageSummary: true
+    };
 
     constructor(props) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
@@ -383,7 +430,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
     }
 
     render() {
-        const { seed, node, highlightNode, hideLegacyLinks } = this.props;
+        const { seed, node, highlightNode, hideLegacyLinks, showLineageSummary } = this.props;
         const url = node.url;
         const lineageUrl = url + '/lineage';
         const name = node.name;
@@ -417,7 +464,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
             // see DotGraph.TYPECODE_* constants
             const typePrefix =
                 node.type === 'Sample' ? 'M' :
-                    node.type === 'Data' ? 'D' : 'A'
+                    node.type === 'Data' ? 'D' : 'A';
             legacyDetailsLineageUrl = ActionURL.buildURL('experiment', 'showRunGraphDetail.view', LABKEY.container.path, {
                 rowId: runId,
                 detail: true,
@@ -426,7 +473,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
         }
 
         return <>
-            <div className="margin-bottom" style={{display: 'inline-block', width: '100%'}}>
+            <div className="margin-bottom lineage-node-detail" >
                 <i className="component-detail--child--img">
                     <SVGIcon
                         iconDir={'_images'}
@@ -437,7 +484,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
                 </i>
                 <div className="text__truncate">
                     <div className='lineage-name'>
-                        <h4 className="no-margin-top" style={{display: 'inline'}}>
+                        <h4 className="no-margin-top lineage-name-data">
                             {(lineageUrl && !isSeed) &&
                             <a href={lineageUrl} onClick={this.handleLinkClick}>{name}</a>
                             ||
@@ -445,14 +492,13 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
                             }
                             <div className='pull-right'>
                                 <a href={url}
-                                   style={{paddingLeft: '1px', paddingRight: '1px'}}
+                                   className='lineage-data-link-left'
                                    onClick={this.handleLinkClick}>
-                                    <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Overview</small>
+                                    <span className='lineage-data-link--text'>Overview</span>
                                 </a>
-                                <a href={lineageUrl}
-                                   style={{paddingLeft: '5px', paddingRight: '5px'}}
+                                <a href={lineageUrl} className='lineage-data-link-right'
                                    onClick={this.handleLinkClick}>
-                                    <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Lineage</small>
+                                    <span className='lineage-data-link--text'>Lineage</span>
                                 </a>
                             </div>
                         </h4>
@@ -478,15 +524,17 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
 
             <Detail queryModel={model} />
 
-            <LineageSummary
-                seed={node.lsid}
-                showRuns={false}
-                highlightNode={highlightNode}
-                isNodeInGraph={this.isNodeInGraph}
-                onNodeMouseOver={this.onNodeMouseOver}
-                onNodeMouseOut={this.onNodeMouseOut}
-                onNodeClick={this.onNodeClick}
-            />
+            {showLineageSummary && (
+                <LineageSummary
+                    seed={node.lsid}
+                    showRuns={false}
+                    highlightNode={highlightNode}
+                    isNodeInGraph={this.isNodeInGraph}
+                    onNodeMouseOver={this.onNodeMouseOver}
+                    onNodeMouseOut={this.onNodeMouseOut}
+                    onNodeClick={this.onNodeClick}
+                />
+            )}
 
         </>;
     }
@@ -565,7 +613,7 @@ class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
         }
 
         return <>
-            <div className="margin-bottom" style={{display: 'inline-block', width: '100%'}}>
+            <div className="margin-bottom lineage-node-detail">
                 <i className="component-detail--child--img">
                     <SVGIcon
                         iconDir={'_images'}
@@ -576,7 +624,7 @@ class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
                 </i>
                 <div className="text__truncate">
                     <div className='lineage-name'>
-                        <h4 className="no-margin-top" style={{display: 'inline'}}>
+                        <h4 className="no-margin-top lineage-name-data">
                             {title}
                         </h4>
                     </div>
@@ -599,6 +647,4 @@ class ClusterNodeDetail extends React.Component<ClusterNodeDetailProps> {
 
         </>;
     }
-
-
 }

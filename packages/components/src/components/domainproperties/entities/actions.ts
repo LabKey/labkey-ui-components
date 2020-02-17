@@ -18,10 +18,11 @@ import { IEntityDetails } from "./models";
 import { ENTITY_FORM_ID_PREFIX, ENTITY_FORM_IDS } from "./constants";
 
 export function getFormNameFromId(id: string): string {
-    return id.substring(id.indexOf(ENTITY_FORM_ID_PREFIX) + ENTITY_FORM_ID_PREFIX.length);
+    const index = id.indexOf(ENTITY_FORM_ID_PREFIX);
+    return index === 0 ? id.substring(index + ENTITY_FORM_ID_PREFIX.length) : id;
 }
 
-export function getEntityFormDataValue(key: string, propName: string, defaultValue: any, formValues: IEntityDetails, data: Map<string, any>): any {
+function getEntityFormDataValue(key: string, propName: string, defaultValue: any, formValues: IEntityDetails, data: Map<string, any>): any {
     if (key && formValues && formValues[key] !== undefined) {
         return formValues[key] || defaultValue;
     }

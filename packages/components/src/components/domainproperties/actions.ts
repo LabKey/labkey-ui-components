@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
+import {ActionURL, Ajax, Domain, Query, Security, Utils} from '@labkey/api';
 
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -241,13 +241,13 @@ export function createFormInputName(name: string): string {
     return [DOMAIN_FIELD_PREFIX, name].join('-');
 }
 
-export function createFormInputId(name: string, index: number): string {
-    return [DOMAIN_FIELD_PREFIX, name, index].join('-');
+export function createFormInputId(name: string, domainIndex: number, rowIndex: number): string {
+    return [DOMAIN_FIELD_PREFIX, name, domainIndex, rowIndex].join('-');
 }
 
 export function getNameFromId(id: string) : string {
     const parts = id.split('-');
-    if (parts.length === 3) {
+    if (parts.length === 4) {
         return parts[1];
     }
 
@@ -256,8 +256,8 @@ export function getNameFromId(id: string) : string {
 
 export function getIndexFromId(id: string): number {
     const parts = id.split('-');
-    if (parts.length === 3) {
-        return parseInt(parts[2]);
+    if (parts.length === 4) {
+        return parseInt(parts[3]);
     }
 
     return -1;
@@ -606,6 +606,22 @@ export function fetchListDesign(domainId = null) {
             })
         })
     });
+}
+
+export function createListDesign() {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('list', 'GetListProperties'),
+            method: 'GET',
+            scope: this,
+            success: Utils.getCallbackWrapper((data) => {
+                resolve(ListModel.create(null, data));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error);
+            })
+        });
+    })
 }
 
 export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>): DomainDesign {

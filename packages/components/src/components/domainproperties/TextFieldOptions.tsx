@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
-import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './actions';
+import { createFormInputId, createFormInputName, getNameFromId } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { DOMAIN_FIELD_CUSTOM_LENGTH, DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH } from './constants';
 import { ITypeDependentProps } from './models';
@@ -30,7 +30,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
     }
 
     handleChange = (event: any) => {
-        const { onChange, scale } = this.props;
+        const { onChange, scale, domainIndex, index } = this.props;
         const target = event.target;
 
         // Initially set to handle custom character count
@@ -42,7 +42,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
         // If handling radio button
         if (fieldName !== DOMAIN_FIELD_SCALE) {
             this.setState({radio: value});  // set local state
-            scaleId = createFormInputId(DOMAIN_FIELD_SCALE, getIndexFromId(target.id));  // updating scale
+            scaleId = createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index);  // updating scale
             value = MAX_TEXT_LENGTH;  // set scale back to MAX_TEXT_LENGTH
         }
         else {
@@ -56,7 +56,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
         if (onChange && value !== scale) {
             onChange(scaleId, value);
         }
-    }
+    };
 
     getMaxCountHelpText = () => {
         return (
@@ -64,10 +64,10 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 Sets the maximum character count for a text field.
             </div>
         )
-    }
+    };
 
     render() {
-        const { index, label, scale, lockType } = this.props;
+        const { index, label, scale, lockType, domainIndex } = this.props;
         const { radio } = this.state;
 
         return (
@@ -95,7 +95,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                value={DOMAIN_FIELD_MAX_LENGTH}
                                checked={radio === DOMAIN_FIELD_MAX_LENGTH}
                                onChange={this.handleChange}
-                               id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, index)}
+                               id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, domainIndex, index)}
                                disabled={isFieldFullyLocked(lockType)}
                         />
                         <div className='domain-text-label'>Unlimited</div>
@@ -108,11 +108,11 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                value={DOMAIN_FIELD_CUSTOM_LENGTH}
                                checked={radio === DOMAIN_FIELD_CUSTOM_LENGTH}
                                onChange={this.handleChange}
-                               id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, index)}
+                               id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, domainIndex, index)}
                         />
                         <span className='domain-text-options-length domain-field-float-left domain-text-label'>No longer than X characters</span>
                         <FormControl type="number"
-                                     id={createFormInputId(DOMAIN_FIELD_SCALE, index)}
+                                     id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
                                      name={createFormInputName(DOMAIN_FIELD_SCALE)}
                                      className='domain-text-length-field'
                                      value={typeof scale !== "undefined" && radio === DOMAIN_FIELD_CUSTOM_LENGTH ? scale : 4000}

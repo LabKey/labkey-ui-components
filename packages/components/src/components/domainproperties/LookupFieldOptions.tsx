@@ -26,7 +26,7 @@ interface LookupFieldProps extends ITypeDependentProps {
 export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, any> {
 
     onFieldChange = (evt) => {
-        const { onMultiChange } = this.props;
+        const { onMultiChange, domainIndex } = this.props;
         const index = getIndexFromId(evt.target.id);
         const name = getNameFromId(evt.target.id);
 
@@ -34,12 +34,12 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
         changes = changes.push({id: evt.target.id, value: evt.target.value} as IFieldChange);
 
         if (name === DOMAIN_FIELD_LOOKUP_CONTAINER) {
-            changes = changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index), value: ''});
-            changes = changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''});
+            changes = changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index), value: ''});
+            changes = changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index), value: ''});
         }
 
         if (name === DOMAIN_FIELD_LOOKUP_SCHEMA) {
-            changes = changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''});
+            changes = changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index), value: ''});
         }
 
         if (onMultiChange) {
@@ -71,7 +71,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
     };
 
     render() {
-        const { index, label, lookupContainer, lookupSchema, lookupQueryValue, original, lockType, lookupValidator } = this.props;
+        const { index, label, lookupContainer, lookupSchema, lookupQueryValue, original, lockType, lookupValidator, domainIndex } = this.props;
         const disabled = lockType === DOMAIN_FIELD_PARTIALLY_LOCKED || lockType === DOMAIN_FIELD_FULLY_LOCKED;
 
         return (
@@ -85,8 +85,8 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                     <Col xs={2}>
                         <div className="domain-field-label">Target Folder</div>
                         <FolderSelect
-                            id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
-                            key={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
+                            id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
+                            key={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
                             disabled={disabled}
                             onChange={this.onFieldChange}
                             value={lookupContainer}
@@ -96,8 +96,8 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                         <div className="domain-field-label">Target Schema</div>
                         <SchemaSelect
                             containerPath={lookupContainer}
-                            id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
-                            key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
+                            id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
+                            key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
                             disabled={disabled}
                             onChange={this.onFieldChange}
                             value={lookupSchema}/>
@@ -106,8 +106,8 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                         <div className="domain-field-label">Target Table</div>
                         <TargetTableSelect
                             containerPath={lookupContainer}
-                            id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
-                            key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
+                            id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}
+                            key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}
                             disabled={disabled}
                             lookupURI={original.rangeURI}
                             onChange={this.onFieldChange}
@@ -119,7 +119,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                         <div className="domain-field-label">Lookup Validator</div>
                         <Checkbox
                             className='domain-field-checkbox-margin'
-                            id={createFormInputId(DOMAIN_VALIDATOR_LOOKUP, index)}
+                            id={createFormInputId(DOMAIN_VALIDATOR_LOOKUP, domainIndex, index)}
                             name={createFormInputName(DOMAIN_VALIDATOR_LOOKUP)}
                             checked={!!lookupValidator}
                             onChange={this.addLookupValidator}

@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Button, Checkbox, Col, Collapse, FormControl, Row } from 'react-bootstrap';
+import { Button, Checkbox, Col, Collapse, FormControl, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGripVertical, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { Draggable } from 'react-beautiful-dnd';
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -31,8 +29,8 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_ROW,
     DOMAIN_FIELD_TYPE,
-    HIGHLIGHT_BLUE,
-    NOT_HIGHLIGHT_GRAY,
+    FIELD_NAME_CHAR_WARNING_INFO,
+    FIELD_NAME_CHAR_WARNING_MSG,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
@@ -44,11 +42,16 @@ import {
     PropDescType,
     resolveAvailableTypes,
 } from './models';
-import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId } from './actions';
+import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
+import { FieldExpansionToggle } from "../base/FieldExpansionToggle";
+import { DeleteIcon } from "../base/DeleteIcon";
+import { DragDropHandle } from "../base/DragDropHandle";
 import { SCHEMAS } from '../base/models/schemas';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface IDomainRowProps {
     domainId?: number
@@ -70,12 +73,12 @@ interface IDomainRowProps {
     defaultValueOptions: List<string>
     appPropertiesOnly?: boolean
     showFilePropertyType?: boolean
+    domainIndex: number
 }
 
 interface IDomainRowState {
     showAdv: boolean
     closing: boolean
-    hover: boolean
     showingModal: boolean
     isDragDisabled: boolean
 }
@@ -91,7 +94,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.state = {
             showAdv: false,
             closing: false,
-            hover: false,
             showingModal: false,
             isDragDisabled: props.isDragDisabled
         };
@@ -108,7 +110,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const { field, index } = this.props;
+        const { field, index, fieldError } = this.props;
         let details = [];
 
         if (field.hasErrors()) {
@@ -152,7 +154,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             period = '. ';
         }
 
-        if (this.props.field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
+        if (field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
             details.push(period + 'Locked');
         }
 
@@ -160,21 +162,31 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             period = '. ';
         }
 
-        if (this.props.fieldError) {
+        if (fieldError) {
             details.push(period);
-            const msg = this.props.fieldError.severity + ": " + this.props.fieldError.message;
-            details.push(<b key={field.name + "_" + index}>{msg}</b>);
+            const msg = fieldError.severity + ': ' + fieldError.message;
+            details.push(
+                <>
+                    <b key={field.name + "_" + index}>{msg}</b>&nbsp;
+                    {fieldError.extraInfo && <OverlayTrigger
+                        placement={'bottom'}
+                        overlay={<Popover bsClass="popover">{fieldError.extraInfo}</Popover>}
+                    >
+                        <FontAwesomeIcon icon={faExclamationCircle} className={'domain-warning-icon'}/>
+                    </OverlayTrigger>}
+                </>
+            );
         }
 
         return details;
     };
 
     getDetails() {
-        const { index, expanded } = this.props;
+        const { index, expanded, domainIndex } = this.props;
         const { closing } = this.state;
 
         return (
-            <div id={createFormInputId(DOMAIN_FIELD_DETAILS, index)}
+            <div id={createFormInputId(DOMAIN_FIELD_DETAILS, domainIndex, index)}
                  className={(expanded || closing) ? 'domain-field-details-expanded' : 'domain-field-details'}>
                 {this.getDetailsText()}
             </div>
@@ -240,30 +252,33 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     };
 
     onNameChange  = (evt) => {
-
-        const { index, onChange } = this.props;
+        const { index, onChange, domainIndex } = this.props;
 
         let value = evt.target.value;
         let nameAndErrorList = List<IFieldChange>().asMutable();
 
         //set value for the field
-        nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, getIndexFromId(evt.target.id)), value: value});
+        nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value: value});
 
         if (isLegalName(value) && !value.includes(' ')) {
-
             //set value to undefined for field error
-            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: undefined});
+            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index), value: undefined});
         }
         else {
-
-            let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
             let fieldName = value;
             let severity = SEVERITY_LEVEL_WARN;
             let indexes = List<number>([index]);
-            let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, rowIndexes: indexes});
+            let domainFieldError = new DomainFieldError({
+                message: FIELD_NAME_CHAR_WARNING_MSG,
+                extraInfo: FIELD_NAME_CHAR_WARNING_INFO,
+                fieldName,
+                propertyId: undefined,
+                severity,
+                rowIndexes: indexes
+            });
 
             //set value for field error
-            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: domainFieldError});
+            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index), value: domainFieldError});
         }
 
         if (onChange) {
@@ -285,14 +300,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.setState(() => ({showAdv: false}));
 
         this.setDragDisabled(this.props.isDragDisabled, false);
-    };
-
-    onMouseOver = (): any => {
-        this.setState(() => ({hover: true}))
-    };
-
-    onMouseOut = (): any => {
-        this.setState(() => ({hover: false}))
     };
 
     onDelete = (): any => {
@@ -327,27 +334,18 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.setState(() => ({showingModal: showing}));
     };
 
-    renderHandle() {
-        const { dragging } = this.props;
-        const { isDragDisabled, hover, closing } = this.state;
-
-        return (
-            <FontAwesomeIcon size='lg' color={!isDragDisabled && (dragging || hover || closing) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY} icon={faGripVertical}/>
-        )
-    }
-
     renderBaseFields() {
-        const { index, field, availableTypes, appPropertiesOnly, showFilePropertyType } = this.props;
+        const { index, field, availableTypes, appPropertiesOnly, showFilePropertyType, domainIndex } = this.props;
 
         return (
-            <div id={createFormInputId(DOMAIN_FIELD_ROW, index)}>
+            <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)}>
                 <Col xs={6}>
                     <FormControl
                         // autoFocus={field.isNew()}  // TODO: This is not working great with drag and drop, need to investigate
                         type="text"
                         value={field.name || ''}
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
-                        id={createFormInputId(DOMAIN_FIELD_NAME, index)}
+                        id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
                         onChange={this.onNameChange}
                         disabled={(isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}
                     />
@@ -357,7 +355,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         componentClass="select"
                         name={createFormInputName(DOMAIN_FIELD_TYPE)}
                         disabled={(!field.isNew() && field.primaryKey) || isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType)}
-                        id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
+                        id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
                         onChange={this.onDataTypeChange}
                         value={field.dataType.name}
                     >
@@ -373,7 +371,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         <Checkbox
                             className='domain-field-checkbox'
                             name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
-                            id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
+                            id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
                             checked={field.required}
                             onChange={this.onFieldChange}
                             disabled={isFieldFullyLocked(field.lockType)}
@@ -385,58 +383,58 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderButtons() {
-        const { expanded, index, field, dragging, appPropertiesOnly } = this.props;
-        const { hover, closing } = this.state;
+        const { expanded, index, field, appPropertiesOnly, domainIndex } = this.props;
+        const { closing } = this.state;
 
-        // TODO update to use FieldExpansionToggle
         return (
             <div className={expanded ? "domain-field-buttons-expanded" : "domain-field-buttons"}>
-                {(expanded || closing) && !isFieldFullyLocked(field.lockType) && (
-                <>
+                {(expanded || closing) && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
                     <Button
-                        className="domain-row-button"
-                        name={createFormInputName(DOMAIN_FIELD_DELETE)}
-                        id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
-                        disabled={isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)}
-                        onClick={this.onDelete}>
-                        Remove Field
-                    </Button>
-                    {!appPropertiesOnly && <Button
                         disabled={isFieldFullyLocked(field.lockType)}
                         name={createFormInputName(DOMAIN_FIELD_ADV)}
-                        id={createFormInputId(DOMAIN_FIELD_ADV, index)}
+                        id={createFormInputId(DOMAIN_FIELD_ADV, domainIndex, index)}
                         onClick={this.onShowAdvanced}
                         className="domain-row-button"
                     >
                         Advanced Settings
-                    </Button>}
-                </>
+                    </Button>
                 )}
-                <div className="field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)} onClick={this.onExpand}>
-                    <FontAwesomeIcon size='lg' color={(dragging || hover) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
-                                     icon={expanded ? faMinusSquare : faPlusSquare}/>
-                </div>
+                {!(isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)) &&
+                    <DeleteIcon
+                        id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
+                        title={'Remove field'}
+                        iconCls={'domain-field-delete-icon'}
+                        onDelete={this.onDelete}
+                    />
+                }
+                <FieldExpansionToggle
+                    cls={'domain-field-expand-icon'}
+                    expanded={expanded}
+                    expandedTitle={"Hide additional field properties"}
+                    collapsedTitle={"Show additional field properties"}
+                    id={createFormInputId(DOMAIN_FIELD_EXPAND, domainIndex, index)}
+                    onClick={this.onExpand}
+                />
             </div>
         )
     }
 
     render() {
         const { closing, isDragDisabled, showAdv, showingModal } = this.state;
-        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId,
+        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId, domainIndex,
             helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions, appPropertiesOnly } = this.props;
 
         return (
-            <Draggable draggableId={createFormInputId("domaindrag", index)} index={index} isDragDisabled={showingModal || isDragDisabled}>
+            <Draggable draggableId={createFormInputId("domaindrag", domainIndex, index)} index={index} isDragDisabled={showingModal || isDragDisabled}>
                 {(provided) => (
                     <div className={this.getRowCssClasses(expanded, closing, dragging, fieldError)}
                          {...provided.draggableProps}
                          ref={provided.innerRef}
                          tabIndex={index}
-                         onMouseEnter={showingModal ? undefined : this.onMouseOver}
-                         onMouseLeave={showingModal ? undefined : this.onMouseOut}
                     >
-                        <Row key={createFormInputId("domainrow", index)} className={'domain-row-container'}>
+                        <Row key={createFormInputId("domainrow", domainIndex, index)} className={'domain-row-container'}>
                             <AdvancedSettings
+                                domainIndex={domainIndex}
                                 domainId={domainId}
                                 helpNoun={helpNoun}
                                 index={index}
@@ -451,7 +449,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 defaultValueOptions={defaultValueOptions}
                             />
                             <div className='domain-row-handle' {...provided.dragHandleProps}>
-                                {this.renderHandle()}
+                                {<DragDropHandle highlighted={dragging ? true : isDragDisabled ? false: undefined /* use undefined instead of false to allow for css to handle the highlight color for hover*/}/>}
                             </div>
                             <div className='domain-row-main'>
                                 <Col xs={6} className='domain-row-base-fields'>
@@ -465,8 +463,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         </Row>
                             <Collapse in={expanded} timeout={expandTransition} onExited={this.onCollapsed} onExiting={this.onCollapsing}>
                                 <div>
-                                    <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange}
-                                                              showingModal={this.showingModal} appPropertiesOnly={appPropertiesOnly}
+                                    <DomainRowExpandedOptions
+                                        field={field}
+                                        index={index}
+                                        domainIndex={domainIndex}
+                                        onMultiChange={this.onMultiFieldChange}
+                                        onChange={this.onSingleFieldChange}
+                                        showingModal={this.showingModal}
+                                        appPropertiesOnly={appPropertiesOnly}
                                     />
                                 </div>
                             </Collapse>

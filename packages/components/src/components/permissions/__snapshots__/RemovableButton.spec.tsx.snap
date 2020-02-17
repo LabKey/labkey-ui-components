@@ -57,3 +57,14 @@ exports[`<RemovableButton/> default props 1`] = `
   </button>
 </div>
 `;
+
+exports[`<RemovableButton/> not removable 1`] = `
+<button
+  className="permissions-button-display btn btn-default"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
+>
+  Display Text (Not Removable)
+</button>
+`;

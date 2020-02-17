@@ -27,14 +27,14 @@ export const _defaultRenderer = (d) => {
     return <DefaultRenderer data={d} />;
 };
 
-function processFields(queryColumns: List<QueryColumn>, detailRenderer: Function, titleRenderer: Function): Map<string, DetailField> {
+function processFields(queryColumns: List<QueryColumn>, detailRenderer: Function, titleRenderer: Function, useDatePicker: boolean): Map<string, DetailField> {
     return queryColumns
         .reduce((fields, c) => {
             let fieldKey = c.fieldKey.toLowerCase(),
                 renderer;
 
             if (detailRenderer) {
-                renderer = detailRenderer(c);
+                renderer = detailRenderer(c, useDatePicker);
             }
 
             if (!renderer) {
@@ -82,6 +82,7 @@ interface DetailProps {
     titleRenderer?: Function
     asPanel: boolean
     editingMode?: boolean
+    useDatePicker?: boolean
 }
 
 
@@ -89,15 +90,16 @@ export class Detail extends React.Component<DetailProps, any> {
 
     static defaultProps = {
         asPanel: false,
-        editingMode: false
+        editingMode: false,
+        useDatePicker: true
     };
 
     render() {
-        const { queryModel, detailRenderer, editingMode, titleRenderer, asPanel } = this.props;
+        const { queryModel, detailRenderer, editingMode, titleRenderer, asPanel, useDatePicker } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
             const displayCols = editingMode ? queryModel.getUpdateDisplayColumns() : queryModel.getDetailsDisplayColumns();
-            const fields = processFields(this.props.queryColumns || displayCols, detailRenderer, titleRenderer);
+            const fields = processFields(this.props.queryColumns || displayCols, detailRenderer, titleRenderer, useDatePicker);
             const target = queryModel.getData();
             let body;
 

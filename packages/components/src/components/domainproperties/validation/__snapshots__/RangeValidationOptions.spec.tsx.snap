@@ -14,6 +14,7 @@ exports[`RangeValidationOptions Range Validator - collapsed 1`] = `
       "lookupQuery": undefined,
     }
   }
+  domainIndex={1}
   expanded={false}
   index={1}
   mvEnabled={true}
@@ -116,6 +117,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
       "lookupQuery": undefined,
     }
   }
+  domainIndex={1}
   expanded={true}
   index={1}
   mvEnabled={true}
@@ -144,6 +146,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
   >
     <div>
       <Filters
+        domainIndex={1}
         expression="~gt=0&~lt=10"
         firstFilterTooltip={
           <LabelHelpTip
@@ -328,7 +331,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
-                    id="domainpropertiesrow-firstFilterType-0"
+                    id="domainpropertiesrow-firstFilterType-1-0"
                     name="domainpropertiesrow-firstFilterType"
                     onChange={[Function]}
                     required={true}
@@ -336,7 +339,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   >
                     <select
                       className="form-control"
-                      id="domainpropertiesrow-firstFilterType-0"
+                      id="domainpropertiesrow-firstFilterType-1-0"
                       name="domainpropertiesrow-firstFilterType"
                       onChange={[Function]}
                       required={true}
@@ -419,7 +422,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                     bsClass="form-control"
                     componentClass="input"
                     disabled={false}
-                    id="domainpropertiesrow-firstFilterValue-0"
+                    id="domainpropertiesrow-firstFilterValue-1-0"
                     name="domainpropertiesrow-firstFilterValue"
                     onChange={[Function]}
                     required={true}
@@ -429,7 +432,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                     <input
                       className="form-control"
                       disabled={false}
-                      id="domainpropertiesrow-firstFilterValue-0"
+                      id="domainpropertiesrow-firstFilterValue-1-0"
                       name="domainpropertiesrow-firstFilterValue"
                       onChange={[Function]}
                       required={true}
@@ -595,14 +598,14 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
-                    id="domainpropertiesrow-secondFilterType-0"
+                    id="domainpropertiesrow-secondFilterType-1-0"
                     name="domainpropertiesrow-secondFilterType"
                     onChange={[Function]}
                     value="lt"
                   >
                     <select
                       className="form-control"
-                      id="domainpropertiesrow-secondFilterType-0"
+                      id="domainpropertiesrow-secondFilterType-1-0"
                       name="domainpropertiesrow-secondFilterType"
                       onChange={[Function]}
                       value="lt"
@@ -690,7 +693,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                     bsClass="form-control"
                     componentClass="input"
                     disabled={false}
-                    id="domainpropertiesrow-secondFilterValue-0"
+                    id="domainpropertiesrow-secondFilterValue-1-0"
                     name="domainpropertiesrow-secondFilterValue"
                     onChange={[Function]}
                     type="number"
@@ -699,7 +702,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                     <input
                       className="form-control"
                       disabled={false}
-                      id="domainpropertiesrow-secondFilterValue-0"
+                      id="domainpropertiesrow-secondFilterValue-1-0"
                       name="domainpropertiesrow-secondFilterValue"
                       onChange={[Function]}
                       type="number"
@@ -746,7 +749,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   bsClass="form-control"
                   className="domain-validation-textarea"
                   componentClass="textarea"
-                  id="domainpropertiesrow-description-0"
+                  id="domainpropertiesrow-description-1-0"
                   name="domainpropertiesrow-description"
                   onChange={[Function]}
                   rows={3}
@@ -754,7 +757,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                 >
                   <textarea
                     className="domain-validation-textarea form-control"
-                    id="domainpropertiesrow-description-0"
+                    id="domainpropertiesrow-description-1-0"
                     name="domainpropertiesrow-description"
                     onChange={[Function]}
                     rows={3}
@@ -800,7 +803,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   bsClass="form-control"
                   className="domain-validation-textarea"
                   componentClass="textarea"
-                  id="domainpropertiesrow-errorMessage-0"
+                  id="domainpropertiesrow-errorMessage-1-0"
                   name="domainpropertiesrow-errorMessage"
                   onChange={[Function]}
                   rows={3}
@@ -808,7 +811,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                 >
                   <textarea
                     className="domain-validation-textarea form-control"
-                    id="domainpropertiesrow-errorMessage-0"
+                    id="domainpropertiesrow-errorMessage-1-0"
                     name="domainpropertiesrow-errorMessage"
                     onChange={[Function]}
                     rows={3}
@@ -851,7 +854,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
-                id="domainpropertiesrow-name-0"
+                id="domainpropertiesrow-name-1-0"
                 name="domainpropertiesrow-name"
                 onChange={[Function]}
                 type="text"
@@ -859,7 +862,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
               >
                 <input
                   className="form-control"
-                  id="domainpropertiesrow-name-0"
+                  id="domainpropertiesrow-name-1-0"
                   name="domainpropertiesrow-name"
                   onChange={[Function]}
                   type="text"
@@ -892,14 +895,14 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                 bsStyle="default"
                 className="domain-validation-delete"
                 disabled={false}
-                id="domainpropertiesrow-removeValidator-0"
+                id="domainpropertiesrow-removeValidator-1-0"
                 name="domainpropertiesrow-removeValidator"
                 onClick={[Function]}
               >
                 <button
                   className="domain-validation-delete btn btn-default"
                   disabled={false}
-                  id="domainpropertiesrow-removeValidator-0"
+                  id="domainpropertiesrow-removeValidator-1-0"
                   name="domainpropertiesrow-removeValidator"
                   onClick={[Function]}
                   type="button"

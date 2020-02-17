@@ -2,6 +2,7 @@
 
 exports[`NameAndLinkingOptions Name and Linking options 1`] = `
 <NameAndLinkingOptions
+  domainIndex={1}
   field={
     Immutable.Record {
       "conceptURI": undefined,
@@ -136,7 +137,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 className="form-control domain-field-textarea"
                 componentClass="textarea"
                 disabled={false}
-                id="domainpropertiesrow-description-1"
+                id="domainpropertiesrow-description-1-1"
                 name="domainpropertiesrow-description"
                 onChange={[Function]}
                 rows={4}
@@ -145,7 +146,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 <textarea
                   className="form-control domain-field-textarea form-control"
                   disabled={false}
-                  id="domainpropertiesrow-description-1"
+                  id="domainpropertiesrow-description-1-1"
                   name="domainpropertiesrow-description"
                   onChange={[Function]}
                   rows={4}
@@ -171,7 +172,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 disabled={false}
-                id="domainpropertiesrow-label-1"
+                id="domainpropertiesrow-label-1-1"
                 name="domainpropertiesrow-label"
                 onChange={[Function]}
                 type="text"
@@ -180,7 +181,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 <input
                   className="form-control"
                   disabled={false}
-                  id="domainpropertiesrow-label-1"
+                  id="domainpropertiesrow-label-1-1"
                   name="domainpropertiesrow-label"
                   onChange={[Function]}
                   type="text"
@@ -314,7 +315,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 disabled={false}
-                id="domainpropertiesrow-importAliases-1"
+                id="domainpropertiesrow-importAliases-1-1"
                 name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
                 type="text"
@@ -323,7 +324,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 <input
                   className="form-control"
                   disabled={false}
-                  id="domainpropertiesrow-importAliases-1"
+                  id="domainpropertiesrow-importAliases-1-1"
                   name="domainpropertiesrow-importAliases"
                   onChange={[Function]}
                   type="text"
@@ -467,7 +468,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 disabled={false}
-                id="domainpropertiesrow-URL-1"
+                id="domainpropertiesrow-URL-1-1"
                 name="domainpropertiesrow-URL"
                 onChange={[Function]}
                 type="text"
@@ -476,7 +477,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 <input
                   className="form-control"
                   disabled={false}
-                  id="domainpropertiesrow-URL-1"
+                  id="domainpropertiesrow-URL-1-1"
                   name="domainpropertiesrow-URL"
                   onChange={[Function]}
                   type="text"

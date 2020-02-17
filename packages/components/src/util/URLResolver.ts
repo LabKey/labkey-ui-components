@@ -16,6 +16,7 @@
 import { fromJS, List, Map } from 'immutable';
 import { ActionURL, Filter } from '@labkey/api';
 import { AppURL } from '../url/AppURL';
+import { LineageResult } from '../components/lineage/models';
 
 interface MapURLOptions {
     column: any
@@ -49,10 +50,12 @@ export class URLResolver {
 
             new ActionMapper('experiment', 'showData', (row) => {
                 const targetURL = row.get('url');
-                const params = ActionURL.getParameters(targetURL);
+                if (targetURL) {
+                    const params = ActionURL.getParameters(targetURL);
 
-                let url = ['rd', 'expdata', params.rowId];
-                return AppURL.create(...url);
+                    let url = ['rd', 'expdata', params.rowId];
+                    return AppURL.create(...url);
+                }
             }),
 
             new ActionMapper('experiment', 'showMaterialSource', (row, column) => {
@@ -74,75 +77,89 @@ export class URLResolver {
 
             new ActionMapper('experiment', 'showMaterial', (row) => {
                 const targetURL = row.get('url');
-                const params = ActionURL.getParameters(targetURL);
-                let rowId = params.rowId;
+                if (targetURL) {
+                    const params = ActionURL.getParameters(targetURL);
+                    let rowId = params.rowId;
 
-                const url = ['rd', 'samples', rowId];
+                    const url = ['rd', 'samples', rowId];
 
-                if (rowId !== undefined) {
-                    return AppURL.create(...url);
+                    if (rowId !== undefined) {
+                        return AppURL.create(...url);
+                    }
                 }
             }),
 
             new ActionMapper('experiment', 'showRunText', (row) => {
                 const targetURL = row.get('url');
-                const params = ActionURL.getParameters(targetURL);
-                const rowId = params.rowId;
-                const url = ['workflow', rowId];
-                if (rowId !== undefined) {
-                    return AppURL.create(...url);
+                if (targetURL) {
+                    const params = ActionURL.getParameters(targetURL);
+                    const rowId = params.rowId;
+                    const url = ['workflow', rowId];
+                    if (rowId !== undefined) {
+                        return AppURL.create(...url);
+                    }
                 }
             }),
 
             // http://localhost:8080/labkey/Sam%20Man/experiment-protocolDetails.view?rowId=1424
             new ActionMapper("experiment", "protocolDetails", (row) => {
                 const targetURL = row.get('url');
-                const params = ActionURL.getParameters(targetURL);
-                const rowId = params.rowId;
-                const url = ['workflow', 'template', rowId];
-                if (rowId !== undefined) {
-                    return AppURL.create(...url);
+                if (targetURL) {
+                    const params = ActionURL.getParameters(targetURL);
+                    const rowId = params.rowId;
+                    const url = ['workflow', 'template', rowId];
+                    if (rowId !== undefined) {
+                        return AppURL.create(...url);
+                    }
                 }
             }),
 
             // Fixme.  This is really sketchy since there is no corresponding URL in LKS
             new ActionMapper('samplesworkflow', 'samples', (row) => {
                 const targetURL = row.get('url');
-                const params = ActionURL.getParameters(targetURL);
-                const jobId = params.jobId;
-                const url = ['workflow', jobId, 'samples'];
-                if (jobId !== undefined) {
-                    return AppURL.create(...url);
+                if (targetURL) {
+                    const params = ActionURL.getParameters(targetURL);
+                    const jobId = params.jobId;
+                    const url = ['workflow', jobId, 'samples'];
+                    if (jobId !== undefined) {
+                        return AppURL.create(...url);
+                    }
                 }
             }),
 
             new ActionMapper('samplesworkflow', 'tasks', (row) => {
                 const targetURL = row.get('url');
-                const params = ActionURL.getParameters(targetURL);
-                const jobId = params.jobId;
-                const url = ['workflow', jobId, 'tasks'];
-                if (jobId !== undefined) {
-                    return AppURL.create(...url);
+                if (targetURL) {
+                    const params = ActionURL.getParameters(targetURL);
+                    const jobId = params.jobId;
+                    const url = ['workflow', jobId, 'tasks'];
+                    if (jobId !== undefined) {
+                        return AppURL.create(...url);
+                    }
                 }
             }),
 
             new ActionMapper('samplesworkflow', 'templateJobs', (row) => {
                 const targetURL = row.get('url');
-                const params = ActionURL.getParameters(targetURL);
-                const templateId = params.templateId;
-                const url = ['workflow', "template", templateId, 'jobs'];
-                if (templateId !== undefined) {
-                    return AppURL.create(...url).addParam("tab", "all");
+                if (targetURL) {
+                    const params = ActionURL.getParameters(targetURL);
+                    const templateId = params.templateId;
+                    const url = ['workflow', "template", templateId, 'jobs'];
+                    if (templateId !== undefined) {
+                        return AppURL.create(...url).addParam("tab", "all");
+                    }
                 }
             }),
 
             new ActionMapper('samplemanager', 'downloadAttachments', (row) => {
                 const targetURL = row.get('url');
-                const params = ActionURL.getParameters(targetURL);
-                const jobId = params.jobId;
-                const url = ['workflow', jobId, 'files'];
-                if (jobId !== undefined) {
-                    return AppURL.create(...url);
+                if (targetURL) {
+                    const params = ActionURL.getParameters(targetURL);
+                    const jobId = params.jobId;
+                    const url = ['workflow', jobId, 'files'];
+                    if (jobId !== undefined) {
+                        return AppURL.create(...url);
+                    }
                 }
             }),
 
@@ -252,38 +269,44 @@ export class URLResolver {
             }),
 
             new ActionMapper('query', 'detailsQueryRow', (row) => {
-                const params = ActionURL.getParameters(row.get('url'));
-                const schemaName = params.schemaName;
-                const queryName = params['query.queryName'];
+                const url = row.get('url');
+                if (url) {
+                    const params = ActionURL.getParameters(url);
+                    const schemaName = params.schemaName;
+                    const queryName = params['query.queryName'];
 
-                if (schemaName && queryName) {
-                    if (schemaName === 'labbook' && queryName === 'LabBookExperiment' && params.RowId !== undefined) {
-                        let parts = [
-                            'experiments',
-                            params.RowId
-                        ];
+                    if (schemaName && queryName) {
+                        if (schemaName === 'labbook' && queryName === 'LabBookExperiment' && params.RowId !== undefined) {
+                            let parts = [
+                                'experiments',
+                                params.RowId
+                            ];
 
-                        return AppURL.create(...parts);
-                    }
+                            return AppURL.create(...parts);
+                        }
 
-                    const key = params.keyValue ? params.keyValue : params.RowId;
+                        const key = params.keyValue ? params.keyValue : params.RowId;
 
-                    if (key !== undefined) {
-                        let parts = [
-                            'q',
-                            schemaName,
-                            queryName,
-                            key
-                        ];
+                        if (key !== undefined) {
+                            let parts = [
+                                'q',
+                                schemaName,
+                                queryName,
+                                key
+                            ];
 
-                        return AppURL.create(...parts);
+                            return AppURL.create(...parts);
+                        }
                     }
                 }
             }),
 
             new ActionMapper('user', 'details', (row, column, schema, query) => {
-                const params = ActionURL.getParameters(row.get('url'));
-                return AppURL.create('q', 'core', 'siteusers', params.userId);
+                const url = row.get('url');
+                if (url) {
+                    const params = ActionURL.getParameters(url);
+                    return AppURL.create('q', 'core', 'siteusers', params.userId);
+                }
             }),
 
             new ActionMapper('labbook', 'experiment', (row) => {
@@ -299,7 +322,7 @@ export class URLResolver {
             new ActionMapper('core', 'downloadFileLink', () => false),
 
             new LookupMapper('q', {
-                'exp-dataclasses': (row) => AppURL.create('rd', 'dataclass', row.get('displayValue')),
+                'exp-dataclasses': (row) => row.get('displayValue') ? AppURL.create('rd', 'dataclass', row.get('displayValue')) : undefined,
                 'exp-runs': (row) => {
                     const runId = row.get('value');
                     if (!isNaN(parseInt(runId))) {
@@ -329,6 +352,32 @@ export class URLResolver {
         }
 
         return mapper.url;
+    }
+
+    public resolveLineageNodes(result: LineageResult, acceptedTypes: Array<string> = ['Sample', 'Data']) : LineageResult {
+        let updatedNodes = result.nodes.map((node) => {
+            if (acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
+                let parts = node.cpasType.split(':');
+                let name = parts[parts.length - 1];
+
+                // Lsid strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
+                name = name.replace(/\+/g, ' ');
+                return node.merge({
+                    // listURL is the url to the grid for the data type.  It will be filtered to the rowIds of the lineage members
+                    // create a URL that will be resolved/redirected in the application resolvers
+                    listURL: AppURL.create('rd', node.type === 'Sample' ? 'samples' : 'dataclass', name).toString(),
+                    url: this.mapURL({
+                        url: node.get('url'),
+                        row: node,
+                        column: Map<string, any>(),
+                        schema: node.get('schemaName'),
+                        query: node.get('queryName')
+                    })
+                })
+            }
+            return node;
+        });
+        return result.set('nodes', updatedNodes) as LineageResult;
     }
 
     /**
@@ -468,10 +517,12 @@ class ActionMapper implements URLMapper {
     }
 
     resolve(url, row, column, schema, query): AppURL | boolean {
-        const parsed = parsePathName(url);
+        if (url) {
+            const parsed = parsePathName(url);
 
-        if (parsed.action === this.action && parsed.controller === this.controller) {
-            return this.resolver(row, column, schema, query);
+            if (parsed.action === this.action && parsed.controller === this.controller) {
+                return this.resolver(row, column, schema, query);
+            }
         }
     }
 }

@@ -132,13 +132,15 @@ export class SecurityPolicy extends Record({
     assignmentsByRole: Map<string, List<SecurityAssignment>>(),
     modified: undefined,
     resourceId: undefined,
-    relevantRoles: List<string>()
+    relevantRoles: List<string>(),
+    containerId: undefined
 }) {
     assignments: List<SecurityAssignment>;
     assignmentsByRole: Map<string, List<SecurityAssignment>>;
     modified: string;
     resourceId: string;
     relevantRoles: List<String>;
+    containerId: string;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -159,7 +161,8 @@ export class SecurityPolicy extends Record({
             ...raw.policy,
             assignments,
             assignmentsByRole: SecurityPolicy.getAssignmentsByRole(assignments),
-            relevantRoles
+            relevantRoles,
+            containerId: raw.containerId
         });
     }
 
@@ -222,6 +225,10 @@ export class SecurityPolicy extends Record({
             assignments,
             assignmentsByRole: SecurityPolicy.getAssignmentsByRole(assignments)
         }) as SecurityPolicy;
+    }
+
+    isInheritFromParent(): boolean {
+        return this.containerId && this.resourceId !== this.containerId;
     }
 }
 

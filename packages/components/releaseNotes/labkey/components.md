@@ -1,6 +1,43 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.24.0
+*Released*: 13 February 2020
+* Issue 39529: Make reset view in lineage graph operational
+* Use URLResolver for resolving links returned from lineage query
+* Rename and re-parameterize SampleDeleteConfirmModal to EntityDeleteConfirmModal (and move to entities instead of samples) for reuse with data class objects
+* Issue 39252: Show initial seed node details on lineage panel while lineage is loading.
+
+### version 0.23.3
+*Released*: 11 February 2020
+* Issue 39524: User management: Creating new user grid filter from notification is incorrect if user already exists and is disabled
+* Issue 39501: Permissions management: Handle case where the security policy for a container is inheriting from the parent container
+* Issue 39616: Update domain field warning message regarding special characters
+
+### version 0.23.2
+*Released*: 8 February 2020
+* Use DatePickerInput for DetailEdit
+* Add advancedExportOption to QueryGridPanel
+
+### version 0.23.1
+*Released*: 6 February 2020
+* Issue 39341: Fix for specimen designer usage of data types that aren't supported for new domain field creation
+
+### version 0.23.0
+*Released*: 3 February 2020
+* Issue 39193: Fix for conditional format dialog to respect filter types allowed for date field type
+* Issue 21401: Fix for conditional formatting filter string URL encoding issue
+* Issue 39528: Change Assay designer results text should for option to define fields manually
+* Move “remove field” to field top display (so it will show in collapsed and expanded view)
+* Only show "Confirm Remove Field" dialog for previously saved fields
+* Field row icons, drag handle and expand icon, only highlight on hover of icon instead of row hover
+* Fix for Domain Designer duplicate field input ids for assay designer case (results in warnings in browser for LKS pages)
+* Issue 39603: Domain warning message with a field name containing invalid characters goes out of the "normal" range
+
+### version 0.22.1
+*Released*: 3 February 2020
+* Issue 38012: For the Batch Update Dialog a field should be cleared if it is changed to disabled
+
 ### version 0.22.0
 *Released*: 30 January 2020
 * Issue 39558: Adjust styling of import tabs to better indicate they are actionable.

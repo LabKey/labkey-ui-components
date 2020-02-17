@@ -90,7 +90,7 @@ class NameInput extends React.PureComponent<any, any> {
         return(
             <Row style={{marginTop: "20px", height: "40px"}}>
                 <Col xs={3} lg={4}>
-                    Name
+                    Name *
                     <LabelHelpTip
                         title={""}
                         body={() => {return (<> Text to be determined </>)}}

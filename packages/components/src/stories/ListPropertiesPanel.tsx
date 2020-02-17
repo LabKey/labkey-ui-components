@@ -712,6 +712,39 @@ const json = {
         "containerPath" : "/Tutorials/Lists"
     }
 };
+const defaultSettings = {
+    "entityId" : null,
+    "createdBy" : 0,
+    "created" : "1969-12-31 16:00:00.000",
+    "modifiedBy" : 0,
+    "modified" : "1969-12-31 16:00:00.000",
+    "containerId" : null,
+    "listId" : 0,
+    "name" : null,
+    "domainId" : 0,
+    "keyName" : null,
+    "keyType" : null,
+    "titleColumn" : null,
+    "description" : null,
+    "lastIndexed" : null,
+    "discussionSetting" : "None",
+    "allowDelete" : true,
+    "allowUpload" : true,
+    "allowExport" : true,
+    "entireListIndex" : false,
+    "entireListIndexSetting" : "MetaData",
+    "entireListTitleSetting" : "Standard",
+    "entireListTitleTemplate" : null,
+    "entireListBodySetting" : "TextOnly",
+    "entireListBodyTemplate" : null,
+    "eachItemIndex" : false,
+    "eachItemTitleSetting" : "Standard",
+    "eachItemTitleTemplate" : null,
+    "eachItemBodySetting" : "TextOnly",
+    "eachItemBodyTemplate" : null,
+    "fileAttachmentIndex" : false,
+    "containerPath" : ""
+};
 
 class A extends Record({a: undefined, b: undefined}) {
     a: string;
@@ -750,15 +783,35 @@ class Wrapped extends React.Component<any, any> {
 
     onRadioChange = (e) => {
         console.log("onRadioChange", e.target.name, e.target.value);
-
-
     };
+
 
     render() {
         return(
             <ListDesignerPanels
                 model={this.state.model}
+            />
+        );
+    }
+}
 
+class WrappedNew extends React.Component<any, any> {
+    constructor(props) {
+        super(props);
+
+        let model = ListModel.create(null, this.props.data);
+        this.state = {model};
+    }
+
+    onRadioChange = (e) => {
+        console.log("onRadioChange", e.target.name, e.target.value);
+    };
+
+
+    render() {
+        return(
+            <ListDesignerPanels
+                model={this.state.model}
             />
         );
     }
@@ -807,9 +860,18 @@ class Wrapped extends React.Component<any, any> {
 
 storiesOf("Advanced Settings", module)
     .addDecorator(withKnobs)
-    .add("Hello World", () => {
+    .add("with existing list", () => {
         return (
             <Wrapped data={json}/>
+        )
+    })
+;
+
+storiesOf("Advanced Settings", module)
+    .addDecorator(withKnobs)
+    .add("with new list", () => {
+        return (
+            <WrappedNew data={defaultSettings}/>
         )
     })
 ;

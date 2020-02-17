@@ -1,12 +1,12 @@
 {
-"exception": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
+"exception": "Field name contains special characters.",
 "success": null,
 "severity": "Warning",
-"errors": [
-    {
+"errors": [{
     "field": "#FieldText$",
-    "message": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
+    "message": "Field name contains special characters.",
+    "extraInfo": "SQL queries, R scripts, and other code are easiest to write when field names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, SPSS, and MATLAB.",
     "severity": "Warning",
     "rowIndexes" : [0]
-    }]
+  }]
 }

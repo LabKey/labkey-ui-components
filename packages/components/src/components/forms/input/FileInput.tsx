@@ -52,7 +52,6 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     constructor(props) {
         super(props);
         this.processFiles = this.processFiles.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.onDrag = this.onDrag.bind(this);
         this.onDragLeave = this.onDragLeave.bind(this);
         this.onDrop = this.onDrop.bind(this);
@@ -94,10 +93,10 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
         onChange({[name]: file});
     }
 
-    onChange(event: React.FormEvent<HTMLInputElement>) {
+    onChange = (event: React.FormEvent<HTMLInputElement>) => {
         cancelEvent(event);
         this.processFiles(this.fileInput.current.files);
-    }
+    };
 
     onDrag(event:React.DragEvent<HTMLElement>) {
         cancelEvent(event);

@@ -2,6 +2,7 @@
 
 exports[`DateTimeFieldOptions Date Time data type 1`] = `
 <DateTimeFieldOptions
+  domainIndex={1}
   excludeFromShifting={true}
   format="MM/dd/yyyy hh:mm"
   index={1}
@@ -207,7 +208,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
               bsClass="form-control"
               componentClass="input"
               disabled={false}
-              id="domainpropertiesrow-format-1"
+              id="domainpropertiesrow-format-1-1"
               name="domainpropertiesrow-format"
               onChange={[Function]}
               type="text"
@@ -216,7 +217,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
               <input
                 className="form-control"
                 disabled={false}
-                id="domainpropertiesrow-format-1"
+                id="domainpropertiesrow-format-1-1"
                 name="domainpropertiesrow-format"
                 onChange={[Function]}
                 type="text"

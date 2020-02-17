@@ -22,6 +22,7 @@ import { EntityInsertPanel } from '../components/entities/EntityInsertPanel';
 
 import './stories.scss';
 import { EntityDataType } from '..';
+import { List } from 'immutable';
 
 storiesOf('EntityInsertPanel', module)
     .addDecorator(withKnobs)
@@ -44,6 +45,7 @@ storiesOf('EntityInsertPanel', module)
             entityDataType={EntityDataType.Sample}
             canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
             location={location}
+            parentSchemaNames={List<string>(['samples'])}
         />;
     })
     // TODO Somehow not all the queries or data or something is right for the use of this selectionKey.

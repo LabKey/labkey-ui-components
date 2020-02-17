@@ -149,10 +149,9 @@ export class EntityIdCreationModel extends Record({
     initialEntityType: undefined,
     isError: false,
     isInit: false,
-    parents: Array<string>(),
-    parentOptions: List<IParentOption>(),
-    entityParents: List<EntityParentType>(),
-    entityTypeData: Map<string, any>(),
+    originalParents: Array<string>(),
+    parentOptions: Map<string, List<IParentOption>>(),
+    entityParents: Map<string, List<EntityParentType>>(),
     entityTypeOptions: List<IEntityTypeOption>(),
     selectionKey: undefined,
     targetEntityType: undefined,
@@ -163,15 +162,14 @@ export class EntityIdCreationModel extends Record({
     initialEntityType: any;
     isError: boolean;
     isInit: boolean;
-    parents: Array<string>; // TODO should be 'originalParents'
-    parentOptions: List<IParentOption>;
-    entityParents: List<EntityParentType>;
-    entityTypeData: Map<string, any>;
-    entityTypeOptions: List<IEntityTypeOption>;
+    originalParents: Array<string>; // taken from the query string
+    parentOptions: Map<string, List<IParentOption>>; // map from query name to the options for the different types of parents allowed
+    entityParents:  Map<string, List<EntityParentType>>; // map from query name to the parents already selected for that query
+    entityTypeOptions: List<IEntityTypeOption>; // the target type options
     selectionKey: string;
-    targetEntityType: EntityTypeOption;
-    entityCount: number;
-    entityDataType: EntityDataType;
+    targetEntityType: EntityTypeOption; // the target entity Type
+    entityCount: number; // how many rows are in the grid
+    entityDataType: EntityDataType; // target entity data type
 
     constructor(values?: any) {
         super(values);
@@ -209,39 +207,43 @@ export class EntityIdCreationModel extends Record({
         return this.hasTargetEntityType() ? this.targetEntityType.value : undefined;
     }
 
+    getParentCount() : number {
+        return this.entityParents.reduce((count: number, parentList) => {
+            return count + parentList.filter((parent) => parent.query !== undefined).count()
+        }, 0);
+    }
+
     getEntityInputs(): {
         dataInputs: Array<EntityInputProps>,
         materialInputs: Array<EntityInputProps>
     } {
-        let dataInputs: Array<EntityInputProps> = [],
-            materialInputs: Array<EntityInputProps> = [];
+        let dataInputs: Array<EntityInputProps> = [];
+        this.entityParents.get(SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName).forEach((parent, index) => {
+            const role =  'data';
 
-        this.entityParents.forEach((parent, index) => {
-            if (parent.value) {
-                const isData = parent.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
-                const isSample = parent.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
-
-                if (isData || isSample) {
-                    const role = isData ? 'data' : 'sample';
-
-                    parent.value.forEach((option) => {
-                        const rowId = parseInt(option.value);
-                        if (!isNaN(rowId)) {
-                            const input = {role, rowId};
-
-                            if (isData) {
-                                dataInputs.push(input);
-                            }
-                            else {
-                                materialInputs.push(input);
-                            }
-                        }
-                        else {
-                            console.warn('Unable to parse rowId from "' + option.value + '" for ' + role + '.');
-                        }
-                    });
+            parent.value.forEach((option) => {
+                const rowId = parseInt(option.value);
+                if (!isNaN(rowId)) {
+                    dataInputs.push({role, rowId});
                 }
-            }
+                else {
+                    console.warn('Unable to parse rowId from "' + option.value + '" for ' + role + '.');
+                }
+            });
+        });
+        let materialInputs: Array<EntityInputProps> = [];
+        this.entityParents.get(SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName).forEach((parent, index) => {
+            const role =  'sample';
+
+            parent.value.forEach((option) => {
+                const rowId = parseInt(option.value);
+                if (!isNaN(rowId)) {
+                    materialInputs.push({role, rowId});
+                }
+                else {
+                    console.warn('Unable to parse rowId from "' + option.value + '" for ' + role + '.');
+                }
+            });
         });
 
         return {
@@ -263,11 +265,11 @@ export class EntityIdCreationModel extends Record({
         };
     }
 
-    getParentOptions(currentSelection: string): Array<any> {
+    getParentOptions(currentSelection: string, queryName: string): Array<any> {
         // exclude options that have already been selected, except the current selection for this input
-        return this.parentOptions
+        return this.parentOptions.get(queryName)
             .filter(o => (
-                this.entityParents.every(parent => {
+                this.entityParents.get(queryName).every(parent => {
                     const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
                     const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
                     return notParentMatch || matchesCurrent;
@@ -345,7 +347,9 @@ export class EntityIdCreationModel extends Record({
                         const sq = EntityIdCreationModel.revertParentInputSchema(col);
 
                         // should be only one parent with the matching schema and query name
-                        const selected = this.entityParents.find((parent) => parent.schema === sq.schemaName && parent.query === sq.queryName);
+                        const selected = this.entityParents.reduce((found, parentList) => {
+                            return found || parentList.find((parent) => parent.schema === sq.schemaName && parent.query === sq.queryName)
+                        }, undefined);
                         if (selected && selected.value) {
                             values = values.set(colName, selected.value);
                         }

@@ -54,11 +54,18 @@ export function getDataDeleteConfirmationData(selectionKey: string, rowIds?: Arr
     return getDeleteConfirmationData(selectionKey, EntityDataType.DataClass, rowIds);
 }
 
+/**
+ * We have either an initialParents array, and determine the schemaQuery from the first id in that list
+ * or a selection key and determine the schema query from parsing the selection key.  In any case, this
+ * assumes parents from a single data type.
+ * @param initialParents
+ * @param selectionKey
+ */
 function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<EntityParentType>> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
 
         if (selectionKey) {
-            const {schemaQuery} = SchemaQuery.parseSelectionKey(selectionKey);
+            const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
             const queryGridModel = getQueryGridModel(selectionKey);
 
             if (queryGridModel && queryGridModel.selectedLoaded) {
@@ -69,6 +76,9 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
                     filterArray: [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)]
                 }).then((response) => {
                     resolve(resolveEntityParentTypeFromIds(schemaQuery, response));
+                }).catch((reason) => {
+                    console.error("There was a problem getting the selected parents' data", reason);
+                    reject(reason);
                 });
             }
             else {
@@ -80,6 +90,9 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
                         filterArray: [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)]
                     }).then((response) => {
                         resolve(resolveEntityParentTypeFromIds(schemaQuery, response));
+                    }).catch((reason) => {
+                        console.error("There was a problem getting the selected parents' data ", reason);
+                        reject(reason);
                     });
                 }).catch(() => {
                     console.warn('Unable to parse selectionKey', selectionKey);
@@ -98,6 +111,9 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
                 filterArray: [Filter.create('RowId', value)]
             }).then((response) => {
                 resolve(resolveEntityParentTypeFromIds(SchemaQuery.create(schema, query), response));
+            }).catch((reason) => {
+                console.error("There was a problem getting the specified initial parents' data", reason);
+                reject(reason);
             });
         }
         else {
@@ -131,15 +147,138 @@ function resolveEntityParentTypeFromIds(schemaQuery: SchemaQuery, response: any)
 }
 
 function extractFromRow(row: Map<string, any>): IEntityTypeOption {
+    const name = row.getIn(['Name', 'value']);
     return {
-        label: row.getIn(['Name', 'value']),
+        label: name,
         lsid: row.getIn(['LSID', 'value']),
         rowId: row.getIn(['RowId', 'value']),
-        value: row.getIn(['Name', 'value'])
+        value: name,
+        query: name
     }
 }
 
-export function initEntityTypeInsert(model: EntityIdCreationModel, schema: SchemaQuery, parentSchemaName: string): Promise<Partial<EntityIdCreationModel>> {
+function getChosenParentData(model: EntityIdCreationModel, parentSchemaNames: List<string>) : Promise<Partial<EntityIdCreationModel>> {
+    return new Promise((resolve, reject) => {
+        initParents(model.originalParents, model.selectionKey).then(
+            (chosenParents) => {
+                // if we have an initial parent, we want to start with a row in the grid (entityCount = 1) otherwise we start with none
+                let validEntityCount = chosenParents.find((parent) => parent.value !== undefined && parentSchemaNames.contains(parent.schema)) ? 1 : 0;
+                if (validEntityCount === 1) {
+                    resolve({
+                        entityCount: validEntityCount
+                    });
+                }
+                else { // if we did not find a valid parent, we clear out the parents and selection key from the model as they aren't relevant
+                    resolve({
+                        originalParents: undefined,
+                        selectionKey: undefined,
+                        entityCount: 0
+                    })
+                }
+            }
+        ).catch((reason) => {
+            console.error(reason);
+            reject(reason);
+        });
+    })
+}
+
+function getInitialTargetTypeData(model: EntityIdCreationModel, targetTypeSchema: SchemaQuery) : Promise<Partial<EntityIdCreationModel>> {
+    // get the options for the target type we are creating
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: targetTypeSchema.schemaName,
+            queryName: targetTypeSchema.queryName,
+            columns: 'LSID,Name,RowId'
+        }).then(
+            (targetTypeOptionResult) => {
+                const targetTypeRows = fromJS(targetTypeOptionResult.models[targetTypeOptionResult.key]);
+
+                const targetTypeOptions = targetTypeRows
+                    .map(row => extractFromRow(row))
+                    .sortBy(r => r.label, naturalSort)
+                    .toList();
+                let initialTargetType;
+                if (model.initialEntityType) {
+                    const setName = model.initialEntityType.toLowerCase();
+                    const data = targetTypeRows.find(row => setName === row.getIn(['Name', 'value']).toLowerCase());
+
+                    if (data) {
+                        initialTargetType = new EntityTypeOption(extractFromRow(data));
+                    }
+                }
+                resolve({
+                    entityTypeOptions: targetTypeOptions,
+                    targetEntityType: initialTargetType
+                })
+            }
+        ).catch((reason) => {
+            console.error(reason);
+            reject(reason);
+        });
+    })
+}
+
+function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: string) : Promise<List<any>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: typeListSchemaQuery.schemaName,
+            queryName: typeListSchemaQuery.queryName,
+            columns: 'LSID,Name,RowId'
+        }).then(
+            (result) => {
+                const rows = fromJS(result.models[result.key]);
+
+                resolve( rows
+                    .map(row => {
+                        const name = row.getIn(['Name', 'value']);
+                        return ({
+                            ...extractFromRow(row),
+                            schema: typeSchemaName,
+                        });
+                    })
+                    .sortBy(r => r.label, naturalSort)
+                    .toList()
+                );
+            }
+        ).catch((reason) => {
+            console.error(reason);
+            reject(reason);
+        });
+    })
+}
+
+// get the set of options for the target type
+// initialize the data for selected parents
+// for each possible parent type, get the values for that data type (e.g., all the sample sets)
+/**
+ * @param model
+ * @param schemaQueries a map between the type schema name (e.g., "samples") and the listing SchemaQuery (e.g., exp.SampleSets)
+ * @param targetSchemaName the name of the schema (key to schemaQueries) that represents the initial target for creation.
+ * @param allowParents
+ */
+export function getEntityTypeData(model: EntityIdCreationModel,  schemaQueries: Map<string, SchemaQuery>, targetSchemaName: string, allowParents: boolean) : Promise<Partial<EntityIdCreationModel>> {
+    return new Promise((resolve, reject) => {
+        let promises = [];
+        // get all the schemaQuery data
+        schemaQueries.forEach((typeListSchemaQuery, typeSchemaName) => {
+            promises.push(getEntityTypeOptions(typeListSchemaQuery, typeSchemaName));
+        });
+        if (allowParents) {
+            promises.push(getChosenParentData(model, schemaQueries.keySeq().toList()));
+        }
+        Promise.all(promises).then(
+            (results) => {
+                // TODO now find the data for the targetSchema and use that to populate the initial target type
+            }
+        ).catch((reason) => {
+            console.error(reason);
+            reject(reason);
+        });
+    });
+}
+
+export function initEntityTypeInsert(model: EntityIdCreationModel, schema: SchemaQuery, allowParents: boolean): Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
         let promises: Array<Promise<any>> = [
             selectRows({
@@ -148,25 +287,29 @@ export function initEntityTypeInsert(model: EntityIdCreationModel, schema: Schem
                 columns: 'LSID,Name,RowId'
             })
         ];
-        if (parentSchemaName) {
-            promises.push(initParents(model.parents, model.selectionKey));
+        if (allowParents) {
+            // get the data about the parents specified in the URL.
+            promises.push(initParents(model.originalParents, model.selectionKey));
         }
         return Promise.all(promises)
             .then(results => {
-                let entityTypeResult = results[0];
-                let entityParents = List<EntityParentType>();
+                let entityTypeResult = results[0]; // the set of values for the given schema
+                const entityTypes = fromJS(entityTypeResult.models[entityTypeResult.key]);
+                let entityParents = List<EntityParentType>(); // these are the parents that have already been specified
                 let entityCount = 0;
                 if (results.length > 1) {
                     entityParents = results[1];
+                    // if we have an initial parent, we want to start with a row in the grid (entityCount = 1) otherwise we start with none
                     entityCount = entityParents.find((parent) => parent.value !== undefined) ? 1 : 0;
                 }
-                const entityTypes = fromJS(entityTypeResult.models[entityTypeResult.key]);
-                const parentOptions = parentSchemaName ? entityTypes.map(row => {
+
+                // this assumes that the initial schema and the parent options are the same
+                const parentOptions = allowParents ? entityTypes.map(row => {
                     const name = row.getIn(['Name', 'value']);
                     return {
                         value: name.toLowerCase(),
                         label: name,
-                        schema: parentSchemaName,
+                        schema: "samples",
                         query: name // Issue 33653: query name is case-sensitive for some data inputs (parents)
                     }
                 }).toList().sortBy(p => p.label, naturalSort) : List<IParentOption>();
@@ -187,9 +330,9 @@ export function initEntityTypeInsert(model: EntityIdCreationModel, schema: Schem
                 }
                 resolve({
                     isInit: true,
-                    parentOptions,
+                    parentOptions: Map<string, List<IParentOption>>({"SampleSets": parentOptions}),
                     entityCount,
-                    entityParents,
+                    entityParents: Map<string, List<EntityParentType>>({ "SampleSets": entityParents}),
                     entityTypeOptions,
                     targetEntityType
                 })

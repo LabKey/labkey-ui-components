@@ -112,7 +112,7 @@ interface OwnProps {
     nounSingular: string
     nounPlural: string
     entityDataType: EntityDataType
-    parentDataTypes?: List<EntityDataType>
+    parentSchemaNames?: List<string>
     importHelpLinkNode: React.ReactNode
 }
 
@@ -222,12 +222,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         if (insertModel
             && insertModel.getTargetEntityTypeName() === queryParams.target
             && insertModel.selectionKey === queryParams.selectionKey
-            && (insertModel.parents === queryParams.parents || !props.parentDataTypes)
+            && (insertModel.originalParents === queryParams.parents || !props.parentSchemaNames)
         )
             return;
 
         insertModel = new EntityIdCreationModel({
-            parents: props.parentDataTypes ? queryParams.parents : undefined,
+            originalParents: props.parentSchemaNames ? queryParams.parents : undefined,
             initialEntityType: queryParams.target,
             selectionKey: queryParams.selectionKey,
             entityCount: 0,
@@ -236,11 +236,9 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
         const isSampleInsert = this.isSampleEntity();
         const currentSchema = isSampleInsert ? SCHEMAS.EXP_TABLES.SAMPLE_SETS : SCHEMAS.EXP_TABLES.DATA_CLASSES;
-        // TODO the parent schema should probably be parameterized separately since the parent type doesn't have to match
-        // the entity type and more than one parent type could be allowed.
-        const parentSchema =  isSampleInsert ? SCHEMAS.SAMPLE_SETS.SCHEMA : undefined;
 
-        initEntityTypeInsert(insertModel, currentSchema, parentSchema)
+        // TODO for each of the possible parent types, get the options and set the parent data if the model's selection key matches
+        initEntityTypeInsert(insertModel, currentSchema, isSampleInsert)
             .then((partialModel) => {
                 const updatedModel = insertModel.merge(partialModel) as EntityIdCreationModel;
                 this.gridInit(updatedModel);
@@ -365,12 +363,14 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
         const { insertModel } = this.state;
         let columns = OrderedMap<string, QueryColumn>();
-        insertModel.entityParents.forEach((parent) => {
-            if (parent.schema && parent.query) {
-                const column = this.generateParentColumn(parent);
-                // Issue 33653: query name is case-sensitive for some data inputs (parents)
-                columns = columns.set(column.name.toLowerCase(), column);
-            }
+        insertModel.entityParents.forEach((parentList) => {
+            parentList.forEach((parent) => {
+                if (parent.schema && parent.query) {
+                    const column = this.generateParentColumn(parent);
+                    // Issue 33653: query name is case-sensitive for some data inputs (parents)
+                    columns = columns.set(column.name.toLowerCase(), column);
+                }
+            })
         });
         return columns;
     }
@@ -381,7 +381,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         if (originalQueryInfo) {
             const uniqueFieldKey = this.getUniqueFieldKey();
             const nameIndex = Math.max(0, originalQueryInfo.columns.toList().findIndex((column) => (column.fieldKey === uniqueFieldKey)));
-            const newColumnIndex = nameIndex + insertModel.entityParents.filter((parent) => parent.query !== undefined).count();
+            const newColumnIndex = nameIndex + insertModel.getParentCount();
             const columns = originalQueryInfo.insertColumns(newColumnIndex, this.getParentColumns());
             return originalQueryInfo.merge({columns}) as QueryInfo;
         }
@@ -398,7 +398,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }) as EntityIdCreationModel;
         if (!selectedOption) {
             updatedModel = updatedModel.merge({
-                entityParents: List<EntityParentType>()
+                entityParents: Map<string, List<EntityParentType>>()
             }) as EntityIdCreationModel;
         }
 
@@ -415,30 +415,30 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         });
     };
 
-    addParent = () => {
+    addParent(queryName: string) {
         const { insertModel } = this.state;
-        const nextIndex = insertModel.entityParents.size + 1;
-        const updatedParents = insertModel.entityParents.push(EntityParentType.create({index: nextIndex}));
+        const nextIndex = insertModel.entityParents.get(queryName).size + 1;
+        const updatedParents = insertModel.entityParents.get(queryName).push(EntityParentType.create({index: nextIndex}));
 
         this.setState(() => {
             return {
-                insertModel: insertModel.set('entityParents', updatedParents) as EntityIdCreationModel
+                insertModel: insertModel.setIn(['entityParents', queryName], updatedParents) as EntityIdCreationModel
             }
         });
-    };
+    }
 
-    changeParent(index: number, fieldName: string, formValue: any, parent: IParentOption): void {
+    changeParent(index: number, queryName: string, fieldName: string, formValue: any, parent: IParentOption): void {
         const { insertModel } = this.state;
         let column;
         let parentColumnName;
         let existingParent;
         const queryGridModel = this.getQueryGridModel();
         if (queryGridModel) {
-
+            const entityParents = insertModel.entityParents.get(queryName);
             let updatedModel = insertModel;
             if (parent) {
-                const existingParentKey = insertModel.entityParents.findKey(parent => parent.get('index') === index);
-                existingParent = insertModel.entityParents.get(existingParentKey);
+                const existingParentKey = entityParents.findKey(parent => parent.get('index') === index);
+                existingParent = entityParents.get(existingParentKey);
 
                 // bail out if the selected parent is the same as the existingParent for this index, i.e. nothing changed
                 const schemaMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
@@ -455,16 +455,18 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                 });
                 updatedModel = insertModel.mergeIn([
                     'entityParents',
+                    queryName,
                     existingParentKey
                 ], parentType) as EntityIdCreationModel;
                 column = this.generateParentColumn(parentType);
             }
             else {
-                let parentToResetKey = insertModel.entityParents.findKey(parent => parent.get('index') === index);
-                const existingParent = insertModel.entityParents.get(parentToResetKey);
+                let parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
+                const existingParent = entityParents.get(parentToResetKey);
                 parentColumnName = this.createParentColumnName(existingParent);
                 updatedModel = insertModel.mergeIn([
                     'entityParents',
+                    queryName,
                     parentToResetKey
                 ], EntityParentType.create({
                     key: existingParent.key,
@@ -488,7 +490,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                         if (existingParent.index === 1)
                             fieldKey = this.getUniqueFieldKey();
                         else {
-                            const definedParents = insertModel.entityParents.filter((parent) => parent.query !== undefined);
+                            const definedParents = entityParents.filter((parent) => parent.query !== undefined);
                             if (definedParents.size === 0)
                                 fieldKey = this.getUniqueFieldKey();
                             else {
@@ -507,31 +509,31 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }
     }
 
-    removeParent(index) {
+    removeParent(index: number, queryName: string) {
         const { insertModel } = this.state;
-        let parentToResetKey = insertModel.entityParents.findKey(parent => parent.get('index') === index);
-        let parentColumnName = this.createParentColumnName(insertModel.entityParents.get(parentToResetKey));
-        const entityParents = this.state.insertModel.entityParents
+        const entityParents = insertModel.entityParents.get(queryName);
+        let parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
+        let parentColumnName = this.createParentColumnName(entityParents.get(parentToResetKey));
+        const updatedEntityParents = entityParents
             .filter(parent => parent.index !== index)
             .map((parent, key) => parent.set('index', (key + 1)));
 
-        const updatedModel = this.state.insertModel.merge({
-            entityParents,
-        }) as EntityIdCreationModel;
-        this.setState(() => {
+        this.setState((state) => {
             return {
-                insertModel: updatedModel,
+                insertModel: state.insertModel.setIn(['entityParents', queryName], updatedEntityParents) as EntityIdCreationModel,
             }
         }, () => {
             removeColumn(this.getQueryGridModel(),  parentColumnName);
         });
     }
 
-    renderParentSelections() {
+    renderEntityTypeSelections(queryName: string, noun: string, descriptionSingular: string, descriptionPlural: string) {
         const { insertModel } = this.state;
 
         if (insertModel) {
-            const {isInit, targetEntityType, parentOptions, entityParents} = insertModel;
+            const { isInit, targetEntityType } = insertModel;
+            const parentOptions = insertModel.parentOptions.get(queryName);
+            const entityParents = insertModel.entityParents.get(queryName);
 
             if (isInit && targetEntityType) {
                 return (
@@ -544,36 +546,40 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                                         formsy={false}
                                         containerClass=''
                                         inputClass="col-sm-5"
-                                        label={"Parent " + index + " Type"}
+                                        label={noun + " " + index + " Type"}
                                         labelClass="col-sm-3 sample-insert--parent-label"
                                         name={"parent-re-select-" + index}
-                                        onChange={this.changeParent.bind(this, index)}
-                                        options={insertModel.getParentOptions(query)}
+                                        onChange={this.changeParent.bind(this, index, queryName)}
+                                        options={insertModel.getParentOptions(query, SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName)}
                                         value={query}
                                     />
 
                                     <RemoveEntityButton
                                         labelClass={'sample-insert--remove-parent'}
-                                        entity="Parent"
+                                        entity={noun}
                                         index={index}
-                                        onClick={this.removeParent.bind(this, index)}/>
+                                        onClick={this.removeParent.bind(this, index, queryName)}/>
                                 </div>
                             )
                         }).toArray()}
-                        {entityParents.size > 0  ? parentOptions.size > entityParents.size ?
+                        {parentOptions.size > 0  ? parentOptions.size > entityParents.size ?
                             <div className="sample-insert--header">
                                 <AddEntityButton
-                                    entity="Parent"
-                                    onClick={this.addParent}/>
+                                    entity={noun}
+                                    onClick={this.addParent.bind(this, queryName)}/>
                             </div> :
                             <div className="sample-insert--header">
-                                Only {parentOptions.size} parent {parentOptions.size === 1 ? this.typeTextSingular : this.typeTextPlural} available.
+                                Only {parentOptions.size} {parentOptions.size === 1 ? descriptionSingular : descriptionPlural} available.
                             </div>
-                        : null}
+                            : null}
                     </>
                 );
             }
         }
+    }
+
+    renderParentSelections() {
+        return this.renderEntityTypeSelections("SampleSets", "Parent", "parent sample type", "parent sample types");
     }
 
     renderHeader(isGrid: boolean) {
@@ -1026,8 +1032,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const { insertModel, error } = this.state;
 
         if (!insertModel) {
-            return <LoadingSpinner wrapperClassName="loading-data-message"/>;
+            if (!error)
+                return <LoadingSpinner wrapperClassName="loading-data-message"/>;
+            else
+                return <Alert>{error}</Alert>;
         }
+
 
         const entityTypeName = insertModel.getTargetEntityTypeName();
         const editEntityTypeDetailsLink = entityTypeName ? AppURL.create(this.props.nounPlural, entityTypeName, 'update') : undefined;

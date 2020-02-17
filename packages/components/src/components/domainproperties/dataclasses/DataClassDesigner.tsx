@@ -50,7 +50,6 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
         }
     }
 
-    // TODO factor this out to remove duplicate code from AssayDesignerPanels.tsx
     onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
         const { visitedPanels, currentPanelIndex } = this.state;
 
@@ -101,15 +100,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                         beforeFinish(model);
                     }
 
-                    console.log('TIME TO SAVE THE DATA CLASS MODEL');
-                    // saveAssayDesign(protocolModel)
-                    //     .then((response) => {
-                    //         this.setState(() => ({protocolModel, submitting: false}));
-                    //         this.props.onComplete(response);
-                    //     })
-                    //     .catch((protocolModel) => {
-                    //         this.setState(() => ({protocolModel, submitting: false}));
-                    //     });
+                    console.log('TODO: THE DATA CLASS MODEL');
                 }
             });
         });

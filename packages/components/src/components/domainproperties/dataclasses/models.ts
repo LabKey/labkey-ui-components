@@ -13,14 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IEntityDetails } from '../entities/models';
 import { Record } from "immutable";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { DomainDesign } from "../models";
-
-export interface IDataClassProperties extends IEntityDetails {
-    materialSourceId?: number
-}
 
 export class DataClassModel extends Record({
     rowId: undefined,
@@ -54,13 +49,7 @@ export class DataClassModel extends Record({
         // need to serialize the DomainDesign object to remove the unrecognized fields
         const domain = DomainDesign.serialize(model.domain);
 
-        let json = model.merge({domain}).toJS();
-
-        // TODO anything needed here, otherwise remove
-        // delete json.autoCopyTargetContainer;
-        // delete json.exception;
-
-        return json;
+        return model.merge({domain}).toJS();
     }
 
     isNew(): boolean {

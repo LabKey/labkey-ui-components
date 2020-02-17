@@ -754,9 +754,6 @@ export function getDomainAlertClasses(collapsed: boolean, controlledCollapse: bo
             classes += ' domain-bottom-alert-expanded';
         }
     }
-    else {
-        classes += ' panel-default';
-    }
 
     if (!collapsed)
         classes += ' domain-bottom-alert-top';

@@ -21,7 +21,7 @@ interface ExpandableDndRowProps {
     // recommended to set this when showing a modal.
     showingModal?: boolean;
     renderMainRow: () => any;
-    renderExpandedSection: () => any;  // For best results here this should be in a Dom object with display: table-cell
+    renderExpandedSection: () => any; // For best results here this should be in a Dom object with display: table-cell
     onExpand: (index?: number) => void;
     onCollapsed?: () => void;
     onCollapsing?: () => void;
@@ -102,23 +102,29 @@ export class ExpandableDndRow extends PureComponent<ExpandableDndRowProps, Expan
     onClosing = (): void => {
         const { onCollapsing } = this.props;
 
-        this.setState(() => ({closing: true}), () => {
-            if (onCollapsing) {
-                onCollapsing();
+        this.setState(
+            () => ({ closing: true }),
+            () => {
+                if (onCollapsing) {
+                    onCollapsing();
+                }
             }
-        })
+        );
     };
 
     onClosed = (): void => {
         const { onCollapsed } = this.props;
         const { closing } = this.state;
 
-        this.setState(() => ({closing: false}), () => {
-            if (onCollapsed) {
-                onCollapsed();
+        this.setState(
+            () => ({ closing: false }),
+            () => {
+                if (onCollapsed) {
+                    onCollapsed();
+                }
             }
-        })
-    }
+        );
+    };
 
     render(): React.ReactNode {
         const {
@@ -146,7 +152,11 @@ export class ExpandableDndRow extends PureComponent<ExpandableDndRowProps, Expan
                             <div className="expandablednd-row-handle" {...provided.dragHandleProps}>
                                 <FontAwesomeIcon
                                     size="lg"
-                                    color={!isDragDisabled && (dragging || hover || closing) ? this.HIGHLIGHT_BLUE : this.NOT_HIGHLIGHT_GRAY}
+                                    color={
+                                        !isDragDisabled && (dragging || hover || closing)
+                                            ? this.HIGHLIGHT_BLUE
+                                            : this.NOT_HIGHLIGHT_GRAY
+                                    }
                                     icon={faGripVertical}
                                 />
                             </div>

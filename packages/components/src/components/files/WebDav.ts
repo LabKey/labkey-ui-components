@@ -1,6 +1,8 @@
-import {Map, Record} from "immutable";
-import {DEFAULT_FILE, IFile} from "./models";
-import {ActionURL, Ajax, Utils} from "@labkey/api";
+import { Map, Record } from 'immutable';
+
+import { ActionURL, Ajax, Utils } from '@labkey/api';
+
+import { DEFAULT_FILE, IFile } from './models';
 
 export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     contentLength: number;
@@ -24,7 +26,7 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     }
 
     static create(values): WebDavFile {
-        let webDavFile = new WebDavFile(values);
+        const webDavFile = new WebDavFile(values);
 
         return webDavFile.merge({
             isCollection: values.collection,
@@ -32,15 +34,15 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
             createdBy: values.createdby,
             created: values.creationdate,
             lastModified: values.lastmodified,
-            downloadUrl: values.href ? values.href + "?contentDisposition=attachment" : undefined,
+            downloadUrl: values.href ? values.href + '?contentDisposition=attachment' : undefined,
             name: values.text,
         }) as WebDavFile;
     }
 }
 
 function getWebDavUrl(containerPath: string, directory?: string, createIntermediates?: boolean) {
-
-    let url = ActionURL.getContextPath() +
+    let url =
+        ActionURL.getContextPath() +
         '/_webdav' +
         ActionURL.encodePath(containerPath) +
         '/' +
@@ -57,15 +59,18 @@ function getWebDavUrl(containerPath: string, directory?: string, createIntermedi
     return url;
 }
 
-export function getWebDavFiles(containerPath: string, directory?: string, includeDirectories?: boolean): Promise<Map<string, WebDavFile>> {
+export function getWebDavFiles(
+    containerPath: string,
+    directory?: string,
+    includeDirectories?: boolean
+): Promise<Map<string, WebDavFile>> {
     return new Promise((resolve, reject) => {
-        let url = getWebDavUrl(containerPath, directory);
+        const url = getWebDavUrl(containerPath, directory);
 
         return Ajax.request({
             url: url + '?method=JSON',
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
-
                 // Filter directories and create webdav files
                 const filteredFiles = response.files.reduce((filtered, file) => {
                     if (includeDirectories || !file.collection) {
@@ -87,12 +92,17 @@ export function getWebDavFiles(containerPath: string, directory?: string, includ
     });
 }
 
-export function uploadWebDavFile(file: File, containerPath: string, directory?: string, createIntermediates?: boolean): Promise<string> {
+export function uploadWebDavFile(
+    file: File,
+    containerPath: string,
+    directory?: string,
+    createIntermediates?: boolean
+): Promise<string> {
     return new Promise((resolve, reject) => {
         const form = new FormData();
         form.append('file', file);
 
-        let url = getWebDavUrl(containerPath, directory, createIntermediates);
+        const url = getWebDavUrl(containerPath, directory, createIntermediates);
 
         Ajax.request({
             url,
@@ -113,14 +123,20 @@ export function uploadWebDavFile(file: File, containerPath: string, directory?: 
     });
 }
 
-export function uploadWebDavFiles(files: Map<string, File>, containerPath: string, directory?: string, createIntermediates?: boolean, onSuccess?: () => any, onFailure?: (any) => any): void {
-
+export function uploadWebDavFiles(
+    files: Map<string, File>,
+    containerPath: string,
+    directory?: string,
+    createIntermediates?: boolean,
+    onSuccess?: () => any,
+    onFailure?: (any) => any
+): void {
     if (files.size === 0) {
         return;
     }
 
     // DavController does not support multiple file uploads, so we do one at a time.
-    let promises = files.reduce((uploads, file) => {
+    const promises = files.reduce((uploads, file) => {
         uploads.push(uploadWebDavFile(file, containerPath, directory, createIntermediates));
         return uploads;
     }, []);

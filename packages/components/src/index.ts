@@ -170,7 +170,6 @@ import { EditableGridLoaderFromSelection } from './components/editable/EditableG
 import { EditableGridModal } from './components/editable/EditableGridModal';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { CollapsiblePanel } from './components/CollapsiblePanel';
-import { ExpandableDndRow } from './components/ExpandableDndRow';
 import { AliasRenderer } from './renderers/AliasRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
@@ -360,7 +359,6 @@ export {
     EditableGridModal,
     QueryGridPanel,
     CollapsiblePanel,
-    ExpandableDndRow,
     BulkAddUpdateForm,
     BulkUpdateForm,
     LookupSelectInput,

@@ -8,7 +8,7 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import { List } from 'immutable';
 
-import { HIGHLIGHT_BLUE, NOT_HIGHLIGHT_GRAY, SEVERITY_LEVEL_ERROR } from './domainproperties/constants';
+import { SEVERITY_LEVEL_ERROR } from './domainproperties/constants';
 
 interface ExpandableDndRowProps {
     idPrefix?: string;
@@ -41,6 +41,9 @@ export class ExpandableDndRow extends PureComponent<ExpandableDndRowProps, Expan
             hover: false,
         };
     }
+
+    private HIGHLIGHT_BLUE = '#2980B9';
+    private NOT_HIGHLIGHT_GRAY = '#999999';
 
     createId = (name: string): string => {
         const { idPrefix, index } = this.props;
@@ -143,7 +146,7 @@ export class ExpandableDndRow extends PureComponent<ExpandableDndRowProps, Expan
                             <div className="expandablednd-row-handle" {...provided.dragHandleProps}>
                                 <FontAwesomeIcon
                                     size="lg"
-                                    color={!isDragDisabled && (dragging || hover || closing) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
+                                    color={!isDragDisabled && (dragging || hover || closing) ? this.HIGHLIGHT_BLUE : this.NOT_HIGHLIGHT_GRAY}
                                     icon={faGripVertical}
                                 />
                             </div>
@@ -154,7 +157,7 @@ export class ExpandableDndRow extends PureComponent<ExpandableDndRowProps, Expan
                                 onClick={this.onExpand}>
                                 <FontAwesomeIcon
                                     size="lg"
-                                    color={dragging || hover ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
+                                    color={dragging || hover ? this.HIGHLIGHT_BLUE : this.NOT_HIGHLIGHT_GRAY}
                                     icon={expanded ? faMinusSquare : faPlusSquare}
                                 />
                             </div>

@@ -6,9 +6,11 @@ import './stories.scss';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { ExpandableDndRow } from '..';
+import {getIndexFromId} from "../components/domainproperties/actions";
 
 interface RowState {
     expanded?: number;
+    dragging: boolean;
 }
 
 class WrappedExpandableDndRow extends React.Component<any, RowState> {
@@ -17,6 +19,7 @@ class WrappedExpandableDndRow extends React.Component<any, RowState> {
 
         this.state = {
             expanded: undefined,
+            dragging: false,
         };
     }
 
@@ -26,6 +29,14 @@ class WrappedExpandableDndRow extends React.Component<any, RowState> {
         } else {
             this.setState({ expanded: index });
         }
+    };
+
+    onBeforeDragStart = () => {
+        this.setState(() => ({dragging: true}));
+    };
+
+    onDragEnd = () => {
+        this.setState(() => ({dragging: false}));
     };
 
     renderMainRow = (): React.ReactFragment => {
@@ -41,10 +52,10 @@ class WrappedExpandableDndRow extends React.Component<any, RowState> {
     };
 
     render(): React.ReactNode {
-        const { expanded } = this.state;
+        const { expanded, dragging } = this.state;
 
         return (
-            <DragDropContext onDragEnd={() => {}}>
+            <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                 <Droppable droppableId="domain-form-droppable">
                     {provided => (
                         <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -52,7 +63,7 @@ class WrappedExpandableDndRow extends React.Component<any, RowState> {
                                 index={1}
                                 isDragDisabled={false}
                                 expanded={expanded === 1}
-                                dragging={false}
+                                dragging={dragging}
                                 onExpand={this.onExpand}
                                 renderMainRow={this.renderMainRow}
                                 renderExpandedSection={this.renderExpandedSection}

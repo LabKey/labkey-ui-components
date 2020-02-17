@@ -122,6 +122,7 @@ import {
     queryGridInvalidate,
     schemaGridInvalidate,
     setSelected,
+    unselectAll,
 } from './actions';
 import {
     getEditorModel,
@@ -321,6 +322,7 @@ export {
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
     setSelected,
+    unselectAll,
 
     // editable grid related items
     MAX_EDITABLE_GRID_ROWS,

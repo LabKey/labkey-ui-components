@@ -3,7 +3,12 @@ import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { IEntityDetails } from './models';
 import { LabelOverlay } from '../../../components/forms/LabelOverlay';
-import { getEntityDescriptionValue, getEntityNameExpressionValue, isExistingEntity } from "./actions";
+import {
+    getEntityDescriptionValue,
+    getEntityNameExpressionValue,
+    getEntityNameValue,
+    isExistingEntity
+} from "./actions";
 import { ENTITY_FORM_IDS } from "./constants";
 
 interface Props {
@@ -23,27 +28,30 @@ export class EntityDetailsForm extends React.PureComponent<Props, any> {
 
         return (
             <Form>
-                {!isExistingEntity(formValues, data) && <Row className={'margin-bottom'}>
-                    <Col xs={3}>
-                        <LabelOverlay
-                            isFormsy={false}
-                            labelClass={'entity-form--overlaylabel'}
-                            label={'Name'}
-                            type={'Text (String)'}
-                            description={`The name for this ${noun.toLowerCase()}. Note that this can\'t be changed after ${noun.toLowerCase()} creation.`}
-                            required={true}
-                            canMouseOverTooltip={true}
-                        />
-                    </Col>
-                    <Col xs={9}>
-                        <FormControl
-                            id={ENTITY_FORM_IDS.NAME}
-                            type="text"
-                            placeholder={`Enter a name for this ${noun.toLowerCase()}`}
-                            onChange={onFormChange}
-                        />
-                    </Col>
-                </Row>}
+                {!isExistingEntity(formValues, data) &&
+                    <Row className={'margin-bottom'}>
+                        <Col xs={3}>
+                            <LabelOverlay
+                                isFormsy={false}
+                                labelClass={'entity-form--overlaylabel'}
+                                label={'Name'}
+                                type={'Text (String)'}
+                                description={`The name for this ${noun.toLowerCase()}. Note that this can\'t be changed after ${noun.toLowerCase()} creation.`}
+                                required={true}
+                                canMouseOverTooltip={true}
+                            />
+                        </Col>
+                        <Col xs={9}>
+                            <FormControl
+                                id={ENTITY_FORM_IDS.NAME}
+                                type="text"
+                                placeholder={`Enter a name for this ${noun.toLowerCase()}`}
+                                onChange={onFormChange}
+                                value={getEntityNameValue(formValues, data)}
+                            />
+                        </Col>
+                    </Row>
+                }
                 <Row className='margin-bottom'>
                     <Col xs={3}>
                         <LabelOverlay

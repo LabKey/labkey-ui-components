@@ -68,6 +68,7 @@ Array [
               onChange={[Function]}
               placeholder="Enter a name for this sample type"
               type="text"
+              value=""
             />
           </div>
         </div>
@@ -321,6 +322,7 @@ Array [
               onChange={[Function]}
               placeholder="Enter a name for this sample type"
               type="text"
+              value=""
             />
           </div>
         </div>

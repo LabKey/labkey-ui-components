@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import classNames from "classnames";
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 import {
@@ -729,36 +730,18 @@ export function getDomainBottomErrorMessage(exception: string, errorDomains: Lis
 }
 
 export function getDomainPanelClass(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
-    let classes = 'domain-form-panel';
-
-    if (!collapsed && controlledCollapse) {
-        if (useTheme) {
-            classes += ' lk-border-theme-light';
-        }
-        else {
-            classes += ' domain-panel-no-theme';
-        }
-    }
-
-    return classes;
+    return classNames('domain-form-panel', {
+        'lk-border-theme-light': !collapsed && controlledCollapse && useTheme,
+        'domain-panel-no-theme': !collapsed && controlledCollapse && !useTheme
+    });
 }
 
 export function getDomainAlertClasses(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
-    let classes = 'domain-bottom-alert panel-default';
-
-    if (!collapsed && controlledCollapse) {
-        if (useTheme) {
-            classes += ' lk-border-theme-light';
-        }
-        else {
-            classes += ' domain-bottom-alert-expanded';
-        }
-    }
-
-    if (!collapsed)
-        classes += ' domain-bottom-alert-top';
-
-    return classes;
+    return classNames('domain-bottom-alert panel-default', {
+        'lk-border-theme-light': !collapsed && controlledCollapse && useTheme,
+        'domain-bottom-alert-expanded': !collapsed && controlledCollapse && !useTheme,
+        'domain-bottom-alert-top': !collapsed
+    });
 }
 
 // This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme

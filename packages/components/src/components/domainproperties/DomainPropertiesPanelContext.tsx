@@ -12,9 +12,7 @@ export interface IDomainPropertiesPanelContext {
     togglePanel?: (evt: any, collapsed?: boolean) => void
 }
 
-const DomainPropertiesPanelContext = React.createContext<IDomainPropertiesPanelContext>(undefined);
-export const DomainPropertiesPanelContextProvider = DomainPropertiesPanelContext.Provider;
-export const DomainPropertiesPanelContextConsumer = DomainPropertiesPanelContext.Consumer;
+export const DomainPropertiesPanelContext = React.createContext<IDomainPropertiesPanelContext>(undefined);
 
 // default provider
 export class DomainPropertiesPanelProvider extends React.Component<Props, IDomainPropertiesPanelContext> {
@@ -66,9 +64,9 @@ export class DomainPropertiesPanelProvider extends React.Component<Props, IDomai
         };
 
         return (
-            <DomainPropertiesPanelContextProvider value={context}>
+            <DomainPropertiesPanelContext.Provider value={context}>
                 {this.props.children}
-            </DomainPropertiesPanelContextProvider>
+            </DomainPropertiesPanelContext.Provider>
         )
     }
 }

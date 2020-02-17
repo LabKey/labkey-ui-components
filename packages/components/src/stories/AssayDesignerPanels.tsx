@@ -61,9 +61,7 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
                 hideEmptyBatchDomain={boolean('hideEmptyBatchDomain', false)}
                 useTheme={false}
                 successBsStyle={text('successBsStyle', 'success')}
-                onChange={(model: AssayProtocolModel) => {
-                    // console.log('change', model.toJS());
-                }}
+                onChange={(model: AssayProtocolModel) => {}}
                 onComplete={(model: AssayProtocolModel) => {
                     console.log('complete clicked', model.toJS());
                 }}

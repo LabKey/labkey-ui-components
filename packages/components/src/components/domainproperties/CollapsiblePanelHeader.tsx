@@ -1,8 +1,9 @@
 import React from "react";
+import classNames from "classnames";
 import {Panel} from "react-bootstrap";
 import {faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { LabelHelpTip } from "../..";
+import { LabelHelpTip } from "../base/LabelHelpTip";
 import { DomainPanelStatus } from "./models";
 
 interface Props {
@@ -25,13 +26,13 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
     getPanelHeaderClass(): string {
         const { collapsed, collapsible, controlledCollapse, useTheme } = this.props;
 
-        let classes = 'domain-panel-header ' + ((collapsible || controlledCollapse) ? 'domain-heading-collapsible' : '');
-        classes += (!collapsed ? ' domain-panel-header-expanded' : ' domain-panel-header-collapsed');
-        if (!collapsed) {
-            classes += (useTheme ? ' labkey-page-nav' : ' domain-panel-header-no-theme');
-        }
-
-        return classes;
+        return classNames('domain-panel-header', {
+            'domain-heading-collapsible': collapsible || controlledCollapse,
+            'domain-panel-header-expanded': !collapsed,
+            'domain-panel-header-collapsed': collapsed,
+            'labkey-page-nav': !collapsed && useTheme,
+            'domain-panel-header-no-theme': !collapsed && !useTheme
+        });
     }
 
     getHeaderIconHelpMsg(): string {
@@ -58,27 +59,30 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
 
     getHeaderIconClass() {
         const { collapsed, isValid, panelStatus } = this.props;
-        const classes = 'domain-panel-status-icon';
+        const validComplete = isValid && panelStatus === 'COMPLETE';
 
-        if (collapsed) {
-            if (isValid && panelStatus === 'COMPLETE') {
-                return classes + ' domain-panel-status-icon-green';
-            }
-            return classes + ' domain-panel-status-icon-blue';
-        }
-
-        return classes;
+        return classNames('domain-panel-status-icon', {
+            'domain-panel-status-icon-green': collapsed && validComplete,
+            'domain-panel-status-icon-blue': collapsed && !validComplete
+        });
     };
 
     getHeaderIcon() {
         const { isValid, panelStatus } = this.props;
-
-        if (!isValid || panelStatus === 'TODO') {
-            return faExclamationCircle;
-        }
-
-        return faCheckCircle;
+        return (!isValid || panelStatus === 'TODO') ? faExclamationCircle : faCheckCircle;
     };
+
+    renderExpandCollapseIcon() {
+        const { collapsed } = this.props;
+        const icon = collapsed ? faPlusSquare : faMinusSquare;
+        const className = collapsed ? 'domain-form-expand-btn' : 'domain-form-collapse-btn';
+
+        return (
+            <span className={'pull-right'}>
+                <FontAwesomeIcon size={'lg'} icon={icon} className={className}/>
+            </span>
+        )
+    }
 
     renderHeader() {
         const { children, collapsed, titlePrefix, panelStatus, controlledCollapse, collapsible, title, headerDetails } = this.props;
@@ -96,15 +100,8 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
                 <span className={'domain-panel-title'}>{(titlePrefix ? titlePrefix + ' - ' : '') + title}</span>
 
                 {/*Expand/Collapse Icon*/}
-                {(controlledCollapse || collapsible) && collapsed &&
-                    <span className={'pull-right'}>
-                        <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"domain-form-expand-btn"}/>
-                    </span>
-                }
-                {(controlledCollapse || collapsible) && !collapsed &&
-                    <span className={'pull-right'}>
-                        <FontAwesomeIcon size={'lg'} icon={faMinusSquare} className={"domain-form-collapse-btn"}/>
-                    </span>
+                {(controlledCollapse || collapsible) &&
+                    this.renderExpandCollapseIcon()
                 }
 
                 {/*Help tip*/}

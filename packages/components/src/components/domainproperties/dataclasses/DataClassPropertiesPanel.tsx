@@ -14,7 +14,7 @@ import { getFormNameFromId } from "../entities/actions";
 import { DataClassModel } from "./models";
 import { HelpTopicURL } from "../HelpTopicURL";
 import {
-    DomainPropertiesPanelContextConsumer,
+    DomainPropertiesPanelContext,
     DomainPropertiesPanelProvider,
     IDomainPropertiesPanelContext
 } from "../DomainPropertiesPanelContext";
@@ -140,7 +140,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                         formsy={false}
                         showLabel={false}
                         preLoad={true}
-                        // fireQSChangeOnInit={true}
+                        // fireQSChangeOnInit={true} // TODO remove these props with final implementation if they are not needed
                         // loadOnChange={true}
                         // loadOnFocus={true}
                         onQSChange={this.onChange}
@@ -156,7 +156,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
         const { isValid } = this.state;
 
         return (
-            <DomainPropertiesPanelContextConsumer>
+            <DomainPropertiesPanelContext.Consumer>
                 {(context) =>
                     <>
                         <Panel className={getDomainPanelClass(context.collapsed, true, useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
@@ -202,7 +202,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                         }
                     </>
                 }
-            </DomainPropertiesPanelContextConsumer>
+            </DomainPropertiesPanelContext.Consumer>
         )
     }
 }

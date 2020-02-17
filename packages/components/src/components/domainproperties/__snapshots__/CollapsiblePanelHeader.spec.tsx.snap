@@ -160,7 +160,7 @@ exports[`<CollapsiblePanelHeader/> invalid, iconHelpMsg, and expanded 1`] = `
 
 exports[`<CollapsiblePanelHeader/> not collapsible 1`] = `
 <div
-  className="domain-panel-header  domain-panel-header-expanded labkey-page-nav panel-heading"
+  className="domain-panel-header domain-panel-header-expanded labkey-page-nav panel-heading"
   id="test-id"
   onClick={[MockFunction]}
 >
@@ -174,7 +174,7 @@ exports[`<CollapsiblePanelHeader/> not collapsible 1`] = `
 
 exports[`<CollapsiblePanelHeader/> not controlledCollapse 1`] = `
 <div
-  className="domain-panel-header  domain-panel-header-collapsed panel-heading"
+  className="domain-panel-header domain-panel-header-collapsed panel-heading"
   id="test-id"
   onClick={[MockFunction]}
 >
@@ -209,7 +209,7 @@ exports[`<CollapsiblePanelHeader/> not controlledCollapse 1`] = `
 
 exports[`<CollapsiblePanelHeader/> not useTheme 1`] = `
 <div
-  className="domain-panel-header  domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
   id="test-id"
   onClick={[MockFunction]}
 >

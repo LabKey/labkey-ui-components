@@ -24,7 +24,7 @@ import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { HelpTopicURL } from "../HelpTopicURL";
 import {
-    DomainPropertiesPanelContextConsumer,
+    DomainPropertiesPanelContext,
     DomainPropertiesPanelProvider,
     IDomainPropertiesPanelContext
 } from "../DomainPropertiesPanelContext";
@@ -240,7 +240,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
         const { validProperties } = this.state;
 
         return (
-            <DomainPropertiesPanelContextConsumer>
+            <DomainPropertiesPanelContext.Consumer>
                 {(context) =>
                     <>
                         <Panel className={getDomainPanelClass(context.collapsed, true, useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
@@ -272,7 +272,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
                         }
                     </>
                 }
-            </DomainPropertiesPanelContextConsumer>
+            </DomainPropertiesPanelContext.Consumer>
         )
     }
 

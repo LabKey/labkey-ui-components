@@ -1345,13 +1345,13 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             >
               <PanelHeading
                 bsClass="panel"
-                className="domain-panel-header  domain-panel-header-expanded domain-panel-header-no-theme"
+                className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme"
                 componentClass="div"
                 id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <div
-                  className="domain-panel-header  domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+                  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
@@ -2858,13 +2858,13 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
             >
               <PanelHeading
                 bsClass="panel"
-                className="domain-panel-header  domain-panel-header-collapsed"
+                className="domain-panel-header domain-panel-header-collapsed"
                 componentClass="div"
                 id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <div
-                  className="domain-panel-header  domain-panel-header-collapsed panel-heading"
+                  className="domain-panel-header domain-panel-header-collapsed panel-heading"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
@@ -4245,13 +4245,13 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
             >
               <PanelHeading
                 bsClass="panel"
-                className="domain-panel-header  domain-panel-header-expanded domain-panel-header-no-theme"
+                className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme"
                 componentClass="div"
                 id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <div
-                  className="domain-panel-header  domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+                  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
@@ -5511,13 +5511,13 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
             >
               <PanelHeading
                 bsClass="panel"
-                className="domain-panel-header  domain-panel-header-expanded domain-panel-header-no-theme"
+                className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme"
                 componentClass="div"
                 id="assay-properties-hdr"
                 onClick={[Function]}
               >
                 <div
-                  className="domain-panel-header  domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+                  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >

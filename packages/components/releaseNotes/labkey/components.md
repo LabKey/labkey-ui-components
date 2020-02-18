@@ -3,6 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Re-parameterize and rename SampleInsertPanel to EntityInsertPanel for use with Data classes as well
+* Add disabled and title optional properties for AddEntityButton
 
 ### version 0.24.0
 *Released*: 13 February 2020

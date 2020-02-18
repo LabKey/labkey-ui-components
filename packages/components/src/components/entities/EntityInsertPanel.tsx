@@ -593,21 +593,18 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const entityParents = insertModel.entityParents.get(queryName);
         if (parentOptions.size === 0)
             return null;
-        else if (parentOptions.size > entityParents.size) {
+        else {
+            const disabled = parentOptions.size <= entityParents.size;
+            const title = disabled ? 'Only ' + parentOptions.size + ' ' + (parentOptions.size === 1 ? parentMetadata.descriptionSingular : parentMetadata.descriptionPlural) + ' available.' : undefined;
             return (
                 <AddEntityButton
                     containerClass={'entity-insert--entity-add-button'}
                     key={'add-entity-' + entityDataType}
                     entity={parentMetadata.nounSingular}
+                    title={title}
+                    disabled={disabled}
                     onClick={this.addParent.bind(this, queryName)}
                 />
-            )
-        }
-        else {
-            return (
-                <div key={'add-entity-' + entityDataType} className={'entity-insert--entity-add-text'}>
-                    Only {parentOptions.size} {parentOptions.size === 1 ? parentMetadata.descriptionSingular : parentMetadata.descriptionPlural} available.
-                </div>
             )
         }
     }

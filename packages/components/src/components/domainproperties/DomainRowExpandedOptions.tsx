@@ -35,6 +35,7 @@ interface IDomainRowExpandedOptionsProps {
     showingModal: (boolean) => any
     appPropertiesOnly?: boolean
     domainIndex: number
+    successBsStyle?: string
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
@@ -84,7 +85,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
     };
 
     render() {
-        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex } = this.props;
+        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex, successBsStyle } = this.props;
 
         return(
             <div className='domain-row-container'>
@@ -98,7 +99,15 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                     </Col>
                     { !isFieldFullyLocked(field.lockType) &&
                         <Col xs={12}>
-                            <ConditionalFormattingAndValidation index={index} domainIndex={domainIndex} field={field} onChange={onChange} showingModal={showingModal} hideConditionalFormatting={appPropertiesOnly} />
+                            <ConditionalFormattingAndValidation
+                                index={index}
+                                domainIndex={domainIndex}
+                                field={field}
+                                onChange={onChange}
+                                showingModal={showingModal}
+                                hideConditionalFormatting={appPropertiesOnly}
+                                successBsStyle={successBsStyle}
+                            />
                         </Col>
                     }
                 </div>

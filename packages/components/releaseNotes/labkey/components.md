@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.25.0
+*Released*: 18 February 2020
+* Item 6835: Changes to support Data Class Designer in Sample Manager and LKS
+    - Factor out EntityDetailsForm.tsx from SampleSetDetailsPanel.tsx
+    - Factor out DomainPropertiesPanelContext.tsx and CollapsiblePanelHeader.tsx for reuse and put back into AssayPropertiesPanel.tsx and DomainForm.tsx
+    - DataClassDesigner.tsx and DataClassPropertiesPanel.tsx
+    - Move AssayProtocolModel to domainproperties/assay/models.ts
+
 ### version 0.24.0
 *Released*: 13 February 2020
 * Issue 39529: Make reset view in lineage graph operational

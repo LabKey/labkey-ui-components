@@ -24,6 +24,7 @@ import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
 import { generateId } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
+import { IEntityDetails } from '../domainproperties/entities/models';
 
 export interface SampleInputProps {
     role: string
@@ -355,12 +356,7 @@ export class SampleIdCreationModel extends Record({
     }
 }
 
-export interface ISampleSetDetails {
-    isUpdate?: boolean
-    rowId?: number
-    name?: string
-    nameExpression?: string
-    description?: string
+export interface ISampleSetDetails extends IEntityDetails {
     importAliasKeys?: Array<string>
     importAliasValues?: Array<string>
 }

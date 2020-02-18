@@ -74,6 +74,7 @@ interface IDomainRowProps {
     appPropertiesOnly?: boolean
     showFilePropertyType?: boolean
     domainIndex: number
+    successBsStyle?: string
 }
 
 interface IDomainRowState {
@@ -422,7 +423,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     render() {
         const { closing, isDragDisabled, showAdv, showingModal } = this.state;
         const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId, domainIndex,
-            helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions, appPropertiesOnly } = this.props;
+            helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions, appPropertiesOnly, successBsStyle } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", domainIndex, index)} index={index} isDragDisabled={showingModal || isDragDisabled}>
@@ -447,6 +448,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 showDefaultValueSettings={showDefaultValueSettings}
                                 defaultDefaultValueType={defaultDefaultValueType}
                                 defaultValueOptions={defaultValueOptions}
+                                successBsStyle={successBsStyle}
                             />
                             <div className='domain-row-handle' {...provided.dragHandleProps}>
                                 {<DragDropHandle highlighted={dragging ? true : isDragDisabled ? false: undefined /* use undefined instead of false to allow for css to handle the highlight color for hover*/}/>}
@@ -471,6 +473,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                         onChange={this.onSingleFieldChange}
                                         showingModal={this.showingModal}
                                         appPropertiesOnly={appPropertiesOnly}
+                                        successBsStyle={successBsStyle}
                                     />
                                 </div>
                             </Collapse>

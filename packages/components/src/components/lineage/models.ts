@@ -177,18 +177,19 @@ export class LineageNode extends Record ({
     }
 
     static create(lsid, values?: { [key:string]: any }): LineageNode {
-        return new LineageNode({
-            children: LineageLink.createList(values.children),
+        return values ? new LineageNode({
+            children:  LineageLink.createList(values.children),
             cpasType: values.cpasType,
             lsid,
-            name: values.name,
+            name:  values.name,
             parents: LineageLink.createList(values.parents),
             queryName: values.queryName,
-            rowId: values.rowId,
+            rowId:values.rowId,
             schemaName: values.schemaName,
             type: values.type,
-            url: values.url
-        });
+            url: values.url,
+            meta: values.meta
+        }) : new LineageNode({lsid});
     }
 }
 
@@ -537,3 +538,4 @@ export class LineagePageModel extends Record({
         super(values);
     }
 }
+

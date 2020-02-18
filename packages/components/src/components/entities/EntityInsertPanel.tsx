@@ -222,7 +222,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     init(props: OwnProps, selectTab: boolean = false) {
-
+        // TODO move most of this to actions?
         const queryParams = props.location ? EntityInsertPanelImpl.getQueryParameters(props.location.query) : {
             parents: undefined,
             selectionKey: undefined,
@@ -343,6 +343,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
+    // TODO move to actions?
     generateParentColumn(parent: EntityParentType): QueryColumn {
         const parentInputType = EntityInsertPanelImpl.convertParentInputSchema(parent.schema);
         const formattedQueryName = capitalizeFirstChar(parent.query);
@@ -380,8 +381,8 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         });
     }
 
+    // TODO move to actions
     getParentColumns() : OrderedMap<string, QueryColumn> {
-
         const { insertModel } = this.state;
         let columns = OrderedMap<string, QueryColumn>();
         insertModel.entityParents.forEach((parentList) => {
@@ -448,6 +449,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         });
     }
 
+    // TODO move most of this to actions or insertModel?
     changeParent(index: number, queryName: string, fieldName: string, formValue: any, parent: IParentOption): void {
         const { insertModel } = this.state;
         let column;

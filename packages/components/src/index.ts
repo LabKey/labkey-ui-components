@@ -188,7 +188,7 @@ import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
-import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
+import { EntityInsertPanel, ParentEntityMetadata } from './components/entities/EntityInsertPanel';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
@@ -455,6 +455,7 @@ export {
     EntityDeleteConfirmModal,
     EntityDataType,
     EntityInsertPanel,
+    ParentEntityMetadata,
 
     // Navigation
     MenuSectionConfig,

@@ -3,7 +3,8 @@ import { List, Map } from 'immutable';
 import { mount } from 'enzyme';
 
 import { AssayDesignerPanels } from './AssayDesignerPanels';
-import { AssayProtocolModel, DomainDesign } from '../models';
+import { DomainDesign } from '../models';
+import { AssayProtocolModel } from '../assay/models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
 import { Panel } from 'react-bootstrap';
 import toJson from 'enzyme-to-json';
@@ -43,10 +44,6 @@ const EMPTY_MODEL  = AssayProtocolModel.create({
         DomainDesign.create({name: 'Data Fields'})
     ])
 });
-
-function getButton(wrapper: any, text: string) {
-    return wrapper.findWhere(n => n.type() === 'button' && n.text() === text);
-}
 
 const nameInputId = 'assay-design-name';
 function setAssayName(wrapper: any, value: string) {
@@ -142,6 +139,7 @@ describe('AssayDesignerPanels', () => {
         const component = (
             <AssayDesignerPanels
                 initModel={EMPTY_MODEL}
+                successBsStyle={'primary'}
                 onCancel={jest.fn}
                 onComplete={jest.fn}
             />
@@ -157,7 +155,9 @@ describe('AssayDesignerPanels', () => {
         expect(wrapper.find('.domain-form-add-btn').hostNodes()).toHaveLength(2);
         expect(wrapper.find('.domain-form-add-link').hostNodes()).toHaveLength(1);
         expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
-        expect(wrapper.find('.domain-assay-buttons').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.domain-designer-buttons').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.btn-primary')).toHaveLength(1);
+        expect(wrapper.find('.btn-primary').props().disabled).toBe(false);
         wrapper.unmount();
     });
 

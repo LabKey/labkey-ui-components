@@ -24,6 +24,7 @@ interface ConditionalFormattingAndValidationProps {
     onChange: (string, any) => any
     showingModal: (boolean) => any
     hideConditionalFormatting?: boolean
+    successBsStyle?: string
 }
 
 interface ConditionalFormattingAndValidationState {
@@ -122,7 +123,8 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                         name={createFormInputName((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR))}
                         id={createFormInputId((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR), domainIndex, index)}
                         disabled={isFieldFullyLocked(field.lockType)}
-                        onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}>
+                        onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}
+                    >
                         {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : (range ? 'Add Range' : 'Add Regex')}
                     </Button>
                     {count === 0 ? <span className='domain-text-label'>None Set</span> :
@@ -152,7 +154,8 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                         name={createFormInputName(DOMAIN_COND_FORMAT)}
                         id={createFormInputId(DOMAIN_COND_FORMAT, domainIndex, index)}
                         disabled={isFieldFullyLocked(field.lockType)}
-                        onClick={this.showHideConditionalFormat}>
+                        onClick={this.showHideConditionalFormat}
+                    >
                         {count > 0 ? 'Edit Formats' : 'Add Format'}
                     </Button>
                     {count === 0 ? <span className='domain-text-label'>None Set</span> :
@@ -162,7 +165,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
     };
 
     render() {
-        const { index, field, hideConditionalFormatting } = this.props;
+        const { index, field, hideConditionalFormatting, successBsStyle } = this.props;
         const { showCondFormat, showRegex, showRange } = this.state;
 
         const CondFormatModal = ValidatorModal(ConditionalFormatOptions);
@@ -196,6 +199,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                                 dataType={field.dataType}
                                 onHide={this.showHideConditionalFormat}
                                 onApply={this.onApply}
+                                successBsStyle={successBsStyle}
                             />
                         }
                         {showRegex &&
@@ -211,6 +215,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                                 dataType={field.dataType}
                                 onHide={this.showHideRegexValidator}
                                 onApply={this.onApply}
+                                successBsStyle={successBsStyle}
                             />
                         }
                         {showRange &&
@@ -226,6 +231,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                                 dataType={field.dataType}
                                 onHide={this.showHideRangeValidator}
                                 onApply={this.onApply}
+                                successBsStyle={successBsStyle}
                             />
                         }
                     </Col>

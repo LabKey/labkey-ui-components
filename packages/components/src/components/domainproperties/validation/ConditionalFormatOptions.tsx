@@ -61,7 +61,8 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
                         className="domain-validation-delete"
                         name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
                         id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
-                        onClick={this.onDelete}>
+                        onClick={this.onDelete}
+                    >
                         Remove Validator
                     </Button>
                 </Col>
@@ -216,7 +217,9 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
                     name={createFormInputName(name)}
                     onClick={this.onColorShow}
                     className='domain-color-picker-btn'
-                >{label}<FontAwesomeIcon className='domain-color-caret' size='lg' icon={showColorPicker ? faCaretUp : faCaretDown}/></Button>
+                >
+                    {label}<FontAwesomeIcon className='domain-color-caret' size='lg' icon={showColorPicker ? faCaretUp : faCaretDown}/>
+                </Button>
                 {showColorPicker &&
                 <div className='domain-validator-color-popover'>
                     <div className='domain-validator-color-cover' id={createFormInputId(name, domainIndex, validatorIndex)} onClick={this.onColorShow}/>

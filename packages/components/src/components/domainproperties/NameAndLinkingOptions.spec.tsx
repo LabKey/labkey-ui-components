@@ -46,7 +46,7 @@ describe('NameAndLinkingOptions', () => {
 
         // Verify values
         // Description
-        let formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1, 1), className: 'form-control domain-field-textarea form-control'});
+        let formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1, 1), className: 'form-control textarea-noresize form-control'});
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_description);
 

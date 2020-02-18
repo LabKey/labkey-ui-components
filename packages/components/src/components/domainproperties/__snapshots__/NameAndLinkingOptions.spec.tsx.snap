@@ -134,7 +134,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
               </div>
               <FormControl
                 bsClass="form-control"
-                className="form-control domain-field-textarea"
+                className="form-control textarea-noresize"
                 componentClass="textarea"
                 disabled={false}
                 id="domainpropertiesrow-description-1-1"
@@ -144,7 +144,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 value="This is a description"
               >
                 <textarea
-                  className="form-control domain-field-textarea form-control"
+                  className="form-control textarea-noresize form-control"
                   disabled={false}
                   id="domainpropertiesrow-description-1-1"
                   name="domainpropertiesrow-description"

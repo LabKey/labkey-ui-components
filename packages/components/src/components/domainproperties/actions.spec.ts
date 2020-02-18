@@ -15,7 +15,18 @@
  */
 import { List } from 'immutable';
 
-import { createFormInputId, getBannerMessages, setDomainFields, updateDomainException } from './actions';
+import {
+    createFormInputId,
+    getBannerMessages,
+    getDomainAlertClasses,
+    getDomainBottomErrorMessage,
+    getDomainHeaderName,
+    getDomainPanelClass,
+    getDomainPanelHeaderId,
+    getDomainPanelStatus,
+    setDomainFields,
+    updateDomainException
+} from './actions';
 import {
     DATETIME_TYPE,
     DomainDesign,
@@ -187,5 +198,76 @@ describe("domain properties actions", () => {
         expect(updatedDomain.fields.get(0).rangeURI).toBe(TEXT_TYPE.rangeURI);
         expect(updatedDomain.fields.get(1).rangeURI).toBe(DOUBLE_TYPE.rangeURI);
         expect(updatedDomain.fields.get(2).rangeURI).toBe(DATETIME_TYPE.rangeURI);
+    });
+
+    test('getDomainPanelStatus', () => {
+        expect(getDomainPanelStatus(0, 0, List.of(0), true)).toBe('NONE');
+        expect(getDomainPanelStatus(0, 0, List.of(0), false)).toBe('INPROGRESS');
+        expect(getDomainPanelStatus(1, 1, List.of(0, 1), false)).toBe('INPROGRESS');
+        expect(getDomainPanelStatus(0, 1, List.of(0), false)).toBe('COMPLETE');
+        expect(getDomainPanelStatus(1, 0, List.of(0, 1), true)).toBe('COMPLETE');
+        expect(getDomainPanelStatus(1, 0, List.of(0, 1), false)).toBe('COMPLETE');
+        expect(getDomainPanelStatus(1, 0, List.of(0), false)).toBe('TODO');
+    });
+
+    test('getDomainBottomErrorMessage', () => {
+        expect(getDomainBottomErrorMessage('Test exception', List.of(), true, List.of())).toBe('Test exception');
+        expect(getDomainBottomErrorMessage('Test exception', List.of('test1', 'test2'), true, List.of())).toBe('Test exception');
+        expect(getDomainBottomErrorMessage('Test exception', List.of('test1'), false, List.of())).toBe('Test exception');
+        expect(getDomainBottomErrorMessage('Test exception', List.of('test1'), true, List.of())).toBe('Test exception');
+        expect(getDomainBottomErrorMessage('Test exception', List.of(), true, List.of(0))).toBe('Test exception');
+        expect(getDomainBottomErrorMessage('Test exception', List.of(), false, List.of(0))).toBe('Test exception');
+
+        expect(getDomainBottomErrorMessage(undefined, List.of('test1', 'test2'), true, List.of())).toContain('errors above');
+        expect(getDomainBottomErrorMessage(undefined, List.of('test1'), false, List.of())).toContain('errors above');
+        expect(getDomainBottomErrorMessage(undefined, List.of('test1'), true, List.of())).toContain('errors in test1');
+        expect(getDomainBottomErrorMessage(undefined, List.of(), false, List.of(0))).toContain('errors in the properties panel');
+
+        expect(getDomainBottomErrorMessage(undefined, List.of(), true, List.of())).toBe(undefined);
+        expect(getDomainBottomErrorMessage(undefined, List.of(), true, List.of(0))).toBe(undefined);
+    });
+
+    test('getDomainPanelClass', () => {
+        expect(getDomainPanelClass(true, true, true)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(true, true, false)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(true, false, true)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(true, false, false)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(false, true, true)).toBe('domain-form-panel lk-border-theme-light');
+        expect(getDomainPanelClass(false, true, false)).toBe('domain-form-panel domain-panel-no-theme');
+        expect(getDomainPanelClass(false, false, true)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(false, false, false)).toBe('domain-form-panel');
+    });
+
+    test('getDomainAlertClasses', () => {
+        expect(getDomainAlertClasses(true, true, true)).toBe('domain-bottom-alert panel-default');
+        expect(getDomainAlertClasses(true, false, true)).toBe('domain-bottom-alert panel-default');
+        expect(getDomainAlertClasses(true, true, false)).toBe('domain-bottom-alert panel-default');
+        expect(getDomainAlertClasses(true, false, false)).toBe('domain-bottom-alert panel-default');
+        expect(getDomainAlertClasses(false, true, true)).toBe('domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top');
+        expect(getDomainAlertClasses(false, true, false)).toBe('domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top');
+        expect(getDomainAlertClasses(false, false, true)).toBe('domain-bottom-alert panel-default domain-bottom-alert-top');
+        expect(getDomainAlertClasses(false, false, false)).toBe('domain-bottom-alert panel-default domain-bottom-alert-top');
+    });
+
+    test('getDomainPanelHeaderId', () => {
+        expect(getDomainPanelHeaderId(undefined)).toBe('domain-header');
+        expect(getDomainPanelHeaderId(undefined, 'domain-header-test')).toBe('domain-header-test');
+        expect(getDomainPanelHeaderId(DomainDesign.create({}))).toBe('domain-header');
+        expect(getDomainPanelHeaderId(DomainDesign.create({}), 'domain-header-test')).toBe('domain-header-test');
+        expect(getDomainPanelHeaderId(DomainDesign.create({name: 'test'}))).toBe('domainpropertiesrow-test-hdr');
+        expect(getDomainPanelHeaderId(DomainDesign.create({name: 'test'}), 'domain-header-test')).toBe('domainpropertiesrow-test-hdr');
+    });
+
+    test('getDomainHeaderName', () => {
+        expect(getDomainHeaderName()).toBe('Fields');
+        expect(getDomainHeaderName('Test Name')).toBe('Test Name');
+        expect(getDomainHeaderName('Test Name', 'Test Header Title')).toBe('Test Header Title');
+        expect(getDomainHeaderName('Test Name', undefined, 'Test')).toBe('Name');
+        expect(getDomainHeaderName('Test Name', 'Test Header Title', 'Test')).toBe('Header Title');
+        expect(getDomainHeaderName('TestName', undefined, 'Test')).toBe('TestName');
+        expect(getDomainHeaderName('TestName', 'TestHeaderTitle', 'Test')).toBe('TestHeaderTitle');
+        expect(getDomainHeaderName('Test Name', undefined, 'test')).toBe('Test Name');
+        expect(getDomainHeaderName('Test Name', 'Test Header Title', 'test')).toBe('Test Header Title');
+        expect(getDomainHeaderName('Data Fields')).toBe('Results Fields');
     });
 });

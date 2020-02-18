@@ -112,6 +112,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     getDetailsText = (): React.ReactNode => {
         const { field, index, fieldError } = this.props;
         let details = [];
+        console.log("GetDetailsText's field", field);
+        console.log("Is pk?", field.isPrimaryKey);
 
         if (field.hasErrors()) {
             switch (field.getErrors()) {
@@ -140,18 +142,22 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             ].join(' > '));
         }
         else if (field.isNew()) {
-            details.push('New field');
+            details.push('New Field');
         }
         else if (field.updatedField) {
             details.push('Updated');
-        }
-        else if (field.isPrimaryKey) {
-            details.push('Primary Key');
         }
 
         let period = '';
         if (details.length > 0) {
             period = '. ';
+        }
+
+        if (field.isPrimaryKey) {
+            if (details.length > 0) {
+                details.push(period);
+            }
+            details.push('Primary Key');
         }
 
         if (field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {

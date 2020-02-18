@@ -6,6 +6,7 @@ import {Alert, Button, Col, FormControl, Row} from "react-bootstrap";
 import {saveListDesign} from "../actions";
 import {LabelHelpTip} from "../../..";
 
+// todo: give this its own file
 class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
     render() {
         let fieldNames= [];
@@ -23,7 +24,7 @@ class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
         }
 
         const {onChangeTemp, keyField} = this.props;
-        console.log("SeKeyFieldNameProps", this.props);
+        console.log("SetKeyFieldNameProps", this.props);
         return(
             <Alert>
                 <div>
@@ -71,7 +72,9 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
         super(props);
 
         this.state = {
-            model: props.model, //TODO: this should eventually be props.initModel?
+            model: props.model,
+            validProperties: true,
+            validDomain: true,
             keyField: -1,
             // firstState: true
         }
@@ -89,7 +92,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
 
     onDomainChange = (domain) => {
         this.setState((state) => {
-            const updatedModel = this.state.model.merge({domain}) as DomainForm;
+            const updatedModel = state.model.merge({domain}) as DomainForm;
             return {model: updatedModel};
         }, () => {
             // TODO: call dirty on Designer.tsx
@@ -99,36 +102,50 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
 
     onFinish = () => {
         // validate before submitting
-        let isValid = true; // TODO
+        const isValidProperties = this.state.model.hasValidProperties();
+        const isValidDomain = true; //TODO
 
-        if (isValid) {
+        if (isValidProperties ) {
+            this.setState({submitting: true});
             // TODO: set state 'Submitting' and, for some reason, the model?
-        }
 
-        // TODO: finalize upon receiving info
-        saveListDesign(this.state.model)
-            .then((response) => console.log("yay!:", response))
-            .catch((model) => console.log("failure:", model));
+            saveListDesign(this.state.model)
+                .then((response) => console.log("yay!:", response))
+                .catch((model) => console.log("failure:", model));
+        } else if (!isValidProperties) {
+            console.log("onFinish: invalid properties");
+            this.setState({validProperties: false})
+        } else if (!isValidDomain) {
+            console.log("onFinish: invalid domain");
+            this.setState({validDomain: false})
+        }
     };
 
+    // to reviewer: this is rather ungainly. Is there a better way?
     onKeyFieldChange = (e) => {
         const {name, value} = e.target;
-        const fields = this.state.model.domain.fields;
 
-        const oldKeyField = fields.get(this.state.keyField);
-        const updatedOldKeyField = oldKeyField.set('isPrimaryKey', false);
+        this.setState((state) => {
+            const oldFields = state.model.domain.fields;
+            const oldPKIndex = state.keyField;
 
-        const newKeyField = fields.get(value);
-        const updatedNewKeyField = newKeyField.set('isPrimaryKey', true);
+            // Toggle off primary key on deselected field
+            const oldKeyField = oldFields.get(oldPKIndex);
+            const updatedOldKeyField = oldKeyField.set('isPrimaryKey', false);
 
+            // Toggle on primary key on newly selected field
+            const newKeyField = oldFields.get(value);
+            const updatedNewKeyField = newKeyField.set('isPrimaryKey', true);
 
-        const newFields = fields.set(value, updatedNewKeyField);
+            const fieldsWithoutPK = oldFields.set(oldPKIndex, updatedOldKeyField);
+            const fields = fieldsWithoutPK.set(value, updatedNewKeyField);
 
-        console.log('ONKEYFIELDCHANGE', fields, "\n value", value,"\n newKeyField", newKeyField);
-
-
-        this.setState({[name]: value});
-
+            const domain = state.model.domain.set('fields', fields);
+            const updatedModel = state.model.merge({domain}) as DomainForm;
+            return {model: updatedModel, [name]: value};
+        }
+        , () => {console.log("onKeyFieldChange", this.state)}
+        );
     };
 
     getPanelStatus = (index: number): DomainPanelStatus => {
@@ -149,13 +166,15 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
         return 'TODO';
     };
 
+    headerRenderer = (config: IAppDomainHeader) => {
+        return <SetKeyFieldName onChangeTemp={this.onKeyFieldChange} keyField={this.state.keyField} {...config}/>;
+
+    };
+
     render(){
         const {model} = this.state;
         const {onCancel} = this.props;
         // console.log("ListDesignerPanel", model);
-
-        let config = {domain: model.domain} as IAppDomainHeader;
-
 
         return(
             <>
@@ -170,7 +189,6 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
                     domain={model.domain}
                     helpTopic={null}
                     onChange={(newDomain) => {
-                        // console.log("the heck");
                         this.onDomainChange(newDomain);
                     }}
                     controlledCollapse={true}
@@ -178,9 +196,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
                     headerTitle={"List Fields"}
                     panelStatus={model.isNew() ? this.getPanelStatus(1) : 'COMPLETE'}
                     showInferFromFile={true}
-                    appDomainHeaderRenderer={(config: IAppDomainHeader) => {return (
-                        <SetKeyFieldName onChangeTemp={this.onKeyFieldChange} keyField={this.state.keyField} {...config}/>
-                    )}}
+                    appDomainHeaderRenderer={model.isNew() && this.headerRenderer}
                 />
 
                 <div className='domain-form-panel domain-assay-buttons'>

@@ -746,33 +746,6 @@ const defaultSettings = {
     "containerPath" : ""
 };
 
-class A extends Record({a: undefined, b: undefined}) {
-    a: string;
-    b: string;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
-
-    static create() {
-        return new A({a: "1", b:"2"})
-    }
-}
-
-class B extends Record({a: undefined, b: undefined}) {
-    a: string;
-    b: string;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
-
-    static create() {
-        return new B({ b:"3"})
-    }
-}
-
-
 class Wrapped extends React.Component<any, any> {
     constructor(props) {
         super(props);

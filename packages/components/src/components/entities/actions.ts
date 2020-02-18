@@ -152,7 +152,7 @@ function extractFromRow(row: Map<string, any>): IEntityTypeOption {
         label: name,
         lsid: row.getIn(['LSID', 'value']),
         rowId: row.getIn(['RowId', 'value']),
-        value: name,
+        value: name.toLowerCase(), // we match values on lower case because (at least) when parsed from an id they are lower case
         query: name
     }
 }
@@ -174,7 +174,7 @@ function getChosenParentData(model: EntityIdCreationModel, parentSchemaQueries: 
                     if (validEntityCount === 1) {
                         resolve({
                             entityCount: validEntityCount,
-                            entityParents: entityParents.set(parentSchemaQueries[parentRep.schema].queryName, chosenParents),
+                            entityParents: entityParents.set(parentSchemaQueries.get(parentRep.schema).queryName, chosenParents),
                         });
                     }
                     else { // if we did not find a valid parent, we clear out the parents and selection key from the model as they aren't relevant
@@ -266,7 +266,7 @@ export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: M
                 // and populate the targetEntityType if one is provided
                 if (model.initialEntityType && partial.entityTypeOptions) {
                     const initialTargetTypeName = model.initialEntityType;
-                    const data = partial.entityTypeOptions.find(row => initialTargetTypeName === row.value);
+                    const data = partial.entityTypeOptions.find(row => initialTargetTypeName.toLowerCase() === row.value);
                     if (data) {
                         partial.targetEntityType = new EntityTypeOption(data);
                     }

@@ -577,7 +577,8 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                             labelClass={'sample-insert--remove-parent'}
                             entity={parentMetadata.nounSingular}
                             index={index}
-                            onClick={this.removeParent.bind(this, index, queryName)}/>
+                            onClick={this.removeParent.bind(this, index, queryName)}
+                        />
                     </div>
                 )
             }).toArray()
@@ -664,7 +665,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                         onChange={this.changeTargetEntityType}
                         options={insertModel.entityTypeOptions.toArray()}
                         required
-                        value={insertModel && insertModel.hasTargetEntityType() ? insertModel.targetEntityType.label : undefined}
+                        value={insertModel && insertModel.hasTargetEntityType() ? insertModel.targetEntityType.label.toLowerCase() : undefined}
                     />
                 )}
                 {insertModel.isError ? this.renderError() : (isGrid && insertModel.hasTargetEntityType() ? this.renderParentTypesAndButtons() : '')}

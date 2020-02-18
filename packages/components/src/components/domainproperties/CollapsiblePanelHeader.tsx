@@ -85,7 +85,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
     }
 
     renderHeader() {
-        const { children, collapsed, titlePrefix, panelStatus, controlledCollapse, collapsible, title, headerDetails } = this.props;
+        const { children, titlePrefix, panelStatus, controlledCollapse, collapsible, title, headerDetails } = this.props;
         const iconHelpMsg = ((panelStatus && panelStatus !== 'NONE') ? this.getHeaderIconHelpMsg() : undefined);
 
         return (

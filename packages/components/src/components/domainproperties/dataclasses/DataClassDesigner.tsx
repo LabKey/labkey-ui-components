@@ -17,7 +17,6 @@ interface Props {
 
     onChange?: (model: DataClassModel) => void
     onCancel: () => void
-    beforeFinish?: (model: DataClassModel) => void
     onComplete: (model: DataClassModel) => void
     initModel?: DataClassModel
     containerTop?: number // This sets the top of the sticky header, default is 0
@@ -83,7 +82,6 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
 
     onFinish = () => {
         const { model, visitedPanels, currentPanelIndex } = this.state;
-        const { beforeFinish } = this.props;
 
         let updatedVisitedPanels = visitedPanels;
         if (!visitedPanels.contains(currentPanelIndex)) {
@@ -96,10 +94,6 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
             this.setState(() => ({validatePanel: undefined}), () => {
                 if (this.isValid()) {
                     this.setState(() => ({submitting: true}));
-                    if (beforeFinish) {
-                        beforeFinish(model);
-                    }
-
                     console.log('TODO: THE DATA CLASS MODEL');
                 }
             });

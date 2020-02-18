@@ -1,10 +1,12 @@
 import React from 'react';
 import {ListPropertiesPanel} from "./ListPropertiesPanel";
-import {DomainDesign, DomainPanelStatus, HeaderRenderer, IAppDomainHeader, IDomainField, ListModel} from "../models";
+import {IAppDomainHeader, IDomainField, ListModel} from "../models";
 import DomainForm from "../DomainForm";
 import {Alert, Button, Col, FormControl, Row} from "react-bootstrap";
-import {saveListDesign} from "../actions";
+import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveListDesign } from "../actions";
 import {LabelHelpTip} from "../../..";
+import { List } from "immutable";
+import { SEVERITY_LEVEL_ERROR } from "../constants";
 
 // todo: give this its own file
 class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
@@ -67,18 +69,52 @@ class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
     }
 }
 
+// TODO need to define Props and State and use React.PureComponent<Props, State>
 export class ListDesignerPanels extends React.PureComponent<any, any> {
     constructor(props) {
         super(props);
 
         this.state = {
-            model: props.model,
-            validProperties: true,
-            validDomain: true,
+            model: props.initModel || ListModel.create({}),
             keyField: -1,
-            // firstState: true
+            submitting: false,
+            currentPanelIndex: 0,
+            visitedPanels: List<number>(),
+            validatePanel: undefined,
+            firstState: true
         }
     }
+
+    onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
+        const { visitedPanels, currentPanelIndex } = this.state;
+
+        let updatedVisitedPanels = visitedPanels;
+        if (!visitedPanels.contains(index)) {
+            updatedVisitedPanels = visitedPanels.push(index);
+        }
+
+        if (!collapsed) {
+            this.setState(() => ({
+                visitedPanels: updatedVisitedPanels,
+                currentPanelIndex: index,
+                firstState: false,
+                validatePanel: currentPanelIndex
+            }), callback());
+        }
+        else {
+            if (currentPanelIndex === index) {
+                this.setState(() => ({
+                    visitedPanels: updatedVisitedPanels,
+                    currentPanelIndex: undefined,
+                    firstState: false,
+                    validatePanel: currentPanelIndex
+                }), callback());
+            }
+            else {
+                callback();
+            }
+        }
+    };
 
     onPropertiesChange = (model: ListModel) => {
         console.log("onPropertiesChange, received Model", model);
@@ -101,25 +137,31 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
     };
 
     onFinish = () => {
-        // validate before submitting
-        const isValidProperties = this.state.model.hasValidProperties();
-        const isValidDomain = true; //TODO
+        const { model, visitedPanels, currentPanelIndex } = this.state;
 
-        if (isValidProperties ) {
-            this.setState({submitting: true});
-            // TODO: set state 'Submitting' and, for some reason, the model?
-
-            saveListDesign(this.state.model)
-                .then((response) => console.log("yay!:", response))
-                .catch((model) => console.log("failure:", model));
-        } else if (!isValidProperties) {
-            console.log("onFinish: invalid properties");
-            this.setState({validProperties: false})
-        } else if (!isValidDomain) {
-            console.log("onFinish: invalid domain");
-            this.setState({validDomain: false})
+        let updatedVisitedPanels = visitedPanels;
+        if (!visitedPanels.contains(currentPanelIndex)) {
+            updatedVisitedPanels = visitedPanels.push(currentPanelIndex);
         }
+
+        // This first setState forces the current expanded panel to validate its fields and display and errors
+        // the callback setState then sets that to undefined so it doesn't keep validating every render
+        this.setState((state) => ({validatePanel: state.currentPanelIndex, visitedPanels: updatedVisitedPanels}), () => {
+            this.setState(() => ({validatePanel: undefined}), () => {
+                if (this.isValid()) {
+                    this.setState(() => ({submitting: true}));
+
+                    saveListDesign(model)
+                        .then((response) => console.log("yay!:", response))
+                        .catch((model) => console.log("failure:", model));
+                }
+            });
+        });
     };
+
+    isValid(): boolean {
+        return ListModel.isValid(this.state.model);
+    }
 
     // to reviewer: this is rather ungainly. Is there a better way?
     onKeyFieldChange = (e) => {
@@ -148,63 +190,65 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
         );
     };
 
-    getPanelStatus = (index: number): DomainPanelStatus => {
-        const { currentPanelIndex, visitedPanels, firstState } = this.state;
-
-        if (index === 0 && firstState) {
-            return 'NONE';
-        }
-
-        // if (currentPanelIndex === index) {
-        //     return 'INPROGRESS';
-        // }
-        //
-        // if (visitedPanels.contains(index)) {
-        //     return 'COMPLETE';
-        // }
-
-        return 'TODO';
-    };
-
     headerRenderer = (config: IAppDomainHeader) => {
         return <SetKeyFieldName onChangeTemp={this.onKeyFieldChange} keyField={this.state.keyField} {...config}/>;
 
     };
 
     render(){
-        const {model} = this.state;
-        const {onCancel} = this.props;
-        // console.log("ListDesignerPanel", model);
+        const { onCancel, useTheme, containerTop, successBsStyle } = this.props;
+        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel } = this.state;
+
+        let errorDomains = List<string>();
+        if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
+            errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
+        }
+
+        const bottomErrorMsg = getDomainBottomErrorMessage(undefined, errorDomains, model.hasValidProperties(), visitedPanels);
 
         return(
             <>
                 <ListPropertiesPanel
-                    panelStatus={model.isNew() ? this.getPanelStatus(0) : 'COMPLETE'}
                     model={model}
-                    collapsible={true}
                     onChange={this.onPropertiesChange}
+                    controlledCollapse={true}
+                    initCollapsed={currentPanelIndex !== 0 }
+                    panelStatus={model.isNew() ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState) : "COMPLETE"}
+                    validate={validatePanel === 0}
+                    onToggle={(collapsed, callback) => {this.onTogglePanel(0, collapsed, callback);}}
+                    useTheme={useTheme}
                 />
 
                 <DomainForm
+                    key={model.domain.domainId || 0}
+                    domainIndex={0}
                     domain={model.domain}
-                    helpTopic={null}
-                    onChange={(newDomain) => {
-                        this.onDomainChange(newDomain);
-                    }}
+                    helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
+                    onChange={this.onDomainChange}
                     controlledCollapse={true}
-                    initCollapsed={true}
-                    headerTitle={"List Fields"}
-                    panelStatus={model.isNew() ? this.getPanelStatus(1) : 'COMPLETE'}
+                    initCollapsed={currentPanelIndex !== 1}
+                    validate={validatePanel === 1}
+                    panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : "COMPLETE"}
                     showInferFromFile={true}
+                    containerTop={containerTop}
+                    onToggle={(collapsed, callback) => {this.onTogglePanel(1, collapsed, callback);}}
+                    useTheme={useTheme}
+                    successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && this.headerRenderer}
                 />
+
+                {bottomErrorMsg &&
+                    <div className={'domain-form-panel'}>
+                        <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
+                    </div>
+                }
 
                 <div className='domain-form-panel domain-assay-buttons'>
                     <Button onClick={onCancel}> Cancel </Button>
                     <Button
                         className='pull-right'
-                        bsStyle='success'
-                        // disabled={this.state.submitting}
+                        bsStyle={successBsStyle || 'success'}
+                        disabled={this.state.submitting}
                         onClick={this.onFinish}
                     >
                         Save

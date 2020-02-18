@@ -19,6 +19,7 @@ import {
     IDomainPropertiesPanelContext
 } from "../DomainPropertiesPanelContext";
 
+const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
 const FORM_IDS = {
@@ -91,11 +92,11 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     }
 
     componentDidMount(): void {
-        updateDomainPanelClassList(this.props.useTheme, undefined, 'dataclass-properties-hdr');
+        updateDomainPanelClassList(this.props.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-        updateDomainPanelClassList(prevProps.useTheme, undefined, 'dataclass-properties-hdr');
+        updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
     setIsValid() {
@@ -159,9 +160,13 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
             <DomainPropertiesPanelContext.Consumer>
                 {(context) =>
                     <>
-                        <Panel className={getDomainPanelClass(context.collapsed, true, useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
+                        <Panel
+                            className={getDomainPanelClass(context.collapsed, true, useTheme)}
+                            expanded={!context.collapsed}
+                            onToggle={function(){}}
+                        >
                             <CollapsiblePanelHeader
-                                id={'dataclass-properties-hdr'}
+                                id={PROPERTIES_HEADER_ID}
                                 title={noun + ' Properties'}
                                 titlePrefix={model.name}
                                 togglePanel={(evt: any) => this.toggleLocalPanel(evt, context)}

@@ -1505,6 +1505,11 @@ export class ListModel extends Record({
         return !this.listId;
     }
 
+    static isValid(model: ListModel): boolean {
+        const errDomain = !!model.domain.domainException && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR;
+        return !errDomain && model.hasValidProperties();
+    }
+
     hasValidProperties(): boolean {
         return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
             // && //additional validation to come

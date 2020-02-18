@@ -86,6 +86,54 @@ const customStyle = {
     },
 };
 
+const DEFAULT_ROOT_PREFIX = '|root';
+const CHECK_ID_PREFIX = 'filetree-check-';
+const EMPTY_FILE_NAME = '*empty';
+const LOADING_FILE_NAME = '*loading';
+
+const Header = (props): React.ReactFragment => {
+    const { style, onSelect, node, customStyles, checked, handleCheckbox } = props;
+    const iconType = node.children ? 'folder' : 'file-text';
+
+    if (node.id.endsWith('|' + EMPTY_FILE_NAME)) {
+        return ( <div className="filetree-empty-directory">No Files Found</div> );
+    }
+
+    if (node.id.endsWith('|' + LOADING_FILE_NAME)) {
+        return (
+            <div className="filetree-empty-directory">
+                <LoadingSpinner />
+            </div>
+        )
+    }
+
+    // Do not always want to toggle directories when clicking a check box
+    const checkClick = (evt): void => {
+        evt.stopPropagation();
+    };
+
+    return (
+        <span className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node')}>
+                    <Checkbox
+                        id={CHECK_ID_PREFIX + node.id}
+                        checked={checked.contains(node.id)}
+                        onChange={handleCheckbox}
+                        onClick={checkClick}
+                    />
+                    <div style={style.base} onClick={onSelect}>
+                        <div style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}>
+                            {iconType === 'folder' ? (
+                                <FontAwesomeIcon icon={faFolder} className="filetree-folder-icon" />
+                            ) : (
+                                <FontAwesomeIcon icon={faFileAlt} className="filetree-folder-icon" />
+                            )}
+                            {node.name}
+                        </div>
+                    </div>
+                </span>
+    );
+};
+
 interface FileTreeProps {
     loadData: (directory?: string) => Promise<any>
     onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean) => void
@@ -124,13 +172,13 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                 if (Array.isArray(data)) {
                     if (data.length < 1) {
                         data = [
-                            { id: this.DEFAULT_ROOT_PREFIX + '|' + this.EMPTY_FILE_NAME, active: false, name: 'empty' },
+                            { id: DEFAULT_ROOT_PREFIX + '|' + EMPTY_FILE_NAME, active: false, name: 'empty' },
                         ];
                     }
 
                     loadedData = {
                         name: 'root',
-                        id: this.DEFAULT_ROOT_PREFIX, // Special id
+                        id: DEFAULT_ROOT_PREFIX, // Special id
                         children: data,
                         toggled: true,
                     };
@@ -147,57 +195,14 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             });
     }
 
-    private DEFAULT_ROOT_PREFIX = '|root';
-    private CHECK_ID_PREFIX = 'filetree-check-';
-    private EMPTY_FILE_NAME = '*empty';
-    private LOADING_FILE_NAME = '*loading';
-
-    Header = (props): React.ReactFragment => {
-        const { style, onSelect, node, customStyles } = props;
+    headerHandler = (props): React.ReactFragment => {
         const { checked } = this.state;
-        const iconType = node.children ? 'folder' : 'file-text';
 
-        if (node.id.endsWith('|' + this.EMPTY_FILE_NAME)) {
-            return ( <div className="filetree-empty-directory">No Files Found</div> );
-        }
-
-        if (node.id.endsWith('|' + this.LOADING_FILE_NAME)) {
-            return (
-                <div className="filetree-empty-directory">
-                    <LoadingSpinner />
-                </div>
-            )
-        }
-
-        return (
-                <span className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node')}>
-                    <Checkbox
-                        id={this.CHECK_ID_PREFIX + node.id}
-                        checked={checked.contains(node.id)}
-                        onChange={this.handleCheckbox}
-                        onClick={this.checkClick}
-                    />
-                    <div style={style.base} onClick={onSelect}>
-                        <div style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}>
-                            {iconType === 'folder' ? (
-                                <FontAwesomeIcon icon={faFolder} className="filetree-folder-icon" />
-                            ) : (
-                                <FontAwesomeIcon icon={faFileAlt} className="filetree-folder-icon" />
-                            )}
-                            {node.name}
-                        </div>
-                    </div>
-                </span>
-        );
-    };
-
-    // Do not always want to toggle directories when clicking a check box
-    checkClick = (evt): void => {
-        evt.stopPropagation();
+        return Header({...props, checked, handleCheckbox: this.handleCheckbox, });
     };
 
     getNodeIdFromId = (id: string): string => {
-        const parts = id.split(this.CHECK_ID_PREFIX);
+        const parts = id.split(CHECK_ID_PREFIX);
         if (parts.length === 2) {
             return parts[1];
         }
@@ -224,8 +229,8 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         let path = id;
 
         // strip off default root id if exists
-        if (path.startsWith(this.DEFAULT_ROOT_PREFIX)) {
-            path = path.substring(this.DEFAULT_ROOT_PREFIX.length);
+        if (path.startsWith(DEFAULT_ROOT_PREFIX)) {
+            path = path.substring(DEFAULT_ROOT_PREFIX.length);
         }
 
         return path.replace(/\|/g, '/');
@@ -242,7 +247,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
 
         const fileName = this.getNameFromId(id);
 
-        if (fileName !== this.EMPTY_FILE_NAME) {
+        if (fileName !== EMPTY_FILE_NAME) {
             onFileSelect(this.getNameFromId(id), this.getPathFromId(id), checked, isDirectory);
         }
     };
@@ -304,15 +309,15 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         this.setCheckedValue(node, checked);
     };
 
-    loadDirectory = (node: any, callback?: () => any): any => {
+    loadDirectory = (nodeId: string, callback?: () => any): any => {
         const { loadData } = this.props;
 
         this.setState(() => ({loading: true}));
-        loadData(this.getPathFromId(node.id))
+        loadData(this.getPathFromId(nodeId))
             .then(children => {
 
                 const { data } = this.state;
-                let dataNode = this.getDataNode(node.id, data);
+                let dataNode = this.getDataNode(nodeId, data);
 
                 children = children.map(child => {
                     child.id = dataNode.id + '|' + child.name; // generate Id from path
@@ -320,12 +325,12 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                 });
 
                 if (children.length < 1) {
-                    children = [{ id: dataNode.id + '|' + this.EMPTY_FILE_NAME, active: false, name: 'empty' }];
+                    children = [{ id: dataNode.id + '|' + EMPTY_FILE_NAME, active: false, name: 'empty' }];
                 }
 
                 dataNode.children = children; // This is not immutable so this is updating the data object
                 this.setState(
-                    () => ({ cursor: node, data: Object.assign({}, data), error: undefined, loading: false }),
+                    () => ({ cursor: dataNode, data: {...data}, error: undefined, loading: false }),
                     callback
                 );
             })
@@ -346,16 +351,16 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         if (node.children) {
             // load data if not already loaded
             if (node.children.length === 0) {
-                node.children = [{ id: node.id + '|' + this.LOADING_FILE_NAME }];
+                node.children = [{ id: node.id + '|' + LOADING_FILE_NAME }];
                 this.setState(
-                    () => ({ cursor: node, data: Object.assign({}, data) }),
+                    () => ({ cursor: node, data: { ...data }}),
                     () => {
-                        this.loadDirectory(node, callback);
+                        this.loadDirectory(node.id, callback);
                     }
                 );
             } else {
                 this.setState(
-                    () => ({ cursor: node, data: Object.assign({}, data), error: undefined }),
+                    () => ({ cursor: node, data: {...data}, error: undefined }),
                     callback
                 );
             }
@@ -364,10 +369,8 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
 
     render(): React.ReactNode {
         const { data, error } = this.state;
-        const Header = this.Header;
 
         return (
-            <>
             <div className="filetree-container">
                 {error ? (
                     <Alert bsStyle="danger">{error}</Alert>
@@ -375,12 +378,11 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                     <Treebeard
                         data={data}
                         onToggle={this.onToggle}
-                        decorators={{ ...decorators, Header }}
+                        decorators={{ ...decorators, Header: this.headerHandler }}
                         style={customStyle}
                     />
                 )}
             </div>
-                </>
         );
     };
 }

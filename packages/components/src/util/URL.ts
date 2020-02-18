@@ -16,7 +16,6 @@
 import {List, Map} from 'immutable';
 
 import { getBrowserHistory } from './global';
-import {ActionURL} from "@labkey/api";
 
 // This type is roughly equivalent to the Location object from this history package
 // but here we have all fields optional to make it also compatible with the window.location object
@@ -132,13 +131,12 @@ export function replaceParameters(location: Location, params: Map<string, string
 }
 
 export function resetParameters(except?: List<string>) {
-    let location = getLocation();
+    const location = getLocation();
 
-    let emptyParams = location.query.map((value: string, key: string) => {
+    const emptyParams = location.query.map((value: string, key: string) => {
         if (except && except.contains(key)) {
             return value;
-        }
-        else {
+        } else {
             return undefined;
         }
     });

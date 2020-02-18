@@ -90,20 +90,17 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             <ViewSelector model={model} />
         ) : null;
 
-        let leftContent;
+        let leftContent = (
+            <div className="col-md-6 col-sm-6 col-xs-12" />
+        );
 
         if (buttons || chart) {
             leftContent = (
                 <div className="col-md-6 col-sm-6 col-xs-12">
                     {buttonsNode}
-
                     {chart}
                 </div>
             );
-        } else {
-            leftContent = (
-                <div className="col-md-6 col-sm-6 col-xs-12" />
-            )
         }
 
         const rightContent = (

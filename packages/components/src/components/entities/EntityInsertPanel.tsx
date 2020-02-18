@@ -66,7 +66,8 @@ import { PlacementType } from "../editable/Controls";
 import {
     DATA_IMPORT_TOPIC,
     EntityDataType,
-    FileAttachmentForm, getActionErrorMessage,
+    FileAttachmentForm,
+    getActionErrorMessage,
     helpLinkNode,
     LabelHelpTip,
     withFormSteps,
@@ -77,9 +78,16 @@ import { FormStep, FormTabs } from '../forms/FormStep';
 import { FileSizeLimitProps } from "../files/models";
 import { Link } from "react-router";
 import { resolveErrorMessage } from '../../util/messaging';
-import { initEntityTypeInsert } from './actions';
+import { getEntityTypeData } from './actions';
 
 const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
+
+// metadata used for rendering the "add entity" buttons in Entity
+export interface ParentEntityMetadata {
+    nounSingular: string,
+    descriptionSingular: string,
+    descriptionPlural: string
+}
 
 class EntityGridLoader implements IGridLoader {
 
@@ -112,7 +120,7 @@ interface OwnProps {
     nounSingular: string
     nounPlural: string
     entityDataType: EntityDataType
-    parentSchemaNames?: List<string>
+    parentDataTypes?: Map<EntityDataType, ParentEntityMetadata>,
     importHelpLinkNode: React.ReactNode
 }
 
@@ -183,8 +191,16 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }
     }
 
+    allowParents() {
+        return this.props.parentDataTypes && !this.props.parentDataTypes.isEmpty();
+    }
+
     isSampleEntity() {
         return this.props.entityDataType === EntityDataType.Sample;
+    }
+
+    isRelevantEntityType(entityType: EntityDataType) {
+        return this.props.entityDataType === entityType || (this.props.parentDataTypes && this.props.parentDataTypes.has(entityType));
     }
 
     getTabs() : Array<string> {
@@ -222,12 +238,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         if (insertModel
             && insertModel.getTargetEntityTypeName() === queryParams.target
             && insertModel.selectionKey === queryParams.selectionKey
-            && (insertModel.originalParents === queryParams.parents || !props.parentSchemaNames)
+            && (insertModel.originalParents === queryParams.parents || !this.allowParents())
         )
             return;
 
         insertModel = new EntityIdCreationModel({
-            originalParents: props.parentSchemaNames ? queryParams.parents : undefined,
+            originalParents: this.allowParents() ? queryParams.parents : undefined,
             initialEntityType: queryParams.target,
             selectionKey: queryParams.selectionKey,
             entityCount: 0,
@@ -235,10 +251,15 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         });
 
         const isSampleInsert = this.isSampleEntity();
-        const currentSchema = isSampleInsert ? SCHEMAS.EXP_TABLES.SAMPLE_SETS : SCHEMAS.EXP_TABLES.DATA_CLASSES;
-
-        // TODO for each of the possible parent types, get the options and set the parent data if the model's selection key matches
-        initEntityTypeInsert(insertModel, currentSchema, isSampleInsert)
+        let schemaQueries = Map<string, SchemaQuery>();
+        let currentSchema = isSampleInsert ? SCHEMAS.EXP_TABLES.SAMPLE_SETS :  SCHEMAS.EXP_TABLES.DATA_CLASSES;
+        if (this.isRelevantEntityType(EntityDataType.Sample)) {
+            schemaQueries = schemaQueries.set("samples", SCHEMAS.EXP_TABLES.SAMPLE_SETS);
+        }
+        if (this.isRelevantEntityType(EntityDataType.DataClass)) {
+            schemaQueries = schemaQueries.set("exp.data", SCHEMAS.EXP_TABLES.DATA_CLASSES);
+        }
+        getEntityTypeData(insertModel, schemaQueries, currentSchema.queryName, isSampleInsert)
             .then((partialModel) => {
                 const updatedModel = insertModel.merge(partialModel) as EntityIdCreationModel;
                 this.gridInit(updatedModel);
@@ -527,59 +548,92 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         });
     }
 
-    renderEntityTypeSelections(queryName: string, noun: string, descriptionSingular: string, descriptionPlural: string) {
+    renderParentTypes(entityDataType: EntityDataType) {
         const { insertModel } = this.state;
+        const queryName = entityDataType;
+        const entityParents = insertModel.entityParents.get(queryName);
+        const parentMetadata = this.props.parentDataTypes.get(entityDataType);
 
-        if (insertModel) {
-            const { isInit, targetEntityType } = insertModel;
-            const parentOptions = insertModel.parentOptions.get(queryName);
-            const entityParents = insertModel.entityParents.get(queryName);
-
-            if (isInit && targetEntityType) {
+        return (
+            entityParents.map((parent) => {
+                const { index, key, query } = parent;
                 return (
-                    <>
-                        {entityParents.map((parent) => {
-                            const { index, key, query } = parent;
-                            return (
-                                <div className="form-group row" key={key}>
-                                    <SelectInput
-                                        formsy={false}
-                                        containerClass=''
-                                        inputClass="col-sm-5"
-                                        label={noun + " " + index + " Type"}
-                                        labelClass="col-sm-3 sample-insert--parent-label"
-                                        name={"parent-re-select-" + index}
-                                        onChange={this.changeParent.bind(this, index, queryName)}
-                                        options={insertModel.getParentOptions(query, SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName)}
-                                        value={query}
-                                    />
+                    <div className="form-group row" key={key}>
+                        <SelectInput
+                            formsy={false}
+                            containerClass=''
+                            inputClass="col-sm-5"
+                            label={parentMetadata.nounSingular + " " + index + " Type"}
+                            labelClass="col-sm-3 sample-insert--parent-label"
+                            name={"parent-re-select-" + index}
+                            onChange={this.changeParent.bind(this, index, queryName)}
+                            options={insertModel.getParentOptions(query, queryName)}
+                            value={query}
+                        />
 
-                                    <RemoveEntityButton
-                                        labelClass={'sample-insert--remove-parent'}
-                                        entity={noun}
-                                        index={index}
-                                        onClick={this.removeParent.bind(this, index, queryName)}/>
-                                </div>
-                            )
-                        }).toArray()}
-                        {parentOptions.size > 0  ? parentOptions.size > entityParents.size ?
-                            <div className="sample-insert--header">
-                                <AddEntityButton
-                                    entity={noun}
-                                    onClick={this.addParent.bind(this, queryName)}/>
-                            </div> :
-                            <div className="sample-insert--header">
-                                Only {parentOptions.size} {parentOptions.size === 1 ? descriptionSingular : descriptionPlural} available.
-                            </div>
-                            : null}
-                    </>
-                );
-            }
+                        <RemoveEntityButton
+                            labelClass={'sample-insert--remove-parent'}
+                            entity={parentMetadata.nounSingular}
+                            index={index}
+                            onClick={this.removeParent.bind(this, index, queryName)}/>
+                    </div>
+                )
+            }).toArray()
+        )
+    }
+
+    renderAddEntityButton(entityDataType: EntityDataType) {
+        const { insertModel } = this.state;
+        const queryName = entityDataType;
+        const parentMetadata = this.props.parentDataTypes.get(entityDataType);
+        const parentOptions = insertModel.parentOptions.get(queryName);
+        const entityParents = insertModel.entityParents.get(queryName);
+        if (parentOptions.size === 0)
+            return null;
+        else if (parentOptions.size > entityParents.size) {
+            return (
+                <AddEntityButton
+                    containerClass={'entity-insert--entity-add-button'}
+                    key={'add-entity-' + entityDataType}
+                    entity={parentMetadata.nounSingular}
+                    onClick={this.addParent.bind(this, queryName)}
+                />
+            )
+        }
+        else {
+            return (
+                <div key={'add-entity-' + entityDataType} className={'entity-insert--entity-add-text'}>
+                    Only {parentOptions.size} {parentOptions.size === 1 ? parentMetadata.descriptionSingular : parentMetadata.descriptionPlural} available.
+                </div>
+            )
         }
     }
 
-    renderParentSelections() {
-        return this.renderEntityTypeSelections("SampleSets", "Parent", "parent sample type", "parent sample types");
+    renderParentTypesAndButtons() {
+        const { insertModel } = this.state;
+        const { parentDataTypes } = this.props;
+
+        if (insertModel) {
+            const { isInit, targetEntityType } = insertModel;
+
+            if (isInit && targetEntityType && parentDataTypes) {
+                return (
+                    <>
+                        {parentDataTypes.keySeq()
+                            .map((dataType) => {
+                                return this.renderParentTypes(dataType);
+                            })
+                        }
+                        <div className={'sample-insert--header'}>
+                            {parentDataTypes.keySeq()
+                                .map((dataType) => {
+                                    return this.renderAddEntityButton(dataType);
+                                })}
+                        </div>
+                    </>
+                )
+            }
+        }
     }
 
     renderHeader(isGrid: boolean) {
@@ -611,7 +665,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                         value={insertModel && insertModel.hasTargetEntityType() ? insertModel.targetEntityType.label : undefined}
                     />
                 )}
-                {insertModel.isError ? this.renderError() : (isGrid && insertModel.hasTargetEntityType() ? this.renderParentSelections() : '')}
+                {insertModel.isError ? this.renderError() : (isGrid && insertModel.hasTargetEntityType() ? this.renderParentTypesAndButtons() : '')}
             </>
         )
     }
@@ -1051,7 +1105,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                                 <FormTabs tabs={this.getTabs()} onTabChange={this.onTabChange}/>
                             </div>
                             {editEntityTypeDetailsLink && canEditEntityTypeDetails ?
-                                <div className={'col-sm-5'}><Link className={'pull-right sample-insert--link'} to={editEntityTypeDetailsLink.toString()}>Edit {this.capNounSingular} Type Details</Link></div>
+                                <div className={'col-sm-5'}><Link className={'pull-right sample-insert--link'} to={editEntityTypeDetailsLink.toString()}>Edit {this.capTypeTextSingular} Details</Link></div>
                                 : undefined}
                         </div>
                         <div className="row">

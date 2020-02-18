@@ -18,21 +18,23 @@ import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { Location } from '../util/URL';
 
-import { EntityInsertPanel } from '../components/entities/EntityInsertPanel';
+import { EntityInsertPanel, ParentEntityMetadata } from '../components/entities/EntityInsertPanel';
 
 import './stories.scss';
 import { EntityDataType } from '..';
-import { List } from 'immutable';
+import { Map } from 'immutable';
 
 storiesOf('EntityInsertPanel', module)
     .addDecorator(withKnobs)
-    .add("No target sample set", () => {
-        return <EntityInsertPanel
-            entityDataType={EntityDataType.Sample}
-            canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
-            nounSingular={text("Singular noun", "sample")}
-            nounPlural={text("Plural noun", "samples")}
-        />;
+    .add("No target sample set no parent data types", () => {
+        return (
+            <EntityInsertPanel
+                entityDataType={EntityDataType.Sample}
+                canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
+                nounSingular={text("Singular noun", "sample")}
+                nounPlural={text("Plural noun", "samples")}
+            />
+        );
 
     })
     .add("Target sample set without parent selections", () => {
@@ -45,19 +47,37 @@ storiesOf('EntityInsertPanel', module)
             entityDataType={EntityDataType.Sample}
             canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
             location={location}
-            parentSchemaNames={List<string>(['samples'])}
+            parentDataTypes={Map<EntityDataType, ParentEntityMetadata>({
+                [EntityDataType.Sample]: {
+                    nounSingular: "Parent",
+                    descriptionSingular: "parent sample type",
+                    descriptionPlural: "parent sample types"
+                }
+            })}
         />;
     })
-    // TODO Somehow not all the queries or data or something is right for the use of this selectionKey.
-    // .add("Target sample set with parent selection", () => {
-    //     const location : Location = {
-    //         query: {
-    //             target: "Sample Set 2",
-    //             selectionKey:"sample-set-name%20expression%20set|samples/name%20expression%20set"
-    //         }
-    //     };
-    //     return <SampleInsertPage
-    //         location={location}
-    //     />;
-    // })
+    .add("Multiple parent type options", () => {
+        const location : Location = {
+            query: {
+                target: "Sample Set 2"
+            }
+        };
+        return <EntityInsertPanel
+            entityDataType={EntityDataType.Sample}
+            canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
+            location={location}
+            parentDataTypes={Map<EntityDataType, ParentEntityMetadata>({
+                [EntityDataType.Sample]: {
+                    nounSingular: "Parent",
+                    descriptionSingular: "parent sample type",
+                    descriptionPlural: "parent sample types"
+                },
+                [EntityDataType.DataClass]: {
+                    nounSingular: "Source",
+                    descriptionSingular: "source type",
+                    descriptionPlural: "source types"
+                }
+            })}
+        />;
+    })
 ;

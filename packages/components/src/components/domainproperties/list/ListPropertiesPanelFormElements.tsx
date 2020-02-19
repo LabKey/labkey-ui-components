@@ -1,75 +1,9 @@
 import React from "react";
-import {Button, Col, FormControl, Panel, Row, Modal, FormGroup, Radio} from "react-bootstrap";
-import classNames from "classnames";
-import {faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare} from "@fortawesome/free-solid-svg-icons";
+import {Col, FormControl, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckSquare} from "@fortawesome/free-solid-svg-icons/faCheckSquare";
 import {faSquare} from "@fortawesome/free-regular-svg-icons/faSquare";
 import {LabelHelpTip} from "../../..";
-
-class ListPropertiesHeader extends React.PureComponent<any, any> {
-    render(){
-        const { panelStatus, controlledCollapse, collapsible, collapsed, model, validProperties } = this.props;
-        // console.log("ListPropertiesHeader", this.props);
-
-        const isComplete = validProperties && panelStatus === 'COMPLETE';
-
-        let headerIconClass = classNames('domain-panel-status-icon', {
-            'domain-panel-list-header-expanded': !collapsed,
-            'domain-panel-status-icon-green': isComplete && collapsed,
-            'domain-panel-status-icon-blue': !isComplete && collapsed
-        });
-
-        let statusIcon = (!validProperties || panelStatus === 'TODO') ? faExclamationCircle : faCheckCircle;
-        return(
-            <>
-                <span className={headerIconClass}>
-                    <FontAwesomeIcon icon={statusIcon}/>
-                </span>
-
-                <span className={'domain-panel-title'}> {model.name && model.name + ' -'} List Properties </span>
-
-                {(controlledCollapse || collapsible) &&
-                <span className='pull-right'>
-                    <FontAwesomeIcon
-                        size={'lg'}
-                        icon={collapsed ? faPlusSquare: faMinusSquare}
-                        className={classNames({'domain-form-expand-btn': collapsed, 'domain-form-collapse-btn': !collapsed})}
-                    />
-                </span>
-                }
-            </>
-        );
-    }
-}
-
-export class Header extends React.PureComponent<any, any> {
-    render(){
-        const {togglePanel, collapsible, collapsed, panelStatus, model, validProperties} = this.props;
-
-        return(
-            <Panel.Heading
-                onClick={togglePanel}
-                className={classNames('domain-panel-header', {
-                    'domain-heading-collapsible': collapsible,
-                    'domain-panel-header-expanded': !collapsed,
-                    'domain-panel-header-collapsed': collapsed,
-                })}
-                style={{backgroundColor: collapsed ? null :'#2980b9'}}
-            >
-                {panelStatus && panelStatus !== 'NONE' &&
-                    <ListPropertiesHeader
-                        panelStatus={panelStatus}
-                        validProperties={validProperties}
-                        collapsed={collapsed}
-                        collapsible={true} //todo
-                        model={model}
-                    />
-                }
-            </Panel.Heading>
-        );
-    }
-}
 
 class BasicPropertiesTitle extends React.PureComponent<any, any> {
     render(){

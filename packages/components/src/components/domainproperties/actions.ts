@@ -708,10 +708,10 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
 export function saveListDesign(model: ListModel): Promise<ListModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('property', 'SaveDomain.api'), // To update
+            url: buildURL('property', 'saveDomain.api'),
             jsonData: ListModel.serialize(model),
             success: Utils.getCallbackWrapper((response) => {
-                resolve(ListModel.create(response.data)); // I guess Binal gives me back my ListModel?
+                console.log("existingList save - success")
             }),
             failure: Utils.getCallbackWrapper((error) => {
                 // todo
@@ -735,11 +735,30 @@ export function saveListDesign(model: ListModel): Promise<ListModel> {
     });
 }
 
+export function newListDesign(model: ListModel): Promise<ListModel> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('property', 'createDomain.api'),
+            method: 'POST',
+            jsonData: ListModel.serialize(model),
+            success: Utils.getCallbackWrapper((response) => {
+                console.log("newList save - success");
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                // todo
+                // let badModel = model;
+                //
+            }, this, false)
+        });
+    });
+}
+
 
 export function getValidPublishTargets(): Promise<List<Container>> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('assay', 'getValidPublishTargets.api'),
+            method: 'POST',
             success: Utils.getCallbackWrapper((response) => {
                 resolve(List<Container>(response.containers.map((container) => new Container(container))));
             }),

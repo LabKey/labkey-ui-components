@@ -75,6 +75,12 @@ class FilePreview extends React.PureComponent<any, any> {
     render() {
         const {filePreviewData} = this.props;
         const {importData} = this.state;
+
+        // TODO RP: perhaps this is a little hacky
+        if (filePreviewData == null) {
+            return
+        }
+
         const data = convertRowDataIntoPreviewData(filePreviewData.get('data'), 4);
 
         return(

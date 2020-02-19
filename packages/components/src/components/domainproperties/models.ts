@@ -1495,7 +1495,6 @@ export class ListModel extends Record({
     }
 
     static serialize(model: ListModel): any {
-        // TODO: remove unrecognized fields from model before converting to json
         let domain = DomainDesign.serialize(model.domain);
         let options = model.merge({domain}).toJS();
 
@@ -1504,7 +1503,7 @@ export class ListModel extends Record({
 
 
         console.log({domain, options});
-        return {domain, options};
+        return {domainDesign: domain, options, kind: 'IntList' };
         // return model.merge({domain}).toJS();
     }
 

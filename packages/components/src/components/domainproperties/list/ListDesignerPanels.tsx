@@ -3,7 +3,13 @@ import {ListPropertiesPanel} from "./ListPropertiesPanel";
 import {IAppDomainHeader, IDomainField, ListModel} from "../models";
 import DomainForm from "../DomainForm";
 import {Alert, Button, Col, FormControl, Row} from "react-bootstrap";
-import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveListDesign } from "../actions";
+import {
+    getDomainBottomErrorMessage,
+    getDomainHeaderName,
+    getDomainPanelStatus,
+    newListDesign,
+    saveListDesign
+} from "../actions";
 import {LabelHelpTip} from "../../..";
 import { List } from "immutable";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
@@ -152,9 +158,15 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
                 if (this.isValid()) {
                     this.setState(() => ({submitting: true}));
 
-                    saveListDesign(model)
-                        .then((response) => console.log("yay!:", response))
-                        .catch((model) => console.log("failure:", model));
+                    if (model.isNew()) {
+                        newListDesign(model)
+                            .then((response) => console.log("yay!:", response))
+                            .catch((model) => console.log("failure:", model));
+                    } else {
+                        saveListDesign(model)
+                            .then((response) => console.log("yay!:", response))
+                            .catch((model) => console.log("failure:", model));
+                    }
                 }
             });
         });

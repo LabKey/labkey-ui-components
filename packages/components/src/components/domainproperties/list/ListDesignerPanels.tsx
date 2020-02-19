@@ -75,7 +75,8 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
         super(props);
 
         this.state = {
-            model: props.initModel || ListModel.create({}),
+            // model: props.initModel || ListModel.create({}),
+            model: props.model,
             keyField: -1,
             submitting: false,
             currentPanelIndex: 0,

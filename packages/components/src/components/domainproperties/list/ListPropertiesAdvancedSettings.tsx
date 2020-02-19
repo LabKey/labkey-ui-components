@@ -1,25 +1,35 @@
 import React from "react";
 import {Button, Col, FormControl, FormGroup, Modal, Radio, Row} from "react-bootstrap";
-import {LabelHelpTip} from "../../..";
+import {LabelHelpTip, SelectInput} from "../../..";
 import {faAngleRight, faAngleDown} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {CheckBox} from "./ListPropertiesPanelFormElements"
 import {Record} from "immutable";
 
+// TODO Must finalize
 class DisplayTitle extends React.PureComponent<any, any> {
     render() {
+        const fields = this.props.model.domain.fields;
+        console.log("DisplayTitle", fields);
+        console.log("length", fields.size);
+        const disabled = !(fields.size > 0);
+        let placeholder = disabled ? 'No fields have been defined yet' : 'Auto';
+
         return(
-            <>
-                <FormControl
-                    className='list__advanced-settings-modal__display-title-input'
-                    id='titleColumn'
-                    type="text"
-                    placeholder={'No fields have been defined yet'}
-                    value={''}
-                    onChange={() => {}}
-                    disabled={false}
+            <div className='list__advanced-settings-modal__display-title'>
+                <SelectInput
+                    name={'titleColumn'}
+                    options={fields.toArray()}
+                    placeholder={placeholder}
+                    inputClass={''}
+                    valueKey={'value'} //uh
+                    labelKey={'name'}
+                    formsy={false}
+                    multiple={false}
+                    required={false}
+                    disabled={disabled}
                 />
-            </>
+            </div>
         );
     }
 }
@@ -437,6 +447,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
         const {modalOpen, discussionSetting, fileAttachmentIndex } = this.state;
         const {entireListIndex, entireListTitleSetting, entireListTitleTemplate, entireListIndexSetting, entireListBodySetting} = this.state;
         const {eachItemIndex, eachItemTitleSetting, eachItemTitleTemplate, eachItemBodySetting} = this.state;
+        const {title, model} = this.props;
 
         const entireListIndexSettings = {
             entireListIndex,
@@ -459,7 +470,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
             <Row>
                 <Col xs={12}>
                     <Button style={{float: "right"}} onClick={() => this.toggleModal(true)}>
-                        {this.props.title}
+                        {title}
                     </Button>
 
                     <Modal show={modalOpen} onHide={() => this.toggleModal(false)}>
@@ -471,7 +482,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
                             <SettingsContainer
                                 title='Field used for display title:'
                                 tipBody='Text to be determined'
-                                fieldComponent={<DisplayTitle/>}
+                                fieldComponent={<DisplayTitle model={model}/>}
                             />
 
                             <SettingsContainer

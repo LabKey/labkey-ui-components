@@ -139,6 +139,8 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         let { panelStatus, collapsible, controlledCollapse, model, useTheme } = this.props;
         let { isValid } = this.state;
 
+        console.log("PROPERTIESPANEL", model);
+
         return(
             <DomainPropertiesPanelContext.Consumer>
                 {(context) =>

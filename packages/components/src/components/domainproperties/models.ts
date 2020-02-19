@@ -1496,9 +1496,16 @@ export class ListModel extends Record({
 
     static serialize(model: ListModel): any {
         // TODO: remove unrecognized fields from model before converting to json
-        const domain = DomainDesign.serialize(model.domain);
+        let domain = DomainDesign.serialize(model.domain);
+        let options = model.merge({domain}).toJS();
 
-        return model.merge({domain}).toJS();
+        delete options.domain;
+
+
+
+        console.log({domain, options});
+        return {domain, options};
+        // return model.merge({domain}).toJS();
     }
 
     isNew(): boolean {
@@ -1514,5 +1521,9 @@ export class ListModel extends Record({
         return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
             // && //additional validation to come
         )
+    }
+
+    hasValidDomain(): boolean {
+        return false;
     }
 }

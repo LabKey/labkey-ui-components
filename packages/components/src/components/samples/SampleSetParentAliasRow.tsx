@@ -107,7 +107,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                 </Col>
                 <Col>
                     <RemoveEntityButton
-                        labelClass={'sample-insert--remove-parent'}
+                        labelClass={'entity-insert--remove-parent'}
                         onClick={this.removeParentAlias}/>
                 </Col>
             </Row>

@@ -144,12 +144,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         importHelpLinkNode: helpLinkNode(IMPORT_SAMPLE_SETS_TOPIC, "Import Sample Types")
     };
 
-    private capNounSingular;
-    private capNounPlural;
-    private capIdsText;
-    private capTypeTextSingular;
-    private typeTextSingular;
-    private typeTextPlural;
+    private readonly capNounSingular;
+    private readonly capNounPlural;
+    private readonly capIdsText;
+    private readonly capTypeTextSingular;
+    private readonly typeTextSingular;
+    private readonly typeTextPlural;
 
     constructor(props: any) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
@@ -266,7 +266,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                 this.gridInit(updatedModel);
             })
             .catch((reason) => {
-                this.setState(() => ({error: getActionErrorMessage('There was a problem initializing the sample type create page.', 'sample types')}));
+                this.setState(() => ({error: getActionErrorMessage('There was a problem initializing the data for import.', this.typeTextPlural)}));
             });
     }
 
@@ -567,7 +567,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                             containerClass=''
                             inputClass="col-sm-5"
                             label={parentMetadata.nounSingular + " " + index + " Type"}
-                            labelClass="col-sm-3 sample-insert--parent-label"
+                            labelClass="col-sm-3 entity-insert--parent-label"
                             name={"parent-re-select-" + index}
                             onChange={this.changeParent.bind(this, index, queryName)}
                             options={insertModel.getParentOptions(query, queryName)}
@@ -575,7 +575,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                         />
 
                         <RemoveEntityButton
-                            labelClass={'sample-insert--remove-parent'}
+                            labelClass={'entity-insert--remove-parent'}
                             entity={parentMetadata.nounSingular}
                             index={index}
                             onClick={this.removeParent.bind(this, index, queryName)}
@@ -625,7 +625,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                                 return this.renderParentTypes(dataType);
                             })
                         }
-                        <div className={'sample-insert--header'}>
+                        <div className={'entity-insert--header'}>
                             {parentDataTypes.keySeq()
                                 .map((dataType) => {
                                     return this.renderAddEntityButton(dataType);
@@ -647,7 +647,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
         return (
             <>
-                {isGrid && <div className="sample-insert--header">
+                {isGrid && <div className="entity-insert--header">
                     <p>
                         Generate unique {this.props.nounPlural} individually or in bulk using the bulk insert option.
                     </p>
@@ -657,7 +657,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                         formsy={false}
                         inputClass="col-sm-5"
                         label={this.capTypeTextSingular}
-                        labelClass="col-sm-3 col-xs-12 sample-insert--parent-label"
+                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
                         name="targetEntityType"
                         placeholder={'Select a ' + this.capTypeTextSingular + '...'}
                         onChange={this.changeTargetEntityType}
@@ -1106,7 +1106,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                                 <FormTabs tabs={this.getTabs()} onTabChange={this.onTabChange}/>
                             </div>
                             {editEntityTypeDetailsLink && canEditEntityTypeDetails ?
-                                <div className={'col-sm-5'}><Link className={'pull-right sample-insert--link'} to={editEntityTypeDetailsLink.toString()}>Edit {this.capTypeTextSingular} Details</Link></div>
+                                <div className={'col-sm-5'}><Link className={'pull-right entity-insert--link'} to={editEntityTypeDetailsLink.toString()}>Edit {this.capTypeTextSingular} Details</Link></div>
                                 : undefined}
                         </div>
                         <div className="row">

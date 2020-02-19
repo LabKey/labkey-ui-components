@@ -10,7 +10,8 @@ import { DataClassPropertiesPanel } from "./DataClassPropertiesPanel";
 import { getDomainBottomErrorMessage, getDomainPanelStatus, getDomainHeaderName } from "../actions";
 
 interface Props {
-    noun?: string
+    nounSingular?: string
+    nounPlural?: string
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
     headerText?: string
@@ -127,7 +128,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { onCancel, appPropertiesOnly, containerTop, useTheme, noun, nameExpressionInfoUrl, nameExpressionPlaceholder, headerText, successBsStyle } = this.props;
+        const { onCancel, appPropertiesOnly, containerTop, useTheme, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder, headerText, successBsStyle } = this.props;
         const { model, currentPanelIndex, validatePanel, visitedPanels, firstState } = this.state;
 
         let errorDomains = List<string>();
@@ -140,7 +141,8 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
         return (
             <>
                 <DataClassPropertiesPanel
-                    noun={noun}
+                    nounSingular={nounSingular}
+                    nounPlural={nounPlural}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     headerText={headerText}

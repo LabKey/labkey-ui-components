@@ -467,52 +467,50 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
 
         // For reviewer: would it be overzealous to pull this into separate <AdvancedSettingsButton/> and <AdvancedSettingsModal/> components?
         return(
-            <Row>
-                <Col xs={12}>
-                    <Button style={{float: "right"}} onClick={() => this.toggleModal(true)}>
-                        {title}
-                    </Button>
+            <Col xs={12} md={2}>
+                <Button className={'domain-field-float-right'} onClick={() => this.toggleModal(true)}>
+                    {title}
+                </Button>
 
-                    <Modal show={modalOpen} onHide={() => this.toggleModal(false)}>
-                        <Modal.Header>
-                            <Modal.Title> Advanced List Settings </Modal.Title>
-                        </Modal.Header>
+                <Modal show={modalOpen} onHide={() => this.toggleModal(false)}>
+                    <Modal.Header>
+                        <Modal.Title> Advanced List Settings </Modal.Title>
+                    </Modal.Header>
 
-                        <Modal.Body>
-                            <SettingsContainer
-                                title='Field used for display title:'
-                                tipBody='Text to be determined'
-                                fieldComponent={<DisplayTitle model={model}/>}
-                            />
+                    <Modal.Body>
+                        <SettingsContainer
+                            title='Field used for display title:'
+                            tipBody='Text to be determined'
+                            fieldComponent={<DisplayTitle model={model}/>}
+                        />
 
-                            <SettingsContainer
-                                title='Discussion links'
-                                tipBody='Text to be determined'
-                                fieldComponent={<DiscussionLinks onRadioChange={this.onRadioChange} discussionSetting={discussionSetting}/>}
-                            />
+                        <SettingsContainer
+                            title='Discussion links'
+                            tipBody='Text to be determined'
+                            fieldComponent={<DiscussionLinks onRadioChange={this.onRadioChange} discussionSetting={discussionSetting}/>}
+                        />
 
-                            <SettingsContainer
-                                title='Search indexing options'
-                                tipBody='Text to be determined'
-                                fieldComponent={
-                                    <SearchIndexing
-                                        onRadioChange={this.onRadioChange}
-                                        onCheckboxChange={this.onCheckboxChange}
-                                        onInputChange={this.onInputChange}
-                                        entireListIndexSettings={entireListIndexSettings}
-                                        eachItemIndexSettings={eachItemIndexSettings}
-                                        fileAttachmentIndex={fileAttachmentIndex}
-                                    />}
-                            />
+                        <SettingsContainer
+                            title='Search indexing options'
+                            tipBody='Text to be determined'
+                            fieldComponent={
+                                <SearchIndexing
+                                    onRadioChange={this.onRadioChange}
+                                    onCheckboxChange={this.onCheckboxChange}
+                                    onInputChange={this.onInputChange}
+                                    entireListIndexSettings={entireListIndexSettings}
+                                    eachItemIndexSettings={eachItemIndexSettings}
+                                    fileAttachmentIndex={fileAttachmentIndex}
+                                />}
+                        />
 
-                            <AdvancedSettingsModalBottom
-                                toggleModal={this.toggleModal}
-                                saveChanges={this.applyChanges}
-                            />
-                        </Modal.Body>
-                    </Modal>
-                </Col>
-            </Row>
+                        <AdvancedSettingsModalBottom
+                            toggleModal={this.toggleModal}
+                            saveChanges={this.applyChanges}
+                        />
+                    </Modal.Body>
+                </Modal>
+            </Col>
         );
     }
 }

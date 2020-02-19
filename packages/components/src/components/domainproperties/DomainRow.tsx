@@ -155,17 +155,12 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         }
 
         if (field.isPrimaryKey) {
-            if (details.length > 0) {
-                details.push(period);
-            }
-            details.push('Primary Key');
+            details.push(period + 'Primary Key');
+            period = '. ';
         }
 
         if (field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
             details.push(period + 'Locked');
-        }
-
-        if (details.length > 0) {
             period = '. ';
         }
 

@@ -819,13 +819,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme } = this.props;
-        const { collapsed } = this.state;
+        const { collapsed, confirmDeleteRowIndex, showFilePreview, filePreviewData } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
 
         return (
             <>
-                {this.state.confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
+                {confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
                 <Panel className={getDomainPanelClass(collapsed, controlledCollapse, useTheme)} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
                         <CollapsiblePanelHeader
@@ -850,7 +850,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             : <Alert>Invalid domain design.</Alert>
                         }
 
-                        {this.state.showFilePreview && <FilePreview filePreviewData={this.state.filePreviewData}/>}
+                        {showFilePreview && filePreviewData && <FilePreview filePreviewData={filePreviewData}/>}
                     </Panel.Body>
 
                 </Panel>

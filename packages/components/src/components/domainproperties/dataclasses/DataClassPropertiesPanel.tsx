@@ -27,7 +27,8 @@ const FORM_IDS = {
 };
 
 interface Props {
-    noun?: string
+    nounSingular?: string
+    nounPlural?: string
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
     headerText?: string
@@ -41,7 +42,6 @@ interface Props {
     validate?: boolean
     useTheme?: boolean
     panelStatus?: DomainPanelStatus
-    helpTopic?: string
     onToggle?: (collapsed: boolean, callback: () => any) => any
 }
 
@@ -69,11 +69,11 @@ export class DataClassPropertiesPanel extends React.PureComponent<Props> {
 class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
 
     static defaultProps = {
-        noun: 'Data Class',
+        nounSingular: 'Data Class',
+        nounPlural: 'Data Classes',
         appPropertiesOnly: false,
         initCollapsed: false,
-        validate: false,
-        helpTopic: DEFINE_DATA_CLASS_TOPIC
+        validate: false
     };
 
     constructor(props) {
@@ -122,14 +122,14 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     };
 
     renderSampleSetSelect() {
-        const { model, noun } = this.props;
+        const { model, nounSingular } = this.props;
 
         return (
             <Row>
                 <Col xs={3}>
                     <LabelOverlay
                         label={'Sample Set'}
-                        description={`The default Sample Set where new samples will be created for this ${noun.toLowerCase()}.`}
+                        description={`The default Sample Set where new samples will be created for this ${nounSingular.toLowerCase()}.`}
                         canMouseOverTooltip={true}
                     />
                 </Col>
@@ -153,7 +153,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     }
 
     render() {
-        const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, noun, nameExpressionInfoUrl, nameExpressionPlaceholder, helpTopic } = this.props;
+        const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
         const { isValid } = this.state;
 
         return (
@@ -167,7 +167,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                         >
                             <CollapsiblePanelHeader
                                 id={PROPERTIES_HEADER_ID}
-                                title={noun + ' Properties'}
+                                title={nounSingular + ' Properties'}
                                 titlePrefix={model.name}
                                 togglePanel={(evt: any) => this.toggleLocalPanel(evt, context)}
                                 collapsed={context.collapsed}
@@ -184,11 +184,11 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                                         {headerText && <div className={'entity-form--headerhelp'}>{headerText}</div>}
                                     </Col>
                                     <Col xs={3}>
-                                        {helpTopic && <HelpTopicURL helpTopic={helpTopic}/>}
+                                        <HelpTopicURL helpTopic={DEFINE_DATA_CLASS_TOPIC} nounPlural={nounPlural}/>
                                     </Col>
                                 </Row>
                                 <EntityDetailsForm
-                                    noun={noun}
+                                    noun={nounSingular}
                                     onFormChange={this.onFormChange}
                                     data={model}
                                     nameExpressionInfoUrl={nameExpressionInfoUrl}

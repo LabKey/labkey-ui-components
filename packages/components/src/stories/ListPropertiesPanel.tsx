@@ -831,20 +831,16 @@ class WrappedNew extends React.Component<any, any> {
 //     })
 // ;
 
-storiesOf("Advanced Settings", module)
+storiesOf("ListDesignerPanels", module)
     .addDecorator(withKnobs)
     .add("with existing list", () => {
         return (
             <Wrapped data={json}/>
         )
     })
-;
-
-storiesOf("Advanced Settings", module)
-    .addDecorator(withKnobs)
     .add("with new list", () => {
         return (
             <WrappedNew data={defaultSettings}/>
         )
-    })
+    });
 ;

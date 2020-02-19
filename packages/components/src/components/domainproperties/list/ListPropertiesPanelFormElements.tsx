@@ -8,11 +8,9 @@ import {LabelHelpTip} from "../../..";
 class BasicPropertiesTitle extends React.PureComponent<any, any> {
     render(){
         return(
-            <Row>
-                <Col xs={9} >
-                    <b>{this.props.title}</b>
-                </Col>
-            </Row>
+            <div className={'domain-field-section-heading'}>
+                {this.props.title}
+            </div>
         );
     }
 }
@@ -76,7 +74,7 @@ export class BasicPropertiesFields extends React.PureComponent<any, any> {
     render() {
         const {model, onInputChange} = this.props;
         return(
-            <Col xs={12} lg={6}>
+            <Col xs={12} md={7}>
                 <BasicPropertiesTitle title={"Basic Properties"}/>
 
                 <NameInput
@@ -127,32 +125,31 @@ class CheckBoxRow extends React.PureComponent<any, any> {
 }
 
 class AllowableActionContainer extends React.PureComponent<any, any> {
-    render(){
-        let {onCheckBoxChange} = this.props;
-        let {allowDelete, allowUpload, allowExport} = this.props.model;
+    render() {
+        const {onCheckBoxChange} = this.props;
+        const {allowDelete, allowUpload, allowExport} = this.props.model;
+
         return(
-            <Row style={{marginTop:"10px"}}>
-                <Col xs={3} lg={4}>
-                    <CheckBoxRow
-                        text={"Delete"}
-                        checked={allowDelete}
-                        onCheckBoxChange={onCheckBoxChange}
-                        name="allowDelete"
-                    />
-                    <CheckBoxRow
-                        text={"Upload"}
-                        checked={allowUpload}
-                        onCheckBoxChange={onCheckBoxChange}
-                        name="allowUpload"
-                    />
-                    <CheckBoxRow
-                        text={"Export & Print"}
-                        checked={allowExport}
-                        onCheckBoxChange={onCheckBoxChange}
-                        name="allowExport"
-                    />
-                </Col>
-            </Row>
+            <>
+                <CheckBoxRow
+                    text={"Delete"}
+                    checked={allowDelete}
+                    onCheckBoxChange={onCheckBoxChange}
+                    name="allowDelete"
+                />
+                <CheckBoxRow
+                    text={"Upload"}
+                    checked={allowUpload}
+                    onCheckBoxChange={onCheckBoxChange}
+                    name="allowUpload"
+                />
+                <CheckBoxRow
+                    text={"Export & Print"}
+                    checked={allowExport}
+                    onCheckBoxChange={onCheckBoxChange}
+                    name="allowExport"
+                />
+            </>
         );
     }
 }
@@ -161,8 +158,7 @@ export class AllowableActions extends React.PureComponent<any, any> {
     render(){
         return(
             <>
-                <Col lg={1}/>
-                <Col xs={12} lg={5}>
+                <Col xs={12} md={3}>
                     <BasicPropertiesTitle title={"Allow these Actions"}/>
 
                     <AllowableActionContainer model={this.props.model} onCheckBoxChange={this.props.onCheckBoxChange}/>

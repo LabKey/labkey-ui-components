@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, Form } from "react-bootstrap";
+import { Panel, Form, Row, Col } from "react-bootstrap";
 import { Utils } from "@labkey/api";
 import { Alert } from '../../base/Alert';
 import { DomainPanelStatus, ListModel } from "../models";
@@ -12,6 +12,8 @@ import {
     IDomainPropertiesPanelContext
 } from "../DomainPropertiesPanelContext";
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
+import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
+import { HelpTopicURL } from "../HelpTopicURL";
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
@@ -54,7 +56,6 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     static defaultProps = {
         initCollapsed: false,
         validate: false
-        //helpTopic TODO
     };
 
     constructor(props) {
@@ -165,11 +166,11 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
                             />
 
                             <Panel.Body collapsible={collapsible || controlledCollapse}>
-                                <AdvancedSettings
-                                    title={"Advanced Settings"}
-                                    model={model}
-                                    saveAdvancedProperties={this.saveAdvancedProperties}
-                                />
+                                <Row className={'margin-bottom'}>
+                                    <Col xs={12}>
+                                        <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural={'lists'}/>
+                                    </Col>
+                                </Row>
                                 <Form>
                                     <BasicPropertiesFields
                                         model={model}
@@ -178,6 +179,11 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
                                     <AllowableActions
                                         model={model}
                                         onCheckBoxChange={this.onCheckBoxChange}
+                                    />
+                                    <AdvancedSettings
+                                        title={"Advanced Settings"}
+                                        model={model}
+                                        saveAdvancedProperties={this.saveAdvancedProperties}
                                     />
                                 </Form>
                             </Panel.Body>

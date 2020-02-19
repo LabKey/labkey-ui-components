@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Ajax, Filter, Utils } from '@labkey/api';
-import { List, Map, Record } from 'immutable';
+import { List, Map, OrderedMap, Record } from 'immutable';
 import { Option } from 'react-select';
 
 import { getEditorModel } from '../../global';
@@ -22,7 +22,7 @@ import { insertRows } from '../../query/api';
 import { gridShowError } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
-import { generateId } from '../../util/utils';
+import { capitalizeFirstChar, generateId } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
 import { EntityDataType } from './constants';
 
@@ -71,6 +71,55 @@ export class EntityParentType extends Record({
         if (!values.key)
             values.key = generateId('parent-type-');
         return new EntityParentType(values);
+    }
+
+    createColumnName() {
+        const parentInputType = this.getInputType();
+        const formattedQueryName = capitalizeFirstChar(this.query);
+        // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
+        // capitalized here and we lower it where needed
+        return [parentInputType, formattedQueryName].join('/');
+    }
+
+    getInputType(): string {
+        return this.schema === SCHEMAS.DATA_CLASSES.SCHEMA ? QueryColumn.DATA_INPUTS : QueryColumn.MATERIAL_INPUTS;
+    }
+
+    // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
+    generateColumn(displayColumn: string): QueryColumn {
+        const parentInputType = this.getInputType();
+        const formattedQueryName = capitalizeFirstChar(this.query);
+        // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
+        // capitalized here and we lower it where needed
+        const parentColName = [parentInputType, formattedQueryName].join('/');
+
+        // 32671: Sample import and edit grid key ingredients on scientific name
+        if (this.schema && this.query &&
+            this.schema.toLowerCase() === SCHEMAS.DATA_CLASSES.INGREDIENTS.schemaName.toLowerCase() &&
+            this.query.toLowerCase() === SCHEMAS.DATA_CLASSES.INGREDIENTS.queryName.toLowerCase()) {
+            displayColumn ='scientificName';
+        }
+
+        return QueryColumn.create({
+            caption: formattedQueryName + ' Parents',
+            description: 'Contains optional parent entity for this ' + formattedQueryName,
+            fieldKeyArray: [parentColName],
+            fieldKey: parentColName,
+            lookup: {
+                displayColumn,
+                isPublic: true,
+                keyColumn: 'RowId',
+                multiValued: 'junction',
+                queryName: this.query,
+                schemaName: this.schema,
+                table: parentInputType
+            },
+            name: parentColName,
+            required: false,
+            shownInInsertView: true,
+            type: 'Text (String)',
+            userEditable: true
+        });
     }
 }
 
@@ -197,6 +246,90 @@ export class EntityIdCreationModel extends Record({
         }
 
         throw new Error('Invalid inputColumn.');
+    }
+
+    getParentColumns(uniqueFieldKey: string) : OrderedMap<string, QueryColumn> {
+        let columns = OrderedMap<string, QueryColumn>();
+        this.entityParents.forEach((parentList) => {
+            parentList.forEach((parent) => {
+                if (parent.schema && parent.query) {
+                    const column = parent.generateColumn(uniqueFieldKey);
+                    // Issue 33653: query name is case-sensitive for some data inputs (parents)
+                    columns = columns.set(column.name.toLowerCase(), column);
+                }
+            })
+        });
+        return columns;
+    }
+
+    addParent(queryName: string) : EntityIdCreationModel {
+        const nextIndex = this.entityParents.get(queryName).size + 1;
+        const updatedParents = this.entityParents.get(queryName).push(EntityParentType.create({index: nextIndex}));
+        return this.setIn(['entityParents', queryName], updatedParents) as EntityIdCreationModel
+    }
+
+    removeParent(index: number, queryName: string) : [EntityIdCreationModel, string] {
+        const entityParents = this.entityParents.get(queryName);
+        let parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
+        let parentColumnName = entityParents.get(parentToResetKey).createColumnName();
+        const updatedEntityParents = entityParents
+            .filter(parent => parent.index !== index)
+            .map((parent, key) => parent.set('index', (key + 1)));
+        return [
+            this.setIn(['entityParents', queryName], updatedEntityParents) as EntityIdCreationModel,
+            parentColumnName
+        ];
+    }
+
+    changeParent(index: number, queryName: string, uniqueFieldKey: string,  parent: IParentOption) : [EntityIdCreationModel, QueryColumn, EntityParentType, string] {
+        let column;
+        let parentColumnName;
+        let existingParent;
+        const entityParents = this.entityParents.get(queryName);
+        let updatedModel;
+        if (parent) {
+            const existingParentKey = entityParents.findKey(parent => parent.get('index') === index);
+            existingParent = entityParents.get(existingParentKey);
+
+            // bail out if the selected parent is the same as the existingParent for this index, i.e. nothing changed
+            const schemaMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
+            const queryMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
+            if (schemaMatch && queryMatch) {
+                return [undefined, undefined, existingParent, undefined];
+            }
+
+            const parentType = EntityParentType.create({
+                index,
+                key: existingParent.key,
+                query: parent.query,
+                schema: parent.schema
+            });
+            updatedModel = this.mergeIn([
+                'entityParents',
+                queryName,
+                existingParentKey
+            ], parentType) as EntityIdCreationModel;
+            column = parentType.generateColumn(uniqueFieldKey);
+        }
+        else {
+            let parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
+            const existingParent = entityParents.get(parentToResetKey);
+            parentColumnName = existingParent.createColumnName();
+            updatedModel = this.mergeIn([
+                'entityParents',
+                queryName,
+                parentToResetKey
+            ], EntityParentType.create({
+                key: existingParent.key,
+                index,
+            })) as EntityIdCreationModel;
+        }
+        return [
+            updatedModel,
+            column,
+            existingParent,
+            parentColumnName
+        ]
     }
 
     hasTargetEntityType() : boolean {

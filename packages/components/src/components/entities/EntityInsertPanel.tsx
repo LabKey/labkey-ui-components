@@ -121,7 +121,7 @@ interface OwnProps {
     nounSingular: string
     nounPlural: string
     entityDataType: EntityDataType
-    parentDataTypes?: Map<EntityDataType, ParentEntityMetadata>,
+    parentDataTypes?: OrderedMap<EntityDataType, ParentEntityMetadata>,
     importHelpLinkNode: React.ReactNode
 }
 
@@ -223,7 +223,6 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     init(props: OwnProps, selectTab: boolean = false) {
-        // TODO move most of this to actions?
         const queryParams = props.location ? EntityInsertPanelImpl.getQueryParameters(props.location.query) : {
             parents: undefined,
             selectionKey: undefined,
@@ -327,75 +326,8 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }
     }
 
-    static convertParentInputSchema(parentSchema: string): string {
-        return parentSchema === SCHEMAS.DATA_CLASSES.SCHEMA ? QueryColumn.DATA_INPUTS : QueryColumn.MATERIAL_INPUTS;
-    }
-
-    createParentColumnName(parent: EntityParentType) {
-        const parentInputType = EntityInsertPanelImpl.convertParentInputSchema(parent.schema);
-        const formattedQueryName = capitalizeFirstChar(parent.query);
-        // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
-        // capitalized here and we lower it where needed
-        return [parentInputType, formattedQueryName].join('/');
-    }
-
     getUniqueFieldKey() {
         return  this.isSampleEntity() ? SAMPLE_UNIQUE_FIELD_KEY : DATA_CLASS_UNIQUE_FIELD_KEY;
-    }
-
-    // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
-    // TODO move to actions?
-    generateParentColumn(parent: EntityParentType): QueryColumn {
-        const parentInputType = EntityInsertPanelImpl.convertParentInputSchema(parent.schema);
-        const formattedQueryName = capitalizeFirstChar(parent.query);
-        // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
-        // capitalized here and we lower it where needed
-        const parentColName = [parentInputType, formattedQueryName].join('/');
-
-        // 32671: Sample import and edit grid key ingredients on scientific name
-        let displayColumn = this.getUniqueFieldKey();
-        if (parent.schema && parent.query &&
-            parent.schema.toLowerCase() === SCHEMAS.DATA_CLASSES.INGREDIENTS.schemaName.toLowerCase() &&
-            parent.query.toLowerCase() === SCHEMAS.DATA_CLASSES.INGREDIENTS.queryName.toLowerCase()) {
-            displayColumn ='scientificName';
-        }
-
-        return QueryColumn.create({
-            caption: formattedQueryName + ' Parents',
-            description: 'Contains optional parent entity for this ' + formattedQueryName,
-            fieldKeyArray: [parentColName],
-            fieldKey: parentColName,
-            lookup: {
-                displayColumn,
-                isPublic: true,
-                keyColumn: 'RowId',
-                multiValued: 'junction',
-                queryName: parent.query,
-                schemaName: parent.schema,
-                table: parentInputType
-            },
-            name: parentColName,
-            required: false,
-            shownInInsertView: true,
-            type: 'Text (String)',
-            userEditable: true
-        });
-    }
-
-    // TODO move to actions
-    getParentColumns() : OrderedMap<string, QueryColumn> {
-        const { insertModel } = this.state;
-        let columns = OrderedMap<string, QueryColumn>();
-        insertModel.entityParents.forEach((parentList) => {
-            parentList.forEach((parent) => {
-                if (parent.schema && parent.query) {
-                    const column = this.generateParentColumn(parent);
-                    // Issue 33653: query name is case-sensitive for some data inputs (parents)
-                    columns = columns.set(column.name.toLowerCase(), column);
-                }
-            })
-        });
-        return columns;
     }
 
     getGridQueryInfo(): QueryInfo {
@@ -405,7 +337,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             const uniqueFieldKey = this.getUniqueFieldKey();
             const nameIndex = Math.max(0, originalQueryInfo.columns.toList().findIndex((column) => (column.fieldKey === uniqueFieldKey)));
             const newColumnIndex = nameIndex + insertModel.getParentCount();
-            const columns = originalQueryInfo.insertColumns(newColumnIndex, this.getParentColumns());
+            const columns = originalQueryInfo.insertColumns(newColumnIndex, insertModel.getParentColumns(this.getUniqueFieldKey()));
             return originalQueryInfo.merge({columns}) as QueryInfo;
         }
         return undefined;
@@ -439,74 +371,30 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     };
 
     addParent(queryName: string) {
-        const { insertModel } = this.state;
-        const nextIndex = insertModel.entityParents.get(queryName).size + 1;
-        const updatedParents = insertModel.entityParents.get(queryName).push(EntityParentType.create({index: nextIndex}));
-
-        this.setState(() => {
+        this.setState((state) => {
             return {
-                insertModel: insertModel.setIn(['entityParents', queryName], updatedParents) as EntityIdCreationModel
+                insertModel: state.insertModel.addParent(queryName)
             }
         });
     }
 
     // TODO move most of this to actions or insertModel?
     changeParent(index: number, queryName: string, fieldName: string, formValue: any, parent: IParentOption): void {
-        const { insertModel } = this.state;
-        let column;
-        let parentColumnName;
-        let existingParent;
         const queryGridModel = this.getQueryGridModel();
         if (queryGridModel) {
-            const entityParents = insertModel.entityParents.get(queryName);
-            let updatedModel = insertModel;
-            if (parent) {
-                const existingParentKey = entityParents.findKey(parent => parent.get('index') === index);
-                existingParent = entityParents.get(existingParentKey);
-
-                // bail out if the selected parent is the same as the existingParent for this index, i.e. nothing changed
-                const schemaMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
-                const queryMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
-                if (schemaMatch && queryMatch) {
-                    return;
-                }
-
-                const parentType = EntityParentType.create({
-                    index,
-                    key: existingParent.key,
-                    query: parent.query,
-                    schema: parent.schema
-                });
-                updatedModel = insertModel.mergeIn([
-                    'entityParents',
-                    queryName,
-                    existingParentKey
-                ], parentType) as EntityIdCreationModel;
-                column = this.generateParentColumn(parentType);
-            }
-            else {
-                let parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
-                const existingParent = entityParents.get(parentToResetKey);
-                parentColumnName = this.createParentColumnName(existingParent);
-                updatedModel = insertModel.mergeIn([
-                    'entityParents',
-                    queryName,
-                    parentToResetKey
-                ], EntityParentType.create({
-                    key: existingParent.key,
-                    index,
-                })) as EntityIdCreationModel;
-            }
+            const { insertModel } = this.state;
+            const [ updatedModel, column, existingParent, parentColumnName ] = insertModel.changeParent(index, queryName, this.getUniqueFieldKey(), parent);
+            if (!updatedModel)
+                return;
 
             this.setState(() => {
                 return {
                     insertModel: updatedModel,
                 }
             }, () => {
-
                 if (column && existingParent) {
                     if (existingParent.query !== undefined) {
-                        changeColumn(queryGridModel, this.createParentColumnName(existingParent), column);
+                        changeColumn(queryGridModel, existingParent.createColumnName(), column);
                     }
                     else {
                         let columnMap = OrderedMap<string, QueryColumn>();
@@ -514,13 +402,13 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                         if (existingParent.index === 1)
                             fieldKey = this.getUniqueFieldKey();
                         else {
-                            const definedParents = entityParents.filter((parent) => parent.query !== undefined);
+                            const definedParents = updatedModel.entityParents.get(queryName).filter((parent) => parent.query !== undefined);
                             if (definedParents.size === 0)
                                 fieldKey = this.getUniqueFieldKey();
                             else {
                                 // want the first defined parent before the new parent's index
                                 const prevParent = definedParents.findLast((parent) => parent.index < existingParent.index);
-                                fieldKey = prevParent ? this.createParentColumnName(prevParent) : this.getUniqueFieldKey();
+                                fieldKey = prevParent ? prevParent.createColumnName() : this.getUniqueFieldKey();
                             }
                         }
                         addColumns(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
@@ -535,16 +423,10 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
     removeParent(index: number, queryName: string) {
         const { insertModel } = this.state;
-        const entityParents = insertModel.entityParents.get(queryName);
-        let parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
-        let parentColumnName = this.createParentColumnName(entityParents.get(parentToResetKey));
-        const updatedEntityParents = entityParents
-            .filter(parent => parent.index !== index)
-            .map((parent, key) => parent.set('index', (key + 1)));
-
+        const [ updatedModel, parentColumnName ] = insertModel.removeParent(index, queryName);
         this.setState((state) => {
             return {
-                insertModel: state.insertModel.setIn(['entityParents', queryName], updatedEntityParents) as EntityIdCreationModel,
+                insertModel: updatedModel,
             }
         }, () => {
             removeColumn(this.getQueryGridModel(),  parentColumnName);

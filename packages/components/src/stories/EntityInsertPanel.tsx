@@ -22,7 +22,7 @@ import { EntityInsertPanel, ParentEntityMetadata } from '../components/entities/
 
 import './stories.scss';
 import { EntityDataType } from '..';
-import { Map } from 'immutable';
+import { OrderedMap } from 'immutable';
 
 storiesOf('EntityInsertPanel', module)
     .addDecorator(withKnobs)
@@ -46,7 +46,7 @@ storiesOf('EntityInsertPanel', module)
             entityDataType={EntityDataType.Sample}
             canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
             location={location}
-            parentDataTypes={Map<EntityDataType, ParentEntityMetadata>({
+            parentDataTypes={OrderedMap<EntityDataType, ParentEntityMetadata>({
                 [EntityDataType.Sample]: {
                     nounSingular: "Parent",
                     descriptionSingular: "parent sample type",
@@ -65,7 +65,7 @@ storiesOf('EntityInsertPanel', module)
             entityDataType={EntityDataType.Sample}
             canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
             location={location}
-            parentDataTypes={Map<EntityDataType, ParentEntityMetadata>({
+            parentDataTypes={OrderedMap<EntityDataType, ParentEntityMetadata>({
                 [EntityDataType.Sample]: {
                     nounSingular: "Parent",
                     descriptionSingular: "parent sample type",

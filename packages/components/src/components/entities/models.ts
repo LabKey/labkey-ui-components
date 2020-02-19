@@ -25,6 +25,7 @@ import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/mod
 import { capitalizeFirstChar, generateId } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
 import { EntityDataType } from './constants';
+import { IEntityDetails } from '../domainproperties/entities/models';
 
 export interface EntityInputProps {
     role: string
@@ -496,12 +497,7 @@ export class EntityIdCreationModel extends Record({
     }
 }
 
-export interface IEntityTypeDetails {
-    isUpdate?: boolean
-    rowId?: number
-    name?: string
-    nameExpression?: string
-    description?: string
+export interface IEntityTypeDetails extends IEntityDetails {
     importAliasKeys?: Array<string>
     importAliasValues?: Array<string>
 }

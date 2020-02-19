@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.??.??
-*Released*: ?? February 2020
+### version 0.25.1
+*Released*: 19 February 2020
 * Fix Issue 39719
     * No longer apply any base filters if a QueryGridModel has a keyValue and the view name is \~\~DETAILS\~\~
 

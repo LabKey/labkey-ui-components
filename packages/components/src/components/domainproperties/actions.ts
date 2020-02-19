@@ -198,24 +198,24 @@ export function getMaxPhiLevel(): Promise<string> {
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string, includeWarnings?: boolean) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         if (domain.domainId) {
-            // Domain.save({
-            //     containerPath: LABKEY.container.path,
-            //     domainDesign: DomainDesign.serialize(domain),
-            //     domainId: domain.domainId,
-            //     includeWarnings: includeWarnings,
-            //     success: (data) => {
-            //         resolve(DomainDesign.create(data));
-            //     },
-            //     failure: (error) => {
-            //         if (!error.exception) {
-            //             error = {exception: error};
-            //         }
-            //
-            //         const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-            //         const badDomain = setDomainException(domain, exception);
-            //         reject(badDomain);
-            //     }
-            // })
+            Domain.save({
+                containerPath: LABKEY.container.path,
+                domainDesign: DomainDesign.serialize(domain),
+                domainId: domain.domainId,
+                includeWarnings: includeWarnings,
+                success: (data) => {
+                    resolve(DomainDesign.create(data));
+                },
+                failure: (error) => {
+                    if (!error.exception) {
+                        error = {exception: error};
+                    }
+
+                    const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    const badDomain = setDomainException(domain, exception);
+                    reject(badDomain);
+                }
+            })
         }
         else {
             Domain.create({

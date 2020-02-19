@@ -736,9 +736,10 @@ export function saveListDesign(model: ListModel): Promise<ListModel> {
 }
 
 export function newListDesign(model: ListModel): Promise<ListModel> {
+    console.log();
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('property', 'createDomain.api'),
+            url: buildURL('property', 'CreateDomain.api'),
             method: 'POST',
             jsonData: ListModel.serialize(model),
             success: Utils.getCallbackWrapper((response) => {
@@ -746,8 +747,7 @@ export function newListDesign(model: ListModel): Promise<ListModel> {
             }),
             failure: Utils.getCallbackWrapper((error) => {
                 // todo
-                // let badModel = model;
-                //
+
             }, this, false)
         });
     });

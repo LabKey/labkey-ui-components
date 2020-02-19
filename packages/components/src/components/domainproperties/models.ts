@@ -1498,13 +1498,14 @@ export class ListModel extends Record({
         let domain = DomainDesign.serialize(model.domain);
         let options = model.merge({domain}).toJS();
 
+
         delete options.domain;
 
-
-
-        console.log({domain, options});
-        return {domainDesign: domain, options, kind: 'IntList' };
-        // return model.merge({domain}).toJS();
+        if (model.isNew()) {
+            return {domainDesign: domain, options, kind: 'IntList'};
+        } else {
+            return {domainDesign: domain, options, kind: 'IntList', schemaName: 'lists', queryName: model.name, domainId: model.domainId};
+        }
     }
 
     isNew(): boolean {

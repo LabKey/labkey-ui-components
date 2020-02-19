@@ -111,6 +111,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
         const { selectedUserId, saveErrorMsg, dirty } = this.state;
         const selectedPrincipal = principalsById ? principalsById.get(selectedUserId) : undefined;
         const isLoading = (!policy || !roles || !principals) && !error;
+        const isEditable = policy && !policy.isInheritFromParent();
 
         if (isLoading) {
             return <LoadingSpinner/>
@@ -131,12 +132,17 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                             {title}
                         </Panel.Heading>
                         <Panel.Body className={'permissions-assignment-panel'}>
-                            {dirty && <div className={'permissions-save-alert'}>
-                                <Alert bsStyle={'info'}>
-                                    You have unsaved changes.
-                                    {this.renderSaveButton()}
-                                </Alert>
-                            </div>}
+                            {isEditable
+                                ? dirty && <div className={'permissions-save-alert'}>
+                                    <Alert bsStyle={'info'}>
+                                        You have unsaved changes.
+                                        {this.renderSaveButton()}
+                                    </Alert>
+                                </div>
+                                : <div className={'permissions-save-alert'}>
+                                    <Alert bsStyle={'info'}>Permissions for this container are being inherited from its parent.</Alert>
+                                </div>
+                            }
                             {visibleRoles.map((role, i) => {
                                 return (
                                     <PermissionsRole
@@ -146,8 +152,8 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                                         typeToShow={typeToShow}
                                         principals={principals}
                                         onClickAssignment={this.showDetails}
-                                        onRemoveAssignment={this.removeAssignment}
-                                        onAddAssignment={this.addAssignment}
+                                        onRemoveAssignment={isEditable ? this.removeAssignment : undefined}
+                                        onAddAssignment={isEditable ? this.addAssignment : undefined}
                                         selectedUserId={selectedUserId}
                                         disabledId={disabledId}
                                     />
@@ -155,7 +161,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                             })}
                             <br/>
                             {saveErrorMsg && <Alert>{saveErrorMsg}</Alert>}
-                            {this.renderSaveButton()}
+                            {isEditable && this.renderSaveButton()}
                         </Panel.Body>
                     </Panel>
                 </Col>

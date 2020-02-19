@@ -24,6 +24,7 @@ export interface ValidatorModalProps {
     validators: List<PropertyValidator | ConditionalFormat>
     onHide: () => any
     onApply: (validators: List<PropertyValidator | ConditionalFormat>, type: string) => any
+    successBsStyle?: string
 }
 
 interface ValidatorModalState {
@@ -138,7 +139,7 @@ export function ValidatorModal(WrappedComponent: any) {
 
         render()
         {
-            const { show, title, subTitle, onHide, addName, index, dataType, mvEnabled } = this.props;
+            const { show, title, subTitle, onHide, addName, index, dataType, mvEnabled, successBsStyle } = this.props;
             const { expanded, validators } = this.state;
 
             return (
@@ -177,11 +178,13 @@ export function ValidatorModal(WrappedComponent: any) {
                                 onClick={this.onAdd}/>
                         </div>
                         <div className={'domain-validation-btn-row'}>
-                            <Button onClick={onHide} bsClass='btn' className='domain-adv-footer domain-adv-cancel-btn'>
+                            <Button onClick={onHide} className='domain-adv-footer domain-adv-cancel-btn'>
                                 Cancel
                             </Button>
-                            <Button onClick={this.handleApply} bsClass='btn btn-success'
-                                    className='domain-adv-footer domain-adv-apply-btn'
+                            <Button
+                                bsStyle={successBsStyle || 'success'}
+                                onClick={this.handleApply}
+                                className='domain-adv-footer domain-adv-apply-btn'
                                 disabled={!this.isValid(validators)}
                             >
                                 Apply

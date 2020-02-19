@@ -2,6 +2,8 @@
 
 This package provides LabKey's base JS ESLint configuration (without React plugins) as an extensible shared config.
 
+See the [CHANGELOG](CHANGELOG.md) for changes in this version.
+
 ## Installing
 
 ```bash

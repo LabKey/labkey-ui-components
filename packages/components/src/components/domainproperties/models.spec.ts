@@ -15,7 +15,6 @@
  */
 import { List } from 'immutable';
 import {
-    AssayProtocolModel,
     ATTACHMENT_TYPE,
     BOOLEAN_TYPE,
     DATETIME_TYPE,
@@ -179,113 +178,5 @@ describe('DomainField', () => {
         const updatedDblField = DomainField.updateDefaultValues(dblField);
         expect(updatedDblField.measure).toBeTruthy();
         expect(updatedDblField.dimension).toBeFalsy();
-    });
-});
-
-describe('AssayProtocolModel', () => {
-    test("getDomainByNameSuffix", () => {
-        const model = AssayProtocolModel.create({
-            protocolId: 1,
-            name: 'Test Assay Protocol',
-            description: 'My assay protocol for you all to use.',
-            domains: [{
-                name: 'Sample Fields',
-                fields: [{
-                    name: 'field1',
-                    rangeURI: 'xsd:string'
-                },{
-                    name: 'field2',
-                    rangeURI: 'xsd:int'
-                },{
-                    name: 'field3',
-                    rangeURI: 'xsd:dateTime'
-                }]
-            }]
-        });
-
-        expect(model.getDomainByNameSuffix('Foo') === undefined).toBeTruthy();
-        expect(model.getDomainByNameSuffix('sample') === undefined).toBeTruthy();
-        expect(model.getDomainByNameSuffix('Sample') === undefined).toBeFalsy();
-    });
-
-    test("isNew", () => {
-        // name should get removed for the case where it is a "new" model (i.e. doesn't have a protocolId)
-        expect(AssayProtocolModel.create({protocolId: 1, name: 'Test'}).isNew()).toBeFalsy();
-        expect(AssayProtocolModel.create({protocolId: 0, name: 'Test'}).isNew()).toBeTruthy();
-        expect(AssayProtocolModel.create({name: 'Test'}).isNew()).toBeTruthy();
-    });
-
-    test("name removal for copy case", () => {
-        // name should get removed for the case where it is a "new" model (i.e. doesn't have a protocolId)
-        expect(AssayProtocolModel.create({protocolId: 1, name: 'Test'}).name).toBe('Test');
-        expect(AssayProtocolModel.create({protocolId: 0, name: 'Test'}).name).toBe(undefined);
-        expect(AssayProtocolModel.create({name: 'Test'}).name).toBe(undefined);
-    });
-
-    test("allowPlateTemplateSelection", () => {
-        expect(AssayProtocolModel.create({}).allowPlateTemplateSelection()).toBeFalsy();
-        expect(AssayProtocolModel.create({availablePlateTemplates: 'test'}).allowPlateTemplateSelection()).toBeFalsy();
-        expect(AssayProtocolModel.create({availablePlateTemplates: []}).allowPlateTemplateSelection()).toBeTruthy();
-        expect(AssayProtocolModel.create({availablePlateTemplates: ['a', 'b', 'c']}).allowPlateTemplateSelection()).toBeTruthy();
-    });
-
-    test("allowDetectionMethodSelection", () => {
-        expect(AssayProtocolModel.create({}).allowDetectionMethodSelection()).toBeFalsy();
-        expect(AssayProtocolModel.create({availableDetectionMethods: 'test'}).allowDetectionMethodSelection()).toBeFalsy();
-        expect(AssayProtocolModel.create({availableDetectionMethods: []}).allowDetectionMethodSelection()).toBeTruthy();
-        expect(AssayProtocolModel.create({availableDetectionMethods: ['a', 'b', 'c']}).allowDetectionMethodSelection()).toBeTruthy();
-    });
-
-    test("allowMetadataInputFormatSelection", () => {
-        expect(AssayProtocolModel.create({}).allowMetadataInputFormatSelection()).toBeFalsy();
-        expect(AssayProtocolModel.create({availableMetadataInputFormats: 'test'}).allowMetadataInputFormatSelection()).toBeFalsy();
-        expect(AssayProtocolModel.create({availableMetadataInputFormats: {}}).allowMetadataInputFormatSelection()).toBeFalsy();
-        expect(AssayProtocolModel.create({availableMetadataInputFormats: {test1: 'abc', test2: 'def'}}).allowMetadataInputFormatSelection()).toBeTruthy();
-    });
-
-    test("isValid", () => {
-        const base = {protocolId: 1, name: 'test'};
-
-        expect(AssayProtocolModel.create({...base, name: undefined}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, name: null}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, name: ''}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, name: 'test'}).hasValidProperties()).toBeTruthy();
-
-        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: undefined}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: null}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 1}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 'foo'}).hasValidProperties()).toBeTruthy();
-
-        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: undefined}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: null}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 1}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 'foo'}).hasValidProperties()).toBeTruthy();
-
-        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: undefined}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: null}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 1}).hasValidProperties()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 'foo'}).hasValidProperties()).toBeTruthy();
-    });
-
-    test("validateTransformScripts", () => {
-        const base = {protocolId: 1, name: 'test'};
-
-        expect(AssayProtocolModel.create({...base}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, protocolTransformScripts: []}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, protocolTransformScripts: List<string>()}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
-
-        expect(AssayProtocolModel.create({...base, protocolTransformScripts: ['foo.pl', 'bar.R', '']}).validateTransformScripts()).toContain('Missing required');
-        expect(AssayProtocolModel.create({...base, protocolTransformScripts: ['foo.pl', null, 'bar.R']}).validateTransformScripts()).toContain('Missing required');
-        expect(AssayProtocolModel.create({...base, protocolTransformScripts: [undefined, 'foo.pl', 'bar.R']}).validateTransformScripts()).toContain('Missing required');
-
-        expect(AssayProtocolModel.create({...base, allowSpacesInPath: true, saveScriptFiles: false, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, allowSpacesInPath: true, saveScriptFiles: true, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, allowSpacesInPath: true, saveScriptFiles: false, protocolTransformScripts: ['foo.pl', '/path with space/bar.R']}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, allowSpacesInPath: true, saveScriptFiles: true, protocolTransformScripts: ['foo.pl', '/path with space/bar.R']}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, allowSpacesInPath: false, saveScriptFiles: false, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, allowSpacesInPath: false, saveScriptFiles: true, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, allowSpacesInPath: false, saveScriptFiles: false, protocolTransformScripts: ['foo.pl', '/path with space/bar.R']}).validateTransformScripts()).toBe(undefined);
-        expect(AssayProtocolModel.create({...base, allowSpacesInPath: false, saveScriptFiles: true, protocolTransformScripts: ['foo.pl', '/path with space/bar.R']}).validateTransformScripts()).toContain('should not contain spaces');
     });
 });

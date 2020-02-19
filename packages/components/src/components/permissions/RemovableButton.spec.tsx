@@ -36,6 +36,19 @@ describe("<RemovableButton/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
+    test("not removable", () => {
+        const component = (
+            <RemovableButton
+                id={2}
+                display={'Display Text (Not Removable)'}
+                onClick={jest.fn()}
+            />
+        );
+
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
     test("with state", () => {
         const wrapper = mount(
             <RemovableButton

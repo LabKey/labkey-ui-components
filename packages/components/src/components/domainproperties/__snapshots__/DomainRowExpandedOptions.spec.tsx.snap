@@ -465,7 +465,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                         </div>
                         <FormControl
                           bsClass="form-control"
-                          className="form-control domain-field-textarea"
+                          className="form-control textarea-noresize"
                           componentClass="textarea"
                           disabled={false}
                           id="domainpropertiesrow-description-1-1"
@@ -475,7 +475,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                           value=""
                         >
                           <textarea
-                            className="form-control domain-field-textarea form-control"
+                            className="form-control textarea-noresize form-control"
                             disabled={false}
                             id="domainpropertiesrow-description-1-1"
                             name="domainpropertiesrow-description"
@@ -1767,7 +1767,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                         </div>
                         <FormControl
                           bsClass="form-control"
-                          className="form-control domain-field-textarea"
+                          className="form-control textarea-noresize"
                           componentClass="textarea"
                           disabled={false}
                           id="domainpropertiesrow-description-1-1"
@@ -1777,7 +1777,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                           value=""
                         >
                           <textarea
-                            className="form-control domain-field-textarea form-control"
+                            className="form-control textarea-noresize form-control"
                             disabled={false}
                             id="domainpropertiesrow-description-1-1"
                             name="domainpropertiesrow-description"
@@ -3260,7 +3260,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                         </div>
                         <FormControl
                           bsClass="form-control"
-                          className="form-control domain-field-textarea"
+                          className="form-control textarea-noresize"
                           componentClass="textarea"
                           disabled={false}
                           id="domainpropertiesrow-description-1-1"
@@ -3270,7 +3270,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                           value=""
                         >
                           <textarea
-                            className="form-control domain-field-textarea form-control"
+                            className="form-control textarea-noresize form-control"
                             disabled={false}
                             id="domainpropertiesrow-description-1-1"
                             name="domainpropertiesrow-description"
@@ -4771,7 +4771,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                         </div>
                         <FormControl
                           bsClass="form-control"
-                          className="form-control domain-field-textarea"
+                          className="form-control textarea-noresize"
                           componentClass="textarea"
                           disabled={false}
                           id="domainpropertiesrow-description-1-1"
@@ -4781,7 +4781,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                           value=""
                         >
                           <textarea
-                            className="form-control domain-field-textarea form-control"
+                            className="form-control textarea-noresize form-control"
                             disabled={false}
                             id="domainpropertiesrow-description-1-1"
                             name="domainpropertiesrow-description"

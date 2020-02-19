@@ -17,8 +17,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS, Map } from 'immutable';
-import { FORM_IDS, SampleSetDetailsPanel } from './SampleSetDetailsPanel';
+import { SampleSetDetailsPanel } from './SampleSetDetailsPanel';
 import { initUnitTestMocks } from "../../testHelpers";
+import { ENTITY_FORM_IDS } from "../domainproperties/entities/constants";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -84,17 +85,17 @@ describe("<SampleSetDetailsPanel/>", () => {
         const wrapper = mount(component);
 
         // Name input should be visible for new sample set
-        expect(wrapper.find('input#' + FORM_IDS.NAME)).toHaveLength(1);
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME)).toHaveLength(1);
 
         const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Save');
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
 
         // simulate Name input value change by updating the component state
-        wrapper.setState({formValues: {[FORM_IDS.NAME]: 'test'}});
+        wrapper.setState({formValues: {[ENTITY_FORM_IDS.NAME]: 'test'}});
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeFalsy();
 
         // change name to empty string and expect button to be disabled again
-        wrapper.setState({formValues: {[FORM_IDS.NAME]: ''}});
+        wrapper.setState({formValues: {[ENTITY_FORM_IDS.NAME]: ''}});
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
 
         wrapper.unmount();
@@ -118,24 +119,24 @@ describe("<SampleSetDetailsPanel/>", () => {
         const wrapper = mount(component);
 
         // Name input should not be visible
-        expect(wrapper.find('input#' + FORM_IDS.NAME)).toHaveLength(0);
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME)).toHaveLength(0);
 
         // Save button should start enabled for existing sample set
         const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Save');
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeFalsy();
 
         // Check initial input values
-        expect(wrapper.find('input#' + FORM_IDS.NAME_EXPRESSION).props().value).toBe(nameExpVal);
-        expect(wrapper.find('textarea#' + FORM_IDS.DESCRIPTION).props().value).toBe(descVal);
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME_EXPRESSION).props().value).toBe(nameExpVal);
+        expect(wrapper.find('textarea#' + ENTITY_FORM_IDS.DESCRIPTION).props().value).toBe(descVal);
 
         // simulate input value changes by updating the component state
         const updateSuffix = ' UPDATED';
         wrapper.setState({formValues: {
-            [FORM_IDS.NAME_EXPRESSION]: nameExpVal + updateSuffix,
-            [FORM_IDS.DESCRIPTION]: descVal + updateSuffix
+            [ENTITY_FORM_IDS.NAME_EXPRESSION]: nameExpVal + updateSuffix,
+            [ENTITY_FORM_IDS.DESCRIPTION]: descVal + updateSuffix
         }});
-        expect(wrapper.find('input#' + FORM_IDS.NAME_EXPRESSION).props().value).toBe(nameExpVal + updateSuffix);
-        expect(wrapper.find('textarea#' + FORM_IDS.DESCRIPTION).props().value).toBe(descVal + updateSuffix);
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME_EXPRESSION).props().value).toBe(nameExpVal + updateSuffix);
+        expect(wrapper.find('textarea#' + ENTITY_FORM_IDS.DESCRIPTION).props().value).toBe(descVal + updateSuffix);
 
         wrapper.unmount();
     });

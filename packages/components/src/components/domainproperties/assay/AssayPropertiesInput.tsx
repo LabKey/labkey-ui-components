@@ -3,7 +3,7 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
-import { AssayProtocolModel } from '../models';
+import { AssayProtocolModel } from '../assay/models';
 import { FORM_IDS } from './AssayPropertiesPanel';
 import { getSplitSentence, getValidPublishTargets } from '../actions';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
@@ -99,7 +99,7 @@ export function DescriptionInput(props: InputProps) {
             }}
         >
             <textarea
-                className="form-control domain-field-textarea"
+                className="form-control textarea-noresize"
                 id={FORM_IDS.ASSAY_DESCRIPTION}
                 value={props.model.description || ''}
                 onChange={props.onChange}

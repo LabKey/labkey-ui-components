@@ -592,14 +592,17 @@ interface IExportOptions {
     selectionKey?: string
 }
 
-export function exportRows(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options?: IExportOptions): void {
+export function exportRows(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options?: IExportOptions, advancedOptions?: Object): void {
 
     let params: any = {
         schemaName: schemaQuery.schemaName,
         ['query.queryName']: schemaQuery.queryName,
         ['query.showRows']: options.showRows ? [options.showRows] : ['ALL'],
-        ['query.selectionKey']: options.selectionKey ? options.selectionKey : undefined
+        ['query.selectionKey']: options.selectionKey ? options.selectionKey : undefined,
     };
+
+    if (advancedOptions)
+        params = {...params, ...advancedOptions};
 
     if (schemaQuery.viewName) {
         params['query.viewName'] = schemaQuery.viewName;
@@ -667,7 +670,7 @@ export function exportRows(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options
     form.trigger( "submit" );
 }
 
-export function gridExport(model: QueryGridModel, type: EXPORT_TYPES) {
+export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Object) {
     const { allowSelection, selectedState } = model;
     const showRows = allowSelection && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
 
@@ -677,7 +680,7 @@ export function gridExport(model: QueryGridModel, type: EXPORT_TYPES) {
         sorts: model.getSorts(),
         showRows,
         selectionKey: model.getId()
-    });
+    }, advancedOptions);
 }
 
 export function gridSelectView(model: QueryGridModel, view: ViewInfo) {

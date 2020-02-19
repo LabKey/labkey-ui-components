@@ -119,7 +119,8 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                         className="domain-validation-delete"
                         name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
                         id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
-                        onClick={this.onDelete}>
+                        onClick={this.onDelete}
+                    >
                         Remove Validator
                     </Button>
                 </Col>

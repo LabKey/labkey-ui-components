@@ -269,42 +269,6 @@ export function deleteSampleSet(rowId: number): Promise<any> {
     });
 }
 
-export interface DeleteConfirmationData {
-    canDelete: Array<any>
-    cannotDelete: Array<any>
-}
-
-export function getSampleDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>) : Promise<DeleteConfirmationData> {
-    return new Promise((resolve, reject) => {
-       let params;
-       if (selectionKey) {
-           params = {
-               dataRegionSelectionKey: selectionKey
-           }
-       }
-       else {
-           params = {
-               rowIds
-           }
-       }
-       return Ajax.request({
-           url: buildURL('experiment', "getMaterialDeleteConfirmationData.api", params),
-           method: "GET",
-           success: Utils.getCallbackWrapper((response) => {
-               if (response.success) {
-                   resolve(response.data);
-               }
-               else {
-                   reject(response.exception);
-               }
-           }),
-           failure: Utils.getCallbackWrapper((response) => {
-               reject(response ? response.exception : 'Unknown error getting sample delete confirmation data.');
-           })
-       })
-    });
-}
-
 export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
     return getSelection(location).then((selection) => {
         if (selection.resolved && selection.schemaQuery && selection.selected.length) {

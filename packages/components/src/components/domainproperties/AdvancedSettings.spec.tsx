@@ -60,7 +60,8 @@ describe('AdvancedSettings', () => {
             showDefaultValueSettings: true,
             defaultDefaultValueType: DOMAIN_EDITABLE_DEFAULT,
             defaultValueOptions : List<string>([ DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT ]),
-            helpNoun: "domain"
+            helpNoun: "domain",
+            successBsStyle: 'primary'
         };
 
         const advSettings  = mount(<AdvancedSettings {...props}/>);
@@ -121,6 +122,11 @@ describe('AdvancedSettings', () => {
         expect(defaultType.length).toEqual(1);
         expect(defaultType.props().children.size).toEqual(3);
         expect(defaultType.props().value).toEqual(DOMAIN_EDITABLE_DEFAULT);
+
+        // Verify buttons
+        expect(advSettings.find('.btn')).toHaveLength(2);
+        expect(advSettings.find('.btn-primary')).toHaveLength(1);
+        expect(advSettings.find('.btn-primary').props().disabled).toBe(false);
 
         const testStateUpdates = function() {
             // Verify hidden

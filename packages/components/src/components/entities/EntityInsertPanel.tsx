@@ -378,13 +378,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         });
     }
 
-    // TODO move most of this to actions or insertModel?
     changeParent(index: number, queryName: string, fieldName: string, formValue: any, parent: IParentOption): void {
         const queryGridModel = this.getQueryGridModel();
         if (queryGridModel) {
             const { insertModel } = this.state;
             const [ updatedModel, column, existingParent, parentColumnName ] = insertModel.changeParent(index, queryName, this.getUniqueFieldKey(), parent);
-            if (!updatedModel)
+            if (!updatedModel) // no updated model if nothing has changed, so we can just stop
                 return;
 
             this.setState(() => {

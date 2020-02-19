@@ -119,6 +119,29 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
     });
 }
 
+/**
+ * @param domainId: Fetch domain by Id. Priority param over schema and query name.
+ * @param schemaName: Schema of domain.
+ * @param queryName: Query of domain.
+ * @return Promise wrapped Domain API call.
+ */
+export function fetchDomainDetails(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
+    return new Promise((resolve, reject) => {
+        Domain.getDomainDetails({
+            containerPath: LABKEY.container.path,
+            domainId,
+            schemaName,
+            queryName,
+            success: (data) => {
+                resolve(DomainDesign.create(data, undefined));
+            },
+            failure: (error) => {
+                reject(error);
+            }
+        })
+    });
+}
+
 export function fetchQueries(containerPath: string, schemaName: string): Promise<List<QueryInfoLite>> {
     const key = [containerPath, schemaName].join('|').toLowerCase();
 
@@ -198,24 +221,25 @@ export function getMaxPhiLevel(): Promise<string> {
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string, includeWarnings?: boolean) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         if (domain.domainId) {
-            // Domain.save({
-            //     containerPath: LABKEY.container.path,
-            //     domainDesign: DomainDesign.serialize(domain),
-            //     domainId: domain.domainId,
-            //     includeWarnings: includeWarnings,
-            //     success: (data) => {
-            //         resolve(DomainDesign.create(data));
-            //     },
-            //     failure: (error) => {
-            //         if (!error.exception) {
-            //             error = {exception: error};
-            //         }
-            //
-            //         const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-            //         const badDomain = setDomainException(domain, exception);
-            //         reject(badDomain);
-            //     }
-            // })
+            Domain.save({
+                containerPath: LABKEY.container.path,
+                domainDesign: DomainDesign.serialize(domain),
+                domainId: domain.domainId,
+                options,
+                includeWarnings: includeWarnings,
+                success: (data) => {
+                    resolve(DomainDesign.create(data));
+                },
+                failure: (error) => {
+                    if (!error.exception) {
+                        error = {exception: error};
+                    }
+
+                    const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    const badDomain = setDomainException(domain, exception);
+                    reject(badDomain);
+                }
+            })
         }
         else {
             Domain.create({

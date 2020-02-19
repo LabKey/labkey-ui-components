@@ -25,6 +25,8 @@ import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/mod
 import { generateId } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
 import { IEntityDetails } from '../domainproperties/entities/models';
+import {DomainDesign, DomainDetails} from '../domainproperties/models'
+import {Domain} from "@labkey/api";
 
 export interface SampleInputProps {
     role: string
@@ -359,6 +361,7 @@ export class SampleIdCreationModel extends Record({
 export interface ISampleSetDetails extends IEntityDetails {
     importAliasKeys?: Array<string>
     importAliasValues?: Array<string>
+    domainDesign?: DomainDesign
 }
 
 export interface IParentAlias {
@@ -373,3 +376,9 @@ export const enum SampleInsertPanelTabs {
     Grid = 1,
     File = 2
 }
+
+export const NEW_SAMPLE_TYPE_DOMAIN_KIND: DomainDetails = {
+    options: Map<string,any>(),
+    domainDesign: DomainDesign.create(null),
+    domainKindName: Domain.KINDS.SAMPLE_TYPE,
+};

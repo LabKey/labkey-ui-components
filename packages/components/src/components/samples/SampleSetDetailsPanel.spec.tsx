@@ -20,6 +20,7 @@ import { fromJS, Map } from 'immutable';
 import { SampleSetDetailsPanel } from './SampleSetDetailsPanel';
 import { initUnitTestMocks } from "../../testHelpers";
 import { ENTITY_FORM_IDS } from "../domainproperties/entities/constants";
+import {DomainDetails} from "../domainproperties/models";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -29,7 +30,7 @@ describe("<SampleSetDetailsPanel/>", () => {
 
     test("default props", (done) => {
         const tree = renderer.create(
-            <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()}/>
+            <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()} />
         );
 
         setTimeout(() => {
@@ -104,10 +105,13 @@ describe("<SampleSetDetailsPanel/>", () => {
     test("existing sample set", () => {
         const nameExpVal = 'S-${genId}';
         const descVal = 'My sample set description.';
-        const data = Map<string, any>(fromJS({
-            rowId: 1,
-            nameExpression: nameExpVal,
-            description: descVal
+        const data = DomainDetails.create(fromJS({
+            options: Map<string, any>({
+                rowId: 1,
+                nameExpression: nameExpVal,
+                description: descVal
+            }),
+            domainKindName: "SampleType",
         }));
 
         const component = (

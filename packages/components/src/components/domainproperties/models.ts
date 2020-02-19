@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import {fromJS, List, Map, Record} from 'immutable';
+import {Domain} from '@labkey/api';
 import {
     ATTACHMENT_RANGE_URI,
     BINARY_RANGE_URI,
@@ -1400,6 +1401,39 @@ export interface IAppDomainHeader {
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
+
+/**
+ * General object to describe a DomainKind
+ *
+ * @property domainDesign The fields found on all items of this domain (e.g., copy per item)
+ * @property options The fields and properties shared by this type (e.g., one copy) ('options' used to match existing LKS api)
+ * @property domainKindName The name of the domainkind type this represents, currently supported can be found in Domain.KINDS
+ */
+export class DomainDetails {
+    domainDesign: DomainDesign;
+    options: Map<string, any>;
+    domainKindName: string;
+
+    static create(rawDesign: Map<string, any> = Map(), domainKindType: string = Domain.KINDS.UNKNOWN): DomainDetails {
+
+        let design;
+        if (rawDesign) {
+            const domainDesign = DomainDesign.create(rawDesign.get('domainDesign'));
+            const domainKindName = rawDesign.get('domainKindName', domainKindType);
+            const options = Map(rawDesign.get('options'));
+            design = {domainDesign, domainKindName, options} as DomainDetails;
+        }
+        else {
+            design = {
+                domainDesign: DomainDesign.create(null),
+                domainKindName: domainKindType,
+                options: Map<string, any>(),
+            } as DomainDetails;
+        }
+
+        return design;
+    }
+}
 
 export class ListModel extends Record({
     domain: undefined,

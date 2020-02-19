@@ -2,8 +2,14 @@ import React from 'react';
 import { Col, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 
-import { createSampleSet, initSampleSetSelects, updateSampleSet } from './actions';
-import { IParentAlias, IParentOption, ISampleSetDetails } from './models';
+import { initSampleSetSelects } from './actions';
+import {
+    IParentAlias,
+    IParentOption,
+    ISampleSetDetails,
+    NEW_SAMPLE_TYPE_DOMAIN_KIND
+} from './models';
+import { LabelOverlay } from '../../components/forms/LabelOverlay';
 import { SampleSetParentAliasRow } from '../../components/samples/SampleSetParentAliasRow';
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../constants';
 import { AddEntityButton } from '../buttons/AddEntityButton';
@@ -20,17 +26,39 @@ import {
     isEntityFormValid,
     isExistingEntity
 } from "../domainproperties/entities/actions";
+import DomainForm from "../domainproperties/DomainForm";
+import {
+    DomainDesign,
+    DomainDetails,
+    DomainField,
+    IDomainField,
+    SAMPLE_TYPE,
+} from "../domainproperties/models"
+import {saveDomain} from "../..";
+import {KINDS} from "../domainproperties/constants";
+import {addDomainField} from "../domainproperties/actions";
 
 const CREATE_ERROR = getActionErrorMessage(`There was a problem creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
 const UPDATE_ERROR = getActionErrorMessage(`There was a problem updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
+const DEFAULT_SAMPLE_FIELD_CONFIG = {
+    required: true,
+    dataType: SAMPLE_TYPE,
+    conceptURI: SAMPLE_TYPE.conceptURI,
+    rangeURI: SAMPLE_TYPE.rangeURI,
+    lookupSchema: 'exp',
+    lookupQuery: 'Materials',
+    lookupType: {...SAMPLE_TYPE},
+    name: 'SampleId',
+} as Partial<IDomainField>;
 
 interface Props {
     onCancel: () => void
     onComplete: (response: any) => void
     beforeFinish?: (formValues: {}) => void
     nameExpressionInfoUrl?: string
-    data?: Map<string, any>
+    data?: DomainDetails
     nameExpressionPlaceholder?: string
+    defaultSampleFieldConfig?: Partial<IDomainField>
 }
 
 interface State {
@@ -39,19 +67,27 @@ interface State {
     parentAliases: Map<string, IParentAlias>
     error: React.ReactNode
     submitting: boolean
+    domain: DomainDesign
+    hasError: boolean,
+    invalidDomainField: string
 }
 
-const NEW_SAMPLE_SET_OPTION : IParentOption = {
+const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
     value: "{{this_sample_set}}"
-};
+} as IParentOption;
+
 
 const IMPORT_PREFIX :string = 'materialInputs/';
+const IMPORT_ALIAS_KEY: string = 'importAliases';
 
 export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
+    private _dirty: boolean;
+
     static defaultProps = {
-        nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}'
+        nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}',
+        defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
     };
 
     constructor(props: Props) {
@@ -62,12 +98,15 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             parentOptions: undefined,
             parentAliases: undefined,
             error: undefined,
-            submitting: false
+            submitting: false,
+
+            domain: undefined,
+            hasError: false,
+            invalidDomainField: undefined
         }
     }
 
-    init(props: Props) {
-        const { data } = this.props;
+    initDetails = (data: Map<string, any>): void => {
         const { parentOptions, formValues } = this.state;
         const isUpdate = isExistingEntity(formValues, data);
         const name = getEntityNameValue(formValues, data);
@@ -77,9 +116,9 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 const options = results.toArray();
 
                 let parentAliases = Map<string, IParentAlias>();
-                if (props.data && props.data.get('importAliases'))
+                if (data && data.get(IMPORT_ALIAS_KEY))
                 {
-                    let importAliases = Map<string,string>(props.data.get('importAliases'));
+                    let importAliases = Map<string,string>(data.get(IMPORT_ALIAS_KEY));
                     importAliases.forEach((val, key) => {
                         const newId = SampleSetDetailsPanel.generateAliasId();
                         parentAliases = parentAliases.set(newId, {
@@ -106,13 +145,17 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 }))
             });
         }
-    }
+    };
 
-    componentWillMount() {
-        this.init(this.props);
-    }
+    componentDidMount = (): void => {
+        const {data = NEW_SAMPLE_TYPE_DOMAIN_KIND} = this.props;
+        const {options = Map<string,any>(), domainDesign = DomainDesign.create(null)} = data;
 
-    onFormChange = (evt: any) => {
+        this.initDetails(options);
+        this.initDomain(domainDesign);
+    };
+
+    onFormChange = (evt: any): void => {
         const id = evt.target.id;
         const value = evt.target.value;
         this.setState((state) => ({
@@ -125,66 +168,100 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     onFinish = () => {
         const { beforeFinish, data } = this.props;
-        const { formValues } = this.state;
-        const name = getEntityNameValue(formValues, data);
-        const nameExpression = getEntityNameExpressionValue(formValues, data);
-        const description = getEntityDescriptionValue(formValues, data);
-        const { importAliasKeys, importAliasValues } = this.getImportAliases();
+        const { formValues, domain, parentAliases } = this.state;
+        const {options = Map<string,any>()} = data;
+
+        const name = getEntityNameValue(formValues, options);
+        const nameExpression = getEntityNameExpressionValue(formValues, options);
+        const description = getEntityDescriptionValue(formValues, options);
 
         this.setSubmitting(true);
+
         if (beforeFinish) {
             beforeFinish(formValues);
         }
 
-        if (isExistingEntity(formValues, data)) {
-            const config = {
-                isUpdate: true,
-                rowId: data.get('rowId'),
-                nameExpression,
-                description,
-                importAliasKeys,
-                importAliasValues,
-            } as ISampleSetDetails;
+        let domainDesign = domain.merge({
+            name: name, //This will be the Sample Type Name
+            description: description,
+        }) as DomainDesign;
 
-            updateSampleSet(config)
-                .then((response) => this.onFinishSuccess(config))
-                .catch((error) => {
-                    console.error(error);
-                    this.onFinishFailure( resolveErrorMessage(error, "sample type", undefined, "update") || UPDATE_ERROR)
-                });
-        }
-        else {
-            const config = {
-                name,
-                nameExpression,
-                description,
-                importAliasKeys,
-                importAliasValues,
-            } as ISampleSetDetails;
+        const details = {
+            name: name,
+            nameExpression: nameExpression,
+            importAliases: this.getImportAliases(),
+        };
 
-            createSampleSet(config)
-                .then((response) => this.onFinishSuccess(config))
-                .catch((error) => {
-                    console.error(error);
-                    this.onFinishFailure( resolveErrorMessage(error, "sample type") ||  CREATE_ERROR);
-                });
+        if (!isExistingEntity(formValues, options))
+        {
+            //Initialize a sampleId column, this is not displayed as part of the designer.
+            const nameCol = {
+                name: 'Name'
+            };
+
+            domainDesign = addDomainField(domainDesign, nameCol);
         }
+
+        saveDomain(domainDesign, KINDS.SAMPLE_TYPE, details, name)
+            .then((savedDomain) => {
+                this.onFinishSuccess(savedDomain);
+            })
+            .catch((errorDomain) => {
+                //TODO need something here.
+                console.error(errorDomain);
+                this.setState(() => ({
+                    domain: errorDomain,
+                    submitting: false
+                }));
+            });
+
+        // if (isExistingEntity(formValues, data)) {
+        //     const config = {
+        //         isUpdate: true,
+        //         rowId: data.get('rowId'),
+        //         nameExpression,
+        //         description,
+        //         importAliasKeys,
+        //         importAliasValues,
+        //     } as ISampleSetDetails;
+        //
+        //     updateSampleSet(config)
+        //         .then((response) => this.onFinishSuccess(config))
+        //         .catch((error) => {
+        //             console.error(error);
+        //             this.onFinishFailure( resolveErrorMessage(error, "sample type", undefined, "update") || UPDATE_ERROR)
+        //         });
+        // }
+        // else {
+        //     const config = {
+        //         name,
+        //         nameExpression,
+        //         description,
+        //         importAliasKeys,
+        //         importAliasValues,
+        //     } as ISampleSetDetails;
+        //
+        //     createSampleSet(config)
+        //         .then((response) => this.onFinishSuccess(config))
+        //         .catch((error) => {
+        //             console.error(error);
+        //             this.onFinishFailure( resolveErrorMessage(error, "sample type") ||  CREATE_ERROR);
+        //         });
+        // }
     };
 
     getImportAliases() {
         const { parentAliases } = this.state;
 
-        let importAliasKeys = [];
-        let importAliasValues = [];
+        let importAliases = {};
 
         if (parentAliases) {
             parentAliases.map((alias: IParentAlias) => {
-                importAliasKeys.push(alias.alias);
-                importAliasValues.push(alias.parentValue.value);
+                importAliases[alias.alias] = alias.parentValue.value;
             });
         }
 
-        return {importAliasKeys, importAliasValues};
+        return importAliases;
     }
 
 
@@ -220,8 +297,10 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     }
 
     isFormValid(): boolean {
-        const { data } = this.props;
+        //TODO Fix this, it is total horked
         const { formValues, parentAliases } = this.state;
+        const { data } = this.props;
+        const {options = Map<string, any>()} = data;
 
         //Check if there are any parent aliases, and if any are invalid (either field blank)
         const hasInvalidAliases =
@@ -229,8 +308,38 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             && parentAliases.size > 0
             && parentAliases.find(SampleSetDetailsPanel.parentAliasInvalid);
 
-        return isEntityFormValid(formValues, data) && !hasInvalidAliases;
+        return isEntityFormValid(formValues, options) && !hasInvalidAliases;
     }
+
+    // getDataValue(key: string, propName: string, defaultValue: any): any {
+    //     const { data } = this.props;
+    //     const { formValues } = this.state;
+    //
+    //     if (key && formValues && formValues[key] !== undefined) {
+    //         return formValues[key] || defaultValue;
+    //     }
+    //     else if (data && data.options) {
+    //         return data.options.get(propName) || defaultValue;
+    //     }
+    //
+    //     return defaultValue;
+    // }
+    //
+    // isExistingSampleSet(): boolean {
+    //     return this.getDataValue(null, 'rowId', undefined) !== undefined;
+    // }
+    //
+    // getSampleSetName(): string {
+    //     return this.getDataValue(FORM_IDS.NAME, 'name', '');
+    // }
+    //
+    // getNameExpressionValue(): string {
+    //     return this.getDataValue(FORM_IDS.NAME_EXPRESSION, 'nameExpression', '');
+    // }
+    //
+    // getDescriptionValue(): string {
+    //     return this.getDataValue(FORM_IDS.DESCRIPTION, 'description', '');
+    // }
 
     addParentAlias = (): void => {
         let {parentAliases} = this.state;
@@ -304,13 +413,155 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         );
     };
 
-    render() {
-        const { onCancel, nameExpressionInfoUrl, nameExpressionPlaceholder, data } = this.props;
-        const { submitting, error, parentOptions, formValues } = this.state;
+    // ############################# Domain Panel methods
+    initDomain = (domain: DomainDesign): void => {
+        this.setState(() => ({
+            domain
+        }));
+    };
+
+    domainChangeHandler = (newDomain: DomainDesign) => {
+        const {defaultSampleFieldConfig} = this.props;
+        let invalidDomainField = undefined;
+        if (newDomain && newDomain.fields) {
+            newDomain.fields.forEach(field => {
+                if (field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase())
+                {
+                    invalidDomainField = field.name
+                }
+            });
+        }
+
+        this._dirty = true;
+        this.setState(() => ({domain: newDomain, invalidDomainField}));
+    };
+
+    renderDomainPanel = () => {
+        const {domain} = this.state;
 
         return (
             <>
-                {error && <Alert>{error}</Alert>}
+                {domain &&
+                <DomainForm
+                        domain={domain}
+                        onChange={this.domainChangeHandler}
+                        showHeader={true}
+                        initCollapsed={true}
+                        collapsible={true}
+                        helpNoun={'sample type'}
+                    // containerTop={STICKY_HEADER_HEIGHT}
+                        useTheme={false}
+                        appPropertiesOnly={true}
+                />
+                }
+            </>
+        );
+    };
+
+// ############################ END Domain Panel region
+//
+//     renderDetailsPanel = () => {
+//         const { nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
+//         const { parentOptions } = this.state;
+//
+//         const moreInfoLink = nameExpressionInfoUrl ?
+//             <p><a target={'_blank'} href={nameExpressionInfoUrl}>More info</a></p> :
+//             '';
+//
+//         return (
+//             <>
+//                 <Panel>
+//                     <Panel.Body>
+//                         <div className={'sample-insert--headerhelp'}>
+//                             Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.
+//                         </div>
+//                         <Form>
+//                             {!this.isExistingSampleSet() && <Row className={'margin-bottom'}>
+//                                 <Col xs={3}>
+//                                     <LabelOverlay
+//                                             isFormsy={false}
+//                                             labelClass={'sample-insert--overlaylabel'}
+//                                             label={'Name'}
+//                                             type={'Text (String)'}
+//                                             description={`The name for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}. Note that this can\'t be changed after ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()} creation.`}
+//                                             required={true}
+//                                             canMouseOverTooltip={true}
+//                                     />
+//                                 </Col>
+//                                 <Col xs={9}>
+//                                     <FormControl
+//                                             id={FORM_IDS.NAME}
+//                                             type="text"
+//                                             placeholder={`Enter a name for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}`}
+//                                             onChange={this.onFormChange}
+//                                     />
+//                                 </Col>
+//                             </Row>}
+//                             <Row className='margin-bottom'>
+//                                 <Col xs={3}>
+//                                     <LabelOverlay
+//                                         label={'Description'}
+//                                         type={'Text (String)'}
+//                                         description={`A short description for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
+//                                         canMouseOverTooltip={true}
+//                                     />
+//                                 </Col>
+//                                 <Col xs={9}>
+//                                 <textarea
+//                                     className="form-control"
+//                                     id={FORM_IDS.DESCRIPTION}
+//                                     onChange={this.onFormChange}
+//                                     value={this.getDescriptionValue()}
+//                                 />
+//                                 </Col>
+//                             </Row>
+//                             <Row className={'margin-bottom'}>
+//                                 <Col xs={3}>
+//                                     <LabelOverlay
+//                                         label={'Naming Pattern'}
+//                                         type={'Text (String)'}
+//                                         description={`Pattern used for generating unique sample IDs for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
+//                                         content={moreInfoLink}
+//                                         canMouseOverTooltip={true}
+//                                     />
+//                                 </Col>
+//                                 <Col xs={9}>
+//                                     <FormControl
+//                                         id={FORM_IDS.NAME_EXPRESSION}
+//                                         type="text"
+//                                         placeholder={nameExpressionPlaceholder}
+//                                         onChange={this.onFormChange}
+//                                         value={this.getNameExpressionValue()}
+//                                     />
+//                                 </Col>
+//                             </Row>
+//                             { this.renderParentAliases() }
+//                             { parentOptions &&
+//                             <Row>
+//                                 <Col xs={3}>
+//                                 </Col>
+//                                 <Col xs={9}>
+//                                     <span>
+//                                         <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias} helperBody={this.renderAddEntityHelper} />
+//                                     </span>
+//                                 </Col>
+//                             </Row>
+//                             }
+//                         </Form>
+//                     </Panel.Body>
+//                 </Panel>
+//             </>
+//         );
+//     };
+
+
+
+    renderDetailsPanel = () => {
+        const {  nameExpressionInfoUrl, nameExpressionPlaceholder, data } = this.props;
+        const { parentOptions, formValues } = this.state;
+
+        return (
+            <>
                 <Panel>
                     <Panel.Body>
                         <div className={'entity-form--headerhelp'}>
@@ -319,27 +570,41 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                         <EntityDetailsForm
                             noun={'Sample Type'}
                             onFormChange={this.onFormChange}
-                            data={data}
+                            data={data.options}
                             formValues={formValues}
                             nameExpressionInfoUrl={nameExpressionInfoUrl}
                             nameExpressionPlaceholder={nameExpressionPlaceholder}
                         />
                         {this.renderParentAliases()}
                         {parentOptions &&
-                            <Row>
-                                <Col xs={3}>
-                                </Col>
-                                <Col xs={9}>
+                        <Row>
+                            <Col xs={3}>
+                            </Col>
+                            <Col xs={9}>
                                     <span>
                                         <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias} helperBody={this.renderAddEntityHelper} />
                                     </span>
-                                </Col>
-                            </Row>
+                            </Col>
+                        </Row>
                         }
                     </Panel.Body>
                 </Panel>
+            </>
+        );
+    };
+
+    render() {
+        // const { onCancel, nameExpressionInfoUrl, nameExpressionPlaceholder, data } = this.props;
+        // const { submitting, error, parentOptions, formValues } = this.state;
+        const { onCancel } = this.props;
+        const { submitting, error, } = this.state;
+        return (
+            <>
+                {error && <Alert>{error}</Alert>}
+                {this.renderDetailsPanel()}
+                {this.renderDomainPanel()}
                 <WizardNavButtons
-                    containerClassName=""
+                    containerClassName="margin-top"
                     cancel={onCancel}
                     finish={true}
                     canFinish={this.isFormValid()}
@@ -349,6 +614,6 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                     isFinishingText={"Saving..."}
                 />
             </>
-        )
+        );
     }
 }

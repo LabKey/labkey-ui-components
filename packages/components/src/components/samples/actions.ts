@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ajax, Filter, Utils } from '@labkey/api';
+import {ActionURL, Ajax, Domain, Filter, Utils} from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 
 import {
@@ -33,6 +33,7 @@ import { getQueryGridModel } from '../../global';
 import { naturalSort } from '../../util/utils';
 import { selectRows } from '../../query/api';
 import { getActionErrorMessage } from "../../util/messaging";
+import {DomainDetails} from "../domainproperties/models";
 
 function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<SampleSetParentType>> {
     return new Promise((resolve) => {
@@ -226,6 +227,28 @@ export function getSampleSet(config: ISampleSetDetails): Promise<any> {
             params: config,
             success: Utils.getCallbackWrapper((response) => {
                 resolve(Map(response));
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}
+
+export function getSampleTypeDetails(query: SchemaQuery): Promise<any> {
+    return new Promise<DomainDetails>((resolve, reject) => {
+        const sampleSetConfig = {
+            containerPath: ActionURL.getContainer(),
+            queryName: query.getQuery(),
+            schemaName: query.getSchema(),
+        } as Domain.GetDomainOptions;
+
+        return Ajax.request({
+            url: buildURL('property', 'getDomainDetails.api'),
+            method: 'GET',
+            params: sampleSetConfig,
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(DomainDetails.create(Map(response)));
             }),
             failure: Utils.getCallbackWrapper((response) => {
                 reject(response);

@@ -193,7 +193,12 @@ import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
-import { deleteSampleSet, getSampleSet, loadSelectedSamples, } from './components/samples/actions';
+import {
+    deleteSampleSet,
+    getSampleSet,
+    getSampleTypeDetails,
+    loadSelectedSamples,
+} from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
@@ -262,6 +267,7 @@ import {
     IAppDomainHeader,
     IBannerMessage,
     IDomainField,
+    DomainDetails,
     IFieldChange,
     SAMPLE_TYPE,
 } from './components/domainproperties/models';
@@ -277,6 +283,7 @@ import {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    KINDS,
 } from './components/domainproperties/constants';
 import { ExpandableContainer } from './components/ExpandableContainer';
 import { PermissionAssignments } from './components/permissions/PermissionAssignments';
@@ -389,6 +396,7 @@ export {
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
     getSampleSet,
+    getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
 
@@ -494,6 +502,7 @@ export {
     IFieldChange,
     IBannerMessage,
     IAppDomainHeader,
+    DomainDetails,
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
@@ -502,6 +511,7 @@ export {
     ListDesignerPanels,
     ListPropertiesPanel,
     ListModel,
+    KINDS,
 
     // Base
     GRID_CHECKBOX_OPTIONS,

@@ -108,6 +108,7 @@ class EntityGridLoader implements IGridLoader {
 }
 
 interface OwnProps {
+    disableMerge?: boolean
     afterEntityCreation?: (entityTypetName, filter, entityCount, actionStr) => void
     getFileTemplateUrl?: (queryInfo: QueryInfo) => string
     location?: Location
@@ -1037,11 +1038,11 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     renderImportEntitiesFromFile() {
-        const { fileSizeLimits } = this.props;
+        const { fileSizeLimits, disableMerge } = this.props;
 
         return (<>
             {this.renderHeader(false)}
-            {this.renderImportOptions()}
+            {!disableMerge && this.renderImportOptions()}
             <FileAttachmentForm
                 showLabel={false}
                 acceptedFormats={".csv, .tsv, .txt, .xls, .xlsx"}

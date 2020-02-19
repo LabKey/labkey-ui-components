@@ -27,14 +27,13 @@ import { Map } from 'immutable';
 storiesOf('EntityInsertPanel', module)
     .addDecorator(withKnobs)
     .add("No target sample set no parent data types", () => {
-        return (
-            <EntityInsertPanel
+        return <EntityInsertPanel
                 entityDataType={EntityDataType.Sample}
                 canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
                 nounSingular={text("Singular noun", "sample")}
                 nounPlural={text("Plural noun", "samples")}
-            />
-        );
+                disableMerge={boolean("Disable merge?", false)}
+            />;
 
     })
     .add("Target sample set without parent selections", () => {

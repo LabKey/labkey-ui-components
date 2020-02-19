@@ -196,6 +196,7 @@ import { SearchResultsModel } from './components/search/models';
 import { deleteSampleSet, getSampleSet, loadSelectedSamples, } from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
+import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel';
@@ -253,7 +254,6 @@ import {
     setDomainFields,
 } from './components/domainproperties/actions';
 import {
-    AssayProtocolModel,
     DomainDesign,
     DomainField,
     IAppDomainHeader,
@@ -264,6 +264,7 @@ import {
 } from './components/domainproperties/models';
 import DomainForm from './components/domainproperties/DomainForm';
 import { DomainFieldsDisplay } from './components/domainproperties/DomainFieldsDisplay';
+import { AssayProtocolModel } from './components/domainproperties/assay/models';
 import { AssayPropertiesPanel } from './components/domainproperties/assay/AssayPropertiesPanel';
 import { AssayDesignerPanels } from './components/domainproperties/assay/AssayDesignerPanels';
 import {
@@ -377,6 +378,7 @@ export {
     SiteUsersGridPanel,
 
     // samples-related
+    DataClassDesigner,
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,

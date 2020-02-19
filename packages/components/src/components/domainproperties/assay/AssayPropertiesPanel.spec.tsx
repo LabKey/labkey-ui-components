@@ -2,7 +2,8 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount } from 'enzyme';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
-import { AssayProtocolModel, DomainDesign } from '../models';
+import { DomainDesign } from '../models';
+import { AssayProtocolModel } from '../assay/models';
 import {
     AutoCopyDataInput,
     BackgroundUploadInput,

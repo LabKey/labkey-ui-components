@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import classNames from "classnames";
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
-
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -27,14 +27,13 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
-
 import {
-    AssayProtocolModel,
     decodeLookup,
     DomainDesign,
     DomainException,
     DomainField,
     DomainFieldError,
+    DomainPanelStatus,
     IBannerMessage,
     IDomainField,
     IFieldChange,
@@ -42,6 +41,7 @@ import {
     QueryInfoLite,
     updateSampleField,
 } from './models';
+import { AssayProtocolModel } from './assay/models';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../util/utils';
 import { processSchemas } from '../base/models/schemas';
@@ -696,4 +696,84 @@ export function getSplitSentence(label: string, lastWord: boolean): string {
             return words.slice(0, words.length -1).join(" ") + " ";
         }
     }
-};
+}
+
+export function getDomainPanelStatus(panelIndex: number, currentIndex: number, visitedPanels: List<number>, firstState: boolean): DomainPanelStatus {
+    if (panelIndex === 0 && firstState) {
+        return 'NONE';
+    }
+    else if (currentIndex === panelIndex) {
+        return 'INPROGRESS';
+    }
+    else if (visitedPanels.contains(panelIndex)) {
+        return 'COMPLETE';
+    }
+
+    return 'TODO';
+}
+
+export function getDomainBottomErrorMessage(exception: string, errorDomains: List<string>, validProperties: boolean, visitedPanels: List<number>): string {
+    if (exception) {
+        return exception;
+    }
+    else if (errorDomains.size > 1 || (errorDomains.size > 0 && !validProperties)) {
+        return "Please correct errors above before saving.";
+    }
+    else if (visitedPanels.size > 0 && !validProperties) {
+        return "Please correct errors in the properties panel before saving.";
+    }
+    else if (errorDomains.size == 1) {
+        return "Please correct errors in " + errorDomains.get(0) + " before saving.";
+    }
+
+    return undefined;
+}
+
+export function getDomainPanelClass(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
+    return classNames('domain-form-panel', {
+        'lk-border-theme-light': !collapsed && controlledCollapse && useTheme,
+        'domain-panel-no-theme': !collapsed && controlledCollapse && !useTheme
+    });
+}
+
+export function getDomainAlertClasses(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
+    return classNames('domain-bottom-alert panel-default', {
+        'lk-border-theme-light': !collapsed && controlledCollapse && useTheme,
+        'domain-bottom-alert-expanded': !collapsed && controlledCollapse && !useTheme,
+        'domain-bottom-alert-top': !collapsed
+    });
+}
+
+// This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
+export function updateDomainPanelClassList(useTheme: boolean, domain: DomainDesign, id?: string) {
+    if (useTheme) {
+        const el = document.getElementById(getDomainPanelHeaderId(domain, id));
+        if (el) {
+            el.classList.remove("panel-heading");
+        }
+    }
+}
+
+export function getDomainPanelHeaderId(domain: DomainDesign, id?: string): string {
+    if (domain && domain.name) {
+        return createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr');
+    }
+
+    return id || 'domain-header';
+}
+
+export function getDomainHeaderName(name?: string, headerTitle?: string, headerPrefix?: string): string {
+    let updatedName = headerTitle || (name ? name : "Fields");
+
+    // optionally trim off a headerPrefix from the name display
+    if (headerPrefix && updatedName.indexOf(headerPrefix + ' ') === 0) {
+        updatedName = updatedName.replace(headerPrefix + ' ', '');
+    }
+
+    // prefer "Results Fields" over "Data Fields"in assay case
+    if (updatedName.endsWith('Data Fields')) {
+        updatedName = updatedName.replace('Data Fields', 'Results Fields');
+    }
+
+    return updatedName;
+}

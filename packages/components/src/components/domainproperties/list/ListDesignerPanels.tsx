@@ -31,7 +31,7 @@ class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
             }, []);
         }
 
-        const {onChangeTemp, keyField} = this.props;
+        const {onKeyFieldChange, keyField} = this.props;
         console.log("SetKeyFieldNameProps", this.props);
         return(
             <Alert>
@@ -52,7 +52,7 @@ class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
                             componentClass="select"
                             name="keyField"
                             placeholder="select"
-                            onChange={(e) => onChangeTemp(e)}
+                            onChange={(e) => onKeyFieldChange(e)}
                             value={keyField}
                             style={{width: "200px"}}
                         >
@@ -124,7 +124,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
     };
 
     onPropertiesChange = (model: ListModel) => {
-        console.log("onPropertiesChange, received Model", model);
+        // console.log("onPropertiesChange, received Model", model);
 
         this.setState(() => ({
             model: model
@@ -176,7 +176,8 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
         return ListModel.isValid(this.state.model);
     }
 
-    // to reviewer: this is rather ungainly. Is there a better way?
+    // to reviewer: this is kind of ungainly. Is there a better way?
+    // TODO: use merge instead
     onKeyFieldChange = (e) => {
         const {name, value} = e.target;
 
@@ -195,8 +196,12 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
             const fieldsWithoutPK = oldFields.set(oldPKIndex, updatedOldKeyField);
             const fields = fieldsWithoutPK.set(value, updatedNewKeyField);
 
-            const domain = state.model.domain.set('fields', fields);
-            const updatedModel = state.model.merge({domain}) as DomainForm;
+            const updatedModel = state.model.merge({
+                domain: state.model.domain.set('fields', fields),
+                keyName: updatedNewKeyField.name,
+                keyType: updatedNewKeyField.dataType.display
+            }) as DomainForm;
+
             return {model: updatedModel, [name]: value};
         }
         , () => {console.log("onKeyFieldChange", this.state)}
@@ -204,8 +209,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
     };
 
     headerRenderer = (config: IAppDomainHeader) => {
-        return <SetKeyFieldName onChangeTemp={this.onKeyFieldChange} keyField={this.state.keyField} {...config}/>;
-
+        return <SetKeyFieldName onKeyFieldChange={this.onKeyFieldChange} keyField={this.state.keyField} {...config}/>;
     };
 
     render(){

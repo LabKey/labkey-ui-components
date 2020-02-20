@@ -1395,7 +1395,7 @@ export interface IAppDomainHeader {
     onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
     onAddField?: (fieldConfig: Partial<IDomainField>) => void
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
-    onChangeTemp? : any
+    onKeyFieldChange? : (any) => void
     keyField?: number
 }
 
@@ -1442,12 +1442,6 @@ export class ListModel extends Record({
     containerPath : undefined,
 }) {
     domain: DomainDesign;
-    entityId : string;
-    createdBy : number;
-    created : number;
-    modifiedBy : number;
-    modified : number;
-    containerId : string;
     name : string;
     description : string;
     lastIndexed : any; //confirm
@@ -1504,6 +1498,7 @@ export class ListModel extends Record({
         if (model.isNew()) {
             return {domainDesign: domain, options, kind: 'IntList'};
         } else {
+            console.log("Attempting to save existing");
             return {domainDesign: domain, options, kind: 'IntList', schemaName: 'lists', queryName: model.name, domainId: model.domainId};
         }
     }

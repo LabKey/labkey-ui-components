@@ -2,7 +2,7 @@ import React from 'react';
 import { Panel, Form, Row, Col } from "react-bootstrap";
 import { Utils } from "@labkey/api";
 import { Alert } from '../../base/Alert';
-import { DomainPanelStatus, ListModel } from "../models";
+import {DomainDesign, DomainPanelStatus, ListModel} from "../models";
 import { AllowableActions, BasicPropertiesFields } from "./ListPropertiesPanelFormElements";
 import { AdvancedSettings } from "./ListPropertiesAdvancedSettings";
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
@@ -95,8 +95,15 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     onChange = (identifier, value) => {
         const {model, onChange} = this.props;
 
+        // Name must be set on Domain as well
+        let newDomain = model.domain; // to reviewer: is this improper immutability?
+        if (identifier == 'name') {
+            newDomain = model.domain.merge({'name': value}) as DomainDesign;
+        }
+
         const newModel = model.merge({
-            [identifier]: value
+            [identifier]: value,
+            domain: newDomain
         }) as ListModel;
 
         onChange(newModel);

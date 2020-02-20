@@ -1491,15 +1491,20 @@ export class ListModel extends Record({
     static serialize(model: ListModel): any {
         let domain = DomainDesign.serialize(model.domain);
         let options = model.merge({domain}).toJS();
-
-
-        delete options.domain;
-
+        
         if (model.isNew()) {
-            return {domainDesign: domain, options, kind: 'IntList'};
+            let kind;
+            if (model.keyType === "Varchar") {
+                kind = "VarList"
+            } else if (model.keyType === "Integer" || model.keyType === "AutoIncrementInteger") {
+                kind = "IntList"
+            }
+
+            delete options.domain;
+            return {domainDesign: domain, options, kind: kind};
         } else {
-            console.log("Attempting to save existing");
-            return {domainDesign: domain, options, kind: 'IntList', schemaName: 'lists', queryName: model.name, domainId: model.domainId};
+            delete options.domain;
+            return {domainDesign: domain, options, schemaName: 'lists', queryName: model.name, domainId: model.domainId};
         }
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {ListPropertiesPanel} from "./ListPropertiesPanel";
-import {IAppDomainHeader, IDomainField, ListModel} from "../models";
+import {DomainField, IAppDomainHeader, IDomainField, ListModel} from "../models";
 import DomainForm from "../DomainForm";
 import {Alert, Button, Col, FormControl, Row} from "react-bootstrap";
 import {
@@ -51,11 +51,13 @@ class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
                         <FormControl
                             componentClass="select"
                             name="keyField"
-                            placeholder="select"
                             onChange={(e) => onKeyFieldChange(e)}
                             value={keyField}
                             style={{width: "200px"}}
                         >
+                            {/*<option disabled value={-2}>*/}
+                            {/*    Select a field from the list*/}
+                            {/*</option>*/}
                             <option value={-1}>
                                 Auto integer key
                             </option>
@@ -191,15 +193,32 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
 
             // Toggle on primary key on newly selected field
             const newKeyField = oldFields.get(value);
-            const updatedNewKeyField = newKeyField.set('isPrimaryKey', true);
+            const updatedNewKeyField = newKeyField.merge({isPrimaryKey: true, required:true});
 
             const fieldsWithoutPK = oldFields.set(oldPKIndex, updatedOldKeyField);
             const fields = fieldsWithoutPK.set(value, updatedNewKeyField);
 
+            // if chosen key field is 'auto integer,' add corresponding field to fields TODO
+            if (value == -1) {
+                const autoIntegerField = DomainField.create({
+                    name: 'Auto increment key (placeholder)',
+                    required: true,
+                    dataType: "Integer"
+                });
+
+                console.log('autoIntegerField', autoIntegerField);
+            }
+
+            let keyType;
+            if (updatedNewKeyField.dataType.name === 'int') {
+                keyType = "Integer"
+            } else if (updatedNewKeyField.dataType.name === 'string') {
+                keyType = "Varchar"
+            }
             const updatedModel = state.model.merge({
                 domain: state.model.domain.set('fields', fields),
                 keyName: updatedNewKeyField.name,
-                keyType: updatedNewKeyField.dataType.display
+                keyType: keyType
             }) as DomainForm;
 
             return {model: updatedModel, [name]: value};

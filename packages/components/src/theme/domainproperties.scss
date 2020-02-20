@@ -614,10 +614,11 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   margin-top: -4px;
-  margin-bottom: 10px;
+  margin-bottom: 0; // to reviewer: Had to make these changes to make the alert look normal.
+  border-width: 0;  // will the changes break other cases?
   cursor: pointer;
   height: 40px;
-  padding-top: .5%;
+  padding-top: 10px;
   border-color: inherit;
 }
 

@@ -18,7 +18,6 @@ describe('FileTree', () => {
         return waitForLoad(tree).then(() => {
             const node = tree
                 .childAt(0)
-                .childAt(0)
                 .dive()
                 .childAt(0)
                 .dive()

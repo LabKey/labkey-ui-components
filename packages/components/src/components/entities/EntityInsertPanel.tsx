@@ -137,13 +137,7 @@ interface StateProps {
 }
 
 export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
-
-    static defaultProps = {
-        nounSingular: "sample",
-        nounPlural: "samples",
-        importHelpLinkNode: helpLinkNode(IMPORT_SAMPLE_SETS_TOPIC, "Import Sample Types")
-    };
-
+    
     private readonly capNounSingular;
     private readonly capNounPlural;
     private readonly capIdsText;

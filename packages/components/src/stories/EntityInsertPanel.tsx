@@ -21,7 +21,7 @@ import { Location } from '../util/URL';
 import { EntityInsertPanel, ParentEntityMetadata } from '../components/entities/EntityInsertPanel';
 
 import './stories.scss';
-import { EntityDataType } from '..';
+import { EntityDataType, helpLinkNode } from '..';
 import { OrderedMap } from 'immutable';
 
 storiesOf('EntityInsertPanel', module)
@@ -45,7 +45,10 @@ storiesOf('EntityInsertPanel', module)
         return <EntityInsertPanel
             entityDataType={EntityDataType.Sample}
             canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
+            nounSingular={text("Singular noun", "sample")}
+            nounPlural={text("Plural noun", "samples")}
             location={location}
+            importHelpLinkNode={helpLinkNode("help", "help text")}
             parentDataTypes={OrderedMap<EntityDataType, ParentEntityMetadata>({
                 [EntityDataType.Sample]: {
                     nounSingular: "Parent",
@@ -64,7 +67,10 @@ storiesOf('EntityInsertPanel', module)
         return <EntityInsertPanel
             entityDataType={EntityDataType.Sample}
             canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
+            nounSingular={text("Singular noun", "sample")}
+            nounPlural={text("Plural noun", "samples")}
             location={location}
+            importHelpLinkNode={helpLinkNode("help", "help text")}
             parentDataTypes={OrderedMap<EntityDataType, ParentEntityMetadata>({
                 [EntityDataType.Sample]: {
                     nounSingular: "Parent",

@@ -15,7 +15,7 @@
  */
 import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
-import { AssayProtocolModel } from '../components/domainproperties/models';
+import { AssayProtocolModel } from '../components/domainproperties/assay/models';
 import { fetchProtocol } from '../components/domainproperties/actions';
 
 import { getQueryDetails, selectRows } from '../query/api';

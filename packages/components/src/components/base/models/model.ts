@@ -269,6 +269,7 @@ export class QueryColumn extends Record({
     required: undefined,
     // selectable: undefined,
     shortCaption: undefined,
+    addToDisplayView: undefined,
     shownInDetailsView: undefined,
     shownInInsertView: undefined,
     shownInUpdateView: undefined,
@@ -330,6 +331,7 @@ export class QueryColumn extends Record({
     required: boolean;
     // selectable: boolean;
     shortCaption: string;
+    addToDisplayView: boolean;
     shownInDetailsView: boolean;
     shownInInsertView: boolean;
     shownInUpdateView: boolean;
@@ -788,8 +790,17 @@ export class QueryGridModel extends Record({
                 } else {
                     console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
                 }
+
+                if (this.view === ViewInfo.DETAIL_NAME) {
+                    // Issue 39719:
+                    // We return here because we should never ever apply any filters other than on the PKCol for the
+                    // details view. If we were to apply any other filters then it's possible that we'll filter out the
+                    // PK we want, which our clients render as "Not Found", and/or can lead to other NPE errors in
+                    // our clients.
+                    return filterList;
+                }
             }
-            // if a keyValue if provided, we may still have baseFilters to apply in the case that the default
+            // if a keyValue is provided, we may still have baseFilters to apply in the case that the default
             // filter on a query view is a limiting filter and we want to expand the set of values returned (e.g., for assay runs
             // that may have been replaced)
             return filterList.concat(this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray)).toList();
@@ -1157,8 +1168,9 @@ export class QueryInfo extends Record({
         };
 
         let viewInfo = this.getView(view);
+        let displayColumns = List<QueryColumn>();
         if (viewInfo) {
-            return viewInfo.columns
+            displayColumns = viewInfo.columns
                 .filter(colFilter)
                 .reduce((list, col) => {
                     let c = this.getColumn(col.fieldKey);
@@ -1177,6 +1189,19 @@ export class QueryInfo extends Record({
                     console.warn(`Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`);
                     return list;
                 }, List<QueryColumn>());
+
+            // add addToDisplayView columns
+            const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
+                return list.push(col.fieldKey.toLowerCase());
+            }, List<string>());
+            this.columns.forEach((col) => {
+                if (col.fieldKey && col.addToDisplayView && !columnFieldKeys.includes(col.fieldKey.toLowerCase())) {
+                    if (!lowerOmit || (lowerOmit.size > 0 && !lowerOmit.includes(col.fieldKey.toLowerCase())))
+                        displayColumns = displayColumns.push(col);
+                }
+            });
+
+            return displayColumns;
         }
 
         console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');

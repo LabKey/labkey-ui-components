@@ -1316,18 +1316,7 @@ export class QueryInfo extends Record({
     }
 
     getIconURL(): string {
-        let iconURL = this.iconURL;
-
-        // TODO better support for iconURL that doesn't come from queryInfo metadata
-        if (iconURL === 'default') {
-            if (this.schemaName === 'samples') {
-                iconURL = 'samples';
-            }
-            console.log(this.toJS());
-            // TODO when we have a category, use that to choose a sources icon here
-        }
-
-        return iconURL;
+        return this.iconURL;
     }
 }
 

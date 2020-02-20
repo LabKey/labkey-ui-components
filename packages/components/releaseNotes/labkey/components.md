@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * Use dataclass category field for choosing the icon to display for search results
+* Remove iconURL workaround and rely on server side QueryIconURLProvider instead
 
 ### version 0.25.2
 *Released*: 19 February 2020

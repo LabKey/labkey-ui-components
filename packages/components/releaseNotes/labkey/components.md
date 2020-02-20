@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.25.2
+*Released*: 19 February 2020
+* Add addToDisplayView to QueryColumn to allow defining additional display columns
+
+### version 0.25.1
+*Released*: 19 February 2020
+* Fix Issue 39719
+    * No longer apply any base filters if a QueryGridModel has a keyValue and the view name is \~\~DETAILS\~\~
+
 ### version 0.25.0
 *Released*: 18 February 2020
 * Item 6835: Changes to support Data Class Designer in Sample Manager and LKS

@@ -38,7 +38,8 @@ export const EXP_TABLES = {
     PROTOCOLS:              SchemaQuery.create(EXP_SCHEMA, 'Protocols'),
     SCHEMA:                 EXP_SCHEMA,
     SAMPLE_SETS:            SchemaQuery.create(EXP_SCHEMA, 'SampleSets'),
-    SAMPLE_SET_HEAT_MAP:    SchemaQuery.create(EXP_SCHEMA, 'SampleSetHeatMap')
+    SAMPLE_SET_HEAT_MAP:    SchemaQuery.create(EXP_SCHEMA, 'SampleSetHeatMap'),
+    SOURCE_TYPE_HEAT_MAP:   SchemaQuery.create(EXP_SCHEMA, 'SourceTypeHeatMap')
 };
 
 // CORE

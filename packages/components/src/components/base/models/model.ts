@@ -1323,6 +1323,7 @@ export class QueryInfo extends Record({
             if (this.schemaName === 'samples') {
                 iconURL = 'samples';
             }
+            console.log(this.toJS());
             // TODO when we have a category, use that to choose a sources icon here
         }
 

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Use dataclass category field for choosing the icon to display for search results
+
 ### version 0.25.2
 *Released*: 19 February 2020
 * Add addToDisplayView to QueryColumn to allow defining additional display columns

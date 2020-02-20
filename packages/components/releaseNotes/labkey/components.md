@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Re-parameterize and rename SampleInsertPanel to EntityInsertPanel for use with Data classes as well
 * Add disabled and title optional properties for AddEntityButton
 
+### version 0.25.2
+*Released*: 19 February 2020
+* Add addToDisplayView to QueryColumn to allow defining additional display columns
+
 ### version 0.25.1
 *Released*: 19 February 2020
 * Fix Issue 39719

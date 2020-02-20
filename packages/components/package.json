@@ -68,8 +68,7 @@
     "react-select": "1.0.0-rc.10",
     "react-sticky": "6.0.3",
     "reactn": "2.2.4",
-    "vis": "4.21.0",
-    "yarn": "^1.22.0"
+    "vis": "4.21.0"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",

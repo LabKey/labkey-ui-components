@@ -91,7 +91,7 @@ import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files
 import { FilesListing } from './components/files/FilesListing';
 import { FilesListingForm } from './components/files/FilesListingForm'
 import { FileAttachmentEntry } from './components/files/FileAttachmentEntry'
-import { WebDavFile, getWebDavFiles, uploadWebDavFile, uploadWebDavFiles } from './components/files/WebDav';
+import { WebDavFile, getWebDavFiles, uploadWebDavFile } from './components/files/WebDav';
 import { FileTree } from './components/files/FileTree';
 import { Notification } from './components/notifications/Notification';
 import { createNotification } from './components/notifications/actions';
@@ -544,7 +544,6 @@ export {
     WebDavFile,
     getWebDavFiles,
     uploadWebDavFile,
-    uploadWebDavFiles,
     AddEntityButton,
     RemoveEntityButton,
     Alert,

@@ -91,9 +91,10 @@ const CHECK_ID_PREFIX = 'filetree-check-';
 const EMPTY_FILE_NAME = '*empty';
 const LOADING_FILE_NAME = '*loading';
 
-const Header = (props): React.ReactFragment => {
+const Header = (props) => {
     const { style, onSelect, node, customStyles, checked, handleCheckbox } = props;
     const iconType = node.children ? 'folder' : 'file-text';
+    const icon = iconType === 'folder' ? faFolder : faFileAlt;
 
     if (node.id.endsWith('|' + EMPTY_FILE_NAME)) {
         return ( <div className="filetree-empty-directory">No Files Found</div> );
@@ -104,7 +105,7 @@ const Header = (props): React.ReactFragment => {
             <div className="filetree-empty-directory">
                 <LoadingSpinner />
             </div>
-        )
+        );
     }
 
     // Do not always want to toggle directories when clicking a check box
@@ -114,23 +115,19 @@ const Header = (props): React.ReactFragment => {
 
     return (
         <span className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node')}>
-                    <Checkbox
-                        id={CHECK_ID_PREFIX + node.id}
-                        checked={checked.contains(node.id)}
-                        onChange={handleCheckbox}
-                        onClick={checkClick}
-                    />
-                    <div style={style.base} onClick={onSelect}>
-                        <div style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}>
-                            {iconType === 'folder' ? (
-                                <FontAwesomeIcon icon={faFolder} className="filetree-folder-icon" />
-                            ) : (
-                                <FontAwesomeIcon icon={faFileAlt} className="filetree-folder-icon" />
-                            )}
-                            {node.name}
-                        </div>
-                    </div>
-                </span>
+            <Checkbox
+                id={CHECK_ID_PREFIX + node.id}
+                checked={checked}
+                onChange={handleCheckbox}
+                onClick={checkClick}
+            />
+            <div style={style.base} onClick={onSelect}>
+                <div style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}>
+                    <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
+                    {node.name}
+                </div>
+            </div>
+        </span>
     );
 };
 
@@ -142,7 +139,7 @@ interface FileTreeProps {
 interface FileTreeState {
     cursor: any
     checked: List<string>
-    data: any
+    data: Array<any>
     error?: string
     loading: boolean  // Only used for testing
 }
@@ -195,10 +192,9 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             });
     }
 
-    headerHandler = (props): React.ReactFragment => {
+    headerDecorator = (props) => {
         const { checked } = this.state;
-
-        return Header({...props, checked, handleCheckbox: this.handleCheckbox, });
+        return <Header {...props} checked={checked.contains(props.node.id)} handleCheckbox={this.handleCheckbox} />;
     };
 
     getNodeIdFromId = (id: string): string => {
@@ -211,7 +207,9 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     };
 
     getDataNode = (id: string, node: any): any => {
-        if (node.id === id) return node;
+        if (node.id === id) {
+            return node;
+        }
 
         if (node.children) {
             // First get which child is the correct descendant path
@@ -219,7 +217,9 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                 return id.startsWith(child.id);
             });
 
-            if (childPath && childPath.length > 0) return this.getDataNode(id, childPath[0]);
+            if (childPath && childPath.length > 0) {
+                return this.getDataNode(id, childPath[0]);
+            }
         }
 
         return undefined;
@@ -339,6 +339,10 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             });
     };
 
+    // This function is called from within the treebeard package. The node that is passed back is a pointer to a specific
+    // node in this.state.data. This function is updating that node which is directly updating this.state.data, then
+    // we make a clone of this.state.data for setState.  Directly manipulating anything in this.state is NOT a recommended React
+    // pattern.  This is done in this case to work with the treebeard package, but should not be copied elsewhere.
     onToggle = (node: any, toggled: boolean, callback?: () => any): void => {
         const { cursor, data } = this.state;
 
@@ -378,7 +382,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                     <Treebeard
                         data={data}
                         onToggle={this.onToggle}
-                        decorators={{ ...decorators, Header: this.headerHandler }}
+                        decorators={{ ...decorators, Header: this.headerDecorator }}
                         style={customStyle}
                     />
                 )}

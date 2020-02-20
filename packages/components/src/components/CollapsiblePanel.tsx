@@ -62,7 +62,7 @@ export class CollapsiblePanel extends PureComponent<CollapsiblePanelProps, Colla
         const { collapsed } = this.state;
 
         return (
-            <Panel expanded={!collapsed}>
+            <Panel expanded={!collapsed} onToggle={() => {}}>
                 <Panel.Heading onClick={this.togglePanel} className="collapsible-panel-header">
                     {this.renderHeaderContent()}
                 </Panel.Heading>

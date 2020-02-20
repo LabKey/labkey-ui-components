@@ -122,30 +122,3 @@ export function uploadWebDavFile(
         });
     });
 }
-
-export function uploadWebDavFiles(
-    files: Map<string, File>,
-    containerPath: string,
-    directory?: string,
-    createIntermediates?: boolean,
-    onSuccess?: () => any,
-    onFailure?: (any) => any
-): void {
-    if (files.size === 0) {
-        return;
-    }
-
-    // DavController does not support multiple file uploads, so we do one at a time.
-    const promises = files.reduce((uploads, file) => {
-        uploads.push(uploadWebDavFile(file, containerPath, directory, createIntermediates));
-        return uploads;
-    }, []);
-
-    Promise.all(promises)
-        .then(() => {
-            if (onSuccess) onSuccess();
-        })
-        .catch(reason => {
-            if (onFailure) onFailure(reason);
-        });
-}

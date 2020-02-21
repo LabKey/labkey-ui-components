@@ -129,11 +129,6 @@ export class ListModel extends Record({
         )
     }
 
-    // TODO is this needed?
-    hasValidDomain(): boolean {
-        return false;
-    }
-
     getOptions(): Object {
         let options = this.toJS();
         delete options.domain;

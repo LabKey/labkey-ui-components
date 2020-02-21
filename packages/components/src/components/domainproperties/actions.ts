@@ -60,6 +60,7 @@ function cache<T>(prefix: string, key: string, miss: () => Promise<T>): Promise<
     return promise;
 }
 
+// TODO move these to lookups dir
 export function fetchContainers(): Promise<List<Container>> {
     return cache<List<Container>>('container-cache', 'containers', () => (
         new Promise((resolve) => {

@@ -63,7 +63,6 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
         let altText;
         if (data) {
             if (data.getIn(['dataClass', 'name'])) {
-                // TODO this should be based off of the data class categories when available
                 iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
             }
             else if (data.getIn(['sampleSet', 'name'])) {

@@ -54,6 +54,22 @@ export function getDataDeleteConfirmationData(selectionKey: string, rowIds?: Arr
     return getDeleteConfirmationData(selectionKey, EntityDataType.DataClass, rowIds);
 }
 
+function getSelectedParents(schemaQuery: SchemaQuery, filterArray: Array<Filter.IFilter>) {
+    return new Promise((resolve, reject) => {
+        return selectRows({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            columns: 'LSID,Name,RowId',
+            filterArray
+        }).then((response) => {
+            resolve(resolveEntityParentTypeFromIds(schemaQuery, response));
+        }).catch((reason) => {
+            console.error("There was a problem getting the selected parents' data", reason);
+            reject(reason);
+        });
+    });
+}
+
 /**
  * We have either an initialParents array, and determine the schemaQuery from the first id in that list
  * or a selection key and determine the schema query from parsing the selection key.  In any case, this
@@ -69,31 +85,12 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
             const queryGridModel = getQueryGridModel(selectionKey);
 
             if (queryGridModel && queryGridModel.selectedLoaded) {
-                return selectRows({
-                    schemaName: schemaQuery.schemaName,
-                    queryName: schemaQuery.queryName,
-                    columns: 'LSID,Name,RowId',
-                    filterArray: [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)]
-                }).then((response) => {
-                    resolve(resolveEntityParentTypeFromIds(schemaQuery, response));
-                }).catch((reason) => {
-                    console.error("There was a problem getting the selected parents' data", reason);
-                    reject(reason);
-                });
+                return getSelectedParents(schemaQuery, [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)]);
             }
             else {
+
                 getSelected(selectionKey).then((selectionResponse) => {
-                    return selectRows({
-                        schemaName: schemaQuery.schemaName,
-                        queryName: schemaQuery.queryName,
-                        columns: 'LSID,Name,RowId',
-                        filterArray: [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)]
-                    }).then((response) => {
-                        resolve(resolveEntityParentTypeFromIds(schemaQuery, response));
-                    }).catch((reason) => {
-                        console.error("There was a problem getting the selected parents' data ", reason);
-                        reject(reason);
-                    });
+                    return getSelectedParents(schemaQuery, [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)]);
                 }).catch(() => {
                     console.warn('Unable to parse selectionKey', selectionKey);
                     resolve(List<EntityParentType>());
@@ -104,17 +101,7 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
             const parent = initialParents[0];
             const [schema, query, value] = parent.toLowerCase().split(':');
 
-            return selectRows({
-                schemaName: schema,
-                queryName: query,
-                columns: 'LSID,Name,RowId',
-                filterArray: [Filter.create('RowId', value)]
-            }).then((response) => {
-                resolve(resolveEntityParentTypeFromIds(SchemaQuery.create(schema, query), response));
-            }).catch((reason) => {
-                console.error("There was a problem getting the specified initial parents' data", reason);
-                reject(reason);
-            });
+            getSelectedParents(SchemaQuery.create(schema, query), [Filter.create('RowId', value)]);
         }
         else {
             resolve(List<EntityParentType>());
@@ -159,10 +146,8 @@ function extractFromRow(row: Map<string, any>): IEntityTypeOption {
 
 function getChosenParentData(model: EntityIdCreationModel, parentSchemaQueries: Map<string, SchemaQuery>, allowParents: boolean) : Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
-        let entityParents = Map<string, List<EntityParentType>>();
-        parentSchemaQueries.forEach((schemaQuery) => {
-            entityParents = entityParents.set(schemaQuery.queryName, List<EntityParentType>());
-        });
+        let entityParents = EntityIdCreationModel.getEmptyEntityParents(
+            parentSchemaQueries.reduce((names, schemaQuery) => names.push(schemaQuery.queryName), List<string>()));
         if (allowParents) {
             const parentSchemaNames = parentSchemaQueries.keySeq();
             initParents(model.originalParents, model.selectionKey).then(
@@ -204,6 +189,7 @@ function getChosenParentData(model: EntityIdCreationModel, parentSchemaQueries: 
 
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
+// TODO will need an extra parameter for filtering by category
 function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: string) : Promise<Map<string, List<any>>> {
     return new Promise((resolve, reject) => {
         selectRows({

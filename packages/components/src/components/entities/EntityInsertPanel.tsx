@@ -80,9 +80,7 @@ import { Link } from "react-router";
 import { resolveErrorMessage } from '../../util/messaging';
 import { getEntityTypeData } from './actions';
 
-const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
-
-// metadata used for rendering the "add entity" buttons in Entity
+// metadata used for rendering the "add entity" buttons in EntityInsertPanel
 export interface ParentEntityMetadata {
     nounSingular: string,
     descriptionSingular: string,
@@ -137,7 +135,7 @@ interface StateProps {
 }
 
 export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
-    
+
     private readonly capNounSingular;
     private readonly capNounPlural;
     private readonly capIdsText;
@@ -347,7 +345,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }) as EntityIdCreationModel;
         if (!selectedOption) {
             updatedModel = updatedModel.merge({
-                entityParents: Map<string, List<EntityParentType>>()
+                entityParents: insertModel.getClearedEntityParents()
             }) as EntityIdCreationModel;
         }
 
@@ -626,23 +624,6 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             gridShowError(queryGridModel, {
                 message
             });
-        });
-    };
-
-    deriveEntityIds = (count: number) => {
-        const { insertModel } = this.state;
-        this.setSubmitting(true);
-        insertModel.deriveEntities(count, this.props.entityDataType).then((result: GenerateEntityResponse) => {
-            this.setSubmitting(false);
-            if (this.props.onDataChange) {
-                this.props.onDataChange(false);
-            }
-            if (this.props.afterEntityCreation) {
-                this.props.afterEntityCreation(insertModel.getTargetEntityTypeName(), result.getFilter(), result.data.materialOutputs.length, 'created');
-            }
-        }).catch((reason) => {
-            this.setSubmitting(false);
-            gridShowError(this.getQueryGridModel(), resolveErrorMessage(reason, count > 1 ? this.props.nounPlural : this.props.nounSingular));
         });
     };
 

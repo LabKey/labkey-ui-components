@@ -249,6 +249,20 @@ export class EntityIdCreationModel extends Record({
         throw new Error('Invalid inputColumn.');
     }
 
+    static getEmptyEntityParents(queryNames: List<string>) : Map<string, List<EntityParentType>> {
+        let entityParents = Map<string, List<EntityParentType>>();
+        queryNames.forEach((queryName) => {
+            entityParents = entityParents.set(queryName, List<EntityParentType>());
+        });
+        return entityParents;
+    }
+
+    getClearedEntityParents() : Map<string, List<EntityParentType>> {
+        return this.entityParents.reduce((clearedParents, parents, key) => {
+            return clearedParents.set(key, List<EntityParentType>());
+        }, Map<string, List<EntityParentType>>());
+    }
+
     getParentColumns(uniqueFieldKey: string) : OrderedMap<string, QueryColumn> {
         let columns = OrderedMap<string, QueryColumn>();
         this.entityParents.forEach((parentList) => {
@@ -410,34 +424,6 @@ export class EntityIdCreationModel extends Record({
                 })
             ))
             .toArray();
-    }
-
-    // Make the call to the Derive API
-    deriveEntities(entityOutputCount: number, entityDataType: EntityDataType): Promise<GenerateEntityResponse> {
-        const { dataInputs, materialInputs, materialOutputs,  materialDefault, targetType } = this.getSaveValues();
-
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: buildURL('experiment', 'derive.api'),
-                jsonData: {
-                    dataInputs,
-                    materialInputs,
-                    targetSampleSet: entityDataType === EntityDataType.Sample ? targetType : undefined,
-                    targetDataClass: entityDataType === EntityDataType.DataClass ? targetType : undefined,
-                    materialOutputCount : entityDataType === EntityDataType.Sample ? entityOutputCount : undefined,
-                    dataOutputCount : entityDataType === EntityDataType.DataClass ? entityOutputCount : undefined,
-                    materialOutputs,
-                    materialDefault
-                },
-                success: Utils.getCallbackWrapper((response) => {
-                    resolve(new GenerateEntityResponse(response));
-                }),
-                failure: Utils.getCallbackWrapper((error) => {
-                    console.error(error);
-                    reject(error);
-                })
-            });
-        });
     }
 
     getSchemaQuery() {

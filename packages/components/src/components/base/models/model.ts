@@ -470,6 +470,7 @@ export interface IQueryGridModel {
     showViewSelector?: boolean
     hideEmptyViewSelector?: boolean
     showChartSelector?: boolean
+    showExport?: boolean
     hideEmptyChartSelector?: boolean
     sortable?: boolean
     sorts?: string
@@ -544,6 +545,7 @@ export class QueryGridModel extends Record({
     showViewSelector: true,
     hideEmptyViewSelector: false,
     showChartSelector: true,
+    showExport: true,
     hideEmptyChartSelector: false,
     sortable: true,
     sorts: undefined,
@@ -587,6 +589,7 @@ export class QueryGridModel extends Record({
     showViewSelector: boolean;
     hideEmptyViewSelector: boolean;
     showChartSelector: boolean;
+    showExport: boolean;
     hideEmptyChartSelector: boolean;
     sortable: boolean;
     sorts: string;

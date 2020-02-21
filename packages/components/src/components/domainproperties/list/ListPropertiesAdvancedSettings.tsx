@@ -4,7 +4,6 @@ import {LabelHelpTip, SelectInput} from "../../..";
 import {faAngleRight, faAngleDown} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {CheckBox} from "./ListPropertiesPanelFormElements"
-import {Record} from "immutable";
 
 // TODO Must finalize
 class DisplayTitle extends React.PureComponent<any, any> {

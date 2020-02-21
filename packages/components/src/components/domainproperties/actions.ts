@@ -15,7 +15,7 @@
  */
 import classNames from "classnames";
 import { List, Map } from 'immutable';
-import {ActionURL, Ajax, Domain, Query, Security, Utils} from '@labkey/api';
+import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -39,8 +39,7 @@ import {
     IFieldChange,
     PROP_DESC_TYPES,
     QueryInfoLite,
-    updateSampleField,
-    ListModel
+    updateSampleField
 } from './models';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../util/utils';
@@ -575,38 +574,6 @@ function getWarningBannerMessage (domain: any) : any {
     return undefined;
 }
 
-export function fetchListDesign(domainId = null) {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('property', 'getDomainDetails.api', {
-                domainId: domainId
-            }),
-            success: Utils.getCallbackWrapper((data) => {
-                resolve(ListModel.create(data));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-            })
-        })
-    });
-}
-
-export function createListDesign() {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('list', 'GetListProperties'),
-            method: 'GET',
-            scope: this,
-            success: Utils.getCallbackWrapper((data) => {
-                resolve(ListModel.create(null, data));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-            })
-        });
-    })
-}
-
 export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>): DomainDesign {
     return domain.merge({
         fields: fields.map((field) => {
@@ -622,83 +589,6 @@ export function setDomainException(domain: DomainDesign, exception: DomainExcept
     const exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exception);
     const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
     return domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exception)) as DomainDesign;
-}
-
-export function setListDomainException(model: ListModel, exception: DomainException): ListModel {
-    let updatedModel = model;
-
-    if (exception.domainName) {
-        updatedModel = model.set('domains', model.domain) as ListModel;
-    } else {
-        updatedModel = model.set('exception', exception.exception) as ListModel;
-    }
-    return updatedModel;
-}
-
-export function saveListDesign(model: ListModel): Promise<ListModel> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('property', 'saveDomain.api'),
-            jsonData: ListModel.serialize(model),
-            success: Utils.getCallbackWrapper((response) => {
-                console.log("existingList save - success");
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                // todo
-                // let badModel = model;
-                //
-                // // Check for validation exception
-                // const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                // if (exception) {
-                //     if (exception.domainName) {
-                //         badModel = setAssayDomainException(model, exception);
-                //     }
-                //     else {
-                //         badModel = model.set("exception", exception.exception) as AssayProtocolModel;
-                //     }
-                // } else {
-                //     badModel = model.set("exception", error) as AssayProtocolModel;
-                // }
-                // reject(badModel);
-            }, this, false)
-        });
-    });
-}
-
-export function newListDesign(model: ListModel): Promise<ListModel> {
-    console.log();
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('property', 'CreateDomain.api'),
-            method: 'POST',
-            jsonData: ListModel.serialize(model),
-            success: Utils.getCallbackWrapper((response) => {
-                console.log("newList save - success");
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-
-            }, this, false)
-        });
-    });
-}
-
-
-export function getValidPublishTargets(): Promise<List<Container>> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('assay', 'getValidPublishTargets.api'),
-            method: 'POST',
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(List<Container>(response.containers.map((container) => new Container(container))));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-            })
-        })
-    });
 }
 
 export function getSplitSentence(label: string, lastWord: boolean): string {

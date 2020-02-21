@@ -2,7 +2,7 @@ import React from 'react';
 import { Panel, Form, Row, Col } from "react-bootstrap";
 import { Utils } from "@labkey/api";
 import { Alert } from '../../base/Alert';
-import {DomainDesign, DomainPanelStatus, ListModel} from "../models";
+import { DomainDesign, DomainPanelStatus } from "../models";
 import { AllowableActions, BasicPropertiesFields } from "./ListPropertiesPanelFormElements";
 import { AdvancedSettings } from "./ListPropertiesAdvancedSettings";
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
@@ -10,6 +10,7 @@ import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
 import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
 import { HelpTopicURL } from "../HelpTopicURL";
+import { ListModel } from "./models";
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';

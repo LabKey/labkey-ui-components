@@ -1,19 +1,14 @@
 import React from 'react';
-import {ListPropertiesPanel} from "./ListPropertiesPanel";
-import {DomainDesign, DomainField, IAppDomainHeader, IDomainField, ListModel} from "../models";
-import DomainForm from "../DomainForm";
-import {Alert, Button, Col, FormControl, Row} from "react-bootstrap";
-import {
-    getDomainBottomErrorMessage,
-    getDomainHeaderName,
-    getDomainPanelStatus,
-    newListDesign,
-    saveListDesign
-} from "../actions";
-import {importData, LabelHelpTip} from "../../..";
+import { Alert, Button, Col, FormControl, Row } from "react-bootstrap";
 import { List } from "immutable";
-import { SEVERITY_LEVEL_ERROR } from "../constants";
 import {ActionURL} from "@labkey/api";
+import { ListPropertiesPanel } from "./ListPropertiesPanel";
+import { DomainDesign, DomainField, IAppDomainHeader, IDomainField } from "../models";
+import DomainForm from "../DomainForm";
+import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveDomain } from "../actions";
+import { LabelHelpTip, importData } from "../../..";
+import { SEVERITY_LEVEL_ERROR } from "../constants";
+import { ListModel } from "./models";
 
 // todo: give this its own file
 class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
@@ -103,8 +98,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
         super(props);
 
         this.state = {
-            // model: props.initModel || ListModel.create({}),
-            model: props.model,
+            model: props.initModel || ListModel.create({}),
             keyField: -1,
             submitting: false,
             currentPanelIndex: 0,
@@ -205,39 +199,39 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
                 if (this.isValid()) {
                     this.setState(() => ({submitting: true}));
 
-                    if (model.isNew()) {
-                        newListDesign(model)
-                            .then((response) => {
-                                // TODO: this response does not have my new listId.
-                                console.log("yay!:", response);
+                    saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
+                        .then((response) => {
+                            // let updatedModel = model.set('exception', undefined) as ListModel;
+                            // updatedModel = updatedModel.merge({domain: response}) as ListModel;
+                            // // TODO success message before navigate? see what assay and single domain designers do
+                            //
+                            // this.setState(() => ({model: updatedModel, submitting: false}));
+                            // this.props.onComplete(updatedModel);
 
-                                // If we're importing List file data, import file contents
-                                if (this.state.fileImportData) {
-                                    this.handleFileImport(0)
-                                        .then((response) => {
-                                            console.log("handleFileImport success", response);
-                                            this.setState(() => ({submitting: false}));
-                                            this.props.onComplete();
-                                        })
-                                        .catch((error) => {
-                                            console.log("handleFileImport error", error);
-                                            // TODO
-                                        })
-                                }
+                            // TODO: this response does not have my new listId.
+                            console.log("yay!:", response);
 
-                                this.setState(() => ({submitting: false}));
-                                this.props.onComplete();
-                            })
-                            .catch((response) => console.log("failure 1:", response));
-                    } else {
-                        saveListDesign(model)
-                            .then((response) => {
-                                console.log("yay!:", response);
-                                this.setState(() => ({submitting: false}));
-                                this.props.onComplete();
-                            })
-                            .catch((model) => console.log("failure 2:", model));
-                    }
+                            // If we're importing List file data, import file contents
+                            if (this.state.fileImportData) {
+                                this.handleFileImport(0)
+                                    .then((response) => {
+                                        console.log("handleFileImport success", response);
+                                        this.setState(() => ({submitting: false}));
+                                        this.props.onComplete();
+                                    })
+                                    .catch((error) => {
+                                        console.log("handleFileImport error", error);
+                                        // TODO
+                                    })
+                            }
+
+                            this.setState(() => ({submitting: false}));
+                            this.props.onComplete();
+                        })
+                        .catch((response) => {
+                            const updatedModel = model.set('exception', response.exception) as ListModel;
+                            this.setState(() => ({model: updatedModel, submitting: false}));
+                        });
                 }
             });
         });
@@ -309,7 +303,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
             errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
         }
 
-        const bottomErrorMsg = getDomainBottomErrorMessage(undefined, errorDomains, model.hasValidProperties(), visitedPanels);
+        const bottomErrorMsg = getDomainBottomErrorMessage(model.exception, errorDomains, model.hasValidProperties(), visitedPanels);
 
         return(
             <>
@@ -328,6 +322,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
                     key={model.domain.domainId || 0}
                     domainIndex={0}
                     domain={model.domain}
+                    headerTitle={'Fields'}
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
                     setFileImportData={this.setFileImportData}
@@ -350,7 +345,9 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
                 }
 
                 <div className='domain-form-panel domain-assay-buttons'>
-                    <Button onClick={onCancel}> Cancel </Button>
+                    <Button onClick={onCancel}>
+                        Cancel
+                    </Button>
                     <Button
                         className='pull-right'
                         bsStyle={successBsStyle || 'success'}

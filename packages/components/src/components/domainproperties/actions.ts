@@ -196,24 +196,33 @@ export function getMaxPhiLevel(): Promise<string> {
  */
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string, includeWarnings?: boolean) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
+        function successHandler(response) {
+            resolve(DomainDesign.create(response));
+        }
+
+        function failureHandler(response) {
+            if (!response.exception) {
+                response = {exception: response};
+            }
+
+            if (!response.errors) {
+                reject(response);
+            }
+
+            const exception = DomainException.create(response, SEVERITY_LEVEL_ERROR);
+            const badDomain = setDomainException(domain, exception);
+            reject(badDomain);
+        }
+
         if (domain.domainId) {
             Domain.save({
                 containerPath: LABKEY.container.path,
-                domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
+                options,
+                domainDesign: DomainDesign.serialize(domain),
                 includeWarnings: includeWarnings,
-                success: (data) => {
-                    resolve(DomainDesign.create(data));
-                },
-                failure: (error) => {
-                    if (!error.exception) {
-                        error = {exception: error};
-                    }
-
-                    const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    const badDomain = setDomainException(domain, exception);
-                    reject(badDomain);
-                }
+                success: successHandler,
+                failure: failureHandler
             })
         }
         else {
@@ -222,14 +231,8 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                 kind,
                 options,
                 domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),
-                success: (data) => {
-                    resolve(DomainDesign.create(data));
-                },
-                failure: (error) => {
-                    let domainException = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    let badDomain = domain.set('domainException', domainException);
-                    reject(badDomain);
-                }
+                success: successHandler,
+                failure: failureHandler
             })
         }
     })

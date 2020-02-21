@@ -782,7 +782,7 @@ export class QueryGridModel extends Record({
     // Applying other base filters will be problematic (Issue 39719) in that they could possibly exclude the row you are trying
     // to get details for.
     getDetailFilters(): List<Filter.IFilter> {
-        return this.baseFilters.filter((filter) => (filter.getColumnName() === 'Replaced')).toList();
+        return this.baseFilters.filter((filter) => (filter.getColumnName().toLowerCase() === 'replaced')).toList();
     }
 
     getFilters(): List<Filter.IFilter> {

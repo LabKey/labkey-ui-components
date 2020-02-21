@@ -1,37 +1,40 @@
 import React from 'react';
-import { Panel, Form, Row, Col } from "react-bootstrap";
-import { Utils } from "@labkey/api";
+import { Panel, Form, Row, Col } from 'react-bootstrap';
+import { Utils } from '@labkey/api';
+
 import { Alert } from '../../base/Alert';
-import {DomainDesign, DomainPanelStatus, ListModel} from "../models";
-import { AllowableActions, BasicPropertiesFields } from "./ListPropertiesPanelFormElements";
-import { AdvancedSettings } from "./ListPropertiesAdvancedSettings";
-import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
+import { DomainDesign, DomainPanelStatus, ListModel } from '../models';
+
+import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
 import {
     DomainPropertiesPanelContext,
     DomainPropertiesPanelProvider,
-    IDomainPropertiesPanelContext
-} from "../DomainPropertiesPanelContext";
-import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
-import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
-import { HelpTopicURL } from "../HelpTopicURL";
+    IDomainPropertiesPanelContext,
+} from '../DomainPropertiesPanelContext';
+import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from '../actions';
+import { DEFINE_LIST_TOPIC } from '../../../util/helpLinks';
+import { HelpTopicURL } from '../HelpTopicURL';
+
+import { AdvancedSettings } from './ListPropertiesAdvancedSettings';
+import { AllowableActions, BasicPropertiesFields } from './ListPropertiesPanelFormElements';
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
 interface Props {
-    model: ListModel
-    panelStatus: DomainPanelStatus
-    onChange: (model: ListModel) => void
-    controlledCollapse?: boolean
-    initCollapsed?: boolean
-    collapsible?: boolean
-    onToggle?: (collapsed: boolean, callback: () => any) => any
-    validate?: boolean
-    useTheme?: boolean
+    model: ListModel;
+    panelStatus: DomainPanelStatus;
+    onChange: (model: ListModel) => void;
+    controlledCollapse?: boolean;
+    initCollapsed?: boolean;
+    collapsible?: boolean;
+    onToggle?: (collapsed: boolean, callback: () => any) => any;
+    validate?: boolean;
+    useTheme?: boolean;
 }
 
 interface State {
-    isValid: boolean
+    isValid: boolean;
 }
 
 export class ListPropertiesPanel extends React.PureComponent<Props> {
@@ -43,27 +46,25 @@ export class ListPropertiesPanel extends React.PureComponent<Props> {
                 controlledCollapse={controlledCollapse}
                 collapsible={collapsible}
                 initCollapsed={initCollapsed}
-                onToggle={onToggle}
-            >
+                onToggle={onToggle}>
                 <ListPropertiesPanelImpl {...this.props} />
             </DomainPropertiesPanelProvider>
-        )
+        );
     }
 }
 
 class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
-
     static defaultProps = {
         initCollapsed: false,
-        validate: false
+        validate: false,
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            isValid: true
-        }
+            isValid: true,
+        };
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
@@ -84,7 +85,10 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     setIsValid() {
         const { model, onChange } = this.props;
         const isValid = model && model.hasValidProperties();
-        this.setState(() => ({isValid}), () => onChange(model));
+        this.setState(
+            () => ({ isValid }),
+            () => onChange(model)
+        );
     }
 
     toggleLocalPanel = (evt: any, context: IDomainPropertiesPanelContext): void => {
@@ -93,23 +97,23 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     };
 
     onChange = (identifier, value) => {
-        const {model, onChange} = this.props;
+        const { model, onChange } = this.props;
 
         // Name must be set on Domain as well
         let newDomain = model.domain; // to reviewer: is this improper immutability?
         if (identifier == 'name') {
-            newDomain = model.domain.merge({'name': value}) as DomainDesign;
+            newDomain = model.domain.merge({ name: value }) as DomainDesign;
         }
 
         const newModel = model.merge({
             [identifier]: value,
-            domain: newDomain
+            domain: newDomain,
         }) as ListModel;
 
         onChange(newModel);
     };
 
-    onInputChange = (e) => {
+    onInputChange = e => {
         const id = e.target.id;
         let value = e.target.value;
 
@@ -122,43 +126,42 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     };
 
     onCheckBoxChange = (name, checked) => {
-        const {model, onChange} = this.props;
+        const { model, onChange } = this.props;
         const newModel = model.merge({
-            [name]: !checked
+            [name]: !checked,
         }) as ListModel;
         // console.log("onCheckBoxChange", newModel);
-        onChange(newModel); //TODO this should call this.onChange and centralize the call to onChange(newModel) there
+        onChange(newModel); // TODO this should call this.onChange and centralize the call to onChange(newModel) there
     };
 
-    onRadioChange = (e) => {
+    onRadioChange = e => {
         const name = e.currentTarget.name;
-        let value = e.target.value;
+        const value = e.target.value;
         this.onChange(name, value);
     };
 
-    saveAdvancedProperties = (advancedSettingsForm) => {
-        const {model, onChange} = this.props;
+    saveAdvancedProperties = advancedSettingsForm => {
+        const { model, onChange } = this.props;
 
         const newModel = model.merge(advancedSettingsForm) as ListModel;
         onChange(newModel);
     };
 
     render() {
-        let { panelStatus, collapsible, controlledCollapse, model, useTheme } = this.props;
-        let { isValid } = this.state;
+        const { panelStatus, collapsible, controlledCollapse, model, useTheme } = this.props;
+        const { isValid } = this.state;
 
-        return(
+        return (
             <DomainPropertiesPanelContext.Consumer>
-                {(context) =>
+                {context => (
                     <>
                         <Panel
                             className={getDomainPanelClass(context.collapsed, true, useTheme)}
                             expanded={!context.collapsed}
-                            onToggle={function(){}}
-                        >
+                            onToggle={function() {}}>
                             <CollapsiblePanelHeader
                                 id={PROPERTIES_HEADER_ID}
-                                title={'List Properties'}
+                                title="List Properties"
                                 titlePrefix={model.name}
                                 togglePanel={(evt: any) => this.toggleLocalPanel(evt, context)}
                                 collapsed={context.collapsed}
@@ -171,40 +174,33 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
                             />
 
                             <Panel.Body collapsible={collapsible || controlledCollapse}>
-                                <Row className={'margin-bottom'}>
+                                <Row className="margin-bottom">
                                     <Col xs={12}>
-                                        <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural={'lists'}/>
+                                        <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural="lists" />
                                     </Col>
                                 </Row>
                                 <Form>
-                                    <BasicPropertiesFields
-                                        model={model}
-                                        onInputChange={this.onInputChange}
-                                    />
-                                    <AllowableActions
-                                        model={model}
-                                        onCheckBoxChange={this.onCheckBoxChange}
-                                    />
+                                    <BasicPropertiesFields model={model} onInputChange={this.onInputChange} />
+                                    <AllowableActions model={model} onCheckBoxChange={this.onCheckBoxChange} />
                                     <AdvancedSettings
-                                        title={"Advanced Settings"}
+                                        title="Advanced Settings"
                                         model={model}
                                         saveAdvancedProperties={this.saveAdvancedProperties}
                                     />
                                 </Form>
                             </Panel.Body>
 
-                            {!isValid &&
+                            {!isValid && (
                                 <div
                                     onClick={(evt: any) => this.toggleLocalPanel(evt, context)}
-                                    className={getDomainAlertClasses(context.collapsed, true, useTheme)}
-                                >
+                                    className={getDomainAlertClasses(context.collapsed, true, useTheme)}>
                                     <Alert bsStyle="danger">{ERROR_MSG}</Alert>
                                 </div>
-                            }
+                            )}
                         </Panel>
                     </>
-                }
+                )}
             </DomainPropertiesPanelContext.Consumer>
-        )
+        );
     }
 }

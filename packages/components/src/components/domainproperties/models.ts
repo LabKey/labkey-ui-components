@@ -1190,23 +1190,20 @@ export class DomainException extends Record({
     errors?: List<DomainFieldError>;
 
     static create(rawModel: any, severityLevel): DomainException {
-        if (rawModel && rawModel.exception)
-        {
+        if (rawModel && rawModel.exception) {
             let errors = List<DomainFieldError>();
             if (rawModel.errors) {
                 errors = DomainFieldError.fromJS(rawModel.errors, severityLevel);
             }
 
-            let severity = severityLevel;
             // warnings will only be there if there are no errors, so looking only the first one
+            let severity = severityLevel;
             let hasOnlyWarnings = errors.find(error => error.severity === SEVERITY_LEVEL_WARN);
-
             if (hasOnlyWarnings) {
                 severity = SEVERITY_LEVEL_WARN;
             }
 
             const domainName = this.getDomainNameFromException(rawModel.exception);
-
             if (domainName) {
                 const prefix = domainName + " -- ";
                 errors = errors.map((err) => {
@@ -1214,16 +1211,16 @@ export class DomainException extends Record({
                     return err.set('message', parts.length > 1 ? parts[1] : parts[0]);
                 }) as List<DomainFieldError>
             }
-            let exception = this.getExceptionMessage(errors);
 
             return new DomainException({
-                exception: exception,
+                exception: this.getExceptionMessage(errors),
                 success: rawModel.success,
                 severity: severity,
                 domainName: domainName,
                 errors: errors
             })
         }
+
         return undefined;
     }
 

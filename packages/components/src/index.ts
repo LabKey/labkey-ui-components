@@ -248,10 +248,8 @@ import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 import {
     createFormInputId,
     fetchDomain,
-    fetchProtocol,
     fetchListDesign,
     createListDesign,
-    saveAssayDesign,
     saveDomain,
     setDomainFields,
 } from './components/domainproperties/actions';
@@ -268,6 +266,7 @@ import {
 import DomainForm from './components/domainproperties/DomainForm';
 import { FilePreview } from './components/domainproperties/list/FilePreview';
 import { DomainFieldsDisplay } from './components/domainproperties/DomainFieldsDisplay';
+import { fetchProtocol, saveAssayDesign } from './components/domainproperties/assay/actions';
 import { AssayProtocolModel } from './components/domainproperties/assay/models';
 import { AssayPropertiesPanel } from './components/domainproperties/assay/AssayPropertiesPanel';
 import { AssayDesignerPanels } from './components/domainproperties/assay/AssayDesignerPanels';

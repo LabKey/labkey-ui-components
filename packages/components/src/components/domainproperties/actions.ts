@@ -42,7 +42,6 @@ import {
     updateSampleField,
     ListModel
 } from './models';
-import { AssayProtocolModel } from './assay/models';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../util/utils';
 import { processSchemas } from '../base/models/schemas';
@@ -573,25 +572,6 @@ function getWarningBannerMessage (domain: any) : any {
     return undefined;
 }
 
-export function fetchProtocol(protocolId?: number, providerName?: string, copy?: boolean): Promise<AssayProtocolModel> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('assay', 'getProtocol.api', {
-                // give precedence to the protocolId if both are provided
-                protocolId,
-                providerName: protocolId !== undefined ? undefined : providerName,
-                copy: copy || false
-            }),
-            success: Utils.getCallbackWrapper((data) => {
-                resolve(AssayProtocolModel.create(data.data));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-            })
-        })
-    });
-}
-
 export function fetchListDesign(domainId = null) {
     return new Promise((resolve, reject) => {
         Ajax.request({
@@ -641,28 +621,6 @@ export function setDomainException(domain: DomainDesign, exception: DomainExcept
     return domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exception)) as DomainDesign;
 }
 
-export function setAssayDomainException(model: AssayProtocolModel, exception: DomainException): AssayProtocolModel {
-    let updatedModel = model;
-
-    // If a domain is identified in the exception, attach to that domain
-    if (exception.domainName) {
-        const exceptionDomains = model.domains.map((domain) => {
-            if (exception.domainName.endsWith(domain.get('name'))) {
-                return setDomainException(domain, exception);
-            }
-
-            return domain;
-        });
-
-        updatedModel = model.set('domains', exceptionDomains) as AssayProtocolModel;
-    }
-    // otherwise attach to whole assay
-    else {
-        updatedModel = model.set('exception', exception.exception) as AssayProtocolModel;
-    }
-    return updatedModel;
-}
-
 export function setListDomainException(model: ListModel, exception: DomainException): ListModel {
     let updatedModel = model;
 
@@ -672,37 +630,6 @@ export function setListDomainException(model: ListModel, exception: DomainExcept
         updatedModel = model.set('exception', exception.exception) as ListModel;
     }
     return updatedModel;
-}
-
-
-
-export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('assay', 'saveProtocol.api'),
-            jsonData: AssayProtocolModel.serialize(model),
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(AssayProtocolModel.create(response.data));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                let badModel = model;
-
-                // Check for validation exception
-                const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                if (exception) {
-                    if (exception.domainName) {
-                        badModel = setAssayDomainException(model, exception);
-                    }
-                    else {
-                        badModel = model.set("exception", exception.exception) as AssayProtocolModel;
-                    }
-                } else {
-                    badModel = model.set("exception", error) as AssayProtocolModel;
-                }
-                reject(badModel);
-            }, this, false)
-        });
-    });
 }
 
 export function saveListDesign(model: ListModel): Promise<ListModel> {

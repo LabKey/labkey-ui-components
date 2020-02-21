@@ -711,7 +711,8 @@ export function saveListDesign(model: ListModel): Promise<ListModel> {
             url: buildURL('property', 'saveDomain.api'),
             jsonData: ListModel.serialize(model),
             success: Utils.getCallbackWrapper((response) => {
-                console.log("existingList save - success")
+                console.log("existingList save - success");
+                resolve(response);
             }),
             failure: Utils.getCallbackWrapper((error) => {
                 // todo
@@ -744,9 +745,10 @@ export function newListDesign(model: ListModel): Promise<ListModel> {
             jsonData: ListModel.serialize(model),
             success: Utils.getCallbackWrapper((response) => {
                 console.log("newList save - success");
+                resolve(response);
             }),
             failure: Utils.getCallbackWrapper((error) => {
-                // todo
+                reject(error);
 
             }, this, false)
         });

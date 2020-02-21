@@ -1491,7 +1491,7 @@ export class ListModel extends Record({
     static serialize(model: ListModel): any {
         let domain = DomainDesign.serialize(model.domain);
         let options = model.merge({domain}).toJS();
-        
+
         if (model.isNew()) {
             let kind;
             if (model.keyType === "Varchar") {

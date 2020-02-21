@@ -21,10 +21,10 @@ const ERROR_MSG = 'Contains errors or is missing required values.';
 interface Props {
     model: ListModel
     panelStatus: DomainPanelStatus
-    collapsible?: boolean
+    onChange: (model: ListModel) => void
     controlledCollapse?: boolean
-    onChange: (model: any) => any
     initCollapsed?: boolean
+    collapsible?: boolean
     onToggle?: (collapsed: boolean, callback: () => any) => any
     validate?: boolean
     useTheme?: boolean
@@ -139,15 +139,13 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     saveAdvancedProperties = (advancedSettingsForm) => {
         const {model, onChange} = this.props;
 
-        const newModel = model.merge(advancedSettingsForm);
+        const newModel = model.merge(advancedSettingsForm) as ListModel;
         onChange(newModel);
     };
 
     render() {
         let { panelStatus, collapsible, controlledCollapse, model, useTheme } = this.props;
         let { isValid } = this.state;
-
-        // console.log("PROPERTIESPANEL", model);
 
         return(
             <DomainPropertiesPanelContext.Consumer>

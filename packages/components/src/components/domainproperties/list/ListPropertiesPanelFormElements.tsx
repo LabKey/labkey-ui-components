@@ -3,9 +3,14 @@ import {Col, FormControl, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckSquare} from "@fortawesome/free-solid-svg-icons/faCheckSquare";
 import {faSquare} from "@fortawesome/free-regular-svg-icons/faSquare";
-import {LabelHelpTip} from "../../..";
+import {LabelHelpTip, ListModel} from "../../..";
 
-class BasicPropertiesTitle extends React.PureComponent<any, any> {
+interface BasicPropertiesInputsProps {
+    model: ListModel
+    onInputChange: (any) => void
+}
+
+class BasicPropertiesTitle extends React.PureComponent<{title: string}> {
     render(){
         return(
             <div className={'domain-field-section-heading'}>
@@ -15,7 +20,7 @@ class BasicPropertiesTitle extends React.PureComponent<any, any> {
     }
 }
 
-class NameInput extends React.PureComponent<any, any> {
+class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
     render(){
         let {model, onInputChange} = this.props;
 
@@ -45,7 +50,7 @@ class NameInput extends React.PureComponent<any, any> {
     }
 }
 
-class DescriptionInput extends React.PureComponent<any, any> {
+class DescriptionInput extends React.PureComponent<BasicPropertiesInputsProps> {
     render(){
         let {model, onInputChange} = this.props;
         let value = (model.description === null) ? "" : model.description;
@@ -70,7 +75,7 @@ class DescriptionInput extends React.PureComponent<any, any> {
     }
 }
 
-export class BasicPropertiesFields extends React.PureComponent<any, any> {
+export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesInputsProps> {
     render() {
         const {model, onInputChange} = this.props;
         return(
@@ -109,6 +114,9 @@ export class CheckBox extends React.PureComponent<any, any> {
     }
 }
 
+interface CheckBoxRow {
+
+}
 class CheckBoxRow extends React.PureComponent<any, any> {
     render(){
         let {checked, onCheckBoxChange, name} = this.props;
@@ -154,6 +162,10 @@ class AllowableActionContainer extends React.PureComponent<any, any> {
     }
 }
 
+interface AllowableActionsProps {
+    model: ListModel
+    onCheckBoxChange: (name: string, checked: boolean) => void
+}
 export class AllowableActions extends React.PureComponent<any, any> {
     render(){
         return(

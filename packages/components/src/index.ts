@@ -266,6 +266,7 @@ import {
     SAMPLE_TYPE,
 } from './components/domainproperties/models';
 import DomainForm from './components/domainproperties/DomainForm';
+import { FilePreview } from './components/domainproperties/list/FilePreview';
 import { DomainFieldsDisplay } from './components/domainproperties/DomainFieldsDisplay';
 import { AssayProtocolModel } from './components/domainproperties/assay/models';
 import { AssayPropertiesPanel } from './components/domainproperties/assay/AssayPropertiesPanel';
@@ -477,6 +478,7 @@ export {
     // DomainProperties
     DomainForm,
     DomainFieldsDisplay,
+    FilePreview,
     AssayPropertiesPanel,
     AssayDesignerPanels,
     fetchDomain,

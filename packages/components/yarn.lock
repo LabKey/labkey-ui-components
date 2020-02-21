@@ -2053,8 +2053,8 @@
 
 "@labkey/api@0.0.33":
   version "0.0.33"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.33.tgz#860f8f23ff076a2130e65e4e76db1b4c98400bf5"
-  integrity sha1-hg+PI/8HaiEw5l5OdtsbTJhAC/U=
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.33.tgz#2b7f95f8ea31acdbda1b1f2b841d9dd9a3f5d7ab"
+  integrity sha1-K3+V+OoxrNvaGx8rhB2d2aP116s=
 
 "@labkey/eslint-config-base@0.0.5":
   version "0.0.5"

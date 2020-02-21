@@ -3,7 +3,7 @@ import { Alert, Button, Col, FormControl, Row } from "react-bootstrap";
 import { List } from "immutable";
 import {ActionURL} from "@labkey/api";
 import { ListPropertiesPanel } from "./ListPropertiesPanel";
-import { DomainDesign, DomainField, IAppDomainHeader, IDomainField } from "../models";
+import { DomainField, IAppDomainHeader, IDomainField } from "../models";
 import DomainForm from "../DomainForm";
 import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveDomain } from "../actions";
 import { LabelHelpTip, importData } from "../../..";
@@ -74,9 +74,10 @@ class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
 }
 
 interface Props {
-    model: ListModel
+    initModel: ListModel
+    onChange?: (model: ListModel) => void
     onCancel: () => void
-    onComplete: () => void
+    onComplete: (model: ListModel) => void
     useTheme?: boolean
     containerTop?: number
     successBsStyle?: string
@@ -92,8 +93,8 @@ interface State {
     firstState: boolean
     fileImportData?: any
 }
-// TODO need to define Props and State and use React.PureComponent<Props, State>
-export class ListDesignerPanels extends React.PureComponent<any, any> {
+
+export class ListDesignerPanels extends React.PureComponent<Props, State> {
     constructor(props) {
         super(props);
 
@@ -185,7 +186,7 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
     };
 
     onFinish = () => {
-        const { model, visitedPanels, currentPanelIndex } = this.state;
+        const { model, visitedPanels, currentPanelIndex, fileImportData } = this.state;
 
         let updatedVisitedPanels = visitedPanels;
         if (!visitedPanels.contains(currentPanelIndex)) {
@@ -201,32 +202,29 @@ export class ListDesignerPanels extends React.PureComponent<any, any> {
 
                     saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
                         .then((response) => {
-                            // let updatedModel = model.set('exception', undefined) as ListModel;
-                            // updatedModel = updatedModel.merge({domain: response}) as ListModel;
-                            // // TODO success message before navigate? see what assay and single domain designers do
-                            //
-                            // this.setState(() => ({model: updatedModel, submitting: false}));
-                            // this.props.onComplete(updatedModel);
+                            let updatedModel = model.set('exception', undefined) as ListModel;
+                            updatedModel = updatedModel.merge({domain: response}) as ListModel;
+                            this.setState(() => ({model: updatedModel}));
 
                             // TODO: this response does not have my new listId.
-                            console.log("yay!:", response);
 
                             // If we're importing List file data, import file contents
-                            if (this.state.fileImportData) {
+                            if (fileImportData) {
                                 this.handleFileImport(0)
                                     .then((response) => {
                                         console.log("handleFileImport success", response);
                                         this.setState(() => ({submitting: false}));
-                                        this.props.onComplete();
+                                        this.props.onComplete(updatedModel);
                                     })
                                     .catch((error) => {
                                         console.log("handleFileImport error", error);
                                         // TODO
                                     })
                             }
-
-                            this.setState(() => ({submitting: false}));
-                            this.props.onComplete();
+                            else {
+                                this.setState(() => ({submitting: false}));
+                                this.props.onComplete(updatedModel);
+                            }
                         })
                         .catch((response) => {
                             const updatedModel = model.set('exception', response.exception) as ListModel;

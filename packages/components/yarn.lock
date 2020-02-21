@@ -2051,10 +2051,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@labkey/api@0.0.32-fb-provenance-runbuilder.1":
-  version "0.0.32-fb-provenance-runbuilder.1"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.32-fb-provenance-runbuilder.1.tgz#62600ce3565f590f36248eed466fd061fbedc94c"
-  integrity sha1-YmAM41ZfWQ82JI7tRm/QYfvtyUw=
+"@labkey/api@0.0.33":
+  version "0.0.33"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.33.tgz#860f8f23ff076a2130e65e4e76db1b4c98400bf5"
+  integrity sha1-hg+PI/8HaiEw5l5OdtsbTJhAC/U=
 
 "@labkey/eslint-config-base@0.0.5":
   version "0.0.5"

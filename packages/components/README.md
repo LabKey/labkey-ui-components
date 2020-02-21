@@ -181,6 +181,25 @@ yarn run storybook
 
 When changes are made to the source code or .scss files for the components or the stories, the storybook instance will automatically reload.
 
+### Lint and Prettier
+ESLint / Prettier package scripts and configurations are included in this repo. ESLint can be run on a file, directory or
+all directories with the following commands.
+
+```shell script
+yarn run lint ./src/components/files/FileTree.tsx
+yarn run lint ./src/components/files/*
+yarn run lint ./src/components/**/*
+```
+
+ESLint can be run with the --fix flag, to automatically fix as many issues as possible, with the following command.
+
+```shell script
+yarn run lint-fix ./src/components/files/FileTree.tsx
+```
+
+Prettier is an ESLint plugin with additional formatting rules. This is automatically run with ESLint in this package.
+
+For more information of [ESLint](https://eslint.org/) or [Prettier](https://github.com/prettier/prettier-eslint) please refer to their online docs.
 
 ## Publishing
 

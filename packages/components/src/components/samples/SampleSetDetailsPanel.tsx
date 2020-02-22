@@ -62,8 +62,8 @@ interface Props {
     onComplete: (response: any) => void
     beforeFinish?: (formValues: {}) => void
     nameExpressionInfoUrl?: string
-    // model: SampleTypeModel
-    data?: DomainDetails
+    model: SampleTypeModel
+    // data?: DomainDetails
     nameExpressionPlaceholder?: string
     defaultSampleFieldConfig?: Partial<IDomainField>
 }

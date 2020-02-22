@@ -20,6 +20,9 @@ interface Props {
     nameExpressionPlaceholder?: string
 }
 
+//TODO rename above
+export type EntityDetailsProps = Props;
+
 export class EntityDetailsForm extends React.PureComponent<Props, any> {
 
     render() {

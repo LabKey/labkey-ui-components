@@ -28,7 +28,7 @@ export class EntityDetailsForm extends React.PureComponent<Props, any> {
 
         return (
             <Form>
-                {!isExistingEntity(formValues, data) &&
+                {
                     <Row className={'margin-bottom'}>
                         <Col xs={3}>
                             <LabelOverlay
@@ -48,6 +48,7 @@ export class EntityDetailsForm extends React.PureComponent<Props, any> {
                                 placeholder={`Enter a name for this ${noun.toLowerCase()}`}
                                 onChange={onFormChange}
                                 value={getEntityNameValue(formValues, data)}
+                                disabled={isExistingEntity(formValues, data)}
                             />
                         </Col>
                     </Row>

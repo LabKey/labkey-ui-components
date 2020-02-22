@@ -253,6 +253,7 @@ import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 import {
     createFormInputId,
     fetchDomain,
+    fetchDomainDetails,
     fetchProtocol,
     fetchListDesign,
     createListDesign,
@@ -488,6 +489,7 @@ export {
     AssayPropertiesPanel,
     AssayDesignerPanels,
     fetchDomain,
+    fetchDomainDetails,
     saveDomain,
     fetchProtocol,
     fetchListDesign,

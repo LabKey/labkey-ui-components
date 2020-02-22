@@ -34,6 +34,8 @@ import { naturalSort } from '../../util/utils';
 import { selectRows } from '../../query/api';
 import { getActionErrorMessage } from "../../util/messaging";
 import {DomainDetails} from "../domainproperties/models";
+import {IEntityDetails} from "../domainproperties/entities/models";
+import {fetchDomainDetails} from "../..";
 
 function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<SampleSetParentType>> {
     return new Promise((resolve) => {
@@ -203,23 +205,24 @@ export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Par
     });
 }
 
-export function createSampleSet(config: ISampleSetDetails): Promise<any> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', 'createSampleSetApi.api'),
-            method: 'POST',
-            params: config,
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((response) => {
-                reject(response);
-            }),
-        });
-    });
-}
+//TODO Deprecated use Domain.saveDomain with kind = KINDS.SAMPLE_TYPE
+// export function createSampleSet(config: ISampleSetDetails): Promise<any> {
+//     return new Promise((resolve, reject) => {
+//         return Ajax.request({
+//             url: buildURL('experiment', 'createSampleSetApi.api'),
+//             method: 'POST',
+//             params: config,
+//             success: Utils.getCallbackWrapper((response) => {
+//                 resolve(response);
+//             }),
+//             failure: Utils.getCallbackWrapper((response) => {
+//                 reject(response);
+//             }),
+//         });
+//     });
+// }
 
-export function getSampleSet(config: ISampleSetDetails): Promise<any> {
+export function getSampleSet(config: IEntityDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {
         return Ajax.request({
             url: buildURL('experiment', 'getSampleSetApi.api'),
@@ -235,9 +238,10 @@ export function getSampleSet(config: ISampleSetDetails): Promise<any> {
     });
 }
 
-export function getSampleTypeDetails(query: SchemaQuery): Promise<any> {
+export function getSampleTypeDetails(query: SchemaQuery, domainId?: number): Promise<any> {
     return new Promise<DomainDetails>((resolve, reject) => {
         const sampleSetConfig = {
+            domainId,
             containerPath: ActionURL.getContainer(),
             queryName: query.getQuery(),
             schemaName: query.getSchema(),
@@ -257,21 +261,22 @@ export function getSampleTypeDetails(query: SchemaQuery): Promise<any> {
     });
 }
 
-export function updateSampleSet(config: ISampleSetDetails): Promise<any> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', 'updateMaterialSourceApi.api'),
-            method: 'POST',
-            params: config,
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((response) => {
-                reject(response);
-            }),
-        });
-    });
-}
+//TODO Deprecated use Domain.saveDomain with kind = KINDS.SAMPLE_TYPE
+// export function updateSampleSet(config: ISampleSetDetails): Promise<any> {
+//     return new Promise((resolve, reject) => {
+//         return Ajax.request({
+//             url: buildURL('experiment', 'updateMaterialSourceApi.api'),
+//             method: 'POST',
+//             params: config,
+//             success: Utils.getCallbackWrapper((response) => {
+//                 resolve(response);
+//             }),
+//             failure: Utils.getCallbackWrapper((response) => {
+//                 reject(response);
+//             }),
+//         });
+//     });
+// }
 
 export function deleteSampleSet(rowId: number): Promise<any> {
     return new Promise((resolve, reject) => {

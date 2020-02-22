@@ -34,9 +34,15 @@ import {
     IDomainField,
     SAMPLE_TYPE,
 } from "../domainproperties/models"
+import {SampleTypeModel} from "../domainproperties/samples/models"
 import {saveDomain} from "../..";
 import {KINDS} from "../domainproperties/constants";
-import {addDomainField} from "../domainproperties/actions";
+import {addDomainField, getDomainPanelClass} from "../domainproperties/actions";
+import {CollapsiblePanelHeader} from "../domainproperties/CollapsiblePanelHeader";
+import {
+    DomainPropertiesPanelContext,
+    IDomainPropertiesPanelContext
+} from "../domainproperties/DomainPropertiesPanelContext";
 
 const CREATE_ERROR = getActionErrorMessage(`There was a problem creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
 const UPDATE_ERROR = getActionErrorMessage(`There was a problem updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
@@ -56,6 +62,7 @@ interface Props {
     onComplete: (response: any) => void
     beforeFinish?: (formValues: {}) => void
     nameExpressionInfoUrl?: string
+    // model: SampleTypeModel
     data?: DomainDetails
     nameExpressionPlaceholder?: string
     defaultSampleFieldConfig?: Partial<IDomainField>
@@ -80,6 +87,8 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
 
 const IMPORT_PREFIX :string = 'materialInputs/';
 const IMPORT_ALIAS_KEY: string = 'importAliases';
+const PROPERTIES_HEADER_ID = 'sampletype-properties-hdr';
+
 
 export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
@@ -168,7 +177,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     onFinish = () => {
         const { beforeFinish, data } = this.props;
-        const { formValues, domain, parentAliases } = this.state;
+        const { formValues, domain } = this.state;
         const {options = Map<string,any>()} = data;
 
         const name = getEntityNameValue(formValues, options);
@@ -554,43 +563,80 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 //         );
 //     };
 
-
+    // setIsValid() {
+    //     const { model, onChange } = this.props;
+    //     const hasError = model && model.hasValidProperties();
+    //     this.setState(() => ({hasError}), () => onChange(model));
+    // }
+    //
+    // toggleLocalPanel = (evt: any, context: IDomainPropertiesPanelContext): void => {
+    //     this.setIsValid();
+    //     context.togglePanel(evt, !context.collapsed);
+    // };
 
     renderDetailsPanel = () => {
+        // const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, noun, nameExpressionInfoUrl, nameExpressionPlaceholder, helpTopic, data } = this.props;
         const {  nameExpressionInfoUrl, nameExpressionPlaceholder, data } = this.props;
-        const { parentOptions, formValues } = this.state;
+        const { hasError, parentOptions, formValues } = this.state;
+        const isUpdate = isExistingEntity(formValues, data.options);
 
+
+        // return (
+            {/*<DomainPropertiesPanelContext.Consumer>*/}
+                // {(context) =>
         return (
-            <>
-                <Panel>
-                    <Panel.Body>
-                        <div className={'entity-form--headerhelp'}>
-                            Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.
-                        </div>
-                        <EntityDetailsForm
-                            noun={'Sample Type'}
-                            onFormChange={this.onFormChange}
-                            data={data.options}
-                            formValues={formValues}
-                            nameExpressionInfoUrl={nameExpressionInfoUrl}
-                            nameExpressionPlaceholder={nameExpressionPlaceholder}
-                        />
-                        {this.renderParentAliases()}
-                        {parentOptions &&
-                        <Row>
-                            <Col xs={3}>
-                            </Col>
-                            <Col xs={9}>
+                    <>
+                        <Panel
+                            // className={getDomainPanelClass(context.collapsed, true, useTheme)}
+                            // expanded={!context.collapsed}
+                            // onToggle={function () {
+                            /*}}*/
+                        >
+                            {/*<CollapsiblePanelHeader*/}
+                            {/*    id={PROPERTIES_HEADER_ID}*/}
+                            {/*    title={noun + ' Properties'}*/}
+                            {/*    titlePrefix={model.name}*/}
+                            {/*    togglePanel={(evt: any) => this.toggleLocalPanel(evt, context)}*/}
+                            {/*    collapsed={context.collapsed}*/}
+                            {/*    collapsible={collapsible}*/}
+                            {/*    controlledCollapse={controlledCollapse}*/}
+                            {/*    panelStatus={panelStatus}*/}
+                            {/*    isValid={hasError}*/}
+                            {/*    iconHelpMsg={isUpdate ? UPDATE_ERROR : CREATE_ERROR }*/}
+                            {/*    useTheme={useTheme}*/}
+                            {/*/>*/}
+                            <Panel.Body>
+                                <div className={'entity-form--headerhelp'}>
+                                    Sample types help you organize samples in your lab and allows you to add properties
+                                    for easy tracking of data.
+                                </div>
+                                <EntityDetailsForm
+                                    noun={'Sample Type'}
+                                    onFormChange={this.onFormChange}
+                                    data={data.options}
+                                    formValues={formValues}
+                                    nameExpressionInfoUrl={nameExpressionInfoUrl}
+                                    nameExpressionPlaceholder={nameExpressionPlaceholder}
+                                />
+                                {this.renderParentAliases()}
+                                {parentOptions &&
+                                <Row>
+                                    <Col xs={3}>
+                                    </Col>
+                                    <Col xs={9}>
                                     <span>
-                                        <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias} helperBody={this.renderAddEntityHelper} />
+                                        <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias}
+                                                         helperBody={this.renderAddEntityHelper}/>
                                     </span>
-                            </Col>
-                        </Row>
-                        }
-                    </Panel.Body>
-                </Panel>
-            </>
-        );
+                                    </Col>
+                                </Row>
+                                }
+                            </Panel.Body>
+                        </Panel>
+                    </>
+                // }
+            // </DomainPropertiesPanelContext.Consumer>
+        )
     };
 
     render() {

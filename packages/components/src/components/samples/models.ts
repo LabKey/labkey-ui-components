@@ -361,6 +361,7 @@ export class SampleIdCreationModel extends Record({
 export interface ISampleSetDetails extends IEntityDetails {
     importAliasKeys?: Array<string>
     importAliasValues?: Array<string>
+    domainId?: number
     domainDesign?: DomainDesign
 }
 

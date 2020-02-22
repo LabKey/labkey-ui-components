@@ -54,7 +54,7 @@ export function getDataDeleteConfirmationData(selectionKey: string, rowIds?: Arr
     return getDeleteConfirmationData(selectionKey, EntityDataType.DataClass, rowIds);
 }
 
-function getSelectedParents(schemaQuery: SchemaQuery, filterArray: Array<Filter.IFilter>) {
+function getSelectedParents(schemaQuery: SchemaQuery, filterArray: Array<Filter.IFilter>) : Promise<List<EntityParentType>> {
     return new Promise((resolve, reject) => {
         return selectRows({
             schemaName: schemaQuery.schemaName,
@@ -85,12 +85,15 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
             const queryGridModel = getQueryGridModel(selectionKey);
 
             if (queryGridModel && queryGridModel.selectedLoaded) {
-                return getSelectedParents(schemaQuery, [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)]);
+                return getSelectedParents(schemaQuery, [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)])
+                    .then((response) => resolve(response))
+                    .catch((reason) => reject(reason));
             }
             else {
-
-                getSelected(selectionKey).then((selectionResponse) => {
-                    return getSelectedParents(schemaQuery, [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)]);
+                return getSelected(selectionKey).then((selectionResponse) => {
+                    return getSelectedParents(schemaQuery, [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)])
+                        .then((response) => resolve(response))
+                        .catch((reason) => reject(reason));
                 }).catch(() => {
                     console.warn('Unable to parse selectionKey', selectionKey);
                     resolve(List<EntityParentType>());
@@ -101,7 +104,9 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
             const parent = initialParents[0];
             const [schema, query, value] = parent.toLowerCase().split(':');
 
-            getSelectedParents(SchemaQuery.create(schema, query), [Filter.create('RowId', value)]);
+            return getSelectedParents(SchemaQuery.create(schema, query), [Filter.create('RowId', value)])
+                .then((response) => resolve(response))
+                .catch((reason) => reject(reason));;
         }
         else {
             resolve(List<EntityParentType>());

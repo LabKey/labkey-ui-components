@@ -48,8 +48,8 @@ export class FilePreview extends React.PureComponent<Props, State> {
                                 return {importData: !state.importData}
                             })}
                         }
-                        on='Enabled'
-                        off='Disabled'
+                        on={'Import Data'}
+                        off={"Don't Import"}
                     />
                 </div>
 

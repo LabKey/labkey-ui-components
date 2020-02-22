@@ -3,7 +3,7 @@ import { Alert, Button, Col, FormControl, Row } from "react-bootstrap";
 import { List } from "immutable";
 import {ActionURL} from "@labkey/api";
 import { ListPropertiesPanel } from "./ListPropertiesPanel";
-import { DomainField, IAppDomainHeader, IDomainField } from "../models";
+import { DomainDesign, DomainField, IAppDomainHeader, IDomainField } from "../models";
 import DomainForm from "../DomainForm";
 import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveDomain } from "../actions";
 import { LabelHelpTip, importData } from "../../..";
@@ -141,11 +141,13 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
     };
 
     onPropertiesChange = (model: ListModel) => {
-        this.setState(() => ({
-            model: model
-        })
-        , () => {console.log("onPropertiesChange", this.state)}
-        )
+        const { onChange } = this.props;
+
+        this.setState(() => ({model}), () => {
+            if (onChange) {
+                onChange(model);
+            }
+        });
     };
 
     setFileImportData = (fileImportData) => {
@@ -153,37 +155,43 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         console.log("setFileImportData", fileImportData);
     };
 
-    onDomainChange = (domain) => {
-        this.setState((state) => {
-            const updatedModel = state.model.merge({domain}) as ListModel;
-            return {model: updatedModel};
-        }, () => {
-            // TODO: call dirty on Designer.tsx
-            console.log("onDomainChange", this.state);
+    onDomainChange = (domain: DomainDesign) => {
+        const { onChange } = this.props;
+
+        this.setState((state) => ({
+            model: state.model.merge({domain}) as ListModel
+        }), () => {
+            if (onChange) {
+                onChange(this.state.model);
+            }
         });
     };
 
-    handleFileImport = (listId) => {
-        const file = this.state.fileImportData;
+    handleFileImport() {
+        const { fileImportData, model } = this.state;
+        const file = fileImportData;
 
-        return new Promise((resolve, reject) => {
-            importData({
-                schemaName: 'lists',
-                queryName: this.state.model.name,
-                file,
-                importUrl: ActionURL.buildURL(
-                    'list',
-                    'UploadListItems',
-                    null,
-                    {'name': this.state.model.name})
-                // need listId param
-            }).then((response) => {
-                resolve(response);
-            }).catch((error) => {
-                reject(error);
-            })
+        importData({
+            schemaName: 'lists',
+            queryName: model.name,
+            file,
+            importUrl: ActionURL.buildURL(
+                'list',
+                'UploadListItems',
+                null,
+                {'name': model.name})
+            // need listId param
         })
-    };
+        .then((response) => {
+            console.log("handleFileImport success", response);
+            this.setState(() => ({submitting: false}));
+            this.props.onComplete(model);
+        })
+        .catch((error) => {
+            console.log("handleFileImport error", error);
+            // TODO
+        });
+    }
 
     onFinish = () => {
         const { model, visitedPanels, currentPanelIndex, fileImportData } = this.state;
@@ -206,20 +214,9 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                             updatedModel = updatedModel.merge({domain: response}) as ListModel;
                             this.setState(() => ({model: updatedModel}));
 
-                            // TODO: this response does not have my new listId.
-
                             // If we're importing List file data, import file contents
                             if (fileImportData) {
-                                this.handleFileImport(0)
-                                    .then((response) => {
-                                        console.log("handleFileImport success", response);
-                                        this.setState(() => ({submitting: false}));
-                                        this.props.onComplete(updatedModel);
-                                    })
-                                    .catch((error) => {
-                                        console.log("handleFileImport error", error);
-                                        // TODO
-                                    })
+                                this.handleFileImport();
                             }
                             else {
                                 this.setState(() => ({submitting: false}));

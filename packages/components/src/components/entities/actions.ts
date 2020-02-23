@@ -1,21 +1,23 @@
-import { buildURL, EntityDataType, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
+import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 import {
     DisplayObject,
+    EntityDataType,
     EntityIdCreationModel,
     EntityParentType,
     EntityTypeOption,
     IEntityTypeOption,
     IParentOption
 } from './models';
+import { DataClassDataType, SampleTypeDataType } from './constants';
 
 export interface DeleteConfirmationData {
     canDelete: Array<any>
     cannotDelete: Array<any>
 }
 
-export function getDeleteConfirmationData(selectionKey: string, dataTypeKey: EntityDataType, rowIds?: Array<string>): Promise<DeleteConfirmationData> {
+export function getDeleteConfirmationData(selectionKey: string, dataType: EntityDataType, rowIds?: Array<string>): Promise<DeleteConfirmationData> {
     return new Promise((resolve, reject) => {
         let params;
         if (selectionKey) {
@@ -29,7 +31,7 @@ export function getDeleteConfirmationData(selectionKey: string, dataTypeKey: Ent
             }
         }
         return Ajax.request({
-            url: buildURL('experiment', dataTypeKey === EntityDataType.DataClass ? 'getDataDeleteConfirmationData.api' : "getMaterialDeleteConfirmationData.api", params),
+            url: buildURL('experiment', dataType.deleteConfirmationActionName, params),
             method: "GET",
             success: Utils.getCallbackWrapper((response) => {
                 if (response.success) {
@@ -47,11 +49,11 @@ export function getDeleteConfirmationData(selectionKey: string, dataTypeKey: Ent
 }
 
 export function getSampleDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>): Promise<DeleteConfirmationData> {
-    return getDeleteConfirmationData(selectionKey, EntityDataType.Sample, rowIds);
+    return getDeleteConfirmationData(selectionKey, SampleTypeDataType, rowIds);
 }
 
 export function getDataDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>): Promise<DeleteConfirmationData> {
-    return getDeleteConfirmationData(selectionKey, EntityDataType.DataClass, rowIds);
+    return getDeleteConfirmationData(selectionKey, DataClassDataType, rowIds);
 }
 
 function getSelectedParents(schemaQuery: SchemaQuery, filterArray: Array<Filter.IFilter>) : Promise<List<EntityParentType>> {

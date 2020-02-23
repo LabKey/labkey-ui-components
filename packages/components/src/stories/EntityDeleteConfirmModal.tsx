@@ -17,8 +17,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import './stories.scss';
-import { EntityDeleteConfirmModal, EntityDataType } from '..';
+import { EntityDeleteConfirmModal } from '..';
 import { text, withKnobs } from '@storybook/addon-knobs';
+import { SampleTypeDataType } from '../components/entities/constants';
 
 storiesOf('EntityDeleteConfirmModal', module)
     .addDecorator(withKnobs)
@@ -27,7 +28,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'nonesuch'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
+            entityDataType={SampleTypeDataType}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents")}
@@ -39,7 +40,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'deleteNone'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
+            entityDataType={SampleTypeDataType}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents and obligations")}
@@ -51,7 +52,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'deleteOne'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
+            entityDataType={SampleTypeDataType}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents")}
@@ -63,7 +64,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'deleteAll'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
+            entityDataType={SampleTypeDataType}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents")}
@@ -75,7 +76,7 @@ storiesOf('EntityDeleteConfirmModal', module)
             selectionKey={'deleteSome'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
+            entityDataType={SampleTypeDataType}
             nounSingular={text("Singular Noun", "sample")}
             nounPlural={text("Plural Noun", "samples")}
             dependencyText={text("Dependency text", "dependents")}

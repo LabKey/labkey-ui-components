@@ -18,22 +18,26 @@ import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { Location } from '../util/URL';
 
-import { EntityInsertPanel, ParentEntityMetadata } from '../components/entities/EntityInsertPanel';
+import { EntityInsertPanel } from '../components/entities/EntityInsertPanel';
 
 import './stories.scss';
-import { EntityDataType, helpLinkNode } from '..';
-import { OrderedMap } from 'immutable';
+import { helpLinkNode } from '..';
+import { List } from 'immutable';
+import { DataClassDataType, SampleTypeDataType } from '../components/entities/constants';
+import { EntityDataType } from '../components/entities/models';
 
 storiesOf('EntityInsertPanel', module)
     .addDecorator(withKnobs)
     .add("No target sample set no parent data types", () => {
-        return <EntityInsertPanel
-                entityDataType={EntityDataType.Sample}
+        return (
+            <EntityInsertPanel
+                entityDataType={SampleTypeDataType}
                 canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
                 nounSingular={text("Singular noun", "sample")}
                 nounPlural={text("Plural noun", "samples")}
                 disableMerge={boolean("Disable merge?", false)}
-            />;
+            />
+        );
 
     })
     .add("Target sample set without parent selections", () => {
@@ -42,21 +46,17 @@ storiesOf('EntityInsertPanel', module)
                 target: "Sample Set 2"
             }
         };
-        return <EntityInsertPanel
-            entityDataType={EntityDataType.Sample}
-            canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
-            nounSingular={text("Singular noun", "sample")}
-            nounPlural={text("Plural noun", "samples")}
-            location={location}
-            importHelpLinkNode={helpLinkNode("help", "help text")}
-            parentDataTypes={OrderedMap<EntityDataType, ParentEntityMetadata>({
-                [EntityDataType.Sample]: {
-                    nounSingular: "Parent",
-                    descriptionSingular: "parent sample type",
-                    descriptionPlural: "parent sample types"
-                }
-            })}
-        />;
+        return (
+            <EntityInsertPanel
+                entityDataType={SampleTypeDataType}
+                canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
+                nounSingular={text("Singular noun", "sample")}
+                nounPlural={text("Plural noun", "samples")}
+                location={location}
+                importHelpLinkNode={helpLinkNode("help", "help text")}
+                parentDataTypes={List<EntityDataType>([SampleTypeDataType])}
+            />
+        );
     })
     .add("Multiple parent type options", () => {
         const location : Location = {
@@ -64,25 +64,25 @@ storiesOf('EntityInsertPanel', module)
                 target: "Sample Set 2"
             }
         };
-        return <EntityInsertPanel
-            entityDataType={EntityDataType.Sample}
-            canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
-            nounSingular={text("Singular noun", "sample")}
-            nounPlural={text("Plural noun", "samples")}
-            location={location}
-            importHelpLinkNode={helpLinkNode("help", "help text")}
-            parentDataTypes={OrderedMap<EntityDataType, ParentEntityMetadata>({
-                [EntityDataType.Sample]: {
-                    nounSingular: "Parent",
-                    descriptionSingular: "parent sample type",
-                    descriptionPlural: "parent sample types"
-                },
-                [EntityDataType.DataClass]: {
-                    nounSingular: "Source",
-                    descriptionSingular: "source type",
-                    descriptionPlural: "source types"
-                }
-            })}
-        />;
+        return (
+            <EntityInsertPanel
+                entityDataType={SampleTypeDataType}
+                canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
+                nounSingular={text("Singular noun", "sample")}
+                nounPlural={text("Plural noun", "samples")}
+                location={location}
+                importHelpLinkNode={helpLinkNode("help", "help text")}
+                parentDataTypes={List<EntityDataType>([
+                    SampleTypeDataType,
+                    {
+                        ...DataClassDataType,
+                        nounSingular: 'Source',
+                        nounPlural: 'Sources',
+                        descriptionSingular: 'source type',
+                        descriptionPlural: 'source types'
+                    }
+                ])}
+            />
+    );
     })
 ;

@@ -19,7 +19,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from "../base/Alert";
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { DeleteConfirmationData, getDeleteConfirmationData } from './actions';
-import { EntityDataType } from './constants';
+import { EntityDataType } from './models';
 
 interface Props {
     onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any

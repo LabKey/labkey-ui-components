@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ajax, Filter, Utils } from '@labkey/api';
+import { Filter, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
 import { Option } from 'react-select';
 
@@ -23,8 +23,6 @@ import { gridShowError } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
 import { capitalizeFirstChar, generateId } from '../../util/utils';
-import { buildURL } from '../../url/ActionURL';
-import { EntityDataType } from './constants';
 import { IEntityDetails } from '../domainproperties/entities/models';
 
 export interface EntityInputProps {
@@ -206,7 +204,7 @@ export class EntityIdCreationModel extends Record({
     selectionKey: undefined,
     targetEntityType: undefined,
     entityCount: 0,
-    entityDataType: EntityDataType.Sample
+    entityDataType: undefined
 }) {
     errors: Array<any>;
     initialEntityType: any;
@@ -428,7 +426,7 @@ export class EntityIdCreationModel extends Record({
 
     getSchemaQuery() {
         const entityTypeName = this.getTargetEntityTypeName();
-        return entityTypeName ? SchemaQuery.create(this.entityDataType === EntityDataType.Sample ? SCHEMAS.SAMPLE_SETS.SCHEMA : SCHEMAS.DATA_CLASSES.SCHEMA, entityTypeName) : undefined;
+        return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
     postEntityGrid(queryGridModel: QueryGridModel) : Promise<any>  {
@@ -500,3 +498,15 @@ export const enum EntityInsertPanelTabs {
     Grid = 1,
     File = 2
 }
+
+export interface EntityDataType {
+    typeListingSchemaQuery: SchemaQuery // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
+    instanceSchemaName: string // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
+    deleteConfirmationActionName: string // action in ExperimentController used to get the delete confirmation data
+    nounSingular: string
+    nounPlural: string
+    descriptionSingular: string // (e.g., parent sample type) used in EntityInsertPanel for a message about how many of these types are available
+    descriptionPlural: string
+    uniqueFieldKey: string
+}
+

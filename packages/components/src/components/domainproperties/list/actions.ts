@@ -15,6 +15,7 @@
  */
 import { ActionURL, Ajax, Utils, Domain } from "@labkey/api";
 import { ListModel } from "./models";
+import {buildURL} from "../../..";
 
 export function getListProperties(listId?: number) {
     return new Promise((resolve, reject) => {
@@ -33,25 +34,43 @@ export function getListProperties(listId?: number) {
     })
 }
 
-export function fetchListDesign(listId: number): Promise<ListModel> {
+// Not finding a Domain.getDomainDetails.
+// export function fetchListDesign(listId: number): Promise<ListModel> {
+//     return new Promise((resolve, reject) => {
+//         // first need to retrieve domainId, given a listId
+//         getListProperties(listId)
+//             .then((model: ListModel) => {
+//                 // then we can use the getDomainDetails function to get the ListModel
+//                 Domain.getDomainDetails({
+//                     containerPath: LABKEY.container.path,
+//                     domainId: model.domainId,
+//                     success: (data) => {
+//                         resolve(ListModel.create(data));
+//                     },
+//                     failure: (error) => {
+//                         reject(error);
+//                     }
+//                 });
+//             })
+//             .catch((error) => {
+//                 reject(error);
+//             });
+//     });
+// }
+
+export function fetchListDesign(domainId = null) {
     return new Promise((resolve, reject) => {
         // first need to retrieve domainId, given a listId
-        getListProperties(listId)
-            .then((model: ListModel) => {
-                // then we can use the getDomainDetails function to get the ListModel
-                Domain.getDomainDetails({
-                    containerPath: LABKEY.container.path,
-                    domainId: model.domainId,
-                    success: (data) => {
-                        resolve(ListModel.create(data));
-                    },
-                    failure: (error) => {
-                        reject(error);
-                    }
-                });
-            })
-            .catch((error) => {
+        Ajax.request({
+            url: buildURL('property', 'getDomainDetails.api', {
+                domainId: domainId
+            }),
+            success: Utils.getCallbackWrapper((data) => {
+                resolve(ListModel.create(data));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
                 reject(error);
-            });
+            })
+        })
     });
 }

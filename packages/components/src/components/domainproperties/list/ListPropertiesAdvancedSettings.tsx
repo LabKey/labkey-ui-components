@@ -114,11 +114,9 @@ class MetadataIndexField extends React.PureComponent<any, any> {
     }
 }
 
-// Temp title. I have no idea what to call it. IndexIndexField??
 class IndexField extends React.PureComponent<any, any> {
     render() {
         const { name, onRadioChange, bodySetting } = this.props;
-        // console.log("indexField", name, bodySetting);
 
         return (
             <div>

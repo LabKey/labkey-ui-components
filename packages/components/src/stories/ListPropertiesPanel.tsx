@@ -3,12 +3,12 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { Record } from 'immutable';
 
-import { ListModel } from '../components/domainproperties/models';
 import { ListPropertiesPanel } from '../components/domainproperties/list/ListPropertiesPanel';
 import {ListDesignerPanels} from '../components/domainproperties/list/ListDesignerPanels';
 
 import './stories.scss';
 import {AdvancedSettings} from "../components/domainproperties/list/ListPropertiesAdvancedSettings";
+import {ListModel} from "..";
 
 
 const json = {
@@ -761,9 +761,7 @@ class Wrapped extends React.Component<any, any> {
 
     render() {
         return(
-            <ListDesignerPanels
-                model={this.state.model}
-            />
+            <div/>
         );
     }
 }
@@ -783,9 +781,7 @@ class WrappedNew extends React.Component<any, any> {
 
     render() {
         return(
-            <ListDesignerPanels
-                model={this.state.model}
-            />
+            <div/>
         );
     }
 }

@@ -5,7 +5,7 @@ import {ActionURL} from "@labkey/api";
 import { ListPropertiesPanel } from "./ListPropertiesPanel";
 import { DomainDesign, DomainField, IAppDomainHeader, IDomainField } from "../models";
 import DomainForm from "../DomainForm";
-import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveDomain, newListDesign, saveListDesign } from "../actions";
+import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveDomain } from "../actions";
 import { LabelHelpTip, importData } from "../../..";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { ListModel } from "./models";
@@ -157,7 +157,15 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     setFileImportData = fileImportData => {
         this.setState({ fileImportData });
-        console.log('setFileImportData', fileImportData);
+    };
+
+    onModelChange = (model, name, value) => {
+        this.setState(({ model, [name]:value } as State),
+            () => {
+                // TODO: call dirty on Designer.tsx
+                console.log('onModelChange', this.state);
+            }
+        );
     };
 
     onDomainChange = (domain: DomainDesign) => {
@@ -246,7 +254,6 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
     }
 
     // to reviewer: this is kind of ungainly. Is there a better way?
-    // TODO: use merge instead
     onKeyFieldChange = e => {
         const { name, value } = e.target;
 
@@ -299,7 +306,12 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     headerRenderer = (config: IAppDomainHeader) => {
         return (
-            <SetKeyFieldNamePanel onKeyFieldChange={this.onKeyFieldChange} keyField={this.state.keyField} {...config} />
+            <SetKeyFieldNamePanel
+                keyField={this.state.keyField}
+                model={this.state.model}
+                onModelChange={this.onModelChange}
+                {...config}
+            />
         );
     };
 

@@ -15,7 +15,7 @@
  */
 import classNames from "classnames";
 import { List, Map } from 'immutable';
-import {ActionURL, Ajax, Domain, Query, Security, Utils} from '@labkey/api';
+import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -39,10 +39,8 @@ import {
     IFieldChange,
     PROP_DESC_TYPES,
     QueryInfoLite,
-    updateSampleField,
-    ListModel
+    updateSampleField
 } from './models';
-import { AssayProtocolModel } from './assay/models';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../util/utils';
 import { processSchemas } from '../base/models/schemas';
@@ -62,6 +60,7 @@ function cache<T>(prefix: string, key: string, miss: () => Promise<T>): Promise<
     return promise;
 }
 
+// TODO move these to lookups dir
 export function fetchContainers(): Promise<List<Container>> {
     return cache<List<Container>>('container-cache', 'containers', () => (
         new Promise((resolve) => {
@@ -197,24 +196,33 @@ export function getMaxPhiLevel(): Promise<string> {
  */
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string, includeWarnings?: boolean) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
+        function successHandler(response) {
+            resolve(DomainDesign.create(response));
+        }
+
+        function failureHandler(response) {
+            if (!response.exception) {
+                response = {exception: response};
+            }
+
+            if (!response.errors) {
+                reject(response);
+            }
+
+            const exception = DomainException.create(response, SEVERITY_LEVEL_ERROR);
+            const badDomain = setDomainException(domain, exception);
+            reject(badDomain);
+        }
+
         if (domain.domainId) {
             Domain.save({
                 containerPath: LABKEY.container.path,
-                domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
+                options,
+                domainDesign: DomainDesign.serialize(domain),
                 includeWarnings: includeWarnings,
-                success: (data) => {
-                    resolve(DomainDesign.create(data));
-                },
-                failure: (error) => {
-                    if (!error.exception) {
-                        error = {exception: error};
-                    }
-
-                    const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    const badDomain = setDomainException(domain, exception);
-                    reject(badDomain);
-                }
+                success: successHandler,
+                failure: failureHandler
             })
         }
         else {
@@ -223,14 +231,8 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                 kind,
                 options,
                 domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),
-                success: (data) => {
-                    resolve(DomainDesign.create(data));
-                },
-                failure: (error) => {
-                    let domainException = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    let badDomain = domain.set('domainException', domainException);
-                    reject(badDomain);
-                }
+                success: successHandler,
+                failure: failureHandler
             })
         }
     })
@@ -573,57 +575,6 @@ function getWarningBannerMessage (domain: any) : any {
     return undefined;
 }
 
-export function fetchProtocol(protocolId?: number, providerName?: string, copy?: boolean): Promise<AssayProtocolModel> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('assay', 'getProtocol.api', {
-                // give precedence to the protocolId if both are provided
-                protocolId,
-                providerName: protocolId !== undefined ? undefined : providerName,
-                copy: copy || false
-            }),
-            success: Utils.getCallbackWrapper((data) => {
-                resolve(AssayProtocolModel.create(data.data));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-            })
-        })
-    });
-}
-
-export function fetchListDesign(domainId = null) {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('property', 'getDomainDetails.api', {
-                domainId: domainId
-            }),
-            success: Utils.getCallbackWrapper((data) => {
-                resolve(ListModel.create(data));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-            })
-        })
-    });
-}
-
-export function createListDesign() {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('list', 'GetListProperties'),
-            method: 'GET',
-            scope: this,
-            success: Utils.getCallbackWrapper((data) => {
-                resolve(ListModel.create(null, data));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-            })
-        });
-    })
-}
-
 export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>): DomainDesign {
     return domain.merge({
         fields: fields.map((field) => {
@@ -639,136 +590,6 @@ export function setDomainException(domain: DomainDesign, exception: DomainExcept
     const exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exception);
     const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
     return domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exception)) as DomainDesign;
-}
-
-export function setAssayDomainException(model: AssayProtocolModel, exception: DomainException): AssayProtocolModel {
-    let updatedModel = model;
-
-    // If a domain is identified in the exception, attach to that domain
-    if (exception.domainName) {
-        const exceptionDomains = model.domains.map((domain) => {
-            if (exception.domainName.endsWith(domain.get('name'))) {
-                return setDomainException(domain, exception);
-            }
-
-            return domain;
-        });
-
-        updatedModel = model.set('domains', exceptionDomains) as AssayProtocolModel;
-    }
-    // otherwise attach to whole assay
-    else {
-        updatedModel = model.set('exception', exception.exception) as AssayProtocolModel;
-    }
-    return updatedModel;
-}
-
-export function setListDomainException(model: ListModel, exception: DomainException): ListModel {
-    let updatedModel = model;
-
-    if (exception.domainName) {
-        updatedModel = model.set('domains', model.domain) as ListModel;
-    } else {
-        updatedModel = model.set('exception', exception.exception) as ListModel;
-    }
-    return updatedModel;
-}
-
-
-
-export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('assay', 'saveProtocol.api'),
-            jsonData: AssayProtocolModel.serialize(model),
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(AssayProtocolModel.create(response.data));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                let badModel = model;
-
-                // Check for validation exception
-                const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                if (exception) {
-                    if (exception.domainName) {
-                        badModel = setAssayDomainException(model, exception);
-                    }
-                    else {
-                        badModel = model.set("exception", exception.exception) as AssayProtocolModel;
-                    }
-                } else {
-                    badModel = model.set("exception", error) as AssayProtocolModel;
-                }
-                reject(badModel);
-            }, this, false)
-        });
-    });
-}
-
-export function saveListDesign(model: ListModel): Promise<ListModel> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('property', 'saveDomain.api'),
-            jsonData: ListModel.serialize(model),
-            success: Utils.getCallbackWrapper((response) => {
-                console.log("existingList save - success");
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                // todo
-                // let badModel = model;
-                //
-                // // Check for validation exception
-                // const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                // if (exception) {
-                //     if (exception.domainName) {
-                //         badModel = setAssayDomainException(model, exception);
-                //     }
-                //     else {
-                //         badModel = model.set("exception", exception.exception) as AssayProtocolModel;
-                //     }
-                // } else {
-                //     badModel = model.set("exception", error) as AssayProtocolModel;
-                // }
-                // reject(badModel);
-            }, this, false)
-        });
-    });
-}
-
-export function newListDesign(model: ListModel): Promise<ListModel> {
-    console.log();
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('property', 'CreateDomain.api'),
-            method: 'POST',
-            jsonData: ListModel.serialize(model),
-            success: Utils.getCallbackWrapper((response) => {
-                console.log("newList save - success");
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-
-            }, this, false)
-        });
-    });
-}
-
-
-export function getValidPublishTargets(): Promise<List<Container>> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('assay', 'getValidPublishTargets.api'),
-            method: 'POST',
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(List<Container>(response.containers.map((container) => new Container(container))));
-            }),
-            failure: Utils.getCallbackWrapper((error) => {
-                reject(error);
-            })
-        })
-    });
 }
 
 export function getSplitSentence(label: string, lastWord: boolean): string {

@@ -21,8 +21,8 @@ class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
     render() {
         const { model, onInputChange } = this.props;
 
-        return (
-            <Row style={{ marginTop: '20px', height: '40px' }}>
+        return(
+            <Row className={'margin-top'}>
                 <Col xs={3} lg={4}>
                     Name *
                     <LabelHelpTip
@@ -41,7 +41,6 @@ class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
                         placeholder="Enter a name for this list"
                         value={model.name}
                         onChange={onInputChange}
-                        disabled={false}
                     />
                 </Col>
             </Row>
@@ -54,14 +53,19 @@ class DescriptionInput extends React.PureComponent<BasicPropertiesInputsProps> {
         const { model, onInputChange } = this.props;
         const value = model.description === null ? '' : model.description;
 
-        return (
-            <Row style={{ marginTop: '20px', height: '40px' }}>
+        return(
+            <Row className={'margin-top'}>
                 <Col xs={3} lg={4}>
                     Description
                 </Col>
 
                 <Col xs={9} lg={8}>
-                    <FormControl id="description" type="text" value={value} onChange={onInputChange} disabled={false} />
+                    <textarea
+                        className="form-control textarea-noresize"
+                        id={'description'}
+                        value={value}
+                        onChange={onInputChange}
+                    />
                 </Col>
             </Row>
         );

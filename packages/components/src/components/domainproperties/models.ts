@@ -1190,23 +1190,20 @@ export class DomainException extends Record({
     errors?: List<DomainFieldError>;
 
     static create(rawModel: any, severityLevel): DomainException {
-        if (rawModel && rawModel.exception)
-        {
+        if (rawModel && rawModel.exception) {
             let errors = List<DomainFieldError>();
             if (rawModel.errors) {
                 errors = DomainFieldError.fromJS(rawModel.errors, severityLevel);
             }
 
-            let severity = severityLevel;
             // warnings will only be there if there are no errors, so looking only the first one
+            let severity = severityLevel;
             let hasOnlyWarnings = errors.find(error => error.severity === SEVERITY_LEVEL_WARN);
-
             if (hasOnlyWarnings) {
                 severity = SEVERITY_LEVEL_WARN;
             }
 
             const domainName = this.getDomainNameFromException(rawModel.exception);
-
             if (domainName) {
                 const prefix = domainName + " -- ";
                 errors = errors.map((err) => {
@@ -1214,16 +1211,16 @@ export class DomainException extends Record({
                     return err.set('message', parts.length > 1 ? parts[1] : parts[0]);
                 }) as List<DomainFieldError>
             }
-            let exception = this.getExceptionMessage(errors);
 
             return new DomainException({
-                exception: exception,
+                exception: this.getExceptionMessage(errors),
                 success: rawModel.success,
                 severity: severity,
                 domainName: domainName,
                 errors: errors
             })
         }
+
         return undefined;
     }
 
@@ -1400,130 +1397,3 @@ export interface IAppDomainHeader {
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
-
-export class ListModel extends Record({
-    domain: undefined,
-    entityId : undefined,
-    createdBy : undefined,
-    created : undefined,
-    modifiedBy : undefined,
-    modified : undefined,
-    containerId : undefined,
-    name : undefined,
-    description : undefined,
-    lastIndexed : undefined, //confirm defaults
-    keyName : undefined,
-    titleColumn : undefined,
-    domainId : undefined,
-    keyType : undefined,
-    discussionSetting : undefined,
-    allowDelete : undefined,
-    allowUpload : undefined,
-    allowExport : undefined,
-    entireListIndex : undefined,
-    entireListIndexSetting : undefined,
-    entireListTitleSetting : undefined,
-    entireListTitleTemplate : undefined,
-    entireListBodySetting : undefined,
-    entireListBodyTemplate : undefined,
-    eachItemIndex : undefined,
-    eachItemTitleSetting : undefined,
-    eachItemTitleTemplate : undefined,
-    eachItemBodySetting : undefined,
-    eachItemBodyTemplate : undefined,
-    fileAttachmentIndex : undefined,
-    listId : undefined,
-    entireListTitleSettingEnum : undefined,
-    entireListBodySettingEnum : undefined,
-    eachItemTitleSettingEnum : undefined,
-    eachItemBodySettingEnum : undefined,
-    discussionSettingEnum : undefined,
-    entireListIndexSettingEnum : undefined,
-    containerPath : undefined,
-}) {
-    domain: DomainDesign;
-    name : string;
-    description : string;
-    lastIndexed : any; //confirm
-    keyName : string;
-    titleColumn : null;
-    domainId : number;
-    keyType : string;
-    discussionSetting : number;
-    allowDelete : true;
-    allowUpload : true;
-    allowExport : true;
-    entireListIndex : true;
-    entireListIndexSetting : number;
-    entireListTitleSetting : number;
-    entireListTitleTemplate : any; //confirm
-    entireListBodySetting : number;
-    entireListBodyTemplate : any; //confirm
-    eachItemIndex : false;
-    eachItemTitleSetting : number;
-    eachItemTitleTemplate : any; //confirm
-    eachItemBodySetting : number;
-    eachItemBodyTemplate : any; //confirm
-    fileAttachmentIndex : false;
-    listId : number;
-    entireListTitleSettingEnum : string;
-    entireListBodySettingEnum : string;
-    eachItemTitleSettingEnum : string;
-    eachItemBodySettingEnum : string;
-    discussionSettingEnum : string;
-    entireListIndexSettingEnum : string;
-    containerPath : string;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
-
-    static create(raw: any, defaultSettings=null): ListModel {
-        if (defaultSettings) {
-            let domain = DomainDesign.create(undefined);
-            return new ListModel({...defaultSettings, domain});
-        } else {
-            let domain = DomainDesign.create(raw.domainDesign);
-            return new ListModel({...raw.options, domain});
-        }
-    }
-
-    static serialize(model: ListModel): any {
-        let domain = DomainDesign.serialize(model.domain);
-        let options = model.merge({domain}).toJS();
-
-        if (model.isNew()) {
-            let kind;
-            if (model.keyType === "Varchar") {
-                kind = "VarList"
-            } else if (model.keyType === "Integer" || model.keyType === "AutoIncrementInteger") {
-                kind = "IntList"
-            }
-
-            delete options.domain;
-            return {domainDesign: domain, options, kind: kind};
-        } else {
-            delete options.domain;
-            return {domainDesign: domain, options, schemaName: 'lists', queryName: model.name, domainId: model.domainId};
-        }
-    }
-
-    isNew(): boolean {
-        return !this.listId;
-    }
-
-    static isValid(model: ListModel): boolean {
-        const errDomain = !!model.domain.domainException && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR;
-        return !errDomain && model.hasValidProperties();
-    }
-
-    hasValidProperties(): boolean {
-        return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
-            // && //additional validation to come
-        )
-    }
-
-    hasValidDomain(): boolean {
-        return false;
-    }
-}

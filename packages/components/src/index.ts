@@ -248,15 +248,10 @@ import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 import {
     createFormInputId,
     fetchDomain,
-    fetchProtocol,
-    fetchListDesign,
-    createListDesign,
-    saveAssayDesign,
     saveDomain,
     setDomainFields,
 } from './components/domainproperties/actions';
 import {
-    ListModel,
     DomainDesign,
     DomainField,
     IAppDomainHeader,
@@ -268,11 +263,13 @@ import {
 import DomainForm from './components/domainproperties/DomainForm';
 import { FilePreview } from './components/domainproperties/list/FilePreview';
 import { DomainFieldsDisplay } from './components/domainproperties/DomainFieldsDisplay';
+import { fetchProtocol, saveAssayDesign } from './components/domainproperties/assay/actions';
 import { AssayProtocolModel } from './components/domainproperties/assay/models';
 import { AssayPropertiesPanel } from './components/domainproperties/assay/AssayPropertiesPanel';
 import { AssayDesignerPanels } from './components/domainproperties/assay/AssayDesignerPanels';
 import { ListDesignerPanels } from "./components/domainproperties/list/ListDesignerPanels";
-import { ListPropertiesPanel } from "./components/domainproperties/list/ListPropertiesPanel";
+import { ListModel } from "./components/domainproperties/list/models";
+import { fetchListDesign, getListProperties } from "./components/domainproperties/list/actions";
 import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
@@ -423,6 +420,12 @@ export {
     getBatchPropertiesModel,
     getBatchPropertiesRow,
 
+    // lists
+    ListDesignerPanels,
+    ListModel,
+    fetchListDesign,
+    getListProperties,
+
     // forms
     handleInputTab,
     handleTabKeyOnTextArea,
@@ -484,8 +487,6 @@ export {
     fetchDomain,
     saveDomain,
     fetchProtocol,
-    fetchListDesign,
-    createListDesign,
     createFormInputId,
     saveAssayDesign,
     setDomainFields,
@@ -501,9 +502,6 @@ export {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
-    ListDesignerPanels,
-    ListPropertiesPanel,
-    ListModel,
 
     // Base
     GRID_CHECKBOX_OPTIONS,

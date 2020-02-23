@@ -3,20 +3,15 @@ import { Panel, Form, Row, Col } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
 import { Alert } from '../../base/Alert';
-import { DomainDesign, DomainPanelStatus, ListModel } from '../models';
-
-import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
-import {
-    DomainPropertiesPanelContext,
-    DomainPropertiesPanelProvider,
-    IDomainPropertiesPanelContext,
-} from '../DomainPropertiesPanelContext';
-import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from '../actions';
-import { DEFINE_LIST_TOPIC } from '../../../util/helpLinks';
-import { HelpTopicURL } from '../HelpTopicURL';
-
-import { AdvancedSettings } from './ListPropertiesAdvancedSettings';
-import { AllowableActions, BasicPropertiesFields } from './ListPropertiesPanelFormElements';
+import { DomainDesign, DomainPanelStatus } from "../models";
+import { AllowableActions, BasicPropertiesFields } from "./ListPropertiesPanelFormElements";
+import { AdvancedSettings } from "./ListPropertiesAdvancedSettings";
+import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
+import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider, IDomainPropertiesPanelContext } from "../DomainPropertiesPanelContext";
+import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
+import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
+import { HelpTopicURL } from "../HelpTopicURL";
+import { ListModel } from "./models";
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
@@ -54,6 +49,9 @@ export class ListPropertiesPanel extends React.PureComponent<Props> {
 }
 
 class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
+    static contextType = DomainPropertiesPanelContext;
+    context!: React.ContextType<typeof DomainPropertiesPanelContext>;
+
     static defaultProps = {
         initCollapsed: false,
         validate: false,
@@ -91,9 +89,10 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         );
     }
 
-    toggleLocalPanel = (evt: any, context: IDomainPropertiesPanelContext): void => {
+    toggleLocalPanel = (evt: any): void => {
+        const { togglePanel, collapsed } = this.context;
         this.setIsValid();
-        context.togglePanel(evt, !context.collapsed);
+        togglePanel(evt, !collapsed);
     };
 
     onChange = (identifier, value) => {
@@ -150,57 +149,62 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     render() {
         const { panelStatus, collapsible, controlledCollapse, model, useTheme } = this.props;
         const { isValid } = this.state;
+        const { collapsed } = this.context;
 
-        return (
-            <DomainPropertiesPanelContext.Consumer>
-                {context => (
-                    <>
-                        <Panel
-                            className={getDomainPanelClass(context.collapsed, true, useTheme)}
-                            expanded={!context.collapsed}
-                            onToggle={function() {}}>
-                            <CollapsiblePanelHeader
-                                id={PROPERTIES_HEADER_ID}
-                                title="List Properties"
-                                titlePrefix={model.name}
-                                togglePanel={(evt: any) => this.toggleLocalPanel(evt, context)}
-                                collapsed={context.collapsed}
-                                collapsible={collapsible}
-                                controlledCollapse={controlledCollapse}
-                                panelStatus={panelStatus}
-                                isValid={isValid}
-                                iconHelpMsg={ERROR_MSG}
-                                useTheme={useTheme}
+        return(
+            <>
+                <Panel
+                    className={getDomainPanelClass(collapsed, true, useTheme)}
+                    expanded={!collapsed}
+                    onToggle={function(){}}
+                >
+                    <CollapsiblePanelHeader
+                        id={PROPERTIES_HEADER_ID}
+                        title={'List Properties'}
+                        titlePrefix={model.name}
+                        togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
+                        collapsed={collapsed}
+                        collapsible={collapsible}
+                        controlledCollapse={controlledCollapse}
+                        panelStatus={panelStatus}
+                        isValid={isValid}
+                        iconHelpMsg={ERROR_MSG}
+                        useTheme={useTheme}
+                    />
+
+                    <Panel.Body collapsible={collapsible || controlledCollapse}>
+                        <Row className={'margin-bottom'}>
+                            <Col xs={12}>
+                                <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural={'lists'}/>
+                            </Col>
+                        </Row>
+                        <Form>
+                            <BasicPropertiesFields
+                                model={model}
+                                onInputChange={this.onInputChange}
                             />
+                            <AllowableActions
+                                model={model}
+                                onCheckBoxChange={this.onCheckBoxChange}
+                            />
+                            <AdvancedSettings
+                                title={"Advanced Settings"}
+                                model={model}
+                                saveAdvancedProperties={this.saveAdvancedProperties}
+                            />
+                        </Form>
+                    </Panel.Body>
 
-                            <Panel.Body collapsible={collapsible || controlledCollapse}>
-                                <Row className="margin-bottom">
-                                    <Col xs={12}>
-                                        <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural="lists" />
-                                    </Col>
-                                </Row>
-                                <Form>
-                                    <BasicPropertiesFields model={model} onInputChange={this.onInputChange} />
-                                    <AllowableActions model={model} onCheckBoxChange={this.onCheckBoxChange} />
-                                    <AdvancedSettings
-                                        title="Advanced Settings"
-                                        model={model}
-                                        saveAdvancedProperties={this.saveAdvancedProperties}
-                                    />
-                                </Form>
-                            </Panel.Body>
-
-                            {!isValid && (
-                                <div
-                                    onClick={(evt: any) => this.toggleLocalPanel(evt, context)}
-                                    className={getDomainAlertClasses(context.collapsed, true, useTheme)}>
-                                    <Alert bsStyle="danger">{ERROR_MSG}</Alert>
-                                </div>
-                            )}
-                        </Panel>
-                    </>
-                )}
-            </DomainPropertiesPanelContext.Consumer>
-        );
+                    {!isValid &&
+                        <div
+                            onClick={(evt: any) => this.toggleLocalPanel(evt)}
+                            className={getDomainAlertClasses(collapsed, true, useTheme)}
+                        >
+                            <Alert bsStyle="danger">{ERROR_MSG}</Alert>
+                        </div>
+                    }
+                </Panel>
+            </>
+        )
     }
 }

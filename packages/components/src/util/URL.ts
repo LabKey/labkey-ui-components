@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Map } from 'immutable';
+import {List, Map} from 'immutable';
 
 import { getBrowserHistory } from './global';
 
@@ -128,4 +128,18 @@ export function replaceParameter(location: Location, key: string, value: string 
 
 export function replaceParameters(location: Location, params: Map<string, string | number>) {
     setParameters(location, params, true);
+}
+
+export function resetParameters(except?: List<string>) {
+    const location = getLocation();
+
+    const emptyParams = location.query.map((value: string, key: string) => {
+        if (except && except.contains(key)) {
+            return value;
+        } else {
+            return undefined;
+        }
+    });
+
+    setParameters(location, emptyParams);
 }

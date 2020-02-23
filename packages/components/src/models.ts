@@ -52,6 +52,7 @@ interface IStateModelProps {
     omittedColumns?: List<string>
     showChartSelector?: boolean
     showViewSelector?: boolean
+    showExport?: boolean
     showSearchBox?: boolean
     containerPath?: string
     containerFilter?: string
@@ -210,6 +211,10 @@ export function getStateQueryGridModel(
 
             if (props.showViewSelector !== undefined) {
                 modelProps.showViewSelector = props.showViewSelector;
+            }
+
+            if (props.showExport !== undefined) {
+                modelProps.showExport = props.showExport;
             }
 
             if (props.showSearchBox !== undefined) {

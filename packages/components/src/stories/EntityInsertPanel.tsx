@@ -76,8 +76,8 @@ storiesOf('EntityInsertPanel', module)
                     SampleTypeDataType,
                     {
                         ...DataClassDataType,
-                        nounSingular: 'Source',
-                        nounPlural: 'Sources',
+                        nounSingular: 'source',
+                        nounPlural: 'sources',
                         descriptionSingular: 'source type',
                         descriptionPlural: 'source types'
                     }

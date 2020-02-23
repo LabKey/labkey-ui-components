@@ -25,10 +25,6 @@ interface Props {
     onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
     onCancel: () => any
     entityDataType: EntityDataType
-    nounSingular: string
-    nounPlural: string
-    dependencyText: string
-    helpLinkTopic: string
     rowIds?: Array<string>
     selectionKey?: string
 }
@@ -89,7 +85,7 @@ export class EntityDeleteConfirmModal extends React.Component<Props, State> {
     }
 
     render() {
-        const { onConfirm, onCancel } = this.props;
+        const { onConfirm, onCancel, entityDataType } = this.props;
 
         if (this.state.isLoading) {
             return (
@@ -119,10 +115,7 @@ export class EntityDeleteConfirmModal extends React.Component<Props, State> {
                 confirmationData={this.state.confirmationData}
                 onConfirm={onConfirm}
                 onCancel={onCancel}
-                nounSingular={this.props.nounSingular}
-                nounPlural={this.props.nounPlural}
-                dependencyText={this.props.dependencyText}
-                helpLinkTopic={this.props.helpLinkTopic}
+                entityDataType={entityDataType}
             />
         )
     }

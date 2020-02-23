@@ -31,10 +31,6 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
-                nounSingular={"datum"}
-                nounPlural={"data"}
-                dependencyText={"dependents"}
-                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);
@@ -53,10 +49,6 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
-                nounSingular={"datum"}
-                nounPlural={"data"}
-                dependencyText={"dependents"}
-                helpLinkTopic={"help"}
             />
         );
         const wrapper = mount(component);

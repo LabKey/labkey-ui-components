@@ -404,13 +404,14 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         return (
             entityParents.map((parent) => {
                 const { index, key, query } = parent;
+                const capNounSingular = capitalizeFirstChar(entityDataType.nounSingular);
                 return (
                     <div className="form-group row" key={key}>
                         <SelectInput
                             formsy={false}
                             containerClass=''
                             inputClass="col-sm-5"
-                            label={entityDataType.nounSingular + " " + index + " Type"}
+                            label={capNounSingular + " " + index + " Type"}
                             labelClass="col-sm-3 entity-insert--parent-label"
                             name={"parent-re-select-" + index}
                             onChange={this.changeParent.bind(this, index, queryName)}
@@ -420,7 +421,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
                         <RemoveEntityButton
                             labelClass={'entity-insert--remove-parent'}
-                            entity={entityDataType.nounSingular}
+                            entity={capNounSingular}
                             index={index}
                             onClick={this.removeParent.bind(this, index, queryName)}
                         />
@@ -444,7 +445,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                 <AddEntityButton
                     containerClass={'entity-insert--entity-add-button'}
                     key={'add-entity-' + queryName}
-                    entity={entityDataType.nounSingular}
+                    entity={capitalizeFirstChar(entityDataType.nounSingular)}
                     title={title}
                     disabled={disabled}
                     onClick={this.addParent.bind(this, queryName)}

@@ -1,4 +1,4 @@
-import { SCHEMAS } from '../..';
+import { DELETE_SAMPLES_TOPIC, SCHEMAS } from '../..';
 import { EntityDataType } from './models';
 
 export const DATA_DELETE_CONFIRMATION_ACTION = 'getDataDeleteConfirmationData.api';
@@ -8,11 +8,13 @@ export const SampleTypeDataType : EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
     instanceSchemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
     deleteConfirmationActionName: SAMPLE_DELETE_CONFIRMATION_ACTION,
-    nounSingular: "Sample",
-    nounPlural: "Samples",
+    nounSingular: "sample",
+    nounPlural: "samples",
     descriptionSingular: "parent sample type",
     descriptionPlural: "parent sample types",
-    uniqueFieldKey: 'Name'
+    uniqueFieldKey: 'Name',
+    dependencyText: "derived sample or assay data dependencies",
+    deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC
 };
 
 export const DataClassDataType : EntityDataType = {
@@ -23,5 +25,7 @@ export const DataClassDataType : EntityDataType = {
     nounPlural: "data",
     descriptionSingular: "parent type",
     descriptionPlural: "parent types",
-    uniqueFieldKey: 'Name'
+    uniqueFieldKey: 'Name',
+    dependencyText: "derived sample dependencies",
+    deleteHelpLinkTopic: "dataClass" // no topic specific to deleting data classes yet, so we refer to data classes in general
 };

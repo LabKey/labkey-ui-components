@@ -504,6 +504,7 @@ export interface EntityDataType {
     instanceSchemaName: string // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
     deleteConfirmationActionName: string // action in ExperimentController used to get the delete confirmation data
     nounSingular: string
+    nounAsParentSingular: string
     nounPlural: string
     descriptionSingular: string // (e.g., parent sample type) used in EntityInsertPanel for a message about how many of these types are available
     descriptionPlural: string

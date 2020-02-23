@@ -404,7 +404,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         return (
             entityParents.map((parent) => {
                 const { index, key, query } = parent;
-                const capNounSingular = capitalizeFirstChar(entityDataType.nounSingular);
+                const capNounSingular = capitalizeFirstChar(entityDataType.nounAsParentSingular);
                 return (
                     <div className="form-group row" key={key}>
                         <SelectInput
@@ -445,7 +445,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                 <AddEntityButton
                     containerClass={'entity-insert--entity-add-button'}
                     key={'add-entity-' + queryName}
-                    entity={capitalizeFirstChar(entityDataType.nounSingular)}
+                    entity={capitalizeFirstChar(entityDataType.nounAsParentSingular)}
                     title={title}
                     disabled={disabled}
                     onClick={this.addParent.bind(this, queryName)}

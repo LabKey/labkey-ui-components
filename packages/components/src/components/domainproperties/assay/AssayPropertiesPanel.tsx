@@ -119,9 +119,9 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
     }
 
     setValidProperties() {
-        const { model, onChange } = this.props;
+        const { model } = this.props;
         const validProperties = model && model.hasValidProperties();
-        this.setState(() => ({validProperties}), () => onChange(model));
+        this.setState(() => ({validProperties}));
     }
 
     toggleLocalPanel = (evt: any): void => {

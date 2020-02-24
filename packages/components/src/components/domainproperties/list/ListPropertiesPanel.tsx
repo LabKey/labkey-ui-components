@@ -1,7 +1,6 @@
 import React from 'react';
 import { Panel, Form, Row, Col } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
-
 import { Alert } from '../../base/Alert';
 import { DomainDesign, DomainPanelStatus } from "../models";
 import { AllowableActions, BasicPropertiesFields } from "./ListPropertiesPanelFormElements";
@@ -81,12 +80,9 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     }
 
     setIsValid(): void {
-        const { model, onChange } = this.props;
+        const { model } = this.props;
         const isValid = model && model.hasValidProperties();
-        this.setState(
-            () => ({ isValid }),
-            () => onChange(model)
-        );
+        this.setState(() => ({isValid}));
     }
 
     toggleLocalPanel = (evt: any): void => {
@@ -99,7 +95,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         const { model, onChange } = this.props;
 
         // Name must be set on Domain as well
-        let newDomain = model.domain; // to reviewer: is this improper immutability?
+        let newDomain = model.domain;
         if (identifier == 'name') {
             newDomain = model.domain.merge({ name: value }) as DomainDesign;
         }
@@ -113,12 +109,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     };
 
     onCheckBoxChange = (name, checked): void => {
-        const { model, onChange } = this.props;
-        const newModel = model.merge({
-            [name]: !checked,
-        }) as ListModel;
-        // console.log("onCheckBoxChange", newModel);
-        onChange(newModel); // TODO this should call this.onChange and centralize the call to onChange(newModel) there
+        this.onChange(name, !checked);
     };
 
     onInputChange = e => {
@@ -133,15 +124,8 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         this.onChange(id, value);
     };
 
-    onRadioChange = e => {
-        const name = e.currentTarget.name;
-        const value = e.target.value;
-        this.onChange(name, value);
-    };
-
-    saveAdvancedProperties = advancedSettingsForm => {
+    applyAdvancedProperties = advancedSettingsForm => {
         const { model, onChange } = this.props;
-
         const newModel = model.merge(advancedSettingsForm) as ListModel;
         onChange(newModel);
     };
@@ -190,20 +174,20 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
                             <AdvancedSettings
                                 title={"Advanced Settings"}
                                 model={model}
-                                saveAdvancedProperties={this.saveAdvancedProperties}
+                                applyAdvancedProperties={this.applyAdvancedProperties}
                             />
                         </Form>
                     </Panel.Body>
-
-                    {!isValid &&
-                        <div
-                            onClick={(evt: any) => this.toggleLocalPanel(evt)}
-                            className={getDomainAlertClasses(collapsed, true, useTheme)}
-                        >
-                            <Alert bsStyle="danger">{ERROR_MSG}</Alert>
-                        </div>
-                    }
                 </Panel>
+
+                {!isValid &&
+                    <div
+                        onClick={(evt: any) => this.toggleLocalPanel(evt)}
+                        className={getDomainAlertClasses(collapsed, true, useTheme)}
+                    >
+                        <Alert bsStyle="danger">{ERROR_MSG}</Alert>
+                    </div>
+                }
             </>
         )
     }

@@ -27,8 +27,6 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
             rangeURI: AUTOINT_TYPE.rangeURI,
             isPrimaryKey: true,
             lockType: "PKLocked", // PK lock type: required, datatype
-
-
         } as Partial<IDomainField>;
         onModelChange(name, value);
         onAddField(autoIncrementFieldConfig);
@@ -45,6 +43,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
         const {domain} = model;
         const {fields} = domain;
         const { name, value } = e.target;
+        console.log(name, value);
 
         let newFields;
 

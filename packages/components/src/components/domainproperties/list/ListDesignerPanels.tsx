@@ -1,12 +1,12 @@
 import React from 'react';
-import { Alert, Button, Col, FormControl, Row } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 import { List } from "immutable";
 import {ActionURL} from "@labkey/api";
 import { ListPropertiesPanel } from "./ListPropertiesPanel";
-import { DomainDesign, DomainField, IAppDomainHeader, IDomainField } from "../models";
+import { DomainDesign, IAppDomainHeader } from "../models";
 import DomainForm from "../DomainForm";
 import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveDomain } from "../actions";
-import { importData } from "../../..";
+import { importData } from "../../../query/api";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { ListModel } from "./models";
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
@@ -62,9 +62,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     currentPanelIndex: index,
                     firstState: false,
                     validatePanel: currentPanelIndex,
-                }),
-                callback()
-            );
+                }), callback());
         } else {
             if (currentPanelIndex === index) {
                 this.setState(
@@ -73,9 +71,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                         currentPanelIndex: undefined,
                         firstState: false,
                         validatePanel: currentPanelIndex,
-                    }),
-                    callback()
-                );
+                    }), callback());
             } else {
                 callback();
             }
@@ -123,7 +119,6 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     onDomainChange = (domain: DomainDesign) => {
         const { onChange } = this.props;
-        console.log("temp, onDomainChange", domain);
 
         this.setState((state) => ({
             model: state.model.merge({domain}) as ListModel
@@ -176,29 +171,35 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                 this.setState(
                     () => ({ validatePanel: undefined }),
                     () => {
-                        if (this.isValid()) {
-                            this.setState(() => ({ submitting: true }));
+                    if (this.isValid()) {
+                        this.setState(() => ({ submitting: true }));
 
-                    saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
-                        .then((response) => {
-                            let updatedModel = model.set('exception', undefined) as ListModel;
-                            updatedModel = updatedModel.merge({domain: response}) as ListModel;
-                            this.setState(() => ({model: updatedModel}));
+                        saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
+                            .then((response) => {
+                                let updatedModel = model.set('exception', undefined) as ListModel;
+                                updatedModel = updatedModel.merge({domain: response}) as ListModel;
+                                this.setState(() => ({model: updatedModel}));
 
-                            // If we're importing List file data, import file contents
-                            if (fileImportData) {
-                                this.handleFileImport();
-                            }
-                            else {
-                                this.setState(() => ({submitting: false}));
-                                this.props.onComplete(updatedModel);
-                            }
-                        })
-                        .catch((response) => {
-                            const updatedModel = model.set('exception', response.exception) as ListModel;
-                            this.setState(() => ({model: updatedModel, submitting: false}));
-                        });
-                }
+                                // If we're importing List file data, import file contents // TODO should this also check that the user does want to import it?
+                                if (fileImportData) {
+                                    this.handleFileImport();
+                                }
+                                else {
+                                    this.setState(() => ({submitting: false}));
+                                    this.props.onComplete(updatedModel);
+                                }
+                            })
+                            .catch((response) => {
+                                const updatedModel = response.exception
+                                    ? model.set('exception', response.exception) as ListModel
+                                    : model.merge({domain: response}) as ListModel;
+                                this.setState(() => ({model: updatedModel, submitting: false}));
+                            });
+                    }
+                    else if (!model.hasValidKeyType()) {
+                        const updatedModel = model.set('exception', 'You must specify a key field for your list in fhe fields panel to continue.') as ListModel;
+                        this.setState(() => ({model: updatedModel, submitting: false}));
+                    }
             });
         });
     };
@@ -246,15 +247,9 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     onChange={this.onPropertiesChange}
                     controlledCollapse={true}
                     initCollapsed={currentPanelIndex !== 0}
-                    panelStatus={
-                        model.isNew()
-                            ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState)
-                            : 'COMPLETE'
-                    }
+                    panelStatus={model.isNew() ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
                     validate={validatePanel === 0}
-                    onToggle={(collapsed, callback) => {
-                        this.onTogglePanel(0, collapsed, callback);
-                    }}
+                    onToggle={(collapsed, callback) => {this.onTogglePanel(0, collapsed, callback);}}
                     useTheme={useTheme}
                 />
 
@@ -269,16 +264,10 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     controlledCollapse={true}
                     initCollapsed={currentPanelIndex !== 1}
                     validate={validatePanel === 1}
-                    panelStatus={
-                        model.isNew()
-                            ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
-                            : 'COMPLETE'
-                    }
+                    panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
                     showInferFromFile={true}
                     containerTop={containerTop}
-                    onToggle={(collapsed, callback) => {
-                        this.onTogglePanel(1, collapsed, callback);
-                    }}
+                    onToggle={(collapsed, callback) => {this.onTogglePanel(1, collapsed, callback);}}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && this.headerRenderer}

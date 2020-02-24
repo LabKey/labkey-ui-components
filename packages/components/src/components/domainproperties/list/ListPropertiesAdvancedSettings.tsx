@@ -480,7 +480,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
     applyChanges = (): void => {
         const { modalOpen, ...advancedSettingsForm } = this.state;
 
-        this.props.saveAdvancedProperties(advancedSettingsForm);
+        this.props.applyAdvancedProperties(advancedSettingsForm);
         this.toggleModal(false);
     };
 

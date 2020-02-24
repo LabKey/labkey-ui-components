@@ -109,9 +109,16 @@ export class ListModel extends Record({
     getDomainKind(): string {
         if (this.keyType === "Varchar") {
             return "VarList"
-        } else if (this.keyType === "Integer" || this.keyType === "AutoIncrementInteger") {
+        }
+        else if (this.keyType === "Integer" || this.keyType === "AutoIncrementInteger") {
             return "IntList"
         }
+
+        return undefined;
+    }
+
+    hasValidKeyType(): boolean {
+        return this.getDomainKind() !== undefined;
     }
 
     isNew(): boolean {
@@ -120,17 +127,16 @@ export class ListModel extends Record({
 
     static isValid(model: ListModel): boolean {
         const errDomain = !!model.domain.domainException && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR;
-        return !errDomain && model.hasValidProperties();
+        return !errDomain && model.hasValidProperties() && model.hasValidKeyType();
     }
 
     hasValidProperties(): boolean {
-        return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
-            // TODO additional validation to come
-        )
+        return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
     }
 
     getOptions(): Object {
         let options = this.toJS();
+        delete options.exception;
         delete options.domain;
         return options;
     }

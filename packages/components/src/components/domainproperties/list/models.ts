@@ -28,7 +28,7 @@ export class ListModel extends Record({
     containerId : undefined,
     name : undefined,
     description : undefined,
-    lastIndexed : undefined, //confirm defaults
+    lastIndexed : undefined,
     keyName : undefined,
     titleColumn : undefined,
     domainId : undefined,

@@ -43,7 +43,7 @@ import {
     resolveAvailableTypes,
 } from './models';
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
-import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from './propertiesUtil';
+import {isFieldFullyLocked, isFieldPartiallyLocked, isLegalName, isPrimaryKeyFieldLocked} from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 import { FieldExpansionToggle } from "../base/FieldExpansionToggle";
@@ -356,7 +356,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     <FormControl
                         componentClass="select"
                         name={createFormInputName(DOMAIN_FIELD_TYPE)}
-                        disabled={(!field.isNew() && field.primaryKey) || isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType)}
+                        disabled={(!field.isNew() && field.primaryKey) || isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
                         id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
                         onChange={this.onDataTypeChange}
                         value={field.dataType.name}
@@ -376,7 +376,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                             id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
                             checked={field.required}
                             onChange={this.onFieldChange}
-                            disabled={isFieldFullyLocked(field.lockType)}
+                            disabled={isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
                         />
                     </div>
                 </Col>
@@ -401,7 +401,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         Advanced Settings
                     </Button>
                 )}
-                {!(isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)) &&
+                {!(isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)) &&
                     <DeleteIcon
                         id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
                         title={'Remove field'}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Col, FormControl, Row } from 'react-bootstrap';
 import {List} from "immutable";
-import {DATE_TYPE, DomainField, IDomainField} from '../models';
+import {AUTOINT_TYPE, DomainField, IDomainField} from '../models';
 import {LabelHelpTip, ListModel} from '../../..';
 
 // TODO: define props - IAppDomainHeader (and some other properties, model, onModelChange, keyField, onAddField)
@@ -9,35 +9,35 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
 
     setKeyField = (fields, newKey) => {
         const newKeyField = fields.get(newKey);
-        const updatedNewKeyField = newKeyField.merge({ isPrimaryKey: true, required: true }) as DomainField;
+        const updatedNewKeyField = newKeyField.merge({ isPrimaryKey: true, required: true, lockType:"PKLocked" }) as DomainField;
         return fields.set(newKey, updatedNewKeyField) as List<DomainField>;
     };
 
     unsetKeyField = (fields, prevKey) => {
         const prevKeyField = fields.get(prevKey) as DomainField;
-        const updatedPrevKeyField = prevKeyField.merge({isPrimaryKey: false, required: false}) as DomainField;
+        const updatedPrevKeyField = prevKeyField.merge({isPrimaryKey: false, required: false, lockType:"NotLocked"}) as DomainField;
         return fields.set(prevKey, updatedPrevKeyField) as List<DomainField>;
     };
 
     addAutoIntField = (onAddField, onModelChange, name, value) => {
         const autoIncrementFieldConfig = {
             required: true,
-            name: 'Auto increment key (placeholder)',
-            dataType: DATE_TYPE,
-            // conceptURI: DATE_TYPE.conceptURI,
-            rangeURI: DATE_TYPE.rangeURI,
-            isPrimaryKey: true
+            name: 'Key',
+            dataType: AUTOINT_TYPE,
+            rangeURI: AUTOINT_TYPE.rangeURI,
+            isPrimaryKey: true,
+            lockType: "PKLocked", // PK lock type: required, datatype
+
 
         } as Partial<IDomainField>;
         onModelChange(name, value);
         onAddField(autoIncrementFieldConfig);
     };
 
-    removeAutoIntField = (fields) => { //TODO RP: propertly identify the field by its dataType
+    removeAutoIntField = (fields) => { //TODO RP: properly identify the field by its dataType
         return fields.filter((field) => {
-            return field.get('name') !== 'Auto increment key (placeholder)'
+            return field.get('name') !== 'Key'
         }) as List<DomainField>;
-
     };
 
     onSelectionChange = (e) => {
@@ -93,10 +93,10 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
     };
 
     render() {
-        const { keyField } = this.props;
+        const { keyField, domain } = this.props;
         let fieldNames = [];
-        if (this.props.domain) {
-            const fields = this.props.domain.fields;
+        if (domain) {
+            const fields = domain.fields;
 
             fieldNames =
                 fields &&
@@ -112,15 +112,22 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
                     return accum;
                 }, []);
         }
-        const autoIntIsPK = (keyField == '-1');
+        let autoIntIsPK = (keyField == '-1');
+        if (domain) {
+            const pkIndex = domain.fields.findIndex(i => (i.isPrimaryKey));
+
+            // TODO RP: identify using type, not name, once type is set up
+            const thing = domain.fields.get(pkIndex).name;
+            autoIntIsPK = (thing == 'Key');
+        }
         return (
             <Alert>
                 <div>
                     Select a key value for this list which uniquely identifies the item. You can use "Auto integer key"
                     to define your own below.
                 </div>
-                <Row style={{ marginTop: '15px' }}>
-                    <Col xs={3} style={{ color: 'black' }}>
+                <Row className='domain-set-key-panel'>
+                    <Col xs={3}>
                         Key Field Name
                         <LabelHelpTip
                             title=""
@@ -136,13 +143,9 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
                             name="keyField"
                             onChange={e => this.onSelectionChange(e)}
                             value={keyField}
-                            style={{ width: '200px' }}
+                            className='domain-set-key-panel__select'
                         >
                             <option disabled value={-2}> Select a field from the list </option>
-
-                            {!autoIntIsPK &&
-                                <option value={-1}>Auto integer key</option>
-                            }
 
                             {fieldNames.map((fieldName, index) => {
                                 return (
@@ -151,6 +154,10 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
                                     </option>
                                 );
                             })}
+
+                            {!autoIntIsPK &&
+                                <option value={-1}>Auto integer key</option>
+                            }
                         </FormControl>
                     </Col>
                 </Row>

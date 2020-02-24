@@ -189,6 +189,7 @@ export const DECIMAL_TYPE = new PropDescType({name: 'decimal', display: 'Decimal
 export const FLOAT_TYPE = new PropDescType({name: 'float', display: 'Float', rangeURI: FLOAT_RANGE_URI});
 export const LONG_TYPE = new PropDescType({name: 'long', display: 'Long Integer', rangeURI: LONG_RANGE_URI});
 export const TIME_TYPE = new PropDescType({name: 'time', display: 'Time', rangeURI: TIME_RANGE_URI});
+export const AUTOINT_TYPE = new PropDescType({name: 'int', display: 'Auto Increment1', shortDisplay: 'Auto Increment2', rangeURI: INT_RANGE_URI, alternateRangeURI: 'xsd:int'});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
@@ -212,7 +213,8 @@ export const READONLY_DESC_TYPES = List([
     DECIMAL_TYPE,
     FLOAT_TYPE,
     LONG_TYPE,
-    TIME_TYPE
+    TIME_TYPE,
+    AUTOINT_TYPE,
 ]);
 
 interface IDomainDesign {
@@ -669,6 +671,7 @@ export class DomainField extends Record({
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
         const {dataType} = baseField;
+        console.log("blarghl", dataType);
         const lookup = DomainField.resolveLookupConfig(rawField, dataType);
         let field = new DomainField(Object.assign(rawField, baseField, {
             ...lookup,
@@ -1003,6 +1006,10 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
     if (!isFieldNew(rawField) || rawField.rangeURI !== undefined) {
         if (rawField.conceptURI === SAMPLE_TYPE_CONCEPT_URI)
             return SAMPLE_TYPE;
+
+        if (rawField.dataType) {
+            return rawField.dataType;
+        }
 
         type = PROP_DESC_TYPES.find((type) => {
 

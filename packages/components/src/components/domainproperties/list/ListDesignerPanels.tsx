@@ -124,6 +124,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
     onDomainChange = (domain: DomainDesign) => {
         const { onChange } = this.props;
         console.log("temp, onDomainChange", domain);
+
         this.setState((state) => ({
             model: state.model.merge({domain}) as ListModel
         }), () => {
@@ -220,11 +221,20 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     render() {
         const { onCancel, useTheme, containerTop, successBsStyle } = this.props;
-        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel } = this.state;
+        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel, keyField } = this.state;
 
         let errorDomains = List<string>();
         if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
             errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
+        }
+
+        // hacky way to update KeyField dropdown selection after user reorders fields.
+        if (keyField !== -2) {
+            const fields = model.domain.fields;
+            const pkIndex = fields.findIndex(i => (i.isPrimaryKey));
+            if (keyField !== pkIndex && pkIndex !== -1) {
+                this.setState({keyField: pkIndex});
+            }
         }
 
         const bottomErrorMsg = getDomainBottomErrorMessage(model.exception, errorDomains, model.hasValidProperties(), visitedPanels);

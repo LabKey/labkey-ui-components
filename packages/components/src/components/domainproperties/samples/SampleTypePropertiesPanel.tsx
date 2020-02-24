@@ -6,7 +6,7 @@ import {EntityDetailsForm, EntityDetailsProps} from "../entities/EntityDetailsFo
 import {IParentAlias, IParentOption, ISampleSetDetails} from "../../samples/models";
 import {DomainPanelStatus} from "../models";
 import {DomainPropertiesPanelProvider} from "../DomainPropertiesPanelContext";
-import {isExistingEntity} from "../entities/actions";
+import {getFormNameFromId, isExistingEntity} from "../entities/actions";
 import {Col, Panel, Row} from "react-bootstrap";
 import {AddEntityButton, generateId, helpLinkNode} from "../../..";
 import {Map} from "immutable";
@@ -18,6 +18,8 @@ interface OwnProps {
     model: SampleTypeModel
     parentOptions: Array<IParentOption>
     onChange: (model: SampleTypeModel) => void
+    onParentAliasChange: (id:string, field: string, newValue: IParentOption) => void
+    onRemoveParentAliasChange: (id:string) => void
 }
 
 interface CollapsiblePanelProps {
@@ -105,29 +107,24 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
         onChange(model.set(getFormNameFromId(id), value) as SampleTypeModel);
     };
 
-    parentAliasChanges = (id:string, field: string, newValue: any): void => {
-        const {model} = this.props;
-        let {parentAliases} = model;
-        parentAliases.get(id)[field] = newValue;
-
-        model.set()
-        this.setState({parentAliases});
+    parentAliasChanges = (id:string, field: string, newValue: IParentOption): void => {
+        const {onParentAliasChange} = this.props;
+        onParentAliasChange(id, field, newValue);
     };
 
     addParentAlias = (): void => {
-        let {parentAliases} = this.state;
-        parentAliases = parentAliases || Map<string, IParentAlias>();
+        const {onParentAliasChange} = this.props;
 
         const newId = SampleTypePropertiesPanelImpl.generateAliasId();
-        parentAliases = parentAliases.set(newId, {
+        const newParentAlias = {
             id: newId,
             alias:'',
             parentValue: undefined,
             ignoreAliasError: true,
             ignoreSelectError: true,
-        });
+        };
 
-        this.setState({parentAliases});
+        onParentAliasChange(newId,'', newParentAlias);
     };
 
     renderAddEntityHelper = ():any => {
@@ -166,12 +163,12 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
             return;
 
         parentAliases = parentAliases.remove(id);
-        this.setState((state) => ({
-            formValues: {
-                ...state.formValues,
-            } as ISampleSetDetails,
-            parentAliases,
-        }));
+        // this.setState((state) => ({
+        //     formValues: {
+        //         ...state.formValues,
+        //     } as ISampleSetDetails,
+        //     parentAliases,
+        // }));
     };
 
     render = () => {

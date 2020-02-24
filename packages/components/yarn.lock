@@ -2051,10 +2051,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@labkey/api@0.0.34-fb-fix-selectRows-callback":
-  version "0.0.34-fb-fix-selectRows-callback"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.34-fb-fix-selectRows-callback.tgz#e5f8858f99e211a424d29a32b78c734f771635cf"
-  integrity sha1-5fiFj5niEaQk0poyt4xzT3cWNc8=
+"@labkey/api@0.0.34-fb-fix-selectRows-callback.1":
+  version "0.0.34-fb-fix-selectRows-callback.1"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.34-fb-fix-selectRows-callback.1.tgz#8acd60caf9d32d0beae9578e8fb9e7cd5517b182"
+  integrity sha1-is1gyvnTLQvq6VeOj7nnzVUXsYI=
 
 "@labkey/eslint-config-base@0.0.5":
   version "0.0.5"

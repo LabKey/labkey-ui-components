@@ -293,7 +293,7 @@ import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } fro
 import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
 import { EntityDataType } from './components/entities/constants';
-
+import {SampleTypeDesigner} from "./components/domainproperties/samples/SampleTypeDesigner";
 
 export {
     // global state functions
@@ -393,7 +393,8 @@ export {
     // samples-related
     DataClassDesigner,
     SampleInsertPanel,
-    SampleSetDetailsPanel,
+    // SampleSetDetailsPanel,
+    SampleTypeDesigner,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
     getSampleSet,

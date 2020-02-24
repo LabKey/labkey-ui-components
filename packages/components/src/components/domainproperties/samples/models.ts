@@ -1,4 +1,4 @@
-import {List, Record} from "immutable";
+import {List, Map, Record} from "immutable";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { DomainDesign } from "../models";
 import {IParentAlias} from "../../samples/models";

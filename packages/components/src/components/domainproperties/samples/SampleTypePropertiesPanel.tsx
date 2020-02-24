@@ -3,25 +3,33 @@ import {SampleTypeModel} from './models';
 import {EntityDetailsForm, EntityDetailsProps} from "../entities/EntityDetailsForm";
 
 //TODO move these to the local models file
-import {IParentAlias, IParentOption, ISampleSetDetails} from "../../samples/models";
+import {IParentOption,} from "../../samples/models";
 import {DomainPanelStatus} from "../models";
 import {DomainPropertiesPanelProvider} from "../DomainPropertiesPanelContext";
-import {getFormNameFromId, isExistingEntity} from "../entities/actions";
+import {getFormNameFromId,} from "../entities/actions";
 import {Col, Panel, Row} from "react-bootstrap";
 import {AddEntityButton, generateId, helpLinkNode} from "../../..";
-import {Map} from "immutable";
 import {PARENT_ALIAS_HELPER_TEXT} from "../../../constants";
 import {DERIVE_SAMPLES_ALIAS_TOPIC} from "../../../util/helpLinks";
 import {SampleSetParentAliasRow} from "../../samples/SampleSetParentAliasRow";
 
+//Splitting these out to clarify where they end-up
 interface OwnProps {
     model: SampleTypeModel
     parentOptions: Array<IParentOption>
-    onChange: (model: SampleTypeModel) => void
+    updateModel: (newModel: SampleTypeModel) => void
     onParentAliasChange: (id:string, field: string, newValue: IParentOption) => void
-    onRemoveParentAliasChange: (id:string) => void
+    onRemoveParentAlias: (id:string) => void
 }
 
+//Splitting these out to clarify where they end-up
+interface EntityProps {
+    noun: string
+    nameExpressionInfoUrl: string
+    nameExpressionPlaceholder: string
+}
+
+//Splitting these out to clarify where they end-up
 interface CollapsiblePanelProps {
     initCollapsed?: boolean
     collapsible?: boolean
@@ -34,16 +42,7 @@ interface CollapsiblePanelProps {
     onToggle?: (collapsed:boolean, callback: () => any) => any
 }
 
-type Props = OwnProps & EntityDetailsProps & CollapsiblePanelProps;
-
-// interface State {
-//     parentOptions: Array<IParentOption>
-//     parentAliases: Map<string, IParentAlias>
-//
-//     error: React.ReactNode
-//     submitting: boolean
-//
-// }
+type Props = OwnProps & EntityProps & CollapsiblePanelProps;
 
 interface State {
     isValid: boolean
@@ -97,14 +96,10 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
     }
 
     onFormChange = (evt: any): void => {
+        const {model, updateModel } = this.props;
         const id = evt.target.id;
         const value = evt.target.value;
-        this.onChange(id, value);
-    };
-
-    onChange = (id: string, value: any): void => {
-        const {model, onChange } = this.props;
-        onChange(model.set(getFormNameFromId(id), value) as SampleTypeModel);
+        updateModel(model.set(getFormNameFromId(id), value) as SampleTypeModel);
     };
 
     parentAliasChanges = (id:string, field: string, newValue: IParentOption): void => {
@@ -139,7 +134,8 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
     };
 
     renderParentAliases = () => {
-        const {parentAliases, parentOptions} = this.props;
+        const {model, parentOptions} = this.props;
+        const {parentAliases} = model;
 
         if (!parentAliases || !parentOptions)
             return [];
@@ -157,25 +153,17 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
     };
 
     removeParentAlias = (id: string): void => {
-        let {model} = this.props;
+        let {model, onRemoveParentAlias} = this.props;
         let {parentAliases} = model;
-        if (parentAliases.size === 0)
+        if (parentAliases.size === 0) //TODO:Verify: should this be an error?
             return;
 
-        parentAliases = parentAliases.remove(id);
-        // this.setState((state) => ({
-        //     formValues: {
-        //         ...state.formValues,
-        //     } as ISampleSetDetails,
-        //     parentAliases,
-        // }));
+        onRemoveParentAlias(id);
     };
 
     render = () => {
-        // const {  nameExpressionInfoUrl, nameExpressionPlaceholder, data, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
-        const {model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder,} = this.props;
-        // const { hasError, parentOptions, formValues } = this.state;
-        const isUpdate = isExistingEntity(formValues, data.options);
+        const {model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, noun='Sample Type'} = this.props;
+        // const isUpdate = isExistingEntity(formValues, data.options);
 
         return (
             <>
@@ -186,7 +174,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
                             for easy tracking of data.
                         </div>
                         <EntityDetailsForm
-                            noun={'Sample Type'}
+                            noun={noun}
                             onFormChange={this.onFormChange}
                             data={model}
                             nameExpressionInfoUrl={nameExpressionInfoUrl}
@@ -208,8 +196,6 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
                     </Panel.Body>
                 </Panel>
             </>
-            // }
-            // </DomainPropertiesPanelContext.Consumer>
         )
     };
 }

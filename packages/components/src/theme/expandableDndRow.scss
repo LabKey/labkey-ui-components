@@ -1,0 +1,38 @@
+
+.expandablednd-row-container {
+    display: flex;
+    width: 100%;
+}
+
+.expandablednd-row-container-main {
+    height: 50px;
+    width: 100%;
+    display: inline-flex;
+}
+
+.expandablednd-row-expanded-container {
+    display: table;
+}
+
+.expandablednd-row-handle-expanded {
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    border-color: $gray-border;
+    width: 29px;
+    height: 100%;
+    background-color: $gray-shadow;
+    display: table-cell;
+}
+
+.expandablednd-row-handle {
+    padding: 12px 0 0 8px;
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    border-color: $gray-border;
+    width: 30px;
+    background-color: $gray-shadow;
+}
+
+.expandablednd-row-expand-icon {
+    padding: 14px 15px 0 0;
+}

@@ -25,6 +25,7 @@ export class AssayProtocolModel extends Record({
     allowQCStates: false,
     allowSpacesInPath: false,
     allowTransformationScript: false,
+    allowPlateMetadata: false,
     autoCopyTargetContainer: undefined,
     autoCopyTargetContainerId: undefined,
     availableDetectionMethods: undefined,
@@ -39,6 +40,7 @@ export class AssayProtocolModel extends Record({
     metadataInputFormatHelp: undefined,
     moduleTransformScripts: undefined,
     name: undefined,
+    plateMetadata: undefined,
     protocolId: undefined,
     protocolParameters: undefined,
     protocolTransformScripts: undefined,
@@ -54,6 +56,7 @@ export class AssayProtocolModel extends Record({
     allowQCStates: boolean;
     allowSpacesInPath: boolean;
     allowTransformationScript: boolean;
+    allowPlateMetadata: boolean;
     autoCopyTargetContainer: {};
     autoCopyTargetContainerId: string;
     availableDetectionMethods: [];
@@ -68,6 +71,7 @@ export class AssayProtocolModel extends Record({
     metadataInputFormatHelp: any;
     moduleTransformScripts: List<string>;
     name: string;
+    plateMetadata: boolean;
     protocolId: number;
     protocolParameters: any;
     protocolTransformScripts: List<string>;

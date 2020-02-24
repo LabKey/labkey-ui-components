@@ -539,3 +539,26 @@ export function SaveScriptDataInput(props: InputProps) {
         </AssayPropertiesInput>
     )
 }
+
+export function PlateMetadataInput(props: InputProps) {
+    return (
+        <AssayPropertiesInput
+            label={'Plate Metadata'}
+            helpTipBody={() => {
+                return (
+                    <p>
+                        If enabled, plate template metadata can be added on a per run basis to combine tabular data
+                        that has well location information with plate based data.
+                    </p>
+                )
+            }}
+        >
+            <input
+                type='checkbox'
+                id={FORM_IDS.PLATE_METADATA}
+                checked={props.model.plateMetadata}
+                onChange={props.onChange}
+            />
+        </AssayPropertiesInput>
+    )
+}

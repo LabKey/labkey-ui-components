@@ -153,7 +153,7 @@ import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, Dat
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
-import { DELETE_SAMPLES_TOPIC, DATA_IMPORT_TOPIC, getHelpLink, helpLinkNode } from './util/helpLinks';
+import { DATA_IMPORT_TOPIC, DELETE_SAMPLES_TOPIC, getHelpLink, helpLinkNode } from './util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -193,7 +193,7 @@ import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
-import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
+import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
@@ -230,7 +230,7 @@ import {
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants';
-import { LineageFilter} from './components/lineage/models';
+import { LineageFilter } from './components/lineage/models';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
@@ -287,7 +287,8 @@ import { PermissionsPageContextProvider } from './components/permissions/Permiss
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './components/permissions/models';
 import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
-import { EntityDataType } from './components/entities/constants';
+import { EntityDataType } from './components/entities/models';
+import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
 
 
 export {
@@ -392,7 +393,6 @@ export {
 
     // samples-related
     DataClassDesigner,
-    SampleInsertPanel,
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
@@ -472,8 +472,13 @@ export {
     invalidateLineageResults,
     getSampleDeleteConfirmationData,
     getDataDeleteConfirmationData,
+
+    // entities
     EntityDeleteConfirmModal,
     EntityDataType,
+    EntityInsertPanel,
+    SampleTypeDataType,
+    DataClassDataType,
 
     // Navigation
     MenuSectionConfig,

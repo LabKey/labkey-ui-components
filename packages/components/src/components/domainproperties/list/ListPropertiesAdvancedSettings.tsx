@@ -1,17 +1,15 @@
 import React from 'react';
-import { Button, Col, FormControl, FormGroup, Modal, Radio, Row } from 'react-bootstrap';
-
+import { Button, Col, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { Record } from 'immutable';
-
-import { LabelHelpTip, SelectInput } from '../../..';
-
+import { LabelHelpTip, ListModel, SelectInput } from '../../..';
 import { CheckBox } from './ListPropertiesPanelFormElements';
 
-// TODO Must finalize
-class DisplayTitle extends React.PureComponent<any, any> {
+interface DisplayTitleProps {
+    model: ListModel
+}
+
+class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
     render() {
         const fields = this.props.model.domain.fields;
         console.log('DisplayTitle', fields);
@@ -39,7 +37,7 @@ class DisplayTitle extends React.PureComponent<any, any> {
 }
 
 interface DiscussionLinksProps {
-    onRadioChange: Function;
+    onRadioChange: (evt: any) => any;
     discussionSetting: number;
 }
 
@@ -69,7 +67,7 @@ class DiscussionLinks extends React.PureComponent<DiscussionLinksProps> {
 interface TitleIndexFieldProps {
     name: string;
     titleTemplate: string;
-    onInputChange: Function;
+    onInputChange: (evt: any) => any;
 }
 
 class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
@@ -103,13 +101,13 @@ class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
     }
 }
 
-interface MetadataIndexField {
+interface MetadataIndexFieldProps {
     indexSetting: number;
     name: string;
-    onRadioChange: any;
+    onRadioChange: (evt: any) => any;
 }
 
-class MetadataIndexField extends React.PureComponent<any> {
+class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
     render() {
         const { indexSetting, name, onRadioChange } = this.props;
 
@@ -131,13 +129,13 @@ class MetadataIndexField extends React.PureComponent<any> {
     }
 }
 
-interface IndexField {
+interface IndexFieldProps {
     name: string;
-    onRadioChange: Function;
+    onRadioChange: (evt: any) => any;
     bodySetting: number;
 }
 
-class IndexField extends React.PureComponent<any> {
+class IndexField extends React.PureComponent<IndexFieldProps> {
     render() {
         const { name, onRadioChange, bodySetting } = this.props;
 
@@ -160,8 +158,8 @@ class IndexField extends React.PureComponent<any> {
 }
 
 interface SingleDocumentIndexFieldsProps {
-    onRadioChange: Function;
-    onInputChange: Function;
+    onRadioChange: (evt: any) => any;
+    onInputChange: (evt: any) => any;
     entireListTitleTemplate: string;
     entireListIndexSetting: number;
     entireListBodySetting: number;
@@ -202,8 +200,8 @@ class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexF
 }
 
 interface SeparateDocumentIndexFieldsProps {
-    onRadioChange: Function;
-    onInputChange: Function;
+    onRadioChange: (evt: any) => any;
+    onInputChange: (evt: any) => any;
     eachItemTitleTemplate: string;
     eachItemBodySetting: number;
 }
@@ -239,10 +237,10 @@ interface CollapsibleFieldsProps {
     expanded: boolean;
     fields: JSX.Element;
     title: string;
-    expandFields: (expandedSection) => void;
+    expandFields: (expandedSection: string) => void;
     identifier: string;
     checked: boolean;
-    onCheckboxChange: (name, checked) => void;
+    onCheckboxChange: (name: string, checked: boolean) => void;
 }
 
 class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
@@ -269,8 +267,8 @@ class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
 }
 
 interface SearchIndexingProps {
-    onRadioChange: Function;
-    onInputChange: Function;
+    onRadioChange: (evt: any) => any;
+    onInputChange: (evt: any) => any;
     onCheckboxChange: (name, checked) => void;
     entireListIndexSettings: any;
     eachItemIndexSettings: any;
@@ -282,7 +280,7 @@ interface SearchIndexingState {
 
 }
 
-class SearchIndexing extends React.PureComponent<any, any> {
+class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchIndexingState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -414,6 +412,7 @@ class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsMo
     }
 }
 
+// TODO typescript props
 export class AdvancedSettings extends React.PureComponent<any, any> {
     constructor(props) {
         super(props);
@@ -486,15 +485,15 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
     };
 
     render() {
-        const { modalOpen, discussionSetting, fileAttachmentIndex } = this.state;
         const {
+            modalOpen,
+            discussionSetting,
+            fileAttachmentIndex,
             entireListIndex,
             entireListTitleSetting,
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
-        } = this.state;
-        const {
             eachItemIndex,
             eachItemTitleSetting,
             eachItemTitleTemplate,

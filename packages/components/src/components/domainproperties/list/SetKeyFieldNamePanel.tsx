@@ -1,13 +1,10 @@
 import React from 'react';
-
 import { Alert, Col, FormControl, Row } from 'react-bootstrap';
-
-import {DATE_TYPE, DomainField, IAppDomainHeader, IDomainField, TEXT_TYPE} from '../models';
-
-import {LabelHelpTip, ListModel} from '../../..';
 import {List} from "immutable";
+import {DATE_TYPE, DomainField, IDomainField} from '../models';
+import {LabelHelpTip, ListModel} from '../../..';
 
-// IAppDomainHeader (and some other properties, model, onModelChange, keyField, onAddField)
+// TODO: define props - IAppDomainHeader (and some other properties, model, onModelChange, keyField, onAddField)
 export class SetKeyFieldNamePanel extends React.PureComponent<any> {
 
     setKeyField = (fields, newKey) => {

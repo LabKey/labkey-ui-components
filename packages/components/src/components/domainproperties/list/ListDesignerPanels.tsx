@@ -192,7 +192,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                             .catch((response) => {
                                 const updatedModel = response.exception
                                     ? model.set('exception', response.exception) as ListModel
-                                    : model.merge({domain: response}) as ListModel;
+                                    : model.merge({domain: response, exception: undefined}) as ListModel;
                                 this.setState(() => ({model: updatedModel, submitting: false}));
                             });
                     }

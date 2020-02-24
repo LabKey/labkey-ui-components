@@ -30,6 +30,23 @@ exports[`<AddEntityButton /> Default properties 1`] = `
 </div>
 `;
 
+exports[`<AddEntityButton /> Disabled 1`] = `
+<div
+  className="form-group"
+>
+  <div>
+    <span
+      className="container--action-button btn btn-default disabled"
+    >
+      <i
+        className="fa fa-plus-circle container--addition-icon"
+      />
+       Add 
+    </span>
+  </div>
+</div>
+`;
+
 exports[`<AddEntityButton /> Specify entity and classes 1`] = `
 <div
   className="test-container-class"
@@ -37,6 +54,27 @@ exports[`<AddEntityButton /> Specify entity and classes 1`] = `
   <div
     className="test-button-class"
   >
+    <span
+      className="container--action-button btn btn-default"
+      onClick={[MockFunction]}
+    >
+      <i
+        className="fa fa-plus-circle container--addition-icon"
+      />
+       Add 
+      Test
+    </span>
+    
+  </div>
+</div>
+`;
+
+exports[`<AddEntityButton /> With title 1`] = `
+<div
+  className="form-group"
+  title="Test title"
+>
+  <div>
     <span
       className="container--action-button btn btn-default"
       onClick={[MockFunction]}

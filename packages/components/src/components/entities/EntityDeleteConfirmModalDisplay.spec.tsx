@@ -16,6 +16,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
+import { SampleTypeDataType } from './constants';
 
 describe("<EntityDeleteConfirmModal/>", () => {
 
@@ -31,10 +32,7 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
-                nounSingular={"sample"}
-                nounPlural={"samples"}
-                dependencyText={"dependents"}
-                helpLinkTopic={"help"}
+                entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
@@ -60,10 +58,7 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
-                nounSingular={"sample"}
-                nounPlural={"samples"}
-                dependencyText={"dependents"}
-                helpLinkTopic={"help"}
+                entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
@@ -89,10 +84,7 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
-                nounSingular={"sample"}
-                nounPlural={"samples"}
-                dependencyText={"dependents"}
-                helpLinkTopic={"help"}
+                entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
@@ -120,10 +112,7 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
-                nounSingular={"sample"}
-                nounPlural={"samples"}
-                dependencyText={"dependents"}
-                helpLinkTopic={"help"}
+                entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
@@ -146,10 +135,7 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
-                nounSingular={"sample"}
-                nounPlural={"samples"}
-                dependencyText={"dependents"}
-                helpLinkTopic={"help"}
+                entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
@@ -169,10 +155,7 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
-                nounSingular={"sample"}
-                nounPlural={"samples"}
-                dependencyText={"dependents"}
-                helpLinkTopic={"help"}
+                entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
@@ -203,10 +186,7 @@ describe("<EntityDeleteConfirmModal/>", () => {
                 }}
                 onCancel={onCancelFn}
                 onConfirm={onConfirmFn}
-                nounSingular={"sample"}
-                nounPlural={"samples"}
-                dependencyText={"dependents"}
-                helpLinkTopic={"help"}
+                entityDataType={SampleTypeDataType}
             />
         );
 

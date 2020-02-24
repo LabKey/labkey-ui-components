@@ -17,69 +17,60 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import './stories.scss';
-import { EntityDeleteConfirmModal, EntityDataType } from '..';
+import { EntityDeleteConfirmModal } from '..';
 import { text, withKnobs } from '@storybook/addon-knobs';
+import { SampleTypeDataType } from '../components/entities/constants';
 
 storiesOf('EntityDeleteConfirmModal', module)
     .addDecorator(withKnobs)
     .add("Error getting data", () => {
-        return <EntityDeleteConfirmModal
-            selectionKey={'nonesuch'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
-            nounSingular={text("Singular Noun", "sample")}
-            nounPlural={text("Plural Noun", "samples")}
-            dependencyText={text("Dependency text", "dependents")}
-            helpLinkTopic={text("Help link topic", "help")}
-        />
+        return (
+            <EntityDeleteConfirmModal
+                selectionKey={'nonesuch'}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+                entityDataType={SampleTypeDataType}
+            />
+        );
     })
     .add("Cannot delete any", () => {
-        return <EntityDeleteConfirmModal
-            selectionKey={'deleteNone'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
-            nounSingular={text("Singular Noun", "sample")}
-            nounPlural={text("Plural Noun", "samples")}
-            dependencyText={text("Dependency text", "dependents and obligations")}
-            helpLinkTopic={text("Help link topic", "help")}
+        return (
+            <EntityDeleteConfirmModal
+                selectionKey={'deleteNone'}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+                entityDataType={SampleTypeDataType}
             />
+        );
     })
     .add("Can delete one", () => {
-        return <EntityDeleteConfirmModal
-            selectionKey={'deleteOne'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
-            nounSingular={text("Singular Noun", "sample")}
-            nounPlural={text("Plural Noun", "samples")}
-            dependencyText={text("Dependency text", "dependents")}
-            helpLinkTopic={text("Help link topic", "help")}
-        />
+        return (
+            <EntityDeleteConfirmModal
+                selectionKey={'deleteOne'}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+                entityDataType={SampleTypeDataType}
+            />
+        )
     })
     .add("Can delete all", () => {
-        return <EntityDeleteConfirmModal
-            selectionKey={'deleteAll'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
-            nounSingular={text("Singular Noun", "sample")}
-            nounPlural={text("Plural Noun", "samples")}
-            dependencyText={text("Dependency text", "dependents")}
-            helpLinkTopic={text("Help link topic", "help")}
-        />
+        return (
+            <EntityDeleteConfirmModal
+                selectionKey={'deleteAll'}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+                entityDataType={SampleTypeDataType}
+            />
+        )
     })
     .add("Can delete some", () => {
-        return <EntityDeleteConfirmModal
-            selectionKey={'deleteSome'}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-            entityDataType={EntityDataType.Sample}
-            nounSingular={text("Singular Noun", "sample")}
-            nounPlural={text("Plural Noun", "samples")}
-            dependencyText={text("Dependency text", "dependents")}
-            helpLinkTopic={text("Help link topic", "help")}
-        />
+        return (
+            <EntityDeleteConfirmModal
+                selectionKey={'deleteSome'}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+                entityDataType={SampleTypeDataType}
+            />
+        )
     })
 ;

@@ -31,6 +31,20 @@ describe('<AddEntityButton />', () => {
         const onClick = jest.fn();
         const tree = renderer.create(<AddEntityButton entity="Test" onClick={onClick} containerClass="test-container-class" buttonClass="test-button-class"/>).toJSON();
         expect(tree).toMatchSnapshot();
+    });
+
+    test("Disabled", () => {
+        const onClick = jest.fn();
+        const wrapper = shallow(<AddEntityButton disabled={true} onClick={onClick}/>);
+        wrapper.find("span").simulate('click');
+        expect(onClick).toHaveBeenCalledTimes(0);
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    test("With title", () => {
+        const onClick = jest.fn();
+        const tree = renderer.create(<AddEntityButton entity="Test" onClick={onClick} title={"Test title"}/>).toJSON();
+        expect(tree).toMatchSnapshot();
     })
 });
 

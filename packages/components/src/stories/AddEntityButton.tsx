@@ -33,7 +33,7 @@ class WrappedAddEntityButton extends React.Component<any, State>
     }
 
     render() {
-        const { entity, buttonClass, containerClass, getHelperBody, helperTitle } = this.props;
+        const { disabled, entity, buttonClass, containerClass, getHelperBody, helperTitle, title } = this.props;
 
         return (
             <>
@@ -44,7 +44,10 @@ class WrappedAddEntityButton extends React.Component<any, State>
                     buttonClass={buttonClass}
                     containerClass={containerClass}
                     helperTitle={helperTitle}
-                    helperBody={getHelperBody} />
+                    helperBody={getHelperBody}
+                    disabled={disabled}
+                    title={title}
+                />
             </>
         );
     }
@@ -59,7 +62,9 @@ storiesOf("AddEntityButton", module)
         const helperBody = text('HelperBody', "https://www.labkey.org", helperId);
         const getHelperBody = showHelper ? () => helperBody : undefined;
         const helperTitle = text('HelperTitle', undefined, helperId);
+        const disabled = boolean("Disabled?", false);
+        const title = text("Button title", "Button title");
 
-        return <WrappedAddEntityButton entity={entity} helperTitle={helperTitle} getHelperBody={getHelperBody} />
+        return <WrappedAddEntityButton title={title} disabled={disabled} entity={entity} helperTitle={helperTitle} getHelperBody={getHelperBody} />
     })
 ;

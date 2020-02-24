@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 import React from 'react';
+import classNames from 'classnames';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface AddEntityButtonProps {
     buttonClass?: string
     containerClass?: string
+    disabled?: boolean
+    title?: string
     entity?: string
     onClick: () => void
     helperTitle?:string
@@ -33,12 +36,14 @@ export class AddEntityButton extends React.Component<AddEntityButtonProps, any> 
     };
 
     render() {
-        const { buttonClass, containerClass, entity, onClick, helperBody, helperTitle } = this.props;
+        const { buttonClass, containerClass, entity, disabled, onClick, title, helperBody, helperTitle } = this.props;
+
+        const buttonClasses = classNames('container--action-button btn btn-default', {'disabled' : disabled});
 
         return (
-            <div className={containerClass}>
+            <div className={containerClass} title={title}>
                 <div className={buttonClass}>
-                    <span className="container--action-button btn btn-default" onClick={onClick}>
+                    <span className={buttonClasses} onClick={disabled ? undefined : onClick}>
                         <i className="fa fa-plus-circle container--addition-icon"/> Add {entity}
                     </span>
                     {helperBody ? <LabelHelpTip body={helperBody} title={helperTitle}/> : '' }

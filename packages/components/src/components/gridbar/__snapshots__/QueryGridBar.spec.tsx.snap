@@ -800,6 +800,9 @@ exports[`<QueryGridBar/> without charts and views 1`] = `
   >
     <div
       className="col-md-6 col-sm-6 col-xs-12"
+    />
+    <div
+      className="col-md-6 col-sm-6 col-xs-12"
     >
       <div
         className="paging pull-right text-nowrap"

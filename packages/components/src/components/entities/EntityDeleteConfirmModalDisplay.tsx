@@ -17,15 +17,13 @@ import React from 'react';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { helpLinkNode } from '../../util/helpLinks';
 import { DeleteConfirmationData } from './actions';
+import { EntityDataType } from './models';
 
 interface Props {
     onConfirm:  (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
     onCancel: () => any
     confirmationData: DeleteConfirmationData
-    nounSingular: string
-    nounPlural: string
-    dependencyText: string
-    helpLinkTopic: string
+    entityDataType: EntityDataType
 }
 
 /**
@@ -38,7 +36,8 @@ export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any>
 
     getConfirmationProperties() : {message: any, title: string, canDelete: boolean}{
 
-        const { confirmationData, helpLinkTopic, nounSingular, nounPlural, dependencyText } = this.props;
+        const { confirmationData, entityDataType  } = this.props;
+        const { deleteHelpLinkTopic, nounSingular, nounPlural, dependencyText } = entityDataType;
 
         if (!confirmationData)
             return undefined;
@@ -74,7 +73,7 @@ export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any>
         const message = (
             <span>
                 {text}
-                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(helpLinkTopic, "more info")})</>}
+                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(deleteHelpLinkTopic, "more info")})</>}
                 {numCanDelete > 0 && <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>  Do you want to proceed?</p>}
             </span>
         );

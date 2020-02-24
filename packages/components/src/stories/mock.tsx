@@ -42,6 +42,8 @@ import nameExpressionSelectedQuery from '../test/data/nameExpressionSet-selected
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
+import dataClassesQuery from '../test/data/dataClasses-getQuery.json';
+import dataClassesQueryInfo from '../test/data/dataClasses-getQueryDetails.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json';
@@ -102,6 +104,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         'samplesetheatmap': sampleSetHeatMapQueryInfo,
         'assaysheatmap': assaysHeatMapQueryInfo,
         'samplesets': sampleSetsQueryInfo,
+        'dataclasses': dataClassesQueryInfo,
     },
     'exp.data': {
         'mixtures': mixturesQueryInfo,
@@ -151,6 +154,7 @@ const QUERY_RESPONSES = fromJS({
         'samplesetheatmap': sampleSetHeatMapQuery,
         'assaysheatmap': assaysHeatMapQuery,
         'samplesets': sampleSetsQuery,
+        'dataclasses': dataClassesQuery,
     },
     'exp.data': {
         'mixtures': mixturesQuery,

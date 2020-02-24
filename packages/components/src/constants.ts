@@ -180,6 +180,7 @@ export enum KEYS {
 export const RELEVANT_SEARCH_RESULT_TYPES = ['data', 'experiment', 'material', 'materialSource', 'assay'];
 
 export const SAMPLE_UNIQUE_FIELD_KEY = 'Name';
+export const DATA_CLASS_UNIQUE_FIELD_KEY = 'Name';
 
 export const NO_UPDATES_MESSAGE = 'No changes were made because the provided values match the existing values.';
 export const PARENT_ALIAS_HELPER_TEXT = "Column headings used during import to set a sample's parentage.";

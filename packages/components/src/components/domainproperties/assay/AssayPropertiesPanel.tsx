@@ -13,6 +13,7 @@ import {
     MetadataInputFormatsInput,
     ModuleProvidedScriptsInput,
     NameInput,
+    PlateMetadataInput,
     PlateTemplatesInput,
     QCStatesInput,
     SaveScriptDataInput,
@@ -44,11 +45,12 @@ export const FORM_IDS = {
     PLATE_TEMPLATE: FORM_ID_PREFIX + 'selectedPlateTemplate',
     PROTOCOL_TRANSFORM_SCRIPTS: FORM_ID_PREFIX + 'protocolTransformScripts',
     QC_ENABLED: FORM_ID_PREFIX + 'qcEnabled',
-    SAVE_SCRIPT_FILES: FORM_ID_PREFIX + 'saveScriptFiles'
+    SAVE_SCRIPT_FILES: FORM_ID_PREFIX + 'saveScriptFiles',
+    PLATE_METADATA: FORM_ID_PREFIX + 'plateMetadata'
 };
 const BOOLEAN_FIELDS = [
     FORM_IDS.BACKGROUND_UPLOAD, FORM_IDS.EDITABLE_RUNS, FORM_IDS.EDITABLE_RESULTS,
-    FORM_IDS.QC_ENABLED, FORM_IDS.SAVE_SCRIPT_FILES
+    FORM_IDS.QC_ENABLED, FORM_IDS.SAVE_SCRIPT_FILES, FORM_IDS.PLATE_METADATA
 ];
 
 interface Props {
@@ -178,6 +180,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
                     {model.allowDetectionMethodSelection() && <DetectionMethodsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
                     {model.allowMetadataInputFormatSelection() && <MetadataInputFormatsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
                     {!appPropertiesOnly && model.allowQCStates && <QCStatesInput model={model} onChange={this.onInputChange}/>}
+                    {!appPropertiesOnly && model.allowPlateMetadata && <PlateMetadataInput model={model} onChange={this.onInputChange}/>}
                 </div>
             </>
         )

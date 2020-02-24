@@ -1,5 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version 0.28.0
+*Released*: 24 February 2020
+* Add support to the assay designer for integrating plate metadata.
+
 ### version 0.27.0
 *Released*: 24 February 2020
 * Re-parameterize and rename SampleInsertPanel to EntityInsertPanel for use with Data classes as well

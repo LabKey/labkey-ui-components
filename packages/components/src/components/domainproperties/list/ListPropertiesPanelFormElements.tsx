@@ -20,7 +20,7 @@ class BasicPropertiesTitle extends React.PureComponent<{ title: string }> {
 class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
     render() {
         const { model, onInputChange } = this.props;
-
+        const value = (model.name === null) ? "" : model.name;
         return(
             <Row className={'margin-top'}>
                 <Col xs={3} lg={4}>
@@ -39,7 +39,7 @@ class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
                         id="name"
                         type="text"
                         placeholder="Enter a name for this list"
-                        value={model.name}
+                        value={value}
                         onChange={onInputChange}
                     />
                 </Col>
@@ -87,7 +87,11 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
     }
 }
 
-export class CheckBox extends React.PureComponent<any, any> {
+interface CheckBoxProps {
+    checked: boolean;
+    onClick: any;
+}
+export class CheckBox extends React.PureComponent<CheckBoxProps> {
     render() {
         const { onClick, checked } = this.props;
 
@@ -98,39 +102,49 @@ export class CheckBox extends React.PureComponent<any, any> {
         );
 
         return (
-            <span style={{ cursor: 'pointer' }} onClick={onClick}>
+            <span className='list__properties__checkbox--no-highlight' onClick={onClick}>
                 {checkedOrNot}
             </span>
         );
     }
 }
 
-interface CheckBoxRow {}
-class CheckBoxRow extends React.PureComponent<any, any> {
+interface CheckBoxRowProps {
+    checked: boolean;
+    onCheckBoxChange: (name, checked) => void;
+    name: string;
+    text: string;
+}
+
+class CheckBoxRow extends React.PureComponent<CheckBoxRowProps> {
     render() {
-        const { checked, onCheckBoxChange, name } = this.props;
+        const { checked, onCheckBoxChange, name, text } = this.props;
 
         return (
-            <div style={{ marginTop: '10px' }}>
+            <div className='list__properties__checkbox-row'>
                 <CheckBox
                     checked={checked}
                     onClick={() => {
                         onCheckBoxChange(name, checked);
                     }}
                 />
-                <span style={{ marginLeft: '10px' }}>{this.props.text}</span>
+                <span className='list__properties__checkbox-text'>{text}</span>
             </div>
         );
     }
 }
 
-class AllowableActionContainer extends React.PureComponent<any, any> {
+interface AllowableActionContainerProps {
+    model: ListModel;
+    onCheckBoxChange: (name, checked) => void;
+}
+class AllowableActionContainer extends React.PureComponent<AllowableActionContainerProps> {
     render() {
         const { onCheckBoxChange } = this.props;
         const { allowDelete, allowUpload, allowExport } = this.props.model;
 
         return (
-            <>
+            <div className='list__properties__allowable-actions'>
                 <CheckBoxRow
                     text="Delete"
                     checked={allowDelete}
@@ -149,7 +163,7 @@ class AllowableActionContainer extends React.PureComponent<any, any> {
                     onCheckBoxChange={onCheckBoxChange}
                     name="allowExport"
                 />
-            </>
+            </div>
         );
     }
 }
@@ -158,7 +172,7 @@ interface AllowableActionsProps {
     model: ListModel;
     onCheckBoxChange: (name: string, checked: boolean) => void;
 }
-export class AllowableActions extends React.PureComponent<any, any> {
+export class AllowableActions extends React.PureComponent<AllowableActionsProps> {
     render() {
         return (
             <>

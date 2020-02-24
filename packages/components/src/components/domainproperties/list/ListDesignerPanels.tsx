@@ -6,73 +6,10 @@ import { ListPropertiesPanel } from "./ListPropertiesPanel";
 import { DomainDesign, DomainField, IAppDomainHeader, IDomainField } from "../models";
 import DomainForm from "../DomainForm";
 import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveDomain } from "../actions";
-import { LabelHelpTip, importData } from "../../..";
+import { importData } from "../../..";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { ListModel } from "./models";
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
-
-// todo: give this its own file
-class SetKeyFieldName extends React.PureComponent<IAppDomainHeader> {
-    render() {
-        let fieldNames= [];
-        if (this.props.domain) {
-            const fields = this.props.domain.fields;
-            // console.log("SetKeyFieldName", fields);
-
-            fieldNames = fields && fields.reduce(function(accum: String[], field: IDomainField) {
-                const dataType = field.dataType.name;
-                if ((dataType == 'string' || dataType == 'int') && (typeof field.name !== 'undefined') && (field.name.trim().length > 0)) {
-                    accum.push(field.name);
-                }
-                return accum;
-            }, []);
-        }
-
-        const {onKeyFieldChange, keyField} = this.props;
-        console.log("SetKeyFieldNameProps", this.props);
-        return(
-            <Alert>
-                <div>
-                    Select a key value for this list which uniquely identifies the item. You can use "Auto integer key" to define your own below.
-                </div>
-                <Row style={{marginTop:"15px"}}>
-                    <Col xs={3} style={{color: "black"}}>
-                        Key Field Name
-                        <LabelHelpTip
-                            title={""}
-                            body={() => {return (<> Only integer or text fields can be made the primary key. </>)}}
-                        />
-                        *
-                    </Col>
-                    <Col xs={3}>
-                        <FormControl
-                            componentClass="select"
-                            name="keyField"
-                            onChange={(e) => onKeyFieldChange(e)}
-                            value={keyField}
-                            style={{width: "200px"}}
-                        >
-                            {/*<option disabled value={-2}>*/}
-                            {/*    Select a field from the list*/}
-                            {/*</option>*/}
-                            <option value={-1}>
-                                Auto integer key
-                            </option>
-
-                            {fieldNames.map((fieldName, index) => {
-                                return(
-                                    <option value={index} key={index + 1}>
-                                        {fieldName}
-                                    </option>
-                                )
-                            })}
-                        </FormControl>
-                    </Col>
-                </Row>
-            </Alert>
-        );
-    }
-}
 
 interface Props {
     initModel: ListModel
@@ -101,7 +38,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
         this.state = {
             model: props.initModel || ListModel.create({}),
-            keyField: -1,
+            keyField: -2,
             submitting: false,
             currentPanelIndex: 0,
             visitedPanels: List<number>(),
@@ -159,18 +96,34 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         this.setState({ fileImportData });
     };
 
-    onModelChange = (model, name, value) => {
-        this.setState(({ model, [name]:value } as State),
-            () => {
-                // TODO: call dirty on Designer.tsx
-                console.log('onModelChange', this.state);
-            }
-        );
+    // tried to do this a pretty way with creating a setState object, but failed
+    onModelChange = (name, value, model=null) => {
+        const { onChange } = this.props;
+
+        if (!model) {
+            this.setState({ [name]:value } as State,
+                () => {
+                    console.log('onModelChange2', this.state);
+                    if (onChange) {
+                        onChange(this.state.model);
+                    }
+                }
+            );
+        } else {
+            this.setState({ model, [name]:value } as State,
+                () => {
+                    console.log('onModelChange2', this.state);
+                    if (onChange) {
+                        onChange(this.state.model);
+                    }
+                }
+            );
+        }
     };
 
     onDomainChange = (domain: DomainDesign) => {
         const { onChange } = this.props;
-
+        console.log("temp, onDomainChange", domain);
         this.setState((state) => ({
             model: state.model.merge({domain}) as ListModel
         }), () => {
@@ -253,63 +206,13 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         return ListModel.isValid(this.state.model);
     }
 
-    // to reviewer: this is kind of ungainly. Is there a better way?
-    onKeyFieldChange = e => {
-        const { name, value } = e.target;
-
-        this.setState(
-            state => {
-                const oldFields = state.model.domain.fields as List<DomainField>;
-                const oldPKIndex = state.keyField;
-
-                // Toggle off primary key on deselected field
-                const oldKeyField = oldFields.get(oldPKIndex) as DomainField;
-                const updatedOldKeyField = oldKeyField.set('isPrimaryKey', false) as DomainField;
-
-                // Toggle on primary key on newly selected field
-                const newKeyField = oldFields.get(value);
-                const updatedNewKeyField = newKeyField.merge({ isPrimaryKey: true, required: true }) as DomainField;
-
-                const fieldsWithoutPK = oldFields.set(oldPKIndex, updatedOldKeyField) as List<DomainField>;
-                const fields = fieldsWithoutPK.set(value, updatedNewKeyField);
-
-                // if chosen key field is 'auto integer,' add corresponding field to fields TODO
-                if (value == -1) {
-                    const autoIntegerField = DomainField.create({
-                        name: 'Auto increment key (placeholder)',
-                        required: true,
-                        dataType: 'Integer',
-                    });
-
-                    console.log('autoIntegerField', autoIntegerField);
-                }
-
-                let keyType;
-                if (updatedNewKeyField.dataType.name === 'int') {
-                    keyType = 'Integer';
-                } else if (updatedNewKeyField.dataType.name === 'string') {
-                    keyType = 'Varchar';
-                }
-                const updatedModel = state.model.merge({
-                    domain: state.model.domain.set('fields', fields),
-                    keyName: updatedNewKeyField.name,
-                    keyType,
-                }) as ListModel;
-
-                return { model: updatedModel, [name]: value } as State;
-            },
-            () => {
-                console.log('onKeyFieldChange', this.state);
-            }
-        );
-    };
-
     headerRenderer = (config: IAppDomainHeader) => {
         return (
             <SetKeyFieldNamePanel
                 keyField={this.state.keyField}
                 model={this.state.model}
                 onModelChange={this.onModelChange}
+                onDomainChange={this.onDomainChange}
                 {...config}
             />
         );

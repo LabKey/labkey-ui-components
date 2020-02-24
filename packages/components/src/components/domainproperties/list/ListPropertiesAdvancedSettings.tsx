@@ -38,7 +38,12 @@ class DisplayTitle extends React.PureComponent<any, any> {
     }
 }
 
-class DiscussionLinks extends React.PureComponent<any, any> {
+interface DiscussionLinksProps {
+    onRadioChange: Function;
+    discussionSetting: number;
+}
+
+class DiscussionLinks extends React.PureComponent<DiscussionLinksProps> {
     render() {
         const { onRadioChange, discussionSetting } = this.props;
         const radioName = 'discussionSetting';
@@ -61,9 +66,15 @@ class DiscussionLinks extends React.PureComponent<any, any> {
     }
 }
 
-class TitleIndexField extends React.PureComponent<any, any> {
+interface TitleIndexFieldProps {
+    name: string;
+    titleTemplate: string;
+    onInputChange: Function;
+}
+
+class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
     render() {
-        const { name, titleTemplate, titleSetting, onInputChange } = this.props;
+        const { name, titleTemplate, onInputChange } = this.props;
         const title = titleTemplate == null ? '' : titleTemplate;
 
         return (
@@ -92,7 +103,13 @@ class TitleIndexField extends React.PureComponent<any, any> {
     }
 }
 
-class MetadataIndexField extends React.PureComponent<any, any> {
+interface MetadataIndexField {
+    indexSetting: number;
+    name: string;
+    onRadioChange: any;
+}
+
+class MetadataIndexField extends React.PureComponent<any> {
     render() {
         const { indexSetting, name, onRadioChange } = this.props;
 
@@ -114,7 +131,13 @@ class MetadataIndexField extends React.PureComponent<any, any> {
     }
 }
 
-class IndexField extends React.PureComponent<any, any> {
+interface IndexField {
+    name: string;
+    onRadioChange: Function;
+    bodySetting: number;
+}
+
+class IndexField extends React.PureComponent<any> {
     render() {
         const { name, onRadioChange, bodySetting } = this.props;
 
@@ -136,12 +159,19 @@ class IndexField extends React.PureComponent<any, any> {
     }
 }
 
-class SingleDocumentIndexFields extends React.PureComponent<any, any> {
+interface SingleDocumentIndexFieldsProps {
+    onRadioChange: Function;
+    onInputChange: Function;
+    entireListTitleTemplate: string;
+    entireListIndexSetting: number;
+    entireListBodySetting: number;
+}
+
+class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexFieldsProps> {
     render() {
         const {
             onRadioChange,
             onInputChange,
-            entireListTitleSetting,
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
@@ -150,7 +180,6 @@ class SingleDocumentIndexFields extends React.PureComponent<any, any> {
         return (
             <div className="list__advanced-settings-modal__single-doc-fields">
                 <TitleIndexField
-                    titleSetting={entireListTitleSetting}
                     titleTemplate={entireListTitleTemplate}
                     name="entireListTitleTemplate"
                     onInputChange={onInputChange}
@@ -172,12 +201,18 @@ class SingleDocumentIndexFields extends React.PureComponent<any, any> {
     }
 }
 
-class SeparateDocumentIndexFields extends React.PureComponent<any, any> {
+interface SeparateDocumentIndexFieldsProps {
+    onRadioChange: Function;
+    onInputChange: Function;
+    eachItemTitleTemplate: string;
+    eachItemBodySetting: number;
+}
+
+class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
     render() {
         const {
             onRadioChange,
             onInputChange,
-            eachItemTitleSetting,
             eachItemTitleTemplate,
             eachItemBodySetting,
         } = this.props;
@@ -185,7 +220,6 @@ class SeparateDocumentIndexFields extends React.PureComponent<any, any> {
         return (
             <div className="list__advanced-settings-modal__single-doc-fields">
                 <TitleIndexField
-                    titleSetting={eachItemTitleSetting}
                     titleTemplate={eachItemTitleTemplate}
                     name="eachItemTitleTemplate"
                     onInputChange={onInputChange}
@@ -201,7 +235,17 @@ class SeparateDocumentIndexFields extends React.PureComponent<any, any> {
     }
 }
 
-class CollapsibleFields extends React.PureComponent<any, any> {
+interface CollapsibleFieldsProps {
+    expanded: boolean;
+    fields: JSX.Element;
+    title: string;
+    expandFields: (expandedSection) => void;
+    identifier: string;
+    checked: boolean;
+    onCheckboxChange: (name, checked) => void;
+}
+
+class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
     render() {
         const { expanded, fields, title, expandFields, identifier, checked, onCheckboxChange } = this.props;
         const icon = expanded ? faAngleDown : faAngleRight;
@@ -209,7 +253,7 @@ class CollapsibleFields extends React.PureComponent<any, any> {
 
         return (
             <div>
-                <span onClick={() => expandFields(set)}>
+                <span onClick={() => expandFields(set)} className='list__advanced-settings-model__collapsible-field'>
                     <FontAwesomeIcon icon={icon} size="lg" color="#333333" />
                 </span>
                 <span className="list__advanced-settings-modal__index-checkbox">
@@ -222,6 +266,20 @@ class CollapsibleFields extends React.PureComponent<any, any> {
             </div>
         );
     }
+}
+
+interface SearchIndexingProps {
+    onRadioChange: Function;
+    onInputChange: Function;
+    onCheckboxChange: (name, checked) => void;
+    entireListIndexSettings: any;
+    eachItemIndexSettings: any;
+    fileAttachmentIndex: any; //todo rp
+}
+
+interface SearchIndexingState {
+    expanded: string;
+
 }
 
 class SearchIndexing extends React.PureComponent<any, any> {
@@ -285,7 +343,7 @@ class SearchIndexing extends React.PureComponent<any, any> {
                     onCheckboxChange={onCheckboxChange}
                 />
 
-                <span style={{ marginLeft: '16px' }}>
+                <span className='list__advanced-settings-model__index-checkbox'>
                     <CheckBox
                         checked={fileAttachmentIndex}
                         onClick={() => onCheckboxChange('fileAttachmentIndex', fileAttachmentIndex)}
@@ -297,7 +355,13 @@ class SearchIndexing extends React.PureComponent<any, any> {
     }
 }
 
-class SettingsContainer extends React.PureComponent<any, any> {
+interface SettingsContainerProps {
+    fieldComponent: JSX.Element;
+    title: string;
+    tipBody: string;
+}
+
+class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
     render() {
         const { fieldComponent, title, tipBody } = this.props;
 
@@ -319,9 +383,13 @@ class SettingsContainer extends React.PureComponent<any, any> {
     }
 }
 
-class AdvancedSettingsModalBottom extends React.PureComponent<any, any> {
+interface AdvancedSettingsModalBottomProps {
+    toggleModal: (isModalOpen: boolean) => void;
+    applyChanges: () => void;
+}
+class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsModalBottomProps> {
     render() {
-        const { toggleModal, saveChanges } = this.props;
+        const { toggleModal, applyChanges } = this.props;
 
         return (
             <div className="list__advanced-settings-modal__bottom">
@@ -329,7 +397,7 @@ class AdvancedSettingsModalBottom extends React.PureComponent<any, any> {
                     Cancel
                 </Button>
 
-                <span style={{ float: 'right' }}>
+                <span className='list__advanced-settings-model__help-link'>
                     <a
                         target="_blank"
                         href="https://www.labkey.org/Documentation/wiki-page.view?name=lists"
@@ -337,7 +405,7 @@ class AdvancedSettingsModalBottom extends React.PureComponent<any, any> {
                         Learn more about using lists
                     </a>
 
-                    <Button className="btn-primary" onClick={saveChanges}>
+                    <Button className="btn-primary" onClick={applyChanges}>
                         Apply
                     </Button>
                 </span>
@@ -384,7 +452,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
         };
     };
 
-    toggleModal = (isModalOpen: boolean) => {
+    toggleModal = (isModalOpen: boolean): void => {
         this.setState({ modalOpen: isModalOpen });
 
         // If modal is re-opened, reset unsaved values
@@ -396,12 +464,10 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
     onRadioChange = e => {
         const name = e.currentTarget.name;
         const value = e.target.value;
-        // console.log("onRadioChange", name, value);
         this.setState({ [name]: parseInt(value) });
     };
 
     onCheckboxChange = (name, checked) => {
-        // console.log("oncheckboxChnage", name, !checked);
         this.setState({ [name]: !checked });
     };
 
@@ -412,7 +478,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
         this.setState({ [id]: value });
     };
 
-    applyChanges = () => {
+    applyChanges = (): void => {
         const { modalOpen, ...advancedSettingsForm } = this.state;
 
         this.props.saveAdvancedProperties(advancedSettingsForm);
@@ -428,7 +494,12 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
             entireListIndexSetting,
             entireListBodySetting,
         } = this.state;
-        const { eachItemIndex, eachItemTitleSetting, eachItemTitleTemplate, eachItemBodySetting } = this.state;
+        const {
+            eachItemIndex,
+            eachItemTitleSetting,
+            eachItemTitleTemplate,
+            eachItemBodySetting
+        } = this.state;
         const { title, model } = this.props;
 
         const entireListIndexSettings = {
@@ -493,7 +564,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
                             }
                         />
 
-                        <AdvancedSettingsModalBottom toggleModal={this.toggleModal} saveChanges={this.applyChanges} />
+                        <AdvancedSettingsModalBottom toggleModal={this.toggleModal} applyChanges={this.applyChanges} />
                     </Modal.Body>
                 </Modal>
             </Col>

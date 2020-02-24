@@ -34,7 +34,7 @@ export class FilePreview extends React.PureComponent<Props, State> {
         const data = convertRowDataIntoPreviewData(filePreviewData.get('data'), 4);
 
         return (
-            <div style={{ marginTop: '15px' }}>
+            <div className='domain-form__file-preview'>
                 <div className="domain-form__file-preview__text"> Import data from this file upon list creation? </div>
                 <div className="domain-form__file-preview__toggle">
                     <ToggleWithInputField

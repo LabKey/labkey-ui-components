@@ -7,71 +7,96 @@ import {DATE_TYPE, DomainField, IAppDomainHeader, IDomainField, TEXT_TYPE} from 
 import {LabelHelpTip, ListModel} from '../../..';
 import {List} from "immutable";
 
-// IAppDomainHeader (and some other properties)
+// IAppDomainHeader (and some other properties, model, onModelChange, keyField, onAddField)
 export class SetKeyFieldNamePanel extends React.PureComponent<any> {
 
+    setKeyField = (fields, newKey) => {
+        const newKeyField = fields.get(newKey);
+        const updatedNewKeyField = newKeyField.merge({ isPrimaryKey: true, required: true }) as DomainField;
+        return fields.set(newKey, updatedNewKeyField) as List<DomainField>;
+    };
+
+    unsetKeyField = (fields, prevKey) => {
+        const prevKeyField = fields.get(prevKey) as DomainField;
+        const updatedPrevKeyField = prevKeyField.merge({isPrimaryKey: false, required: false}) as DomainField;
+        return fields.set(prevKey, updatedPrevKeyField) as List<DomainField>;
+    };
+
+    addAutoIntField = (onAddField, onModelChange, name, value) => {
+        const autoIncrementFieldConfig = {
+            required: true,
+            name: 'Auto increment key (placeholder)',
+            dataType: DATE_TYPE,
+            // conceptURI: DATE_TYPE.conceptURI,
+            rangeURI: DATE_TYPE.rangeURI,
+            isPrimaryKey: true
+
+        } as Partial<IDomainField>;
+        onModelChange(name, value);
+        onAddField(autoIncrementFieldConfig);
+    };
+
+    removeAutoIntField = (fields) => { //TODO RP: propertly identify the field by its dataType
+        return fields.filter((field) => {
+            return field.get('name') !== 'Auto increment key (placeholder)'
+        }) as List<DomainField>;
+
+    };
 
     onSelectionChange = (e) => {
-        const {model, onModelChange, keyField, onAddField} = this.props;
+        const {model, onModelChange, keyField, onAddField, onDomainChange} = this.props;
         const {domain} = model;
+        const {fields} = domain;
         const { name, value } = e.target;
 
-        console.log("current keyfield", keyField);
-        console.log("SetKeyFieldNamePanel", this.props);
-        console.log(name, value);
-        console.log(typeof value, value);
-        console.log(typeof '-1', '-1');
-        console.log(value !== '-1')
-        // Selecting non-autoInteger key
-        if (value !== '-1') {
-            // TODO tuck this into a helper function
-            const oldFields = domain.fields as List<DomainField>;
-            const oldPKIndex = keyField;
+        let newFields;
 
-            // if coming from -1, remove it from fields, otherwise
-
-            // Toggle off primary key on deselected field
-            const oldKeyField = oldFields.get(oldPKIndex) as DomainField;
-            const updatedOldKeyField = oldKeyField.merge({isPrimaryKey: false, required: false}) as DomainField;
-            console.log("updatedOldKeyField", oldKeyField);
-
-            // Toggle on primary key on newly selected field
-            const newKeyField = oldFields.get(value);
-            const updatedNewKeyField = newKeyField.merge({ isPrimaryKey: true, required: true }) as DomainField;
-
-            const fieldsWithoutPK = oldFields.set(oldPKIndex, updatedOldKeyField) as List<DomainField>;
-            const fields = fieldsWithoutPK.set(value, updatedNewKeyField);
-
-            let keyType;
-            if (updatedNewKeyField.dataType.name === 'int') {
-                keyType = 'Integer';
-            } else if (updatedNewKeyField.dataType.name === 'string') {
-                keyType = 'Varchar';
+        // Making first selection of key
+        if (keyField == '-2') {
+            if (value == '-1') {
+                this.addAutoIntField(onAddField, onModelChange, name, value); // Selecting auto int key
+                return;
+            } else {
+                newFields = this.setKeyField(fields, value);  // Selecting regular field
             }
-            const updatedModel = model.merge({
-                domain: model.domain.set('fields', fields),
-                keyName: updatedNewKeyField.name,
-                keyType,
-            }) as ListModel;
-
-            onModelChange(updatedModel, name, value);
-            // also need to update keyField on ListDesigner Panels?
+        // Changing key from one field to another
         } else {
-            console.log("let;s fucking go");
-            const autoIncrementFieldConfig = {
-                required: true,
-                name: 'Auto increment key (placeholder)',
-                dataType: DATE_TYPE,
-                // conceptURI: DATE_TYPE.conceptURI,
-                rangeURI: DATE_TYPE.rangeURI
-            } as Partial<IDomainField>;
-            onAddField(autoIncrementFieldConfig);
-            // new field needs to be of type auto increment, with locked type, and go away when another
+            if (keyField == '-1') {
+                const fieldsNoKey = this.removeAutoIntField(fields); // Auto int to regular field
+                newFields = this.setKeyField(fieldsNoKey, value);
+            } else if (value == '-1') {
+                newFields = this.unsetKeyField(fields, keyField); // Regular to auto int field
 
+                onDomainChange(domain.merge({fields: newFields}));
+                console.log("Old key field correct un-set.");
+
+                this.addAutoIntField(onAddField, onModelChange, name, value);
+                return;
+            } else if (value !== '-1') {
+                const fieldsNoKey = this.unsetKeyField(fields, keyField); // Regular to regular field
+                newFields = this.setKeyField(fieldsNoKey, value);
+            }
         }
+
+        const newKeyField = fields.get(value);
+        let keyType;
+        if (newKeyField.dataType.name === 'int') {
+            keyType = 'Integer';
+        } else if (newKeyField.dataType.name === 'string') {
+            keyType = 'Varchar';
+        }
+
+        const updatedModel = model.merge({
+            domain: model.domain.set('fields', newFields),
+            keyName: newKeyField.name,
+            keyType,
+        }) as ListModel;
+
+        onModelChange(name, value, updatedModel);
     };
 
     render() {
+        const { keyField } = this.props;
         let fieldNames = [];
         if (this.props.domain) {
             const fields = this.props.domain.fields;
@@ -90,8 +115,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
                     return accum;
                 }, []);
         }
-
-        const { onKeyFieldChange, keyField } = this.props;
+        const autoIntIsPK = (keyField == '-1');
         return (
             <Alert>
                 <div>
@@ -115,11 +139,13 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
                             name="keyField"
                             onChange={e => this.onSelectionChange(e)}
                             value={keyField}
-                            style={{ width: '200px' }}>
-                            {/* <option disabled value={-2}>*/}
-                            {/*    Select a field from the list*/}
-                            {/* </option>*/}
-                            <option value={-1}>Auto integer key</option>
+                            style={{ width: '200px' }}
+                        >
+                            <option disabled value={-2}> Select a field from the list </option>
+
+                            {!autoIntIsPK &&
+                                <option value={-1}>Auto integer key</option>
+                            }
 
                             {fieldNames.map((fieldName, index) => {
                                 return (

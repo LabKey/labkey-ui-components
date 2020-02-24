@@ -47,6 +47,10 @@
   margin-bottom: 10px;
 }
 
+.domain-form__file-preview {
+    margin-top: 15px;
+}
+
 .domain-zero-padding {
   padding: 0
 }
@@ -642,9 +646,30 @@
     width: 75px;
 }
 
-// TODO RP Move to separate file
 .list__bold-text {
     font-weight: bold;
+}
+
+.list__properties__checkbox--no-highlight {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.list__properties__checkbox-row {
+    margin-top: 10px;
+}
+
+.list__properties__checkbox-text {
+    margin-left: 10px;
+}
+
+.list__properties__allowable-actions {
+    margin-top: 14px;
 }
 
 .list__advanced-settings-modal__bottom {
@@ -687,10 +712,18 @@
     border-radius: 5px;
 }
 
+.list__advanced-settings-model__collapsible-field {
+    display: inline-block;
+    width: 15px;
+}
 
+.list__advanced-settings-model__index-checkbox {
+    margin-left: 22px;
+}
 
-// TO RELOCATE
-
+.list__advanced-settings-model__help-link {
+    float: right;
+}
 
 //.btn {
 //    display: inline-block;

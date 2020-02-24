@@ -80,7 +80,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
-    setIsValid() {
+    setIsValid(): void {
         const { model, onChange } = this.props;
         const isValid = model && model.hasValidProperties();
         this.setState(
@@ -95,7 +95,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         togglePanel(evt, !collapsed);
     };
 
-    onChange = (identifier, value) => {
+    onChange = (identifier, value): void => {
         const { model, onChange } = this.props;
 
         // Name must be set on Domain as well
@@ -112,6 +112,15 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         onChange(newModel);
     };
 
+    onCheckBoxChange = (name, checked): void => {
+        const { model, onChange } = this.props;
+        const newModel = model.merge({
+            [name]: !checked,
+        }) as ListModel;
+        // console.log("onCheckBoxChange", newModel);
+        onChange(newModel); // TODO this should call this.onChange and centralize the call to onChange(newModel) there
+    };
+
     onInputChange = e => {
         const id = e.target.id;
         let value = e.target.value;
@@ -122,15 +131,6 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         }
 
         this.onChange(id, value);
-    };
-
-    onCheckBoxChange = (name, checked) => {
-        const { model, onChange } = this.props;
-        const newModel = model.merge({
-            [name]: !checked,
-        }) as ListModel;
-        // console.log("onCheckBoxChange", newModel);
-        onChange(newModel); // TODO this should call this.onChange and centralize the call to onChange(newModel) there
     };
 
     onRadioChange = e => {

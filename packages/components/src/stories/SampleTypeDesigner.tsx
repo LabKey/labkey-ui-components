@@ -24,13 +24,13 @@ import './stories.scss';
 import {DomainDetails} from "../components/domainproperties/models";
 import {Domain} from "@labkey/api";
 import {SampleTypeDesigner} from "../components/domainproperties/samples/SampleTypeDesigner";
-import {SampleTypeModel} from "../components/domainproperties/samples/models";
+
 
 storiesOf('SampleTypeDesigner', module)
     .addDecorator(withKnobs)
     .add('for create', () => {
         return <SampleTypeDesigner
-            initModel={SampleTypeModel.create({})}
+            initModel={DomainDetails.create()}
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://wwDodomw.labkey.org')}

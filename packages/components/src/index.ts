@@ -268,7 +268,7 @@ import {
     IAppDomainHeader,
     IBannerMessage,
     IDomainField,
-    DomainDetails,     //TODO REVIEW remove?
+    DomainDetails,
     IFieldChange,
     SAMPLE_TYPE,
 } from './components/domainproperties/models';
@@ -297,6 +297,7 @@ import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
 import { EntityDataType } from './components/entities/models';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
+import {SampleTypeModel} from "./components/domainproperties/samples/models";
 import {SampleTypeDesigner} from "./components/domainproperties/samples/SampleTypeDesigner";
 
 export {
@@ -401,8 +402,9 @@ export {
 
     // samples-related
     DataClassDesigner,
-    // SampleSetDetailsPanel,
+    SampleSetDetailsPanel,   //TODO REMOVE in favor of SampleTypeDesigner
     SampleTypeDesigner,
+    SampleTypeModel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
     getSampleSet,

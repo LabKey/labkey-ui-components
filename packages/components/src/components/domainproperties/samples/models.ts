@@ -1,6 +1,6 @@
-import {List, Map, Record} from "immutable";
+import { Map, Record} from "immutable";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
-import { DomainDesign } from "../models";
+import {DomainDesign, DomainDetails} from "../models";
 import {IParentAlias} from "../../entities/models";
 
 export class SampleTypeModel extends Record({
@@ -24,12 +24,16 @@ export class SampleTypeModel extends Record({
         super(values);
     }
 
-    static create(raw: any): SampleTypeModel {
+    static create(raw?: DomainDetails): SampleTypeModel {
+        if (!raw)
+            return new SampleTypeModel();
+
         let domain = raw.domainDesign ?
             DomainDesign.create(raw.domainDesign) :
             DomainDesign.create({});
 
-        return new SampleTypeModel({...raw, domain});
+        const options = raw.options || {};
+        return new SampleTypeModel({...options, domain});
     }
 
     static serialize(model: SampleTypeModel): any {

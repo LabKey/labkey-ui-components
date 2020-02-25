@@ -1,11 +1,9 @@
 import React from 'react';
 import {SampleTypeModel} from './models';
 import {SampleTypePropertiesPanel} from "./SampleTypePropertiesPanel";
-import {Alert, DomainDesign, IDomainField, SAMPLE_TYPE, WizardNavButtons} from "../../..";
-import {Button} from "react-bootstrap";
+import {Alert, DomainDesign, DomainDetails, IDomainField, SAMPLE_TYPE, WizardNavButtons} from "../../..";
 import DomainForm from "../DomainForm";
 import {IParentAlias, IParentOption,} from "../../entities/models";
-import {Map} from "immutable";
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -22,7 +20,7 @@ interface Props {
     onCancel: () => void
     onComplete: (response: any) => void
     beforeFinish?: (formValues: {}) => void
-    initModel: SampleTypeModel
+    initModel: DomainDetails
     defaultSampleFieldConfig?: Partial<IDomainField>
 
     //EntityDetailsForm props
@@ -55,10 +53,12 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        const domainDetails = props.initModel || DomainDetails.create();
+
         this.state = {
             submitting: false,
             currentPanelIndex: 0,
-            model: props.initModel || SampleTypeModel.create({}),
+            model: SampleTypeModel.create(domainDetails),
             invalidDomainField: undefined,
             activePanelIndex: 0,
             parentOptions: undefined,

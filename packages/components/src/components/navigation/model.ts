@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Record } from 'immutable';
-import { ActionURL, Ajax, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Utils, QueryKey } from '@labkey/api';
 import { AppURL } from '../../url/AppURL';
 import { buildURL } from '../../url/ActionURL';
 
@@ -79,7 +79,11 @@ export class MenuItemModel extends Record ({
                 const parts = rawData.key.split("?");
                 const subParts = parts[0]
                     .split("/")
-                    .filter(val => val !== '');
+                    .filter(val => val !== '')
+                    .map(val => QueryKey.decodePart(val));
+
+                const decodedPart = subParts.join('/');
+                const decodedKey = rawData.key.replace(parts[0], decodedPart);
 
                 let url = AppURL.create(sectionKey, ...subParts);
                 if (parts.length > 1 && parts[1]) {
@@ -87,7 +91,8 @@ export class MenuItemModel extends Record ({
                 }
 
                 return new MenuItemModel(Object.assign({}, rawData, {
-                    url: url
+                    url: url,
+                    key: decodedKey
                 }));
             }
             else {

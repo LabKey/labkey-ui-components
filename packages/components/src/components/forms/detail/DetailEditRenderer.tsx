@@ -142,25 +142,23 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                         value={value && value.toString().toLowerCase() === 'true'}/>
                 );
             case 'date':
-                if (typeof value === 'string') {
-                    if (useDatePicker) {
-                        return (
-                            <DatePickerInput
-                                wrapperClassName={"col-sm-12"}
-                                name={col.name}
-                                queryColumn={col}
-                                value={value}/>)
-                    }
-                    else {
-                        return (
-                            <DateInput
-                                elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}
-                                name={col.name}
-                                queryColumn={col}
-                                validatePristine={true}
-                                value={value}/>
-                        )
-                    }
+                if (useDatePicker && (!value || typeof value === 'string')) {
+                    return (
+                        <DatePickerInput
+                            wrapperClassName={"col-sm-12"}
+                            name={col.name}
+                            queryColumn={col}
+                            value={value}/>)
+                }
+                else if (typeof value === 'string') {
+                    return (
+                        <DateInput
+                            elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}
+                            name={col.name}
+                            queryColumn={col}
+                            validatePristine={true}
+                            value={value}/>
+                    )
                  }
             default:
                 let validations,

@@ -158,7 +158,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
     className=""
   >
     <div
-      className="sample-insert--remove-parent"
+      className="entity-insert--remove-parent"
     >
       <span
         className="container--action-button"
@@ -345,7 +345,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
     className=""
   >
     <div
-      className="sample-insert--remove-parent"
+      className="entity-insert--remove-parent"
     >
       <span
         className="container--action-button"

@@ -277,7 +277,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     isFormValid(): boolean {
         //TODO Fix this, it is total horked
         const { formValues, parentAliases } = this.state;
-        const { data } = this.props;
+        const { data = DomainDetails.create()} = this.props;
         const {options = Map<string, any>()} = data;
 
         //Check if there are any parent aliases, and if any are invalid (either field blank)
@@ -547,7 +547,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     renderDetailsPanel = () => {
         // const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, noun, nameExpressionInfoUrl, nameExpressionPlaceholder, helpTopic, data } = this.props;
-        const {  nameExpressionInfoUrl, nameExpressionPlaceholder, data } = this.props;
+        const {  nameExpressionInfoUrl, nameExpressionPlaceholder, data = DomainDetails.create() } = this.props;
         const { hasError, parentOptions, formValues } = this.state;
         const isUpdate = isExistingEntity(formValues, data.options);
 

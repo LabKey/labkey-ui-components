@@ -4,14 +4,16 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import React from 'react';
+import { fromJS, Map } from "immutable";
+import { Utils } from '@labkey/api';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { Utils } from '@labkey/api';
 import { DomainException } from '../components/domainproperties/models';
 import { AssayProtocolModel } from '../components/domainproperties/assay/models';
 import { setAssayDomainException } from '../components/domainproperties/assay/actions';
 import { AssayDesignerPanels } from '../components/domainproperties/assay/AssayDesignerPanels';
 import { SEVERITY_LEVEL_ERROR } from '../components/domainproperties/constants';
+import { Alert } from "../components/base/Alert";
 import generalAssayTemplate from '../test/data/assay-getProtocolGeneralTemplate.json';
 import generalAssaySaved from '../test/data/assay-getProtocolGeneral.json';
 import generalAssayDupes from '../test/data/assay-getProtocolGeneralDuplicateFields.json';
@@ -24,6 +26,7 @@ interface Props {
     data: {},
     exception?: {}
     appPropertiesOnly?: boolean
+    appDomainHeaders?: Map<string, any>
 }
 
 interface State {
@@ -59,6 +62,7 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
                 initModel={this.state.model}
                 appPropertiesOnly={appPropertiesOnly}
                 hideEmptyBatchDomain={boolean('hideEmptyBatchDomain', false)}
+                appDomainHeaders={this.props.appDomainHeaders}
                 useTheme={false}
                 successBsStyle={text('successBsStyle', 'success')}
                 onChange={(model: AssayProtocolModel) => {}}
@@ -103,8 +107,16 @@ storiesOf("AssayDesignerPanels", module)
             <WrappedAssayDesignerPanels data={elispotAssaySaved.data}/>
         )
     })
-    .add("AppPropertiesOnly", () => {
+    .add("AppPropertiesOnly and AppDomainHeaders", () => {
         return (
-            <WrappedAssayDesignerPanels data={generalAssayDupes.data} appPropertiesOnly={true}/>
+            <WrappedAssayDesignerPanels
+                data={generalAssayDupes.data}
+                appPropertiesOnly={true}
+                appDomainHeaders={fromJS({
+                    Batch: () => {return <Alert bsStyle={'info'} id={'mock-app-header-batch'}>This is a mock batch app header.</Alert>},
+                    Run: () => {return <Alert bsStyle={'info'} id={'mock-app-header-run'}>This is a mock run app header.</Alert>},
+                    Data: () => {return <Alert bsStyle={'info'} id={'mock-app-header-results'}>This is a mock results app header.</Alert>}
+                })}
+            />
         )
     });

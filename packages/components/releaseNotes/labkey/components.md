@@ -3,8 +3,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Item 6639: ListDesignerPanels and related components, models, actions
-    - ...TODO add more details here
+* Item 6798: ListDesignerPanels and related components, models, actions
+    - new list related components ListDesignerPanels.tsx and ListPropertiesPanel.tsx
+    - DomainForm changes to support an "Import Data" option when using a file to infer fields for the domain (see ImportDataFilePreview.tsx)
+    - DomainRow changs to support locking the "primary key" field data type and required inputs
+    - move assay related actions to domainproperties/assay/actions.ts file
+
+### version 0.28.1
+*Released*: 25 February 2020
+* Use dataclass category field for choosing the icon to display for search results
+* Remove iconURL workaround and rely on server side QueryIconURLProvider instead
 
 ### version 0.28.0
 *Released*: 24 February 2020

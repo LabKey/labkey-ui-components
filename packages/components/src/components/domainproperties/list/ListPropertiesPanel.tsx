@@ -10,7 +10,7 @@ import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider, IDomainPro
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
 import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
 import { HelpTopicURL } from "../HelpTopicURL";
-import { ListModel } from "./models";
+import {AdvancedSettingsForm, ListModel} from "./models";
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
@@ -124,7 +124,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         this.onChange(id, value);
     };
 
-    applyAdvancedProperties = advancedSettingsForm => {
+    applyAdvancedProperties = (advancedSettingsForm: AdvancedSettingsForm) : void => {
         const { model, onChange } = this.props;
         const newModel = model.merge(advancedSettingsForm) as ListModel;
         onChange(newModel);

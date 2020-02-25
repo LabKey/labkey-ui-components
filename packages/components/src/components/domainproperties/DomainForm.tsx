@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import {
@@ -58,10 +58,7 @@ import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { CollapsiblePanelHeader } from "./CollapsiblePanelHeader";
-import {FilePreviewGrid} from "../files/FilePreviewGrid";
-import {FilePreview, GridColumn, ToggleButtons} from "../..";
-import {convertRowDataIntoPreviewData} from "../files/actions";
-import {ToggleWithInputField} from "../forms/input/ToggleWithInputField";
+import { ImportDataFilePreview } from "./ImportDataFilePreview";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -88,7 +85,7 @@ interface IDomainFormInput {
     showFilePropertyType?: boolean //Flag to indicate if the File property type should be allowed
     domainIndex?: number
     successBsStyle?: string
-    setFileImportData?: any
+    setFileImportData?: (file: File) => any // having this prop set is also an indicator that you want to show the file preview grid with the import data option
 }
 
 interface IDomainFormState {
@@ -100,9 +97,8 @@ interface IDomainFormState {
     dragId?: number
     availableTypes: List<PropDescType>
     filtered: boolean
-    showFilePreview: boolean
-    filePreviewData?: InferDomainResponse
-    fileData?: File
+    filePreviewData: InferDomainResponse
+    fileData: File
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -143,7 +139,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             availableTypes: this.getAvailableTypes(),
             collapsed: props.initCollapsed,
             filtered: false,
-            showFilePreview: false,
+            filePreviewData: undefined,
+            fileData: undefined
         };
     }
 
@@ -337,7 +334,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     applyAddField = (config?: Partial<IDomainField>) => {
-        this.setState({showFilePreview: true});
         this.onDomainChange(addDomainField(this.props.domain, config));
         this.collapseRow();
     };
@@ -588,12 +584,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return showInferFromFile && domain.fields.size === 0;
     }
 
-    handleFilePreviewLoad = (response: InferDomainResponse, file: File = null) => {
-        console.log("handlefilepreview info", response);
+    handleFilePreviewLoad = (response: InferDomainResponse, file: File) => {
+        const { domain, setFileImportData } = this.props;
 
-        this.onDomainChange(setDomainFields(this.props.domain, response.fields));
-        // For passing file data to <FilePreview/>
-        this.setState({showFilePreview: true, filePreviewData: response, fileData: file});
+        // if the DomainForm usage wants to show the file preview and import data options, then set these state values
+        if (setFileImportData) {
+            this.setState({filePreviewData: response, fileData: file});
+        }
+
+        this.onDomainChange(setDomainFields(domain, response.fields));
     };
 
     renderEmptyDomain() {
@@ -712,14 +711,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderForm() {
         const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex, successBsStyle } = this.props;
-        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered, showFilePreview } = this.state;
+        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
             <>
                 {this.renderPanelHeaderContent()}
-                {/*TODO this will break prev code*/}
-                {(appDomainHeaderRenderer && showFilePreview) && this.renderAppDomainHeader()}
-                {/*showFilePreview: {showFilePreview ? "true" : "false"}*/}
+                {appDomainHeaderRenderer && this.renderAppDomainHeader()}
                 {(filtered || domain.fields.size > 1) && this.renderSearchField()}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
@@ -779,8 +776,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     render() {
-        const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme } = this.props;
-        const { collapsed, confirmDeleteRowIndex, showFilePreview, filePreviewData, fileData } = this.state;
+        const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme, helpNoun, setFileImportData } = this.props;
+        const { collapsed, confirmDeleteRowIndex, filePreviewData, fileData } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
 
@@ -811,8 +808,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             : <Alert>Invalid domain design.</Alert>
                         }
 
-                        {showFilePreview && filePreviewData &&
-                            <FilePreview filePreviewData={filePreviewData} setFileImportData={this.props.setFileImportData} fileData={fileData}/>
+                        {filePreviewData &&
+                            <ImportDataFilePreview
+                                noun={helpNoun}
+                                filePreviewData={filePreviewData}
+                                setFileImportData={setFileImportData}
+                                fileData={fileData}
+                            />
                         }
                     </Panel.Body>
 

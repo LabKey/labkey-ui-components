@@ -190,7 +190,7 @@ export const DECIMAL_TYPE = new PropDescType({name: 'decimal', display: 'Decimal
 export const FLOAT_TYPE = new PropDescType({name: 'float', display: 'Float', rangeURI: FLOAT_RANGE_URI});
 export const LONG_TYPE = new PropDescType({name: 'long', display: 'Long Integer', rangeURI: LONG_RANGE_URI});
 export const TIME_TYPE = new PropDescType({name: 'time', display: 'Time', rangeURI: TIME_RANGE_URI});
-export const AUTOINT_TYPE = new PropDescType({name: 'int', display: 'Auto Increment1', shortDisplay: 'Auto Increment2', rangeURI: INT_RANGE_URI, alternateRangeURI: 'xsd:int'});
+export const AUTOINT_TYPE = new PropDescType({name: 'int', display: 'Auto Increment', rangeURI: INT_RANGE_URI, alternateRangeURI: 'xsd:int'});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
@@ -206,6 +206,7 @@ export const PROP_DESC_TYPES = List([
     PARTICIPANT_TYPE,
     LOOKUP_TYPE,
     SAMPLE_TYPE,
+    AUTOINT_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([
@@ -1399,8 +1400,6 @@ export interface IAppDomainHeader {
     onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
     onAddField?: (fieldConfig: Partial<IDomainField>) => void
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
-    onKeyFieldChange? : (any) => void
-    keyField?: number
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';

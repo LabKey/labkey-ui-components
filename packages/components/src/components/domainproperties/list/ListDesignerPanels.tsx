@@ -22,13 +22,13 @@ interface Props {
 }
 
 interface State {
-    model: ListModel;
-    keyField: number;
-    submitting: boolean;
-    currentPanelIndex: number;
-    visitedPanels: List<number>;
-    validatePanel: number;
-    firstState: boolean;
+    model?: ListModel;
+    keyField?: number;
+    submitting?: boolean;
+    currentPanelIndex?: number;
+    visitedPanels?: List<number>;
+    validatePanel?: number;
+    firstState?: boolean;
     fileImportData?: any;
 }
 
@@ -92,37 +92,26 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         this.setState({ fileImportData });
     };
 
-    // tried to do this a pretty way with creating a setState object, but failed
-    onModelChange = (name, value, model=null) => {
+    onModelChange = (name: string, value: any, model: ListModel) : void => {
         const { onChange } = this.props;
+        const intValue = parseInt(value);
 
-        if (!model) {
-            this.setState({ [name]:value } as State,
-                () => {
-                    console.log('onModelChange2', this.state);
-                    if (onChange) {
-                        onChange(this.state.model);
-                    }
+        this.setState({ model, [name]:intValue } as State,
+            () => {
+                if (onChange) {
+                    onChange(this.state.model);
                 }
-            );
-        } else {
-            this.setState({ model, [name]:value } as State,
-                () => {
-                    console.log('onModelChange2', this.state);
-                    if (onChange) {
-                        onChange(this.state.model);
-                    }
-                }
-            );
-        }
+            }
+        );
     };
 
-    onDomainChange = (domain: DomainDesign) => {
+    onDomainChange = (domain: DomainDesign): void => {
         const { onChange } = this.props;
 
         this.setState((state) => ({
-            model: state.model.merge({domain}) as ListModel
+            model: state.model.mergeDeep({domain}) as ListModel
         }), () => {
+            console.log("onDomainChange", this.state.model);
             if (onChange) {
                 onChange(this.state.model);
             }
@@ -180,7 +169,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                                 updatedModel = updatedModel.merge({domain: response}) as ListModel;
                                 this.setState(() => ({model: updatedModel}));
 
-                                // If we're importing List file data, import file contents // TODO should this also check that the user does want to import it?
+                                // If we're importing List file data, import file contents
                                 if (fileImportData) {
                                     this.handleFileImport();
                                 }
@@ -197,7 +186,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                             });
                     }
                     else if (!model.hasValidKeyType()) {
-                        const updatedModel = model.set('exception', 'You must specify a key field for your list in fhe fields panel to continue.') as ListModel;
+                        const updatedModel = model.set('exception', 'You must specify a key field for your list in the fields panel to continue.') as ListModel;
                         this.setState(() => ({model: updatedModel, submitting: false}));
                     }
             });
@@ -233,7 +222,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         if (keyField !== -2) {
             const fields = model.domain.fields;
             const pkIndex = fields.findIndex(i => (i.isPrimaryKey));
-            if (keyField !== pkIndex && pkIndex !== -1) {
+            if (keyField !== pkIndex) {
                 this.setState({keyField: pkIndex});
             }
         }
@@ -258,6 +247,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle={'Fields'}
+                    helpNoun={'list'}
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
                     setFileImportData={this.setFileImportData}
@@ -270,7 +260,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     onToggle={(collapsed, callback) => {this.onTogglePanel(1, collapsed, callback);}}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
-                    appDomainHeaderRenderer={model.isNew() && this.headerRenderer}
+                    appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
                 />
 
                 {bottomErrorMsg && (

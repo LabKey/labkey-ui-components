@@ -1,10 +1,17 @@
 import React from 'react';
 import { Alert, Col, FormControl, Row } from 'react-bootstrap';
 import {List} from "immutable";
-import {AUTOINT_TYPE, DomainField, IDomainField} from '../models';
+import {AUTOINT_TYPE, DomainDesign, DomainField, IAppDomainHeader, IDomainField} from '../models';
 import {LabelHelpTip, ListModel} from '../../..';
 
 // TODO: define props - IAppDomainHeader (and some other properties, model, onModelChange, keyField, onAddField)
+interface SetKeyFieldNamePanelProps extends IAppDomainHeader {
+    keyField: number;
+    model: ListModel;
+    onModelChange: (name: string, value: any, model: ListModel) => void;
+    // onDomainChange: (domain: DomainDesign) => void;
+
+}
 export class SetKeyFieldNamePanel extends React.PureComponent<any> {
 
     setKeyField = (fields, newKey) => {
@@ -19,56 +26,68 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
         return fields.set(prevKey, updatedPrevKeyField) as List<DomainField>;
     };
 
-    addAutoIntField = (onAddField, onModelChange, name, value) => {
+    addAutoIntField(name, value) {
+        const {model, onModelChange} = this.props;
+
         const autoIncrementFieldConfig = {
             required: true,
             name: 'Key',
             dataType: AUTOINT_TYPE,
             rangeURI: AUTOINT_TYPE.rangeURI,
             isPrimaryKey: true,
-            lockType: "PKLocked", // PK lock type: required, datatype
+            lockType: "PKLocked",
         } as Partial<IDomainField>;
-        onModelChange(name, value);
-        onAddField(autoIncrementFieldConfig);
-    };
 
-    removeAutoIntField = (fields) => { //TODO RP: properly identify the field by its dataType
+        const updatedModel = model.merge({
+            keyName: autoIncrementFieldConfig.name,
+            keyType: "AutoIncrementInteger",
+        }) as ListModel;
+
+        onModelChange(name, parseInt(value), updatedModel);
+        this.props.onAddField(autoIncrementFieldConfig);
+    }
+
+    removeAutoIntField = (fields) => {
         return fields.filter((field) => {
-            return field.get('name') !== 'Key'
+            return field.get('dataType').display !== 'Auto Increment'
         }) as List<DomainField>;
     };
 
+    // todo rp
     onSelectionChange = (e) => {
-        const {model, onModelChange, keyField, onAddField, onDomainChange} = this.props;
+        const {model, keyField, onDomainChange, onModelChange} = this.props;
         const {domain} = model;
         const {fields} = domain;
         const { name, value } = e.target;
-        console.log(name, value);
 
         let newFields;
+        const autoIntIndex = fields.findIndex(i => (i.get('dataType').display == 'Auto Increment'));
+        console.log("onSelectionChange", keyField, autoIntIndex);
 
         // Making first selection of key
-        if (keyField == '-2') {
-            if (value == '-1') {
-                this.addAutoIntField(onAddField, onModelChange, name, value); // Selecting auto int key
+        if (keyField == -2) {
+            if (value == -1) {
+                this.addAutoIntField(name, value); // Selecting auto int key
                 return;
             } else {
                 newFields = this.setKeyField(fields, value);  // Selecting regular field
             }
-        // Changing key from one field to another
-        } else {
-            if (keyField == '-1') {
+        }
+        else {
+            if (keyField == -1) { // todo: auto int is no longer reliably located at -1
                 const fieldsNoKey = this.removeAutoIntField(fields); // Auto int to regular field
+                console.log("auto int to regular", fieldsNoKey);
                 newFields = this.setKeyField(fieldsNoKey, value);
-            } else if (value == '-1') {
+            } else if (value == -1) {
                 newFields = this.unsetKeyField(fields, keyField); // Regular to auto int field
+                const newDomain = domain.merge({fields: newFields});
 
-                onDomainChange(domain.merge({fields: newFields}));
-                console.log("Old key field correct un-set.");
-
-                this.addAutoIntField(onAddField, onModelChange, name, value);
+                console.log("regular to auto int:", newDomain);
+                onDomainChange(newDomain);
+                console.log("adding new field");
+                this.addAutoIntField(name, value);
                 return;
-            } else if (value !== '-1') {
+            } else if (value !== -1) {
                 const fieldsNoKey = this.unsetKeyField(fields, keyField); // Regular to regular field
                 newFields = this.setKeyField(fieldsNoKey, value);
             }
@@ -78,17 +97,18 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
         let keyType;
         if (newKeyField.dataType.name === 'int') {
             keyType = 'Integer';
-        } else if (newKeyField.dataType.name === 'string') {
+        }
+        else if (newKeyField.dataType.name === 'string') {
             keyType = 'Varchar';
         }
 
         const updatedModel = model.merge({
-            domain: model.domain.set('fields', newFields),
+            domain: domain.set('fields', newFields),
             keyName: newKeyField.name,
             keyType,
         }) as ListModel;
 
-        onModelChange(name, value, updatedModel);
+        onModelChange(name, parseInt(value), updatedModel);
     };
 
     render() {
@@ -111,13 +131,10 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
                     return accum;
                 }, []);
         }
-        let autoIntIsPK = (keyField == '-1');
+        let autoIntIsPK = (keyField == -1);
         if (domain) {
             const pkIndex = domain.fields.findIndex(i => (i.isPrimaryKey));
-
-            // TODO RP: identify using type, not name, once type is set up
-            const thing = domain.fields.get(pkIndex).name;
-            autoIntIsPK = (thing == 'Key');
+            autoIntIsPK = (domain.fields.get(pkIndex).dataType.display == 'Auto Increment');
         }
         return (
             <Alert>

@@ -2,18 +2,28 @@ import React from 'react';
 import { Button, Col, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { LabelHelpTip, ListModel, SelectInput } from '../../..';
+import {LabelHelpTip, ListModel, Principal, SelectInput} from '../../..';
 import { CheckBox } from './ListPropertiesPanelFormElements';
+import {AdvancedSettingsForm} from "./models";
+import {
+    CUSTOM_TEMPLATE_TIP,
+    DATA_INDEXING_TIP,
+    DISCUSSION_LINKS_TIP,
+    EACHITEM_TITLE_TIP,
+    ENTIRELIST_TITLE_TIP,
+    SEARCH_INDEXING_TIP
+} from "./constants";
 
 interface DisplayTitleProps {
     model: ListModel
+    onSelectChange: (name, formValue, selected) => void;
+    titleColumn: string;
 }
 
 class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
     render() {
-        const fields = this.props.model.domain.fields;
-        console.log('DisplayTitle', fields);
-        console.log('length', fields.size);
+        const {model, onSelectChange, titleColumn} = this.props;
+        const fields = model.domain.fields;
         const disabled = !(fields.size > 0);
         const placeholder = disabled ? 'No fields have been defined yet' : 'Auto';
 
@@ -23,13 +33,16 @@ class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
                     name="titleColumn"
                     options={fields.toArray()}
                     placeholder={placeholder}
-                    inputClass=""
-                    valueKey="value" // uh
+                    inputClass="" // This attr is necessary for proper styling
+                    valueKey="name"
                     labelKey="name"
+                    key="name"
                     formsy={false}
                     multiple={false}
                     required={false}
                     disabled={disabled}
+                    onChange={onSelectChange}
+                    value={titleColumn}
                 />
             </div>
         );
@@ -74,16 +87,11 @@ class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
     render() {
         const { name, titleTemplate, onInputChange } = this.props;
         const title = titleTemplate == null ? '' : titleTemplate;
-
+        const tipText = (name == "eachItemTitleTemplate") ? EACHITEM_TITLE_TIP : ENTIRELIST_TITLE_TIP;
         return (
             <div>
                 Document title
-                <LabelHelpTip
-                    title=""
-                    body={() => {
-                        return <> words to be written </>;
-                    }}
-                />
+                <LabelHelpTip title="" body={() => {return <> {tipText} </>;}}/>
                 <span>
                     <FormControl
                         className="list__advanced-settings-modal__text-field"
@@ -116,9 +124,11 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
                 <FormGroup>
                     <Radio name={name} value={0} checked={indexSetting == 0} onChange={e => onRadioChange(e)}>
                         Include both metadata and data
+                        <LabelHelpTip title="" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
                     </Radio>
                     <Radio name={name} value={1} checked={indexSetting == 1} onChange={e => onRadioChange(e)}>
                         Include data only
+                        <LabelHelpTip title="" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
                     </Radio>
                     <Radio name={name} value={2} checked={indexSetting == 2} onChange={e => onRadioChange(e)}>
                         Include metadata only (name and description of list and fields)
@@ -132,12 +142,15 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
 interface IndexFieldProps {
     name: string;
     onRadioChange: (evt: any) => any;
+    onInputChange: (evt: any) => any;
     bodySetting: number;
+    bodyTemplate: string;
 }
 
 class IndexField extends React.PureComponent<IndexFieldProps> {
     render() {
-        const { name, onRadioChange, bodySetting } = this.props;
+        const { name, onRadioChange, bodySetting, bodyTemplate, onInputChange } = this.props;
+        const id = (name == "entireListBodySetting") ? "entireListBodyTemplate" : "eachItemBodyTemplate";
 
         return (
             <div>
@@ -150,8 +163,19 @@ class IndexField extends React.PureComponent<IndexFieldProps> {
                     </Radio>
                     <Radio name={name} value={2} checked={bodySetting == 2} onChange={e => onRadioChange(e)}>
                         Index using custom template
+                        <LabelHelpTip title="" body={() => {return <> {CUSTOM_TEMPLATE_TIP} </>;}}/>
                     </Radio>
                 </FormGroup>
+
+                {bodySetting == 2 &&
+                    <FormControl
+                        id={id}
+                        type="text"
+                        value={bodyTemplate}
+                        onChange={onInputChange}
+                        className='list__advanced-settings-modal__custom-template-text-field'
+                    />
+                }
             </div>
         );
     }
@@ -163,6 +187,7 @@ interface SingleDocumentIndexFieldsProps {
     entireListTitleTemplate: string;
     entireListIndexSetting: number;
     entireListBodySetting: number;
+    entireListBodyTemplate: string;
 }
 
 class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexFieldsProps> {
@@ -173,6 +198,7 @@ class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexF
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
+            entireListBodyTemplate,
         } = this.props;
 
         return (
@@ -192,7 +218,9 @@ class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexF
                 <IndexField
                     name="entireListBodySetting"
                     onRadioChange={onRadioChange}
+                    onInputChange={onInputChange}
                     bodySetting={entireListBodySetting}
+                    bodyTemplate={entireListBodyTemplate}
                 />
             </div>
         );
@@ -204,6 +232,7 @@ interface SeparateDocumentIndexFieldsProps {
     onInputChange: (evt: any) => any;
     eachItemTitleTemplate: string;
     eachItemBodySetting: number;
+    eachItemBodyTemplate: string;
 }
 
 class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
@@ -213,6 +242,7 @@ class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIn
             onInputChange,
             eachItemTitleTemplate,
             eachItemBodySetting,
+            eachItemBodyTemplate,
         } = this.props;
 
         return (
@@ -226,7 +256,9 @@ class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIn
                 <IndexField
                     name="eachItemBodySetting"
                     onRadioChange={onRadioChange}
+                    onInputChange={onInputChange}
                     bodySetting={eachItemBodySetting}
+                    bodyTemplate={eachItemBodyTemplate}
                 />
             </div>
         );
@@ -251,7 +283,7 @@ class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
 
         return (
             <div>
-                <span onClick={() => expandFields(set)} className='list__advanced-settings-model__collapsible-field'>
+                <span onClick={() => expandFields(set)} className='list__advanced-settings-model__collapsible-field list__properties__checkbox--no-highlight'>
                     <FontAwesomeIcon icon={icon} size="lg" color="#333333" />
                 </span>
                 <span className="list__advanced-settings-modal__index-checkbox">
@@ -272,12 +304,11 @@ interface SearchIndexingProps {
     onCheckboxChange: (name, checked) => void;
     entireListIndexSettings: any;
     eachItemIndexSettings: any;
-    fileAttachmentIndex: any; //todo rp
+    fileAttachmentIndex: boolean;
 }
 
 interface SearchIndexingState {
     expanded: string;
-
 }
 
 class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchIndexingState> {
@@ -356,7 +387,7 @@ class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchInde
 interface SettingsContainerProps {
     fieldComponent: JSX.Element;
     title: string;
-    tipBody: string;
+    tipBody: string | JSX.Element;
 }
 
 class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
@@ -412,8 +443,17 @@ class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsMo
     }
 }
 
-// TODO typescript props
-export class AdvancedSettings extends React.PureComponent<any, any> {
+interface AdvancedSettingsProps {
+    model: ListModel;
+    title: string;
+    applyAdvancedProperties: (advancedSettingsForm: AdvancedSettingsForm) => void;
+}
+
+interface AdvancedSettingsState extends AdvancedSettingsForm{
+    modalOpen?: boolean;
+}
+
+export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
     constructor(props) {
         super(props);
         const initialState = this.setInitialState();
@@ -421,7 +461,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
         this.state = {
             modalOpen: false,
             ...initialState,
-        };
+        } as AdvancedSettingsState;
     }
 
     setInitialState = () => {
@@ -434,20 +474,20 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
             // entire list
             entireListIndex: model.entireListIndex,
             // document title
-            entireListTitleSetting: model.entireListTitleSetting, // may not need this?
             entireListTitleTemplate: model.entireListTitleTemplate,
             // metadata/data
             entireListIndexSetting: model.entireListIndexSetting,
             // index
             entireListBodySetting: model.entireListBodySetting,
+            entireListBodyTemplate: model.entireListBodyTemplate,
 
             // each item
             eachItemIndex: model.eachItemIndex,
             // document title
-            eachItemTitleSetting: model.eachItemTitleSetting, // may not need this?
             eachItemTitleTemplate: model.eachItemTitleTemplate,
             // index
             eachItemBodySetting: model.entireListBodySetting,
+            eachItemBodyTemplate: model.eachItemBodyTemplate,
         };
     };
 
@@ -477,10 +517,15 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
         this.setState({ [id]: value });
     };
 
+    onSelectChange = (name, formValue, selected): void => {
+        const value = (selected) ? selected.name : '<AUTO>';
+        this.setState({ [name]: value });
+    };
+
     applyChanges = (): void => {
         const { modalOpen, ...advancedSettingsForm } = this.state;
 
-        this.props.applyAdvancedProperties(advancedSettingsForm);
+        this.props.applyAdvancedProperties(advancedSettingsForm as AdvancedSettingsForm);
         this.toggleModal(false);
     };
 
@@ -490,35 +535,43 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
             discussionSetting,
             fileAttachmentIndex,
             entireListIndex,
-            entireListTitleSetting,
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
             eachItemIndex,
-            eachItemTitleSetting,
             eachItemTitleTemplate,
-            eachItemBodySetting
+            eachItemBodySetting,
+            titleColumn,
+            entireListBodyTemplate,
+            eachItemBodyTemplate,
         } = this.state;
         const { title, model } = this.props;
 
         const entireListIndexSettings = {
             entireListIndex,
-            entireListTitleSetting,
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
+            entireListBodyTemplate
         };
 
         const eachItemIndexSettings = {
             eachItemIndex,
-            eachItemTitleSetting,
             eachItemTitleTemplate,
             eachItemBodySetting,
+            eachItemBodyTemplate,
         };
 
-        // console.log("AdvSettings", this.state);
+        let displayTitleTip =
+            <>
+                Choose a field to identify this list when other lists or datasets do lookups into this list
+                When “Auto” is enabled, LabKey will select the field for you by using:
+                <ul>
+                    <li>The first non-lookup string column</li>
+                    <li>The primary key, if there are no string fields</li>
+                </ul>
+            </> as JSX.Element;
 
-        // For reviewer: would it be overzealous to pull this into separate <AdvancedSettingsButton/> and <AdvancedSettingsModal/> components?
         return (
             <Col xs={12} md={2}>
                 <Button className="domain-field-float-right" onClick={() => this.toggleModal(true)}>
@@ -533,13 +586,19 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
                     <Modal.Body>
                         <SettingsContainer
                             title="Field used for display title:"
-                            tipBody="Text to be determined"
-                            fieldComponent={<DisplayTitle model={model} />}
+                            tipBody={displayTitleTip}
+                            fieldComponent={
+                                <DisplayTitle
+                                    model={model}
+                                    onSelectChange={this.onSelectChange}
+                                    titleColumn={titleColumn}
+                                />
+                            }
                         />
 
                         <SettingsContainer
                             title="Discussion links"
-                            tipBody="Text to be determined"
+                            tipBody={DISCUSSION_LINKS_TIP}
                             fieldComponent={
                                 <DiscussionLinks
                                     onRadioChange={this.onRadioChange}
@@ -550,7 +609,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
 
                         <SettingsContainer
                             title="Search indexing options"
-                            tipBody="Text to be determined"
+                            tipBody={SEARCH_INDEXING_TIP}
                             fieldComponent={
                                 <SearchIndexing
                                     onRadioChange={this.onRadioChange}

@@ -113,8 +113,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     getDetailsText = (): React.ReactNode => {
         const { field, index, fieldError } = this.props;
         let details = [];
-        // console.log("GetDetailsText's field", field);
-        // console.log("Is pk?", field.isPrimaryKey);
 
         if (field.hasErrors()) {
             switch (field.getErrors()) {
@@ -362,9 +360,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         value={field.dataType.name}
                     >
                         {
-                            resolveAvailableTypes(field, availableTypes, appPropertiesOnly, showFilePropertyType).map(
-                                (type, i) => (<option key={i} value={type.name}>{type.display}</option>
-                            ))
+                            isPrimaryKeyFieldLocked(field.lockType)
+                                ? <option value={field.dataType.name}>{field.dataType.display}</option>
+                                : resolveAvailableTypes(field, availableTypes, appPropertiesOnly, showFilePropertyType).map(
+                                    (type, i) => (<option key={i} value={type.name}>{type.display}</option>
+                                ))
                         }
                     </FormControl>
                 </Col>

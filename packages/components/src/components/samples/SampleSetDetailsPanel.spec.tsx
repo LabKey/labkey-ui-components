@@ -85,8 +85,9 @@ describe("<SampleSetDetailsPanel/>", () => {
 
         const wrapper = mount(component);
 
-        // Name input should be visible for new sample set
+        // Name input should be visible and enabled for new sample set
         expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME)).toHaveLength(1);
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME).prop('disabled')).toBeFalsy();
 
         const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Save');
         expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
@@ -122,8 +123,9 @@ describe("<SampleSetDetailsPanel/>", () => {
 
         const wrapper = mount(component);
 
-        // Name input should not be visible
-        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME)).toHaveLength(0);
+        // Name input should be visible but disabled
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME)).toHaveLength(1);
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME).prop('disabled')).toBeTruthy();
 
         // Save button should start enabled for existing sample set
         const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Save');

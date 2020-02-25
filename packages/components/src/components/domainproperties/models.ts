@@ -190,6 +190,7 @@ export const DECIMAL_TYPE = new PropDescType({name: 'decimal', display: 'Decimal
 export const FLOAT_TYPE = new PropDescType({name: 'float', display: 'Float', rangeURI: FLOAT_RANGE_URI});
 export const LONG_TYPE = new PropDescType({name: 'long', display: 'Long Integer', rangeURI: LONG_RANGE_URI});
 export const TIME_TYPE = new PropDescType({name: 'time', display: 'Time', rangeURI: TIME_RANGE_URI});
+export const AUTOINT_TYPE = new PropDescType({name: 'int', display: 'Auto Increment1', shortDisplay: 'Auto Increment2', rangeURI: INT_RANGE_URI, alternateRangeURI: 'xsd:int'});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
@@ -213,7 +214,8 @@ export const READONLY_DESC_TYPES = List([
     DECIMAL_TYPE,
     FLOAT_TYPE,
     LONG_TYPE,
-    TIME_TYPE
+    TIME_TYPE,
+    AUTOINT_TYPE,
 ]);
 
 interface IDomainDesign {
@@ -1005,6 +1007,10 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
         if (rawField.conceptURI === SAMPLE_TYPE_CONCEPT_URI)
             return SAMPLE_TYPE;
 
+        if (rawField.dataType) {
+            return rawField.dataType;
+        }
+
         type = PROP_DESC_TYPES.find((type) => {
 
             // handle matching rangeURI and conceptURI
@@ -1191,23 +1197,20 @@ export class DomainException extends Record({
     errors?: List<DomainFieldError>;
 
     static create(rawModel: any, severityLevel): DomainException {
-        if (rawModel && rawModel.exception)
-        {
+        if (rawModel && rawModel.exception) {
             let errors = List<DomainFieldError>();
             if (rawModel.errors) {
                 errors = DomainFieldError.fromJS(rawModel.errors, severityLevel);
             }
 
-            let severity = severityLevel;
             // warnings will only be there if there are no errors, so looking only the first one
+            let severity = severityLevel;
             let hasOnlyWarnings = errors.find(error => error.severity === SEVERITY_LEVEL_WARN);
-
             if (hasOnlyWarnings) {
                 severity = SEVERITY_LEVEL_WARN;
             }
 
             const domainName = this.getDomainNameFromException(rawModel.exception);
-
             if (domainName) {
                 const prefix = domainName + " -- ";
                 errors = errors.map((err) => {
@@ -1215,16 +1218,16 @@ export class DomainException extends Record({
                     return err.set('message', parts.length > 1 ? parts[1] : parts[0]);
                 }) as List<DomainFieldError>
             }
-            let exception = this.getExceptionMessage(errors);
 
             return new DomainException({
-                exception: exception,
+                exception: this.getExceptionMessage(errors),
                 success: rawModel.success,
                 severity: severity,
                 domainName: domainName,
                 errors: errors
             })
         }
+
         return undefined;
     }
 
@@ -1396,7 +1399,7 @@ export interface IAppDomainHeader {
     onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
     onAddField?: (fieldConfig: Partial<IDomainField>) => void
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
-    onChangeTemp? : any
+    onKeyFieldChange? : (any) => void
     keyField?: number
 }
 
@@ -1432,122 +1435,6 @@ export class DomainDetails {
         }
 
         return design;
-    }
-}
-
-export class ListModel extends Record({
-    domain: undefined,
-    entityId : undefined,
-    createdBy : undefined,
-    created : undefined,
-    modifiedBy : undefined,
-    modified : undefined,
-    containerId : undefined,
-    name : undefined,
-    description : undefined,
-    lastIndexed : undefined, //confirm defaults
-    keyName : undefined,
-    titleColumn : undefined,
-    domainId : undefined,
-    keyType : undefined,
-    discussionSetting : undefined,
-    allowDelete : undefined,
-    allowUpload : undefined,
-    allowExport : undefined,
-    entireListIndex : undefined,
-    entireListIndexSetting : undefined,
-    entireListTitleSetting : undefined,
-    entireListTitleTemplate : undefined,
-    entireListBodySetting : undefined,
-    entireListBodyTemplate : undefined,
-    eachItemIndex : undefined,
-    eachItemTitleSetting : undefined,
-    eachItemTitleTemplate : undefined,
-    eachItemBodySetting : undefined,
-    eachItemBodyTemplate : undefined,
-    fileAttachmentIndex : undefined,
-    listId : undefined,
-    entireListTitleSettingEnum : undefined,
-    entireListBodySettingEnum : undefined,
-    eachItemTitleSettingEnum : undefined,
-    eachItemBodySettingEnum : undefined,
-    discussionSettingEnum : undefined,
-    entireListIndexSettingEnum : undefined,
-    containerPath : undefined,
-}) {
-    domain: DomainDesign;
-    entityId : string;
-    createdBy : number;
-    created : number;
-    modifiedBy : number;
-    modified : number;
-    containerId : string;
-    name : string;
-    description : string;
-    lastIndexed : any; //confirm
-    keyName : string;
-    titleColumn : null;
-    domainId : number;
-    keyType : string;
-    discussionSetting : number;
-    allowDelete : true;
-    allowUpload : true;
-    allowExport : true;
-    entireListIndex : true;
-    entireListIndexSetting : number;
-    entireListTitleSetting : number;
-    entireListTitleTemplate : any; //confirm
-    entireListBodySetting : number;
-    entireListBodyTemplate : any; //confirm
-    eachItemIndex : false;
-    eachItemTitleSetting : number;
-    eachItemTitleTemplate : any; //confirm
-    eachItemBodySetting : number;
-    eachItemBodyTemplate : any; //confirm
-    fileAttachmentIndex : false;
-    listId : number;
-    entireListTitleSettingEnum : string;
-    entireListBodySettingEnum : string;
-    eachItemTitleSettingEnum : string;
-    eachItemBodySettingEnum : string;
-    discussionSettingEnum : string;
-    entireListIndexSettingEnum : string;
-    containerPath : string;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
-
-    static create(raw: any, defaultSettings=null): ListModel {
-        if (defaultSettings) {
-            let domain = DomainDesign.create(undefined);
-            return new ListModel({...defaultSettings, domain});
-        } else {
-            let domain = DomainDesign.create(raw.domainDesign);
-            return new ListModel({...raw.options, domain});
-        }
-    }
-
-    static serialize(model: ListModel): any {
-        // TODO: remove unrecognized fields from model before converting to json
-        const domain = DomainDesign.serialize(model.domain);
-
-        return model.merge({domain}).toJS();
-    }
-
-    isNew(): boolean {
-        return !this.listId;
-    }
-
-    static isValid(model: ListModel): boolean {
-        const errDomain = !!model.domain.domainException && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR;
-        return !errDomain && model.hasValidProperties();
-    }
-
-    hasValidProperties(): boolean {
-        return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
-            // && //additional validation to come
-        )
     }
 }
 

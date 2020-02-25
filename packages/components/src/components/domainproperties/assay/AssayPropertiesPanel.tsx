@@ -13,6 +13,7 @@ import {
     MetadataInputFormatsInput,
     ModuleProvidedScriptsInput,
     NameInput,
+    PlateMetadataInput,
     PlateTemplatesInput,
     QCStatesInput,
     SaveScriptDataInput,
@@ -23,11 +24,7 @@ import { Alert } from '../../base/Alert';
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { HelpTopicURL } from "../HelpTopicURL";
-import {
-    DomainPropertiesPanelContext,
-    DomainPropertiesPanelProvider,
-    IDomainPropertiesPanelContext
-} from "../DomainPropertiesPanelContext";
+import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
 
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
@@ -44,11 +41,12 @@ export const FORM_IDS = {
     PLATE_TEMPLATE: FORM_ID_PREFIX + 'selectedPlateTemplate',
     PROTOCOL_TRANSFORM_SCRIPTS: FORM_ID_PREFIX + 'protocolTransformScripts',
     QC_ENABLED: FORM_ID_PREFIX + 'qcEnabled',
-    SAVE_SCRIPT_FILES: FORM_ID_PREFIX + 'saveScriptFiles'
+    SAVE_SCRIPT_FILES: FORM_ID_PREFIX + 'saveScriptFiles',
+    PLATE_METADATA: FORM_ID_PREFIX + 'plateMetadata'
 };
 const BOOLEAN_FIELDS = [
     FORM_IDS.BACKGROUND_UPLOAD, FORM_IDS.EDITABLE_RUNS, FORM_IDS.EDITABLE_RESULTS,
-    FORM_IDS.QC_ENABLED, FORM_IDS.SAVE_SCRIPT_FILES
+    FORM_IDS.QC_ENABLED, FORM_IDS.SAVE_SCRIPT_FILES, FORM_IDS.PLATE_METADATA
 ];
 
 interface Props {
@@ -88,6 +86,8 @@ export class AssayPropertiesPanel extends React.PureComponent<Props> {
 }
 
 class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
+    static contextType = DomainPropertiesPanelContext;
+    context!: React.ContextType<typeof DomainPropertiesPanelContext>;
 
     static defaultProps = {
         appPropertiesOnly: false,
@@ -121,14 +121,15 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
     }
 
     setValidProperties() {
-        const { model, onChange } = this.props;
+        const { model } = this.props;
         const validProperties = model && model.hasValidProperties();
-        this.setState(() => ({validProperties}), () => onChange(model));
+        this.setState(() => ({validProperties}));
     }
 
-    toggleLocalPanel = (evt: any, context: IDomainPropertiesPanelContext): void => {
+    toggleLocalPanel = (evt: any): void => {
+        const { togglePanel, collapsed } = this.context;
         this.setValidProperties();
-        context.togglePanel(evt, !context.collapsed);
+        togglePanel(evt, !collapsed);
     };
 
     onInputChange = (evt) => {
@@ -178,6 +179,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
                     {model.allowDetectionMethodSelection() && <DetectionMethodsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
                     {model.allowMetadataInputFormatSelection() && <MetadataInputFormatsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
                     {!appPropertiesOnly && model.allowQCStates && <QCStatesInput model={model} onChange={this.onInputChange}/>}
+                    {!appPropertiesOnly && model.allowPlateMetadata && <PlateMetadataInput model={model} onChange={this.onInputChange}/>}
                 </div>
             </>
         )
@@ -238,41 +240,38 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
     renderPanel() {
         const { collapsible, controlledCollapse, model, panelStatus, useTheme, helpTopic } = this.props;
         const { validProperties } = this.state;
+        const { collapsed } = this.context;
 
         return (
-            <DomainPropertiesPanelContext.Consumer>
-                {(context) =>
-                    <>
-                        <Panel className={getDomainPanelClass(context.collapsed, true, useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
-                            <CollapsiblePanelHeader
-                                id={'assay-properties-hdr'}
-                                title={'Assay Properties'}
-                                titlePrefix={model.name}
-                                collapsed={context.collapsed}
-                                collapsible={collapsible}
-                                controlledCollapse={controlledCollapse}
-                                panelStatus={panelStatus}
-                                togglePanel={(evt: any) => this.toggleLocalPanel(evt, context)}
-                                useTheme={useTheme}
-                                isValid={validProperties}
-                                iconHelpMsg={ERROR_MSG}
-                            />
-                            <Panel.Body collapsible={collapsible || controlledCollapse}>
-                                {helpTopic && <HelpTopicURL nounPlural={'assays'} helpTopic={helpTopic}/>}
-                                {this.renderForm()}
-                            </Panel.Body>
-                        </Panel>
-                        {!validProperties &&
-                            <div
-                                onClick={(evt: any) => this.toggleLocalPanel(evt, context)}
-                                className={getDomainAlertClasses(context.collapsed, true, useTheme)}
-                            >
-                                <Alert bsStyle="danger">{ERROR_MSG}</Alert>
-                            </div>
-                        }
-                    </>
+            <>
+                <Panel className={getDomainPanelClass(collapsed, true, useTheme)} expanded={!collapsed} onToggle={function(){}}>
+                    <CollapsiblePanelHeader
+                        id={'assay-properties-hdr'}
+                        title={'Assay Properties'}
+                        titlePrefix={model.name}
+                        collapsed={collapsed}
+                        collapsible={collapsible}
+                        controlledCollapse={controlledCollapse}
+                        panelStatus={panelStatus}
+                        togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
+                        useTheme={useTheme}
+                        isValid={validProperties}
+                        iconHelpMsg={ERROR_MSG}
+                    />
+                    <Panel.Body collapsible={collapsible || controlledCollapse}>
+                        {helpTopic && <HelpTopicURL nounPlural={'assays'} helpTopic={helpTopic}/>}
+                        {this.renderForm()}
+                    </Panel.Body>
+                </Panel>
+                {!validProperties &&
+                    <div
+                        onClick={(evt: any) => this.toggleLocalPanel(evt)}
+                        className={getDomainAlertClasses(collapsed, true, useTheme)}
+                    >
+                        <Alert bsStyle="danger">{ERROR_MSG}</Alert>
+                    </div>
                 }
-            </DomainPropertiesPanelContext.Consumer>
+            </>
         )
     }
 

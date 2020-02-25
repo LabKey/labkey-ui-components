@@ -6,9 +6,8 @@ import { initSampleSetSelects } from './actions';
 import {
     IParentAlias,
     IParentOption,
-    ISampleSetDetails,
-    NEW_SAMPLE_TYPE_DOMAIN_KIND
-} from './models';
+    IEntityTypeDetails,
+} from '../entities/models';
 import { LabelOverlay } from '../../components/forms/LabelOverlay';
 import { SampleSetParentAliasRow } from '../../components/samples/SampleSetParentAliasRow';
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../constants';
@@ -44,6 +43,12 @@ import {
     IDomainPropertiesPanelContext
 } from "../domainproperties/DomainPropertiesPanelContext";
 
+const NEW_SAMPLE_TYPE_DOMAIN_KIND: DomainDetails = {
+    options: Map<string, any>(),
+    domainDesign: DomainDesign.create({}),
+    domainKindName: KINDS.SAMPLE_TYPE
+};
+
 const CREATE_ERROR = getActionErrorMessage(`There was a problem creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
 const UPDATE_ERROR = getActionErrorMessage(`There was a problem updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
@@ -68,7 +73,7 @@ interface Props {
 }
 
 interface State {
-    formValues: ISampleSetDetails
+    formValues: IEntityTypeDetails
     parentOptions: Array<IParentOption>
     parentAliases: Map<string, IParentAlias>
     error: React.ReactNode
@@ -82,7 +87,6 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
     value: "{{this_sample_set}}"
 } as IParentOption;
-
 
 const IMPORT_PREFIX :string = 'materialInputs/';
 const IMPORT_ALIAS_KEY: string = 'importAliases';
@@ -142,7 +146,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 this.setState((state) => ({
                     formValues: {
                         ...state.formValues
-                    } as ISampleSetDetails,
+                    } as IEntityTypeDetails,
                     parentOptions: options,
                     parentAliases
                 }));
@@ -170,7 +174,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             formValues: {
                 ...state.formValues,
                 [id]: value
-            } as ISampleSetDetails
+            } as IEntityTypeDetails
         }));
     };
 
@@ -222,40 +226,6 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                     submitting: false
                 }));
             });
-
-        // if (isExistingEntity(formValues, data)) {
-        //     const config = {
-        //         isUpdate: true,
-        //         rowId: data.get('rowId'),
-        //         nameExpression,
-        //         description,
-        //         importAliasKeys,
-        //         importAliasValues,
-        //     } as ISampleSetDetails;
-        //
-        //     updateSampleSet(config)
-        //         .then((response) => this.onFinishSuccess(config))
-        //         .catch((error) => {
-        //             console.error(error);
-        //             this.onFinishFailure( resolveErrorMessage(error, "sample type", undefined, "update") || UPDATE_ERROR)
-        //         });
-        // }
-        // else {
-        //     const config = {
-        //         name,
-        //         nameExpression,
-        //         description,
-        //         importAliasKeys,
-        //         importAliasValues,
-        //     } as ISampleSetDetails;
-        //
-        //     createSampleSet(config)
-        //         .then((response) => this.onFinishSuccess(config))
-        //         .catch((error) => {
-        //             console.error(error);
-        //             this.onFinishFailure( resolveErrorMessage(error, "sample type") ||  CREATE_ERROR);
-        //         });
-        // }
     };
 
     getImportAliases() {
@@ -319,6 +289,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         return isEntityFormValid(formValues, options) && !hasInvalidAliases;
     }
 
+    // TODO REMOVE
     // getDataValue(key: string, propName: string, defaultValue: any): any {
     //     const { data } = this.props;
     //     const { formValues } = this.state;
@@ -405,7 +376,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         this.setState((state) => ({
             formValues: {
                 ...state.formValues,
-            } as ISampleSetDetails,
+            } as IEntityTypeDetails,
             parentAliases,
         }));
     };
@@ -467,7 +438,8 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     };
 
 // ############################ END Domain Panel region
-//
+
+//TODO REMOVE
 //     renderDetailsPanel = () => {
 //         const { nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
 //         const { parentOptions } = this.state;

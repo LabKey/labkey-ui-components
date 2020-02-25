@@ -5,7 +5,8 @@ import { ActionURL } from '@labkey/api';
 
 import { AssayProtocolModel } from '../assay/models';
 import { FORM_IDS } from './AssayPropertiesPanel';
-import { getSplitSentence, getValidPublishTargets } from '../actions';
+import { getSplitSentence } from '../actions';
+import { getValidPublishTargets } from '../assay/actions';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Container } from '../../base/models/model';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
@@ -533,6 +534,29 @@ export function SaveScriptDataInput(props: InputProps) {
                 type='checkbox'
                 id={FORM_IDS.SAVE_SCRIPT_FILES}
                 checked={props.model.saveScriptFiles}
+                onChange={props.onChange}
+            />
+        </AssayPropertiesInput>
+    )
+}
+
+export function PlateMetadataInput(props: InputProps) {
+    return (
+        <AssayPropertiesInput
+            label={'Plate Metadata'}
+            helpTipBody={() => {
+                return (
+                    <p>
+                        If enabled, plate template metadata can be added on a per run basis to combine tabular data
+                        that has well location information with plate based data.
+                    </p>
+                )
+            }}
+        >
+            <input
+                type='checkbox'
+                id={FORM_IDS.PLATE_METADATA}
+                checked={props.model.plateMetadata}
                 onChange={props.onChange}
             />
         </AssayPropertiesInput>

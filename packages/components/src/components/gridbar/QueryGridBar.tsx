@@ -74,6 +74,7 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
 
         const exportBtn = model ? (
             <Export model={model} advancedOption={advancedExportOption}/>
+
         ) : null;
 
         const chart = model && model.showChartSelector ? (
@@ -89,13 +90,14 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             <ViewSelector model={model} />
         ) : null;
 
-        let leftContent;
+        let leftContent = (
+            <div className="col-md-6 col-sm-6 col-xs-12" />
+        );
 
         if (buttons || chart) {
             leftContent = (
                 <div className="col-md-6 col-sm-6 col-xs-12">
                     {buttonsNode}
-
                     {chart}
                 </div>
             );

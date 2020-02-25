@@ -269,6 +269,7 @@ export class QueryColumn extends Record({
     required: undefined,
     // selectable: undefined,
     shortCaption: undefined,
+    addToDisplayView: undefined,
     shownInDetailsView: undefined,
     shownInInsertView: undefined,
     shownInUpdateView: undefined,
@@ -330,6 +331,7 @@ export class QueryColumn extends Record({
     required: boolean;
     // selectable: boolean;
     shortCaption: string;
+    addToDisplayView: boolean;
     shownInDetailsView: boolean;
     shownInInsertView: boolean;
     shownInUpdateView: boolean;
@@ -468,6 +470,7 @@ export interface IQueryGridModel {
     showViewSelector?: boolean
     hideEmptyViewSelector?: boolean
     showChartSelector?: boolean
+    showExport?: boolean
     hideEmptyChartSelector?: boolean
     sortable?: boolean
     sorts?: string
@@ -542,6 +545,7 @@ export class QueryGridModel extends Record({
     showViewSelector: true,
     hideEmptyViewSelector: false,
     showChartSelector: true,
+    showExport: true,
     hideEmptyChartSelector: false,
     sortable: true,
     sorts: undefined,
@@ -585,6 +589,7 @@ export class QueryGridModel extends Record({
     showViewSelector: boolean;
     hideEmptyViewSelector: boolean;
     showChartSelector: boolean;
+    showExport: boolean;
     hideEmptyChartSelector: boolean;
     sortable: boolean;
     sorts: string;
@@ -774,6 +779,15 @@ export class QueryGridModel extends Record({
         return !this.getFilters().isEmpty()
     }
 
+    // Issue 39765: When viewing details for assays, we need to apply an "is not blank" filter on the "Replaced" column in order to
+    // see replaced assay runs.  So this is the one case (we know of) where we want to apply base filters when viewing details since
+    // the default view restricts the set of items found.
+    // Applying other base filters will be problematic (Issue 39719) in that they could possibly exclude the row you are trying
+    // to get details for.
+    getDetailFilters(): List<Filter.IFilter> {
+        return this.baseFilters.filter((filter) => (filter.getColumnName().toLowerCase() === 'replaced')).toList();
+    }
+
     getFilters(): List<Filter.IFilter> {
         let filterList = List<Filter.IFilter>();
         if (this.queryInfo) {
@@ -785,10 +799,10 @@ export class QueryGridModel extends Record({
                 } else {
                     console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
                 }
+
+                return filterList.concat(this.getDetailFilters()).toList();
+
             }
-            // if a keyValue if provided, we may still have baseFilters to apply in the case that the default
-            // filter on a query view is a limiting filter and we want to expand the set of values returned (e.g., for assay runs
-            // that may have been replaced)
             return filterList.concat(this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray)).toList();
         }
 
@@ -1154,8 +1168,9 @@ export class QueryInfo extends Record({
         };
 
         let viewInfo = this.getView(view);
+        let displayColumns = List<QueryColumn>();
         if (viewInfo) {
-            return viewInfo.columns
+            displayColumns = viewInfo.columns
                 .filter(colFilter)
                 .reduce((list, col) => {
                     let c = this.getColumn(col.fieldKey);
@@ -1174,6 +1189,19 @@ export class QueryInfo extends Record({
                     console.warn(`Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`);
                     return list;
                 }, List<QueryColumn>());
+
+            // add addToDisplayView columns
+            const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
+                return list.push(col.fieldKey.toLowerCase());
+            }, List<string>());
+            this.columns.forEach((col) => {
+                if (col.fieldKey && col.addToDisplayView && !columnFieldKeys.includes(col.fieldKey.toLowerCase())) {
+                    if (!lowerOmit || (lowerOmit.size > 0 && !lowerOmit.includes(col.fieldKey.toLowerCase())))
+                        displayColumns = displayColumns.push(col);
+                }
+            });
+
+            return displayColumns;
         }
 
         console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');

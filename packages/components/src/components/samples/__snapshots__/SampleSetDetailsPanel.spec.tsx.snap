@@ -64,6 +64,7 @@ Array [
           >
             <input
               className="form-control"
+              disabled={false}
               id="entity-name"
               onChange={[Function]}
               placeholder="Enter a name for this sample type"
@@ -318,6 +319,7 @@ Array [
           >
             <input
               className="form-control"
+              disabled={false}
               id="entity-name"
               onChange={[Function]}
               placeholder="Enter a name for this sample type"

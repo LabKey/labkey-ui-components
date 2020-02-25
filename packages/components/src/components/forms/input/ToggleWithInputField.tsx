@@ -22,6 +22,7 @@ export class ToggleWithInputField extends React.Component<ToggleWithInputFieldPr
         delete toggleProps.inputFieldName;
         delete toggleProps.containerClassName;
 
+        // console.log("TOGGLE WITH INPUT FIELD", this.props);
         return (
             <span className={containerClassName}>
                 {inputFieldName && <Input name={inputFieldName} type="hidden" value={active.toString()}/>}

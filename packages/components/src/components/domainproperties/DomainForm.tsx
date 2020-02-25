@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import {
@@ -58,6 +58,10 @@ import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { CollapsiblePanelHeader } from "./CollapsiblePanelHeader";
+import {FilePreviewGrid} from "../files/FilePreviewGrid";
+import {FilePreview, GridColumn, ToggleButtons} from "../..";
+import {convertRowDataIntoPreviewData} from "../files/actions";
+import {ToggleWithInputField} from "../forms/input/ToggleWithInputField";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -84,6 +88,7 @@ interface IDomainFormInput {
     showFilePropertyType?: boolean //Flag to indicate if the File property type should be allowed
     domainIndex?: number
     successBsStyle?: string
+    setFileImportData?: any
 }
 
 interface IDomainFormState {
@@ -95,6 +100,9 @@ interface IDomainFormState {
     dragId?: number
     availableTypes: List<PropDescType>
     filtered: boolean
+    showFilePreview: boolean
+    filePreviewData?: InferDomainResponse
+    fileData?: File
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -134,7 +142,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
             availableTypes: this.getAvailableTypes(),
             collapsed: props.initCollapsed,
-            filtered: false
+            filtered: false,
+            showFilePreview: false,
         };
     }
 
@@ -328,6 +337,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     applyAddField = (config?: Partial<IDomainField>) => {
+        this.setState({showFilePreview: true});
         this.onDomainChange(addDomainField(this.props.domain, config));
         this.collapseRow();
     };
@@ -578,8 +588,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return showInferFromFile && domain.fields.size === 0;
     }
 
-    handleFilePreviewLoad = (response: InferDomainResponse) => {
+    handleFilePreviewLoad = (response: InferDomainResponse, file: File = null) => {
+        console.log("handlefilepreview info", response);
+
         this.onDomainChange(setDomainFields(this.props.domain, response.fields));
+        // For passing file data to <FilePreview/>
+        this.setState({showFilePreview: true, filePreviewData: response, fileData: file});
     };
 
     renderEmptyDomain() {
@@ -698,12 +712,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderForm() {
         const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex, successBsStyle } = this.props;
-        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
+        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered, showFilePreview } = this.state;
 
         return (
             <>
                 {this.renderPanelHeaderContent()}
-                {appDomainHeaderRenderer && this.renderAppDomainHeader()}
+                {/*TODO this will break prev code*/}
+                {(appDomainHeaderRenderer && showFilePreview) && this.renderAppDomainHeader()}
+                {/*showFilePreview: {showFilePreview ? "true" : "false"}*/}
                 {(filtered || domain.fields.size > 1) && this.renderSearchField()}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
@@ -764,13 +780,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme } = this.props;
-        const { collapsed } = this.state;
+        const { collapsed, confirmDeleteRowIndex, showFilePreview, filePreviewData, fileData } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
 
         return (
             <>
-                {this.state.confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
+                {confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
                 <Panel className={getDomainPanelClass(collapsed, controlledCollapse, useTheme)} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
                         <CollapsiblePanelHeader
@@ -794,7 +810,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             ? this.renderForm()
                             : <Alert>Invalid domain design.</Alert>
                         }
+
+                        {showFilePreview && filePreviewData &&
+                            <FilePreview filePreviewData={filePreviewData} setFileImportData={this.props.setFileImportData} fileData={fileData}/>
+                        }
                     </Panel.Body>
+
                 </Panel>
                 {domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR &&
                     <div onClick={this.togglePanel} className={getDomainAlertClasses(collapsed, controlledCollapse, useTheme)}>

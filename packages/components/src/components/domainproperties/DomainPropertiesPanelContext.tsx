@@ -9,7 +9,7 @@ interface Props {
 
 export interface IDomainPropertiesPanelContext {
     collapsed: boolean
-    togglePanel?: (evt: any, collapsed?: boolean) => void
+    togglePanel: (evt: any, collapsed?: boolean) => void
 }
 
 export const DomainPropertiesPanelContext = React.createContext<IDomainPropertiesPanelContext>(undefined);
@@ -25,7 +25,8 @@ export class DomainPropertiesPanelProvider extends React.Component<Props, IDomai
         super(props);
 
         this.state = {
-            collapsed: props.initCollapsed
+            collapsed: props.initCollapsed,
+            togglePanel: this.togglePanel
         };
     }
 
@@ -58,13 +59,8 @@ export class DomainPropertiesPanelProvider extends React.Component<Props, IDomai
     };
 
     render() {
-        const context = {
-            ...this.state,
-            togglePanel: this.togglePanel
-        };
-
         return (
-            <DomainPropertiesPanelContext.Provider value={context}>
+            <DomainPropertiesPanelContext.Provider value={this.state}>
                 {this.props.children}
             </DomainPropertiesPanelContext.Provider>
         )

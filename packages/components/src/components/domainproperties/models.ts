@@ -1398,8 +1398,6 @@ export interface IAppDomainHeader {
     onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
     onAddField?: (fieldConfig: Partial<IDomainField>) => void
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
-    onKeyFieldChange? : (any) => void
-    keyField?: number
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';

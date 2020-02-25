@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.28.1
+*Released*: 25 February 2020
 * Use dataclass category field for choosing the icon to display for search results
 * Remove iconURL workaround and rely on server side QueryIconURLProvider instead
 

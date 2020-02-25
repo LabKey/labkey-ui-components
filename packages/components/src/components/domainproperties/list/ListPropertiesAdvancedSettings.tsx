@@ -135,12 +135,15 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
 interface IndexFieldProps {
     name: string;
     onRadioChange: (evt: any) => any;
+    onInputChange: (evt: any) => any;
     bodySetting: number;
+    bodyTemplate: string;
 }
 
 class IndexField extends React.PureComponent<IndexFieldProps> {
     render() {
-        const { name, onRadioChange, bodySetting } = this.props;
+        const { name, onRadioChange, bodySetting, bodyTemplate, onInputChange } = this.props;
+        const id = (name == "entireListBodySetting") ? "entireListBodyTemplate" : "eachItemBodyTemplate";
 
         return (
             <div>
@@ -156,6 +159,16 @@ class IndexField extends React.PureComponent<IndexFieldProps> {
                         <LabelHelpTip title="" body={() => {return <> {CUSTOM_TEMPLATE_TIP} </>;}}/>
                     </Radio>
                 </FormGroup>
+
+                {bodySetting == 2 &&
+                    <FormControl
+                        id={id}
+                        type="text"
+                        value={bodyTemplate}
+                        onChange={onInputChange}
+                        className='list__advanced-settings-modal__custom-template-text-field'
+                    />
+                }
             </div>
         );
     }
@@ -167,6 +180,7 @@ interface SingleDocumentIndexFieldsProps {
     entireListTitleTemplate: string;
     entireListIndexSetting: number;
     entireListBodySetting: number;
+    entireListBodyTemplate: string;
 }
 
 class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexFieldsProps> {
@@ -177,6 +191,7 @@ class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexF
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
+            entireListBodyTemplate,
         } = this.props;
 
         return (
@@ -196,7 +211,9 @@ class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexF
                 <IndexField
                     name="entireListBodySetting"
                     onRadioChange={onRadioChange}
+                    onInputChange={onInputChange}
                     bodySetting={entireListBodySetting}
+                    bodyTemplate={entireListBodyTemplate}
                 />
             </div>
         );
@@ -208,6 +225,7 @@ interface SeparateDocumentIndexFieldsProps {
     onInputChange: (evt: any) => any;
     eachItemTitleTemplate: string;
     eachItemBodySetting: number;
+    eachItemBodyTemplate: string;
 }
 
 class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
@@ -217,6 +235,7 @@ class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIn
             onInputChange,
             eachItemTitleTemplate,
             eachItemBodySetting,
+            eachItemBodyTemplate,
         } = this.props;
 
         return (
@@ -230,7 +249,9 @@ class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIn
                 <IndexField
                     name="eachItemBodySetting"
                     onRadioChange={onRadioChange}
+                    onInputChange={onInputChange}
                     bodySetting={eachItemBodySetting}
+                    bodyTemplate={eachItemBodyTemplate}
                 />
             </div>
         );
@@ -451,6 +472,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             entireListIndexSetting: model.entireListIndexSetting,
             // index
             entireListBodySetting: model.entireListBodySetting,
+            entireListBodyTemplate: model.entireListBodyTemplate,
 
             // each item
             eachItemIndex: model.eachItemIndex,
@@ -458,6 +480,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             eachItemTitleTemplate: model.eachItemTitleTemplate,
             // index
             eachItemBodySetting: model.entireListBodySetting,
+            eachItemBodyTemplate: model.eachItemBodyTemplate,
         };
     };
 
@@ -511,7 +534,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             eachItemIndex,
             eachItemTitleTemplate,
             eachItemBodySetting,
-            titleColumn
+            titleColumn,
+            entireListBodyTemplate,
+            eachItemBodyTemplate,
         } = this.state;
         const { title, model } = this.props;
 
@@ -520,12 +545,14 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
+            entireListBodyTemplate
         };
 
         const eachItemIndexSettings = {
             eachItemIndex,
             eachItemTitleTemplate,
             eachItemBodySetting,
+            eachItemBodyTemplate,
         };
 
         return (

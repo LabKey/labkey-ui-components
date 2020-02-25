@@ -18,7 +18,7 @@ import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { DomainDesign } from "../models";
 
 export interface AdvancedSettingsForm {
-    titleColumn?: any; // todo rp
+    titleColumn?: string;
     discussionSetting?: number;
     fileAttachmentIndex?: boolean;
     entireListIndex?: boolean;
@@ -28,6 +28,8 @@ export interface AdvancedSettingsForm {
     eachItemIndex?: boolean;
     eachItemTitleTemplate?: string;
     eachItemBodySetting?: number;
+    entireListBodyTemplate?: string;
+    eachItemBodyTemplate?: string;
 }
 
 export class ListModel extends Record({

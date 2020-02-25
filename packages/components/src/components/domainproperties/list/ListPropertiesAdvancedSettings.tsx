@@ -5,7 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {LabelHelpTip, ListModel, Principal, SelectInput} from '../../..';
 import { CheckBox } from './ListPropertiesPanelFormElements';
 import {AdvancedSettingsForm} from "./models";
-import {CUSTOM_TEMPLATE_TIP, DATA_INDEXING_TIP, EACHITEM_TITLE_TIP, ENTIRELIST_TITLE_TIP} from "./constants";
+import {
+    CUSTOM_TEMPLATE_TIP,
+    DATA_INDEXING_TIP,
+    DISCUSSION_LINKS_TIP,
+    EACHITEM_TITLE_TIP,
+    ENTIRELIST_TITLE_TIP,
+    SEARCH_INDEXING_TIP
+} from "./constants";
 
 interface DisplayTitleProps {
     model: ListModel
@@ -380,7 +387,7 @@ class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchInde
 interface SettingsContainerProps {
     fieldComponent: JSX.Element;
     title: string;
-    tipBody: string;
+    tipBody: string | JSX.Element;
 }
 
 class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
@@ -555,6 +562,16 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             eachItemBodyTemplate,
         };
 
+        let displayTitleTip =
+            <>
+                Choose a field to identify this list when other lists or datasets do lookups into this list
+                When “Auto” is enabled, LabKey will select the field for you by using:
+                <ul>
+                    <li>The first non-lookup string column</li>
+                    <li>The primary key, if there are no string fields</li>
+                </ul>
+            </> as JSX.Element;
+
         return (
             <Col xs={12} md={2}>
                 <Button className="domain-field-float-right" onClick={() => this.toggleModal(true)}>
@@ -569,7 +586,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <Modal.Body>
                         <SettingsContainer
                             title="Field used for display title:"
-                            tipBody="Text to be determined"
+                            tipBody={displayTitleTip}
                             fieldComponent={
                                 <DisplayTitle
                                     model={model}
@@ -581,7 +598,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                         <SettingsContainer
                             title="Discussion links"
-                            tipBody="Text to be determined"
+                            tipBody={DISCUSSION_LINKS_TIP}
                             fieldComponent={
                                 <DiscussionLinks
                                     onRadioChange={this.onRadioChange}
@@ -592,7 +609,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                         <SettingsContainer
                             title="Search indexing options"
-                            tipBody="Text to be determined"
+                            tipBody={SEARCH_INDEXING_TIP}
                             fieldComponent={
                                 <SearchIndexing
                                     onRadioChange={this.onRadioChange}

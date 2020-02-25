@@ -1,9 +1,23 @@
 import React from 'react';
 import {SampleTypeModel} from './models';
 import {SampleTypePropertiesPanel} from "./SampleTypePropertiesPanel";
-import {Alert, DomainDesign, DomainDetails, IDomainField, SAMPLE_TYPE, WizardNavButtons} from "../../..";
+import {
+    Alert,
+    DomainDesign,
+    DomainDetails, generateId,
+    IDomainField,
+    KINDS,
+    resolveErrorMessage,
+    SAMPLE_TYPE,
+    saveDomain,
+    WizardNavButtons
+} from "../../..";
 import DomainForm from "../DomainForm";
 import {IParentAlias, IParentOption,} from "../../entities/models";
+import {addDomainField} from "../actions";
+import {initSampleSetSelects} from "../../samples/actions";
+import {SAMPLE_SET_DISPLAY_TEXT} from "../../../constants";
+import {Map} from "immutable";
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -15,6 +29,13 @@ const DEFAULT_SAMPLE_FIELD_CONFIG = {
     lookupType: {...SAMPLE_TYPE},
     name: 'SampleId',
 } as Partial<IDomainField>;
+
+const NEW_SAMPLE_SET_OPTION: IParentOption = {
+    label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`, //TODO: this should use props.noun;
+    value: "{{this_sample_set}}"
+} as IParentOption;
+
+const IMPORT_PREFIX :string = 'materialInputs/';
 
 interface Props {
     onCancel: () => void
@@ -48,17 +69,16 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     static defaultProps = {
         nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}',
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
+        noun: SAMPLE_SET_DISPLAY_TEXT,
     };
 
     constructor(props: Props) {
         super(props);
 
-        const domainDetails = props.initModel || DomainDetails.create();
-
         this.state = {
             submitting: false,
             currentPanelIndex: 0,
-            model: SampleTypeModel.create(domainDetails),
+            model: undefined,
             invalidDomainField: undefined,
             activePanelIndex: 0,
             parentOptions: undefined,
@@ -66,23 +86,74 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         };
     }
 
-    // ############################# Properties Panel methods
+    componentDidMount = (): void => {
+        const domainDetails = this.props.initModel || DomainDetails.create();
+        const model = SampleTypeModel.create(domainDetails);
+        this.initParentOptions(model);
+    };
+
+    initParentOptions = (model: SampleTypeModel) => {
+        initSampleSetSelects(!model.isNew(), model.name, NEW_SAMPLE_SET_OPTION, IMPORT_PREFIX).then(results => {
+            const options = results.toArray();
+            let importAliases = Map<string, IParentAlias>();
+
+            if (model && model.parentAliases)
+            {
+                let parentAliases = Map<string,string>(model.parentAliases);
+                parentAliases.forEach((val, key) => {
+                    const newId = SampleTypeDesigner.generateAliasId();
+                    importAliases = importAliases.set(newId, {
+                        id: newId,
+                        alias: key,
+                        parentValue: options.find(opt => opt.value === val),
+                        ignoreAliasError: false,
+                        ignoreSelectError: false,
+                    } as IParentAlias);
+                });
+            }
+
+            this.setState(() => ({
+                parentOptions: options,
+                model: model.merge({importAliases}) as SampleTypeModel
+            }));
+        });
+    };
+
+    //Generates a temporary id for add/delete of the import aliases
+    static generateAliasId() {
+        return generateId("sampleset-parent-import-alias-");
+    }
+
     onFieldChange = (newModel: SampleTypeModel) => {
         this.setState(()=>({model:newModel}));
     };
 
-    parentAliasChange = (id:string, field: string, newValue: IParentOption) => {
+    parentAliasChange = (id:string, field: string, newValue: any) => {
         const {model} = this.state;
-        let {parentAliases} = model;
-        parentAliases.get(id)[field] = newValue;
-        model.set('parentAliases', parentAliases);
+        const {importAliases} = model;
+        const parentAlias = {
+            ...importAliases.get(id),
+            [field]: newValue,
+        };
+
+        const newAliases = importAliases.set(id, parentAlias);
+        const newModel = model.merge({importAliases: newAliases}) as SampleTypeModel;
+        this.setState(() => ({model: newModel}));
+    };
+
+    addParentAlias = (id:string, newAlias: IParentAlias): void => {
+        const {model} = this.state;
+        let {importAliases} = model;
+        const newModel = model.merge({importAliases:importAliases.set(id, newAlias)}) as SampleTypeModel;
+        this.setState(() => ({model: newModel}));
     };
 
     removeParentAlias = (id:string) => {
         const {model} = this.state;
-        let {parentAliases} = model;
-        parentAliases.delete(id);
-        model.set('parentAliases', parentAliases);
+        let {importAliases} = model;
+        const aliases = importAliases.delete(id);
+        const newModel = model.set('importAliases', aliases) as SampleTypeModel;
+        this.setState(() => ({model: newModel}));
     };
 
     renderDetailsPanel = () => {
@@ -94,6 +165,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                     model={model}
                     parentOptions={parentOptions}
                     onParentAliasChange={this.parentAliasChange}
+                    onAddParentAlias={this.addParentAlias}
                     onRemoveParentAlias={this.removeParentAlias}
                     noun={noun}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
@@ -103,9 +175,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
             </>
         )
     };
-    // ############################# END Properties Panel region
 
-    // ############################# Domain Panel methods
     domainChangeHandler = (newDomain: DomainDesign): void => {
         const {defaultSampleFieldConfig} = this.props;
         let {model} = this.state;
@@ -127,6 +197,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     };
 
     renderDomainPanel = () => {
+        const {noun} = this.props;
         const {model} = this.state;
         const {domain} = model;
 
@@ -139,8 +210,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                         showHeader={true}
                         initCollapsed={true}
                         collapsible={true}
-                        helpNoun={'sample type'}
-                    // containerTop={STICKY_HEADER_HEIGHT}
+                        helpNoun={noun.toLowerCase()}
                         useTheme={false}
                         appPropertiesOnly={true}
                 />
@@ -148,47 +218,79 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
             </>
         );
     };
-// ############################ END Domain Panel region
 
     isFormValid = (): boolean => {
-        return true;
+        return SampleTypeModel.isValid(this.state.model);
     };
 
     onFinish = () => {
+        const { beforeFinish } = this.props;
+        const { model } = this.state;
+
+        this.setSubmitting(true);
+
+        if (beforeFinish) {
+            beforeFinish(model);
+        }
+
+        const {name, domain, description, nameExpression } = model;
+
+        let domainDesign = domain.merge({
+            name: name, //This will be the Sample Type Name
+            description: description,
+        }) as DomainDesign;
+
+        const details = {
+            name,
+            nameExpression,
+            importAliases: model.getImportAliasesAsMap().toJS(),
+        };
+
+        if (model.isNew())
+        {
+            //Initialize a sampleId column, this is not displayed as part of the designer.
+            const nameCol = {
+                name: 'Name'
+            };
+
+            domainDesign = addDomainField(domainDesign, nameCol);
+        }
+
+        saveDomain(domainDesign, KINDS.SAMPLE_TYPE, details, name)
+            .then((savedDomain) => {
+                this.onFinishSuccess(savedDomain);
+            })
+            .catch((errorDomain) => {
+                this.onFinishFailure(resolveErrorMessage(errorDomain));
+            });
 
     };
 
-    render() {
-        // return (
-        //     <>
-        //         <SampleTypePropertiesPanel
-        //             model={}
-        //             parentOptions={}
-        //             onChange={}
-        //             onParentAliasChange={}
-        //             onRemoveParentAlias={}
-        //             noun={}
-        //             onFormChange={}
-        //         />
-        //         {}
-        //         <DomainForm
-        //             />
-        //         {bottomErrorMsg &&
-        //         <div className={'domain-form-panel'}>
-        //             <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
-        //         </div>
-        //         }
-        //         <div className={'domain-form-panel domain-designer-buttons'}>
-        //             <Button onClick={onCancel}>Cancel</Button>
-        //             <Button className='pull-right' bsStyle={successBsStyle || 'success'} disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
-        //         </div>
-        //     </>
-        //
-        //
-        // );
+    onFinishSuccess(response: any) {
+        this.setSubmitting(false);
+        this.props.onComplete(response);
+    }
 
+    onFinishFailure(error: React.ReactNode) {
+        this.setState(() => ({
+            error,
+            submitting: false
+        }));
+    }
+
+    setSubmitting(submitting: boolean) {
+        this.setState(() => ({
+            error: undefined,
+            submitting
+        }));
+    }
+
+    render() {
         const { onCancel } = this.props;
-        const { submitting, error, } = this.state;
+        const { submitting, error, model } = this.state;
+        if (!model)
+            return null;
+
         return (
             <>
                 {error && <Alert>{error}</Alert>}

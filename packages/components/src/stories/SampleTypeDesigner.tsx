@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Map } from 'immutable';
+import {Map} from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
-import { SampleSetDetailsPanel } from '../components/samples/SampleSetDetailsPanel';
 import domainData from '../test/data/property-getDomain-sampleType.json';
 
 import './stories.scss';
 import {DomainDetails} from "../components/domainproperties/models";
-import {Domain} from "@labkey/api";
 import {SampleTypeDesigner} from "../components/domainproperties/samples/SampleTypeDesigner";
+import {Domain} from "@labkey/api";
 
 
 storiesOf('SampleTypeDesigner', module)
@@ -36,15 +35,15 @@ storiesOf('SampleTypeDesigner', module)
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://wwDodomw.labkey.org')}
             nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
         />
+    })
+    .add('for update', () => {
+        let design = DomainDetails.create(Map(domainData), Domain.KINDS.SAMPLE_TYPE);
+
+        return <SampleTypeDesigner
+            initModel={ design }
+            onCancel={() => console.log('Cancel clicked')}
+            onComplete={() => console.log('Create clicked')}
+            nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
+            nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+        />
     });
-    // .add('for update', () => {
-    //     let design = DomainDetails.create(Map(domainData), Domain.KINDS.SAMPLE_TYPE);
-    //
-    //     return <SampleSetDetailsPanel
-    //         data={ design }
-    //         onCancel={() => console.log('Cancel clicked')}
-    //         onComplete={() => console.log('Create clicked')}
-    //         nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
-    //         nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
-    //     />
-    // });

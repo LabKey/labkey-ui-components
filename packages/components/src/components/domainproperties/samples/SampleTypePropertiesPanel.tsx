@@ -1,9 +1,9 @@
 import React from 'react';
 import {SampleTypeModel} from './models';
-import {EntityDetailsForm, EntityDetailsProps} from "../entities/EntityDetailsForm";
+import {EntityDetailsForm,} from "../entities/EntityDetailsForm";
 
 //TODO move these to the local models file
-import {IParentOption,} from "../../entities/models";
+import {IParentAlias, IParentOption,} from "../../entities/models";
 import {DomainPanelStatus} from "../models";
 import {DomainPropertiesPanelProvider} from "../DomainPropertiesPanelContext";
 import {getFormNameFromId,} from "../entities/actions";
@@ -18,7 +18,8 @@ interface OwnProps {
     model: SampleTypeModel
     parentOptions: Array<IParentOption>
     updateModel: (newModel: SampleTypeModel) => void
-    onParentAliasChange: (id:string, field: string, newValue: IParentOption) => void
+    onParentAliasChange: (id:string, field: string, newValue: any) => void
+    onAddParentAlias: (id:string, newAlias: IParentAlias ) => void
     onRemoveParentAlias: (id:string) => void
 }
 
@@ -81,15 +82,6 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
         };
     }
 
-    init = (model: SampleTypeModel): void => {
-
-    };
-
-    componentDidMount = (): void => {
-        const {model} = this.props;
-        this.init(model);
-    };
-
     //Generates a temporary id for add/delete of the import aliases
     static generateAliasId() {
         return generateId("sampletype-parent-import-alias-");
@@ -102,13 +94,13 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
         updateModel(model.set(getFormNameFromId(id), value) as SampleTypeModel);
     };
 
-    parentAliasChanges = (id:string, field: string, newValue: IParentOption): void => {
+    parentAliasChanges = (id:string, field: string, newValue: any): void => {
         const {onParentAliasChange} = this.props;
         onParentAliasChange(id, field, newValue);
     };
 
     addParentAlias = (): void => {
-        const {onParentAliasChange} = this.props;
+        const {onAddParentAlias} = this.props;
 
         const newId = SampleTypePropertiesPanelImpl.generateAliasId();
         const newParentAlias = {
@@ -119,7 +111,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
             ignoreSelectError: true,
         };
 
-        onParentAliasChange(newId,'', newParentAlias);
+        onAddParentAlias(newId, newParentAlias);
     };
 
     renderAddEntityHelper = ():any => {
@@ -135,16 +127,16 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
 
     renderParentAliases = () => {
         const {model, parentOptions} = this.props;
-        const {parentAliases} = model;
+        const {importAliases} = model;
 
-        if (!parentAliases || !parentOptions)
+        if (!importAliases || !parentOptions)
             return [];
 
-        return parentAliases.valueSeq().map((parentAlias) =>
+        return importAliases.valueSeq().map((alias) =>
             <SampleSetParentAliasRow
-                key={parentAlias.id}
-                id={parentAlias.id}
-                parentAlias={parentAlias}
+                key={alias.id}
+                id={alias.id}
+                parentAlias={alias}
                 parentOptions={parentOptions}
                 onAliasChange={this.parentAliasChanges}
                 onRemove={this.removeParentAlias}
@@ -152,18 +144,13 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
         );
     };
 
-    removeParentAlias = (id: string): void => {
-        let {model, onRemoveParentAlias} = this.props;
-        let {parentAliases} = model;
-        if (parentAliases.size === 0) //TODO:Verify: should this be an error?
-            return;
-
-        onRemoveParentAlias(id);
+    removeParentAlias = (index: string): void => {
+        let {onRemoveParentAlias} = this.props;
+        onRemoveParentAlias(index);
     };
 
     render = () => {
         const {model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, noun='Sample Type'} = this.props;
-        // const isUpdate = isExistingEntity(formValues, data.options);
 
         return (
             <>

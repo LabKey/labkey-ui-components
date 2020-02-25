@@ -1,4 +1,4 @@
-import { Map, Record} from "immutable";
+import {fromJS, Map, Record} from "immutable";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import {DomainDesign, DomainDetails} from "../models";
 import {IParentAlias} from "../../entities/models";
@@ -9,6 +9,7 @@ export class SampleTypeModel extends Record({
     nameExpression: undefined,
     description: undefined,
     parentAliases: undefined,
+    importAliases: undefined,
     domainId: undefined,
     domain: undefined,
 }) {
@@ -16,7 +17,8 @@ export class SampleTypeModel extends Record({
     name: string;
     nameExpression: string;
     description: string;
-    parentAliases?: Map<string, IParentAlias>;
+    parentAliases?: Map<string, string>;
+    importAliases?: Map<string, IParentAlias>;
     domainId?: number;
     domain?: DomainDesign;
 
@@ -29,11 +31,21 @@ export class SampleTypeModel extends Record({
             return new SampleTypeModel();
 
         let domain = raw.domainDesign ?
-            DomainDesign.create(raw.domainDesign) :
+            raw.domainDesign :
             DomainDesign.create({});
 
-        const options = raw.options || {};
-        return new SampleTypeModel({...options, domain});
+        const {options} = raw;
+        let parentAliases = Map<string,string>();
+        if (options) {
+            let aliases = options.get('parentAliases') || {};
+            parentAliases = Map<string,string>(fromJS(aliases));
+        }
+
+        return new SampleTypeModel({
+            ...options.toJS(),
+            parentAliases,
+            domain
+        });
     }
 
     static serialize(model: SampleTypeModel): any {
@@ -41,7 +53,7 @@ export class SampleTypeModel extends Record({
         return model.merge({domain}).toJS();
     }
 
-    isNew = (): boolean => {
+    isNew(): boolean {
         return !this.rowId;
     };
 
@@ -50,9 +62,38 @@ export class SampleTypeModel extends Record({
         return !errDomain && model.hasValidProperties();
     }
 
+    /**
+     * Check if IParentAlias is invalid
+     * @param alias
+     */
+    static parentAliasInvalid(alias: IParentAlias): boolean {
+        if (!alias)
+            return true;
+
+        //return true if alias is null or blank; or if parentValue option is not set
+        return !alias.alias || alias.alias.trim() === '' || !alias.parentValue;
+    }
+
     hasValidProperties(): boolean {
+        const {importAliases} = this;
+        const hasInvalidAliases = importAliases && importAliases.size > 0 && importAliases.find(SampleTypeModel.parentAliasInvalid);
+
         return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
-            // && //additional validation to come
+            && !hasInvalidAliases
         );
+    }
+
+    getImportAliasesAsMap(): Map<string,string> {
+        const { importAliases } = this;
+
+        let aliases = {};
+
+        if (importAliases) {
+            importAliases.map((alias: IParentAlias) => {
+                aliases[alias.alias] = alias.parentValue.value;
+            });
+        }
+
+        return Map<string,string>(aliases);
     }
 }

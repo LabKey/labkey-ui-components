@@ -1,8 +1,8 @@
 {
   "domainKindName": "SampleSet",
   "options": {
-    "name": "SampleSet_02",
-    "namingPattern": "S-${now:date}-${dailySampleCount}",
+    "name": "Sample Set 2",
+    "nameExpression": "S-${now:date}-${dailySampleCount}",
     "description": "tacocat",
     "parentAliases": {
       "a": "materialInputs/Fruits"
@@ -12,7 +12,7 @@
   },
   "domainDesign": {
     "domainId": 29,
-    "name": "SampleSet_02",
+    "name": "Sample Set 2",
     "domainURI": "urn:lsid:labkey.com:SampleSet.Folder-5:SampleSet_02",
     "description": null,
     "container": "8d32de1d-f757-1037-9da8-ac11f4c8df70",

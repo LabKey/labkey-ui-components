@@ -402,7 +402,6 @@ export {
 
     // samples-related
     DataClassDesigner,
-    SampleSetDetailsPanel,   //TODO REMOVE in favor of SampleTypeDesigner
     SampleTypeDesigner,
     SampleTypeModel,
     SampleSetDeleteConfirmModal,

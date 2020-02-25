@@ -2,20 +2,21 @@ import React from 'react';
 import { Button, Col, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { LabelHelpTip, ListModel, SelectInput } from '../../..';
+import {LabelHelpTip, ListModel, Principal, SelectInput} from '../../..';
 import { CheckBox } from './ListPropertiesPanelFormElements';
 import {AdvancedSettingsForm} from "./models";
+import {CUSTOM_TEMPLATE_TIP, DATA_INDEXING_TIP, EACHITEM_TITLE_TIP, ENTIRELIST_TITLE_TIP} from "./constants";
 
 interface DisplayTitleProps {
     model: ListModel
+    onSelectChange: (name, formValue, selected) => void;
+    titleColumn: string;
 }
 
-// TODO RP
 class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
     render() {
-        const fields = this.props.model.domain.fields;
-        console.log('DisplayTitle', fields);
-        console.log('length', fields.size);
+        const {model, onSelectChange, titleColumn} = this.props;
+        const fields = model.domain.fields;
         const disabled = !(fields.size > 0);
         const placeholder = disabled ? 'No fields have been defined yet' : 'Auto';
 
@@ -25,13 +26,16 @@ class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
                     name="titleColumn"
                     options={fields.toArray()}
                     placeholder={placeholder}
-                    inputClass=""
-                    valueKey="value"
+                    inputClass="" // This attr is necessary for proper styling
+                    valueKey="name"
                     labelKey="name"
+                    key="name"
                     formsy={false}
                     multiple={false}
                     required={false}
                     disabled={disabled}
+                    onChange={onSelectChange}
+                    value={titleColumn}
                 />
             </div>
         );
@@ -76,16 +80,11 @@ class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
     render() {
         const { name, titleTemplate, onInputChange } = this.props;
         const title = titleTemplate == null ? '' : titleTemplate;
-
+        const tipText = (name == "eachItemTitleTemplate") ? EACHITEM_TITLE_TIP : ENTIRELIST_TITLE_TIP;
         return (
             <div>
                 Document title
-                <LabelHelpTip
-                    title=""
-                    body={() => {
-                        return <> words to be written </>;
-                    }}
-                />
+                <LabelHelpTip title="" body={() => {return <> {tipText} </>;}}/>
                 <span>
                     <FormControl
                         className="list__advanced-settings-modal__text-field"
@@ -118,9 +117,11 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
                 <FormGroup>
                     <Radio name={name} value={0} checked={indexSetting == 0} onChange={e => onRadioChange(e)}>
                         Include both metadata and data
+                        <LabelHelpTip title="" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
                     </Radio>
                     <Radio name={name} value={1} checked={indexSetting == 1} onChange={e => onRadioChange(e)}>
                         Include data only
+                        <LabelHelpTip title="" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
                     </Radio>
                     <Radio name={name} value={2} checked={indexSetting == 2} onChange={e => onRadioChange(e)}>
                         Include metadata only (name and description of list and fields)
@@ -152,6 +153,7 @@ class IndexField extends React.PureComponent<IndexFieldProps> {
                     </Radio>
                     <Radio name={name} value={2} checked={bodySetting == 2} onChange={e => onRadioChange(e)}>
                         Index using custom template
+                        <LabelHelpTip title="" body={() => {return <> {CUSTOM_TEMPLATE_TIP} </>;}}/>
                     </Radio>
                 </FormGroup>
             </div>
@@ -253,7 +255,7 @@ class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
 
         return (
             <div>
-                <span onClick={() => expandFields(set)} className='list__advanced-settings-model__collapsible-field'>
+                <span onClick={() => expandFields(set)} className='list__advanced-settings-model__collapsible-field list__properties__checkbox--no-highlight'>
                     <FontAwesomeIcon icon={icon} size="lg" color="#333333" />
                 </span>
                 <span className="list__advanced-settings-modal__index-checkbox">
@@ -485,6 +487,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         this.setState({ [id]: value });
     };
 
+    onSelectChange = (name, formValue, selected): void => {
+        const value = (selected) ? selected.name : '<AUTO>';
+        this.setState({ [name]: value });
+    };
+
     applyChanges = (): void => {
         const { modalOpen, ...advancedSettingsForm } = this.state;
 
@@ -503,7 +510,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             entireListBodySetting,
             eachItemIndex,
             eachItemTitleTemplate,
-            eachItemBodySetting
+            eachItemBodySetting,
+            titleColumn
         } = this.state;
         const { title, model } = this.props;
 
@@ -535,7 +543,13 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <SettingsContainer
                             title="Field used for display title:"
                             tipBody="Text to be determined"
-                            fieldComponent={<DisplayTitle model={model} />}
+                            fieldComponent={
+                                <DisplayTitle
+                                    model={model}
+                                    onSelectChange={this.onSelectChange}
+                                    titleColumn={titleColumn}
+                                />
+                            }
                         />
 
                         <SettingsContainer

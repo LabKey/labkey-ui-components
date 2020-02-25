@@ -25,13 +25,6 @@ class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
             <Row className={'margin-top'}>
                 <Col xs={3} lg={4}>
                     Name *
-                    <LabelHelpTip
-                        title=""
-                        body={() => {
-                            return <> Text to be determined </>;
-                        }}
-                        required={true}
-                    />
                 </Col>
 
                 <Col xs={9} lg={8}>

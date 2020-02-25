@@ -229,11 +229,6 @@ describe("QueryInfo", () => {
             expect(queryInfo.getIconURL()).toBe('default');
         });
 
-        test("samples schema", () => {
-            const queryInfo = QueryInfo.create({schemaName: 'samples', name: 'test'});
-            expect(queryInfo.getIconURL()).toBe('samples');
-        });
-
         test("with custom iconURL", () => {
             const queryInfo = QueryInfo.create({schemaName: 'samples', name: 'test', iconURL: 'other'});
             expect(queryInfo.getIconURL()).toBe('other');

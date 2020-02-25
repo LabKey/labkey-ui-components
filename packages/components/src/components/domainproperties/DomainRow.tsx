@@ -113,8 +113,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     getDetailsText = (): React.ReactNode => {
         const { field, index, fieldError } = this.props;
         let details = [];
-        // console.log("GetDetailsText's field", field);
-        // console.log("Is pk?", field.isPrimaryKey);
 
         if (field.hasErrors()) {
             switch (field.getErrors()) {

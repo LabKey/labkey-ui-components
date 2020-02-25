@@ -19,7 +19,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
         return fields.set(prevKey, updatedPrevKeyField) as List<DomainField>;
     };
 
-    addAutoIntField = (onAddField, onModelChange, name, value) => {
+    addAutoIntField() {
         const autoIncrementFieldConfig = {
             required: true,
             name: 'Key',
@@ -28,9 +28,9 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
             isPrimaryKey: true,
             lockType: "PKLocked", // PK lock type: required, datatype
         } as Partial<IDomainField>;
-        onModelChange(name, value);
-        onAddField(autoIncrementFieldConfig);
-    };
+
+        this.props.onAddField(autoIncrementFieldConfig);
+    }
 
     removeAutoIntField = (fields) => { //TODO RP: properly identify the field by its dataType
         return fields.filter((field) => {
@@ -39,36 +39,38 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
     };
 
     onSelectionChange = (e) => {
-        const {model, onModelChange, keyField, onAddField, onDomainChange} = this.props;
+        const {model, keyField, onDomainChange, onModelChange} = this.props;
         const {domain} = model;
         const {fields} = domain;
         const { name, value } = e.target;
-        console.log(name, value);
-
         let newFields;
 
         // Making first selection of key
         if (keyField == '-2') {
             if (value == '-1') {
-                this.addAutoIntField(onAddField, onModelChange, name, value); // Selecting auto int key
+                this.addAutoIntField(); // Selecting auto int key
                 return;
-            } else {
+            }
+            else {
                 newFields = this.setKeyField(fields, value);  // Selecting regular field
             }
+        }
         // Changing key from one field to another
-        } else {
+        else {
             if (keyField == '-1') {
                 const fieldsNoKey = this.removeAutoIntField(fields); // Auto int to regular field
                 newFields = this.setKeyField(fieldsNoKey, value);
-            } else if (value == '-1') {
+            }
+            else if (value == '-1') {
                 newFields = this.unsetKeyField(fields, keyField); // Regular to auto int field
 
                 onDomainChange(domain.merge({fields: newFields}));
                 console.log("Old key field correct un-set.");
 
-                this.addAutoIntField(onAddField, onModelChange, name, value);
+                this.addAutoIntField();
                 return;
-            } else if (value !== '-1') {
+            }
+            else if (value !== '-1') {
                 const fieldsNoKey = this.unsetKeyField(fields, keyField); // Regular to regular field
                 newFields = this.setKeyField(fieldsNoKey, value);
             }
@@ -78,12 +80,13 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
         let keyType;
         if (newKeyField.dataType.name === 'int') {
             keyType = 'Integer';
-        } else if (newKeyField.dataType.name === 'string') {
+        }
+        else if (newKeyField.dataType.name === 'string') {
             keyType = 'Varchar';
         }
 
         const updatedModel = model.merge({
-            domain: model.domain.set('fields', newFields),
+            domain: domain.set('fields', newFields),
             keyName: newKeyField.name,
             keyType,
         }) as ListModel;
@@ -112,7 +115,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
                 }, []);
         }
         let autoIntIsPK = (keyField == '-1');
-        if (domain) {
+        if (domain && domain.fields.size > 0) {
             const pkIndex = domain.fields.findIndex(i => (i.isPrimaryKey));
 
             // TODO RP: identify using type, not name, once type is set up

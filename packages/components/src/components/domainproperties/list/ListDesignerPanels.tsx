@@ -180,7 +180,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                                 updatedModel = updatedModel.merge({domain: response}) as ListModel;
                                 this.setState(() => ({model: updatedModel}));
 
-                                // If we're importing List file data, import file contents // TODO should this also check that the user does want to import it?
+                                // If we're importing List file data, import file contents
                                 if (fileImportData) {
                                     this.handleFileImport();
                                 }
@@ -197,7 +197,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                             });
                     }
                     else if (!model.hasValidKeyType()) {
-                        const updatedModel = model.set('exception', 'You must specify a key field for your list in fhe fields panel to continue.') as ListModel;
+                        const updatedModel = model.set('exception', 'You must specify a key field for your list in the fields panel to continue.') as ListModel;
                         this.setState(() => ({model: updatedModel, submitting: false}));
                     }
             });
@@ -258,6 +258,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle={'Fields'}
+                    helpNoun={'list'}
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
                     setFileImportData={this.setFileImportData}
@@ -270,7 +271,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     onToggle={(collapsed, callback) => {this.onTogglePanel(1, collapsed, callback);}}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
-                    appDomainHeaderRenderer={model.isNew() && this.headerRenderer}
+                    appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
                 />
 
                 {bottomErrorMsg && (

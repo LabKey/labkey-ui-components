@@ -671,7 +671,6 @@ export class DomainField extends Record({
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
         const {dataType} = baseField;
-        console.log("blarghl", dataType);
         const lookup = DomainField.resolveLookupConfig(rawField, dataType);
         let field = new DomainField(Object.assign(rawField, baseField, {
             ...lookup,

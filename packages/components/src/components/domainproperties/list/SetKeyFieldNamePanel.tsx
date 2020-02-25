@@ -26,7 +26,9 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
         return fields.set(prevKey, updatedPrevKeyField) as List<DomainField>;
     };
 
-    addAutoIntField() {
+    addAutoIntField(name, value) {
+        const {model, onModelChange} = this.props;
+
         const autoIncrementFieldConfig = {
             required: true,
             name: 'Key',
@@ -35,6 +37,13 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
             isPrimaryKey: true,
             lockType: "PKLocked",
         } as Partial<IDomainField>;
+
+        const updatedModel = model.merge({
+            keyName: autoIncrementFieldConfig.name,
+            keyType: "AutoIncrementInteger",
+        }) as ListModel;
+
+        onModelChange(name, parseInt(value), updatedModel);
         this.props.onAddField(autoIncrementFieldConfig);
     }
 
@@ -52,27 +61,31 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
         const { name, value } = e.target;
 
         let newFields;
+        const autoIntIndex = fields.findIndex(i => (i.get('dataType').display == 'Auto Increment'));
+        console.log("onSelectionChange", keyField, autoIntIndex);
 
         // Making first selection of key
         if (keyField == -2) {
             if (value == -1) {
-                this.addAutoIntField(); // Selecting auto int key
+                this.addAutoIntField(name, value); // Selecting auto int key
                 return;
             } else {
                 newFields = this.setKeyField(fields, value);  // Selecting regular field
             }
         }
         else {
-            if (keyField == -1) {
+            if (keyField == -1) { // todo: auto int is no longer reliably located at -1
                 const fieldsNoKey = this.removeAutoIntField(fields); // Auto int to regular field
+                console.log("auto int to regular", fieldsNoKey);
                 newFields = this.setKeyField(fieldsNoKey, value);
             } else if (value == -1) {
                 newFields = this.unsetKeyField(fields, keyField); // Regular to auto int field
+                const newDomain = domain.merge({fields: newFields});
 
-                onDomainChange(domain.merge({fields: newFields}));
-                console.log("Old key field correct un-set.");
-
-                this.addAutoIntField();
+                console.log("regular to auto int:", newDomain);
+                onDomainChange(newDomain);
+                console.log("adding new field");
+                this.addAutoIntField(name, value);
                 return;
             } else if (value !== -1) {
                 const fieldsNoKey = this.unsetKeyField(fields, keyField); // Regular to regular field

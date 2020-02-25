@@ -109,8 +109,9 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         const { onChange } = this.props;
 
         this.setState((state) => ({
-            model: state.model.merge({domain}) as ListModel
+            model: state.model.mergeDeep({domain}) as ListModel
         }), () => {
+            console.log("onDomainChange", this.state.model);
             if (onChange) {
                 onChange(this.state.model);
             }
@@ -221,7 +222,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         if (keyField !== -2) {
             const fields = model.domain.fields;
             const pkIndex = fields.findIndex(i => (i.isPrimaryKey));
-            if (keyField !== pkIndex && pkIndex !== -1) {
+            if (keyField !== pkIndex) {
                 this.setState({keyField: pkIndex});
             }
         }

@@ -22,13 +22,13 @@ interface Props {
 }
 
 interface State {
-    model: ListModel;
-    keyField: number;
-    submitting: boolean;
-    currentPanelIndex: number;
-    visitedPanels: List<number>;
-    validatePanel: number;
-    firstState: boolean;
+    model?: ListModel;
+    keyField?: number;
+    submitting?: boolean;
+    currentPanelIndex?: number;
+    visitedPanels?: List<number>;
+    validatePanel?: number;
+    firstState?: boolean;
     fileImportData?: any;
 }
 
@@ -92,32 +92,20 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         this.setState({ fileImportData });
     };
 
-    // tried to do this a pretty way with creating a setState object, but failed
-    onModelChange = (name, value, model=null) => {
+    onModelChange = (name: string, value: any, model: ListModel) : void => {
         const { onChange } = this.props;
+        const intValue = parseInt(value);
 
-        if (!model) {
-            this.setState({ [name]:value } as State,
-                () => {
-                    console.log('onModelChange2', this.state);
-                    if (onChange) {
-                        onChange(this.state.model);
-                    }
+        this.setState({ model, [name]:intValue } as State,
+            () => {
+                if (onChange) {
+                    onChange(this.state.model);
                 }
-            );
-        } else {
-            this.setState({ model, [name]:value } as State,
-                () => {
-                    console.log('onModelChange2', this.state);
-                    if (onChange) {
-                        onChange(this.state.model);
-                    }
-                }
-            );
-        }
+            }
+        );
     };
 
-    onDomainChange = (domain: DomainDesign) => {
+    onDomainChange = (domain: DomainDesign): void => {
         const { onChange } = this.props;
 
         this.setState((state) => ({

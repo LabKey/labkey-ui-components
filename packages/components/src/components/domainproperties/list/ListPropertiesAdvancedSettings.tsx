@@ -4,11 +4,13 @@ import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LabelHelpTip, ListModel, SelectInput } from '../../..';
 import { CheckBox } from './ListPropertiesPanelFormElements';
+import {AdvancedSettingsForm} from "./models";
 
 interface DisplayTitleProps {
     model: ListModel
 }
 
+// TODO RP
 class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
     render() {
         const fields = this.props.model.domain.fields;
@@ -24,7 +26,7 @@ class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
                     options={fields.toArray()}
                     placeholder={placeholder}
                     inputClass=""
-                    valueKey="value" // uh
+                    valueKey="value"
                     labelKey="name"
                     formsy={false}
                     multiple={false}
@@ -272,12 +274,11 @@ interface SearchIndexingProps {
     onCheckboxChange: (name, checked) => void;
     entireListIndexSettings: any;
     eachItemIndexSettings: any;
-    fileAttachmentIndex: any; //todo rp
+    fileAttachmentIndex: boolean;
 }
 
 interface SearchIndexingState {
     expanded: string;
-
 }
 
 class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchIndexingState> {
@@ -412,8 +413,17 @@ class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsMo
     }
 }
 
-// TODO typescript props
-export class AdvancedSettings extends React.PureComponent<any, any> {
+interface AdvancedSettingsProps {
+    model: ListModel;
+    title: string;
+    applyAdvancedProperties: (advancedSettingsForm: AdvancedSettingsForm) => void;
+}
+
+interface AdvancedSettingsState extends AdvancedSettingsForm{
+    modalOpen?: boolean;
+}
+
+export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
     constructor(props) {
         super(props);
         const initialState = this.setInitialState();
@@ -421,7 +431,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
         this.state = {
             modalOpen: false,
             ...initialState,
-        };
+        } as AdvancedSettingsState;
     }
 
     setInitialState = () => {
@@ -434,7 +444,6 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
             // entire list
             entireListIndex: model.entireListIndex,
             // document title
-            entireListTitleSetting: model.entireListTitleSetting, // may not need this?
             entireListTitleTemplate: model.entireListTitleTemplate,
             // metadata/data
             entireListIndexSetting: model.entireListIndexSetting,
@@ -444,7 +453,6 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
             // each item
             eachItemIndex: model.eachItemIndex,
             // document title
-            eachItemTitleSetting: model.eachItemTitleSetting, // may not need this?
             eachItemTitleTemplate: model.eachItemTitleTemplate,
             // index
             eachItemBodySetting: model.entireListBodySetting,
@@ -480,7 +488,7 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
     applyChanges = (): void => {
         const { modalOpen, ...advancedSettingsForm } = this.state;
 
-        this.props.applyAdvancedProperties(advancedSettingsForm);
+        this.props.applyAdvancedProperties(advancedSettingsForm as AdvancedSettingsForm);
         this.toggleModal(false);
     };
 
@@ -490,12 +498,10 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
             discussionSetting,
             fileAttachmentIndex,
             entireListIndex,
-            entireListTitleSetting,
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
             eachItemIndex,
-            eachItemTitleSetting,
             eachItemTitleTemplate,
             eachItemBodySetting
         } = this.state;
@@ -503,7 +509,6 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
 
         const entireListIndexSettings = {
             entireListIndex,
-            entireListTitleSetting,
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
@@ -511,14 +516,10 @@ export class AdvancedSettings extends React.PureComponent<any, any> {
 
         const eachItemIndexSettings = {
             eachItemIndex,
-            eachItemTitleSetting,
             eachItemTitleTemplate,
             eachItemBodySetting,
         };
 
-        // console.log("AdvSettings", this.state);
-
-        // For reviewer: would it be overzealous to pull this into separate <AdvancedSettingsButton/> and <AdvancedSettingsModal/> components?
         return (
             <Col xs={12} md={2}>
                 <Button className="domain-field-float-right" onClick={() => this.toggleModal(true)}>

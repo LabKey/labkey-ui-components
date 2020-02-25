@@ -17,6 +17,19 @@ import { Record } from "immutable";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { DomainDesign } from "../models";
 
+export interface AdvancedSettingsForm {
+    titleColumn?: any; // todo rp
+    discussionSetting?: number;
+    fileAttachmentIndex?: boolean;
+    entireListIndex?: boolean;
+    entireListTitleTemplate?: string;
+    entireListIndexSetting?: number;
+    entireListBodySetting?: number;
+    eachItemIndex?: boolean;
+    eachItemTitleTemplate?: string;
+    eachItemBodySetting?: number;
+}
+
 export class ListModel extends Record({
     exception: undefined,
     domain: undefined,

@@ -1,10 +1,17 @@
 import React from 'react';
 import { Alert, Col, FormControl, Row } from 'react-bootstrap';
 import {List} from "immutable";
-import {AUTOINT_TYPE, DomainField, IDomainField} from '../models';
+import {AUTOINT_TYPE, DomainDesign, DomainField, IAppDomainHeader, IDomainField} from '../models';
 import {LabelHelpTip, ListModel} from '../../..';
 
 // TODO: define props - IAppDomainHeader (and some other properties, model, onModelChange, keyField, onAddField)
+interface SetKeyFieldNamePanelProps extends IAppDomainHeader {
+    keyField: number;
+    model: ListModel;
+    onModelChange: (name: string, value: any, model: ListModel) => void;
+    // onDomainChange: (domain: DomainDesign) => void;
+
+}
 export class SetKeyFieldNamePanel extends React.PureComponent<any> {
 
     setKeyField = (fields, newKey) => {
@@ -26,42 +33,40 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
             dataType: AUTOINT_TYPE,
             rangeURI: AUTOINT_TYPE.rangeURI,
             isPrimaryKey: true,
-            lockType: "PKLocked", // PK lock type: required, datatype
+            lockType: "PKLocked",
         } as Partial<IDomainField>;
-
         this.props.onAddField(autoIncrementFieldConfig);
     }
 
-    removeAutoIntField = (fields) => { //TODO RP: properly identify the field by its dataType
+    removeAutoIntField = (fields) => {
         return fields.filter((field) => {
-            return field.get('name') !== 'Key'
+            return field.get('dataType').display !== 'Auto Increment'
         }) as List<DomainField>;
     };
 
+    // todo rp
     onSelectionChange = (e) => {
         const {model, keyField, onDomainChange, onModelChange} = this.props;
         const {domain} = model;
         const {fields} = domain;
         const { name, value } = e.target;
+
         let newFields;
 
         // Making first selection of key
-        if (keyField == '-2') {
-            if (value == '-1') {
+        if (keyField == -2) {
+            if (value == -1) {
                 this.addAutoIntField(); // Selecting auto int key
                 return;
-            }
-            else {
+            } else {
                 newFields = this.setKeyField(fields, value);  // Selecting regular field
             }
         }
-        // Changing key from one field to another
         else {
-            if (keyField == '-1') {
+            if (keyField == -1) {
                 const fieldsNoKey = this.removeAutoIntField(fields); // Auto int to regular field
                 newFields = this.setKeyField(fieldsNoKey, value);
-            }
-            else if (value == '-1') {
+            } else if (value == -1) {
                 newFields = this.unsetKeyField(fields, keyField); // Regular to auto int field
 
                 onDomainChange(domain.merge({fields: newFields}));
@@ -69,8 +74,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
 
                 this.addAutoIntField();
                 return;
-            }
-            else if (value !== '-1') {
+            } else if (value !== -1) {
                 const fieldsNoKey = this.unsetKeyField(fields, keyField); // Regular to regular field
                 newFields = this.setKeyField(fieldsNoKey, value);
             }
@@ -91,7 +95,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
             keyType,
         }) as ListModel;
 
-        onModelChange(name, value, updatedModel);
+        onModelChange(name, parseInt(value), updatedModel);
     };
 
     render() {
@@ -114,13 +118,10 @@ export class SetKeyFieldNamePanel extends React.PureComponent<any> {
                     return accum;
                 }, []);
         }
-        let autoIntIsPK = (keyField == '-1');
-        if (domain && domain.fields.size > 0) {
+        let autoIntIsPK = (keyField == -1);
+        if (domain) {
             const pkIndex = domain.fields.findIndex(i => (i.isPrimaryKey));
-
-            // TODO RP: identify using type, not name, once type is set up
-            const thing = domain.fields.get(pkIndex).name;
-            autoIntIsPK = (thing == 'Key');
+            autoIntIsPK = (domain.fields.get(pkIndex).dataType.display == 'Auto Increment');
         }
         return (
             <Alert>

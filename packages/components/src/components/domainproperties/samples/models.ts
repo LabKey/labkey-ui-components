@@ -1,7 +1,7 @@
 import {List, Map, Record} from "immutable";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { DomainDesign } from "../models";
-import {IParentAlias} from "../../samples/models";
+import {IParentAlias} from "../../entities/models";
 
 export class SampleTypeModel extends Record({
     rowId: undefined,
@@ -9,8 +9,6 @@ export class SampleTypeModel extends Record({
     nameExpression: undefined,
     description: undefined,
     parentAliases: undefined,
-    // importAliasKeys: undefined,
-    // importAliasValues: undefined,
     domainId: undefined,
     domain: undefined,
 }) {
@@ -19,8 +17,6 @@ export class SampleTypeModel extends Record({
     nameExpression: string;
     description: string;
     parentAliases?: Map<string, IParentAlias>;
-    // importAliasKeys?: Array<string>;
-    // importAliasValues?: Array<string>;
     domainId?: number;
     domain?: DomainDesign;
 

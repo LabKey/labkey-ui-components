@@ -3,7 +3,7 @@ import {SampleTypeModel} from './models';
 import {EntityDetailsForm, EntityDetailsProps} from "../entities/EntityDetailsForm";
 
 //TODO move these to the local models file
-import {IParentOption,} from "../../samples/models";
+import {IParentOption,} from "../../entities/models";
 import {DomainPanelStatus} from "../models";
 import {DomainPropertiesPanelProvider} from "../DomainPropertiesPanelContext";
 import {getFormNameFromId,} from "../entities/actions";

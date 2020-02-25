@@ -4,7 +4,7 @@ import {SampleTypePropertiesPanel} from "./SampleTypePropertiesPanel";
 import {Alert, DomainDesign, IDomainField, SAMPLE_TYPE, WizardNavButtons} from "../../..";
 import {Button} from "react-bootstrap";
 import DomainForm from "../DomainForm";
-import {IParentAlias, IParentOption, ISampleSetDetails} from "../../samples/models";
+import {IParentAlias, IParentOption,} from "../../entities/models";
 import {Map} from "immutable";
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
@@ -41,13 +41,7 @@ interface State {
     submitting: boolean
     currentPanelIndex: number
 
-    // formValues: ISampleSetDetails
-    // parentOptions: Array<IParentOption>
-    // parentAliases: Map<string, IParentAlias>
-    // domain: DomainDesign
-
     error: React.ReactNode
-    // hasError: boolean,
 }
 
 export class SampleTypeDesigner extends React.PureComponent<Props, State> {

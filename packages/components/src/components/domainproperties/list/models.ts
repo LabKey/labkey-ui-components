@@ -137,6 +137,14 @@ export class ListModel extends Record({
 
     getOptions(): Object {
         let options = this.toJS();
+
+        // Note: keyName is primarily set using <SetKeyFieldNamePanel/>'s onSelectionChange()
+        // Setting keyName here covers the use-case where a user sets a Key Field, and then changes its name
+        const keyFieldName = (this.domain.fields).find((field) => (field.isPrimaryKey)).name;
+        if (this.keyName !== keyFieldName) {
+            options.keyName = keyFieldName;
+        }
+
         delete options.exception;
         delete options.domain;
         return options;

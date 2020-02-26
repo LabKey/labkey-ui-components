@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.28.3
+*Released*: 26 February 2020
+* Bump @labkey/api dependency to 0.0.34
+
 ### version 0.28.2
 *Released*: 25 February 2020
 * Issue 39788: Responses that have exceptions but not errors not showing messages in the UI

@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - DomainRow changs to support locking the "primary key" field data type and required inputs
     - move assay related actions to domainproperties/assay/actions.ts file
 
+### version 0.28.2
+*Released*: 25 February 2020
+* Issue 39788: Responses that have exceptions but not errors not showing messages in the UI
+
 ### version 0.28.1
 *Released*: 25 February 2020
 * Use dataclass category field for choosing the icon to display for search results

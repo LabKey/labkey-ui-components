@@ -1218,9 +1218,10 @@ export class DomainException extends Record({
                     return err.set('message', parts.length > 1 ? parts[1] : parts[0]);
                 }) as List<DomainFieldError>
             }
+            let exception = errors.isEmpty() ? rawModel.exception : this.getExceptionMessage(errors);
 
             return new DomainException({
-                exception: this.getExceptionMessage(errors),
+                exception,
                 success: rawModel.success,
                 severity: severity,
                 domainName: domainName,

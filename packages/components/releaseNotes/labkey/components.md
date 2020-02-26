@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 0.29.0
-*Released*: ??? February 2020
+*Released*: 26 February 2020
 * Issue 37776: updateUrl in custom assay does not get used in Biologics UI
 * Added two new attributes to QueryGridModel
     * includeDetailsColumn

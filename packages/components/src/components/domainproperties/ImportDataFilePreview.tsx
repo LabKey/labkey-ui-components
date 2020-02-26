@@ -3,12 +3,17 @@ import { convertRowDataIntoPreviewData } from '../files/actions';
 import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 import { FilePreviewGrid } from '../files/FilePreviewGrid';
 import { InferDomainResponse } from '../base/models/model';
+import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { DeleteIcon} from "../..";
+
 
 interface Props {
     noun: string;
     filePreviewData: InferDomainResponse;
     setFileImportData: (file: File) => any;
     fileData: File;
+    fileTitle: string;
 }
 
 interface State {
@@ -33,7 +38,7 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { filePreviewData, noun } = this.props;
+        const { filePreviewData, noun, fileTitle } = this.props;
         const { importData } = this.state;
 
         if (filePreviewData == null) {
@@ -53,6 +58,21 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
                         on="Import Data"
                         off="Don't Import"
                     />
+                    {importData &&
+                        <>
+                            <DeleteIcon
+                                title={null}
+                                iconCls={'domain-field-delete-icon'}
+                                onDelete={this.onToggleClick}
+                            />
+                            <span className='domain__import-data__file-icon'>
+                                <FontAwesomeIcon icon={faFileAlt} size='lg'/>
+                            </span>
+
+                            <span className='domain__import-data__file-title'> {fileTitle} </span>
+                        </>
+                    }
+
                 </div>
 
                 {importData && (

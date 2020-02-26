@@ -99,6 +99,7 @@ interface IDomainFormState {
     filtered: boolean
     filePreviewData: InferDomainResponse
     fileData: File
+    fileTitle?: string
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -589,7 +590,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         // if the DomainForm usage wants to show the file preview and import data options, then set these state values
         if (setFileImportData) {
-            this.setState({filePreviewData: response, fileData: file});
+            this.setState({filePreviewData: response, fileData: file, fileTitle: file.name});
         }
 
         this.onDomainChange(setDomainFields(domain, response.fields));
@@ -777,7 +778,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme, helpNoun, setFileImportData } = this.props;
-        const { collapsed, confirmDeleteRowIndex, filePreviewData, fileData } = this.state;
+        const { collapsed, confirmDeleteRowIndex, filePreviewData, fileData, fileTitle } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
 
@@ -814,6 +815,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 filePreviewData={filePreviewData}
                                 setFileImportData={setFileImportData}
                                 fileData={fileData}
+                                fileTitle={fileTitle}
                             />
                         }
                     </Panel.Body>

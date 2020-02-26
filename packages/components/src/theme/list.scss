@@ -12,6 +12,10 @@
     cursor: pointer;
 }
 
+.list__properties__checkbox-unchecked {
+    color: $gray-light;
+}
+
 .list__properties__checkbox-row {
     margin-top: 10px;
 }
@@ -22,15 +26,6 @@
 
 .list__properties__allowable-actions {
     margin-top: 14px;
-}
-
-.list__advanced-settings-modal__bottom {
-    border-top: 1px solid #eee;
-    padding-top: 13px;
-}
-
-.list__advanced-settings-modal__help-link {
-    margin-right: 5px;
 }
 
 .list__advanced-settings-modal__display-title {
@@ -73,12 +68,13 @@
     margin-left: 22px;
 }
 
-.list__advanced-settings-model__help-link {
-    float: right;
-}
-
 .list__advanced-settings-modal__custom-template-text-field {
     width: 250px;
     border-radius: 5px;
     margin-bottom: 15px;
+}
+
+.list__set-key-panel {
+    margin-top: 15px;
+    color: $text-color;
 }

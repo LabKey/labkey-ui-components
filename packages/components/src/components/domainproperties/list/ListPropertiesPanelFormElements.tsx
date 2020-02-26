@@ -3,15 +3,18 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
 import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
-
-import { LabelHelpTip, ListModel } from '../../..';
+import { ListModel } from './models';
 
 interface BasicPropertiesInputsProps {
     model: ListModel;
     onInputChange: (any) => void;
 }
 
-class BasicPropertiesTitle extends React.PureComponent<{ title: string }> {
+interface BasicPropertiesTitleProps {
+    title: string
+}
+
+class BasicPropertiesTitle extends React.PureComponent<BasicPropertiesTitleProps> {
     render() {
         return <div className="domain-field-section-heading">{this.props.title}</div>;
     }

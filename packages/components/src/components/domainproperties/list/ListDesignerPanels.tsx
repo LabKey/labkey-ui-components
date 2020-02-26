@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Button } from "react-bootstrap";
 import { List } from "immutable";
-import {ActionURL} from "@labkey/api";
+import { ActionURL } from "@labkey/api";
 import { ListPropertiesPanel } from "./ListPropertiesPanel";
 import { DomainDesign, IAppDomainHeader } from "../models";
 import DomainForm from "../DomainForm";
@@ -104,21 +104,18 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     handleFileImport() {
         const { fileImportData, model } = this.state;
-        const file = fileImportData;
 
         importData({
             schemaName: 'lists',
             queryName: model.name,
-            file,
+            file: fileImportData,
             importUrl: ActionURL.buildURL(
                 'list',
                 'UploadListItems',
-                null,
+                LABKEY.container.path,
                 {'name': model.name})
-            // need listId param
         })
         .then((response) => {
-            // console.log("handleFileImport success", response);
             this.setState(() => ({submitting: false}));
             this.props.onComplete(model);
         })
@@ -213,6 +210,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     validate={validatePanel === 0}
                     onToggle={(collapsed, callback) => {this.onTogglePanel(0, collapsed, callback);}}
                     useTheme={useTheme}
+                    successBsStyle={successBsStyle}
                 />
 
                 <DomainForm

@@ -6,7 +6,7 @@ import { DomainDesign, DomainPanelStatus } from "../models";
 import { AllowableActions, BasicPropertiesFields } from "./ListPropertiesPanelFormElements";
 import { AdvancedSettings } from "./ListPropertiesAdvancedSettings";
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
-import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider, IDomainPropertiesPanelContext } from "../DomainPropertiesPanelContext";
+import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
 import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
 import { HelpTopicURL } from "../HelpTopicURL";
@@ -25,6 +25,7 @@ interface Props {
     onToggle?: (collapsed: boolean, callback: () => any) => any;
     validate?: boolean;
     useTheme?: boolean;
+    successBsStyle?: string;
 }
 
 interface State {
@@ -131,7 +132,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { panelStatus, collapsible, controlledCollapse, model, useTheme } = this.props;
+        const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle } = this.props;
         const { isValid } = this.state;
         const { collapsed } = this.context;
 
@@ -175,6 +176,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
                                 title={"Advanced Settings"}
                                 model={model}
                                 applyAdvancedProperties={this.applyAdvancedProperties}
+                                successBsStyle={successBsStyle}
                             />
                         </Form>
                     </Panel.Body>

@@ -84,7 +84,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                     Select a key value for this list which uniquely identifies the item. You can use "{AUTO_INC_KEY_OPTION_TEXT}"
                     to define your own below.
                 </div>
-                <Row className='domain-set-key-panel'>
+                <Row className='list__set-key-panel'>
                     <Col xs={3}>
                         Key Field Name *
                         <LabelHelpTip
@@ -94,12 +94,11 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                             }}
                         />
                     </Col>
-                    <Col xs={6}>
+                    <Col xs={5}>
                         <FormControl
                             componentClass="select"
                             name="keyField"
                             onChange={this.onSelectionChange}
-                            className='domain-set-key-panel__select'
                             value={pkRowIndex > -1 ? pkRowIndex : undefined}
                         >
                             {!pkField && <option key={'_default'} value={undefined}>Select a field from the list</option>}

@@ -15,7 +15,7 @@ interface Props {
     initModel: ListModel
     onChange?: (model: ListModel) => void
     onCancel: () => void
-    onComplete: (model: ListModel) => void
+    onComplete: (model: ListModel, fileImportError?: string) => void
     useTheme?: boolean
     containerTop?: number
     successBsStyle?: string
@@ -121,7 +121,8 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         })
         .catch((error) => {
             console.error(error);
-            // TODO
+            this.setState(() => ({submitting: false}));
+            this.props.onComplete(model, error.exception);
         });
     }
 

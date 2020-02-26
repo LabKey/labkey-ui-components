@@ -60,7 +60,7 @@ storiesOf('QueryGrid', module)
             schemaName: "exp.data",
             queryName: "mixtures"
         });
-        const model = getStateQueryGridModel(modelId, schemaQuery, {});
+        const model = getStateQueryGridModel(modelId, schemaQuery);
 
         return <QueryGrid model={model}/>
     })
@@ -70,6 +70,6 @@ storiesOf('QueryGrid', module)
             schemaName: "assay.General.Amino Acids",
             queryName: "Runs"
         });
-        const model = getStateQueryGridModel(modelId, schemaQuery, {});
+        const model = getStateQueryGridModel(modelId, schemaQuery);
         return <QueryGrid model={model}/>
     });

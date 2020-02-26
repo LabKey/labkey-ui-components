@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.29.0
+*Released*: 26 February 2020
+* Issue 37776: updateUrl in custom assay does not get used in Biologics UI
+* Added two new attributes to QueryGridModel
+    * includeDetailsColumn
+    * includeUpdateColumn
+    * simplify getStateQueryGridModel
+    * remove IStateModelProps interface used by getStateQueryGridModel
+
 ### version 0.28.3
 *Released*: 26 February 2020
 * Bump @labkey/api dependency to 0.0.34

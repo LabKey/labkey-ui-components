@@ -23,7 +23,6 @@ interface Props {
 
 interface State {
     model?: ListModel;
-    keyField?: number;
     submitting?: boolean;
     currentPanelIndex?: number;
     visitedPanels?: List<number>;
@@ -38,7 +37,6 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
         this.state = {
             model: props.initModel || ListModel.create({}),
-            keyField: -2,
             submitting: false,
             currentPanelIndex: 0,
             visitedPanels: List<number>(),
@@ -88,34 +86,20 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         });
     };
 
-    setFileImportData = fileImportData => {
-        this.setState({ fileImportData });
-    };
-
-    onModelChange = (name: string, value: any, model: ListModel) : void => {
-        const { onChange } = this.props;
-        const intValue = parseInt(value);
-
-        this.setState({ model, [name]:intValue } as State,
-            () => {
-                if (onChange) {
-                    onChange(this.state.model);
-                }
-            }
-        );
-    };
-
     onDomainChange = (domain: DomainDesign): void => {
         const { onChange } = this.props;
 
         this.setState((state) => ({
-            model: state.model.mergeDeep({domain}) as ListModel
+            model: state.model.merge({domain}) as ListModel
         }), () => {
-            console.log("onDomainChange", this.state.model);
             if (onChange) {
                 onChange(this.state.model);
             }
         });
+    };
+
+    setFileImportData = fileImportData => {
+        this.setState({ fileImportData });
     };
 
     handleFileImport() {
@@ -134,12 +118,12 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
             // need listId param
         })
         .then((response) => {
-            console.log("handleFileImport success", response);
+            // console.log("handleFileImport success", response);
             this.setState(() => ({submitting: false}));
             this.props.onComplete(model);
         })
         .catch((error) => {
-            console.log("handleFileImport error", error);
+            console.error(error);
             // TODO
         });
     }
@@ -200,10 +184,8 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
     headerRenderer = (config: IAppDomainHeader) => {
         return (
             <SetKeyFieldNamePanel
-                keyField={this.state.keyField}
                 model={this.state.model}
-                onModelChange={this.onModelChange}
-                onDomainChange={this.onDomainChange}
+                onModelChange={this.onPropertiesChange}
                 {...config}
             />
         );
@@ -211,20 +193,11 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     render() {
         const { onCancel, useTheme, containerTop, successBsStyle } = this.props;
-        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel, keyField } = this.state;
+        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel } = this.state;
 
         let errorDomains = List<string>();
         if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
             errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
-        }
-
-        // hacky way to update KeyField dropdown selection after user reorders fields.
-        if (keyField !== -2) {
-            const fields = model.domain.fields;
-            const pkIndex = fields.findIndex(i => (i.isPrimaryKey));
-            if (keyField !== pkIndex) {
-                this.setState({keyField: pkIndex});
-            }
         }
 
         const bottomErrorMsg = getDomainBottomErrorMessage(model.exception, errorDomains, model.hasValidProperties(), visitedPanels);

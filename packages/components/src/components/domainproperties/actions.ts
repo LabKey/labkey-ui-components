@@ -265,14 +265,20 @@ export function getIndexFromId(id: string): number {
     return -1;
 }
 
-export function addDomainField(domain: DomainDesign, fieldConfig:  Partial<IDomainField> = {}): DomainDesign {
+export function createNewDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainField {
     // Issue 38771: if the domain has a defaultDefaultValueType and the fieldConfig doesn't include its own, use the defaultDefaultValueType
     if (domain.defaultDefaultValueType && !fieldConfig.defaultValueType) {
         fieldConfig.defaultValueType = domain.defaultDefaultValueType;
     }
 
+    return DomainField.create(fieldConfig, true);
+}
+
+export function addDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainDesign {
+    const newField = createNewDomainField(domain, fieldConfig);
+
     return domain.merge({
-        fields: domain.fields.push(DomainField.create(fieldConfig, true))
+        fields: domain.fields.push(newField)
     }) as DomainDesign;
 }
 

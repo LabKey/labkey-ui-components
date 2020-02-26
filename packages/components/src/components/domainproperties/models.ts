@@ -124,6 +124,10 @@ export class PropDescType extends Record({
         return (rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI && rangeURI !== MULTILINE_RANGE_URI)
     }
 
+    static isAutoIncrement(dataType: PropDescType): boolean {
+        return dataType.display === AUTOINT_TYPE.display;
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }

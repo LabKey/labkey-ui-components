@@ -209,7 +209,6 @@ export const PROP_DESC_TYPES = List([
     PARTICIPANT_TYPE,
     LOOKUP_TYPE,
     SAMPLE_TYPE,
-    AUTOINT_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([
@@ -219,7 +218,6 @@ export const READONLY_DESC_TYPES = List([
     FLOAT_TYPE,
     LONG_TYPE,
     TIME_TYPE,
-    AUTOINT_TYPE,
 ]);
 
 interface IDomainDesign {

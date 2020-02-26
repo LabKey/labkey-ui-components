@@ -17,8 +17,8 @@ export class SampleTypeModel extends Record({
     name: string;
     nameExpression: string;
     description: string;
-    parentAliases?: Map<string, string>;
-    importAliases?: Map<string, IParentAlias>;
+    parentAliases?: Map<string, IParentAlias>;
+    importAliases?: Map<string, string>;
     domainId?: number;
     domain?: DomainDesign;
 
@@ -35,15 +35,15 @@ export class SampleTypeModel extends Record({
             DomainDesign.create({});
 
         const {options} = raw;
-        let parentAliases = Map<string,string>();
+        let importAliases = Map<string,string>();
         if (options) {
-            let aliases = options.get('parentAliases') || {};
-            parentAliases = Map<string,string>(fromJS(aliases));
+            let aliases = options.get('importAliases') || {};
+            importAliases = Map<string,string>(fromJS(aliases));
         }
 
         return new SampleTypeModel({
             ...options.toJS(),
-            parentAliases,
+            importAliases,
             domain
         });
     }
@@ -75,8 +75,8 @@ export class SampleTypeModel extends Record({
     }
 
     hasValidProperties(): boolean {
-        const {importAliases} = this;
-        const hasInvalidAliases = importAliases && importAliases.size > 0 && importAliases.find(SampleTypeModel.parentAliasInvalid);
+        const {parentAliases} = this;
+        const hasInvalidAliases = parentAliases && parentAliases.size > 0 && parentAliases.find(SampleTypeModel.parentAliasInvalid);
 
         return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
             && !hasInvalidAliases
@@ -84,12 +84,12 @@ export class SampleTypeModel extends Record({
     }
 
     getImportAliasesAsMap(): Map<string,string> {
-        const { importAliases } = this;
+        const { parentAliases } = this;
 
         let aliases = {};
 
-        if (importAliases) {
-            importAliases.map((alias: IParentAlias) => {
+        if (parentAliases) {
+            parentAliases.map((alias: IParentAlias) => {
                 aliases[alias.alias] = alias.parentValue.value;
             });
         }

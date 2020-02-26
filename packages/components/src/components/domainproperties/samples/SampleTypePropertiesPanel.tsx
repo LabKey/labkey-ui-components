@@ -127,12 +127,12 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
 
     renderParentAliases = () => {
         const {model, parentOptions} = this.props;
-        const {importAliases} = model;
+        const {parentAliases} = model;
 
-        if (!importAliases || !parentOptions)
+        if (!parentAliases || !parentOptions)
             return [];
 
-        return importAliases.valueSeq().map((alias) =>
+        return parentAliases.valueSeq().map((alias) =>
             <SampleSetParentAliasRow
                 key={alias.id}
                 id={alias.id}

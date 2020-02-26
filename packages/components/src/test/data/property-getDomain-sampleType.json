@@ -4,7 +4,7 @@
     "name": "Sample Set 2",
     "nameExpression": "S-${now:date}-${dailySampleCount}",
     "description": "tacocat",
-    "parentAliases": {
+    "importAliases": {
       "a": "materialInputs/Fruits"
     },
     "rowId": 3,

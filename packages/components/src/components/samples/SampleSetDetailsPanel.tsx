@@ -10,7 +10,7 @@ import {
 } from '../entities/models';
 import { LabelOverlay } from '../../components/forms/LabelOverlay';
 import { SampleSetParentAliasRow } from '../../components/samples/SampleSetParentAliasRow';
-import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../constants';
+import {PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from '../../constants';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { generateId } from '../../util/utils';
@@ -428,7 +428,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                         initCollapsed={true}
                         collapsible={true}
                         helpNoun={'sample type'}
-                    // containerTop={STICKY_HEADER_HEIGHT}
+                        containerTop={STICKY_HEADER_HEIGHT}
                         useTheme={false}
                         appPropertiesOnly={true}
                 />

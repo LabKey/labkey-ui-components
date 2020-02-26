@@ -16,7 +16,7 @@ import DomainForm from "../DomainForm";
 import {IParentAlias, IParentOption,} from "../../entities/models";
 import {addDomainField} from "../actions";
 import {initSampleSetSelects} from "../../samples/actions";
-import {SAMPLE_SET_DISPLAY_TEXT} from "../../../constants";
+import {SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from "../../../constants";
 import {Map} from "immutable";
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
@@ -48,6 +48,9 @@ interface Props {
     noun?: string
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
+
+    //DomainDesigner props
+    domainDesignerStickyHeight?: number
 }
 
 interface State {
@@ -70,6 +73,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}',
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         noun: SAMPLE_SET_DISPLAY_TEXT,
+        domainDesignerStickyHeight: STICKY_HEADER_HEIGHT,
     };
 
     constructor(props: Props) {
@@ -95,14 +99,14 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     initParentOptions = (model: SampleTypeModel) => {
         initSampleSetSelects(!model.isNew(), model.name, NEW_SAMPLE_SET_OPTION, IMPORT_PREFIX).then(results => {
             const options = results.toArray();
-            let importAliases = Map<string, IParentAlias>();
+            let parentAliases = Map<string, IParentAlias>();
 
-            if (model && model.parentAliases)
+            if (model && model.importAliases)
             {
-                let parentAliases = Map<string,string>(model.parentAliases);
-                parentAliases.forEach((val, key) => {
+                let initialAlias = Map<string,string>(model.importAliases);
+                initialAlias.forEach((val, key) => {
                     const newId = SampleTypeDesigner.generateAliasId();
-                    importAliases = importAliases.set(newId, {
+                    parentAliases = parentAliases.set(newId, {
                         id: newId,
                         alias: key,
                         parentValue: options.find(opt => opt.value === val),
@@ -114,7 +118,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
 
             this.setState(() => ({
                 parentOptions: options,
-                model: model.merge({importAliases}) as SampleTypeModel
+                model: model.merge({parentAliases}) as SampleTypeModel
             }));
         });
     };
@@ -130,29 +134,29 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
 
     parentAliasChange = (id:string, field: string, newValue: any) => {
         const {model} = this.state;
-        const {importAliases} = model;
-        const parentAlias = {
-            ...importAliases.get(id),
+        const {parentAliases} = model;
+        const changedAlias = {
+            ...parentAliases.get(id),
             [field]: newValue,
         };
 
-        const newAliases = importAliases.set(id, parentAlias);
-        const newModel = model.merge({importAliases: newAliases}) as SampleTypeModel;
+        const newAliases = parentAliases.set(id, changedAlias);
+        const newModel = model.merge({parentAliases: newAliases}) as SampleTypeModel;
         this.setState(() => ({model: newModel}));
     };
 
     addParentAlias = (id:string, newAlias: IParentAlias): void => {
         const {model} = this.state;
-        let {importAliases} = model;
-        const newModel = model.merge({importAliases:importAliases.set(id, newAlias)}) as SampleTypeModel;
+        let {parentAliases} = model;
+        const newModel = model.merge({parentAliases:parentAliases.set(id, newAlias)}) as SampleTypeModel;
         this.setState(() => ({model: newModel}));
     };
 
     removeParentAlias = (id:string) => {
         const {model} = this.state;
-        let {importAliases} = model;
-        const aliases = importAliases.delete(id);
-        const newModel = model.set('importAliases', aliases) as SampleTypeModel;
+        let {parentAliases} = model;
+        const aliases = parentAliases.delete(id);
+        const newModel = model.set('parentAliases', aliases) as SampleTypeModel;
         this.setState(() => ({model: newModel}));
     };
 
@@ -197,7 +201,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     };
 
     renderDomainPanel = () => {
-        const {noun} = this.props;
+        const {noun, domainDesignerStickyHeight} = this.props;
         const {model} = this.state;
         const {domain} = model;
 
@@ -213,6 +217,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                         helpNoun={noun.toLowerCase()}
                         useTheme={false}
                         appPropertiesOnly={true}
+                        containerTop={domainDesignerStickyHeight}
                 />
                 }
             </>

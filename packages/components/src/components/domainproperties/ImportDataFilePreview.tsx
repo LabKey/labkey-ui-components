@@ -23,6 +23,7 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
     constructor(props) {
         super(props);
 
+        props.setFileImportData(props.file);
         this.state = {
             importData: true,
         };

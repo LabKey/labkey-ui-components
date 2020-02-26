@@ -48,7 +48,7 @@ export function resolveKey(schema: string, query: string): string {
 }
 
 export function resolveKeyFromJson(json: {schemaName: Array<string>, queryName: string}): string {
-    return resolveKey(json.schemaName.join('.'), json.queryName);
+    return resolveKey(json.schemaName.map((schemaPart) => {return encodePart(schemaPart);}).join('.'), json.queryName);
 }
 
 // TODO: resolveSchemaQuery should have a better name, and it should be added as a property on the SchemaQuery record

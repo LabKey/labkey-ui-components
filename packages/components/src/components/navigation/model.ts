@@ -77,6 +77,9 @@ export class MenuItemModel extends Record ({
         if (rawData) {
             if (rawData.key && sectionKey !== "user") {
                 const parts = rawData.key.split("?");
+
+                // for assay name that contains slash, full raw key (protocol/assayname: general/a/b) is encoded using QueryKey.encodePart as general/a$Sb on server side
+                // use QueryKey.decodePart to decode the assay name so url can tyeh be correctly called by encodeURIComponent and key be used to display decoded assay name
                 const subParts = parts[0]
                     .split("/")
                     .filter(val => val !== '')

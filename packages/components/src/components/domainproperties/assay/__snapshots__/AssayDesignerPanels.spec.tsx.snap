@@ -3442,6 +3442,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                             compact={false}
                             label="Infer fields from file"
                             labelLong="Select file or drag and drop here."
+                            onFileRemoval={[Function]}
                             previewGridProps={
                               Object {
                                 "onPreviewLoad": [Function],
@@ -19797,6 +19798,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             compact={false}
                             label="Infer fields from file"
                             labelLong="Select file or drag and drop here."
+                            onFileRemoval={[Function]}
                             previewGridProps={
                               Object {
                                 "onPreviewLoad": [Function],
@@ -23023,6 +23025,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             compact={false}
                             label="Infer fields from file"
                             labelLong="Select file or drag and drop here."
+                            onFileRemoval={[Function]}
                             previewGridProps={
                               Object {
                                 "onPreviewLoad": [Function],

@@ -12,8 +12,7 @@ interface Props {
     noun: string;
     filePreviewData: InferDomainResponse;
     setFileImportData: (file: File) => any;
-    fileData: File;
-    fileTitle: string;
+    file: File;
 }
 
 interface State {
@@ -30,15 +29,15 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
     }
 
     onToggleClick = () => {
-        const { setFileImportData, fileData } = this.props;
+        const { setFileImportData, file } = this.props;
 
         this.setState(state => ({ importData: !state.importData }), () => {
-            setFileImportData(this.state.importData ? fileData : undefined);
+            setFileImportData(this.state.importData ? file : undefined);
         });
     };
 
     render() {
-        const { filePreviewData, noun, fileTitle } = this.props;
+        const { filePreviewData, noun, file } = this.props;
         const { importData } = this.state;
 
         if (filePreviewData == null) {
@@ -58,7 +57,7 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
                         on="Import Data"
                         off="Don't Import"
                     />
-                    {importData &&
+                    {importData && file &&
                         <>
                             <DeleteIcon
                                 title={null}
@@ -69,7 +68,7 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
                                 <FontAwesomeIcon icon={faFileAlt} size='lg'/>
                             </span>
 
-                            <span className='domain__import-data__file-title'> {fileTitle} </span>
+                            <span className='domain__import-data__file-title'> {file.name} </span>
                         </>
                     }
 

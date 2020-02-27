@@ -2051,10 +2051,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@labkey/api@0.0.34":
-  version "0.0.34"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.34.tgz#00dcb8dba40e15ae9406283e88df61af3b84199c"
-  integrity sha1-ANy426QOFa6UBig+iN9hrzuEGZw=
+"@labkey/api@0.0.34-fb-mergeSTUI-6848.0":
+  version "0.0.34-fb-mergeSTUI-6848.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.34-fb-mergeSTUI-6848.0.tgz#272ef35711ca397a127a3283ff9ece84fd9eae96"
+  integrity sha1-Jy7zVxHKOXoSejKD/57OhP2erpY=
 
 "@labkey/eslint-config-base@0.0.5":
   version "0.0.5"

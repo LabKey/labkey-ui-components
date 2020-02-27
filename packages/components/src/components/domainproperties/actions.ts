@@ -103,13 +103,13 @@ export function processContainers(payload: any, container?: Container): List<Con
  */
 export function fetchDomain(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
-        Domain.get({
+        Domain.getDomainDetails({
             containerPath: LABKEY.container.path,
             domainId,
             schemaName,
             queryName,
             success: (data) => {
-                resolve(DomainDesign.create(data, undefined));
+                resolve(DomainDesign.create(data.domainDesign ? data.domainDesign : data, undefined));
             },
             failure: (error) => {
                 reject(error);

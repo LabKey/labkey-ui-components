@@ -256,7 +256,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                 <Progress
                     modal={true}
                     delay={1000}
-                    estimate={fileImportData ? fileImportData.size * .0001 : undefined}
+                    estimate={fileImportData ? fileImportData.size * .005 : undefined}
                     title={"Importing data from selected file..."}
                     toggle={submitting && fileImportData !== undefined}
                 />

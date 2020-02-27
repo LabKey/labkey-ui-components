@@ -45,7 +45,7 @@ describe("QueryGridPanel render", () => {
             schemaName: "assay.General.Amino Acids",
             queryName: "Data"
         });
-       const model = getStateQueryGridModel(modelId, schemaQuery, {});
+       const model = getStateQueryGridModel(modelId, schemaQuery);
        const tree = renderer.create(<QueryGridPanel model={model}/>).toJSON();
        expect(tree).toMatchSnapshot();
     });
@@ -56,7 +56,7 @@ describe("QueryGridPanel render", () => {
             schemaName: "i.dont.exist",
             queryName: "shouldFourOhFour"
         });
-        const model = getStateQueryGridModel(modelId, schemaQuery, {});
+        const model = getStateQueryGridModel(modelId, schemaQuery);
 
         const tree = renderer.create(<QueryGridPanel model={model}/>);
         setTimeout(() => {
@@ -71,7 +71,7 @@ describe("QueryGridPanel render", () => {
             schemaName: "assay.General.Amino Acids",
             queryName: "Data"
         });
-        const model = getStateQueryGridModel(modelId, schemaQuery, {});
+        const model = getStateQueryGridModel(modelId, schemaQuery);
         const tree = renderer.create(
             <QueryGridPanel
                 model={model}
@@ -89,7 +89,7 @@ describe("QueryGridPanel render", () => {
             schemaName: "assay.General.ImageFieldAssay",
             queryName: "Runs"
         });
-        const model = getStateQueryGridModel(modelId, schemaQuery, {});
+        const model = getStateQueryGridModel(modelId, schemaQuery);
         const tree = renderer.create(<QueryGridPanel model={model} showAllTabs={true}/>);
         expect(tree).toMatchSnapshot();
     });

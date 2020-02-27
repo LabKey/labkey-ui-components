@@ -125,6 +125,10 @@ export class PropDescType extends Record({
         return (rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI && rangeURI !== MULTILINE_RANGE_URI)
     }
 
+    static isAutoIncrement(dataType: PropDescType): boolean {
+        return dataType.display === AUTOINT_TYPE.display;
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
@@ -206,7 +210,6 @@ export const PROP_DESC_TYPES = List([
     PARTICIPANT_TYPE,
     LOOKUP_TYPE,
     SAMPLE_TYPE,
-    AUTOINT_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([
@@ -216,7 +219,6 @@ export const READONLY_DESC_TYPES = List([
     FLOAT_TYPE,
     LONG_TYPE,
     TIME_TYPE,
-    AUTOINT_TYPE,
 ]);
 
 interface IDomainDesign {
@@ -1219,9 +1221,10 @@ export class DomainException extends Record({
                     return err.set('message', parts.length > 1 ? parts[1] : parts[0]);
                 }) as List<DomainFieldError>
             }
+            let exception = errors.isEmpty() ? rawModel.exception : this.getExceptionMessage(errors);
 
             return new DomainException({
-                exception: this.getExceptionMessage(errors),
+                exception,
                 success: rawModel.success,
                 severity: severity,
                 domainName: domainName,

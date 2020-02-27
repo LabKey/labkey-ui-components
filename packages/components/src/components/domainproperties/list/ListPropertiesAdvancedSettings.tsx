@@ -1,16 +1,16 @@
 import React from 'react';
+import classNames from "classnames";
 import { Button, Col, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {LabelHelpTip, ListModel, Principal, SelectInput} from '../../..';
+import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../..';
 import { CheckBox } from './ListPropertiesPanelFormElements';
 import {AdvancedSettingsForm} from "./models";
 import {
     CUSTOM_TEMPLATE_TIP,
     DATA_INDEXING_TIP,
     DISCUSSION_LINKS_TIP,
-    EACHITEM_TITLE_TIP,
-    ENTIRELIST_TITLE_TIP,
+    DOCUMENT_TITLE_TIP,
     SEARCH_INDEXING_TIP
 } from "./constants";
 
@@ -20,11 +20,11 @@ interface DisplayTitleProps {
     titleColumn: string;
 }
 
-class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
+export class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
     render() {
         const {model, onSelectChange, titleColumn} = this.props;
         const fields = model.domain.fields;
-        const disabled = !(fields.size > 0);
+        const disabled = fields.size === 0;
         const placeholder = disabled ? 'No fields have been defined yet' : 'Auto';
 
         return (
@@ -62,13 +62,13 @@ class DiscussionLinks extends React.PureComponent<DiscussionLinksProps> {
         return (
             <>
                 <FormGroup>
-                    <Radio name={radioName} value={0} checked={discussionSetting == 0} onChange={e => onRadioChange(e)}>
-                        Don't allow discussion links
+                    <Radio name={radioName} value={0} checked={discussionSetting == 0} onChange={onRadioChange}>
+                        Disable discussion links
                     </Radio>
-                    <Radio name={radioName} value={1} checked={discussionSetting == 1} onChange={e => onRadioChange(e)}>
+                    <Radio name={radioName} value={1} checked={discussionSetting == 1} onChange={onRadioChange}>
                         Allow one discussion per item
                     </Radio>
-                    <Radio name={radioName} checked={discussionSetting == 2} value={2} onChange={e => onRadioChange(e)}>
+                    <Radio name={radioName} value={2} checked={discussionSetting == 2} onChange={onRadioChange}>
                         Allow multiple discussions per item
                     </Radio>
                 </FormGroup>
@@ -87,11 +87,10 @@ class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
     render() {
         const { name, titleTemplate, onInputChange } = this.props;
         const title = titleTemplate == null ? '' : titleTemplate;
-        const tipText = (name == "eachItemTitleTemplate") ? EACHITEM_TITLE_TIP : ENTIRELIST_TITLE_TIP;
         return (
             <div>
                 Document title
-                <LabelHelpTip title="" body={() => {return <> {tipText} </>;}}/>
+                <LabelHelpTip title="Document title" body={() => {return <> {DOCUMENT_TITLE_TIP} </>;}}/>
                 <span>
                     <FormControl
                         className="list__advanced-settings-modal__text-field"
@@ -99,9 +98,7 @@ class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
                         type="text"
                         placeholder="Use default"
                         value={title}
-                        onChange={e => {
-                            onInputChange(e);
-                        }}
+                        onChange={onInputChange}
                     />
                 </span>
             </div>
@@ -122,15 +119,15 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
         return (
             <div>
                 <FormGroup>
-                    <Radio name={name} value={0} checked={indexSetting == 0} onChange={e => onRadioChange(e)}>
+                    <Radio name={name} value={0} checked={indexSetting == 0} onChange={onRadioChange}>
                         Include both metadata and data
-                        <LabelHelpTip title="" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
+                        <LabelHelpTip title="Warning" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
                     </Radio>
-                    <Radio name={name} value={1} checked={indexSetting == 1} onChange={e => onRadioChange(e)}>
+                    <Radio name={name} value={1} checked={indexSetting == 1} onChange={onRadioChange}>
                         Include data only
-                        <LabelHelpTip title="" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
+                        <LabelHelpTip title="Warning" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
                     </Radio>
-                    <Radio name={name} value={2} checked={indexSetting == 2} onChange={e => onRadioChange(e)}>
+                    <Radio name={name} value={2} checked={indexSetting == 2} onChange={onRadioChange}>
                         Include metadata only (name and description of list and fields)
                     </Radio>
                 </FormGroup>
@@ -147,7 +144,7 @@ interface IndexFieldProps {
     bodyTemplate: string;
 }
 
-class IndexField extends React.PureComponent<IndexFieldProps> {
+export class IndexField extends React.PureComponent<IndexFieldProps> {
     render() {
         const { name, onRadioChange, bodySetting, bodyTemplate, onInputChange } = this.props;
         const id = (name == "entireListBodySetting") ? "entireListBodyTemplate" : "eachItemBodyTemplate";
@@ -155,13 +152,13 @@ class IndexField extends React.PureComponent<IndexFieldProps> {
         return (
             <div>
                 <FormGroup>
-                    <Radio name={name} value={0} checked={bodySetting == 0} onChange={e => onRadioChange(e)}>
+                    <Radio name={name} value={0} checked={bodySetting == 0} onChange={onRadioChange}>
                         Index all non-PHI text fields
                     </Radio>
-                    <Radio name={name} value={1} checked={bodySetting == 1} onChange={e => onRadioChange(e)}>
+                    <Radio name={name} value={1} checked={bodySetting == 1} onChange={onRadioChange}>
                         Index all non-PHI fields (text, number, date, and boolean)
                     </Radio>
-                    <Radio name={name} value={2} checked={bodySetting == 2} onChange={e => onRadioChange(e)}>
+                    <Radio name={name} value={2} checked={bodySetting == 2} onChange={onRadioChange}>
                         Index using custom template
                         <LabelHelpTip title="" body={() => {return <> {CUSTOM_TEMPLATE_TIP} </>;}}/>
                     </Radio>
@@ -190,7 +187,7 @@ interface SingleDocumentIndexFieldsProps {
     entireListBodyTemplate: string;
 }
 
-class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexFieldsProps> {
+export class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexFieldsProps> {
     render() {
         const {
             onRadioChange,
@@ -235,7 +232,7 @@ interface SeparateDocumentIndexFieldsProps {
     eachItemBodyTemplate: string;
 }
 
-class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
+export class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
     render() {
         const {
             onRadioChange,
@@ -276,15 +273,25 @@ interface CollapsibleFieldsProps {
 }
 
 class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
-    render() {
-        const { expanded, fields, title, expandFields, identifier, checked, onCheckboxChange } = this.props;
-        const icon = expanded ? faAngleDown : faAngleRight;
+    expand = () => {
+        const { expanded, expandFields, identifier, checked } = this.props;
         const set = expanded ? '' : identifier;
+        if (checked) {
+            expandFields(set)
+        }
+    };
+
+    render() {
+        const { expanded, fields, title, identifier, checked, onCheckboxChange } = this.props;
+        const icon = expanded ? faAngleDown : faAngleRight;
+        const classes = classNames('list__advanced-settings-model__collapsible-field list__properties__checkbox--no-highlight', {
+            'list__properties__checkbox-unchecked': !checked
+        });
 
         return (
             <div>
-                <span onClick={() => expandFields(set)} className='list__advanced-settings-model__collapsible-field list__properties__checkbox--no-highlight'>
-                    <FontAwesomeIcon icon={icon} size="lg" color="#333333" />
+                <span onClick={this.expand} className={classes}>
+                    <FontAwesomeIcon icon={icon} size="lg" />
                 </span>
                 <span className="list__advanced-settings-modal__index-checkbox">
                     <CheckBox checked={checked} onClick={() => onCheckboxChange(identifier, checked)} />
@@ -311,7 +318,7 @@ interface SearchIndexingState {
     expanded: string;
 }
 
-class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchIndexingState> {
+export class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchIndexingState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -388,18 +395,19 @@ interface SettingsContainerProps {
     fieldComponent: JSX.Element;
     title: string;
     tipBody: string | JSX.Element;
+    tipTitle?: string;
 }
 
 class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
     render() {
-        const { fieldComponent, title, tipBody } = this.props;
+        const { fieldComponent, title, tipBody, tipTitle } = this.props;
 
         return (
             <div className="list__advanced-settings-modal__section-container">
                 <div className="list__advanced-settings-modal__heading">
                     <span className="list__bold-text"> {title} </span>
                     <LabelHelpTip
-                        title=""
+                        title={tipTitle || title}
                         body={() => {
                             return <> {tipBody} </>;
                         }}
@@ -415,30 +423,23 @@ class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
 interface AdvancedSettingsModalBottomProps {
     toggleModal: (isModalOpen: boolean) => void;
     applyChanges: () => void;
+    successBsStyle?: string;
 }
+
 class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsModalBottomProps> {
     render() {
-        const { toggleModal, applyChanges } = this.props;
+        const { toggleModal, applyChanges, successBsStyle } = this.props;
 
         return (
-            <div className="list__advanced-settings-modal__bottom">
-                <Button className="" onClick={() => toggleModal(false)}>
+            <>
+                <Button onClick={() => toggleModal(false)} className='domain-adv-footer domain-adv-cancel-btn'>
                     Cancel
                 </Button>
-
-                <span className='list__advanced-settings-model__help-link'>
-                    <a
-                        target="_blank"
-                        href="https://www.labkey.org/Documentation/wiki-page.view?name=lists"
-                        className="list__advanced-settings-modal__help-link">
-                        Learn more about using lists
-                    </a>
-
-                    <Button className="btn-primary" onClick={applyChanges}>
-                        Apply
-                    </Button>
-                </span>
-            </div>
+                {helpLinkNode('lists', "Learn more about using lists", 'domain-adv-footer domain-adv-link')}
+                <Button onClick={applyChanges} bsStyle={successBsStyle || 'success'} className='domain-adv-footer domain-adv-apply-btn'>
+                    Apply
+                </Button>
+            </>
         );
     }
 }
@@ -447,6 +448,7 @@ interface AdvancedSettingsProps {
     model: ListModel;
     title: string;
     applyAdvancedProperties: (advancedSettingsForm: AdvancedSettingsForm) => void;
+    successBsStyle?: string;
 }
 
 interface AdvancedSettingsState extends AdvancedSettingsForm{
@@ -471,6 +473,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             titleColumn: model.titleColumn,
             discussionSetting: model.discussionSetting,
             fileAttachmentIndex: model.fileAttachmentIndex,
+
             // entire list
             entireListIndex: model.entireListIndex,
             // document title
@@ -545,7 +548,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             entireListBodyTemplate,
             eachItemBodyTemplate,
         } = this.state;
-        const { title, model } = this.props;
+        const { title, model, successBsStyle } = this.props;
 
         const entireListIndexSettings = {
             entireListIndex,
@@ -564,8 +567,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         let displayTitleTip =
             <>
-                Choose a field to identify this list when other lists or datasets do lookups into this list
-                When “Auto” is enabled, LabKey will select the field for you by using:
+                Choose a field to identify this list when other lists or datasets have lookups into this list.
+                When “Auto” is enabled, LabKey will select the title field for you by using:
                 <ul>
                     <li>The first non-lookup string column</li>
                     <li>The primary key, if there are no string fields</li>
@@ -579,13 +582,14 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 </Button>
 
                 <Modal show={modalOpen} onHide={() => this.toggleModal(false)}>
-                    <Modal.Header>
+                    <Modal.Header closeButton>
                         <Modal.Title> Advanced List Settings </Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <SettingsContainer
-                            title="Field used for display title:"
+                            title="Field used for display title"
+                            tipTitle={'Display Title Field'}
                             tipBody={displayTitleTip}
                             fieldComponent={
                                 <DisplayTitle
@@ -622,8 +626,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             }
                         />
 
-                        <AdvancedSettingsModalBottom toggleModal={this.toggleModal} applyChanges={this.applyChanges} />
                     </Modal.Body>
+
+                    <Modal.Footer>
+                        <AdvancedSettingsModalBottom toggleModal={this.toggleModal} applyChanges={this.applyChanges} successBsStyle={successBsStyle} />
+                    </Modal.Footer>
                 </Modal>
             </Col>
         );

@@ -8,12 +8,6 @@ import getDomainDetailsJSON from '../test/data/property-getDomainDetails.json';
 import './stories.scss';
 
 const DEFAULT_LIST_SETTINGS = {
-    "entityId" : null,
-    "createdBy" : 0,
-    "created" : "1969-12-31 16:00:00.000",
-    "modifiedBy" : 0,
-    "modified" : "1969-12-31 16:00:00.000",
-    "containerId" : null,
     "listId" : 0,
     "name" : null,
     "domainId" : 0,
@@ -22,23 +16,20 @@ const DEFAULT_LIST_SETTINGS = {
     "titleColumn" : null,
     "description" : null,
     "lastIndexed" : null,
-    "discussionSetting" : "None",
     "allowDelete" : true,
     "allowUpload" : true,
     "allowExport" : true,
+    "discussionSetting" : 0,
+    "entireListTitleTemplate" : "",
+    "entireListIndexSetting" : 0,
+    "entireListBodySetting" : 0,
+    "eachItemTitleTemplate" : "",
+    "eachItemBodySetting" : 0,
     "entireListIndex" : false,
-    "entireListIndexSetting" : "MetaData",
-    "entireListTitleSetting" : "Standard",
-    "entireListTitleTemplate" : null,
-    "entireListBodySetting" : "TextOnly",
     "entireListBodyTemplate" : null,
     "eachItemIndex" : false,
-    "eachItemTitleSetting" : "Standard",
-    "eachItemTitleTemplate" : null,
-    "eachItemBodySetting" : "TextOnly",
     "eachItemBodyTemplate" : null,
-    "fileAttachmentIndex" : false,
-    "containerPath" : ""
+    "fileAttachmentIndex" : false
 };
 
 class Wrapped extends React.Component<any, any> {

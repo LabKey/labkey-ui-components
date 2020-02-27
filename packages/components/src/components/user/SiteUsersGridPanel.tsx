@@ -101,10 +101,16 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     getUsersModel(): QueryGridModel {
         const { usersView } = this.state;
         const gridId = 'user-management-users-' + usersView;
+        let baseFilters = List<Filter.IFilter>([Filter.create('active', usersView === 'active')]);
+
+        if (usersView === 'all') {
+            baseFilters = List<Filter.IFilter>();
+        }
+
         const model = getStateQueryGridModel(gridId, SCHEMAS.CORE_TABLES.USERS, {
             containerPath: '/',
             omittedColumns: OMITTED_COLUMNS,
-            baseFilters: usersView === 'all' ? undefined : List<Filter.IFilter>([Filter.create('active', usersView === 'active')]),
+            baseFilters: baseFilters,
             bindURL: true,
             isPaged: true
         });

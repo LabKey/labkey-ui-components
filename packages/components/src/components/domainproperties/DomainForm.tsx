@@ -98,7 +98,8 @@ interface IDomainFormState {
     availableTypes: List<PropDescType>
     filtered: boolean
     filePreviewData: InferDomainResponse
-    fileData: File
+    file: File
+    filePreviewMsg: string
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -140,7 +141,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             collapsed: props.initCollapsed,
             filtered: false,
             filePreviewData: undefined,
-            fileData: undefined
+            file: undefined,
+            filePreviewMsg: undefined
         };
     }
 
@@ -307,13 +309,22 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     onDeleteConfirm(index: number) {
+        let fieldCount = this.props.domain.fields.size;
         if (index !== undefined) {
-            this.onDomainChange(removeField(this.props.domain, index));
+            const updatedDomain = removeField(this.props.domain, index);
+            fieldCount = updatedDomain.fields.size;
+
+            this.onDomainChange(updatedDomain);
         }
 
-        this.setState(() => ({
+        this.setState((state) => ({
             expandedRowIndex: undefined,
-            confirmDeleteRowIndex: undefined
+            confirmDeleteRowIndex: undefined,
+
+            // if the last field was removed, clear any file preview data
+            filePreviewData: fieldCount === 0 ? undefined : state.filePreviewData,
+            file: fieldCount === 0 ? undefined : state.file,
+            filePreviewMsg: undefined
         }));
     }
 
@@ -588,28 +599,37 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { domain, setFileImportData } = this.props;
 
         // if the DomainForm usage wants to show the file preview and import data options, then set these state values
-        if (setFileImportData) {
-            this.setState({filePreviewData: response, fileData: file});
-        }
+        if (response && response.fields.size > 0) {
+            if (setFileImportData) {
+                this.setState({filePreviewData: response, file: file, filePreviewMsg: undefined});
+            }
 
-        this.onDomainChange(setDomainFields(domain, response.fields));
+            this.onDomainChange(setDomainFields(domain, response.fields));
+        }
+        else {
+            this.setState({filePreviewMsg: 'The selected file does not have any data. Please remove it and try selecting another file.'});
+        }
     };
 
     renderEmptyDomain() {
         if (this.shouldShowInferFromFile()) {
             return (
-                <FileAttachmentForm
-                    acceptedFormats={".csv, .tsv, .txt, .xls, .xlsx"}
-                    showAcceptedFormats={true}
-                    allowDirectories={false}
-                    allowMultiple={false}
-                    label={'Infer fields from file'}
-                    previewGridProps={{
-                        previewCount: 3,
-                        skipPreviewGrid: true,
-                        onPreviewLoad: this.handleFilePreviewLoad
-                    }}
-                />
+                <>
+                    <FileAttachmentForm
+                        acceptedFormats={".csv, .tsv, .txt, .xls, .xlsx"}
+                        showAcceptedFormats={true}
+                        allowDirectories={false}
+                        allowMultiple={false}
+                        label={'Infer fields from file'}
+                        onFileRemoval={() => this.setState(() => ({filePreviewMsg: undefined}))}
+                        previewGridProps={{
+                            previewCount: 3,
+                            skipPreviewGrid: true,
+                            onPreviewLoad: this.handleFilePreviewLoad
+                        }}
+                    />
+                    {this.state.filePreviewMsg && <Alert bsStyle={'info'}>{this.state.filePreviewMsg}</Alert>}
+                </>
             )
         }
         else {
@@ -777,7 +797,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme, helpNoun, setFileImportData } = this.props;
-        const { collapsed, confirmDeleteRowIndex, filePreviewData, fileData } = this.state;
+        const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
 
@@ -813,7 +833,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 noun={helpNoun}
                                 filePreviewData={filePreviewData}
                                 setFileImportData={setFileImportData}
-                                fileData={fileData}
+                                file={file}
                             />
                         }
                     </Panel.Body>

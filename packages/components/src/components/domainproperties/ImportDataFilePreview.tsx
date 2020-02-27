@@ -3,12 +3,16 @@ import { convertRowDataIntoPreviewData } from '../files/actions';
 import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 import { FilePreviewGrid } from '../files/FilePreviewGrid';
 import { InferDomainResponse } from '../base/models/model';
+import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { DeleteIcon} from "../..";
+
 
 interface Props {
     noun: string;
     filePreviewData: InferDomainResponse;
     setFileImportData: (file: File) => any;
-    fileData: File;
+    file: File;
 }
 
 interface State {
@@ -19,21 +23,22 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
     constructor(props) {
         super(props);
 
+        props.setFileImportData(props.file);
         this.state = {
-            importData: false,
+            importData: true,
         };
     }
 
     onToggleClick = () => {
-        const { setFileImportData, fileData } = this.props;
+        const { setFileImportData, file } = this.props;
 
         this.setState(state => ({ importData: !state.importData }), () => {
-            setFileImportData(this.state.importData ? fileData : undefined);
+            setFileImportData(this.state.importData ? file : undefined);
         });
     };
 
     render() {
-        const { filePreviewData, noun } = this.props;
+        const { filePreviewData, noun, file } = this.props;
         const { importData } = this.state;
 
         if (filePreviewData == null) {
@@ -53,6 +58,21 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
                         on="Import Data"
                         off="Don't Import"
                     />
+                    {importData && file &&
+                        <>
+                            <DeleteIcon
+                                title={null}
+                                iconCls={'domain-field-delete-icon'}
+                                onDelete={this.onToggleClick}
+                            />
+                            <span className='domain__import-data__file-icon'>
+                                <FontAwesomeIcon icon={faFileAlt} size='lg'/>
+                            </span>
+
+                            <span className='domain__import-data__file-title'> {file.name} </span>
+                        </>
+                    }
+
                 </div>
 
                 {importData && (

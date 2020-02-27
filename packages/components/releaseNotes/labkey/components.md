@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.31.0
+*Released*: 27 February 2020
 * Item 6798: ListDesignerPanels and related components, models, actions
     - new list related components ListDesignerPanels.tsx and ListPropertiesPanel.tsx
     - DomainForm changes to support an "Import Data" option when using a file to infer fields for the domain (see ImportDataFilePreview.tsx)

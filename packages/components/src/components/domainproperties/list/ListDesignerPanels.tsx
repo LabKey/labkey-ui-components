@@ -16,6 +16,7 @@ import { importData } from "../../../query/api";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { ListModel } from "./models";
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
+import { Progress } from "../../base/Progress";
 
 interface Props {
     initModel: ListModel
@@ -34,7 +35,7 @@ interface State {
     visitedPanels?: List<number>;
     validatePanel?: number;
     firstState?: boolean;
-    fileImportData?: any;
+    fileImportData?: File;
 }
 
 export class ListDesignerPanels extends React.PureComponent<Props, State> {
@@ -189,7 +190,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     render() {
         const { onCancel, useTheme, containerTop, successBsStyle } = this.props;
-        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel } = this.state;
+        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel, submitting, fileImportData } = this.state;
 
         let errorDomains = List<string>();
         if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
@@ -246,11 +247,19 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     <Button
                         className="pull-right"
                         bsStyle={successBsStyle || 'success'}
-                        disabled={this.state.submitting}
+                        disabled={submitting}
                         onClick={this.onFinish}>
                         Save
                     </Button>
                 </div>
+
+                <Progress
+                    modal={true}
+                    delay={1000}
+                    estimate={fileImportData ? fileImportData.size * .0001 : undefined}
+                    title={"Importing data from selected file..."}
+                    toggle={submitting && fileImportData !== undefined}
+                />
             </>
         );
     }

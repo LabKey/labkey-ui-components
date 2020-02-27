@@ -5,11 +5,18 @@ import { ActionURL } from "@labkey/api";
 import { ListPropertiesPanel } from "./ListPropertiesPanel";
 import { DomainDesign, IAppDomainHeader } from "../models";
 import DomainForm from "../DomainForm";
-import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus, saveDomain } from "../actions";
+import {
+    getDomainBottomErrorMessage,
+    getDomainHeaderName,
+    getDomainPanelStatus,
+    getUpdatedVisitedPanelsList,
+    saveDomain
+} from "../actions";
 import { importData } from "../../../query/api";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { ListModel } from "./models";
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
+import { Progress } from "../../base/Progress";
 
 interface Props {
     initModel: ListModel
@@ -28,7 +35,7 @@ interface State {
     visitedPanels?: List<number>;
     validatePanel?: number;
     firstState?: boolean;
-    fileImportData?: any;
+    fileImportData?: File;
 }
 
 export class ListDesignerPanels extends React.PureComponent<Props, State> {
@@ -47,11 +54,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
         const { visitedPanels, currentPanelIndex } = this.state;
-
-        let updatedVisitedPanels = visitedPanels;
-        if (!visitedPanels.contains(index)) {
-            updatedVisitedPanels = visitedPanels.push(index);
-        }
+        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
 
         if (!collapsed) {
             this.setState(
@@ -128,11 +131,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     onFinish = () => {
         const { model, visitedPanels, currentPanelIndex, fileImportData } = this.state;
-
-        let updatedVisitedPanels = visitedPanels;
-        if (!visitedPanels.contains(currentPanelIndex)) {
-            updatedVisitedPanels = visitedPanels.push(currentPanelIndex);
-        }
+        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, currentPanelIndex);
 
         // This first setState forces the current expanded panel to validate its fields and display and errors
         // the callback setState then sets that to undefined so it doesn't keep validating every render
@@ -191,7 +190,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
     render() {
         const { onCancel, useTheme, containerTop, successBsStyle } = this.props;
-        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel } = this.state;
+        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel, submitting, fileImportData } = this.state;
 
         let errorDomains = List<string>();
         if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
@@ -248,11 +247,19 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     <Button
                         className="pull-right"
                         bsStyle={successBsStyle || 'success'}
-                        disabled={this.state.submitting}
+                        disabled={submitting}
                         onClick={this.onFinish}>
                         Save
                     </Button>
                 </div>
+
+                <Progress
+                    modal={true}
+                    delay={1000}
+                    estimate={fileImportData ? fileImportData.size * .005 : undefined}
+                    title={"Importing data from selected file..."}
+                    toggle={submitting && fileImportData !== undefined}
+                />
             </>
         );
     }

@@ -3,7 +3,12 @@ import { List, Map } from 'immutable';
 import { DomainDesign, HeaderRenderer } from '../models';
 import { AssayProtocolModel } from '../assay/models';
 import { saveAssayDesign } from '../assay/actions';
-import { getDomainBottomErrorMessage, getDomainHeaderName, getDomainPanelStatus } from '../actions';
+import {
+    getDomainBottomErrorMessage,
+    getDomainHeaderName,
+    getDomainPanelStatus,
+    getUpdatedVisitedPanelsList
+} from '../actions';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
 import DomainForm from '../DomainForm';
 import { Button } from 'react-bootstrap';
@@ -77,11 +82,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
 
     onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
         const { visitedPanels, currentPanelIndex } = this.state;
-
-        let updatedVisitedPanels = visitedPanels;
-        if (!visitedPanels.contains(index)) {
-            updatedVisitedPanels = visitedPanels.push(index);
-        }
+        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
 
         if (!collapsed) {
             this.setState(() => ({
@@ -109,11 +110,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
     onFinish = () => {
         const { protocolModel, visitedPanels, currentPanelIndex } = this.state;
         const { beforeFinish } = this.props;
-
-        let updatedVisitedPanels = visitedPanels;
-        if (!visitedPanels.contains(currentPanelIndex)) {
-            updatedVisitedPanels = visitedPanels.push(currentPanelIndex);
-        }
+        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, currentPanelIndex);
 
         // This first setState forces the current expanded panel to validate its fields and display and errors
         // the callback setState then sets that to undefined so it doesn't keep validating every render

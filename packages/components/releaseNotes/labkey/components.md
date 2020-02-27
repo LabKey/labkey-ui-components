@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: 27 February 2020
+* Issue 39813: Metadata settings in new Designer don't align with old Designer
+    - Resolved bug in List Designer's indexing settings.
+
 ### version 0.31.0
 *Released*: 27 February 2020
 * Item 6798: ListDesignerPanels and related components, models, actions

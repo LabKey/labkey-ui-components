@@ -20,7 +20,7 @@ beforeAll(() => {
 describe("<QueryGridBar/>", () => {
 
     test("default props", (done) => {
-        const model = getStateQueryGridModel("QueryGridBarDefaultProps", SQ, {});
+        const model = getStateQueryGridModel("QueryGridBarDefaultProps", SQ);
         gridInit(model);
 
         window.setTimeout(() => {

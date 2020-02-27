@@ -20,7 +20,7 @@ interface DisplayTitleProps {
     titleColumn: string;
 }
 
-class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
+export class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
     render() {
         const {model, onSelectChange, titleColumn} = this.props;
         const fields = model.domain.fields;
@@ -144,7 +144,7 @@ interface IndexFieldProps {
     bodyTemplate: string;
 }
 
-class IndexField extends React.PureComponent<IndexFieldProps> {
+export class IndexField extends React.PureComponent<IndexFieldProps> {
     render() {
         const { name, onRadioChange, bodySetting, bodyTemplate, onInputChange } = this.props;
         const id = (name == "entireListBodySetting") ? "entireListBodyTemplate" : "eachItemBodyTemplate";
@@ -187,7 +187,7 @@ interface SingleDocumentIndexFieldsProps {
     entireListBodyTemplate: string;
 }
 
-class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexFieldsProps> {
+export class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexFieldsProps> {
     render() {
         const {
             onRadioChange,
@@ -232,7 +232,7 @@ interface SeparateDocumentIndexFieldsProps {
     eachItemBodyTemplate: string;
 }
 
-class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
+export class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
     render() {
         const {
             onRadioChange,
@@ -318,7 +318,7 @@ interface SearchIndexingState {
     expanded: string;
 }
 
-class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchIndexingState> {
+export class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchIndexingState> {
     constructor(props) {
         super(props);
         this.state = {

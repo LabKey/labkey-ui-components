@@ -14,13 +14,13 @@ interface BasicPropertiesTitleProps {
     title: string
 }
 
-class BasicPropertiesTitle extends React.PureComponent<BasicPropertiesTitleProps> {
+export class BasicPropertiesTitle extends React.PureComponent<BasicPropertiesTitleProps> {
     render() {
         return <div className="domain-field-section-heading">{this.props.title}</div>;
     }
 }
 
-class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
+export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
     render() {
         const { model, onInputChange } = this.props;
         const value = (model.name === null) ? "" : model.name;
@@ -44,7 +44,7 @@ class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
     }
 }
 
-class DescriptionInput extends React.PureComponent<BasicPropertiesInputsProps> {
+export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsProps> {
     render() {
         const { model, onInputChange } = this.props;
         const value = model.description === null ? '' : model.description;
@@ -112,7 +112,7 @@ interface CheckBoxRowProps {
     text: string;
 }
 
-class CheckBoxRow extends React.PureComponent<CheckBoxRowProps> {
+export class CheckBoxRow extends React.PureComponent<CheckBoxRowProps> {
     render() {
         const { checked, onCheckBoxChange, name, text } = this.props;
 

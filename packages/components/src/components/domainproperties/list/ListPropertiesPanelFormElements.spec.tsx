@@ -10,32 +10,7 @@ import {
 } from "./ListPropertiesPanelFormElements";
 import toJson from 'enzyme-to-json';
 import getDomainDetailsJSON from '../../../test/data/property-getDomainDetails.json';
-
-
-const DEFAULT_LIST_SETTINGS = {
-    "listId" : 0,
-    "name" : null,
-    "domainId" : 0,
-    "keyName" : null,
-    "keyType" : null,
-    "titleColumn" : null,
-    "description" : null,
-    "lastIndexed" : null,
-    "allowDelete" : true,
-    "allowUpload" : true,
-    "allowExport" : true,
-    "discussionSetting" : 0,
-    "entireListTitleTemplate" : "",
-    "entireListIndexSetting" : 0,
-    "entireListBodySetting" : 0,
-    "eachItemTitleTemplate" : "",
-    "eachItemBodySetting" : 0,
-    "entireListIndex" : false,
-    "entireListBodyTemplate" : null,
-    "eachItemIndex" : false,
-    "eachItemBodyTemplate" : null,
-    "fileAttachmentIndex" : false
-};
+import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);

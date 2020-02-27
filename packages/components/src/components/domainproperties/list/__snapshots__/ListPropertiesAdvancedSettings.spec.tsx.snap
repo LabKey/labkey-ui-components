@@ -292,7 +292,7 @@ exports[`AdvancedSettings existing list, existing properties 1`] = `
             "lookupValidator": undefined,
             "measure": false,
             "mvEnabled": false,
-            "name": "Motherss",
+            "name": "Mothers",
             "PHI": "NotPHI",
             "primaryKey": undefined,
             "propertyId": 26823,

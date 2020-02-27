@@ -157,7 +157,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
                 <Panel>
                     <Panel.Body>
                         <div className={'entity-form--headerhelp'}>
-                            Sample types help you organize samples in your lab and allows you to add properties
+                            Sample types help you organize samples in your lab and allow you to add properties
                             for easy tracking of data.
                         </div>
                         <EntityDetailsForm

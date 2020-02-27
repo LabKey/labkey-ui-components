@@ -702,3 +702,12 @@ export function getDomainHeaderName(name?: string, headerTitle?: string, headerP
 
     return updatedName;
 }
+
+export function getUpdatedVisitedPanelsList(visitedPanels: List<number>, index: number): List<number> {
+    let updatedVisitedPanels = visitedPanels.merge([0]);
+    if (!updatedVisitedPanels.contains(index)) {
+        updatedVisitedPanels = updatedVisitedPanels.push(index);
+    }
+
+    return updatedVisitedPanels;
+}

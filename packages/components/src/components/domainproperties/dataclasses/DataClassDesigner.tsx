@@ -7,7 +7,12 @@ import { DomainDesign } from "../models";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
 import DomainForm from "../DomainForm";
 import { DataClassPropertiesPanel } from "./DataClassPropertiesPanel";
-import { getDomainBottomErrorMessage, getDomainPanelStatus, getDomainHeaderName } from "../actions";
+import {
+    getDomainBottomErrorMessage,
+    getDomainPanelStatus,
+    getDomainHeaderName,
+    getUpdatedVisitedPanelsList
+} from "../actions";
 
 interface Props {
     nounSingular?: string
@@ -52,11 +57,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
 
     onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
         const { visitedPanels, currentPanelIndex } = this.state;
-
-        let updatedVisitedPanels = visitedPanels;
-        if (!visitedPanels.contains(index)) {
-            updatedVisitedPanels = visitedPanels.push(index);
-        }
+        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
 
         if (!collapsed) {
             this.setState(() => ({
@@ -83,11 +84,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
 
     onFinish = () => {
         const { model, visitedPanels, currentPanelIndex } = this.state;
-
-        let updatedVisitedPanels = visitedPanels;
-        if (!visitedPanels.contains(currentPanelIndex)) {
-            updatedVisitedPanels = visitedPanels.push(currentPanelIndex);
-        }
+        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, currentPanelIndex);
 
         // This first setState forces the current expanded panel to validate its fields and display and errors
         // the callback setState then sets that to undefined so it doesn't keep validating every render

@@ -38,6 +38,19 @@
   text-align: center;
 }
 
+.domain-form__file-preview__text {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.domain-form__file-preview__toggle {
+  margin-bottom: 10px;
+}
+
+.domain-form__file-preview {
+    margin-top: 15px;
+}
+
 .domain-zero-padding {
   padding: 0
 }
@@ -626,4 +639,14 @@
 
 .domain-designer-buttons .btn {
     width: 75px;
+}
+
+.domain__import-data__file-icon {
+    margin-left: 7px;
+    color: $gray-light;
+}
+
+.domain__import-data__file-title {
+    margin-left: 6px;
+    color: $brand-primary;
 }

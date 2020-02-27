@@ -33,6 +33,7 @@ export const PermissionTypes = {
     // Other
     DesignAssay: 'org.labkey.api.assay.security.DesignAssayPermission',
     DesignSampleSet: 'org.labkey.api.security.permissions.DesignSampleSetPermission',
+    DesignList: 'org.labkey.api.lists.permissions.DesignListPermission',
     UserManagement: 'org.labkey.api.security.permissions.UserManagementPermission',
     ApplicationAdmin: 'org.labkey.api.security.permissions.ApplicationAdminPermission',
 

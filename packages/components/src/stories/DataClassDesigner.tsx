@@ -27,7 +27,8 @@ storiesOf('DataClassDesigner', module)
             onCancel={() => console.log('cancel')}
             onComplete={(model) => console.log('complete', model.toJS())}
             initModel={DataClassModel.create({})}
-            noun={text('noun', undefined)}
+            nounSingular={text('nounSingular', undefined)}
+            nounPlural={text('nounPlural', undefined)}
             appPropertiesOnly={boolean('appPropertiesOnly', false)}
             headerText={text('headerText', undefined)}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
@@ -40,7 +41,8 @@ storiesOf('DataClassDesigner', module)
             onCancel={() => console.log('cancel')}
             onComplete={(model) => console.log('complete', model.toJS())}
             initModel={DataClassModel.create({rowId: 1, name: 'testing1', description: 'testing2', nameExpression: 'DC-${genId}', materialSourceId: 111})}
-            noun={text('noun', 'Source')}
+            nounSingular={text('nounSingular', 'Source')}
+            nounPlural={text('nounPlural', 'Sources')}
             appPropertiesOnly={boolean('appPropertiesOnly', true)}
             headerText={text('headerText', 'Use source types to connect your samples to their biological or physical origins.')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org/Documentation')}

@@ -13,12 +13,9 @@ import { ENTITY_FORM_ID_PREFIX } from "../entities/constants";
 import { getFormNameFromId } from "../entities/actions";
 import { DataClassModel } from "./models";
 import { HelpTopicURL } from "../HelpTopicURL";
-import {
-    DomainPropertiesPanelContext,
-    DomainPropertiesPanelProvider,
-    IDomainPropertiesPanelContext
-} from "../DomainPropertiesPanelContext";
+import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
 
+const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
 const FORM_IDS = {
@@ -26,7 +23,8 @@ const FORM_IDS = {
 };
 
 interface Props {
-    noun?: string
+    nounSingular?: string
+    nounPlural?: string
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
     headerText?: string
@@ -40,7 +38,6 @@ interface Props {
     validate?: boolean
     useTheme?: boolean
     panelStatus?: DomainPanelStatus
-    helpTopic?: string
     onToggle?: (collapsed: boolean, callback: () => any) => any
 }
 
@@ -66,13 +63,15 @@ export class DataClassPropertiesPanel extends React.PureComponent<Props> {
 }
 
 class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
+    static contextType = DomainPropertiesPanelContext;
+    context!: React.ContextType<typeof DomainPropertiesPanelContext>;
 
     static defaultProps = {
-        noun: 'Data Class',
+        nounSingular: 'Data Class',
+        nounPlural: 'Data Classes',
         appPropertiesOnly: false,
         initCollapsed: false,
-        validate: false,
-        helpTopic: DEFINE_DATA_CLASS_TOPIC
+        validate: false
     };
 
     constructor(props) {
@@ -91,11 +90,11 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     }
 
     componentDidMount(): void {
-        updateDomainPanelClassList(this.props.useTheme, undefined, 'dataclass-properties-hdr');
+        updateDomainPanelClassList(this.props.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-        updateDomainPanelClassList(prevProps.useTheme, undefined, 'dataclass-properties-hdr');
+        updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
     setIsValid() {
@@ -104,9 +103,10 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
         this.setState(() => ({isValid}), () => onChange(model));
     }
 
-    toggleLocalPanel = (evt: any, context: IDomainPropertiesPanelContext): void => {
+    toggleLocalPanel = (evt: any): void => {
+        const { togglePanel, collapsed } = this.context;
         this.setIsValid();
-        context.togglePanel(evt, !context.collapsed);
+        togglePanel(evt, !collapsed)
     };
 
     onFormChange = (evt: any) => {
@@ -121,14 +121,14 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     };
 
     renderSampleSetSelect() {
-        const { model, noun } = this.props;
+        const { model, nounSingular } = this.props;
 
         return (
             <Row>
                 <Col xs={3}>
                     <LabelOverlay
                         label={'Sample Set'}
-                        description={`The default Sample Set where new samples will be created for this ${noun.toLowerCase()}.`}
+                        description={`The default Sample Set where new samples will be created for this ${nounSingular.toLowerCase()}.`}
                         canMouseOverTooltip={true}
                     />
                 </Col>
@@ -152,57 +152,58 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     }
 
     render() {
-        const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, noun, nameExpressionInfoUrl, nameExpressionPlaceholder, helpTopic } = this.props;
+        const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
         const { isValid } = this.state;
+        const { collapsed } = this.context;
 
         return (
-            <DomainPropertiesPanelContext.Consumer>
-                {(context) =>
-                    <>
-                        <Panel className={getDomainPanelClass(context.collapsed, true, useTheme)} expanded={!context.collapsed} onToggle={function(){}}>
-                            <CollapsiblePanelHeader
-                                id={'dataclass-properties-hdr'}
-                                title={noun + ' Properties'}
-                                titlePrefix={model.name}
-                                togglePanel={(evt: any) => this.toggleLocalPanel(evt, context)}
-                                collapsed={context.collapsed}
-                                collapsible={collapsible}
-                                controlledCollapse={controlledCollapse}
-                                panelStatus={panelStatus}
-                                isValid={isValid}
-                                iconHelpMsg={ERROR_MSG}
-                                useTheme={useTheme}
-                            />
-                            <Panel.Body collapsible={collapsible || controlledCollapse}>
-                                <Row className={'margin-bottom'}>
-                                    <Col xs={9}>
-                                        {headerText && <div className={'entity-form--headerhelp'}>{headerText}</div>}
-                                    </Col>
-                                    <Col xs={3}>
-                                        {helpTopic && <HelpTopicURL helpTopic={helpTopic}/>}
-                                    </Col>
-                                </Row>
-                                <EntityDetailsForm
-                                    noun={noun}
-                                    onFormChange={this.onFormChange}
-                                    data={model}
-                                    nameExpressionInfoUrl={nameExpressionInfoUrl}
-                                    nameExpressionPlaceholder={nameExpressionPlaceholder}
-                                />
-                                {!appPropertiesOnly && this.renderSampleSetSelect()}
-                            </Panel.Body>
-                        </Panel>
-                        {!isValid &&
-                            <div
-                                onClick={(evt: any) => this.toggleLocalPanel(evt, context)}
-                                className={getDomainAlertClasses(context.collapsed, true, useTheme)}
-                            >
-                                <Alert bsStyle="danger">{ERROR_MSG}</Alert>
-                            </div>
-                        }
-                    </>
+            <>
+                <Panel
+                    className={getDomainPanelClass(collapsed, true, useTheme)}
+                    expanded={!collapsed}
+                    onToggle={function(){}}
+                >
+                    <CollapsiblePanelHeader
+                        id={PROPERTIES_HEADER_ID}
+                        title={nounSingular + ' Properties'}
+                        titlePrefix={model.name}
+                        togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
+                        collapsed={collapsed}
+                        collapsible={collapsible}
+                        controlledCollapse={controlledCollapse}
+                        panelStatus={panelStatus}
+                        isValid={isValid}
+                        iconHelpMsg={ERROR_MSG}
+                        useTheme={useTheme}
+                    />
+                    <Panel.Body collapsible={collapsible || controlledCollapse}>
+                        <Row className={'margin-bottom'}>
+                            <Col xs={9}>
+                                {headerText && <div className={'entity-form--headerhelp'}>{headerText}</div>}
+                            </Col>
+                            <Col xs={3}>
+                                <HelpTopicURL helpTopic={DEFINE_DATA_CLASS_TOPIC} nounPlural={nounPlural}/>
+                            </Col>
+                        </Row>
+                        <EntityDetailsForm
+                            noun={nounSingular}
+                            onFormChange={this.onFormChange}
+                            data={model}
+                            nameExpressionInfoUrl={nameExpressionInfoUrl}
+                            nameExpressionPlaceholder={nameExpressionPlaceholder}
+                        />
+                        {!appPropertiesOnly && this.renderSampleSetSelect()}
+                    </Panel.Body>
+                </Panel>
+                {!isValid &&
+                    <div
+                        onClick={(evt: any) => this.toggleLocalPanel(evt)}
+                        className={getDomainAlertClasses(collapsed, true, useTheme)}
+                    >
+                        <Alert bsStyle="danger">{ERROR_MSG}</Alert>
+                    </div>
                 }
-            </DomainPropertiesPanelContext.Consumer>
+            </>
         )
     }
 }

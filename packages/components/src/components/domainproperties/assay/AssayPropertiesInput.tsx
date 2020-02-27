@@ -5,7 +5,8 @@ import { ActionURL } from '@labkey/api';
 
 import { AssayProtocolModel } from '../assay/models';
 import { FORM_IDS } from './AssayPropertiesPanel';
-import { getSplitSentence, getValidPublishTargets } from '../actions';
+import { getSplitSentence } from '../actions';
+import { getValidPublishTargets } from '../assay/actions';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Container } from '../../base/models/model';
 import { LoadingSpinner } from '../../base/LoadingSpinner';

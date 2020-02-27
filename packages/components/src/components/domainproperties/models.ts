@@ -124,6 +124,10 @@ export class PropDescType extends Record({
         return (rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI && rangeURI !== MULTILINE_RANGE_URI)
     }
 
+    static isAutoIncrement(dataType: PropDescType): boolean {
+        return dataType.display === AUTOINT_TYPE.display;
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
@@ -189,6 +193,7 @@ export const DECIMAL_TYPE = new PropDescType({name: 'decimal', display: 'Decimal
 export const FLOAT_TYPE = new PropDescType({name: 'float', display: 'Float', rangeURI: FLOAT_RANGE_URI});
 export const LONG_TYPE = new PropDescType({name: 'long', display: 'Long Integer', rangeURI: LONG_RANGE_URI});
 export const TIME_TYPE = new PropDescType({name: 'time', display: 'Time', rangeURI: TIME_RANGE_URI});
+export const AUTOINT_TYPE = new PropDescType({name: 'int', display: 'Auto Increment', rangeURI: INT_RANGE_URI, alternateRangeURI: 'xsd:int'});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
@@ -212,7 +217,7 @@ export const READONLY_DESC_TYPES = List([
     DECIMAL_TYPE,
     FLOAT_TYPE,
     LONG_TYPE,
-    TIME_TYPE
+    TIME_TYPE,
 ]);
 
 interface IDomainDesign {
@@ -1004,6 +1009,10 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
         if (rawField.conceptURI === SAMPLE_TYPE_CONCEPT_URI)
             return SAMPLE_TYPE;
 
+        if (rawField.dataType) {
+            return rawField.dataType;
+        }
+
         type = PROP_DESC_TYPES.find((type) => {
 
             // handle matching rangeURI and conceptURI
@@ -1190,23 +1199,20 @@ export class DomainException extends Record({
     errors?: List<DomainFieldError>;
 
     static create(rawModel: any, severityLevel): DomainException {
-        if (rawModel && rawModel.exception)
-        {
+        if (rawModel && rawModel.exception) {
             let errors = List<DomainFieldError>();
             if (rawModel.errors) {
                 errors = DomainFieldError.fromJS(rawModel.errors, severityLevel);
             }
 
-            let severity = severityLevel;
             // warnings will only be there if there are no errors, so looking only the first one
+            let severity = severityLevel;
             let hasOnlyWarnings = errors.find(error => error.severity === SEVERITY_LEVEL_WARN);
-
             if (hasOnlyWarnings) {
                 severity = SEVERITY_LEVEL_WARN;
             }
 
             const domainName = this.getDomainNameFromException(rawModel.exception);
-
             if (domainName) {
                 const prefix = domainName + " -- ";
                 errors = errors.map((err) => {
@@ -1217,13 +1223,14 @@ export class DomainException extends Record({
             let exception = errors.isEmpty() ? rawModel.exception : this.getExceptionMessage(errors);
 
             return new DomainException({
-                exception: exception,
+                exception,
                 success: rawModel.success,
                 severity: severity,
                 domainName: domainName,
                 errors: errors
             })
         }
+
         return undefined;
     }
 

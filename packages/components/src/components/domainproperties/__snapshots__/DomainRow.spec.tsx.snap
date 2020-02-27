@@ -3043,7 +3043,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   className="domain-field-details"
                                   id="domainpropertiesrow-details-1-1"
                                 >
-                                  New field
+                                  New Field
                                   . 
                                   <b
                                     key="#ColumnAwesome_1"
@@ -11948,7 +11948,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   className="domain-field-details"
                                   id="domainpropertiesrow-details-1-1"
                                 >
-                                  New field
+                                  New Field
                                   . 
                                   <b
                                     key="modified_1"
@@ -16287,7 +16287,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   className="domain-field-details"
                                   id="domainpropertiesrow-details-1-1"
                                 >
-                                  New field
+                                  New Field
                                 </div>
                                 <div
                                   className="domain-field-buttons"

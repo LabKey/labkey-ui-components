@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED } from './constants';
+import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
 
 //this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string) : boolean {
@@ -50,4 +50,9 @@ export function isFieldPartiallyLocked(lockType: string) : boolean {
 export function isFieldFullyLocked(lockType: string) : boolean {
     //with fully locked, can't change any properties
     return lockType == DOMAIN_FIELD_FULLY_LOCKED;
+}
+
+export function isPrimaryKeyFieldLocked(lockType: string) : boolean {
+    // with PK locked, can't change type or required, but can change other properties
+    return lockType == DOMAIN_FIELD_PRIMARY_KEY_LOCKED;
 }

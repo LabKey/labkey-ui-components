@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.31.0
+*Released*: 27 February 2020
+* Item 6798: ListDesignerPanels and related components, models, actions
+    - new list related components ListDesignerPanels.tsx and ListPropertiesPanel.tsx
+    - DomainForm changes to support an "Import Data" option when using a file to infer fields for the domain (see ImportDataFilePreview.tsx)
+    - DomainRow changs to support locking the "primary key" field data type and required inputs
+    - move assay related actions to domainproperties/assay/actions.ts file
+
 ### version 0.29.0
 *Released*: 26 February 2020
 * Issue 37776: updateUrl in custom assay does not get used in Biologics UI

@@ -278,7 +278,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 }
 
                 if (previewGridProps.onPreviewLoad) {
-                    previewGridProps.onPreviewLoad(response);
+                    previewGridProps.onPreviewLoad(response, file);
                 }
             })
             .catch((reason) => {

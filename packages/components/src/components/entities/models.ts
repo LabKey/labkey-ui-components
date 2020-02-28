@@ -22,7 +22,7 @@ import { insertRows } from '../../query/api';
 import { gridShowError } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
-import { capitalizeFirstChar, generateId } from '../../util/utils';
+import { capitalizeFirstChar, decodePart, encodePart, generateId } from '../../util/utils';
 import { IEntityDetails } from '../domainproperties/entities/models';
 
 export interface EntityInputProps {
@@ -90,7 +90,7 @@ export class EntityParentType extends Record({
         const formattedQueryName = capitalizeFirstChar(this.query);
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
-        const parentColName = [parentInputType, formattedQueryName].join('/');
+        const parentColName = [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
 
         // 32671: Sample import and edit grid key ingredients on scientific name
         if (this.schema && this.query &&
@@ -238,7 +238,7 @@ export class EntityIdCreationModel extends Record({
                     throw new Error('Invalid inputColumn fieldKey. "' + fieldKey[0] + '"');
                 }
 
-                return SchemaQuery.create(schemaName, fieldKey[1]);
+                return SchemaQuery.create(decodePart(schemaName), decodePart(fieldKey[1]));
             }
 
             throw new Error('invalid inputColumn fieldKey length.');

@@ -40,7 +40,7 @@ export function getLocation() : Location
         const params = location.search.substring(1).split('&');
         params.forEach( (p) => {
             const keyVal = p.split('=');
-            query.set(decodeURI(keyVal[0].trim()), decodeURI(keyVal[1].trim()));
+            query.set(keyVal[0].trim(), keyVal[1].trim());
         });
     }
 
@@ -51,7 +51,7 @@ export function getLocation() : Location
         const params = location.hash.substring(index + 1).split('&');
         params.forEach( (p) => {
             const keyVal = p.split('=');
-            query.set(decodeURI(keyVal[0].trim()), decodeURI(keyVal[1].trim()));
+            query.set(keyVal[0].trim(), keyVal[1].trim());
         });
 
         location.hash = location.hash.substring(0, index);

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: 28 February 2020
+* Adds unit tests for List Designer feature.
+
 ### version 0.31.1
 *Released*: 27 February 2020
 * Issue 39813: Metadata settings in new Designer don't align with old Designer

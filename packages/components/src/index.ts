@@ -258,7 +258,6 @@ import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 import {
     createFormInputId,
     fetchDomain,
-    fetchDomainDetails, //TODO REVIEW remove?
     saveDomain,
     setDomainFields,
 } from './components/domainproperties/actions';
@@ -296,8 +295,8 @@ import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
 import { EntityDataType } from './components/entities/models';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
-import {SampleTypeModel} from "./components/domainproperties/samples/models";
-import {SampleTypeDesigner} from "./components/domainproperties/samples/SampleTypeDesigner";
+import { SampleTypeModel } from "./components/domainproperties/samples/models";
+import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
 
 export {
     // global state functions
@@ -509,7 +508,6 @@ export {
     AssayPropertiesPanel,
     AssayDesignerPanels,
     fetchDomain,
-    fetchDomainDetails,   //TODO REVIEW still needed?
     saveDomain,
     fetchProtocol,
     createFormInputId,

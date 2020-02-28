@@ -39,7 +39,7 @@ import {
     IFieldChange,
     PROP_DESC_TYPES,
     QueryInfoLite,
-    updateSampleField
+    updateSampleField,
 } from './models';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../util/utils';
@@ -110,30 +110,6 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
             queryName,
             success: (data) => {
                 resolve(DomainDesign.create(data.domainDesign ? data.domainDesign : data, undefined));
-            },
-            failure: (error) => {
-                reject(error);
-            }
-        })
-    });
-}
-
-//TODO Review if this is still needed
-/**
- * @param domainId: Fetch domain by Id. Priority param over schema and query name.
- * @param schemaName: Schema of domain.
- * @param queryName: Query of domain.
- * @return Promise wrapped Domain API call.
- */
-export function fetchDomainDetails(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
-    return new Promise((resolve, reject) => {
-        Domain.getDomainDetails({
-            containerPath: LABKEY.container.path,
-            domainId,
-            schemaName,
-            queryName,
-            success: (data) => {
-                resolve(DomainDesign.create(data, undefined));
             },
             failure: (error) => {
                 reject(error);

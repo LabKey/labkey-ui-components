@@ -116,10 +116,13 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
     render() {
         const { indexSetting, name, onRadioChange } = this.props;
 
+        // Note: Currently the radio values go from high to low in order to correspond with the previous
+        // designer's order of radio options. Once the old designer is deprecated, we could change these to
+        // count from low to high.
         return (
             <div>
                 <FormGroup>
-                    <Radio name={name} value={0} checked={indexSetting == 0} onChange={onRadioChange}>
+                    <Radio name={name} value={2} checked={indexSetting == 2} onChange={onRadioChange}>
                         Include both metadata and data
                         <LabelHelpTip title="Warning" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
                     </Radio>
@@ -127,7 +130,7 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
                         Include data only
                         <LabelHelpTip title="Warning" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
                     </Radio>
-                    <Radio name={name} value={2} checked={indexSetting == 2} onChange={onRadioChange}>
+                    <Radio name={name} value={0} checked={indexSetting == 0} onChange={onRadioChange}>
                         Include metadata only (name and description of list and fields)
                     </Radio>
                 </FormGroup>

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.31.2
+*Released* 28 February 2020
+* Fix issue 38668
+    * We now pass the display column value of lookups to QuerySelect in QueryFormInputs
+
 ### version 0.31.1
 *Released*: 27 February 2020
 * Issue 39813: Metadata settings in new Designer don't align with old Designer
@@ -13,6 +18,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - DomainForm changes to support an "Import Data" option when using a file to infer fields for the domain (see ImportDataFilePreview.tsx)
     - DomainRow changs to support locking the "primary key" field data type and required inputs
     - move assay related actions to domainproperties/assay/actions.ts file
+
+### version 0.30.0
+*Released*: 27 February 2020
+* Bump @labkey/api to 0.0.35
 
 ### version 0.29.0
 *Released*: 26 February 2020

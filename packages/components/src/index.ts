@@ -253,6 +253,7 @@ import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 import {
     createFormInputId,
     fetchDomain,
+    fetchQueryMetadata,
     saveDomain,
     setDomainFields,
 } from './components/domainproperties/actions';
@@ -499,6 +500,7 @@ export {
     AssayDesignerPanels,
     fetchDomain,
     saveDomain,
+    fetchQueryMetadata,
     fetchProtocol,
     createFormInputId,
     saveAssayDesign,

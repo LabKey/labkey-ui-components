@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.31.2-fb-queryMetadataEditor-0.3
+*Released*: TBD
+* Item 6803: New QueryMetadata Editor
+
 ### version 0.31.1
 *Released*: 27 February 2020
 * Issue 39813: Metadata settings in new Designer don't align with old Designer

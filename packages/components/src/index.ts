@@ -202,6 +202,8 @@ import { deleteSampleSet, getSampleSet, loadSelectedSamples, } from './component
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
+import { DataClassModel } from './components/domainproperties/dataclasses/models';
+import { fetchDataClass } from './components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel';
@@ -390,8 +392,12 @@ export {
     ChangePasswordModal,
     SiteUsersGridPanel,
 
-    // samples-related
+    // data class
     DataClassDesigner,
+    DataClassModel,
+    fetchDataClass,
+
+    // samples-related
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,

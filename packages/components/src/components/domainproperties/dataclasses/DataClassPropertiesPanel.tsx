@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Panel, Row } from 'react-bootstrap';
+import { Col,Panel, Row } from 'react-bootstrap';
 import { EntityDetailsForm } from "../entities/EntityDetailsForm";
 import { LabelOverlay } from "../../forms/LabelOverlay";
 import { QuerySelect } from "../../forms/QuerySelect";
@@ -14,12 +14,13 @@ import { getFormNameFromId } from "../entities/actions";
 import { DataClassModel } from "./models";
 import { HelpTopicURL } from "../HelpTopicURL";
 import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
+import { initQueryGridState } from "../../../global";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
 const FORM_IDS = {
-    MATERIAL_SOURCE_ID: ENTITY_FORM_ID_PREFIX + 'materialSourceId'
+    SAMPLE_SET_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet'
 };
 
 interface Props {
@@ -76,6 +77,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
 
     constructor(props) {
         super(props);
+        initQueryGridState(); //needed for QuerySelect usage
 
         this.state = {
             isValid: true
@@ -134,17 +136,14 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                 </Col>
                 <Col xs={9}>
                     <QuerySelect
-                        componentId={FORM_IDS.MATERIAL_SOURCE_ID}
-                        name={FORM_IDS.MATERIAL_SOURCE_ID}
+                        componentId={FORM_IDS.SAMPLE_SET_ID}
+                        name={FORM_IDS.SAMPLE_SET_ID}
                         schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SETS}
                         formsy={false}
                         showLabel={false}
                         preLoad={true}
-                        // fireQSChangeOnInit={true} // TODO remove these props with final implementation if they are not needed
-                        // loadOnChange={true}
-                        // loadOnFocus={true}
                         onQSChange={this.onChange}
-                        value={model.materialSourceId} // TODO this isn't loading with initial value selected in update case (at least not in storybook)
+                        value={model.sampleSet} // TODO this isn't loading with initial value selected in update case (at least not in storybook)
                     />
                 </Col>
             </Row>
@@ -178,10 +177,12 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                     />
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         <Row className={'margin-bottom'}>
-                            <Col xs={9}>
-                                {headerText && <div className={'entity-form--headerhelp'}>{headerText}</div>}
-                            </Col>
-                            <Col xs={3}>
+                            {headerText &&
+                                <Col xs={9}>
+                                    <div className={'entity-form--headerhelp'}>{headerText}</div>}
+                                </Col>
+                            }
+                            <Col xs={headerText ? 3 : 12}>
                                 <HelpTopicURL helpTopic={DEFINE_DATA_CLASS_TOPIC} nounPlural={nounPlural}/>
                             </Col>
                         </Row>

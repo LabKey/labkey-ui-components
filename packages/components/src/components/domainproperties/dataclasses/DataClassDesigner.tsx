@@ -11,7 +11,8 @@ import {
     getDomainBottomErrorMessage,
     getDomainPanelStatus,
     getDomainHeaderName,
-    getUpdatedVisitedPanelsList, saveDomain
+    getUpdatedVisitedPanelsList,
+    saveDomain
 } from "../actions";
 
 interface Props {

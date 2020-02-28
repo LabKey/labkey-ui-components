@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Fix for Sample Manager QueryGridModel use case that passes in undefined as baseFilters
+    - make sure baseFilters is defined before doing a concat with the rest of the filters
+
 ### version 0.31.1
 *Released*: 27 February 2020
 * Issue 39813: Metadata settings in new Designer don't align with old Designer

@@ -795,7 +795,9 @@ export class QueryGridModel extends Record({
     }
 
     getFilters(): List<Filter.IFilter> {
+        const baseFilters = this.baseFilters || List<Filter.IFilter>();
         let filterList = List<Filter.IFilter>();
+
         if (this.queryInfo) {
             if (this.keyValue !== undefined) {
                 if (this.queryInfo.pkCols.size === 1) {
@@ -809,10 +811,10 @@ export class QueryGridModel extends Record({
                 return filterList.concat(this.getDetailFilters()).toList();
 
             }
-            return filterList.concat(this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray)).toList();
+            return filterList.concat(baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray)).toList();
         }
 
-        return this.baseFilters.concat(this.filterArray).toList();
+        return baseFilters.concat(this.filterArray).toList();
     }
 
     getId(): string {

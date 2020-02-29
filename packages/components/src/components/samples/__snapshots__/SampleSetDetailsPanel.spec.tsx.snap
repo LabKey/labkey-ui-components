@@ -221,10 +221,107 @@ Array [
     </div>
   </div>,
   <div
+    className="domain-form-panel panel panel-default"
+  >
+    <div
+      className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed panel-heading"
+      id="domain-header"
+      onClick={[Function]}
+    >
+      <span
+        className="domain-panel-title"
+      >
+        Fields
+      </span>
+      <span
+        className="pull-right"
+      >
+        <svg
+          aria-hidden="true"
+          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg domain-form-expand-btn"
+          data-icon="plus-square"
+          data-prefix="fas"
+          focusable="false"
+          role="img"
+          style={Object {}}
+          viewBox="0 0 448 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+            fill="currentColor"
+            style={Object {}}
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      aria-expanded={null}
+      className="panel-collapse collapse"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="domain-form-hdr-margins row"
+        >
+          <div
+            className="col-xs-9"
+          >
+            Adjust fields and their properties. Expand a row to set additional properties.
+          </div>
+          <div
+            className="col-xs-3"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor"
+              target="_blank"
+            >
+              Learn more about this tool
+            </a>
+          </div>
+        </div>
+        <div
+          className="domain-form-no-field-panel panel panel-default"
+        >
+          No fields created yet. Add some using the button below.
+        </div>
+        <div
+          className="domain-add-field-row row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            <div
+              className="form-group"
+            >
+              <div
+                className="domain-form-add-btn"
+              >
+                <span
+                  className="container--action-button btn btn-default"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="fa fa-plus-circle container--addition-icon"
+                  />
+                   Add 
+                  Field
+                </span>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  <div
     className="form-group no-margin-bottom"
   >
     <div
-      className=""
+      className="margin-top"
     >
       <div
         className="pull-left"
@@ -476,10 +573,107 @@ Array [
     </div>
   </div>,
   <div
+    className="domain-form-panel panel panel-default"
+  >
+    <div
+      className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed panel-heading"
+      id="domain-header"
+      onClick={[Function]}
+    >
+      <span
+        className="domain-panel-title"
+      >
+        Fields
+      </span>
+      <span
+        className="pull-right"
+      >
+        <svg
+          aria-hidden="true"
+          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg domain-form-expand-btn"
+          data-icon="plus-square"
+          data-prefix="fas"
+          focusable="false"
+          role="img"
+          style={Object {}}
+          viewBox="0 0 448 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+            fill="currentColor"
+            style={Object {}}
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      aria-expanded={null}
+      className="panel-collapse collapse"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="domain-form-hdr-margins row"
+        >
+          <div
+            className="col-xs-9"
+          >
+            Adjust fields and their properties. Expand a row to set additional properties.
+          </div>
+          <div
+            className="col-xs-3"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor"
+              target="_blank"
+            >
+              Learn more about this tool
+            </a>
+          </div>
+        </div>
+        <div
+          className="domain-form-no-field-panel panel panel-default"
+        >
+          No fields created yet. Add some using the button below.
+        </div>
+        <div
+          className="domain-add-field-row row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            <div
+              className="form-group"
+            >
+              <div
+                className="domain-form-add-btn"
+              >
+                <span
+                  className="container--action-button btn btn-default"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="fa fa-plus-circle container--addition-icon"
+                  />
+                   Add 
+                  Field
+                </span>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  <div
     className="form-group no-margin-bottom"
   >
     <div
-      className=""
+      className="margin-top"
     >
       <div
         className="pull-left"

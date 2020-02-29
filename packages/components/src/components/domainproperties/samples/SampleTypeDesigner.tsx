@@ -128,6 +128,26 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         return generateId("sampleset-parent-import-alias-");
     }
 
+    static getImportAliasesAsMap(model: SampleTypeModel): Map<string,string> {
+        const {name, parentAliases } = model;
+
+
+        let aliases = {};
+
+        if (parentAliases) {
+            parentAliases.map((alias: IParentAlias) => {
+                const {parentValue} = alias;
+                let value = parentValue.value as string;
+                if (parentValue === NEW_SAMPLE_SET_OPTION)
+                    value = IMPORT_PREFIX + name;
+
+                aliases[alias.alias] = value;
+            });
+        }
+
+        return Map<string,string>(aliases);
+    };
+
     onFieldChange = (newModel: SampleTypeModel) => {
         this.setState(()=>({model:newModel}));
     };
@@ -248,7 +268,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         const details = {
             name,
             nameExpression,
-            importAliases: model.getImportAliasesAsMap().toJS(),
+            importAliases: SampleTypeDesigner.getImportAliasesAsMap(model).toJS(),
         };
 
         if (model.isNew())

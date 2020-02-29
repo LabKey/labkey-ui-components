@@ -82,18 +82,4 @@ export class SampleTypeModel extends Record({
             && !hasInvalidAliases
         );
     }
-
-    getImportAliasesAsMap(): Map<string,string> {
-        const { parentAliases } = this;
-
-        let aliases = {};
-
-        if (parentAliases) {
-            parentAliases.map((alias: IParentAlias) => {
-                aliases[alias.alias] = alias.parentValue.value;
-            });
-        }
-
-        return Map<string,string>(aliases);
-    }
 }

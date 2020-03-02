@@ -47,7 +47,14 @@ export class DataClassModel extends Record({
         }
 
         if (raw.options) {
-            return new DataClassModel({...raw.options, domain});
+            let model = new DataClassModel({...raw.options, domain});
+            if (model.category === null) {
+                model = model.set('category', undefined) as DataClassModel;
+            }
+            if (model.sampleSet === null) {
+                model = model.set('sampleSet', undefined) as DataClassModel;
+            }
+            return model;
         }
 
         return new DataClassModel({...raw, domain});
@@ -68,6 +75,8 @@ export class DataClassModel extends Record({
 
     getOptions(): Object {
         return {
+            rowId: this.rowId,
+            name: this.name,
             description: this.description,
             nameExpression: this.nameExpression,
             category: this.category,

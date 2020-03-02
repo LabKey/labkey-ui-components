@@ -40,7 +40,7 @@ storiesOf('DataClassDesigner', module)
         return <DataClassDesigner
             onCancel={() => console.log('cancel')}
             onComplete={(model) => console.log('complete', model.toJS())}
-            initModel={DataClassModel.create({rowId: 1, name: 'testing1', description: 'testing2', nameExpression: 'DC-${genId}', materialSourceId: 111})}
+            initModel={DataClassModel.create({rowId: 1, name: 'testing1', description: 'testing2', nameExpression: 'DC-${genId}', category: 'sources'})}
             nounSingular={text('nounSingular', 'Source')}
             nounPlural={text('nounPlural', 'Sources')}
             appPropertiesOnly={boolean('appPropertiesOnly', true)}

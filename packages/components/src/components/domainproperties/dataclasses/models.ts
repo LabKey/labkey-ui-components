@@ -24,6 +24,7 @@ export class DataClassModel extends Record({
     nameExpression: undefined,
     description: undefined,
     sampleSet: undefined,
+    category: undefined,
     domain: undefined
 }) {
     rowId: number;
@@ -32,6 +33,7 @@ export class DataClassModel extends Record({
     nameExpression: string;
     description: string;
     sampleSet: number;
+    category: string;
     domain: DomainDesign;
 
     constructor(values?: {[key:string]: any}) {
@@ -51,13 +53,6 @@ export class DataClassModel extends Record({
         return new DataClassModel({...raw, domain});
     }
 
-    // static serialize(model: DataClassModel): any {
-    //     // need to serialize the DomainDesign object to remove the unrecognized fields
-    //     const domain = DomainDesign.serialize(model.domain);
-    //
-    //     return model.merge({domain}).toJS();
-    // }
-
     isNew(): boolean {
         return !this.rowId;
     }
@@ -75,6 +70,7 @@ export class DataClassModel extends Record({
         return {
             description: this.description,
             nameExpression: this.nameExpression,
+            category: this.category,
             sampleSet: this.sampleSet
         }
     }

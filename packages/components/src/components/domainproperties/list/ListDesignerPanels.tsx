@@ -19,23 +19,23 @@ import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { Progress } from "../../base/Progress";
 
 interface Props {
-    initModel: ListModel
+    initModel?: ListModel
     onChange?: (model: ListModel) => void
     onCancel: () => void
     onComplete: (model: ListModel, fileImportError?: string) => void
     useTheme?: boolean
-    containerTop?: number
+    containerTop?: number // This sets the top of the sticky header, default is 0
     successBsStyle?: string
 }
 
 interface State {
-    model?: ListModel;
-    submitting?: boolean;
-    currentPanelIndex?: number;
-    visitedPanels?: List<number>;
-    validatePanel?: number;
-    firstState?: boolean;
-    fileImportData?: File;
+    model: ListModel;
+    submitting: boolean;
+    currentPanelIndex: number;
+    visitedPanels: List<number>;
+    validatePanel: number;
+    firstState: boolean;
+    fileImportData: File;
 }
 
 export class ListDesignerPanels extends React.PureComponent<Props, State> {
@@ -49,6 +49,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
             visitedPanels: List<number>(),
             validatePanel: undefined,
             firstState: true,
+            fileImportData: undefined
         };
     }
 
@@ -135,12 +136,8 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
 
         // This first setState forces the current expanded panel to validate its fields and display and errors
         // the callback setState then sets that to undefined so it doesn't keep validating every render
-        this.setState(
-            state => ({ validatePanel: state.currentPanelIndex, visitedPanels: updatedVisitedPanels }),
-            () => {
-                this.setState(
-                    () => ({ validatePanel: undefined }),
-                    () => {
+        this.setState((state) => ({ validatePanel: state.currentPanelIndex, visitedPanels: updatedVisitedPanels }), () => {
+                this.setState(() => ({ validatePanel: undefined }), () => {
                     if (this.isValid()) {
                         this.setState(() => ({ submitting: true }));
 
@@ -248,7 +245,8 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                         className="pull-right"
                         bsStyle={successBsStyle || 'success'}
                         disabled={submitting}
-                        onClick={this.onFinish}>
+                        onClick={this.onFinish}
+                    >
                         Save
                     </Button>
                 </div>

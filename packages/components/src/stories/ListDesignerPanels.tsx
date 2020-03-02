@@ -82,12 +82,12 @@ class WrappedNew extends React.Component<any, any> {
 
 storiesOf("ListDesignerPanels", module)
     .addDecorator(withKnobs)
-    .add("new list", () => {
+    .add("ListDesignerPanels - create", () => {
         return (
             <WrappedNew data={DEFAULT_LIST_SETTINGS}/>
         )
     })
-    .add("with existing list", () => {
+    .add("ListDesignerPanels - update", () => {
         return (
             <Wrapped data={getDomainDetailsJSON}/>
         )

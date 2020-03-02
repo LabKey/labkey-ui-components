@@ -20,6 +20,7 @@ const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
 const FORM_IDS = {
+    CATEGORY: ENTITY_FORM_ID_PREFIX + 'category',
     SAMPLE_SET_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet'
 };
 
@@ -143,7 +144,33 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                         showLabel={false}
                         preLoad={true}
                         onQSChange={this.onChange}
-                        value={model.sampleSet} // TODO this isn't loading with initial value selected in update case (at least not in storybook)
+                        value={model.sampleSet}
+                    />
+                </Col>
+            </Row>
+        )
+    }
+
+    renderCategorySelect() {
+        const { model } = this.props;
+
+        return (
+            <Row>
+                <Col xs={3}>
+                    Category
+                </Col>
+                <Col xs={9}>
+                    <QuerySelect
+                        componentId={FORM_IDS.CATEGORY}
+                        name={FORM_IDS.CATEGORY}
+                        schemaQuery={SCHEMAS.EXP_TABLES.DATA_CLASS_CATEGORY_TYPE}
+                        displayColumn={'Value'}
+                        valueColumn={'Value'}
+                        formsy={false}
+                        showLabel={false}
+                        preLoad={true}
+                        onQSChange={this.onChange}
+                        value={model.category}
                     />
                 </Col>
             </Row>
@@ -179,7 +206,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                         <Row className={'margin-bottom'}>
                             {headerText &&
                                 <Col xs={9}>
-                                    <div className={'entity-form--headerhelp'}>{headerText}</div>}
+                                    <div className={'entity-form--headerhelp'}>{headerText}</div>
                                 </Col>
                             }
                             <Col xs={headerText ? 3 : 12}>
@@ -193,6 +220,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                             nameExpressionInfoUrl={nameExpressionInfoUrl}
                             nameExpressionPlaceholder={nameExpressionPlaceholder}
                         />
+                        {!appPropertiesOnly && this.renderCategorySelect()}
                         {!appPropertiesOnly && this.renderSampleSetSelect()}
                     </Panel.Body>
                 </Panel>

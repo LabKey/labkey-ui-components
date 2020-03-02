@@ -8,44 +8,41 @@ import {
     DescriptionInput,
     NameInput
 } from "./ListPropertiesPanelFormElements";
-import toJson from 'enzyme-to-json';
 import getDomainDetailsJSON from '../../../test/data/property-getDomainDetails.json';
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
+import renderer from "react-test-renderer";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 
 describe('BasicPropertiesFields', () => {
-
     test('new list, default properties', () => {
-        const basicPropertiesFields = mount(
+        const basicPropertiesFields =
             <BasicPropertiesFields
                 model={emptyNewModel}
-                onInputChange={() => {}}
-            />
-        );
+                onInputChange={jest.fn()}
+            />;
 
-        expect(toJson(basicPropertiesFields)).toMatchSnapshot();
-        basicPropertiesFields.unmount();
+        const tree = renderer.create(basicPropertiesFields).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     test('existing list, existing properties', () => {
-        const basicPropertiesFields = mount(
+        const basicPropertiesFields =
             <BasicPropertiesFields
                 model={populatedExistingModel}
-                onInputChange={() => {}}
-            />
-        );
+                onInputChange={jest.fn()}
+            />;
 
-        expect(toJson(basicPropertiesFields)).toMatchSnapshot();
-        basicPropertiesFields.unmount();
+        const tree = renderer.create(basicPropertiesFields).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     test("visible basic properties", () => {
         const basicPropertiesFields = mount(
             <BasicPropertiesFields
                 model={populatedExistingModel}
-                onInputChange={() => {}}
+                onInputChange={jest.fn()}
             />
         );
 
@@ -59,34 +56,32 @@ describe('BasicPropertiesFields', () => {
 describe('AllowableActions', () => {
 
     test('new list, default properties', () => {
-        const allowableActions = mount(
+        const allowableActions =
             <AllowableActions
                 model={emptyNewModel}
-                onCheckBoxChange={() => {}}
-            />
-        );
+                onCheckBoxChange={jest.fn()}
+            />;
 
-        expect(toJson(allowableActions)).toMatchSnapshot();
-        allowableActions.unmount();
+        const tree = renderer.create(allowableActions).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     test('existing list, existing properties', () => {
-        const allowableActions = mount(
+        const allowableActions =
             <AllowableActions
                 model={populatedExistingModel}
-                onCheckBoxChange={() => {}}
-            />
-        );
+                onCheckBoxChange={jest.fn()}
+            />;
 
-        expect(toJson(allowableActions)).toMatchSnapshot();
-        allowableActions.unmount();
+        const tree = renderer.create(allowableActions).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     test("visible AllowableActions", () => {
         const allowableActions = mount(
             <AllowableActions
                 model={populatedExistingModel}
-                onCheckBoxChange={() => {}}
+                onCheckBoxChange={jest.fn()}
             />
         );
 

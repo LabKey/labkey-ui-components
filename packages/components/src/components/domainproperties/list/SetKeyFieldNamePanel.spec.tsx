@@ -1,49 +1,61 @@
 import {ListModel} from "./models";
 import {mount} from "enzyme";
-import toJson from 'enzyme-to-json';
 import React from "react";
 import {SetKeyFieldNamePanel} from "./SetKeyFieldNamePanel";
 import getDomainDetailsJSON from "../../../test/data/property-getDomainDetails.json";
 import getDomainDetailsWithAutoIncPKJSON from "../../../test/data/property-getDomainDetails-withAutoIntPK.json";
+import renderer from "react-test-renderer";
+import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
 
+const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 const populatedExitingModelWithAutoIncPK = ListModel.create(getDomainDetailsWithAutoIncPKJSON);
 
 describe('SetKeyFieldNamePanel', () => {
-
     test('new list, default properties', () => {
-        const setKeyFieldNamePanel = mount(
+        const setKeyFieldNamePanel =
+            <SetKeyFieldNamePanel
+                model={emptyNewModel}
+                onModelChange={jest.fn()}
+                domain={emptyNewModel.domain}
+                domainIndex={1}
+            />;
+
+        const tree = renderer.create(setKeyFieldNamePanel).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('existing list, given properties', () => {
+        const setKeyFieldNamePanel =
             <SetKeyFieldNamePanel
                 model={populatedExistingModel}
-                onModelChange={(model: ListModel) => {}}
+                onModelChange={jest.fn()}
                 domain={populatedExistingModel.domain}
                 domainIndex={1}
-            />
-        );
+            />;
 
-        expect(toJson(setKeyFieldNamePanel)).toMatchSnapshot();
-        setKeyFieldNamePanel.unmount();
+        const tree = renderer.create(setKeyFieldNamePanel).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     test("list with auto integer key", () => {
-        const setKeyFieldNamePanel = mount(
+        const setKeyFieldNamePanel =
             <SetKeyFieldNamePanel
                 model={populatedExitingModelWithAutoIncPK}
-                onModelChange={(model: ListModel) => {}}
+                onModelChange={jest.fn()}
                 domain={populatedExistingModel.domain}
                 domainIndex={1}
-            />
-        );
+            />;
 
-        expect(toJson(setKeyFieldNamePanel)).toMatchSnapshot();
-        setKeyFieldNamePanel.unmount();
+        const tree = renderer.create(setKeyFieldNamePanel).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     test("key fields that are unnamed, or are not of string or int dataType, are invalid", () => {
         const setKeyFieldNamePanel = mount(
             <SetKeyFieldNamePanel
                 model={populatedExistingModel}
-                onModelChange={(model: ListModel) => {}}
+                onModelChange={jest.fn()}
                 domain={populatedExistingModel.domain}
                 domainIndex={1}
             />
@@ -66,5 +78,6 @@ describe('SetKeyFieldNamePanel', () => {
         expect(selectOptionsText).not.toContain('Occupation');
         expect(selectOptionsText).not.toContain('BirthDate');
         expect(selectOptionsText).not.toContain('CartoonAvailable');
+        setKeyFieldNamePanel.unmount();
     });
 });

@@ -1148,8 +1148,8 @@ exports[`ListDesignerPanel existing list 1`] = `
       "containerPath": "/Tutorials/Lists",
     }
   }
-  onCancel={[Function]}
-  onComplete={[Function]}
+  onCancel={[MockFunction]}
+  onComplete={[MockFunction]}
 >
   <ListPropertiesPanel
     controlledCollapse={true}
@@ -43851,12 +43851,12 @@ exports[`ListDesignerPanel existing list 1`] = `
       bsClass="btn"
       bsStyle="default"
       disabled={false}
-      onClick={[Function]}
+      onClick={[MockFunction]}
     >
       <button
         className="btn btn-default"
         disabled={false}
-        onClick={[Function]}
+        onClick={[MockFunction]}
         type="button"
       >
         Cancel
@@ -43949,1819 +43949,441 @@ exports[`ListDesignerPanel existing list 1`] = `
 `;
 
 exports[`ListDesignerPanel new list 1`] = `
-<ListDesignerPanels
-  initModel={
-    Immutable.Record {
-      "exception": undefined,
-      "domain": Immutable.Record {
-        "name": undefined,
-        "container": undefined,
-        "description": undefined,
-        "domainURI": undefined,
-        "domainId": null,
-        "allowFileLinkProperties": true,
-        "allowAttachmentProperties": true,
-        "allowFlagProperties": true,
-        "showDefaultValueSettings": false,
-        "defaultDefaultValueType": undefined,
-        "defaultValueOptions": Immutable.List [],
-        "fields": Immutable.List [],
-        "indices": Immutable.List [],
-        "domainException": undefined,
-        "mandatoryFieldNames": Immutable.List [],
-        "reservedFieldNames": Immutable.List [],
-        "newDesignFields": undefined,
-        "instructions": undefined,
-      },
-      "entityId": undefined,
-      "createdBy": undefined,
-      "created": undefined,
-      "modifiedBy": undefined,
-      "modified": undefined,
-      "containerId": undefined,
-      "name": null,
-      "description": null,
-      "lastIndexed": null,
-      "keyName": null,
-      "titleColumn": null,
-      "domainId": 0,
-      "keyType": null,
-      "discussionSetting": 0,
-      "allowDelete": true,
-      "allowUpload": true,
-      "allowExport": true,
-      "entireListIndex": false,
-      "entireListIndexSetting": 0,
-      "entireListTitleTemplate": "",
-      "entireListBodySetting": 0,
-      "entireListBodyTemplate": null,
-      "eachItemIndex": false,
-      "eachItemTitleTemplate": "",
-      "eachItemBodySetting": 0,
-      "eachItemBodyTemplate": null,
-      "fileAttachmentIndex": false,
-      "listId": 0,
-      "discussionSettingEnum": undefined,
-      "containerPath": undefined,
-    }
-  }
-  onCancel={[Function]}
-  onComplete={[Function]}
->
-  <ListPropertiesPanel
-    controlledCollapse={true}
-    initCollapsed={false}
-    model={
-      Immutable.Record {
-        "exception": undefined,
-        "domain": Immutable.Record {
-          "name": undefined,
-          "container": undefined,
-          "description": undefined,
-          "domainURI": undefined,
-          "domainId": null,
-          "allowFileLinkProperties": true,
-          "allowAttachmentProperties": true,
-          "allowFlagProperties": true,
-          "showDefaultValueSettings": false,
-          "defaultDefaultValueType": undefined,
-          "defaultValueOptions": Immutable.List [],
-          "fields": Immutable.List [],
-          "indices": Immutable.List [],
-          "domainException": undefined,
-          "mandatoryFieldNames": Immutable.List [],
-          "reservedFieldNames": Immutable.List [],
-          "newDesignFields": undefined,
-          "instructions": undefined,
-        },
-        "entityId": undefined,
-        "createdBy": undefined,
-        "created": undefined,
-        "modifiedBy": undefined,
-        "modified": undefined,
-        "containerId": undefined,
-        "name": null,
-        "description": null,
-        "lastIndexed": null,
-        "keyName": null,
-        "titleColumn": null,
-        "domainId": 0,
-        "keyType": null,
-        "discussionSetting": 0,
-        "allowDelete": true,
-        "allowUpload": true,
-        "allowExport": true,
-        "entireListIndex": false,
-        "entireListIndexSetting": 0,
-        "entireListTitleTemplate": "",
-        "entireListBodySetting": 0,
-        "entireListBodyTemplate": null,
-        "eachItemIndex": false,
-        "eachItemTitleTemplate": "",
-        "eachItemBodySetting": 0,
-        "eachItemBodyTemplate": null,
-        "fileAttachmentIndex": false,
-        "listId": 0,
-        "discussionSettingEnum": undefined,
-        "containerPath": undefined,
-      }
-    }
-    onChange={[Function]}
-    onToggle={[Function]}
-    panelStatus="NONE"
-    validate={false}
+Array [
+  <div
+    className="domain-form-panel domain-panel-no-theme panel panel-default"
   >
-    <DomainPropertiesPanelProvider
-      controlledCollapse={true}
-      initCollapsed={false}
-      onToggle={[Function]}
+    <div
+      className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+      id="list-properties-hdr"
+      onClick={[Function]}
     >
-      <ListPropertiesPanelImpl
-        controlledCollapse={true}
-        initCollapsed={false}
-        model={
-          Immutable.Record {
-            "exception": undefined,
-            "domain": Immutable.Record {
-              "name": undefined,
-              "container": undefined,
-              "description": undefined,
-              "domainURI": undefined,
-              "domainId": null,
-              "allowFileLinkProperties": true,
-              "allowAttachmentProperties": true,
-              "allowFlagProperties": true,
-              "showDefaultValueSettings": false,
-              "defaultDefaultValueType": undefined,
-              "defaultValueOptions": Immutable.List [],
-              "fields": Immutable.List [],
-              "indices": Immutable.List [],
-              "domainException": undefined,
-              "mandatoryFieldNames": Immutable.List [],
-              "reservedFieldNames": Immutable.List [],
-              "newDesignFields": undefined,
-              "instructions": undefined,
-            },
-            "entityId": undefined,
-            "createdBy": undefined,
-            "created": undefined,
-            "modifiedBy": undefined,
-            "modified": undefined,
-            "containerId": undefined,
-            "name": null,
-            "description": null,
-            "lastIndexed": null,
-            "keyName": null,
-            "titleColumn": null,
-            "domainId": 0,
-            "keyType": null,
-            "discussionSetting": 0,
-            "allowDelete": true,
-            "allowUpload": true,
-            "allowExport": true,
-            "entireListIndex": false,
-            "entireListIndexSetting": 0,
-            "entireListTitleTemplate": "",
-            "entireListBodySetting": 0,
-            "entireListBodyTemplate": null,
-            "eachItemIndex": false,
-            "eachItemTitleTemplate": "",
-            "eachItemBodySetting": 0,
-            "eachItemBodyTemplate": null,
-            "fileAttachmentIndex": false,
-            "listId": 0,
-            "discussionSettingEnum": undefined,
-            "containerPath": undefined,
-          }
-        }
-        onChange={[Function]}
-        onToggle={[Function]}
-        panelStatus="NONE"
-        validate={false}
+      <span
+        className="domain-panel-title"
       >
-        <Uncontrolled(Panel)
-          className="domain-form-panel domain-panel-no-theme"
-          expanded={true}
-          onToggle={[Function]}
+        List Properties
+      </span>
+      <span
+        className="pull-right"
+      >
+        <svg
+          aria-hidden="true"
+          className="svg-inline--fa fa-minus-square fa-w-14 fa-lg domain-form-collapse-btn"
+          data-icon="minus-square"
+          data-prefix="fas"
+          focusable="false"
+          role="img"
+          style={Object {}}
+          viewBox="0 0 448 512"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <Panel
-            bsClass="panel"
-            bsStyle="default"
-            className="domain-form-panel domain-panel-no-theme"
-            expanded={true}
-            onToggle={[Function]}
+          <path
+            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM92 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H92z"
+            fill="currentColor"
+            style={Object {}}
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      aria-expanded={null}
+      className="panel-collapse collapse in"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="col-xs-12"
           >
             <div
-              className="domain-form-panel domain-panel-no-theme panel panel-default"
+              className="row"
             >
-              <CollapsiblePanelHeader
-                collapsed={false}
-                controlledCollapse={true}
-                iconHelpMsg="Contains errors or is missing required values."
-                id="list-properties-hdr"
-                isValid={true}
-                panelStatus="NONE"
-                title="List Properties"
-                titlePrefix={null}
-                togglePanel={[Function]}
+              <div
+                className="col-xs-12"
               >
-                <PanelHeading
-                  bsClass="panel"
-                  className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme"
-                  componentClass="div"
-                  id="list-properties-hdr"
+                <a
+                  className="domain-field-float-right"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createListOptions"
+                  target="_blank"
+                >
+                  Learn more about designing lists
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form
+          className=""
+        >
+          <div
+            className="col-md-7 col-xs-12"
+          >
+            <div
+              className="domain-field-section-heading"
+            >
+              Basic Properties
+            </div>
+            <div
+              className="margin-top row"
+            >
+              <div
+                className="col-lg-4 col-xs-3"
+              >
+                Name *
+              </div>
+              <div
+                className="col-lg-8 col-xs-9"
+              >
+                <input
+                  className="form-control"
+                  id="name"
+                  onChange={[Function]}
+                  placeholder="Enter a name for this list"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              className="margin-top row"
+            >
+              <div
+                className="col-lg-4 col-xs-3"
+              >
+                Description
+              </div>
+              <div
+                className="col-lg-8 col-xs-9"
+              >
+                <textarea
+                  className="form-control textarea-noresize"
+                  id="description"
+                  onChange={[Function]}
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-md-3 col-xs-12"
+          >
+            <div
+              className="domain-field-section-heading"
+            >
+              Allow these Actions
+            </div>
+            <div
+              className="list__properties__allowable-actions"
+            >
+              <div
+                className="list__properties__checkbox-row"
+              >
+                <span
+                  className="list__properties__checkbox--no-highlight"
                   onClick={[Function]}
                 >
-                  <div
-                    className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                    id="list-properties-hdr"
-                    onClick={[Function]}
+                  <svg
+                    aria-hidden="true"
+                    className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                    color="#0073BB"
+                    data-icon="check-square"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    style={Object {}}
+                    viewBox="0 0 448 512"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <span
-                      className="domain-panel-title"
-                    >
-                      List Properties
-                    </span>
-                    <span
-                      className="pull-right"
-                    >
-                      <FontAwesomeIcon
-                        border={false}
-                        className="domain-form-collapse-btn"
-                        fixedWidth={false}
-                        flip={null}
-                        icon={
-                          Object {
-                            "icon": Array [
-                              448,
-                              512,
-                              Array [],
-                              "f146",
-                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM92 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H92z",
-                            ],
-                            "iconName": "minus-square",
-                            "prefix": "fas",
-                          }
-                        }
-                        inverse={false}
-                        listItem={false}
-                        mask={null}
-                        pull={null}
-                        pulse={false}
-                        rotation={null}
-                        size="lg"
-                        spin={false}
-                        symbol={false}
-                        title=""
-                        transform={null}
-                      >
-                        <svg
-                          aria-hidden="true"
-                          className="svg-inline--fa fa-minus-square fa-w-14 fa-lg domain-form-collapse-btn"
-                          data-icon="minus-square"
-                          data-prefix="fas"
-                          focusable="false"
-                          role="img"
-                          style={Object {}}
-                          viewBox="0 0 448 512"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM92 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H92z"
-                            fill="currentColor"
-                            style={Object {}}
-                          />
-                        </svg>
-                      </FontAwesomeIcon>
-                    </span>
-                  </div>
-                </PanelHeading>
-              </CollapsiblePanelHeader>
-              <PanelBody
-                bsClass="panel"
-                collapsible={true}
-              >
-                <PanelCollapse
-                  bsClass="panel"
+                    <path
+                      d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                      fill="currentColor"
+                      style={Object {}}
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="list__properties__checkbox-text"
                 >
-                  <Collapse
-                    appear={false}
-                    dimension="height"
-                    getDimensionValue={[Function]}
-                    in={true}
-                    mountOnEnter={false}
-                    timeout={300}
-                    unmountOnExit={false}
+                  Delete
+                </span>
+              </div>
+              <div
+                className="list__properties__checkbox-row"
+              >
+                <span
+                  className="list__properties__checkbox--no-highlight"
+                  onClick={[Function]}
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                    color="#0073BB"
+                    data-icon="check-square"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    style={Object {}}
+                    viewBox="0 0 448 512"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <Transition
-                      appear={false}
-                      aria-expanded={null}
-                      enter={true}
-                      exit={true}
-                      in={true}
-                      mountOnEnter={false}
-                      onEnter={[Function]}
-                      onEntered={[Function]}
-                      onEntering={[Function]}
-                      onExit={[Function]}
-                      onExited={[Function]}
-                      onExiting={[Function]}
-                      timeout={300}
-                      unmountOnExit={false}
-                    >
-                      <div
-                        aria-expanded={null}
-                        className="panel-collapse collapse in"
-                      >
-                        <div
-                          className="panel-body"
-                        >
-                          <Row
-                            bsClass="row"
-                            className="margin-bottom"
-                            componentClass="div"
-                          >
-                            <div
-                              className="margin-bottom row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                >
-                                  <HelpTopicURL
-                                    helpTopic="createListOptions"
-                                    nounPlural="lists"
-                                  >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
-                                    >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <a
-                                              className="domain-field-float-right"
-                                              href="https://www.labkey.org/Documentation/wiki-page.view?name=createListOptions"
-                                              target="_blank"
-                                            >
-                                              Learn more about designing lists
-                                            </a>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
-                                  </HelpTopicURL>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
-                          <Form
-                            bsClass="form"
-                            componentClass="form"
-                            horizontal={false}
-                            inline={false}
-                          >
-                            <form
-                              className=""
-                            >
-                              <BasicPropertiesFields
-                                model={
-                                  Immutable.Record {
-                                    "exception": undefined,
-                                    "domain": Immutable.Record {
-                                      "name": undefined,
-                                      "container": undefined,
-                                      "description": undefined,
-                                      "domainURI": undefined,
-                                      "domainId": null,
-                                      "allowFileLinkProperties": true,
-                                      "allowAttachmentProperties": true,
-                                      "allowFlagProperties": true,
-                                      "showDefaultValueSettings": false,
-                                      "defaultDefaultValueType": undefined,
-                                      "defaultValueOptions": Immutable.List [],
-                                      "fields": Immutable.List [],
-                                      "indices": Immutable.List [],
-                                      "domainException": undefined,
-                                      "mandatoryFieldNames": Immutable.List [],
-                                      "reservedFieldNames": Immutable.List [],
-                                      "newDesignFields": undefined,
-                                      "instructions": undefined,
-                                    },
-                                    "entityId": undefined,
-                                    "createdBy": undefined,
-                                    "created": undefined,
-                                    "modifiedBy": undefined,
-                                    "modified": undefined,
-                                    "containerId": undefined,
-                                    "name": null,
-                                    "description": null,
-                                    "lastIndexed": null,
-                                    "keyName": null,
-                                    "titleColumn": null,
-                                    "domainId": 0,
-                                    "keyType": null,
-                                    "discussionSetting": 0,
-                                    "allowDelete": true,
-                                    "allowUpload": true,
-                                    "allowExport": true,
-                                    "entireListIndex": false,
-                                    "entireListIndexSetting": 0,
-                                    "entireListTitleTemplate": "",
-                                    "entireListBodySetting": 0,
-                                    "entireListBodyTemplate": null,
-                                    "eachItemIndex": false,
-                                    "eachItemTitleTemplate": "",
-                                    "eachItemBodySetting": 0,
-                                    "eachItemBodyTemplate": null,
-                                    "fileAttachmentIndex": false,
-                                    "listId": 0,
-                                    "discussionSettingEnum": undefined,
-                                    "containerPath": undefined,
-                                  }
-                                }
-                                onInputChange={[Function]}
-                              >
-                                <Col
-                                  bsClass="col"
-                                  componentClass="div"
-                                  md={7}
-                                  xs={12}
-                                >
-                                  <div
-                                    className="col-md-7 col-xs-12"
-                                  >
-                                    <BasicPropertiesTitle
-                                      title="Basic Properties"
-                                    >
-                                      <div
-                                        className="domain-field-section-heading"
-                                      >
-                                        Basic Properties
-                                      </div>
-                                    </BasicPropertiesTitle>
-                                    <NameInput
-                                      model={
-                                        Immutable.Record {
-                                          "exception": undefined,
-                                          "domain": Immutable.Record {
-                                            "name": undefined,
-                                            "container": undefined,
-                                            "description": undefined,
-                                            "domainURI": undefined,
-                                            "domainId": null,
-                                            "allowFileLinkProperties": true,
-                                            "allowAttachmentProperties": true,
-                                            "allowFlagProperties": true,
-                                            "showDefaultValueSettings": false,
-                                            "defaultDefaultValueType": undefined,
-                                            "defaultValueOptions": Immutable.List [],
-                                            "fields": Immutable.List [],
-                                            "indices": Immutable.List [],
-                                            "domainException": undefined,
-                                            "mandatoryFieldNames": Immutable.List [],
-                                            "reservedFieldNames": Immutable.List [],
-                                            "newDesignFields": undefined,
-                                            "instructions": undefined,
-                                          },
-                                          "entityId": undefined,
-                                          "createdBy": undefined,
-                                          "created": undefined,
-                                          "modifiedBy": undefined,
-                                          "modified": undefined,
-                                          "containerId": undefined,
-                                          "name": null,
-                                          "description": null,
-                                          "lastIndexed": null,
-                                          "keyName": null,
-                                          "titleColumn": null,
-                                          "domainId": 0,
-                                          "keyType": null,
-                                          "discussionSetting": 0,
-                                          "allowDelete": true,
-                                          "allowUpload": true,
-                                          "allowExport": true,
-                                          "entireListIndex": false,
-                                          "entireListIndexSetting": 0,
-                                          "entireListTitleTemplate": "",
-                                          "entireListBodySetting": 0,
-                                          "entireListBodyTemplate": null,
-                                          "eachItemIndex": false,
-                                          "eachItemTitleTemplate": "",
-                                          "eachItemBodySetting": 0,
-                                          "eachItemBodyTemplate": null,
-                                          "fileAttachmentIndex": false,
-                                          "listId": 0,
-                                          "discussionSettingEnum": undefined,
-                                          "containerPath": undefined,
-                                        }
-                                      }
-                                      onInputChange={[Function]}
-                                    >
-                                      <Row
-                                        bsClass="row"
-                                        className="margin-top"
-                                        componentClass="div"
-                                      >
-                                        <div
-                                          className="margin-top row"
-                                        >
-                                          <Col
-                                            bsClass="col"
-                                            componentClass="div"
-                                            lg={4}
-                                            xs={3}
-                                          >
-                                            <div
-                                              className="col-lg-4 col-xs-3"
-                                            >
-                                              Name *
-                                            </div>
-                                          </Col>
-                                          <Col
-                                            bsClass="col"
-                                            componentClass="div"
-                                            lg={8}
-                                            xs={9}
-                                          >
-                                            <div
-                                              className="col-lg-8 col-xs-9"
-                                            >
-                                              <FormControl
-                                                bsClass="form-control"
-                                                componentClass="input"
-                                                id="name"
-                                                onChange={[Function]}
-                                                placeholder="Enter a name for this list"
-                                                type="text"
-                                                value=""
-                                              >
-                                                <input
-                                                  className="form-control"
-                                                  id="name"
-                                                  onChange={[Function]}
-                                                  placeholder="Enter a name for this list"
-                                                  type="text"
-                                                  value=""
-                                                />
-                                              </FormControl>
-                                            </div>
-                                          </Col>
-                                        </div>
-                                      </Row>
-                                    </NameInput>
-                                    <DescriptionInput
-                                      model={
-                                        Immutable.Record {
-                                          "exception": undefined,
-                                          "domain": Immutable.Record {
-                                            "name": undefined,
-                                            "container": undefined,
-                                            "description": undefined,
-                                            "domainURI": undefined,
-                                            "domainId": null,
-                                            "allowFileLinkProperties": true,
-                                            "allowAttachmentProperties": true,
-                                            "allowFlagProperties": true,
-                                            "showDefaultValueSettings": false,
-                                            "defaultDefaultValueType": undefined,
-                                            "defaultValueOptions": Immutable.List [],
-                                            "fields": Immutable.List [],
-                                            "indices": Immutable.List [],
-                                            "domainException": undefined,
-                                            "mandatoryFieldNames": Immutable.List [],
-                                            "reservedFieldNames": Immutable.List [],
-                                            "newDesignFields": undefined,
-                                            "instructions": undefined,
-                                          },
-                                          "entityId": undefined,
-                                          "createdBy": undefined,
-                                          "created": undefined,
-                                          "modifiedBy": undefined,
-                                          "modified": undefined,
-                                          "containerId": undefined,
-                                          "name": null,
-                                          "description": null,
-                                          "lastIndexed": null,
-                                          "keyName": null,
-                                          "titleColumn": null,
-                                          "domainId": 0,
-                                          "keyType": null,
-                                          "discussionSetting": 0,
-                                          "allowDelete": true,
-                                          "allowUpload": true,
-                                          "allowExport": true,
-                                          "entireListIndex": false,
-                                          "entireListIndexSetting": 0,
-                                          "entireListTitleTemplate": "",
-                                          "entireListBodySetting": 0,
-                                          "entireListBodyTemplate": null,
-                                          "eachItemIndex": false,
-                                          "eachItemTitleTemplate": "",
-                                          "eachItemBodySetting": 0,
-                                          "eachItemBodyTemplate": null,
-                                          "fileAttachmentIndex": false,
-                                          "listId": 0,
-                                          "discussionSettingEnum": undefined,
-                                          "containerPath": undefined,
-                                        }
-                                      }
-                                      onInputChange={[Function]}
-                                    >
-                                      <Row
-                                        bsClass="row"
-                                        className="margin-top"
-                                        componentClass="div"
-                                      >
-                                        <div
-                                          className="margin-top row"
-                                        >
-                                          <Col
-                                            bsClass="col"
-                                            componentClass="div"
-                                            lg={4}
-                                            xs={3}
-                                          >
-                                            <div
-                                              className="col-lg-4 col-xs-3"
-                                            >
-                                              Description
-                                            </div>
-                                          </Col>
-                                          <Col
-                                            bsClass="col"
-                                            componentClass="div"
-                                            lg={8}
-                                            xs={9}
-                                          >
-                                            <div
-                                              className="col-lg-8 col-xs-9"
-                                            >
-                                              <textarea
-                                                className="form-control textarea-noresize"
-                                                id="description"
-                                                onChange={[Function]}
-                                                value=""
-                                              />
-                                            </div>
-                                          </Col>
-                                        </div>
-                                      </Row>
-                                    </DescriptionInput>
-                                  </div>
-                                </Col>
-                              </BasicPropertiesFields>
-                              <AllowableActions
-                                model={
-                                  Immutable.Record {
-                                    "exception": undefined,
-                                    "domain": Immutable.Record {
-                                      "name": undefined,
-                                      "container": undefined,
-                                      "description": undefined,
-                                      "domainURI": undefined,
-                                      "domainId": null,
-                                      "allowFileLinkProperties": true,
-                                      "allowAttachmentProperties": true,
-                                      "allowFlagProperties": true,
-                                      "showDefaultValueSettings": false,
-                                      "defaultDefaultValueType": undefined,
-                                      "defaultValueOptions": Immutable.List [],
-                                      "fields": Immutable.List [],
-                                      "indices": Immutable.List [],
-                                      "domainException": undefined,
-                                      "mandatoryFieldNames": Immutable.List [],
-                                      "reservedFieldNames": Immutable.List [],
-                                      "newDesignFields": undefined,
-                                      "instructions": undefined,
-                                    },
-                                    "entityId": undefined,
-                                    "createdBy": undefined,
-                                    "created": undefined,
-                                    "modifiedBy": undefined,
-                                    "modified": undefined,
-                                    "containerId": undefined,
-                                    "name": null,
-                                    "description": null,
-                                    "lastIndexed": null,
-                                    "keyName": null,
-                                    "titleColumn": null,
-                                    "domainId": 0,
-                                    "keyType": null,
-                                    "discussionSetting": 0,
-                                    "allowDelete": true,
-                                    "allowUpload": true,
-                                    "allowExport": true,
-                                    "entireListIndex": false,
-                                    "entireListIndexSetting": 0,
-                                    "entireListTitleTemplate": "",
-                                    "entireListBodySetting": 0,
-                                    "entireListBodyTemplate": null,
-                                    "eachItemIndex": false,
-                                    "eachItemTitleTemplate": "",
-                                    "eachItemBodySetting": 0,
-                                    "eachItemBodyTemplate": null,
-                                    "fileAttachmentIndex": false,
-                                    "listId": 0,
-                                    "discussionSettingEnum": undefined,
-                                    "containerPath": undefined,
-                                  }
-                                }
-                                onCheckBoxChange={[Function]}
-                              >
-                                <Col
-                                  bsClass="col"
-                                  componentClass="div"
-                                  md={3}
-                                  xs={12}
-                                >
-                                  <div
-                                    className="col-md-3 col-xs-12"
-                                  >
-                                    <BasicPropertiesTitle
-                                      title="Allow these Actions"
-                                    >
-                                      <div
-                                        className="domain-field-section-heading"
-                                      >
-                                        Allow these Actions
-                                      </div>
-                                    </BasicPropertiesTitle>
-                                    <AllowableActionContainer
-                                      model={
-                                        Immutable.Record {
-                                          "exception": undefined,
-                                          "domain": Immutable.Record {
-                                            "name": undefined,
-                                            "container": undefined,
-                                            "description": undefined,
-                                            "domainURI": undefined,
-                                            "domainId": null,
-                                            "allowFileLinkProperties": true,
-                                            "allowAttachmentProperties": true,
-                                            "allowFlagProperties": true,
-                                            "showDefaultValueSettings": false,
-                                            "defaultDefaultValueType": undefined,
-                                            "defaultValueOptions": Immutable.List [],
-                                            "fields": Immutable.List [],
-                                            "indices": Immutable.List [],
-                                            "domainException": undefined,
-                                            "mandatoryFieldNames": Immutable.List [],
-                                            "reservedFieldNames": Immutable.List [],
-                                            "newDesignFields": undefined,
-                                            "instructions": undefined,
-                                          },
-                                          "entityId": undefined,
-                                          "createdBy": undefined,
-                                          "created": undefined,
-                                          "modifiedBy": undefined,
-                                          "modified": undefined,
-                                          "containerId": undefined,
-                                          "name": null,
-                                          "description": null,
-                                          "lastIndexed": null,
-                                          "keyName": null,
-                                          "titleColumn": null,
-                                          "domainId": 0,
-                                          "keyType": null,
-                                          "discussionSetting": 0,
-                                          "allowDelete": true,
-                                          "allowUpload": true,
-                                          "allowExport": true,
-                                          "entireListIndex": false,
-                                          "entireListIndexSetting": 0,
-                                          "entireListTitleTemplate": "",
-                                          "entireListBodySetting": 0,
-                                          "entireListBodyTemplate": null,
-                                          "eachItemIndex": false,
-                                          "eachItemTitleTemplate": "",
-                                          "eachItemBodySetting": 0,
-                                          "eachItemBodyTemplate": null,
-                                          "fileAttachmentIndex": false,
-                                          "listId": 0,
-                                          "discussionSettingEnum": undefined,
-                                          "containerPath": undefined,
-                                        }
-                                      }
-                                      onCheckBoxChange={[Function]}
-                                    >
-                                      <div
-                                        className="list__properties__allowable-actions"
-                                      >
-                                        <CheckBoxRow
-                                          checked={true}
-                                          name="allowDelete"
-                                          onCheckBoxChange={[Function]}
-                                          text="Delete"
-                                        >
-                                          <div
-                                            className="list__properties__checkbox-row"
-                                          >
-                                            <CheckBox
-                                              checked={true}
-                                              onClick={[Function]}
-                                            >
-                                              <span
-                                                className="list__properties__checkbox--no-highlight"
-                                                onClick={[Function]}
-                                              >
-                                                <FontAwesomeIcon
-                                                  border={false}
-                                                  className=""
-                                                  color="#0073BB"
-                                                  fixedWidth={false}
-                                                  flip={null}
-                                                  icon={
-                                                    Object {
-                                                      "icon": Array [
-                                                        448,
-                                                        512,
-                                                        Array [],
-                                                        "f14a",
-                                                        "M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z",
-                                                      ],
-                                                      "iconName": "check-square",
-                                                      "prefix": "fas",
-                                                    }
-                                                  }
-                                                  inverse={false}
-                                                  listItem={false}
-                                                  mask={null}
-                                                  pull={null}
-                                                  pulse={false}
-                                                  rotation={null}
-                                                  size="lg"
-                                                  spin={false}
-                                                  symbol={false}
-                                                  title=""
-                                                  transform={null}
-                                                >
-                                                  <svg
-                                                    aria-hidden="true"
-                                                    className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
-                                                    color="#0073BB"
-                                                    data-icon="check-square"
-                                                    data-prefix="fas"
-                                                    focusable="false"
-                                                    role="img"
-                                                    style={Object {}}
-                                                    viewBox="0 0 448 512"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <path
-                                                      d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
-                                                      fill="currentColor"
-                                                      style={Object {}}
-                                                    />
-                                                  </svg>
-                                                </FontAwesomeIcon>
-                                              </span>
-                                            </CheckBox>
-                                            <span
-                                              className="list__properties__checkbox-text"
-                                            >
-                                              Delete
-                                            </span>
-                                          </div>
-                                        </CheckBoxRow>
-                                        <CheckBoxRow
-                                          checked={true}
-                                          name="allowUpload"
-                                          onCheckBoxChange={[Function]}
-                                          text="Upload"
-                                        >
-                                          <div
-                                            className="list__properties__checkbox-row"
-                                          >
-                                            <CheckBox
-                                              checked={true}
-                                              onClick={[Function]}
-                                            >
-                                              <span
-                                                className="list__properties__checkbox--no-highlight"
-                                                onClick={[Function]}
-                                              >
-                                                <FontAwesomeIcon
-                                                  border={false}
-                                                  className=""
-                                                  color="#0073BB"
-                                                  fixedWidth={false}
-                                                  flip={null}
-                                                  icon={
-                                                    Object {
-                                                      "icon": Array [
-                                                        448,
-                                                        512,
-                                                        Array [],
-                                                        "f14a",
-                                                        "M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z",
-                                                      ],
-                                                      "iconName": "check-square",
-                                                      "prefix": "fas",
-                                                    }
-                                                  }
-                                                  inverse={false}
-                                                  listItem={false}
-                                                  mask={null}
-                                                  pull={null}
-                                                  pulse={false}
-                                                  rotation={null}
-                                                  size="lg"
-                                                  spin={false}
-                                                  symbol={false}
-                                                  title=""
-                                                  transform={null}
-                                                >
-                                                  <svg
-                                                    aria-hidden="true"
-                                                    className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
-                                                    color="#0073BB"
-                                                    data-icon="check-square"
-                                                    data-prefix="fas"
-                                                    focusable="false"
-                                                    role="img"
-                                                    style={Object {}}
-                                                    viewBox="0 0 448 512"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <path
-                                                      d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
-                                                      fill="currentColor"
-                                                      style={Object {}}
-                                                    />
-                                                  </svg>
-                                                </FontAwesomeIcon>
-                                              </span>
-                                            </CheckBox>
-                                            <span
-                                              className="list__properties__checkbox-text"
-                                            >
-                                              Upload
-                                            </span>
-                                          </div>
-                                        </CheckBoxRow>
-                                        <CheckBoxRow
-                                          checked={true}
-                                          name="allowExport"
-                                          onCheckBoxChange={[Function]}
-                                          text="Export & Print"
-                                        >
-                                          <div
-                                            className="list__properties__checkbox-row"
-                                          >
-                                            <CheckBox
-                                              checked={true}
-                                              onClick={[Function]}
-                                            >
-                                              <span
-                                                className="list__properties__checkbox--no-highlight"
-                                                onClick={[Function]}
-                                              >
-                                                <FontAwesomeIcon
-                                                  border={false}
-                                                  className=""
-                                                  color="#0073BB"
-                                                  fixedWidth={false}
-                                                  flip={null}
-                                                  icon={
-                                                    Object {
-                                                      "icon": Array [
-                                                        448,
-                                                        512,
-                                                        Array [],
-                                                        "f14a",
-                                                        "M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z",
-                                                      ],
-                                                      "iconName": "check-square",
-                                                      "prefix": "fas",
-                                                    }
-                                                  }
-                                                  inverse={false}
-                                                  listItem={false}
-                                                  mask={null}
-                                                  pull={null}
-                                                  pulse={false}
-                                                  rotation={null}
-                                                  size="lg"
-                                                  spin={false}
-                                                  symbol={false}
-                                                  title=""
-                                                  transform={null}
-                                                >
-                                                  <svg
-                                                    aria-hidden="true"
-                                                    className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
-                                                    color="#0073BB"
-                                                    data-icon="check-square"
-                                                    data-prefix="fas"
-                                                    focusable="false"
-                                                    role="img"
-                                                    style={Object {}}
-                                                    viewBox="0 0 448 512"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <path
-                                                      d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
-                                                      fill="currentColor"
-                                                      style={Object {}}
-                                                    />
-                                                  </svg>
-                                                </FontAwesomeIcon>
-                                              </span>
-                                            </CheckBox>
-                                            <span
-                                              className="list__properties__checkbox-text"
-                                            >
-                                              Export & Print
-                                            </span>
-                                          </div>
-                                        </CheckBoxRow>
-                                      </div>
-                                    </AllowableActionContainer>
-                                  </div>
-                                </Col>
-                              </AllowableActions>
-                              <AdvancedSettings
-                                applyAdvancedProperties={[Function]}
-                                model={
-                                  Immutable.Record {
-                                    "exception": undefined,
-                                    "domain": Immutable.Record {
-                                      "name": undefined,
-                                      "container": undefined,
-                                      "description": undefined,
-                                      "domainURI": undefined,
-                                      "domainId": null,
-                                      "allowFileLinkProperties": true,
-                                      "allowAttachmentProperties": true,
-                                      "allowFlagProperties": true,
-                                      "showDefaultValueSettings": false,
-                                      "defaultDefaultValueType": undefined,
-                                      "defaultValueOptions": Immutable.List [],
-                                      "fields": Immutable.List [],
-                                      "indices": Immutable.List [],
-                                      "domainException": undefined,
-                                      "mandatoryFieldNames": Immutable.List [],
-                                      "reservedFieldNames": Immutable.List [],
-                                      "newDesignFields": undefined,
-                                      "instructions": undefined,
-                                    },
-                                    "entityId": undefined,
-                                    "createdBy": undefined,
-                                    "created": undefined,
-                                    "modifiedBy": undefined,
-                                    "modified": undefined,
-                                    "containerId": undefined,
-                                    "name": null,
-                                    "description": null,
-                                    "lastIndexed": null,
-                                    "keyName": null,
-                                    "titleColumn": null,
-                                    "domainId": 0,
-                                    "keyType": null,
-                                    "discussionSetting": 0,
-                                    "allowDelete": true,
-                                    "allowUpload": true,
-                                    "allowExport": true,
-                                    "entireListIndex": false,
-                                    "entireListIndexSetting": 0,
-                                    "entireListTitleTemplate": "",
-                                    "entireListBodySetting": 0,
-                                    "entireListBodyTemplate": null,
-                                    "eachItemIndex": false,
-                                    "eachItemTitleTemplate": "",
-                                    "eachItemBodySetting": 0,
-                                    "eachItemBodyTemplate": null,
-                                    "fileAttachmentIndex": false,
-                                    "listId": 0,
-                                    "discussionSettingEnum": undefined,
-                                    "containerPath": undefined,
-                                  }
-                                }
-                                title="Advanced Settings"
-                              >
-                                <Col
-                                  bsClass="col"
-                                  componentClass="div"
-                                  md={2}
-                                  xs={12}
-                                >
-                                  <div
-                                    className="col-md-2 col-xs-12"
-                                  >
-                                    <Button
-                                      active={false}
-                                      block={false}
-                                      bsClass="btn"
-                                      bsStyle="default"
-                                      className="domain-field-float-right"
-                                      disabled={false}
-                                      onClick={[Function]}
-                                    >
-                                      <button
-                                        className="domain-field-float-right btn btn-default"
-                                        disabled={false}
-                                        onClick={[Function]}
-                                        type="button"
-                                      >
-                                        Advanced Settings
-                                      </button>
-                                    </Button>
-                                    <Modal
-                                      animation={true}
-                                      autoFocus={true}
-                                      backdrop={true}
-                                      bsClass="modal"
-                                      dialogComponentClass={[Function]}
-                                      enforceFocus={true}
-                                      keyboard={true}
-                                      manager={
-                                        ModalManager {
-                                          "add": [Function],
-                                          "containers": Array [],
-                                          "data": Array [],
-                                          "handleContainerOverflow": true,
-                                          "hideSiblingNodes": true,
-                                          "isTopModal": [Function],
-                                          "modals": Array [],
-                                          "remove": [Function],
-                                        }
-                                      }
-                                      onHide={[Function]}
-                                      renderBackdrop={[Function]}
-                                      restoreFocus={true}
-                                      show={false}
-                                    >
-                                      <Modal
-                                        autoFocus={true}
-                                        backdrop={true}
-                                        backdropClassName="modal-backdrop"
-                                        backdropTransition={[Function]}
-                                        containerClassName="modal-open"
-                                        enforceFocus={true}
-                                        keyboard={true}
-                                        manager={
-                                          ModalManager {
-                                            "add": [Function],
-                                            "containers": Array [],
-                                            "data": Array [],
-                                            "handleContainerOverflow": true,
-                                            "hideSiblingNodes": true,
-                                            "isTopModal": [Function],
-                                            "modals": Array [],
-                                            "remove": [Function],
-                                          }
-                                        }
-                                        onEntering={[Function]}
-                                        onExited={[Function]}
-                                        onHide={[Function]}
-                                        renderBackdrop={[Function]}
-                                        restoreFocus={true}
-                                        show={false}
-                                        transition={[Function]}
-                                      />
-                                    </Modal>
-                                  </div>
-                                </Col>
-                              </AdvancedSettings>
-                            </form>
-                          </Form>
-                        </div>
-                      </div>
-                    </Transition>
-                  </Collapse>
-                </PanelCollapse>
-              </PanelBody>
+                    <path
+                      d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                      fill="currentColor"
+                      style={Object {}}
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="list__properties__checkbox-text"
+                >
+                  Upload
+                </span>
+              </div>
+              <div
+                className="list__properties__checkbox-row"
+              >
+                <span
+                  className="list__properties__checkbox--no-highlight"
+                  onClick={[Function]}
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                    color="#0073BB"
+                    data-icon="check-square"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    style={Object {}}
+                    viewBox="0 0 448 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                      fill="currentColor"
+                      style={Object {}}
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="list__properties__checkbox-text"
+                >
+                  Export & Print
+                </span>
+              </div>
             </div>
-          </Panel>
-        </Uncontrolled(Panel)>
-      </ListPropertiesPanelImpl>
-    </DomainPropertiesPanelProvider>
-  </ListPropertiesPanel>
-  <DomainForm
-    appDomainHeaderRenderer={false}
-    controlledCollapse={true}
-    domain={
-      Immutable.Record {
-        "name": undefined,
-        "container": undefined,
-        "description": undefined,
-        "domainURI": undefined,
-        "domainId": null,
-        "allowFileLinkProperties": true,
-        "allowAttachmentProperties": true,
-        "allowFlagProperties": true,
-        "showDefaultValueSettings": false,
-        "defaultDefaultValueType": undefined,
-        "defaultValueOptions": Immutable.List [],
-        "fields": Immutable.List [],
-        "indices": Immutable.List [],
-        "domainException": undefined,
-        "mandatoryFieldNames": Immutable.List [],
-        "reservedFieldNames": Immutable.List [],
-        "newDesignFields": undefined,
-        "instructions": undefined,
-      }
-    }
-    domainIndex={0}
-    headerTitle="Fields"
-    helpNoun="list"
-    helpTopic={null}
-    initCollapsed={true}
-    key="0"
-    onChange={[Function]}
-    onToggle={[Function]}
-    panelStatus="TODO"
-    setFileImportData={[Function]}
-    showInferFromFile={true}
-    validate={false}
+          </div>
+          <div
+            className="col-md-2 col-xs-12"
+          >
+            <button
+              className="domain-field-float-right btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Advanced Settings
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>,
+  <div
+    className="domain-form-panel panel panel-default"
   >
-    <LookupProvider>
-      <DomainFormImpl
-        appDomainHeaderRenderer={false}
-        appPropertiesOnly={false}
-        controlledCollapse={true}
-        domain={
-          Immutable.Record {
-            "name": undefined,
-            "container": undefined,
-            "description": undefined,
-            "domainURI": undefined,
-            "domainId": null,
-            "allowFileLinkProperties": true,
-            "allowAttachmentProperties": true,
-            "allowFlagProperties": true,
-            "showDefaultValueSettings": false,
-            "defaultDefaultValueType": undefined,
-            "defaultValueOptions": Immutable.List [],
-            "fields": Immutable.List [],
-            "indices": Immutable.List [],
-            "domainException": undefined,
-            "mandatoryFieldNames": Immutable.List [],
-            "reservedFieldNames": Immutable.List [],
-            "newDesignFields": undefined,
-            "instructions": undefined,
-          }
-        }
-        domainIndex={0}
-        headerTitle="Fields"
-        helpNoun="list"
-        helpTopic={null}
-        initCollapsed={true}
-        isNew={false}
-        onChange={[Function]}
-        onToggle={[Function]}
-        panelStatus="TODO"
-        setFileImportData={[Function]}
-        showHeader={true}
-        showInferFromFile={true}
-        successBsStyle="success"
-        validate={false}
+    <div
+      className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed panel-heading"
+      id="domain-header"
+      onClick={[Function]}
+    >
+      <span
+        className="label-help-target"
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
       >
-        <Uncontrolled(Panel)
-          className="domain-form-panel"
-          expanded={false}
-          onToggle={[Function]}
+        <span
+          className="domain-panel-status-icon domain-panel-status-icon-blue"
         >
-          <Panel
-            bsClass="panel"
-            bsStyle="default"
-            className="domain-form-panel"
-            expanded={false}
-            onToggle={[Function]}
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-exclamation-circle fa-w-16 "
+            data-icon="exclamation-circle"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
+        </span>
+      </span>
+      <span
+        className="domain-panel-title"
+      >
+        Fields
+      </span>
+      <span
+        className="pull-right"
+      >
+        <svg
+          aria-hidden="true"
+          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg domain-form-expand-btn"
+          data-icon="plus-square"
+          data-prefix="fas"
+          focusable="false"
+          role="img"
+          style={Object {}}
+          viewBox="0 0 448 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+            fill="currentColor"
+            style={Object {}}
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      aria-expanded={null}
+      className="panel-collapse collapse"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          />
+        </div>
+        <span
+          className="translator--toggle__wizard"
+        >
+          <div
+            className="row"
           >
             <div
-              className="domain-form-panel panel panel-default"
+              className="col-sm-12"
             >
-              <CollapsiblePanelHeader
-                collapsed={true}
-                controlledCollapse={true}
-                id="domain-header"
-                isValid={true}
-                panelStatus="TODO"
-                title="Fields"
-                togglePanel={[Function]}
+              <label
+                className="control-label text-left"
               >
-                <PanelHeading
-                  bsClass="panel"
-                  className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
-                  componentClass="div"
-                  id="domain-header"
-                  onClick={[Function]}
-                >
-                  <div
-                    className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed panel-heading"
-                    id="domain-header"
-                    onClick={[Function]}
-                  >
-                    <LabelHelpTip
-                      body={[Function]}
-                      customStyle={Object {}}
-                      iconComponent={[Function]}
-                      id="tooltip"
-                      placement="top"
-                      size="1x"
-                      title="Fields"
-                    >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
-                      >
-                        <span
-                          className="domain-panel-status-icon domain-panel-status-icon-blue"
-                        >
-                          <FontAwesomeIcon
-                            border={false}
-                            className=""
-                            fixedWidth={false}
-                            flip={null}
-                            icon={
-                              Object {
-                                "icon": Array [
-                                  512,
-                                  512,
-                                  Array [],
-                                  "f06a",
-                                  "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
-                                ],
-                                "iconName": "exclamation-circle",
-                                "prefix": "fas",
-                              }
-                            }
-                            inverse={false}
-                            listItem={false}
-                            mask={null}
-                            pull={null}
-                            pulse={false}
-                            rotation={null}
-                            size={null}
-                            spin={false}
-                            symbol={false}
-                            title=""
-                            transform={null}
-                          >
-                            <svg
-                              aria-hidden="true"
-                              className="svg-inline--fa fa-exclamation-circle fa-w-16 "
-                              data-icon="exclamation-circle"
-                              data-prefix="fas"
-                              focusable="false"
-                              role="img"
-                              style={Object {}}
-                              viewBox="0 0 512 512"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
-                                fill="currentColor"
-                                style={Object {}}
-                              />
-                            </svg>
-                          </FontAwesomeIcon>
-                        </span>
-                        <Overlay
-                          animation={[Function]}
-                          placement="top"
-                          rootClose={false}
-                          show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <span
-                                class="domain-panel-status-icon domain-panel-status-icon-blue"
-                              >
-                                <svg
-                                  aria-hidden="true"
-                                  class="svg-inline--fa fa-exclamation-circle fa-w-16 "
-                                  data-icon="exclamation-circle"
-                                  data-prefix="fas"
-                                  focusable="false"
-                                  role="img"
-                                  viewBox="0 0 512 512"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                            </span>
-                          }
-                        >
-                          <Overlay
-                            placement="top"
-                            rootClose={false}
-                            show={false}
-                            target={
-                              <span
-                                class="label-help-target"
-                              >
-                                <span
-                                  class="domain-panel-status-icon domain-panel-status-icon-blue"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    class="svg-inline--fa fa-exclamation-circle fa-w-16 "
-                                    data-icon="exclamation-circle"
-                                    data-prefix="fas"
-                                    focusable="false"
-                                    role="img"
-                                    viewBox="0 0 512 512"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
-                                      fill="currentColor"
-                                    />
-                                  </svg>
-                                </span>
-                              </span>
-                            }
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </LabelHelpTip>
-                    <span
-                      className="domain-panel-title"
-                    >
-                      Fields
-                    </span>
-                    <span
-                      className="pull-right"
-                    >
-                      <FontAwesomeIcon
-                        border={false}
-                        className="domain-form-expand-btn"
-                        fixedWidth={false}
-                        flip={null}
-                        icon={
-                          Object {
-                            "icon": Array [
-                              448,
-                              512,
-                              Array [],
-                              "f0fe",
-                              "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                            ],
-                            "iconName": "plus-square",
-                            "prefix": "fas",
-                          }
-                        }
-                        inverse={false}
-                        listItem={false}
-                        mask={null}
-                        pull={null}
-                        pulse={false}
-                        rotation={null}
-                        size="lg"
-                        spin={false}
-                        symbol={false}
-                        title=""
-                        transform={null}
-                      >
-                        <svg
-                          aria-hidden="true"
-                          className="svg-inline--fa fa-plus-square fa-w-14 fa-lg domain-form-expand-btn"
-                          data-icon="plus-square"
-                          data-prefix="fas"
-                          focusable="false"
-                          role="img"
-                          style={Object {}}
-                          viewBox="0 0 448 512"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                            fill="currentColor"
-                            style={Object {}}
-                          />
-                        </svg>
-                      </FontAwesomeIcon>
-                    </span>
-                  </div>
-                </PanelHeading>
-              </CollapsiblePanelHeader>
-              <PanelBody
-                bsClass="panel"
-                collapsible={true}
-              >
-                <PanelCollapse
-                  bsClass="panel"
-                >
-                  <Collapse
-                    appear={false}
-                    dimension="height"
-                    getDimensionValue={[Function]}
-                    in={false}
-                    mountOnEnter={false}
-                    timeout={300}
-                    unmountOnExit={false}
-                  >
-                    <Transition
-                      appear={false}
-                      aria-expanded={null}
-                      enter={true}
-                      exit={true}
-                      in={false}
-                      mountOnEnter={false}
-                      onEnter={[Function]}
-                      onEntered={[Function]}
-                      onEntering={[Function]}
-                      onExit={[Function]}
-                      onExited={[Function]}
-                      onExiting={[Function]}
-                      timeout={300}
-                      unmountOnExit={false}
-                    >
-                      <div
-                        aria-expanded={null}
-                        className="panel-collapse collapse"
-                      >
-                        <div
-                          className="panel-body"
-                        >
-                          <Row
-                            bsClass="row"
-                            className=""
-                            componentClass="div"
-                          >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                />
-                              </Col>
-                            </div>
-                          </Row>
-                          <FileAttachmentForm
-                            acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
-                            allowDirectories={false}
-                            allowMultiple={false}
-                            cancelText="Cancel"
-                            compact={false}
-                            label="Infer fields from file"
-                            labelLong="Select file or drag and drop here."
-                            onFileRemoval={[Function]}
-                            previewGridProps={
-                              Object {
-                                "onPreviewLoad": [Function],
-                                "previewCount": 3,
-                                "skipPreviewGrid": true,
-                              }
-                            }
-                            showAcceptedFormats={true}
-                            showButtons={false}
-                            showLabel={true}
-                            showProgressBar={false}
-                            submitText="Upload"
-                          >
-                            <span
-                              className="translator--toggle__wizard"
-                            >
-                              <FormSection
-                                iconSpacer={false}
-                                label="Infer fields from file"
-                                showLabel={true}
-                              >
-                                <div
-                                  className="row"
-                                >
-                                  <div
-                                    className="col-sm-12"
-                                  >
-                                    <label
-                                      className="control-label text-left"
-                                    >
-                                      <strong>
-                                        Infer fields from file
-                                      </strong>
-                                    </label>
-                                  </div>
-                                </div>
-                                <div
-                                  className="row"
-                                >
-                                  <div
-                                    className="col-sm-12"
-                                  >
-                                    <div
-                                      className="wizard-row--container"
-                                    >
-                                      <FileAttachmentContainer
-                                        acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
-                                        allowDirectories={false}
-                                        allowMultiple={false}
-                                        compact={false}
-                                        handleChange={[Function]}
-                                        handleRemoval={[Function]}
-                                        labelLong="Select file or drag and drop here."
-                                      >
-                                        <div>
-                                          <div
-                                            className="file-upload--container block"
-                                          >
-                                            <label
-                                              className="file-upload--label"
-                                              htmlFor="fileUpload"
-                                              onDragEnter={[Function]}
-                                              onDragLeave={[Function]}
-                                              onDragOver={[Function]}
-                                              onDrop={[Function]}
-                                            >
-                                              <i
-                                                aria-hidden="true"
-                                                className="fa fa-cloud-upload fa-2x cloud-logo"
-                                              />
-                                              Select file or drag and drop here.
-                                            </label>
-                                            <input
-                                              accept=".csv, .tsv, .txt, .xls, .xlsx"
-                                              className="file-upload--input"
-                                              id="fileUpload"
-                                              multiple={false}
-                                              name="fileUpload"
-                                              onChange={[Function]}
-                                              type="file"
-                                            />
-                                          </div>
-                                        </div>
-                                      </FileAttachmentContainer>
-                                    </div>
-                                  </div>
-                                </div>
-                              </FormSection>
-                            </span>
-                            <div
-                              className="row"
-                            >
-                              <div
-                                className="col-md-9"
-                              >
-                                <div
-                                  className="file-form-formats"
-                                >
-                                  <strong>
-                                    Supported formats include: 
-                                  </strong>
-                                  .csv, .tsv, .txt, .xls, .xlsx
-                                </div>
-                              </div>
-                              <div
-                                className="col-md-3"
-                              >
-                                <div
-                                  className="pull-right"
-                                />
-                              </div>
-                            </div>
-                          </FileAttachmentForm>
-                          <div
-                            className="margin-top"
-                          >
-                            or 
-                            <span
-                              className="domain-form-add-link"
-                              onClick={[Function]}
-                            >
-                              manually define fields
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </Transition>
-                  </Collapse>
-                </PanelCollapse>
-              </PanelBody>
+                <strong>
+                  Infer fields from file
+                </strong>
+              </label>
             </div>
-          </Panel>
-        </Uncontrolled(Panel)>
-      </DomainFormImpl>
-    </LookupProvider>
-  </DomainForm>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col-sm-12"
+            >
+              <div
+                className="wizard-row--container"
+              >
+                <div>
+                  <div
+                    className="file-upload--container block"
+                  >
+                    <label
+                      className="file-upload--label"
+                      htmlFor="fileUpload"
+                      onDragEnter={[Function]}
+                      onDragLeave={[Function]}
+                      onDragOver={[Function]}
+                      onDrop={[Function]}
+                    >
+                      <i
+                        aria-hidden="true"
+                        className="fa fa-cloud-upload fa-2x cloud-logo"
+                      />
+                      Select file or drag and drop here.
+                    </label>
+                    <input
+                      accept=".csv, .tsv, .txt, .xls, .xlsx"
+                      className="file-upload--input"
+                      id="fileUpload"
+                      multiple={false}
+                      name="fileUpload"
+                      onChange={[Function]}
+                      type="file"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </span>
+        <div
+          className="row"
+        >
+          <div
+            className="col-md-9"
+          >
+            <div
+              className="file-form-formats"
+            >
+              <strong>
+                Supported formats include: 
+              </strong>
+              .csv, .tsv, .txt, .xls, .xlsx
+            </div>
+          </div>
+          <div
+            className="col-md-3"
+          >
+            <div
+              className="pull-right"
+            />
+          </div>
+        </div>
+        <div
+          className="margin-top"
+        >
+          or 
+          <span
+            className="domain-form-add-link"
+            onClick={[Function]}
+          >
+            manually define fields
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>,
   <div
     className="domain-form-panel domain-assay-buttons"
   >
-    <Button
-      active={false}
-      block={false}
-      bsClass="btn"
-      bsStyle="default"
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[MockFunction]}
+      type="button"
+    >
+      Cancel
+    </button>
+    <button
+      className="pull-right btn btn-success"
       disabled={false}
       onClick={[Function]}
+      type="button"
     >
-      <button
-        className="btn btn-default"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
-      >
-        Cancel
-      </button>
-    </Button>
-    <Button
-      active={false}
-      block={false}
-      bsClass="btn"
-      bsStyle="success"
-      className="pull-right"
-      disabled={false}
-      onClick={[Function]}
-    >
-      <button
-        className="pull-right btn btn-success"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
-      >
-        Save
-      </button>
-    </Button>
-  </div>
-  <Progress
-    delay={1000}
-    estimate={500}
-    modal={true}
-    title="Importing data from selected file..."
-    toggle={false}
-    updateIncrement={50}
-  >
-    <Modal
-      animation={true}
-      autoFocus={true}
-      backdrop={true}
-      bsClass="modal"
-      bsSize="large"
-      dialogComponentClass={[Function]}
-      enforceFocus={true}
-      keyboard={true}
-      manager={
-        ModalManager {
-          "add": [Function],
-          "containers": Array [],
-          "data": Array [],
-          "handleContainerOverflow": true,
-          "hideSiblingNodes": true,
-          "isTopModal": [Function],
-          "modals": Array [],
-          "remove": [Function],
-        }
-      }
-      onHide={[Function]}
-      renderBackdrop={[Function]}
-      restoreFocus={true}
-      show={false}
-    >
-      <Modal
-        autoFocus={true}
-        backdrop={true}
-        backdropClassName="modal-backdrop"
-        backdropTransition={[Function]}
-        containerClassName="modal-open"
-        enforceFocus={true}
-        keyboard={true}
-        manager={
-          ModalManager {
-            "add": [Function],
-            "containers": Array [],
-            "data": Array [],
-            "handleContainerOverflow": true,
-            "hideSiblingNodes": true,
-            "isTopModal": [Function],
-            "modals": Array [],
-            "remove": [Function],
-          }
-        }
-        onEntering={[Function]}
-        onExited={[Function]}
-        onHide={[Function]}
-        renderBackdrop={[Function]}
-        restoreFocus={true}
-        show={false}
-        transition={[Function]}
-      />
-    </Modal>
-  </Progress>
-</ListDesignerPanels>
+      Save
+    </button>
+  </div>,
+]
 `;

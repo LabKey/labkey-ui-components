@@ -1,36 +1,36 @@
 import React from "react";
 import {ListDesignerPanels} from "./ListDesignerPanels";
 import {mount} from "enzyme";
-import toJson from 'enzyme-to-json';
 import {ListModel} from "./models";
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
 import getDomainDetailsJSON from "../../../test/data/property-getDomainDetails.json";
 import DomainForm from "../DomainForm";
 import {ListPropertiesPanel} from "./ListPropertiesPanel";
 import {Alert} from "react-bootstrap";
+import renderer from 'react-test-renderer';
+import toJson from "enzyme-to-json";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 
-describe('ListDesignerPanel', () => { // in progress
+describe('ListDesignerPanel', () => {
     test('new list', () => {
-        const listDesignerPanels = mount(
+        const listDesignerPanels =
             <ListDesignerPanels
-                onComplete={() => {}}
-                onCancel={() => {}}
+                onComplete={jest.fn()}
+                onCancel={jest.fn()}
                 initModel={emptyNewModel}
-            />
-        );
+            />;
 
-        expect(toJson(listDesignerPanels)).toMatchSnapshot();
-        listDesignerPanels.unmount();
+        const tree = renderer.create(listDesignerPanels).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     test('existing list', () => {
         const listDesignerPanels = mount(
             <ListDesignerPanels
-                onComplete={() => {}}
-                onCancel={() => {}}
+                onComplete={jest.fn()}
+                onCancel={jest.fn()}
                 initModel={populatedExistingModel}
             />
         );
@@ -42,8 +42,8 @@ describe('ListDesignerPanel', () => { // in progress
     test('visible properties', () => {
         const listDesignerPanels = mount(
             <ListDesignerPanels
-                onComplete={() => {}}
-                onCancel={() => {}}
+                onComplete={jest.fn()}
+                onCancel={jest.fn()}
                 initModel={emptyNewModel}
             />
         );
@@ -51,13 +51,14 @@ describe('ListDesignerPanel', () => { // in progress
         expect(listDesignerPanels.find(ListPropertiesPanel)).toHaveLength(1);
         expect(listDesignerPanels.find(DomainForm)).toHaveLength(1);
         expect(listDesignerPanels.find('.domain-assay-buttons')).toHaveLength(1);
+        listDesignerPanels.unmount();
     });
 
     test('open fields panel', () => {
         const listDesignerPanels = mount(
             <ListDesignerPanels
-                onComplete={() => {}}
-                onCancel={() => {}}
+                onComplete={jest.fn()}
+                onCancel={jest.fn()}
                 initModel={emptyNewModel}
             />
         );
@@ -84,5 +85,6 @@ describe('ListDesignerPanel', () => { // in progress
         expect(listDesignerPanels.find(Alert)).toHaveLength(2);
         expect(listDesignerPanels.find(Alert).at(0).text()).toEqual('Contains errors or is missing required values.');
         expect(listDesignerPanels.find(Alert).at(1).text()).toEqual('Please correct errors in the properties panel before saving.');
+        listDesignerPanels.unmount();
     });
 });

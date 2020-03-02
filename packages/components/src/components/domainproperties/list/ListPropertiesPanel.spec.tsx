@@ -1,6 +1,5 @@
 import React from "react";
 import {mount} from "enzyme";
-import toJson from 'enzyme-to-json';
 import {ListModel} from "./models";
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
 import getDomainDetailsJSON from "../../../test/data/property-getDomainDetails.json";
@@ -9,50 +8,48 @@ import {AllowableActions, BasicPropertiesFields} from "./ListPropertiesPanelForm
 import {AdvancedSettings} from "./ListPropertiesAdvancedSettings";
 import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
 import { Alert } from '../../base/Alert';
+import renderer from "react-test-renderer";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 const invalidModelHasException = populatedExistingModel.setIn(['domain', 'domainException'], {severity: "Error"}) as ListModel;
 
 
-describe('ListPropertiesPanel', () => { // in progress
+describe('ListPropertiesPanel', () => {
     test('new list', () => {
-        const listPropertiesPanel = mount(
+        const listPropertiesPanel =
             <ListPropertiesPanel
                 model={emptyNewModel}
                 panelStatus={'NONE'}
-                onChange={() => {}}
-            />
-        );
+                onChange={jest.fn()}
+            />;
 
-        expect(toJson(listPropertiesPanel)).toMatchSnapshot();
-        listPropertiesPanel.unmount();
+        const tree = renderer.create(listPropertiesPanel).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     test('existing list', () => {
-        const listPropertiesPanel = mount(
+        const listPropertiesPanel =
             <ListPropertiesPanel
                 model={populatedExistingModel}
                 panelStatus={'COMPLETE'}
-                onChange={() => {}}
-            />
-        );
+                onChange={jest.fn()}
+            />;
 
-        expect(toJson(listPropertiesPanel)).toMatchSnapshot();
-        listPropertiesPanel.unmount();
+        const tree = renderer.create(listPropertiesPanel).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     test('list with error', () => {
-        const listPropertiesPanel = mount(
+        const listPropertiesPanel =
             <ListPropertiesPanel
                 model={invalidModelHasException}
                 panelStatus={'TODO'}
-                onChange={() => {}}
-            />
-        );
+                onChange={jest.fn()}
+            />;
 
-        expect(toJson(listPropertiesPanel)).toMatchSnapshot();
-        listPropertiesPanel.unmount();
+        const tree = renderer.create(listPropertiesPanel).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
     //Note: visible properties are the same between new and existing lists
@@ -61,7 +58,7 @@ describe('ListPropertiesPanel', () => { // in progress
             <ListPropertiesPanel
                 model={populatedExistingModel}
                 panelStatus={'COMPLETE'}
-                onChange={() => {}}
+                onChange={jest.fn()}
             />
         );
 
@@ -71,6 +68,7 @@ describe('ListPropertiesPanel', () => { // in progress
         expect(listPropertiesPanel.find(CollapsiblePanelHeader)).toHaveLength(1);
 
         expect(listPropertiesPanel.find(Alert)).toHaveLength(0);
+        listPropertiesPanel.unmount();
     });
 
     test('invalid', () => {
@@ -78,7 +76,7 @@ describe('ListPropertiesPanel', () => { // in progress
             <ListPropertiesPanel
                 model={populatedExistingModel}
                 panelStatus={'TODO'}
-                onChange={() => {}}
+                onChange={jest.fn()}
             />
         );
         listPropertiesPanel.setState({isValid: false});
@@ -90,7 +88,12 @@ describe('ListPropertiesPanel', () => { // in progress
         expect(listPropertiesPanel.find(AdvancedSettings)).toHaveLength(1);
         expect(listPropertiesPanel.find(CollapsiblePanelHeader)).toHaveLength(1);
 
-        // expect(listPropertiesPanel.find(Alert)).toHaveLength(1); // alert is not being triggered
+        // alert is not being triggered
+        console.log(listPropertiesPanel.debug());
+        // expect(listPropertiesPanel.find('Alert')).toHaveLength(1);
+        // expect(listPropertiesPanel.find(Alert)).toHaveLength(1);
+
+        listPropertiesPanel.unmount();
     });
 
     test('clicking advanced settings renders modal', () => {
@@ -98,7 +101,7 @@ describe('ListPropertiesPanel', () => { // in progress
             <ListPropertiesPanel
                 model={emptyNewModel}
                 panelStatus={'NONE'}
-                onChange={() => {}}
+                onChange={jest.fn()}
             />
         );
 
@@ -111,6 +114,6 @@ describe('ListPropertiesPanel', () => { // in progress
 
         expect(listPropertiesPanel.find('.modal-title')).toHaveLength(1);
         expect(listPropertiesPanel.find('.modal-title').text()).toEqual(' Advanced List Settings ');
-
+        listPropertiesPanel.unmount();
     });
 });

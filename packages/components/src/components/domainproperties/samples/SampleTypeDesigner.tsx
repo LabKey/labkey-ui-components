@@ -6,18 +6,18 @@ import {
     DomainDesign,
     DomainDetails, generateId,
     IDomainField,
-    KINDS,
+    KINDS, naturalSort,
     resolveErrorMessage,
     SAMPLE_TYPE,
-    saveDomain,
+    saveDomain, SCHEMAS,
     WizardNavButtons
 } from "../../..";
 import DomainForm from "../DomainForm";
 import {IParentAlias, IParentOption,} from "../../entities/models";
 import {addDomainField} from "../actions";
-import {initSampleSetSelects} from "../../samples/actions";
+import {initSampleSetSelects,} from "../../samples/actions";
 import {SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from "../../../constants";
-import {Map} from "immutable";
+import {fromJS, List, Map} from "immutable";
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -35,7 +35,9 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
     value: "{{this_sample_set}}"
 } as IParentOption;
 
-const IMPORT_PREFIX :string = 'materialInputs/';
+export const SAMPLE_SET_IMPORT_PREFIX :string = 'materialInputs/';
+export const DATA_CLASS_IMPORT_PREFIX :string = 'dataInputs/';
+const DATA_CLASS_SCHEMA_KEY:string = 'exp/dataclasses';
 
 interface Props {
     onCancel: () => void
@@ -43,6 +45,7 @@ interface Props {
     beforeFinish?: (formValues: {}) => void
     initModel: DomainDetails
     defaultSampleFieldConfig?: Partial<IDomainField>
+    includeDataClasses?: boolean
 
     //EntityDetailsForm props
     noun?: string
@@ -74,6 +77,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         noun: SAMPLE_SET_DISPLAY_TEXT,
         domainDesignerStickyHeight: STICKY_HEADER_HEIGHT,
+        includeDataClasses: false,
     };
 
     constructor(props: Props) {
@@ -93,35 +97,87 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     componentDidMount = (): void => {
         const domainDetails = this.props.initModel || DomainDetails.create();
         const model = SampleTypeModel.create(domainDetails);
-        this.initParentOptions(model);
+        const {includeDataClasses} = this.props;
+
+        initSampleSetSelects(!model.isNew(), model.name, includeDataClasses)
+            .then((results) => {
+                this.initParentOptions(model, results);
+            })
+            .catch((error) => {
+                this.onFinishFailure(resolveErrorMessage(error));
+            });
     };
 
-    initParentOptions = (model: SampleTypeModel) => {
-        initSampleSetSelects(!model.isNew(), model.name, NEW_SAMPLE_SET_OPTION, IMPORT_PREFIX).then(results => {
-            const options = results.toArray();
-            let parentAliases = Map<string, IParentAlias>();
+    formatLabel = (name:string, prefix: string, containerPath?: string): string => {
+        const {includeDataClasses} = this.props;
+        return includeDataClasses ?
+            `${prefix}: ${name} (${containerPath})`:
+            name;
+    };
 
-            if (model && model.importAliases)
-            {
-                let initialAlias = Map<string,string>(model.importAliases);
-                initialAlias.forEach((val, key) => {
-                    const newId = SampleTypeDesigner.generateAliasId();
-                    parentAliases = parentAliases.set(newId, {
-                        id: newId,
-                        alias: key,
-                        parentValue: options.find(opt => opt.value === val),
-                        ignoreAliasError: false,
-                        ignoreSelectError: false,
-                    } as IParentAlias);
+    initParentOptions = (model: SampleTypeModel, responses: any[]) => {
+        let sets = List<IParentOption>();
+        responses.forEach((results) => {
+            const domain = fromJS(results.models[results.key]);
+
+            const prefix = results.key === DATA_CLASS_SCHEMA_KEY ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
+            const labelPrefix = results.key === DATA_CLASS_SCHEMA_KEY ? "Data Class" : "Sample Set";
+
+            domain.forEach(row => {
+                const name = row.getIn(['Name', 'value']);
+                const containerPath = row.getIn(['Folder', 'displayValue']);
+                let label = NEW_SAMPLE_SET_OPTION && name === model.name ? NEW_SAMPLE_SET_OPTION.label : this.formatLabel(name, labelPrefix, containerPath);
+                sets = sets.push({
+                    value: prefix + name,
+                    label: label,
+                    schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
                 });
-            }
-
-            this.setState(() => ({
-                parentOptions: options,
-                model: model.merge({parentAliases}) as SampleTypeModel
-            }));
+            });
         });
+
+        if(model.isNew()) {
+            sets = sets.push(NEW_SAMPLE_SET_OPTION);
+        }
+
+        this.mapParentAliasOptions(model, sets.sortBy(p => p.label, naturalSort) as List<IParentOption>);
+
+        //
+        //
+        // initSampleSetSelects(!model.isNew(), model.name, true).then(results => {
+        //     this.mapParentAliasOptions(results);
+        // }).catch((error) => {
+        //     this.onFinishFailure(resolveErrorMessage(error));
+        // });
     };
+
+    mapParentAliasOptions = (model: SampleTypeModel, results: List<IParentOption>): void => {
+        const options = results.toArray();
+
+        let parentAliases = Map<string, IParentAlias>();
+
+        if (model && model.importAliases)
+        {
+            let initialAlias = Map<string,string>(model.importAliases);
+            initialAlias.forEach((val, key) => {
+                const newId = SampleTypeDesigner.generateAliasId();
+                parentAliases = parentAliases.set(newId, {
+                    id: newId,
+                    alias: key,
+                    parentValue: options.find(opt => opt.value === val),
+                    ignoreAliasError: false,
+                    ignoreSelectError: false,
+                } as IParentAlias);
+            });
+        }
+
+        this.setState(() => ({
+            parentOptions: options,
+            model: model.merge({parentAliases}) as SampleTypeModel
+        }));
+    };
+
+
 
     //Generates a temporary id for add/delete of the import aliases
     static generateAliasId() {
@@ -139,7 +195,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                 const {parentValue} = alias;
                 let value = parentValue.value as string;
                 if (parentValue === NEW_SAMPLE_SET_OPTION)
-                    value = IMPORT_PREFIX + name;
+                    value = SAMPLE_SET_IMPORT_PREFIX + name;
 
                 aliases[alias.alias] = value;
             });

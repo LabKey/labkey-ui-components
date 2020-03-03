@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 
-import { initSampleSetSelects } from './actions';
+// import {initSampleSetSelects, SAMPLE_SET_IMPORT_PREFIX} from './actions';
 import {
     IParentAlias,
     IParentOption,
@@ -88,7 +88,6 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
     value: "{{this_sample_set}}"
 } as IParentOption;
 
-const IMPORT_PREFIX :string = 'materialInputs/';
 const IMPORT_ALIAS_KEY: string = 'importAliases';
 const PROPERTIES_HEADER_ID = 'sampletype-properties-hdr';
 
@@ -124,38 +123,39 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         const name = getEntityNameValue(formValues, data);
 
         if (!parentOptions) {
-            initSampleSetSelects(isUpdate, name, NEW_SAMPLE_SET_OPTION, IMPORT_PREFIX).then((results) => {
-                const options = results.toArray();
-
-                let parentAliases = Map<string, IParentAlias>();
-                if (data && data.get(IMPORT_ALIAS_KEY))
-                {
-                    let importAliases = Map<string,string>(data.get(IMPORT_ALIAS_KEY));
-                    importAliases.forEach((val, key) => {
-                        const newId = SampleSetDetailsPanel.generateAliasId();
-                        parentAliases = parentAliases.set(newId, {
-                            id: newId,
-                            alias: key,
-                            parentValue: options.find(opt => opt.value === val),
-                            ignoreAliasError: false,
-                            ignoreSelectError: false,
-                        } as IParentAlias);
-                    });
-                }
-
-                this.setState((state) => ({
-                    formValues: {
-                        ...state.formValues
-                    } as IEntityTypeDetails,
-                    parentOptions: options,
-                    parentAliases
-                }));
-            }).catch((reason) => {
-                console.error(reason);
-                this.setState(() => ({
-                    parentOptions: [NEW_SAMPLE_SET_OPTION]
-                }))
-            });
+            // initSampleSetSelects(isUpdate, name, NEW_SAMPLE_SET_OPTION, false).then((results) => {
+            //     const options = results.toArray();
+            //
+            //     let parentAliases = Map<string, IParentAlias>();
+            //     if (data && data.get(IMPORT_ALIAS_KEY))
+            //     {
+            //         let importAliases = Map<string,string>(data.get(IMPORT_ALIAS_KEY));
+            //         importAliases.forEach((val, key) => {
+            //             const newId = SampleSetDetailsPanel.generateAliasId();
+            //             parentAliases = parentAliases.set(newId, {
+            //                 id: newId,
+            //                 alias: key,
+            //                 parentValue: options.find(opt => opt.value === val),
+            //                 ignoreAliasError: false,
+            //                 ignoreSelectError: false,
+            //             } as IParentAlias);
+            //         });
+            //     }
+            //
+            //     this.setState((state) => ({
+            //         formValues: {
+            //             ...state.formValues
+            //         } as IEntityTypeDetails,
+            //         parentOptions: options,
+            //         parentAliases
+            //     }));
+            // }).catch((reason) => {
+            //     console.error(reason);
+            //
+            //     this.setState(() => ({
+            //         parentOptions: [NEW_SAMPLE_SET_OPTION]
+            //     }))
+            // });
         }
     };
 

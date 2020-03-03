@@ -29,8 +29,6 @@ export type Location = {
     state?: any // {[key:string]: string}
 }
 
-// FIXME: the return type for getLocation is incorrect since we modify the object to be something rather different.
-//  we convert several parts of the location object to immutable objects which is not in the spec.
 export function getLocation() : Location {
     let location : Location = getBrowserHistory().location;
     let query =  Map<string, string>(location.query).asMutable();

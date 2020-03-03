@@ -29,34 +29,36 @@ export type Location = {
     state?: any // {[key:string]: string}
 }
 
-export function getLocation() : Location
-{
+// FIXME: the return type for getLocation is incorrect since we modify the object to be something rather different.
+//  we convert several parts of the location object to immutable objects which is not in the spec.
+export function getLocation() : Location {
     let location : Location = getBrowserHistory().location;
     let query =  Map<string, string>(location.query).asMutable();
+    const parseParams = (p => {
+        const keyVal = p.split('=');
+        query.set(decodeURIComponent(keyVal[0].trim()), decodeURIComponent(keyVal[1].trim()));
+    });
 
+    // FIXME: Why would there ever be a query string before the hash? We should consider dropping this case.
     // check for query params that are before the hash
-    if (location.search && location.search.length > 0)
-    {
+    if (location.search && location.search.length > 0) {
         const params = location.search.substring(1).split('&');
-        params.forEach( (p) => {
-            const keyVal = p.split('=');
-            query.set(decodeURI(keyVal[0].trim()), decodeURI(keyVal[1].trim()));
-        });
+        params.forEach(parseParams);
     }
 
     // and check for query params after the hash
     if (location.hash && location.hash.indexOf('?') > -1) {
         const index = location.hash.indexOf('?');
-
         const params = location.hash.substring(index + 1).split('&');
-        params.forEach( (p) => {
-            const keyVal = p.split('=');
-            query.set(decodeURI(keyVal[0].trim()), decodeURI(keyVal[1].trim()));
-        });
+        params.forEach(parseParams);
 
+        // FIXME: we should not be modifying this object in place, the next caller to getBrowserHistory() will get the
+        //  modified location object.
         location.hash = location.hash.substring(0, index);
     }
 
+    // FIXME: we should not be modifying this object in place, the next caller to getBrowserHistory() will get the
+    //  modified location object.
     location.query = query.asImmutable();
     return location;
 }

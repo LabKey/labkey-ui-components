@@ -1322,10 +1322,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@labkey/api@0.0.38-fb-containerFilterEnum.2":
-  version "0.0.38-fb-containerFilterEnum.2"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.38-fb-containerFilterEnum.2.tgz#1a2d0a9a079e6564ad96724a73d2f55be3162d63"
-  integrity sha1-Gi0KmgeeZWStlnJKc9L1W+MWLWM=
+"@labkey/api@0.0.38-fb-containerFilterEnum.3":
+  version "0.0.38-fb-containerFilterEnum.3"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.38-fb-containerFilterEnum.3.tgz#1602736923db98dfac0bf621d008aada56ea544a"
+  integrity sha1-FgJzaSPbmN+sC/Yh0Aiq2lbqVEo=
 
 "@labkey/eslint-config-base@0.0.5":
   version "0.0.5"

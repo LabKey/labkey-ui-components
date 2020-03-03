@@ -34,8 +34,7 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
             columns: 'LSID, Name, RowId, Folder',
-            // containerFilter: 'CurrentPlusProjectAndShared',
-            containerFilter: Query.ContainerFilter.CurrentPlusProjectAndShared,
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
     );
 
@@ -46,7 +45,7 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
                 schemaName: SCHEMAS.EXP_TABLES.DATA_CLASSES.schemaName,
                 queryName: SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName,
                 columns: 'LSID, Name, RowId, Folder',
-                containerFilter: Query.ContainerFilter.CurrentPlusProjectAndShared,
+                containerFilter: Query.containerFilter.currentPlusProjectAndShared,
             })
         );
     }

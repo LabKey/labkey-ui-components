@@ -21,7 +21,6 @@ import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, Que
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { Location } from '../../util/URL';
 
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel
@@ -31,7 +30,7 @@ export interface AssayPropertiesPanelProps {
 
 export interface IAssayURLContext {
     assayRequest?: string
-    location?: Location
+    location?: string
     protocol: string
     provider: string
     runId?: string

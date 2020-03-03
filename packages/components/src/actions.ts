@@ -972,7 +972,7 @@ export function getFilterListFromQuery(location: Location) : List<Filter.IFilter
     return undefined;
 }
 
-export function getSelection(location: Location): Promise<ISelectionResponse> {
+export function getSelection(location: any): Promise<ISelectionResponse> {
     if (location && location.query && location.query.selectionKey) {
         const key = location.query.selectionKey;
 

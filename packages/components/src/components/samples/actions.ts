@@ -23,7 +23,6 @@ import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';
 import { naturalSort } from '../../util/utils';
 import { selectRows } from '../../query/api';
-import { Location } from '../../util/URL';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, placeholderOption: IParentOption, prefix: string, ) :Promise<List<IParentOption>> {
     return selectRows({
@@ -154,7 +153,7 @@ export function fetchSamples(schemaQuery: SchemaQuery, sampleColumn: QueryColumn
  * @param location The location to search for the selectionKey on
  * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
  */
-export function loadSelectedSamples(location: Location, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
+export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
     return getSelection(location).then((selection) => {
         if (selection.resolved && selection.schemaQuery && selection.selected.length) {
             return fetchSamples(selection.schemaQuery, sampleColumn, [

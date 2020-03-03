@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.3?.0
+*Released*: ?? March 2020
+* Use decodeURIComponent in getLocation
+
 ### version 0.31.3
 *Released*: 28 February 2020
 * Fix for Sample Manager QueryGridModel use case that passes in undefined as baseFilters

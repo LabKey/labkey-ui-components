@@ -576,7 +576,7 @@ function bindSearch(searchTerm: string): List<Filter.IFilter> {
     if (searchTerm) {
         searchTerm.split(';').forEach((term) => {
             if (term) {
-                searchFilters.push(Filter.create('*', term, Filter.Types.Q));
+                searchFilters.push(Filter.create('*', decodeURIComponent(term), Filter.Types.Q));
             }
         });
     }

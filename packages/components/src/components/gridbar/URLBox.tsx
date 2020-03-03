@@ -103,7 +103,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
             for (let i=0; i < actionValueCollection.length; i++) {
                 let actionParams = actionValueCollection[i].action.buildParams(actionValueCollection[i].values);
                 for (let p=0; p < actionParams.length; p++) {
-                    params.set(actionParams[p].paramKey, actionParams[p].paramValue);
+                    params.set(encodeURIComponent(actionParams[p].paramKey), encodeURIComponent(actionParams[p].paramValue));
                 }
             }
         }

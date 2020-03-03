@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.3X.X
+*Released*: 3 March 2020
+* Fix issue 39085
+    - factored out "fetchSamples" from "loadSelectedSamples" to allow for fetching and and transformation independent of getting selection
+
 ### version 0.31.3
 *Released*: 28 February 2020
 * Fix for Sample Manager QueryGridModel use case that passes in undefined as baseFilters

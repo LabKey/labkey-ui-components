@@ -30,7 +30,11 @@ export type Location = {
 }
 
 export function getLocation() : Location {
+    // FIXME: Instead of manipulating the location object like we do here (which has side effects) we should return a
+    //  new object every time.
     let location : Location = getBrowserHistory().location;
+    // FIXME: Side effect! location.query is only ever available after the first time this function is called becuase we
+    //  manipulate the object in place.
     let query =  Map<string, string>(location.query).asMutable();
     const parseParams = (p => {
         const keyVal = p.split('=');

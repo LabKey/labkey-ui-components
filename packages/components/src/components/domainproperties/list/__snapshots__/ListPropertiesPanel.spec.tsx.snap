@@ -1,0 +1,706 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListPropertiesPanel existing list 1`] = `
+<div
+  className="domain-form-panel domain-panel-no-theme panel panel-default"
+>
+  <div
+    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    id="list-properties-hdr"
+    onClick={[Function]}
+  >
+    <span
+      className="domain-panel-status-icon"
+    >
+      <svg
+        aria-hidden="true"
+        className="svg-inline--fa fa-check-circle fa-w-16 "
+        data-icon="check-circle"
+        data-prefix="fas"
+        focusable="false"
+        role="img"
+        style={Object {}}
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"
+          fill="currentColor"
+          style={Object {}}
+        />
+      </svg>
+    </span>
+    <span
+      className="domain-panel-title"
+    >
+      NIMHDemographics - List Properties
+    </span>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="margin-bottom row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createListOptions"
+              target="_blank"
+            >
+              Learn more about designing lists
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form
+      className=""
+    >
+      <div
+        className="col-md-7 col-xs-12"
+      >
+        <div
+          className="domain-field-section-heading"
+        >
+          Basic Properties
+        </div>
+        <div
+          className="margin-top row"
+        >
+          <div
+            className="col-lg-4 col-xs-3"
+          >
+            Name *
+          </div>
+          <div
+            className="col-lg-8 col-xs-9"
+          >
+            <input
+              className="form-control"
+              id="name"
+              onChange={[Function]}
+              placeholder="Enter a name for this list"
+              type="text"
+              value="NIMHDemographics"
+            />
+          </div>
+        </div>
+        <div
+          className="margin-top row"
+        >
+          <div
+            className="col-lg-4 col-xs-3"
+          >
+            Description
+          </div>
+          <div
+            className="col-lg-8 col-xs-9"
+          >
+            <textarea
+              className="form-control textarea-noresize"
+              id="description"
+              onChange={[Function]}
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-md-3 col-xs-12"
+      >
+        <div
+          className="domain-field-section-heading"
+        >
+          Allow these Actions
+        </div>
+        <div
+          className="list__properties__allowable-actions"
+        >
+          <div
+            className="list__properties__checkbox-row"
+          >
+            <span
+              className="list__properties__checkbox--no-highlight"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                color="#0073BB"
+                data-icon="check-square"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </span>
+            <span
+              className="list__properties__checkbox-text"
+            >
+              Delete
+            </span>
+          </div>
+          <div
+            className="list__properties__checkbox-row"
+          >
+            <span
+              className="list__properties__checkbox--no-highlight"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                color="#0073BB"
+                data-icon="check-square"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </span>
+            <span
+              className="list__properties__checkbox-text"
+            >
+              Upload
+            </span>
+          </div>
+          <div
+            className="list__properties__checkbox-row"
+          >
+            <span
+              className="list__properties__checkbox--no-highlight"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                color="#0073BB"
+                data-icon="check-square"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </span>
+            <span
+              className="list__properties__checkbox-text"
+            >
+              Export & Print
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-md-2 col-xs-12"
+      >
+        <button
+          className="domain-field-float-right btn btn-default"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Advanced Settings
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`ListPropertiesPanel list with error 1`] = `
+<div
+  className="domain-form-panel domain-panel-no-theme panel panel-default"
+>
+  <div
+    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    id="list-properties-hdr"
+    onClick={[Function]}
+  >
+    <span
+      className="label-help-target"
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+    >
+      <span
+        className="domain-panel-status-icon"
+      >
+        <svg
+          aria-hidden="true"
+          className="svg-inline--fa fa-exclamation-circle fa-w-16 "
+          data-icon="exclamation-circle"
+          data-prefix="fas"
+          focusable="false"
+          role="img"
+          style={Object {}}
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
+            fill="currentColor"
+            style={Object {}}
+          />
+        </svg>
+      </span>
+    </span>
+    <span
+      className="domain-panel-title"
+    >
+      NIMHDemographics - List Properties
+    </span>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="margin-bottom row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createListOptions"
+              target="_blank"
+            >
+              Learn more about designing lists
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form
+      className=""
+    >
+      <div
+        className="col-md-7 col-xs-12"
+      >
+        <div
+          className="domain-field-section-heading"
+        >
+          Basic Properties
+        </div>
+        <div
+          className="margin-top row"
+        >
+          <div
+            className="col-lg-4 col-xs-3"
+          >
+            Name *
+          </div>
+          <div
+            className="col-lg-8 col-xs-9"
+          >
+            <input
+              className="form-control"
+              id="name"
+              onChange={[Function]}
+              placeholder="Enter a name for this list"
+              type="text"
+              value="NIMHDemographics"
+            />
+          </div>
+        </div>
+        <div
+          className="margin-top row"
+        >
+          <div
+            className="col-lg-4 col-xs-3"
+          >
+            Description
+          </div>
+          <div
+            className="col-lg-8 col-xs-9"
+          >
+            <textarea
+              className="form-control textarea-noresize"
+              id="description"
+              onChange={[Function]}
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-md-3 col-xs-12"
+      >
+        <div
+          className="domain-field-section-heading"
+        >
+          Allow these Actions
+        </div>
+        <div
+          className="list__properties__allowable-actions"
+        >
+          <div
+            className="list__properties__checkbox-row"
+          >
+            <span
+              className="list__properties__checkbox--no-highlight"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                color="#0073BB"
+                data-icon="check-square"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </span>
+            <span
+              className="list__properties__checkbox-text"
+            >
+              Delete
+            </span>
+          </div>
+          <div
+            className="list__properties__checkbox-row"
+          >
+            <span
+              className="list__properties__checkbox--no-highlight"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                color="#0073BB"
+                data-icon="check-square"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </span>
+            <span
+              className="list__properties__checkbox-text"
+            >
+              Upload
+            </span>
+          </div>
+          <div
+            className="list__properties__checkbox-row"
+          >
+            <span
+              className="list__properties__checkbox--no-highlight"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                color="#0073BB"
+                data-icon="check-square"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </span>
+            <span
+              className="list__properties__checkbox-text"
+            >
+              Export & Print
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-md-2 col-xs-12"
+      >
+        <button
+          className="domain-field-float-right btn btn-default"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Advanced Settings
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`ListPropertiesPanel new list 1`] = `
+<div
+  className="domain-form-panel domain-panel-no-theme panel panel-default"
+>
+  <div
+    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    id="list-properties-hdr"
+    onClick={[Function]}
+  >
+    <span
+      className="domain-panel-title"
+    >
+      List Properties
+    </span>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="margin-bottom row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createListOptions"
+              target="_blank"
+            >
+              Learn more about designing lists
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form
+      className=""
+    >
+      <div
+        className="col-md-7 col-xs-12"
+      >
+        <div
+          className="domain-field-section-heading"
+        >
+          Basic Properties
+        </div>
+        <div
+          className="margin-top row"
+        >
+          <div
+            className="col-lg-4 col-xs-3"
+          >
+            Name *
+          </div>
+          <div
+            className="col-lg-8 col-xs-9"
+          >
+            <input
+              className="form-control"
+              id="name"
+              onChange={[Function]}
+              placeholder="Enter a name for this list"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          className="margin-top row"
+        >
+          <div
+            className="col-lg-4 col-xs-3"
+          >
+            Description
+          </div>
+          <div
+            className="col-lg-8 col-xs-9"
+          >
+            <textarea
+              className="form-control textarea-noresize"
+              id="description"
+              onChange={[Function]}
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-md-3 col-xs-12"
+      >
+        <div
+          className="domain-field-section-heading"
+        >
+          Allow these Actions
+        </div>
+        <div
+          className="list__properties__allowable-actions"
+        >
+          <div
+            className="list__properties__checkbox-row"
+          >
+            <span
+              className="list__properties__checkbox--no-highlight"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                color="#0073BB"
+                data-icon="check-square"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </span>
+            <span
+              className="list__properties__checkbox-text"
+            >
+              Delete
+            </span>
+          </div>
+          <div
+            className="list__properties__checkbox-row"
+          >
+            <span
+              className="list__properties__checkbox--no-highlight"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                color="#0073BB"
+                data-icon="check-square"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </span>
+            <span
+              className="list__properties__checkbox-text"
+            >
+              Upload
+            </span>
+          </div>
+          <div
+            className="list__properties__checkbox-row"
+          >
+            <span
+              className="list__properties__checkbox--no-highlight"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-square fa-w-14 fa-lg "
+                color="#0073BB"
+                data-icon="check-square"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </span>
+            <span
+              className="list__properties__checkbox-text"
+            >
+              Export & Print
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-md-2 col-xs-12"
+      >
+        <button
+          className="domain-field-float-right btn btn-default"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Advanced Settings
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

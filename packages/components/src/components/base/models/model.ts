@@ -452,6 +452,8 @@ export interface IQueryGridModel {
     editable?: boolean
     editing?: boolean
     filterArray?: List<Filter.IFilter>
+    includeDetailsColumn?: boolean,
+    includeUpdateColumn?: boolean,
     isError?: boolean
     isLoaded?: boolean
     isLoading?: boolean
@@ -519,6 +521,8 @@ export class QueryGridModel extends Record({
     editable: false,
     editing: false,
     filterArray: List<Filter.IFilter>(),
+    includeDetailsColumn: false,
+    includeUpdateColumn: false,
     isError: false,
     isLoaded: false,
     isLoading: false,
@@ -571,6 +575,8 @@ export class QueryGridModel extends Record({
     editable: boolean;
     editing: boolean;
     filterArray: List<Filter.IFilter>;
+    includeDetailsColumn?: boolean;
+    includeUpdateColumn?: boolean;
     isError: boolean;
     isLoaded: boolean;
     isLoading: boolean;
@@ -785,11 +791,16 @@ export class QueryGridModel extends Record({
     // Applying other base filters will be problematic (Issue 39719) in that they could possibly exclude the row you are trying
     // to get details for.
     getDetailFilters(): List<Filter.IFilter> {
-        return this.baseFilters.filter((filter) => (filter.getColumnName().toLowerCase() === 'replaced')).toList();
+        return this.baseFilters
+            ? this.baseFilters.filter((filter) => (filter.getColumnName().toLowerCase() === 'replaced')).toList()
+            : List<Filter.IFilter>();
     }
 
     getFilters(): List<Filter.IFilter> {
+        const baseFilters = this.baseFilters || List<Filter.IFilter>();
+        const filterArray = this.filterArray || List<Filter.IFilter>();
         let filterList = List<Filter.IFilter>();
+
         if (this.queryInfo) {
             if (this.keyValue !== undefined) {
                 if (this.queryInfo.pkCols.size === 1) {
@@ -803,10 +814,10 @@ export class QueryGridModel extends Record({
                 return filterList.concat(this.getDetailFilters()).toList();
 
             }
-            return filterList.concat(this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray)).toList();
+            return filterList.concat(baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(filterArray)).toList();
         }
 
-        return this.baseFilters.concat(this.filterArray).toList();
+        return baseFilters.concat(filterArray).toList();
     }
 
     getId(): string {

@@ -90,6 +90,7 @@ export const DOMAIN_FILTER_HASANYVALUE = 'HAS_ANY_VALUE';
 export const DOMAIN_FIELD_NOT_LOCKED = "NotLocked"; // not locked, can change all properties
 export const DOMAIN_FIELD_PARTIALLY_LOCKED = "PartiallyLocked"; // can't change name and type, for example, but can change other properties
 export const DOMAIN_FIELD_FULLY_LOCKED = "FullyLocked"; // can't change any properties
+export const DOMAIN_FIELD_PRIMARY_KEY_LOCKED = "PKLocked"; // can't change data type or required properties
 
 export const SEVERITY_LEVEL_ERROR = "Error";
 export const SEVERITY_LEVEL_WARN = "Warning";

@@ -3442,6 +3442,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                             compact={false}
                             label="Infer fields from file"
                             labelLong="Select file or drag and drop here."
+                            onFileRemoval={[Function]}
                             previewGridProps={
                               Object {
                                 "onPreviewLoad": [Function],
@@ -10193,7 +10194,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     className="domain-field-details"
                                                                     id="domainpropertiesrow-details-1-0"
                                                                   >
-                                                                    New field
+                                                                    New Field
                                                                   </div>
                                                                   <div
                                                                     className="domain-field-buttons"
@@ -12257,7 +12258,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     className="domain-field-details"
                                                                     id="domainpropertiesrow-details-1-1"
                                                                   >
-                                                                    New field
+                                                                    New Field
                                                                   </div>
                                                                   <div
                                                                     className="domain-field-buttons"
@@ -14459,7 +14460,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     className="domain-field-details"
                                                                     id="domainpropertiesrow-details-1-2"
                                                                   >
-                                                                    New field
+                                                                    New Field
                                                                   </div>
                                                                   <div
                                                                     className="domain-field-buttons"
@@ -19797,6 +19798,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             compact={false}
                             label="Infer fields from file"
                             labelLong="Select file or drag and drop here."
+                            onFileRemoval={[Function]}
                             previewGridProps={
                               Object {
                                 "onPreviewLoad": [Function],
@@ -23023,6 +23025,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             compact={false}
                             label="Infer fields from file"
                             labelLong="Select file or drag and drop here."
+                            onFileRemoval={[Function]}
                             previewGridProps={
                               Object {
                                 "onPreviewLoad": [Function],
@@ -29754,7 +29757,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     className="domain-field-details"
                                                                     id="domainpropertiesrow-details-1-0"
                                                                   >
-                                                                    New field
+                                                                    New Field
                                                                   </div>
                                                                   <div
                                                                     className="domain-field-buttons"
@@ -32004,7 +32007,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     className="domain-field-details"
                                                                     id="domainpropertiesrow-details-1-1"
                                                                   >
-                                                                    New field
+                                                                    New Field
                                                                   </div>
                                                                   <div
                                                                     className="domain-field-buttons"
@@ -34392,7 +34395,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     className="domain-field-details"
                                                                     id="domainpropertiesrow-details-1-2"
                                                                   >
-                                                                    New field
+                                                                    New Field
                                                                   </div>
                                                                   <div
                                                                     className="domain-field-buttons"
@@ -43732,7 +43735,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     className="domain-field-details"
                                                                     id="domainpropertiesrow-details-1-0"
                                                                   >
-                                                                    New field
+                                                                    New Field
                                                                   </div>
                                                                   <div
                                                                     className="domain-field-buttons"
@@ -45982,7 +45985,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     className="domain-field-details"
                                                                     id="domainpropertiesrow-details-1-1"
                                                                   >
-                                                                    New field
+                                                                    New Field
                                                                   </div>
                                                                   <div
                                                                     className="domain-field-buttons"
@@ -48370,7 +48373,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     className="domain-field-details"
                                                                     id="domainpropertiesrow-details-1-2"
                                                                   >
-                                                                    New field
+                                                                    New Field
                                                                   </div>
                                                                   <div
                                                                     className="domain-field-buttons"

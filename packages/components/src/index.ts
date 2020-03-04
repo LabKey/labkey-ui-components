@@ -198,7 +198,7 @@ import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
-import { deleteSampleSet, getSampleSet, loadSelectedSamples, } from './components/samples/actions';
+import { deleteSampleSet, fetchSamples, getSampleSet, loadSelectedSamples } from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
@@ -253,8 +253,6 @@ import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 import {
     createFormInputId,
     fetchDomain,
-    fetchProtocol,
-    saveAssayDesign,
     saveDomain,
     setDomainFields,
 } from './components/domainproperties/actions';
@@ -269,9 +267,13 @@ import {
 } from './components/domainproperties/models';
 import DomainForm from './components/domainproperties/DomainForm';
 import { DomainFieldsDisplay } from './components/domainproperties/DomainFieldsDisplay';
+import { fetchProtocol, saveAssayDesign } from './components/domainproperties/assay/actions';
 import { AssayProtocolModel } from './components/domainproperties/assay/models';
 import { AssayPropertiesPanel } from './components/domainproperties/assay/AssayPropertiesPanel';
 import { AssayDesignerPanels } from './components/domainproperties/assay/AssayDesignerPanels';
+import { ListDesignerPanels } from "./components/domainproperties/list/ListDesignerPanels";
+import { ListModel } from "./components/domainproperties/list/models";
+import { fetchListDesign, getListProperties } from "./components/domainproperties/list/actions";
 import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
@@ -393,6 +395,7 @@ export {
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
+    fetchSamples,
     getSampleSet,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
@@ -426,6 +429,12 @@ export {
     getRunPropertiesRow,
     getBatchPropertiesModel,
     getBatchPropertiesRow,
+
+    // lists
+    ListDesignerPanels,
+    ListModel,
+    fetchListDesign,
+    getListProperties,
 
     // forms
     handleInputTab,

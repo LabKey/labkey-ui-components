@@ -7,6 +7,55 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 38907: ui-components applications cannot handle assay names with periods
 * Issue 39461: Editing a date field in a sample does not show a date picker
 
+### version 0.32.0
+*Released*: 3 March 2020
+* Fix issue 39085
+    - factored out "fetchSamples" from "loadSelectedSamples" to allow for fetching and and transformation independent of getting selection
+
+### version 0.31.3
+*Released*: 28 February 2020
+* Fix for Sample Manager QueryGridModel use case that passes in undefined as baseFilters
+    - make sure baseFilters is defined before doing a concat with the rest of the filters
+
+### version 0.31.2
+*Released* 28 February 2020
+* Fix issue 38668
+    * We now pass the display column value of lookups to QuerySelect in QueryFormInputs
+
+### version 0.31.1
+*Released*: 27 February 2020
+* Issue 39813: Metadata settings in new Designer don't align with old Designer
+    - Resolved bug in List Designer's indexing settings.
+
+### version 0.31.0
+*Released*: 27 February 2020
+* Item 6798: ListDesignerPanels and related components, models, actions
+    - new list related components ListDesignerPanels.tsx and ListPropertiesPanel.tsx
+    - DomainForm changes to support an "Import Data" option when using a file to infer fields for the domain (see ImportDataFilePreview.tsx)
+    - DomainRow changs to support locking the "primary key" field data type and required inputs
+    - move assay related actions to domainproperties/assay/actions.ts file
+
+### version 0.30.0
+*Released*: 27 February 2020
+* Bump @labkey/api to 0.0.35
+
+### version 0.29.0
+*Released*: 26 February 2020
+* Issue 37776: updateUrl in custom assay does not get used in Biologics UI
+* Added two new attributes to QueryGridModel
+    * includeDetailsColumn
+    * includeUpdateColumn
+    * simplify getStateQueryGridModel
+    * remove IStateModelProps interface used by getStateQueryGridModel
+
+### version 0.28.3
+*Released*: 26 February 2020
+* Bump @labkey/api dependency to 0.0.34
+
+### version 0.28.2
+*Released*: 25 February 2020
+* Issue 39788: Responses that have exceptions but not errors not showing messages in the UI
+
 ### version 0.28.1
 *Released*: 25 February 2020
 * Use dataclass category field for choosing the icon to display for search results

@@ -511,7 +511,7 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
             gridShowError(payload.model, payload.error, connectedComponent);
         }
         else {
-            console.error("No model available for loading.", payload.error);
+            console.error("No model available for loading.", payload.error || payload);
             setError(model, resolveErrorMessage(payload.error, "data"));
         }
     });

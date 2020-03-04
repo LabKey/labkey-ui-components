@@ -19,6 +19,7 @@ import { getBrowserHistory } from './global';
 
 // This type is roughly equivalent to the Location object from this history package
 // but here we have all fields optional to make it also compatible with the window.location object
+// we are not making use of action, key, state fields for now, but keeping them so the type is consistent with history.location type
 export type Location = {
     action?: string
     hash?: string
@@ -31,38 +32,34 @@ export type Location = {
 
 export function getLocation() : Location
 {
-    const browserLocation : Location = getBrowserHistory().location;
+    const location = getBrowserHistory().location;
+    const { action, pathname, search, key, state } = location;
 
-    // return a new object, instead of manipulating the browser location object
-    let location : Location = (({ action, hash, key, pathname, query, search, state }) => ({ action, hash, key, pathname, query, search, state }))(browserLocation);
-
-    let query =  Map<string, string>(location.query).asMutable();
+    let hash = location.hash;
+    let query =  Map<string, string>().asMutable();
+    const parseParams = (p) => {
+        const keyVal = p.split('=');
+        query = query.set(keyVal[0].trim(), keyVal[1].trim());
+    };
 
     // check for query params that are before the hash
-    if (location.search && location.search.length > 0)
+    if (search && search.length > 0)
     {
-        const params = location.search.substring(1).split('&');
-        params.forEach( (p) => {
-            const keyVal = p.split('=');
-            query.set(keyVal[0].trim(), keyVal[1].trim());
-        });
+        const params = search.substring(1).split('&');
+        params.forEach(parseParams);
     }
 
     // and check for query params after the hash
-    if (location.hash && location.hash.indexOf('?') > -1) {
-        const index = location.hash.indexOf('?');
-
-        const params = location.hash.substring(index + 1).split('&');
-        params.forEach( (p) => {
-            const keyVal = p.split('=');
-            query.set(keyVal[0].trim(), keyVal[1].trim());
-        });
-
-        location.hash = location.hash.substring(0, index);
+    if (hash && hash.indexOf('?') > -1) {
+        const index = hash.indexOf('?');
+        const params = hash.substring(index + 1).split('&');
+        params.forEach(parseParams);
+        hash = hash.substring(0, index);
     }
 
-    location.query = query.asImmutable();
-    return location;
+    query = query.asImmutable();
+
+    return { action, pathname, search, key, state, hash, query };
 }
 
 export function getRouteFromLocationHash(hash: string) {

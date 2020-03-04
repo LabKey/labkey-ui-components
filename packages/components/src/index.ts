@@ -205,7 +205,6 @@ import {
     loadSelectedSamples,
 } from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
-import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
@@ -520,7 +519,7 @@ export {
     IFieldChange,
     IBannerMessage,
     IAppDomainHeader,
-    DomainDetails,       //TODO REVIEW still needed?
+    DomainDetails,
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,

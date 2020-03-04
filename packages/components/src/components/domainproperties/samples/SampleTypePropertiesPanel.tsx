@@ -2,8 +2,8 @@ import React from 'react';
 import {SampleTypeModel} from './models';
 import {EntityDetailsForm,} from "../entities/EntityDetailsForm";
 
-//TODO move these to the local models file
-import {IParentAlias, IParentOption,} from "../../entities/models";
+import {IParentOption} from "../../entities/models";
+import {IParentAlias} from "./models";
 import {DomainPanelStatus} from "../models";
 import {DomainPropertiesPanelProvider} from "../DomainPropertiesPanelContext";
 import {getFormNameFromId,} from "../entities/actions";
@@ -25,9 +25,9 @@ interface OwnProps {
 
 //Splitting these out to clarify where they end-up
 interface EntityProps {
-    noun: string
-    nameExpressionInfoUrl: string
-    nameExpressionPlaceholder: string
+    noun?: string
+    nameExpressionInfoUrl?: string
+    nameExpressionPlaceholder?: string
 }
 
 //Splitting these out to clarify where they end-up
@@ -67,8 +67,10 @@ export class SampleTypePropertiesPanel extends React.PureComponent<Props> {
 }
 
 class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
-    static defaultProps: {
+    static defaultProps = {
         noun: 'Sample Type',
+        nameExpressionInfoUrl: '',
+        nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}',
         initCollapsed: false,
         validate: false,
         appPropertiesOnly: false,
@@ -150,7 +152,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
     };
 
     render = () => {
-        const {model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, noun='Sample Type'} = this.props;
+        const {model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, noun} = this.props;
 
         return (
             <>

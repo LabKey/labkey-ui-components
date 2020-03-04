@@ -1,6 +1,7 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom'
-import { IParentAlias, IParentOption } from '../entities/models';
+import { IParentOption } from "../entities/models";
+import { IParentAlias } from '../domainproperties/samples/models';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import { SelectInput } from '../forms/input/SelectInput';
@@ -74,7 +75,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
 
         return (
             <Row key={id} >
-                <Col xs={3}> {/* TODO:Error/validation styling on label {className={classNames('parent-alias-label', {'has-error': aliasBlank || !optionValue})}> */}
+                <Col xs={3}>
                     <LabelOverlay
                         label={'Parent Alias *'}
                         description={PARENT_ALIAS_HELPER_TEXT}

@@ -1439,27 +1439,3 @@ export class DomainDetails {
         return design;
     }
 }
-
-// TODO understand why this doesn't work
-// export class BaseDomainModel extends Record({
-//     domain: undefined
-// }) {
-//     domain: DomainDesign;
-//     isNew: () => boolean;
-//     hasValidProperties: () => boolean;
-//
-//     constructor(values?: {[key:string]: any}){
-//         super(values);
-//     }
-//
-//     static isValid(model: BaseDomainModel): boolean {
-//         const errDomain = !!model.domain.domainException && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR;
-//         return !errDomain && model.hasValidProperties();
-//     }
-//
-//     static serialize(model: BaseDomainModel): BaseDomainModel {
-//         // TODO: remove unrecognized fields from model before converting to json
-//         const domain = DomainDesign.serialize(model.domain);
-//         return model.merge({domain} as BaseDomainModel).toJS();
-//     }
-// }

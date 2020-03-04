@@ -13,7 +13,8 @@ import {
     WizardNavButtons
 } from "../../..";
 import DomainForm from "../DomainForm";
-import {IParentAlias, IParentOption,} from "../../entities/models";
+import {IParentOption} from "../../entities/models";
+import {IParentAlias} from "./models";
 import {addDomainField} from "../actions";
 import {initSampleSetSelects,} from "../../samples/actions";
 import {SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from "../../../constants";
@@ -31,7 +32,7 @@ const DEFAULT_SAMPLE_FIELD_CONFIG = {
 } as Partial<IDomainField>;
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
-    label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`, //TODO: this should use props.noun;
+    label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
     value: "{{this_sample_set}}"
 } as IParentOption;
 

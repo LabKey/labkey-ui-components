@@ -2518,7 +2518,7 @@ export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
  * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
  * provide a filter for the sample column or columns defined in the assay design.
  */
-export function createQueryGridModelFilteredBySample(model: AssayDefinitionModel, gridId: string, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string, useLsid?: boolean): QueryGridModel {
+export function createQueryGridModelFilteredBySample(model: AssayDefinitionModel, gridId: string, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string, useLsid?: boolean, omitSampleCols?: boolean): QueryGridModel {
     const schemaQuery = SchemaQuery.create(model.protocolSchemaName, 'Data');
     const sampleColumns = model.getSampleColumnFieldKeys();
 
@@ -2528,7 +2528,8 @@ export function createQueryGridModelFilteredBySample(model: AssayDefinitionModel
             baseFilters: List([filter]),
             isPaged: true,
             title: model.name,
-            urlPrefix: model.name
+            urlPrefix: model.name,
+            omittedColumns: omitSampleCols ? sampleColumns : undefined
         }));
     }
 }

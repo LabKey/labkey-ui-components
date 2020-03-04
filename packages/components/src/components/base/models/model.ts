@@ -1756,15 +1756,16 @@ export class AssayDefinitionModel extends Record({
         return List(sampleCols.map(this.sampleColumnFieldKey));
     }
 
-    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string) {
+    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string, useLsid?: boolean) {
+        const keyCol = useLsid ? '/LSID' : '/RowId';
         if (sampleColumns.size == 1) {
             // generate simple equals filter
             let sampleColumn = sampleColumns.get(0);
-            return Filter.create(`${sampleColumn}/RowId`, value, singleFilter);
+            return Filter.create(sampleColumn + keyCol, value, singleFilter);
         } else {
             // generate an OR filter to include all sample columns
             let whereClause = '(' + sampleColumns.map(sampleCol => {
-                let fieldKey = (sampleCol + '/RowId').replace(/\//g, '.');
+                let fieldKey = (sampleCol + keyCol).replace(/\//g, '.');
                 return whereClausePart(fieldKey, value);
             }).join(' OR ') + ')';
             return Filter.create('*', whereClause, WHERE_FILTER_TYPE);

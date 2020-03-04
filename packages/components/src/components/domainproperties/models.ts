@@ -624,7 +624,8 @@ export class DomainField extends Record({
     original: undefined,
     updatedField: false,
     isPrimaryKey: false,
-    lockType: DOMAIN_FIELD_NOT_LOCKED
+    lockType: DOMAIN_FIELD_NOT_LOCKED,
+    wrappedColumnName: undefined
 
 }) implements IDomainField {
     conceptURI?: string;
@@ -670,6 +671,7 @@ export class DomainField extends Record({
     updatedField: boolean;
     isPrimaryKey: boolean;
     lockType: string;
+    wrappedColumnName?: string
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);

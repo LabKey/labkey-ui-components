@@ -6,31 +6,7 @@ import {ListModel} from "../components/domainproperties/list/models";
 import getDomainDetailsJSON from '../test/data/property-getDomainDetails.json';
 
 import './stories.scss';
-
-const DEFAULT_LIST_SETTINGS = {
-    "listId" : 0,
-    "name" : null,
-    "domainId" : 0,
-    "keyName" : null,
-    "keyType" : null,
-    "titleColumn" : null,
-    "description" : null,
-    "lastIndexed" : null,
-    "allowDelete" : true,
-    "allowUpload" : true,
-    "allowExport" : true,
-    "discussionSetting" : 0,
-    "entireListTitleTemplate" : "",
-    "entireListIndexSetting" : 0,
-    "entireListBodySetting" : 0,
-    "eachItemTitleTemplate" : "",
-    "eachItemBodySetting" : 0,
-    "entireListIndex" : false,
-    "entireListBodyTemplate" : null,
-    "eachItemIndex" : false,
-    "eachItemBodyTemplate" : null,
-    "fileAttachmentIndex" : false
-};
+import {DEFAULT_LIST_SETTINGS} from "../test/data/constants";
 
 class Wrapped extends React.Component<any, any> {
     constructor(props) {

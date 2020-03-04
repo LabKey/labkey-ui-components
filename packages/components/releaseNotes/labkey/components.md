@@ -5,6 +5,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 6803: New QueryMetadata Editor
 
+### version 0.32.0
+*Released*: 3 March 2020
+* Fix issue 39085
+    - factored out "fetchSamples" from "loadSelectedSamples" to allow for fetching and and transformation independent of getting selection
+
+### version 0.31.3
+*Released*: 28 February 2020
+* Fix for Sample Manager QueryGridModel use case that passes in undefined as baseFilters
+    - make sure baseFilters is defined before doing a concat with the rest of the filters
+
+### version 0.31.2
+*Released* 28 February 2020
+* Fix issue 38668
+    * We now pass the display column value of lookups to QuerySelect in QueryFormInputs
+
 ### version 0.31.1
 *Released*: 27 February 2020
 * Issue 39813: Metadata settings in new Designer don't align with old Designer
@@ -17,6 +32,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - DomainForm changes to support an "Import Data" option when using a file to infer fields for the domain (see ImportDataFilePreview.tsx)
     - DomainRow changs to support locking the "primary key" field data type and required inputs
     - move assay related actions to domainproperties/assay/actions.ts file
+
+### version 0.30.0
+*Released*: 27 February 2020
+* Bump @labkey/api to 0.0.35
 
 ### version 0.29.0
 *Released*: 26 February 2020

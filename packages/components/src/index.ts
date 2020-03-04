@@ -198,7 +198,7 @@ import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
-import { deleteSampleSet, getSampleSet, loadSelectedSamples, } from './components/samples/actions';
+import { deleteSampleSet, fetchSamples, getSampleSet, loadSelectedSamples } from './components/samples/actions';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './components/domainproperties/dataclasses/models';
@@ -401,6 +401,7 @@ export {
     // samples-related
     SampleSetDetailsPanel,
     deleteSampleSet,
+    fetchSamples,
     getSampleSet,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,

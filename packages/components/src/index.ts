@@ -199,11 +199,10 @@ import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
 import { deleteSampleSet, getSampleSet, loadSelectedSamples, } from './components/samples/actions';
-import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './components/domainproperties/dataclasses/models';
-import { fetchDataClass } from './components/domainproperties/dataclasses/actions';
+import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel';
@@ -237,6 +236,7 @@ import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
 import { EntityDeleteConfirmModal } from './components/entities/EntityDeleteConfirmModal';
+import { EntityTypeDeleteConfirmModal } from './components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
@@ -395,11 +395,11 @@ export {
     // data class
     DataClassDesigner,
     DataClassModel,
+    deleteDataClass,
     fetchDataClass,
 
     // samples-related
     SampleSetDetailsPanel,
-    SampleSetDeleteConfirmModal,
     deleteSampleSet,
     getSampleSet,
     createQueryGridModelFilteredBySample,
@@ -479,6 +479,7 @@ export {
     getDataDeleteConfirmationData,
 
     // entities
+    EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
     EntityDataType,
     EntityInsertPanel,

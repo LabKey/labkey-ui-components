@@ -15,15 +15,16 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
+import { EntityTypeDeleteConfirmModal } from "./EntityTypeDeleteConfirmModal";
 
-import { SampleSetDeleteConfirmModal } from './SampleSetDeleteConfirmModal';
-
-describe("<SampleSetDeleteConfirmModal/>", () => {
+describe("<EntityTypeDeleteConfirmModal/>", () => {
 
     test("showDependenciesLink prop", () => {
         const component = (
-            <SampleSetDeleteConfirmModal
+            <EntityTypeDeleteConfirmModal
                 rowId={0}
+                noun={'sample'}
+                deleteConfirmationActionName={'deleteMaterialSource'}
                 showDependenciesLink={true}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
@@ -39,8 +40,10 @@ describe("<SampleSetDeleteConfirmModal/>", () => {
         const onConfirmFn = jest.fn();
         const onCancelFn = jest.fn();
         const component = (
-            <SampleSetDeleteConfirmModal
+            <EntityTypeDeleteConfirmModal
                 rowId={0}
+                noun={'sample'}
+                deleteConfirmationActionName={'deleteMaterialSource'}
                 onCancel={onCancelFn}
                 onConfirm={onConfirmFn}
             />

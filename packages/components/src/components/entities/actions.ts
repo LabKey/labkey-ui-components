@@ -275,3 +275,22 @@ export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: M
         });
     });
 }
+
+export function deleteEntityType(deleteActionName: string, rowId: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', deleteActionName + '.api'),
+            method: 'POST',
+            params: {
+                singleObjectRowId: rowId,
+                forceDelete: true
+            },
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}

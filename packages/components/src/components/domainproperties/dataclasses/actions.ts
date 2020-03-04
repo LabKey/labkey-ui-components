@@ -15,7 +15,8 @@
  */
 import { Domain } from "@labkey/api";
 import { DataClassModel } from "./models";
-import { SCHEMAS } from "../../..";
+import { SCHEMAS } from "../../base/models/schemas";
+import { deleteEntityType } from "../../entities/actions";
 
 export function fetchDataClass(name: string): Promise<DataClassModel> {
     return new Promise((resolve, reject) => {
@@ -36,4 +37,8 @@ export function fetchDataClass(name: string): Promise<DataClassModel> {
             }
         })
     });
+}
+
+export function deleteDataClass(rowId: number): Promise<any> {
+    return deleteEntityType('deleteDataClass', rowId);
 }

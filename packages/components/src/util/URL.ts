@@ -31,7 +31,11 @@ export type Location = {
 
 export function getLocation() : Location
 {
-    let location : Location = getBrowserHistory().location;
+    const browserLocation : Location = getBrowserHistory().location;
+
+    // return a new object, instead of manipulating the browser location object
+    let location : Location = (({ action, hash, key, pathname, query, search, state }) => ({ action, hash, key, pathname, query, search, state }))(browserLocation);
+
     let query =  Map<string, string>(location.query).asMutable();
 
     // check for query params that are before the hash

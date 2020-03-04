@@ -100,10 +100,11 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
         updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
-    setIsValid() {
+    setIsValid(newModel?: DataClassModel) {
         const { model, onChange } = this.props;
-        const isValid = model && model.hasValidProperties();
-        this.setState(() => ({isValid}), () => onChange(model));
+        const updatedModel = newModel || model;
+        const isValid = updatedModel && updatedModel.hasValidProperties();
+        this.setState(() => ({isValid}), () => onChange(updatedModel));
     }
 
     toggleLocalPanel = (evt: any): void => {
@@ -119,8 +120,9 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     };
 
     onChange = (id: string, value: any) => {
-        const { model, onChange } = this.props;
-        onChange(model.set(getFormNameFromId(id), value) as DataClassModel);
+        const { model } = this.props;
+        const newModel = model.set(getFormNameFromId(id), value) as DataClassModel;
+        this.setIsValid(newModel);
     };
 
     renderSampleSetSelect() {

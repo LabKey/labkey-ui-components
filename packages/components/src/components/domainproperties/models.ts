@@ -1408,13 +1408,17 @@ export interface IAppDomainHeader {
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
 
 /**
- * General object to describe a DomainKind
+ * General object to describe a DomainKind as received from Domain.getDomainDetails
  *
  * @property domainDesign The fields found on all items of this domain (e.g., copy per item)
  * @property options The fields and properties shared by this type (e.g., one copy) ('options' used to match existing LKS api)
  * @property domainKindName The name of the domainkind type this represents, currently supported can be found in Domain.KINDS
  */
-export class DomainDetails {
+export class DomainDetails extends Record({
+    domainDesign: undefined,
+    options: undefined,
+    domainKindName: undefined,
+}) {
     domainDesign: DomainDesign;
     options: Map<string, any>;
     domainKindName: string;
@@ -1426,16 +1430,20 @@ export class DomainDetails {
             const domainDesign = DomainDesign.create(rawDesign.get('domainDesign'));
             const domainKindName = rawDesign.get('domainKindName', domainKindType);
             const options = Map(rawDesign.get('options'));
-            design = {domainDesign, domainKindName, options} as DomainDetails;
+            design = new DomainDetails({domainDesign, domainKindName, options});
         }
         else {
-            design = {
+            design = new DomainDetails({
                 domainDesign: DomainDesign.create(null),
                 domainKindName: domainKindType,
                 options: Map<string, any>(),
-            } as DomainDetails;
+            });
         }
 
         return design;
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
     }
 }

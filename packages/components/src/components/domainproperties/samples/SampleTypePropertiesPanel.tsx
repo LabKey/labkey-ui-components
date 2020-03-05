@@ -45,10 +45,6 @@ interface CollapsiblePanelProps {
 
 type Props = OwnProps & EntityProps & CollapsiblePanelProps;
 
-interface State {
-    isValid: boolean
-}
-
 export class SampleTypePropertiesPanel extends React.PureComponent<Props> {
     render() {
         const {controlledCollapse, collapsible, initCollapsed, onToggle} = this.props;
@@ -66,7 +62,7 @@ export class SampleTypePropertiesPanel extends React.PureComponent<Props> {
     }
 }
 
-class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
+class SampleTypePropertiesPanelImpl extends React.Component<Props> {
     static defaultProps = {
         noun: 'Sample Type',
         nameExpressionInfoUrl: '',
@@ -75,14 +71,6 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props,State> {
         validate: false,
         appPropertiesOnly: false,
     };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isValid: true
-        };
-    }
 
     //Generates a temporary id for add/delete of the import aliases
     static generateAliasId() {

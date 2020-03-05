@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Fix for List Designer issues targeting LabKey release 20.3
+    - Issue 39846: New list designer - "Name" doesn't validate immediately
+
 ### version 0.31.3
 *Released*: 28 February 2020
 * Fix for Sample Manager QueryGridModel use case that passes in undefined as baseFilters

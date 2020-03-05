@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.33.0
+*Released*: 5 March 2020
 * Issue 38221: Sample Manager: encoding issues at various places
 * Issue 38907: ui-components applications cannot handle assay names with periods
 * Issue 39461: Editing a date field in a sample does not show a date picker

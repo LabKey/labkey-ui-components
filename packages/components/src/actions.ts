@@ -538,7 +538,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
         .concat(bindSearch(q))
         .toList();
     props.sorts = getSortFromUrl(queryString, model.urlPrefix);
-    props.view = view;
+    props.view = view ? decodeURIComponent(view) : undefined;
 
     if (model.isPaged) {
         let pageNumber = parseInt(p);

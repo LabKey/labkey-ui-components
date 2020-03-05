@@ -1,10 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.31.4
+*Released*: TBD March 2020
 * Fix for List Designer issues targeting LabKey release 20.3
-    - Issue 39846: New list designer - "Name" doesn't validate immediately
+    - Issue 39846: List designer - "Name" doesn't validate immediately
+    - Issue 39879: Domain designer - lookup queries which only have container PK are filtered out of the select input
 
 ### version 0.31.3
 *Released*: 28 February 2020

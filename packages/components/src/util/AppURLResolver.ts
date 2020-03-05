@@ -60,7 +60,7 @@ export class AssayResolver implements AppRouteResolver {
                 return fetchProtocol(assayRowId)
                     .then((assay: AssayProtocolModel) => {
                         const context = {
-                            name: assay.name,
+                            name: encodeURIComponent(assay.name),
                             provider: assay.providerName
                         };
 
@@ -272,7 +272,7 @@ export class SamplesResolver implements AppRouteResolver {
                                     );
                                 }
                                 else {
-                                    this.samples = this.samples.set(sampleRowId, List([SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase(), sampleSetName]));
+                                    this.samples = this.samples.set(sampleRowId, List([SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase(), encodeURIComponent(sampleSetName)]));
                                 }
                             }
 
@@ -335,7 +335,7 @@ export class SampleSetResolver implements AppRouteResolver {
                     }
 
                     if (this.sets.contains(sampleSetName)) {
-                        const newParts = ['samples', sampleSetName];
+                        const newParts = ['samples', encodeURIComponent(sampleSetName)];
                         return resolve(spliceURL(parts, newParts, 0, 3));
                     }
 

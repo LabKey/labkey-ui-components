@@ -538,7 +538,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
         .concat(bindSearch(q))
         .toList();
     props.sorts = getSortFromUrl(queryString, model.urlPrefix);
-    props.view = view;
+    props.view = view ? decodeURIComponent(view) : undefined;
 
     if (model.isPaged) {
         let pageNumber = parseInt(p);
@@ -562,7 +562,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
         model.urlParams.forEach((paramName) => {
             const value = location.query.get(model.createParam(paramName));
             if (value !== undefined) {
-                props.urlParamValues = props.urlParamValues.set(paramName, value);
+                props.urlParamValues = props.urlParamValues.set(paramName, decodeURIComponent(value));
             }
         });
     }
@@ -576,7 +576,7 @@ function bindSearch(searchTerm: string): List<Filter.IFilter> {
     if (searchTerm) {
         searchTerm.split(';').forEach((term) => {
             if (term) {
-                searchFilters.push(Filter.create('*', term, Filter.Types.Q));
+                searchFilters.push(Filter.create('*', decodeURIComponent(term), Filter.Types.Q));
             }
         });
     }

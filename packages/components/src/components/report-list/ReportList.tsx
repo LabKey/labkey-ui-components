@@ -171,7 +171,7 @@ class SampleComparisonReportBody extends PureComponent<ReportConsumer, SampleCom
 
     getReportId = () => {
         const { report } = this.props;
-        return report.reportId.replace('db:', '');
+        return decodeURIComponent(report.reportId).replace('db:', '');
     };
 
     fetchReport = () => {

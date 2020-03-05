@@ -2529,7 +2529,7 @@ export function createQueryGridModelFilteredBySample(model: AssayDefinitionModel
             isPaged: true,
             title: model.name,
             urlPrefix: model.name,
-            omittedColumns: omitSampleCols ? sampleColumns : undefined
+            omittedColumns: omitSampleCols ? sampleColumns : List<string>()
         }));
     }
 }

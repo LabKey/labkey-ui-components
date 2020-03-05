@@ -7,6 +7,12 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Allow using lsid instead of rowid for createQueryGridModelFilteredBySample
     - Allow omit sample columns in generated model
 
+### version 0.33.0
+*Released*: 5 March 2020
+* Issue 38221: Sample Manager: encoding issues at various places
+* Issue 38907: ui-components applications cannot handle assay names with periods
+* Issue 39461: Editing a date field in a sample does not show a date picker
+
 ### version 0.32.0
 *Released*: 3 March 2020
 * Fix issue 39085

@@ -562,7 +562,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
         model.urlParams.forEach((paramName) => {
             const value = location.query.get(model.createParam(paramName));
             if (value !== undefined) {
-                props.urlParamValues = props.urlParamValues.set(paramName, value);
+                props.urlParamValues = props.urlParamValues.set(paramName, decodeURIComponent(value));
             }
         });
     }

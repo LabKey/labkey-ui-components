@@ -196,3 +196,4 @@ export const FIELD_NAME_CHAR_WARNING_INFO = 'SQL queries, R scripts, and other c
     + 'SPSS, and MATLAB.';
 
 export const KINDS = Domain.KINDS;
+export const DEFAULT_NAMING_PATTERN = 'S-${genId}';

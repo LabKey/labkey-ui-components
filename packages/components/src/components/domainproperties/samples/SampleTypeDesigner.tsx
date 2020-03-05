@@ -39,6 +39,7 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
 export const SAMPLE_SET_IMPORT_PREFIX :string = 'materialInputs/';
 export const DATA_CLASS_IMPORT_PREFIX :string = 'dataInputs/';
 const DATA_CLASS_SCHEMA_KEY:string = 'exp/dataclasses';
+const SAMPLEID_RESERVED_ERROR = 'The ' + DEFAULT_SAMPLE_FIELD_CONFIG.name + ' field name is reserved for imported or generated sample ids.';
 
 interface Props {
     onCancel: () => void
@@ -54,7 +55,9 @@ interface Props {
     nameExpressionPlaceholder?: string
 
     //DomainDesigner props
-    domainDesignerStickyHeight?: number
+    domainDesignerStickyHeight?: number, // This sets the height of the sticky header, default is 60
+    useTheme?: boolean,
+    appPropertiesOnly?: boolean,
 }
 
 interface State {
@@ -74,20 +77,26 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     private _dirty = false;
 
     static defaultProps = {
-        nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}',
+        nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         noun: SAMPLE_SET_DISPLAY_TEXT,
-        domainDesignerStickyHeight: STICKY_HEADER_HEIGHT,
         includeDataClasses: false,
+
+        domainDesignerStickyHeight: STICKY_HEADER_HEIGHT,
+        useTheme: false,
+        appPropertiesOnly: true,
     };
 
     constructor(props: Props) {
         super(props);
 
+        const domainDetails = this.props.initModel || DomainDetails.create();
+        const model = SampleTypeModel.create(domainDetails);
+
         this.state = {
             submitting: false,
             currentPanelIndex: 0,
-            model: undefined,
+            model,
             invalidDomainField: undefined,
             activePanelIndex: 0,
             parentOptions: undefined,
@@ -96,9 +105,8 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     }
 
     componentDidMount = (): void => {
-        const domainDetails = this.props.initModel || DomainDetails.create();
-        const model = SampleTypeModel.create(domainDetails);
         const {includeDataClasses} = this.props;
+        const {model} = this.state;
 
         initSampleSetSelects(!model.isNew(), model.name, includeDataClasses)
             .then((results) => {
@@ -142,14 +150,6 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         }
 
         this.mapParentAliasOptions(model, sets.sortBy(p => p.label, naturalSort) as List<IParentOption>);
-
-        //
-        //
-        // initSampleSetSelects(!model.isNew(), model.name, true).then(results => {
-        //     this.mapParentAliasOptions(results);
-        // }).catch((error) => {
-        //     this.onFinishFailure(resolveErrorMessage(error));
-        // });
     };
 
     mapParentAliasOptions = (model: SampleTypeModel, results: List<IParentOption>): void => {
@@ -238,7 +238,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     };
 
     renderDetailsPanel = () => {
-        const {noun = 'Sample Type', nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
+        const {noun, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
         const {model, parentOptions,} = this.state;
         return (
             <>
@@ -259,26 +259,32 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
 
     domainChangeHandler = (newDomain: DomainDesign): void => {
         const {defaultSampleFieldConfig} = this.props;
-        let {model} = this.state;
+        let {model, error} = this.state;
         let invalidDomainField = undefined;
         if (newDomain && newDomain.fields) {
             newDomain.fields.forEach(field => {
                 if (field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase()) {
-                    invalidDomainField = field.name
+                    invalidDomainField = field.name;
+                    error = SAMPLEID_RESERVED_ERROR;
                 }
             });
         }
+
+        //If error field cleared and error message matches then clear it.
+        if (!invalidDomainField && error === SAMPLEID_RESERVED_ERROR) //Splice || regex better?
+            error = undefined;
 
         this._dirty = true;
         model = model.merge({domain:newDomain}) as SampleTypeModel;
         this.setState(() => ({
             model,
-            invalidDomainField
+            invalidDomainField,
+            error,
         }));
     };
 
     renderDomainPanel = () => {
-        const {noun, domainDesignerStickyHeight} = this.props;
+        const {noun, domainDesignerStickyHeight, useTheme, appPropertiesOnly} = this.props;
         const {model} = this.state;
         const {domain} = model;
 
@@ -292,8 +298,8 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                         initCollapsed={true}
                         collapsible={true}
                         helpNoun={noun.toLowerCase()}
-                        useTheme={false}
-                        appPropertiesOnly={true}
+                        useTheme={useTheme}
+                        appPropertiesOnly={appPropertiesOnly}
                         containerTop={domainDesignerStickyHeight}
                 />
                 }
@@ -302,7 +308,8 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     };
 
     isFormValid = (): boolean => {
-        return SampleTypeModel.isValid(this.state.model);
+        const {invalidDomainField} = this.state;
+        return SampleTypeModel.isValid(this.state.model) && !invalidDomainField;
     };
 
     onFinish = () => {
@@ -375,9 +382,9 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
 
         return (
             <>
-                {error && <Alert>{error}</Alert>}
                 {this.renderDetailsPanel()}
                 {this.renderDomainPanel()}
+                {error && <Alert>{error}</Alert>}
                 <WizardNavButtons
                     containerClassName="margin-top"
                     cancel={onCancel}

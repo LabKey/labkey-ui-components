@@ -11,7 +11,7 @@ import {
 } from "./actions";
 import { ENTITY_FORM_IDS } from "./constants";
 
-interface Props {
+export interface EntityDetailsProps {
     noun: string
     onFormChange: (evt: any) => any
     formValues?: IEntityDetails
@@ -20,10 +20,7 @@ interface Props {
     nameExpressionPlaceholder?: string
 }
 
-//TODO rename above
-export type EntityDetailsProps = Props;
-
-export class EntityDetailsForm extends React.PureComponent<Props, any> {
+export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, any> {
 
     render() {
         const { nameExpressionInfoUrl, nameExpressionPlaceholder, noun, onFormChange, formValues, data } = this.props;

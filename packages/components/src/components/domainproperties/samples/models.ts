@@ -1,5 +1,5 @@
 import {fromJS, Map, Record} from "immutable";
-import { SEVERITY_LEVEL_ERROR } from "../constants";
+import {SEVERITY_LEVEL_ERROR} from "../constants";
 import { DomainDesign, DomainDetails } from "../models";
 import { IParentOption } from "../../entities/models";
 

@@ -79,6 +79,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
       "updatedField": false,
       "isPrimaryKey": false,
       "lockType": "NotLocked",
+      "wrappedColumnName": undefined,
     }
   }
   index={1}
@@ -410,6 +411,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               }
             }
             index={1}
@@ -910,6 +912,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               }
             }
             index={1}
@@ -1362,6 +1365,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
       "updatedField": false,
       "isPrimaryKey": false,
       "lockType": "NotLocked",
+      "wrappedColumnName": undefined,
     }
   }
   index={1}
@@ -1712,6 +1716,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               }
             }
             index={1}
@@ -2212,6 +2217,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               }
             }
             index={1}
@@ -2820,6 +2826,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
       "updatedField": false,
       "isPrimaryKey": false,
       "lockType": "NotLocked",
+      "wrappedColumnName": undefined,
     }
   }
   index={1}
@@ -3205,6 +3212,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               }
             }
             index={1}
@@ -3705,6 +3713,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               }
             }
             index={1}
@@ -4313,6 +4322,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
       "updatedField": false,
       "isPrimaryKey": false,
       "lockType": "NotLocked",
+      "wrappedColumnName": undefined,
     }
   }
   index={1}
@@ -4716,6 +4726,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               }
             }
             index={1}
@@ -5216,6 +5227,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               }
             }
             index={1}

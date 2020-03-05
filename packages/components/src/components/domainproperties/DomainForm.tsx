@@ -86,6 +86,7 @@ interface IDomainFormInput {
     domainIndex?: number
     successBsStyle?: string
     setFileImportData?: (file: File) => any // having this prop set is also an indicator that you want to show the file preview grid with the import data option
+    hideAddFieldsButton?: boolean
 }
 
 interface IDomainFormState {
@@ -176,11 +177,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 return false;
             }
 
-            if (type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties) {
-                return false;
-            }
+            return !(type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties);
 
-            return true;
         }) as List<PropDescType>
     };
 
@@ -491,28 +489,31 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderAddFieldOption() {
 
-        if (this.shouldShowInferFromFile()) {
-            return (
-                <div className={'margin-top'}>
-                    or&nbsp;
-                    <span className={'domain-form-add-link'} onClick={this.initNewDesign}>
+        const { hideAddFieldsButton } = this.props;
+
+        if (!hideAddFieldsButton) {
+            if (this.shouldShowInferFromFile()) {
+                return (
+                    <div className={'margin-top'}>
+                        or&nbsp;
+                        <span className={'domain-form-add-link'} onClick={this.initNewDesign}>
                         manually define fields
                     </span>
-                </div>
-            )
-        }
-        else {
-            // TODO remove domain-form-add-btn after use in 19.3
-            return (
-                <Row className='domain-add-field-row'>
-                    <Col xs={12}>
-                        <AddEntityButton
-                            entity="Field"
-                            buttonClass="domain-form-add-btn"
-                            onClick={this.onAddField}/>
-                    </Col>
-                </Row>
-            )
+                    </div>
+                )
+            } else {
+                // TODO remove domain-form-add-btn after use in 19.3
+                return (
+                    <Row className='domain-add-field-row'>
+                        <Col xs={12}>
+                            <AddEntityButton
+                                entity="Field"
+                                buttonClass="domain-form-add-btn"
+                                onClick={this.onAddField}/>
+                        </Col>
+                    </Row>
+                )
+            }
         }
     }
 

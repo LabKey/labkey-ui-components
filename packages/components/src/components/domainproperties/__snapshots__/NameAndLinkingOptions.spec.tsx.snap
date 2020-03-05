@@ -79,6 +79,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "updatedField": false,
       "isPrimaryKey": false,
       "lockType": "NotLocked",
+      "wrappedColumnName": undefined,
     }
   }
   index={1}

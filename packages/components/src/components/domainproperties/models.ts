@@ -671,7 +671,7 @@ export class DomainField extends Record({
     updatedField: boolean;
     isPrimaryKey: boolean;
     lockType: string;
-    wrappedColumnName?: string
+    wrappedColumnName?: string;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);

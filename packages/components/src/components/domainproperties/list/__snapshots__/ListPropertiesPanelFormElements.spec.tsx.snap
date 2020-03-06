@@ -2334,7 +2334,7 @@ exports[`AllowableActions existing list, existing properties 1`] = `
                 onClick={[Function]}
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <FontAwesomeIcon
@@ -2410,7 +2410,7 @@ exports[`AllowableActions existing list, existing properties 1`] = `
                 onClick={[Function]}
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <FontAwesomeIcon
@@ -2486,7 +2486,7 @@ exports[`AllowableActions existing list, existing properties 1`] = `
                 onClick={[Function]}
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <FontAwesomeIcon
@@ -2707,7 +2707,7 @@ exports[`AllowableActions new list, default properties 1`] = `
                 onClick={[Function]}
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <FontAwesomeIcon
@@ -2783,7 +2783,7 @@ exports[`AllowableActions new list, default properties 1`] = `
                 onClick={[Function]}
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <FontAwesomeIcon
@@ -2859,7 +2859,7 @@ exports[`AllowableActions new list, default properties 1`] = `
                 onClick={[Function]}
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <FontAwesomeIcon
@@ -5256,11 +5256,11 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
             <Col
               bsClass="col"
               componentClass="div"
-              lg={4}
+              lg={2}
               xs={3}
             >
               <div
-                className="col-lg-4 col-xs-3"
+                className="col-lg-2 col-xs-3"
               >
                 Name *
               </div>
@@ -5293,6 +5293,15 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
                   />
                 </FormControl>
               </div>
+            </Col>
+            <Col
+              bsClass="col"
+              componentClass="div"
+              lg={2}
+            >
+              <div
+                className="col-lg-2"
+              />
             </Col>
           </div>
         </Row>
@@ -6457,11 +6466,11 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
             <Col
               bsClass="col"
               componentClass="div"
-              lg={4}
+              lg={2}
               xs={3}
             >
               <div
-                className="col-lg-4 col-xs-3"
+                className="col-lg-2 col-xs-3"
               >
                 Description
               </div>
@@ -6482,6 +6491,15 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
                   value=""
                 />
               </div>
+            </Col>
+            <Col
+              bsClass="col"
+              componentClass="div"
+              lg={2}
+            >
+              <div
+                className="col-lg-2"
+              />
             </Col>
           </div>
         </Row>
@@ -6637,11 +6655,11 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
             <Col
               bsClass="col"
               componentClass="div"
-              lg={4}
+              lg={2}
               xs={3}
             >
               <div
-                className="col-lg-4 col-xs-3"
+                className="col-lg-2 col-xs-3"
               >
                 Name *
               </div>
@@ -6674,6 +6692,15 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
                   />
                 </FormControl>
               </div>
+            </Col>
+            <Col
+              bsClass="col"
+              componentClass="div"
+              lg={2}
+            >
+              <div
+                className="col-lg-2"
+              />
             </Col>
           </div>
         </Row>
@@ -6747,11 +6774,11 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
             <Col
               bsClass="col"
               componentClass="div"
-              lg={4}
+              lg={2}
               xs={3}
             >
               <div
-                className="col-lg-4 col-xs-3"
+                className="col-lg-2 col-xs-3"
               >
                 Description
               </div>
@@ -6772,6 +6799,15 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
                   value=""
                 />
               </div>
+            </Col>
+            <Col
+              bsClass="col"
+              componentClass="div"
+              lg={2}
+            >
+              <div
+                className="col-lg-2"
+              />
             </Col>
           </div>
         </Row>

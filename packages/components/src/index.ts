@@ -203,6 +203,7 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     loadSelectedSamples,
+    fetchSamples,  //TODO verify if this is needed
 } from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
@@ -284,7 +285,6 @@ import {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
-    KINDS,
 } from './components/domainproperties/constants';
 import { ExpandableContainer } from './components/ExpandableContainer';
 import { PermissionAssignments } from './components/permissions/PermissionAssignments';
@@ -403,6 +403,7 @@ export {
     SampleTypeModel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
+    fetchSamples,  //TODO Verify if used
     getSampleSet,
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
@@ -525,7 +526,6 @@ export {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
-    KINDS,
 
     // Base
     GRID_CHECKBOX_OPTIONS,

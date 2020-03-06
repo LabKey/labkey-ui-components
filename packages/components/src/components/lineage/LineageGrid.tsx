@@ -67,8 +67,7 @@ export class LineageGrid extends React.Component<Props, State> {
         const location = getLocation();
         const seeds = location.query.get('seeds');
 
-        // the getLocation() does decodeURI on each query param, but the lineage API expects them encoded
-        return seeds ? encodeURI(seeds.split(",")[0]) : undefined;
+        return seeds ? decodeURIComponent(seeds.split(",")[0]) : undefined;
     }
 
     setGridLoading() {

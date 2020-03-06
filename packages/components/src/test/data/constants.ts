@@ -92,6 +92,31 @@ export const FILES_DATA_2 = List<IFile>([
     }
 ]);
 
+export const DEFAULT_LIST_SETTINGS = {
+    "listId" : 0,
+    "name" : null,
+    "domainId" : 0,
+    "keyName" : null,
+    "keyType" : null,
+    "titleColumn" : null,
+    "description" : null,
+    "lastIndexed" : null,
+    "allowDelete" : true,
+    "allowUpload" : true,
+    "allowExport" : true,
+    "discussionSetting" : 0,
+    "entireListTitleTemplate" : "",
+    "entireListIndexSetting" : 0,
+    "entireListBodySetting" : 0,
+    "eachItemTitleTemplate" : "",
+    "eachItemBodySetting" : 0,
+    "entireListIndex" : false,
+    "entireListBodyTemplate" : null,
+    "eachItemIndex" : false,
+    "eachItemBodyTemplate" : null,
+    "fileAttachmentIndex" : false
+};
+
 export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';
 export const SECURITY_ROLE_FOLDERADMIN = 'org.labkey.api.security.roles.FolderAdminRole';
 export const SECURITY_ROLE_EDITOR = 'org.labkey.api.security.roles.EditorRole';

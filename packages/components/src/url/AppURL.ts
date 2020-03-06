@@ -78,8 +78,14 @@ export class AppURL extends Record({
 
     addParams(params: any): AppURL {
         if (params) {
+            let mapParams = Map<string, any>();
+            mapParams = mapParams.merge(params);
+            let encodedParams = Map<string, any>();
+            mapParams.forEach((value, key) => {
+                encodedParams = encodedParams.set(encodeURIComponent(key), encodeURIComponent(value));
+            });
             return this.merge({
-                _params: this._params ? this._params.merge(params) : Map(params)
+                _params: this._params ? this._params.merge(encodedParams) : encodedParams
             }) as AppURL;
         }
 

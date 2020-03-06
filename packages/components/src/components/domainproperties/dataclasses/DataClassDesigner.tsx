@@ -98,7 +98,6 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                         .then((response) => {
                             let updatedModel = model.set('exception', undefined) as DataClassModel;
                             updatedModel = updatedModel.merge({domain: response}) as DataClassModel;
-                            // TODO success message before navigate? see what assay and single domain designers do
 
                             this.setState(() => ({model: updatedModel, submitting: false}));
                             this.props.onComplete(updatedModel);

@@ -3,8 +3,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Item 6835: Data Class Designer
-    - TODO add more detail about changes
+* Item 6835: Data Class designer updates for use in Sample Manager
+    - add fetchDataClass function for call to Domain.getDomainDetails and resolve as DataClassModel
+    - use saveDomain function in DataClassDesigner for create and update
+    - add Category select input for DataClassPropertiesPanel (for appPropertiesOnly)
+    - refactor SampleSetDeleteConfirmModal as EntityTypeDeleteConfirm model for use with sample type and source type
+    - refactor deleteSampleSet as deleteEntityType for use with sample type and source type
 
 ### version 0.33.0
 *Released*: 5 March 2020

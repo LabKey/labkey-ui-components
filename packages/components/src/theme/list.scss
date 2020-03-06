@@ -2,7 +2,7 @@
     font-weight: bold;
 }
 
-.list__properties__checkbox--no-highlight {
+.list__properties__no-highlight {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -12,12 +12,16 @@
     cursor: pointer;
 }
 
+.list__clickable {
+    cursor:pointer;
+}
+
 .list__properties__checkbox-unchecked {
     color: $gray-light;
 }
 
 .list__properties__checkbox-row {
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .list__properties__checkbox-text {
@@ -25,7 +29,7 @@
 }
 
 .list__properties__allowable-actions {
-    margin-top: 14px;
+    margin-top: 17px;
 }
 
 .list__advanced-settings-modal__display-title {

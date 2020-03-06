@@ -45,6 +45,8 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
 
         switch(field.dataType.name) {
             case 'string':
+                if (field.isPrimaryKey)
+                    return;
                 return <TextFieldOptions index={index} domainIndex={domainIndex} label='Text Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'flag':
                 return <TextFieldOptions index={index} domainIndex={domainIndex} label='Flag Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;

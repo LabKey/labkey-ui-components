@@ -3,7 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBH
 *Released*: TBD
-* Small updates to List Designer and Domains.
+* Issue 39819: List designer: small nits
+* Issue 39877: List designer: max text length options should not be visible for text key field of list
 
 ### version 0.31.3
 *Released*: 28 February 2020

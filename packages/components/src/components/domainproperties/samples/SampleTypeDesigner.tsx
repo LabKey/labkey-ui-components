@@ -55,7 +55,7 @@ interface Props {
     nameExpressionPlaceholder?: string
 
     //DomainDesigner props
-    domainDesignerStickyHeight?: number, // This sets the height of the sticky header, default is 60
+    containerTop?: number, // This sets the height of the sticky header, default is 60
     useTheme?: boolean,
     appPropertiesOnly?: boolean,
 }
@@ -82,7 +82,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         noun: SAMPLE_SET_DISPLAY_TEXT,
         includeDataClasses: false,
 
-        domainDesignerStickyHeight: STICKY_HEADER_HEIGHT,
+        containerTop: STICKY_HEADER_HEIGHT,
         useTheme: false,
         appPropertiesOnly: true,
     };
@@ -284,7 +284,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     };
 
     renderDomainPanel = () => {
-        const {noun, domainDesignerStickyHeight, useTheme, appPropertiesOnly} = this.props;
+        const {noun, containerTop, useTheme, appPropertiesOnly} = this.props;
         const {model} = this.state;
         const {domain} = model;
 
@@ -300,7 +300,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                         helpNoun={noun.toLowerCase()}
                         useTheme={useTheme}
                         appPropertiesOnly={appPropertiesOnly}
-                        containerTop={domainDesignerStickyHeight}
+                        containerTop={containerTop}
                 />
                 }
             </>

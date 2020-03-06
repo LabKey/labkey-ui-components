@@ -203,7 +203,7 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     loadSelectedSamples,
-    fetchSamples,  //TODO verify if this is needed
+    fetchSamples,
 } from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
@@ -403,7 +403,7 @@ export {
     SampleTypeModel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
-    fetchSamples,  //TODO Verify if used
+    fetchSamples,
     getSampleSet,
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,

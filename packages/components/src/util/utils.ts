@@ -44,11 +44,20 @@ export function encodePart(s: string): string {
 }
 
 export function resolveKey(schema: string, query: string): string {
+    /*
+       It's questionable if we really need to encodePart schema here and the suspicion is that this would result in double encoding.
+       Since schema is not recognisable by api when not encoded, it would be reasonable to assume the passed in schema is already QueryKey encoded.
+       Though it won't hurt to double encode as long as resolveKey, resolveKeyFromJson and getSchemaQuery have the same assumption on the need to encode/decode
+    */
     return [encodePart(schema), encodePart(query)].join('/').toLowerCase();
 }
 
 export function resolveKeyFromJson(json: {schemaName: Array<string>, queryName: string}): string {
-    return resolveKey(json.schemaName.join('.'), json.queryName);
+    // if schema parts contain '.', replace with $P, to distinguish from '.' used to separate schema parts
+    // similarly, encode '/' in schema parts, to distinguish from '/' used to separate schema and query parts
+    // schemaName ['assay', 'general', 'a.b/c'] will be will processed to 'assay.general.a$pb$sc'
+    // resolveKey will then further encode schema to assay$pgeneral$pa$dpb$sc
+    return resolveKey(json.schemaName.map((schemaPart) => {return encodePart(schemaPart);}).join('.'), json.queryName);
 }
 
 // TODO: resolveSchemaQuery should have a better name, and it should be added as a property on the SchemaQuery record

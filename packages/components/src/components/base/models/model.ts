@@ -1620,8 +1620,7 @@ export class AssayDefinitionModel extends Record({
             ...rawModel,
             domains,
             domainTypes,
-            links,
-            protocolSchemaName: decodePart(rawModel.protocolSchemaName),
+            links
         });
     }
 

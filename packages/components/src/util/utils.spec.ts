@@ -55,11 +55,11 @@ describe('resolveKey', () => {
 describe("resolveKeyFromJson", () => {
     test("schema name with one part", () => {
         expect(resolveKeyFromJson({schemaName: ["partOne"], queryName: "q/Name"})).toBe("partone/q$sname");
-        expect(resolveKeyFromJson({schemaName: ["p&rtOne"], queryName: "//$Name"})).toBe("p$artone/$s$s$dname");
+        expect(resolveKeyFromJson({schemaName: ["p&rtOne"], queryName: "//$Name"})).toBe("p$dartone/$s$s$dname");
     });
 
     test("schema name with multiple parts", () => {
-        expect(resolveKeyFromJson({schemaName: ["one", "Two", "thrEE$"], queryName: "four"})).toBe("one$ptwo$pthree$d/four")
+        expect(resolveKeyFromJson({schemaName: ["one", "Two", "thrEE$"], queryName: "four"})).toBe("one$ptwo$pthree$dd/four")
     });
 });
 

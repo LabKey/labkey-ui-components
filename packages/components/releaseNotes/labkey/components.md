@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 0.31.4
-*Released*: TBD March 2020
+*Released*: 6 March 2020
 * Fixes for List Designer issues targeting LabKey release 20.3
     - Issue 39846: List designer - "Name" doesn't validate immediately
     - Issue 39879: Domain designer - lookup queries which only have container PK are filtered out of the select input

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 39818: List designer PK fields should be shown as Required upon load
+
 ### version 0.33.0
 *Released*: 5 March 2020
 * Issue 38221: Sample Manager: encoding issues at various places
@@ -29,7 +33,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 0.31.0
 *Released*: 27 February 2020
-* Item 6798: ListDesignerPanels and related components, models, actions
+* Item 6798: ListDesignerPanels and related c
+omponents, models, actions
     - new list related components ListDesignerPanels.tsx and ListPropertiesPanel.tsx
     - DomainForm changes to support an "Import Data" option when using a file to infer fields for the domain (see ImportDataFilePreview.tsx)
     - DomainRow changs to support locking the "primary key" field data type and required inputs

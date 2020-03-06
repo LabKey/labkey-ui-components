@@ -4,9 +4,10 @@ import {SampleTypePropertiesPanel} from "./SampleTypePropertiesPanel";
 import {
     Alert,
     DomainDesign,
-    DomainDetails, generateId,
+    DomainDetails,
+    generateId,
     IDomainField,
-    KINDS, naturalSort,
+    naturalSort,
     resolveErrorMessage,
     SAMPLE_TYPE,
     saveDomain, SCHEMAS,
@@ -19,6 +20,7 @@ import {addDomainField} from "../actions";
 import {initSampleSetSelects,} from "../../samples/actions";
 import {SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from "../../../constants";
 import {fromJS, List, Map} from "immutable";
+import {Domain} from "@labkey/api";
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -345,7 +347,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
             domainDesign = addDomainField(domainDesign, nameCol);
         }
 
-        saveDomain(domainDesign, KINDS.SAMPLE_TYPE, details, name)
+        saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name)
             .then((savedDomain) => {
                 this.onFinishSuccess(savedDomain);
             })

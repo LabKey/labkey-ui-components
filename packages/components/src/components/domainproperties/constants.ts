@@ -195,5 +195,4 @@ export const FIELD_NAME_CHAR_WARNING_INFO = 'SQL queries, R scripts, and other c
     + 'Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, '
     + 'SPSS, and MATLAB.';
 
-export const KINDS = Domain.KINDS;
 export const DEFAULT_NAMING_PATTERN = 'S-${genId}';

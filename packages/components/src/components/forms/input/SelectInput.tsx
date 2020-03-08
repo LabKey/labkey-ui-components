@@ -174,7 +174,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
 
     _cache = {};
     _id: string;
-    change: boolean = false;
+    change: boolean = false; // indicates if the initial value has been changed or not
 
     constructor(props: SelectInputProps) {
         super(props);
@@ -193,15 +193,15 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     };
 
     componentWillReceiveProps(nextProps: SelectInputProps) {
-        // This allows for "late-bound" value
-        if (this.props.autoValue && !this.change && !equalValues(this.props.value, nextProps.value)) {
-            if (nextProps.autoValue)
+        if (!this.change && !equalValues(this.props.value, nextProps.value)) {
+            if (nextProps.autoValue) { // This allows for "late-bound" value
                 this._setOptionsAndValue(initOptions(nextProps));
+            }
             else {
                 this.setState({
                     selectedOptions: nextProps.selectedOptions,
-                    originalOptions: nextProps.selectedOptions,
-                });
+                    originalOptions: nextProps.selectedOptions
+                })
             }
         }
 

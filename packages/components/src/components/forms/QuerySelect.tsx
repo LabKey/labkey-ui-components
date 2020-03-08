@@ -199,15 +199,15 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
     }
 
     componentWillReceiveProps(nextProps: QuerySelectOwnProps) {
-        if (!this.state.model && nextProps.componentId !== this.props.componentId) {
+        if (nextProps.componentId !== this.props.componentId) {
             this.initModel(nextProps);
         }
     }
 
     initModel(props: QuerySelectOwnProps) {
-        initSelect(props, this.state.model)
+        initSelect(props)
             .then((model) => {
-                this.setState(() => ({model}));
+                this.setState(() => ({error: undefined, model}));
             }, (reason) => {
                 this.setState(() => ({error: reason}));
             });
@@ -350,7 +350,8 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 name: this.props.name || this.props.componentId + '-loader',
                 placeholder: 'Loading...',
                 required,
-                type: 'text'
+                type: 'text',
+                value: undefined
             };
 
             return <SelectInput {...inputProps}/>

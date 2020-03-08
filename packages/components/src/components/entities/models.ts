@@ -506,10 +506,14 @@ export interface EntityDataType {
     nounSingular: string
     nounAsParentSingular: string
     nounPlural: string
+    typeNounSingular: string
     descriptionSingular: string // (e.g., parent sample type) used in EntityInsertPanel for a message about how many of these types are available
     descriptionPlural: string
     uniqueFieldKey: string
     dependencyText: string // text describing the dependencies that may prevent the entity from being deleted (e.g., 'derived sample or assay data dependencies')
     deleteHelpLinkTopic: string // help topic for finding out more about dependencies and deletion
+    inputColumnName: string // used for extracting or querying for the parents of this type
+    inputTypeColumnName: string // used for extracting or querying for the types for the input columns
+    inputTypeValueField: string
 }
 

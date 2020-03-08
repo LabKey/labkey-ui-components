@@ -80,6 +80,10 @@ import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTarget
 import browseData from '../test/data/example_browse_data_tree_api.json';
 import assayAminoAcidsDataQueryInfo from '../test/data/assayAminoAcidsData-getQueryDetails.json';
 import assayAminoAcidsDataQuery from '../test/data/assayAminoAcidsData-getQuery.json';
+import sampleWithParentsQuery from '../test/data/sampleWithParents-getQuery.json';
+import sampleWithParentsQueryDetails from '../test/data/sampleWithParents-getQueryDetails.json';
+import sourceQueryDetails from '../test/data/source-getQueryDetails.json';
+import sourceQuery from '../test/data/source-getQuery.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 
@@ -110,6 +114,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         'mixtures': mixturesQueryInfo,
         'mixturespaging': mixturesQueryInfo,
         'expressionsystem': expressionsystemQueryInfo,
+        'second source': sourceQueryDetails,
     },
     'labbook': {
         'labbookexperiment': labbookQueryInfo,
@@ -125,6 +130,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         'samplesetwithallfieldtypes': sampleSetAllFieldTypesQueryInfo,
         'name expression set': nameExpressionQueryInfo,
         'name%20expression%20set': nameExpressionQueryInfo,
+        'examples': sampleWithParentsQueryDetails,
     },
     'schema': {
         'gridwithoutdata': mixturesQueryInfo,
@@ -159,7 +165,8 @@ const QUERY_RESPONSES = fromJS({
     'exp.data': {
         'mixtures': mixturesQuery,
         'mixturespaging': mixturesQueryPaging,
-        'expressionsystem': expSystemLineageQuery
+        'expressionsystem': expSystemLineageQuery,
+        'second source': sourceQuery,
     },
     'labbook': {
         'labbookexperiment': labbookQuery,
@@ -173,6 +180,7 @@ const QUERY_RESPONSES = fromJS({
         'expressionsystemsamples': expSystemSamplesLineageQuery,
         'samplesetwithallfieldtypes': samplesLineageQuery,
         'name expression set': nameExpressionSelectedQuery,
+        'examples': sampleWithParentsQuery,
     },
     'schema': {
         'gridwithoutdata': noDataQuery,

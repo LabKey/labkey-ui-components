@@ -1,4 +1,13 @@
-import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
+import {
+    buildURL,
+    getQueryGridModel,
+    getSelected, getStateQueryGridModel,
+    naturalSort,
+    QueryGridModel,
+    SchemaQuery,
+    SCHEMAS,
+    selectRows, ViewInfo
+} from '../..';
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 import {
@@ -56,6 +65,79 @@ export function getDataDeleteConfirmationData(selectionKey: string, rowIds?: Arr
     return getDeleteConfirmationData(selectionKey, DataClassDataType, rowIds);
 }
 
+// TODO remove
+export function getParentGridModels(inputs, typeQueryNames, entityDataType: EntityDataType) : List<QueryGridModel> {
+    let parentModels = List<QueryGridModel>();
+
+    inputs.forEach((input, index) => {
+        const typeName = typeQueryNames.get(index);
+        if (typeName) {
+            const model = getStateQueryGridModel('parent-data', SchemaQuery.create(entityDataType.instanceSchemaName, typeName), {
+                bindURL: false,
+                allowSelection: false,
+                view: ViewInfo.DETAIL_NAME,
+                baseFilters: List([Filter.create("LSID", input.get('value'))]),
+                omittedColumns: List<string>(['Name', 'LSID', 'MaterialLSIDPrefix']) // TODO do dataclasses want to omit different columns here?
+            });
+            parentModels = parentModels.push(getQueryGridModel(model.getId()) || model);
+        }
+    });
+    return parentModels;
+}
+
+// TODO remove
+export function getParentGridData(childModel: QueryGridModel) : Promise<any> {
+    return new Promise( (resolve, reject) => {
+        const row = childModel.getRow();
+        if (row.size > 0) {
+            const materialInputs: List<Map<string, any>> = row.get("Inputs/Materials/First");
+            const inputSampleSets : List<Map<string, any>> = row.get("Inputs/Materials/First/SampleSet");
+            const dataInputs: List<Map<string, any>> = row.get('Inputs/Data/First');
+            const inputDataClasses: List<Map<string, any>> = row.get('Inputs/Data/First/DataClass');
+            let promises = [];
+
+            materialInputs.forEach((input, index) => {
+                // I'm not sure when the sample set could have more than one value here, but 'value' is an array
+                const setLsid : string = inputSampleSets.getIn([index, 'value', 0]);
+                const lsidParts = setLsid.split(":");
+
+                promises.push(selectRows({
+                    schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    queryName: lsidParts[lsidParts.length-1],
+                    viewName: ViewInfo.DETAIL_NAME,
+                    columns: [],
+                    filterArray: [Filter.create("lsid", input.get('value'))]
+                }))
+            });
+
+            dataInputs.forEach((input, index) => {
+                const classLsid : string = inputDataClasses.getIn([index, 'value', 0]);
+                const lsidParts = classLsid.split(":");
+
+                promises.push(selectRows({
+                    schemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
+                    queryName: lsidParts[lsidParts.length-1],
+                    viewName: ViewInfo.DETAIL_NAME,
+                    filterArray: [Filter.create("lsid", input.get('value'))]
+                }))
+            });
+            return Promise.all(promises).then((allParentData) => {
+                // const [samplesResponse, dataClassResponse] = allParentData;
+                // console.log('samplesResponse', samplesResponse);
+                // console.log('dataClassResponse', dataClassResponse);
+                resolve(allParentData);
+            }).catch((reason) => {
+                console.error(reason);
+                reject(reason);
+            })
+        }
+        else {
+            resolve([]);
+        }
+    })
+
+}
+
 function getSelectedParents(schemaQuery: SchemaQuery, filterArray: Array<Filter.IFilter>) : Promise<List<EntityParentType>> {
     return new Promise((resolve, reject) => {
         return selectRows({
@@ -108,7 +190,7 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
 
             return getSelectedParents(SchemaQuery.create(schema, query), [Filter.create('RowId', value)])
                 .then((response) => resolve(response))
-                .catch((reason) => reject(reason));;
+                .catch((reason) => reject(reason));
         }
         else {
             resolve(List<EntityParentType>());
@@ -123,7 +205,7 @@ function resolveEntityParentTypeFromIds(schemaQuery: SchemaQuery, response: any)
 
     // The transformation done here makes the entities compatible with the editable grid
     orderedModels[key].forEach((id) => {
-        const row = extractFromRow(rows.get(id));
+        const row = extractEntityTypeOptionFromRow(rows.get(id));
         data = data.push({
             displayValue: row.label,
             value: row.rowId
@@ -140,7 +222,7 @@ function resolveEntityParentTypeFromIds(schemaQuery: SchemaQuery, response: any)
     ]);
 }
 
-function extractFromRow(row: Map<string, any>): IEntityTypeOption {
+function extractEntityTypeOptionFromRow(row: Map<string, any>): IEntityTypeOption {
     const name = row.getIn(['Name', 'value']);
     return {
         label: name,
@@ -197,7 +279,7 @@ function getChosenParentData(model: EntityIdCreationModel, parentSchemaQueries: 
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
 // TODO will need an extra parameter for filtering by category
-function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: string) : Promise<Map<string, List<any>>> {
+export function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: string) : Promise<Map<string, List<any>>> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: typeListSchemaQuery.schemaName,
@@ -210,7 +292,7 @@ function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: 
                 optionMap = optionMap.set(typeListSchemaQuery.queryName, rows
                     .map(row => {
                         return ({
-                            ...extractFromRow(row),
+                            ...extractEntityTypeOptionFromRow(row),
                             schema: typeSchemaName, // e.g. "samples" or "dataclasses"
                         });
                     })

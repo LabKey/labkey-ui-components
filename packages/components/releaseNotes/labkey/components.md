@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version TBD
+*Released*: TBD
+* Add ParentEntityEditPanel for CRUD operations on parents.  Initially supporting display
+only
+* Fix problem with QuerySelect and SelectInput not playing nicely together when you want to
+select a schema for the QuerySelect to use.
+
+
 ### version 0.33.0
 *Released*: 5 March 2020
 * Issue 38221: Sample Manager: encoding issues at various places

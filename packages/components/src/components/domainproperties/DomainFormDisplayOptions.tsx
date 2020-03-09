@@ -21,6 +21,7 @@ export interface IDomainFormDisplayOptions {
     showValidators?: boolean
     isDragDisabled?: boolean
     showTextOptions?: boolean
+    phiLevelDisabled?: boolean
 }
 
 export class DomainFormDisplayOptions extends React.Component<IDomainFormDisplayOptions, any> {
@@ -29,7 +30,8 @@ export class DomainFormDisplayOptions extends React.Component<IDomainFormDisplay
         showRequired: true,
         showValidators: true,
         isDragDisabled: false,
-        showTextOptions: true
+        showTextOptions: true,
+        phiLevelDisabled: false
     };
 
     constructor(props) {

@@ -5,6 +5,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
   domainFormDisplayOptions={
     Object {
       "isDragDisabled": false,
+      "phiLevelDisabled": false,
       "showRequired": true,
       "showTextOptions": true,
       "showValidators": true,
@@ -480,6 +481,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
   domainFormDisplayOptions={
     Object {
       "isDragDisabled": false,
+      "phiLevelDisabled": false,
       "showRequired": true,
       "showTextOptions": true,
       "showValidators": true,

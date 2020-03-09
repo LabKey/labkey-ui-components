@@ -1540,6 +1540,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -2247,6 +2248,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -2954,6 +2956,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -7203,6 +7206,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -8721,6 +8725,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -9724,6 +9729,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   domainFormDisplayOptions={
                                                     Object {
                                                       "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -9890,6 +9896,15 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -10455,6 +10470,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                 domainFormDisplayOptions={
                                                                   Object {
                                                                     "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -11369,6 +11385,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -11816,6 +11833,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   domainFormDisplayOptions={
                                                     Object {
                                                       "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -11982,6 +12000,15 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -12547,6 +12574,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                 domainFormDisplayOptions={
                                                                   Object {
                                                                     "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -13443,6 +13471,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -14046,6 +14075,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   domainFormDisplayOptions={
                                                     Object {
                                                       "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -14212,6 +14242,15 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -14777,6 +14816,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                 domainFormDisplayOptions={
                                                                   Object {
                                                                     "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -15638,6 +15678,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -18061,6 +18102,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -18767,6 +18809,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -19473,6 +19516,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -22010,6 +22054,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -22716,6 +22761,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -28425,6 +28471,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -29428,6 +29475,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   domainFormDisplayOptions={
                                                     Object {
                                                       "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -29594,6 +29642,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -30189,6 +30246,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                 domainFormDisplayOptions={
                                                                   Object {
                                                                     "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -31103,6 +31161,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -31706,6 +31765,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   domainFormDisplayOptions={
                                                     Object {
                                                       "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -31872,6 +31932,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -32467,6 +32536,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                 domainFormDisplayOptions={
                                                                   Object {
                                                                     "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -33363,6 +33433,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -34122,6 +34193,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   domainFormDisplayOptions={
                                                     Object {
                                                       "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -34288,6 +34360,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -34883,6 +34964,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                 domainFormDisplayOptions={
                                                                   Object {
                                                                     "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -35744,6 +35826,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -41031,6 +41114,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -42548,6 +42632,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         domainFormDisplayOptions={
           Object {
             "isDragDisabled": false,
+            "phiLevelDisabled": false,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -43551,6 +43636,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   domainFormDisplayOptions={
                                                     Object {
                                                       "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -43717,6 +43803,15 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -44312,6 +44407,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                 domainFormDisplayOptions={
                                                                   Object {
                                                                     "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -45226,6 +45322,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -45829,6 +45926,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   domainFormDisplayOptions={
                                                     Object {
                                                       "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -45995,6 +46093,15 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -46590,6 +46697,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                 domainFormDisplayOptions={
                                                                   Object {
                                                                     "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -47486,6 +47594,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -48245,6 +48354,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   domainFormDisplayOptions={
                                                     Object {
                                                       "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -48411,6 +48521,15 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -49006,6 +49125,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                 domainFormDisplayOptions={
                                                                   Object {
                                                                     "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -49867,6 +49987,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,

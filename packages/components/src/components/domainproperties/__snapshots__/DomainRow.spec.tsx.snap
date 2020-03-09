@@ -216,6 +216,7 @@ exports[`DomainRow Sample Field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "isDragDisabled": false,
+                    "phiLevelDisabled": false,
                     "showRequired": true,
                     "showTextOptions": true,
                     "showValidators": true,
@@ -385,6 +386,15 @@ exports[`DomainRow Sample Field 1`] = `
                                 "LAST_ENTERED",
                                 "FIXED_NON_EDITABLE",
                               ]
+                            }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
                             }
                             domainIndex={1}
                             field={
@@ -924,6 +934,7 @@ exports[`DomainRow Sample Field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
                                   "showRequired": true,
                                   "showTextOptions": true,
                                   "showValidators": true,
@@ -1788,6 +1799,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
                                             "showRequired": true,
                                             "showTextOptions": true,
                                             "showValidators": true,
@@ -2478,6 +2490,7 @@ exports[`DomainRow client side warning on field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "isDragDisabled": false,
+                    "phiLevelDisabled": false,
                     "showRequired": true,
                     "showTextOptions": true,
                     "showValidators": true,
@@ -2659,6 +2672,15 @@ exports[`DomainRow client side warning on field 1`] = `
                                 "LAST_ENTERED",
                                 "FIXED_NON_EDITABLE",
                               ]
+                            }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
                             }
                             domainIndex={1}
                             field={
@@ -3336,6 +3358,7 @@ exports[`DomainRow client side warning on field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
                                   "showRequired": true,
                                   "showTextOptions": true,
                                   "showValidators": true,
@@ -3958,6 +3981,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
                                             "showRequired": true,
                                             "showTextOptions": true,
                                             "showValidators": true,
@@ -4648,6 +4672,7 @@ exports[`DomainRow date time field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "isDragDisabled": false,
+                    "phiLevelDisabled": false,
                     "showRequired": true,
                     "showTextOptions": true,
                     "showValidators": true,
@@ -4817,6 +4842,15 @@ exports[`DomainRow date time field 1`] = `
                                 "LAST_ENTERED",
                                 "FIXED_NON_EDITABLE",
                               ]
+                            }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
                             }
                             domainIndex={1}
                             field={
@@ -5336,6 +5370,7 @@ exports[`DomainRow date time field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
                                   "showRequired": true,
                                   "showTextOptions": true,
                                   "showValidators": true,
@@ -6196,6 +6231,7 @@ exports[`DomainRow date time field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
                                             "showRequired": true,
                                             "showTextOptions": true,
                                             "showValidators": true,
@@ -7042,6 +7078,7 @@ exports[`DomainRow decimal field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "isDragDisabled": false,
+                    "phiLevelDisabled": false,
                     "showRequired": true,
                     "showTextOptions": true,
                     "showValidators": true,
@@ -7211,6 +7248,15 @@ exports[`DomainRow decimal field 1`] = `
                                 "LAST_ENTERED",
                                 "FIXED_NON_EDITABLE",
                               ]
+                            }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
                             }
                             domainIndex={1}
                             field={
@@ -7730,6 +7776,7 @@ exports[`DomainRow decimal field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
                                   "showRequired": true,
                                   "showTextOptions": true,
                                   "showValidators": true,
@@ -8625,6 +8672,7 @@ exports[`DomainRow decimal field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
                                             "showRequired": true,
                                             "showTextOptions": true,
                                             "showValidators": true,
@@ -9471,6 +9519,7 @@ exports[`DomainRow participant id field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "isDragDisabled": false,
+                    "phiLevelDisabled": false,
                     "showRequired": true,
                     "showTextOptions": true,
                     "showValidators": true,
@@ -9640,6 +9689,15 @@ exports[`DomainRow participant id field 1`] = `
                                 "LAST_ENTERED",
                                 "FIXED_NON_EDITABLE",
                               ]
+                            }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
                             }
                             domainIndex={1}
                             field={
@@ -10183,6 +10241,7 @@ exports[`DomainRow participant id field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
                                   "showRequired": true,
                                   "showTextOptions": true,
                                   "showValidators": true,
@@ -10805,6 +10864,7 @@ exports[`DomainRow participant id field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
                                             "showRequired": true,
                                             "showTextOptions": true,
                                             "showValidators": true,
@@ -11495,6 +11555,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "isDragDisabled": false,
+                    "phiLevelDisabled": false,
                     "showRequired": true,
                     "showTextOptions": true,
                     "showValidators": true,
@@ -11676,6 +11737,15 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 "LAST_ENTERED",
                                 "FIXED_NON_EDITABLE",
                               ]
+                            }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
                             }
                             domainIndex={1}
                             field={
@@ -12276,6 +12346,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
                                   "showRequired": true,
                                   "showTextOptions": true,
                                   "showValidators": true,
@@ -12898,6 +12969,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
                                             "showRequired": true,
                                             "showTextOptions": true,
                                             "showValidators": true,
@@ -13588,6 +13660,7 @@ exports[`DomainRow string field test 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "isDragDisabled": false,
+                    "phiLevelDisabled": false,
                     "showRequired": true,
                     "showTextOptions": true,
                     "showValidators": true,
@@ -13757,6 +13830,15 @@ exports[`DomainRow string field test 1`] = `
                                 "LAST_ENTERED",
                                 "FIXED_NON_EDITABLE",
                               ]
+                            }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
                             }
                             domainIndex={1}
                             field={
@@ -14300,6 +14382,7 @@ exports[`DomainRow string field test 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
                                   "showRequired": true,
                                   "showTextOptions": true,
                                   "showValidators": true,
@@ -15213,6 +15296,7 @@ exports[`DomainRow string field test 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
                                             "showRequired": true,
                                             "showTextOptions": true,
                                             "showValidators": true,
@@ -15903,6 +15987,7 @@ exports[`DomainRow with empty domain form 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "isDragDisabled": false,
+                    "phiLevelDisabled": false,
                     "showRequired": true,
                     "showTextOptions": true,
                     "showValidators": true,
@@ -16072,6 +16157,15 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "LAST_ENTERED",
                                 "FIXED_NON_EDITABLE",
                               ]
+                            }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
                             }
                             domainIndex={1}
                             field={
@@ -16664,6 +16758,7 @@ exports[`DomainRow with empty domain form 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
                                   "showRequired": true,
                                   "showTextOptions": true,
                                   "showValidators": true,
@@ -17577,6 +17672,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
                                             "showRequired": true,
                                             "showTextOptions": true,
                                             "showValidators": true,

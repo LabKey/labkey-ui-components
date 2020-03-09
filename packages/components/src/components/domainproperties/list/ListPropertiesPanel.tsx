@@ -14,6 +14,7 @@ import {AdvancedSettingsForm, ListModel} from "./models";
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
+const DEFAULT_CONTEXT = {collapsed: false};
 
 interface Props {
     model: ListModel;
@@ -48,7 +49,8 @@ export class ListPropertiesPanel extends React.PureComponent<Props> {
     }
 }
 
-class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
+//Note: exporting this class for jest test case
+export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     static contextType = DomainPropertiesPanelContext;
     context!: React.ContextType<typeof DomainPropertiesPanelContext>;
 
@@ -134,7 +136,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     render() {
         const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle } = this.props;
         const { isValid } = this.state;
-        const { collapsed } = this.context;
+        const { collapsed } = this.context || DEFAULT_CONTEXT;
 
         return(
             <>

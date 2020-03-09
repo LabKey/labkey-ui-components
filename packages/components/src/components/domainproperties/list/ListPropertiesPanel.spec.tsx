@@ -3,7 +3,7 @@ import {mount, shallow} from "enzyme";
 import {ListModel} from "./models";
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
 import getDomainDetailsJSON from "../../../test/data/list-getDomainDetails.json";
-import {ListPropertiesPanel} from "./ListPropertiesPanel";
+import { ListPropertiesPanel, ListPropertiesPanelImpl } from "./ListPropertiesPanel";
 import {AllowableActions, BasicPropertiesFields} from "./ListPropertiesPanelFormElements";
 import {AdvancedSettings} from "./ListPropertiesAdvancedSettings";
 import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
@@ -71,30 +71,33 @@ describe('ListPropertiesPanel', () => {
         listPropertiesPanel.unmount();
     });
 
-    // NOTE: It is uncertain why our listPropertiesPanel is not re-rendering following our call to
-    // setState, but it is causing our <Alert/> to not appear.
-    //
-    // test('invalid', () => {
-    //     let listPropertiesPanel = mount(
-    //         <ListPropertiesPanel
-    //             model={populatedExistingModel}
-    //             panelStatus={'TODO'}
-    //             onChange={jest.fn()}
-    //         />
-    //     );
-    //     listPropertiesPanel.setState({isValid: false});
-    //     listPropertiesPanel.update();
-    //     listPropertiesPanel.instance().forceUpdate();
-    //     expect(listPropertiesPanel.state()).toHaveProperty('isValid', false);
-    //
-    //     expect(listPropertiesPanel.find(BasicPropertiesFields)).toHaveLength(1);
-    //     expect(listPropertiesPanel.find(AllowableActions)).toHaveLength(1);
-    //     expect(listPropertiesPanel.find(AdvancedSettings)).toHaveLength(1);
-    //     expect(listPropertiesPanel.find(CollapsiblePanelHeader)).toHaveLength(1);
-    //
-    //     expect(listPropertiesPanel.find(Alert)).toHaveLength(1);
-    //     listPropertiesPanel.unmount();
-    // });
+    test('set state for isValid', () => {
+        let listPropertiesPanel = mount(
+            <ListPropertiesPanelImpl
+                model={populatedExistingModel}
+                panelStatus={'TODO'}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(listPropertiesPanel.find(BasicPropertiesFields)).toHaveLength(1);
+        expect(listPropertiesPanel.find(AllowableActions)).toHaveLength(1);
+        expect(listPropertiesPanel.find(AdvancedSettings)).toHaveLength(1);
+        expect(listPropertiesPanel.find(CollapsiblePanelHeader)).toHaveLength(1);
+        expect(listPropertiesPanel.find(Alert)).toHaveLength(0);
+
+        expect(listPropertiesPanel.state()).toHaveProperty('isValid', true);
+        listPropertiesPanel.setState({isValid: false});
+        expect(listPropertiesPanel.state()).toHaveProperty('isValid', false);
+
+        expect(listPropertiesPanel.find(BasicPropertiesFields)).toHaveLength(1);
+        expect(listPropertiesPanel.find(AllowableActions)).toHaveLength(1);
+        expect(listPropertiesPanel.find(AdvancedSettings)).toHaveLength(1);
+        expect(listPropertiesPanel.find(CollapsiblePanelHeader)).toHaveLength(1);
+        expect(listPropertiesPanel.find(Alert)).toHaveLength(1);
+
+        listPropertiesPanel.unmount();
+    });
 
     test('clicking advanced settings renders modal', () => {
         const listPropertiesPanel = mount(

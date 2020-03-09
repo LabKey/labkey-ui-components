@@ -3,7 +3,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBH
 *Released*: TBD
-* Issue 39819: List designer: small nits
+* Issue 39819: List designer
+    - Changed spacing between 
+    - Phrasing update, "Create Range Validator" => "Create Range Expression Validator"
+    - Updated caret and checkbox expand + collapse behavior for Advanced Settings' Search Indexing Options 
+    - Phrasing update, "Field used for display title" => "Default display field"
+    - Phrasing update, "Discussion links" => "Discussion Threads"
+    - Change color for string field options' "Unlimited" and "No longer than X characters" options so that they don't look disabled.
+    - Use title-case for Advanced List Settings' titles instead of sentence-case
 * Issue 39877: List designer: max text length options should not be visible for text key field of list
 
 ### version 0.31.3

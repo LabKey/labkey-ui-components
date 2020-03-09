@@ -616,7 +616,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <Modal.Body>
                         <SettingsContainer
                             title="Default Display Field"
-                            tipTitle={'Display Title Field'}
                             tipBody={displayTitleTip}
                             fieldComponent={
                                 <DisplayTitle

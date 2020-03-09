@@ -13463,6 +13463,14 @@ exports[`ListDesignerPanel existing list 1`] = `
             "instructions": null,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
+          }
+        }
         domainIndex={0}
         headerTitle="Fields"
         helpNoun="list"
@@ -14042,6 +14050,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -14128,7 +14144,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={0}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-0"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -14685,6 +14700,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -15577,6 +15600,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -16324,6 +16355,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -16421,7 +16460,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={1}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-1"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -17055,6 +17093,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -17984,6 +18030,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -18586,6 +18640,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -18683,7 +18745,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={2}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-2"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -19317,6 +19378,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -20246,6 +20315,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -20848,6 +20925,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -20945,7 +21030,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={3}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-3"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -21581,6 +21665,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -22732,6 +22824,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -23490,6 +23590,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -23587,7 +23695,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={4}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-4"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -24223,6 +24330,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -25374,6 +25489,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -26132,6 +26255,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -26229,7 +26360,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={5}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-5"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -26863,6 +26993,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -27792,6 +27930,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -28394,6 +28540,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -28480,7 +28634,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={6}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-6"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -29079,6 +29232,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -29694,6 +29855,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -30285,6 +30454,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -30382,7 +30559,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={7}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-7"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -31018,6 +31194,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -32169,6 +32353,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -32927,6 +33119,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -33024,7 +33224,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={8}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-8"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -33658,6 +33857,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -34587,6 +34794,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -35189,6 +35404,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -35286,7 +35509,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={9}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-9"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -35920,6 +36142,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -36849,6 +37079,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -37451,6 +37689,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -37548,7 +37794,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={10}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-10"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -38182,6 +38427,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -39111,6 +39364,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -39713,6 +39974,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -39799,7 +40068,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={11}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-11"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -40398,6 +40666,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -41252,6 +41528,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -41999,6 +42283,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -42085,7 +42377,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   }
                                                   helpNoun="list"
                                                   index={12}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-12"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -42684,6 +42975,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -43519,6 +43818,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {

@@ -2,6 +2,14 @@
 
 exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] = `
 <ConditionalFormattingAndValidation
+  domainFormDisplayOptions={
+    Object {
+      "isDragDisabled": false,
+      "showRequired": true,
+      "showTextOptions": true,
+      "showValidators": true,
+    }
+  }
   domainIndex={1}
   field={
     Immutable.Record {
@@ -469,6 +477,14 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
 
 exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
 <ConditionalFormattingAndValidation
+  domainFormDisplayOptions={
+    Object {
+      "isDragDisabled": false,
+      "showRequired": true,
+      "showTextOptions": true,
+      "showValidators": true,
+    }
+  }
   domainIndex={1}
   field={
     Immutable.Record {

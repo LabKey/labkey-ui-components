@@ -26,6 +26,7 @@ import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndVa
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { Col } from 'react-bootstrap';
+import {IDomainFormDisplayOptions} from "./DomainFormDisplayOptions";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField
@@ -36,16 +37,23 @@ interface IDomainRowExpandedOptionsProps {
     appPropertiesOnly?: boolean
     domainIndex: number
     successBsStyle?: string
+    domainFormDisplayOptions?: IDomainFormDisplayOptions
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
 
     typeDependentOptions = () => {
-        const { field, index, onChange, onMultiChange, domainIndex } = this.props;
+        const { field, index, onChange, onMultiChange, domainIndex, domainFormDisplayOptions } = this.props;
 
         switch(field.dataType.name) {
-            case 'string':
-                return <TextFieldOptions index={index} domainIndex={domainIndex} label='Text Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
+            case 'string': {
+                if (domainFormDisplayOptions && domainFormDisplayOptions.showTextOptions) {
+                    return <TextFieldOptions index={index} domainIndex={domainIndex} label='Text Options' scale={field.scale} onChange={onChange} lockType={field.lockType}/>;
+                }
+                else {
+                    return null;
+                }
+            }
             case 'flag':
                 return <TextFieldOptions index={index} domainIndex={domainIndex} label='Flag Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'multiLine':
@@ -85,7 +93,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
     };
 
     render() {
-        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex, successBsStyle } = this.props;
+        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex, successBsStyle, domainFormDisplayOptions } = this.props;
 
         return(
             <div className='domain-row-container'>
@@ -107,6 +115,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                 showingModal={showingModal}
                                 hideConditionalFormatting={appPropertiesOnly}
                                 successBsStyle={successBsStyle}
+                                domainFormDisplayOptions={domainFormDisplayOptions}
                             />
                         </Col>
                     }

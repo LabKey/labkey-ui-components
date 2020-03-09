@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
+import React from 'react';
+
 export interface IDomainFormDisplayOptions {
-    hideRequired?: boolean
+    showRequired?: boolean
+    showValidators?: boolean
+    isDragDisabled?: boolean
+    showTextOptions?: boolean
 }
 
-export class DomainFormDisplayOptions implements IDomainFormDisplayOptions {
-    private _hideRequired?: boolean;
+export class DomainFormDisplayOptions extends React.Component<IDomainFormDisplayOptions, any> {
 
+    static defaultProps = {
+        showRequired: true,
+        showValidators: true,
+        isDragDisabled: false,
+        showTextOptions: true
+    };
 
-    get hideRequired(): boolean {
-        return this._hideRequired;
-    }
-
-    set hideRequired(value: boolean) {
-        this._hideRequired = value;
+    constructor(props) {
+        super(props);
     }
 }
-
-
-
-

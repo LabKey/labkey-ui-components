@@ -59,6 +59,7 @@ import { Alert } from '../base/Alert';
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { CollapsiblePanelHeader } from "./CollapsiblePanelHeader";
 import { ImportDataFilePreview } from "./ImportDataFilePreview";
+import {DomainFormDisplayOptions, IDomainFormDisplayOptions} from "./DomainFormDisplayOptions";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -87,6 +88,7 @@ interface IDomainFormInput {
     successBsStyle?: string
     setFileImportData?: (file: File) => any // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     hideAddFieldsButton?: boolean
+    domainFormDisplayOptions?: IDomainFormDisplayOptions
 }
 
 interface IDomainFormState {
@@ -126,7 +128,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         isNew: false,
         appPropertiesOnly: false,
         domainIndex: 0,
-        successBsStyle: 'success'
+        successBsStyle: 'success',
+        domainFormDisplayOptions: DomainFormDisplayOptions.defaultProps
     };
 
     constructor(props) {
@@ -569,6 +572,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderRowHeaders() {
+        const { domainFormDisplayOptions } = this.props;
+
         return (
             <div className='domain-floating-hdr'>
                 <Row className='domain-form-hdr-row'>
@@ -579,9 +584,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <Col xs={4}>
                             <b>Data Type</b>
                         </Col>
-                        <Col xs={2} className='domain-form-hdr-center'>
-                            <b>Required</b>
-                        </Col>
+                        {
+                            domainFormDisplayOptions.showRequired &&
+                            <Col xs={2} className='domain-form-hdr-center'>
+                                <b>Required</b>
+                            </Col>
+                        }
                     </Col>
                     <Col xs={6}>
                         <b>Details</b>
@@ -731,7 +739,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm() {
-        const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex, successBsStyle } = this.props;
+        const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex, successBsStyle, domainFormDisplayOptions } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
@@ -772,7 +780,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 onDelete={this.onDeleteField}
                                                 maxPhiLevel={maxPhiLevel}
                                                 dragging={dragId === i}
-                                                isDragDisabled={filtered}
                                                 availableTypes={availableTypes}
                                                 showDefaultValueSettings={domain.showDefaultValueSettings}
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
@@ -780,6 +787,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 appPropertiesOnly={appPropertiesOnly}
                                                 showFilePropertyType={showFilePropertyType}
                                                 successBsStyle={successBsStyle}
+                                                domainFormDisplayOptions={domainFormDisplayOptions}
                                             />
                                         }))}
                                         {provided.placeholder}

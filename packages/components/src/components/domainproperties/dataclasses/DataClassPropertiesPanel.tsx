@@ -183,7 +183,7 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
     render() {
         const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
         const { isValid } = this.state;
-        const { collapsed } = this.context ? this.context : DEFAULT_CONTEXT;
+        const { collapsed } = this.context || DEFAULT_CONTEXT;
 
         return (
             <>

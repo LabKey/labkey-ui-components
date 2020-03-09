@@ -3,6 +3,10 @@ import renderer from "react-test-renderer";
 import { mount } from "enzyme";
 import { DataClassModel } from "./models";
 import { DataClassPropertiesPanel, DataClassPropertiesPanelImpl } from "./DataClassPropertiesPanel";
+import { Alert } from "../../base/Alert";
+import { EntityDetailsForm } from "../entities/EntityDetailsForm";
+import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
+import { QuerySelect } from "../../forms/QuerySelect";
 import getDomainDetailsJSON from "../../../test/data/dataclass-getDomainDetails.json";
 
 describe('DataClassPropertiesPanel', () => {
@@ -47,19 +51,19 @@ describe('DataClassPropertiesPanel', () => {
             />
         );
 
-        expect(wrapped.find('CollapsiblePanelHeader')).toHaveLength(1);
-        expect(wrapped.find('EntityDetailsForm')).toHaveLength(1);
-        expect(wrapped.find('QuerySelect')).toHaveLength(2);
-        expect(wrapped.find('Alert')).toHaveLength(0);
+        expect(wrapped.find(CollapsiblePanelHeader)).toHaveLength(1);
+        expect(wrapped.find(EntityDetailsForm)).toHaveLength(1);
+        expect(wrapped.find(QuerySelect)).toHaveLength(2);
+        expect(wrapped.find(Alert)).toHaveLength(0);
 
         expect(wrapped.state()).toHaveProperty('isValid', true);
         wrapped.setState({isValid: false});
         expect(wrapped.state()).toHaveProperty('isValid', false);
 
-        expect(wrapped.find('CollapsiblePanelHeader')).toHaveLength(1);
-        expect(wrapped.find('EntityDetailsForm')).toHaveLength(1);
-        expect(wrapped.find('QuerySelect')).toHaveLength(2);
-        expect(wrapped.find('Alert')).toHaveLength(2);
+        expect(wrapped.find(CollapsiblePanelHeader)).toHaveLength(1);
+        expect(wrapped.find(EntityDetailsForm)).toHaveLength(1);
+        expect(wrapped.find(QuerySelect)).toHaveLength(2);
+        expect(wrapped.find(Alert)).toHaveLength(1);
 
         wrapped.unmount();
     });

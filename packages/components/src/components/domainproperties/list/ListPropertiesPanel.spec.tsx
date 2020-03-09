@@ -2,7 +2,7 @@ import React from "react";
 import {mount, shallow} from "enzyme";
 import {ListModel} from "./models";
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
-import getDomainDetailsJSON from "../../../test/data/property-getDomainDetails.json";
+import getDomainDetailsJSON from "../../../test/data/list-getDomainDetails.json";
 import {ListPropertiesPanel} from "./ListPropertiesPanel";
 import {AllowableActions, BasicPropertiesFields} from "./ListPropertiesPanelFormElements";
 import {AdvancedSettings} from "./ListPropertiesAdvancedSettings";

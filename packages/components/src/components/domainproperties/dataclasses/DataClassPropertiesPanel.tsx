@@ -18,7 +18,7 @@ import { initQueryGridState } from "../../../global";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
-
+const DEFAULT_CONTEXT = {collapsed: false};
 const FORM_IDS = {
     CATEGORY: ENTITY_FORM_ID_PREFIX + 'category',
     SAMPLE_SET_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet'
@@ -64,7 +64,8 @@ export class DataClassPropertiesPanel extends React.PureComponent<Props> {
     }
 }
 
-class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
+//Note: exporting this class for jest test case
+export class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     static contextType = DomainPropertiesPanelContext;
     context!: React.ContextType<typeof DomainPropertiesPanelContext>;
 
@@ -182,7 +183,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     render() {
         const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
         const { isValid } = this.state;
-        const { collapsed } = this.context;
+        const { collapsed } = this.context ? this.context : DEFAULT_CONTEXT;
 
         return (
             <>

@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import {ListDesignerPanels} from '../components/domainproperties/list/ListDesignerPanels';
 import {ListModel} from "../components/domainproperties/list/models";
-import getDomainDetailsJSON from '../test/data/property-getDomainDetails.json';
+import getDomainDetailsJSON from '../test/data/list-getDomainDetails.json';
 
 import './stories.scss';
 import {DEFAULT_LIST_SETTINGS} from "../test/data/constants";

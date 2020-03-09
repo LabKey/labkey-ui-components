@@ -3,7 +3,7 @@ import {ListDesignerPanels} from "./ListDesignerPanels";
 import {mount} from "enzyme";
 import {ListModel} from "./models";
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
-import getDomainDetailsJSON from "../../../test/data/property-getDomainDetails.json";
+import getDomainDetailsJSON from "../../../test/data/list-getDomainDetails.json";
 import DomainForm from "../DomainForm";
 import {ListPropertiesPanel} from "./ListPropertiesPanel";
 import {Alert} from "react-bootstrap";

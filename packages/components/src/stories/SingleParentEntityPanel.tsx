@@ -23,18 +23,45 @@ import { fromJS } from 'immutable';
 
 storiesOf('SingleParentEntityPanel', module)
     .addDecorator(withKnobs)
-    .add("readonly", () => {
+    .add("No parents", () => {
+        return (
+            <SingleParentEntityPanel childNounSingular={"Sample"}
+                                     parentDataType={DataClassDataType}
+                                     parentValues={undefined}
+                                     parentTypeQueryName={undefined}
+             />
+        )
+    })
+    .add("single parent", () => {
         return (
             <SingleParentEntityPanel
-                parentDataType={DataClassDataType}
+                childNounSingular={"Sample"}
+                parentDataType={{...DataClassDataType, appUrlPrefixParts: ['sources']}}
                 parentTypeQueryName={"Second Source"}
-                parentValue={fromJS({
+                parentValues={fromJS([{
                     displayValue: 'Sec-32',
                     value: "url:lsid:blah",
                     url: "/labkey/Sam%20Man/experiment-showData.view?rowId=57093&dataClassId=322"
-                })}
-                index={1}
+                }])}
             />
         )
     })
+    // .add('multiple parents', () => {
+    //     return (
+    //         <SingleParentEntityPanel
+    //             childNounSingular={"Sample"}
+    //             parentDataType={{...DataClassDataType, appUrlPrefixParts: ['sources']}}
+    //             parentTypeQueryName={"Multi-Source Parent"}
+    //             parentValues={fromJS([{
+    //                 displayValue: 'Sec-32',
+    //                 value: "url:lsid:blah",
+    //                 url: "/labkey/Sam%20Man/experiment-showData.view?rowId=57093&dataClassId=322"
+    //             }, {
+    //                 displayValue: 'Sec-44',
+    //                 value: "url:lsid:blah",
+    //                 url: "/labkey/Sam%20Man/experiment-showData.view?rowId=57093&dataClassId=324"
+    //             }])}
+    //         />
+    //     )
+    // })
 ;

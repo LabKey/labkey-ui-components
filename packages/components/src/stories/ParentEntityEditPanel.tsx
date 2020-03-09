@@ -56,7 +56,7 @@ class ParentEntityEditPage extends React.Component<Props, any> {
     };
 
     render() {
-        const { childName, childNounSingular, title} = this.props;
+        const { canUpdate, childName, childNounSingular, title} = this.props;
         const model = this.getQueryGridModel();
         if (!model.isLoaded) {
             return <LoadingSpinner/>
@@ -65,6 +65,7 @@ class ParentEntityEditPage extends React.Component<Props, any> {
         return (
             <ParentEntityEditPanel
                 childModel={model}
+                canUpdate={canUpdate}
                 childName={childName}
                 childNounSingular={childNounSingular}
                 title={title}

@@ -3,21 +3,23 @@ import { Button, Panel } from 'react-bootstrap';
 import {
     AddEntityButton,
     capitalizeFirstChar,
-    EntityDataType,
+    EntityDataType, gridInvalidate,
     LoadingSpinner,
     QueryGridModel,
     QuerySelect,
+    resolveErrorMessage,
     SchemaQuery,
-    SelectInput
+    SelectInput,
+    updateRows
 } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { getEntityTypeOptions } from './actions';
 import { List, Map } from 'immutable';
-import { IEntityTypeOption } from './models';
+import { IEntityTypeOption, IParentOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 
-
 interface Props {
+    canUpdate: boolean
     childName: string
     childNounSingular: string
     childModel: QueryGridModel
@@ -29,12 +31,12 @@ interface Props {
 
 interface State {
     editing: boolean
+    error: React.ReactNode
     canSubmit: boolean
     loading: boolean
-    parentTypeOptions: List<any>
+    parentTypeOptions: List<IParentOption>
     entityType: IEntityTypeOption
-    inputs: List<Map<string, any>>
-    typeQueryNames: List<string>
+    entityValue: string | Array<any>
 }
 
 export class ParentEntityEditPanel extends React.Component<Props, State> {
@@ -49,12 +51,12 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
         this.state = {
             editing: false,
+            error: undefined,
             canSubmit: false,
             loading: true,
             parentTypeOptions: undefined,
             entityType: undefined,
-            inputs: List<Map<string, any>>(),
-            typeQueryNames: List<string>(),
+            entityValue: undefined,
         };
     }
 
@@ -65,31 +67,10 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     init()  {
         getEntityTypeOptions(this.props.parentDataType.typeListingSchemaQuery, this.props.parentDataType.instanceSchemaName)
             .then((optionsMap) => {
-                const parentTypeOptions = optionsMap.get(this.props.parentDataType.typeListingSchemaQuery.queryName);
-                // TODO this seems like the right place to do this to avoid doing it with each render, but
-                // it currently won't happen except on first mount. so if a property updates this won't happen.
-                const row = this.props.childModel.getRow();
-                let updatedState : any = {
+                this.setState(() => ({
                     loading: false,
-                    parentTypeOptions
-                };
-                if (row.size > 0) {
-                    const { parentDataType } = this.props;
-                    // for each parent in the model, extract the name and type and then create a QueryGrid with a single row
-                    const inputs: List<Map<string, any>> = row.get(parentDataType.inputColumnName);
-                    const inputTypes: List<Map<string, any>> = row.get(parentDataType.inputTypeColumnName);
-                    if (inputs && inputTypes) {
-                        const typeQueryNames = inputTypes.map((type) => {
-                            // I'm not sure when the type could have more than one value here, but 'value' is an array
-                            const typeValue = type.getIn(['value', 0]);
-                            const typeOption = parentTypeOptions.find((option) => option[parentDataType.inputTypeValueField] === typeValue);
-                            return typeOption ? typeOption.query : undefined;
-                        }).toList();
-                        updatedState['inputs'] = inputs;
-                        updatedState['typeQueryNames'] = typeQueryNames;
-                    }
-                }
-                this.setState(() => (updatedState));
+                    parentTypeOptions: optionsMap.get(this.props.parentDataType.typeListingSchemaQuery.queryName)
+                }));
             }
         )
     }
@@ -108,19 +89,56 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     };
 
     changeEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption): void => {
-        this.setState(() => ({entityType: selectedOption}))
+        this.setState(() => ({
+            entityType: selectedOption,
+            canSubmit: false,
+            entityValue: undefined
+        }))
     };
 
-    onParentValueChange = () => {
-
+    onParentValueChange = (name: string, value: string | Array<any>) => {
+        this.setState(() => ({
+            canSubmit: value !== undefined,
+            entityValue: value
+        }))
     };
 
     onCancel = () => {
         this.setState(() => ({editing: false}))
     };
 
-    onSubmit = () => {
+    onSubmit = (values) => {
+        const { childModel, parentDataType } = this.props;
 
+        const queryData = childModel.getRow();
+        const queryInfo = childModel.queryInfo;
+        const schemaQuery = queryInfo.schemaQuery;
+        let updatedValues = {};
+        updatedValues['DataInputs/'+ this.state.entityType.value] = this.state.entityValue;
+
+        queryInfo.getPkCols().forEach((pkCol) => {
+            const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
+
+            if (pkVal !== undefined && pkVal !== null) {
+                updatedValues[pkCol.fieldKey] = pkVal;
+            }
+            else {
+                console.warn('Unable to find value for pkCol \"' + pkCol.fieldKey + '\"');
+            }
+        });
+
+        return updateRows({
+            schemaQuery,
+            rows: [updatedValues]
+        }).then(() => {
+            gridInvalidate(childModel); // TODO more invalidation required here
+            this.setState(() => ({editing: false}));
+        }).catch((error) => {
+            console.error(error);
+            this.setState(() => ({
+                error: resolveErrorMessage(error, 'data', undefined, 'update')
+            }));
+        });
     };
 
     renderEditControls() {
@@ -149,6 +167,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         )
     }
 
+    // TODO initialize with current parent values.
     renderNewParentSection() {
         const { parentDataType } = this.props;
         const { entityType } = this.state;
@@ -171,11 +190,12 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 />
                 {entityType && (
                     <QuerySelect
+                        clearable={false} // change to true (or remove) when we have support on the back end
                         componentId={entityType.value + "_value"}
                         containerClass="row"
                         disabled={entityType === undefined}
                         formsy={false}
-                        label={parentDataType.nounSingular + " ID"}
+                        label={capitalizeFirstChar(parentDataType.nounSingular) + " ID"}
                         inputClass="col-xs-6 test-loc-ingredient"
                         name={entityType.value + "_added"}
                         onQSChange={this.onParentValueChange}
@@ -200,18 +220,28 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             const inputs: List<Map<string, any>> = row.get(parentDataType.inputColumnName);
             const inputTypes: List<Map<string, any>> = row.get(parentDataType.inputTypeColumnName);
             if (inputs && inputTypes) {
-                const typeQueryNames = inputTypes.map((type) => {
+                let parentValuesByType = Map<string, List<Map<string, any>>>();
+                // group the inputs by parent type so we can show each in its own grid.
+                inputTypes.forEach((typeMap, index) => {
                     // I'm not sure when the type could have more than one value here, but 'value' is an array
-                    const typeValue = type.getIn(['value', 0]);
+                    const typeValue = typeMap.getIn(['value', 0]);
                     const typeOption = parentTypeOptions.find((option) => option[parentDataType.inputTypeValueField] === typeValue);
-                    return typeOption ? typeOption.query : undefined;
-                }).toList();
-                return inputs.map((input, index) => (
+                    if (!typeOption) {
+                        console.warn("Unable to find parent type.", typeValue);
+                    }
+                    else {
+                        if (!parentValuesByType.has(typeOption.query)) {
+                            parentValuesByType = parentValuesByType.set(typeOption.query, List<Map<string, any>>())
+                        }
+                        parentValuesByType = parentValuesByType.set(typeOption.query, parentValuesByType.get(typeOption.query).push(inputs.get(index)))
+                    }
+                });
+                return parentValuesByType.map((input, typeName) => (
                     <SingleParentEntityPanel
-                        index={index}
+                        key={typeName}
                         parentDataType={parentDataType}
-                        parentTypeQueryName={typeQueryNames.get(index)}
-                        parentValue={input}
+                        parentTypeQueryName={typeName}
+                        parentValues={input}
                     />
                 )).toArray();
             }
@@ -220,23 +250,22 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     }
 
     renderParentData() {
-        const { parentDataType } = this.props;
-        const lcPlural = parentDataType.nounPlural.toLowerCase();
+        const { parentDataType, childNounSingular } = this.props;
         if (this.hasParents()) {
             return this.renderSingleParentPanels();
         }
         else {
             return (
-                <>
-                    No {lcPlural} currently defined.
-                    Click the edit icon in the upper right to add {lcPlural}.
-                </>
+               <SingleParentEntityPanel
+                   parentDataType={parentDataType}
+                   childNounSingular={childNounSingular}
+               />
             )
         }
     }
 
     onAddParent = () => {
-
+        console.log("Adding second parent not currently implemented.");
     };
 
     renderAddParentButton() {
@@ -248,14 +277,14 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     }
 
     render() {
-        const { parentDataType, title, childName } = this.props;
+        const { parentDataType, title, canUpdate, childName } = this.props;
         const { editing, loading } = this.state;
 
         const heading = (
             <DetailPanelHeader
                 useEditIcon={true}
-                isEditable={!loading}
-                canUpdate={true}
+                isEditable={!loading && canUpdate}
+                canUpdate={canUpdate}
                 editing={editing}
                 title={title}
                 onClickFn={this.handleClick}
@@ -271,7 +300,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                         editing ?
                         <>
                             {this.renderNewParentSection()}
-                            {this.renderAddParentButton()}
+                            {/*{this.renderAddParentButton()}*/}
                             {this.renderEditControls()}
                         </> :
                         <>

@@ -515,5 +515,6 @@ export interface EntityDataType {
     inputColumnName: string // used for extracting or querying for the parents of this type
     inputTypeColumnName: string // used for extracting or querying for the types for the input columns
     inputTypeValueField: string
+    appUrlPrefixParts?: Array<string> // the prefix used for creating links to this type in the application
 }
 

@@ -1698,14 +1698,19 @@ export class AssayDefinitionModel extends Record({
         return false;
     }
 
-    private getSampleColumnByDomain(domainType: AssayDomainTypes): QueryColumn {
+    private getSampleColumnsByDomain(domainType: AssayDomainTypes): ScopedSampleColumn[] {
+        let ret = [];
         const columns = this.getDomainByType(domainType);
 
         if (columns) {
-            return columns.find(c => c.isSampleLookup());
+            columns.forEach(column => {
+                if (column.isSampleLookup()) {
+                    ret.push({column, domain : domainType});
+                }
+            });
         }
 
-        return null;
+        return ret;
     }
 
     /**
@@ -1715,10 +1720,10 @@ export class AssayDefinitionModel extends Record({
         let ret = [];
         // The order matters here, we care about result, run, and batch in that order.
         for (const domain of [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH]) {
-            const column = this.getSampleColumnByDomain(domain);
+            const columns = this.getSampleColumnsByDomain(domain);
 
-            if (column) {
-                ret.push({column, domain});
+            if (columns && columns.length > 0) {
+                ret = ret.concat(columns);
             }
         }
 

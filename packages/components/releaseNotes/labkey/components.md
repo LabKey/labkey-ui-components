@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Enhance createQueryGridModelFilteredBySample
     - Allow using lsid instead of rowid for createQueryGridModelFilteredBySample
     - Allow omit sample columns in generated model
+    - Get all sample columns instead of one sample column per domain type
 
 ### version 0.33.0
 *Released*: 5 March 2020

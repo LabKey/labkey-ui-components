@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Domain } from "@labkey/api";
-import { DataClassModel } from "./models";
-import { SCHEMAS } from "../../base/models/schemas";
-import { deleteEntityType } from "../../entities/actions";
+import { Domain } from '@labkey/api';
+
+import { SCHEMAS } from '../../base/models/schemas';
+import { deleteEntityType } from '../../entities/actions';
+
+import { DataClassModel } from './models';
 
 export function fetchDataClass(name: string): Promise<DataClassModel> {
     return new Promise((resolve, reject) => {
@@ -24,18 +26,18 @@ export function fetchDataClass(name: string): Promise<DataClassModel> {
             containerPath: LABKEY.container.path,
             schemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
             queryName: name,
-            success: (data) => {
+            success: data => {
                 if (data.domainKindName === 'DataClass') {
                     resolve(DataClassModel.create(data));
                 }
                 else {
-                    reject({exception: 'Unexpected domainKind type found: ' + data.domainKindName});
+                    reject({ exception: 'Unexpected domainKind type found: ' + data.domainKindName });
                 }
             },
-            failure: (error) => {
+            failure: error => {
                 reject(error);
-            }
-        })
+            },
+        });
     });
 }
 

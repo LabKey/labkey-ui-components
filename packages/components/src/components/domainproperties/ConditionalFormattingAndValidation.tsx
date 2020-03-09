@@ -184,7 +184,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
                         {!hideConditionalFormatting && this.renderConditionalFormats()}
-                        {this.renderValidator(false)}
+                        {field.dataType.isString() && this.renderValidator(false)}
                         {DomainField.hasRangeValidation(field) && this.renderValidator(true)}
                         {showCondFormat &&
                             <CondFormatModal

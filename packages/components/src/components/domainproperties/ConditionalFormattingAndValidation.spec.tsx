@@ -16,6 +16,7 @@ describe('ConditionalFormattingAndValidation', () => {
         const decimalPropertyType = DOUBLE_TYPE;
         const datePropertyType = DATETIME_TYPE;
         const booleanPropertyType = BOOLEAN_TYPE;
+        const stringPropertyType = TEXT_TYPE;
 
         const props = {
             index: 1,
@@ -45,12 +46,21 @@ describe('ConditionalFormattingAndValidation', () => {
         cfv.setProps({...props, field: DomainField.create({rangeURI: decimalPropertyType.rangeURI})});
 
         buttons = cfv.find({className: 'domain-validation-button btn btn-default'});
-        expect(buttons.length).toEqual(3); // All three should be available now
+        // Two should be available now: Conditional Format Criteria and Range Expression Validator
+        expect(buttons.length).toEqual(2);
 
         validatorStrings = cfv.find({className: 'domain-text-label'});
-        expect(validatorStrings.length).toEqual(3);
+        expect(validatorStrings.length).toEqual(2);
 
         cfv.setProps({...props, field: DomainField.create({rangeURI: booleanPropertyType.rangeURI})});
+
+        buttons = cfv.find({className: 'domain-validation-button btn btn-default'});
+        expect(buttons.length).toEqual(1);
+
+        validatorStrings = cfv.find({className: 'domain-text-label'});
+        expect(validatorStrings.length).toEqual(1);
+
+        cfv.setProps({...props, field: DomainField.create({rangeURI: datePropertyType.rangeURI})});
 
         buttons = cfv.find({className: 'domain-validation-button btn btn-default'});
         expect(buttons.length).toEqual(2);
@@ -58,18 +68,17 @@ describe('ConditionalFormattingAndValidation', () => {
         validatorStrings = cfv.find({className: 'domain-text-label'});
         expect(validatorStrings.length).toEqual(2);
 
-        cfv.setProps({...props, field: DomainField.create({rangeURI: datePropertyType.rangeURI})});
+        cfv.setProps({...props, field: DomainField.create({rangeURI: stringPropertyType.rangeURI})});
 
         buttons = cfv.find({className: 'domain-validation-button btn btn-default'});
-        expect(buttons.length).toEqual(3);
+        expect(buttons.length).toEqual(2);
 
         validatorStrings = cfv.find({className: 'domain-text-label'});
-        expect(validatorStrings.length).toEqual(3);
+        expect(validatorStrings.length).toEqual(2);
 
         // Validator strings should all be None Set
         expect(validatorStrings.at(0).text()).toEqual(expectedValidators);
         expect(validatorStrings.at(1).text()).toEqual(expectedValidators);
-        expect(validatorStrings.at(2).text()).toEqual(expectedValidators);
 
         expect(toJson(cfv)).toMatchSnapshot();
         cfv.unmount();
@@ -98,9 +107,8 @@ describe('ConditionalFormattingAndValidation', () => {
         expect(validatorStrings.length).toEqual(1);
 
         validatorStrings = cfv.find({className: 'domain-validator-link'});
-        expect(validatorStrings.length).toEqual(2);
+        expect(validatorStrings.length).toEqual(1);
         expect(validatorStrings.at(0).text()).toEqual(validatorString);
-        expect(validatorStrings.at(1).text()).toEqual(validatorString);
 
         cfv.setProps({field: DomainField.create({conditionalFormats: [conditionalFormat1, conditionalFormat2], rangeURI: textPropertyType.rangeURI})});
 

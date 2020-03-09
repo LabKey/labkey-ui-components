@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 39817: Don't show RegEx validator options for non-string fields
+
 ### version 0.33.0
 *Released*: 5 March 2020
 * Issue 38221: Sample Manager: encoding issues at various places

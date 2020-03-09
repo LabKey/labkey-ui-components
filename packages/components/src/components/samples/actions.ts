@@ -92,37 +92,17 @@ export function getSampleTypeDetails(query: SchemaQuery, domainId?: number): Pro
             containerPath: ActionURL.getContainer(),
             queryName: query.getQuery(),
             schemaName: query.getSchema(),
+            success: (response) => {
+                resolve(DomainDetails.create(Map(response)));
+            },
+            failure:(response) => {
+                reject(response);
+            }
         } as Domain.GetDomainOptions;
 
-        return Ajax.request({
-            url: buildURL('property', 'getDomainDetails.api'),
-            method: 'GET',
-            params: sampleSetConfig,
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(DomainDetails.create(Map(response)));
-            }),
-            failure: Utils.getCallbackWrapper((response) => {
-                reject(response);
-            }),
-        });
+        return Domain.getDomainDetails(sampleSetConfig);
     });
 }
-
-// export function updateSampleSet(config: IEntityTypeDetails): Promise<any> {
-//     return new Promise((resolve, reject) => {
-//         return Ajax.request({
-//             url: buildURL('experiment', 'updateMaterialSourceApi.api'),
-//             method: 'POST',
-//             params: config,
-//             success: Utils.getCallbackWrapper((response) => {
-//                 resolve(response);
-//             }),
-//             failure: Utils.getCallbackWrapper((response) => {
-//                 reject(response);
-//             }),
-//         });
-//     });
-// }
 
 export function deleteSampleSet(rowId: number): Promise<any> {
     return new Promise((resolve, reject) => {

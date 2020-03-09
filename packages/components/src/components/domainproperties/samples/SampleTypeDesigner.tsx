@@ -7,6 +7,7 @@ import {
     DomainDetails,
     generateId,
     IDomainField,
+    initQueryGridState,
     naturalSort,
     resolveErrorMessage,
     SAMPLE_TYPE,
@@ -92,6 +93,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        initQueryGridState();
         const domainDetails = this.props.initModel || DomainDetails.create();
         const model = SampleTypeModel.create(domainDetails);
 

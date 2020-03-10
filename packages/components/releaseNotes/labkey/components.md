@@ -13,6 +13,17 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Use title-case for Advanced List Settings' titles instead of sentence-case
 * Issue 39877: List designer: max text length options should not be visible for text key field of list
 
+### version 0.33.0
+*Released*: 5 March 2020
+* Issue 38221: Sample Manager: encoding issues at various places
+* Issue 38907: ui-components applications cannot handle assay names with periods
+* Issue 39461: Editing a date field in a sample does not show a date picker
+
+### version 0.32.0
+*Released*: 3 March 2020
+* Fix issue 39085
+    - factored out "fetchSamples" from "loadSelectedSamples" to allow for fetching and and transformation independent of getting selection
+
 ### version 0.31.3
 *Released*: 28 February 2020
 * Fix for Sample Manager QueryGridModel use case that passes in undefined as baseFilters

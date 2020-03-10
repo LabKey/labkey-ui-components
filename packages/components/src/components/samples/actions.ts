@@ -19,7 +19,7 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { IEntityTypeDetails, IParentOption, } from '../entities/models';
 import { getSelection } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
-import { QueryColumn } from '../base/models/model';
+import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';
 import { naturalSort } from '../../util/utils';
 import { selectRows } from '../../query/api';
@@ -119,31 +119,46 @@ export function deleteSampleSet(rowId: number): Promise<any> {
     });
 }
 
+/**
+ * Fetches an OrderedMap of Sample Set rows specified by a schemaQuery and collection of filters. This data
+ * is mapped via the sampleColumn to make it compatible with editable grid data.
+ * @param schemaQuery SchemaQuery which sources the request for rows
+ * @param sampleColumn A QueryColumn used to map fieldKey, displayColumn, and keyColumn data
+ * @param filterArray A collection of filters used when requesting rows
+ */
+export function fetchSamples(schemaQuery: SchemaQuery, sampleColumn: QueryColumn, filterArray: Array<Filter.IFilter>): Promise<OrderedMap<any, any>> {
+    return selectRows({
+        schemaName: schemaQuery.schemaName,
+        queryName: schemaQuery.queryName,
+        filterArray,
+    }).then(response => {
+        const { key, models, orderedModels } = response;
+        const rows = fromJS(models[key]);
+        let data = OrderedMap<any, any>();
+
+        orderedModels[key].forEach((id) => {
+            data = data.setIn([id, sampleColumn.fieldKey], List([{
+                displayValue: rows.getIn([id, sampleColumn.lookup.displayColumn, 'value']),
+                value: rows.getIn([id, sampleColumn.lookup.keyColumn, 'value']),
+            }]));
+        });
+
+        return data;
+    });
+}
+
+/**
+ * Loads a collection of RowIds from a selectionKey found on "location". Uses [[fetchSamples]] to query and filter
+ * the Sample Set data.
+ * @param location The location to search for the selectionKey on
+ * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
+ */
 export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
     return getSelection(location).then((selection) => {
         if (selection.resolved && selection.schemaQuery && selection.selected.length) {
-            return selectRows({
-                schemaName: selection.schemaQuery.schemaName,
-                queryName: selection.schemaQuery.queryName,
-                filterArray: [
-                    Filter.create('RowId', selection.selected, Filter.Types.IN)
-                ]
-            }).then(response => {
-                const { key, models, orderedModels } = response;
-                const rows = fromJS(models[key]);
-                let data = OrderedMap<any, any>();
-
-                // The transformation done here makes the samples compatible with the editable grid on the assay upload
-                // wizard.
-                orderedModels[key].forEach((id) => {
-                    data = data.setIn([id, sampleColumn.fieldKey], List([{
-                        displayValue: rows.getIn([id, sampleColumn.lookup.displayColumn, 'value']),
-                        value: rows.getIn([id, sampleColumn.lookup.keyColumn, 'value'])
-                    }]));
-                });
-
-                return data;
-            });
+            return fetchSamples(selection.schemaQuery, sampleColumn, [
+                Filter.create('RowId', selection.selected, Filter.Types.IN)
+            ]);
         }
     });
 }

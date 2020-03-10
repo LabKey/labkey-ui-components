@@ -42,17 +42,8 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
     constructor(props) {
         super(props);
 
-        let model = props.initModel;
-        if (props.initModel.name) {
-            const fields = props.initModel.domain.fields;
-            const pkField = fields.findIndex(i => (i.isPrimaryKey));
-            const pkFieldLocked = fields.get(pkField).merge({ lockType:"PKLocked", required:true }) as DomainField;
-            const updatedFields = fields.set(pkField, pkFieldLocked);
-            model = props.initModel.setIn(['domain','fields'], updatedFields);
-        }
-
         this.state = {
-            model: model || ListModel.create({}),
+            model: props.initModel || ListModel.create({}),
             submitting: false,
             currentPanelIndex: 0,
             visitedPanels: List<number>(),

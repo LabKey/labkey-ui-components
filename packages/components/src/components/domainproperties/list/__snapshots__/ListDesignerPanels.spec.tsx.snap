@@ -95,7 +95,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             },
             "updatedField": false,
             "isPrimaryKey": true,
-            "lockType": "PartiallyLocked",
+            "lockType": "PKLocked",
           },
           Immutable.Record {
             "conceptURI": null,

@@ -6040,11 +6040,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           <Col
                                             bsClass="col"
                                             componentClass="div"
-                                            lg={4}
+                                            lg={2}
                                             xs={3}
                                           >
                                             <div
-                                              className="col-lg-4 col-xs-3"
+                                              className="col-lg-2 col-xs-3"
                                             >
                                               Name *
                                             </div>
@@ -6077,6 +6077,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 />
                                               </FormControl>
                                             </div>
+                                          </Col>
+                                          <Col
+                                            bsClass="col"
+                                            componentClass="div"
+                                            lg={2}
+                                          >
+                                            <div
+                                              className="col-lg-2"
+                                            />
                                           </Col>
                                         </div>
                                       </Row>
@@ -7241,11 +7250,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           <Col
                                             bsClass="col"
                                             componentClass="div"
-                                            lg={4}
+                                            lg={2}
                                             xs={3}
                                           >
                                             <div
-                                              className="col-lg-4 col-xs-3"
+                                              className="col-lg-2 col-xs-3"
                                             >
                                               Description
                                             </div>
@@ -7266,6 +7275,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 value=""
                                               />
                                             </div>
+                                          </Col>
+                                          <Col
+                                            bsClass="col"
+                                            componentClass="div"
+                                            lg={2}
+                                          >
+                                            <div
+                                              className="col-lg-2"
+                                            />
                                           </Col>
                                         </div>
                                       </Row>
@@ -9606,7 +9624,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                               onClick={[Function]}
                                             >
                                               <span
-                                                className="list__properties__checkbox--no-highlight"
+                                                className="list__properties__no-highlight"
                                                 onClick={[Function]}
                                               >
                                                 <FontAwesomeIcon
@@ -9682,7 +9700,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                               onClick={[Function]}
                                             >
                                               <span
-                                                className="list__properties__checkbox--no-highlight"
+                                                className="list__properties__no-highlight"
                                                 onClick={[Function]}
                                               >
                                                 <FontAwesomeIcon
@@ -9758,7 +9776,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                               onClick={[Function]}
                                             >
                                               <span
-                                                className="list__properties__checkbox--no-highlight"
+                                                className="list__properties__no-highlight"
                                                 onClick={[Function]}
                                               >
                                                 <FontAwesomeIcon
@@ -15875,7 +15893,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -17234,7 +17252,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -19491,7 +19509,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -23026,7 +23044,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -25663,7 +25681,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -27022,7 +27040,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -32443,7 +32461,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -33802,7 +33820,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -36059,7 +36077,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -38316,7 +38334,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -41495,7 +41513,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -44030,7 +44048,7 @@ Array [
               className="margin-top row"
             >
               <div
-                className="col-lg-4 col-xs-3"
+                className="col-lg-2 col-xs-3"
               >
                 Name *
               </div>
@@ -44046,12 +44064,15 @@ Array [
                   value=""
                 />
               </div>
+              <div
+                className="col-lg-2"
+              />
             </div>
             <div
               className="margin-top row"
             >
               <div
-                className="col-lg-4 col-xs-3"
+                className="col-lg-2 col-xs-3"
               >
                 Description
               </div>
@@ -44065,6 +44086,9 @@ Array [
                   value=""
                 />
               </div>
+              <div
+                className="col-lg-2"
+              />
             </div>
           </div>
           <div
@@ -44082,7 +44106,7 @@ Array [
                 className="list__properties__checkbox-row"
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <svg
@@ -44114,7 +44138,7 @@ Array [
                 className="list__properties__checkbox-row"
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <svg
@@ -44146,7 +44170,7 @@ Array [
                 className="list__properties__checkbox-row"
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <svg

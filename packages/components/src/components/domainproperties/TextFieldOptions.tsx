@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { createFormInputId, createFormInputName, getNameFromId } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
+import classNames from 'classnames';
 import { DOMAIN_FIELD_CUSTOM_LENGTH, DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH } from './constants';
 import { ITypeDependentProps } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
@@ -98,7 +99,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, domainIndex, index)}
                                disabled={isFieldFullyLocked(lockType)}
                         />
-                        <div className='domain-text-label'>Unlimited</div>
+                        <div className={classNames({'domain-text-label': (radio !== DOMAIN_FIELD_MAX_LENGTH)})}>Unlimited</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
@@ -110,7 +111,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                onChange={this.handleChange}
                                id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, domainIndex, index)}
                         />
-                        <span className='domain-text-options-length domain-field-float-left domain-text-label'>No longer than X characters</span>
+                        <span className={classNames('domain-text-options-length domain-field-float-left', {'domain-text-label': (radio !== DOMAIN_FIELD_CUSTOM_LENGTH)})}>No longer than X characters</span>
                         <FormControl type="number"
                                      id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
                                      name={createFormInputName(DOMAIN_FIELD_SCALE)}

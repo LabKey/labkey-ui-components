@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.33.3
+*Released*: 10 March 2020
+* Issue 39817: Don't show RegEx validator options for non-string fields
+
 ### version 0.33.2
 *Released*: 10 March 2020
 * Issue 39818: List designer PK fields should be shown as Required upon load

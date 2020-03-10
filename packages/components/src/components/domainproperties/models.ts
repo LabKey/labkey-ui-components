@@ -853,6 +853,10 @@ export class DomainField extends Record({
                 field.dataType === LOOKUP_TYPE);
     }
 
+    static hasRegExValidation(field: DomainField): boolean {
+        return field.dataType.isString();
+    }
+
     static updateDefaultValues(field: DomainField): DomainField {
 
         const {dataType} = field;

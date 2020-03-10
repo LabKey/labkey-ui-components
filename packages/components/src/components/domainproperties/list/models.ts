@@ -107,9 +107,11 @@ export class ListModel extends Record({
             // Issue39818: Set the key field of an existing list to be PKLocked.
             const fields = domain.fields;
             const pkField = fields.findIndex(i => (i.isPrimaryKey));
-            const pkFieldLocked = fields.get(pkField).merge({ lockType:"PKLocked" }) as DomainField;
-            const updatedFields = fields.set(pkField, pkFieldLocked);
-            domain = domain.set('fields', updatedFields) as DomainDesign;
+            if (pkField > -1) {
+                const pkFieldLocked = fields.get(pkField).merge({ lockType:"PKLocked" }) as DomainField;
+                const updatedFields = fields.set(pkField, pkFieldLocked);
+                domain = domain.set('fields', updatedFields) as DomainDesign;
+            }
 
             return new ListModel({...raw.options, domain});
         }

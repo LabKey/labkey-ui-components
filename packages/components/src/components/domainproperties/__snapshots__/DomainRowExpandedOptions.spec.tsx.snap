@@ -2578,7 +2578,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                         <div
                           className="domain-field-label domain-no-wrap"
                         >
-                          Create Range Expression Validator
+                          Create Range Validator
                           <LabelHelpTip
                             body={[Function]}
                             customStyle={Object {}}
@@ -4071,7 +4071,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                         <div
                           className="domain-field-label domain-no-wrap"
                         >
-                          Create Range Expression Validator
+                          Create Range Validator
                           <LabelHelpTip
                             body={[Function]}
                             customStyle={Object {}}
@@ -4552,7 +4552,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                         />
                       </FormControl>
                       <div
-                        className="domain-text-label"
+                        className=""
                       >
                         Unlimited
                       </div>

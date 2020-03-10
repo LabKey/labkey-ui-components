@@ -10681,7 +10681,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -13603,7 +13603,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -15770,7 +15770,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -30244,7 +30244,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -33508,7 +33508,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -35861,7 +35861,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -44222,7 +44222,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -47486,7 +47486,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -49839,7 +49839,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}

@@ -63,7 +63,7 @@ class DiscussionLinks extends React.PureComponent<DiscussionLinksProps> {
             <>
                 <FormGroup>
                     <Radio name={radioName} value={0} checked={discussionSetting == 0} onChange={onRadioChange}>
-                        Disable discussion links
+                        Disable discussions
                     </Radio>
                     <Radio name={radioName} value={1} checked={discussionSetting == 1} onChange={onRadioChange}>
                         Allow one discussion per item
@@ -270,6 +270,7 @@ interface CollapsibleFieldsProps {
     fields: JSX.Element;
     title: string;
     expandFields: (expandedSection: string) => void;
+    collapseFields: () => void;
     identifier: string;
     checked: boolean;
     onCheckboxChange: (name: string, checked: boolean) => void;
@@ -277,17 +278,27 @@ interface CollapsibleFieldsProps {
 
 class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
     expand = () => {
-        const { expanded, expandFields, identifier, checked } = this.props;
+        const { expanded, expandFields, identifier } = this.props;
         const set = expanded ? '' : identifier;
-        if (checked) {
-            expandFields(set)
+        expandFields(set);
+    };
+
+    onClick = () => {
+        const { identifier, checked, onCheckboxChange, collapseFields, expanded } = this.props;
+        onCheckboxChange(identifier, checked);
+        if (expanded && !checked) {
+            // If options are expanded, changing a checkbox from unchecked to checked does not expand or collapse
+        } else if (!checked) {
+            this.expand();
+        } else {
+            collapseFields();
         }
     };
 
     render() {
-        const { expanded, fields, title, identifier, checked, onCheckboxChange } = this.props;
+        const { expanded, fields, title, checked } = this.props;
         const icon = expanded ? faAngleDown : faAngleRight;
-        const classes = classNames('list__advanced-settings-model__collapsible-field list__properties__checkbox--no-highlight', {
+        const classes = classNames('list__advanced-settings-model__collapsible-field list__properties__no-highlight', {
             'list__properties__checkbox-unchecked': !checked
         });
 
@@ -297,9 +308,11 @@ class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
                     <FontAwesomeIcon icon={icon} size="lg" />
                 </span>
                 <span className="list__advanced-settings-modal__index-checkbox">
-                    <CheckBox checked={checked} onClick={() => onCheckboxChange(identifier, checked)} />
+                    <CheckBox checked={checked} onClick={() => this.onClick()} />
                     <span className="list__advanced-settings-modal__index-text">
-                        {title}
+                        <span className='list__clickable' onClick={() => this.onClick()}>
+                            {title}
+                        </span>
                         {expanded && fields}
                     </span>
                 </span>
@@ -333,6 +346,10 @@ export class SearchIndexing extends React.PureComponent<SearchIndexingProps, Sea
         this.setState({ expanded: expandedSection });
     };
 
+    collapseFields = () => {
+        this.setState({ expanded: '' });
+    };
+
     render() {
         const {
             onRadioChange,
@@ -362,6 +379,7 @@ export class SearchIndexing extends React.PureComponent<SearchIndexingProps, Sea
                     title={singleDocTitle}
                     identifier="entireListIndex"
                     expandFields={this.expandFields}
+                    collapseFields={this.collapseFields}
                     checked={entireListIndexSettings.entireListIndex}
                     onCheckboxChange={onCheckboxChange}
                 />
@@ -378,6 +396,7 @@ export class SearchIndexing extends React.PureComponent<SearchIndexingProps, Sea
                     title={separateDocTitle}
                     identifier="eachItemIndex"
                     expandFields={this.expandFields}
+                    collapseFields={this.collapseFields}
                     checked={eachItemIndexSettings.eachItemIndex}
                     onCheckboxChange={onCheckboxChange}
                 />
@@ -387,7 +406,12 @@ export class SearchIndexing extends React.PureComponent<SearchIndexingProps, Sea
                         checked={fileAttachmentIndex}
                         onClick={() => onCheckboxChange('fileAttachmentIndex', fileAttachmentIndex)}
                     />
-                    <span className="list__advanced-settings-modal__index-text">Index file attachments</span>
+                    <span
+                        className="list__advanced-settings-modal__index-text list__clickable"
+                        onClick={() => onCheckboxChange('fileAttachmentIndex', fileAttachmentIndex)}
+                    >
+                        Index file attachments
+                    </span>
                 </span>
             </div>
         );
@@ -591,8 +615,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                     <Modal.Body>
                         <SettingsContainer
-                            title="Field used for display title"
-                            tipTitle={'Display Title Field'}
+                            title="Default Display Field"
                             tipBody={displayTitleTip}
                             fieldComponent={
                                 <DisplayTitle
@@ -604,7 +627,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         />
 
                         <SettingsContainer
-                            title="Discussion links"
+                            title="Discussion Threads"
                             tipBody={DISCUSSION_LINKS_TIP}
                             fieldComponent={
                                 <DiscussionLinks
@@ -615,7 +638,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         />
 
                         <SettingsContainer
-                            title="Search indexing options"
+                            title="Search Indexing Options"
                             tipBody={SEARCH_INDEXING_TIP}
                             fieldComponent={
                                 <SearchIndexing

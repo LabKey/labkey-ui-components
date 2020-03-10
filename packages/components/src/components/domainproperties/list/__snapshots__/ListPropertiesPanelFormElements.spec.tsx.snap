@@ -16,7 +16,7 @@ exports[`AllowableActions existing list, existing properties 1`] = `
       className="list__properties__checkbox-row"
     >
       <span
-        className="list__properties__checkbox--no-highlight"
+        className="list__properties__no-highlight"
         onClick={[Function]}
       >
         <svg
@@ -48,7 +48,7 @@ exports[`AllowableActions existing list, existing properties 1`] = `
       className="list__properties__checkbox-row"
     >
       <span
-        className="list__properties__checkbox--no-highlight"
+        className="list__properties__no-highlight"
         onClick={[Function]}
       >
         <svg
@@ -80,7 +80,7 @@ exports[`AllowableActions existing list, existing properties 1`] = `
       className="list__properties__checkbox-row"
     >
       <span
-        className="list__properties__checkbox--no-highlight"
+        className="list__properties__no-highlight"
         onClick={[Function]}
       >
         <svg
@@ -128,7 +128,7 @@ exports[`AllowableActions new list, default properties 1`] = `
       className="list__properties__checkbox-row"
     >
       <span
-        className="list__properties__checkbox--no-highlight"
+        className="list__properties__no-highlight"
         onClick={[Function]}
       >
         <svg
@@ -160,7 +160,7 @@ exports[`AllowableActions new list, default properties 1`] = `
       className="list__properties__checkbox-row"
     >
       <span
-        className="list__properties__checkbox--no-highlight"
+        className="list__properties__no-highlight"
         onClick={[Function]}
       >
         <svg
@@ -192,7 +192,7 @@ exports[`AllowableActions new list, default properties 1`] = `
       className="list__properties__checkbox-row"
     >
       <span
-        className="list__properties__checkbox--no-highlight"
+        className="list__properties__no-highlight"
         onClick={[Function]}
       >
         <svg
@@ -237,7 +237,7 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
     className="margin-top row"
   >
     <div
-      className="col-lg-4 col-xs-3"
+      className="col-lg-2 col-xs-3"
     >
       Name *
     </div>
@@ -253,12 +253,15 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
         value="NIMHDemographics"
       />
     </div>
+    <div
+      className="col-lg-2"
+    />
   </div>
   <div
     className="margin-top row"
   >
     <div
-      className="col-lg-4 col-xs-3"
+      className="col-lg-2 col-xs-3"
     >
       Description
     </div>
@@ -272,6 +275,9 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
         value=""
       />
     </div>
+    <div
+      className="col-lg-2"
+    />
   </div>
 </div>
 `;
@@ -289,7 +295,7 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
     className="margin-top row"
   >
     <div
-      className="col-lg-4 col-xs-3"
+      className="col-lg-2 col-xs-3"
     >
       Name *
     </div>
@@ -305,12 +311,15 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
         value=""
       />
     </div>
+    <div
+      className="col-lg-2"
+    />
   </div>
   <div
     className="margin-top row"
   >
     <div
-      className="col-lg-4 col-xs-3"
+      className="col-lg-2 col-xs-3"
     >
       Description
     </div>
@@ -324,6 +333,9 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
         value=""
       />
     </div>
+    <div
+      className="col-lg-2"
+    />
   </div>
 </div>
 `;

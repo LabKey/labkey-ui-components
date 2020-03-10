@@ -6561,7 +6561,7 @@ exports[`DomainRow date time field 1`] = `
                                                     <div
                                                       className="domain-field-label domain-no-wrap"
                                                     >
-                                                      Create Range Expression Validator
+                                                      Create Range Validator
                                                       <LabelHelpTip
                                                         body={[Function]}
                                                         customStyle={Object {}}
@@ -8962,7 +8962,7 @@ exports[`DomainRow decimal field 1`] = `
                                                     <div
                                                       className="domain-field-label domain-no-wrap"
                                                     >
-                                                      Create Range Expression Validator
+                                                      Create Range Validator
                                                       <LabelHelpTip
                                                         body={[Function]}
                                                         customStyle={Object {}}
@@ -14436,7 +14436,7 @@ exports[`DomainRow string field test 1`] = `
                                                     />
                                                   </FormControl>
                                                   <div
-                                                    className="domain-text-label"
+                                                    className=""
                                                   >
                                                     Unlimited
                                                   </div>
@@ -16772,7 +16772,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     />
                                                   </FormControl>
                                                   <div
-                                                    className="domain-text-label"
+                                                    className=""
                                                   >
                                                     Unlimited
                                                   </div>

@@ -95,7 +95,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             },
             "updatedField": false,
             "isPrimaryKey": true,
-            "lockType": "PartiallyLocked",
+            "lockType": "PKLocked",
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1247,7 +1247,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               },
               "updatedField": false,
               "isPrimaryKey": true,
-              "lockType": "PartiallyLocked",
+              "lockType": "PKLocked",
             },
             Immutable.Record {
               "conceptURI": null,
@@ -2406,7 +2406,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   },
                   "updatedField": false,
                   "isPrimaryKey": true,
-                  "lockType": "PartiallyLocked",
+                  "lockType": "PKLocked",
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -3807,7 +3807,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           },
                                           "updatedField": false,
                                           "isPrimaryKey": true,
-                                          "lockType": "PartiallyLocked",
+                                          "lockType": "PKLocked",
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4974,7 +4974,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 },
                                                 "updatedField": false,
                                                 "isPrimaryKey": true,
-                                                "lockType": "PartiallyLocked",
+                                                "lockType": "PKLocked",
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6040,11 +6040,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           <Col
                                             bsClass="col"
                                             componentClass="div"
-                                            lg={4}
+                                            lg={2}
                                             xs={3}
                                           >
                                             <div
-                                              className="col-lg-4 col-xs-3"
+                                              className="col-lg-2 col-xs-3"
                                             >
                                               Name *
                                             </div>
@@ -6077,6 +6077,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 />
                                               </FormControl>
                                             </div>
+                                          </Col>
+                                          <Col
+                                            bsClass="col"
+                                            componentClass="div"
+                                            lg={2}
+                                          >
+                                            <div
+                                              className="col-lg-2"
+                                            />
                                           </Col>
                                         </div>
                                       </Row>
@@ -6175,7 +6184,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 },
                                                 "updatedField": false,
                                                 "isPrimaryKey": true,
-                                                "lockType": "PartiallyLocked",
+                                                "lockType": "PKLocked",
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -7241,11 +7250,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           <Col
                                             bsClass="col"
                                             componentClass="div"
-                                            lg={4}
+                                            lg={2}
                                             xs={3}
                                           >
                                             <div
-                                              className="col-lg-4 col-xs-3"
+                                              className="col-lg-2 col-xs-3"
                                             >
                                               Description
                                             </div>
@@ -7266,6 +7275,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 value=""
                                               />
                                             </div>
+                                          </Col>
+                                          <Col
+                                            bsClass="col"
+                                            componentClass="div"
+                                            lg={2}
+                                          >
+                                            <div
+                                              className="col-lg-2"
+                                            />
                                           </Col>
                                         </div>
                                       </Row>
@@ -7367,7 +7385,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           },
                                           "updatedField": false,
                                           "isPrimaryKey": true,
-                                          "lockType": "PartiallyLocked",
+                                          "lockType": "PKLocked",
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -8534,7 +8552,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 },
                                                 "updatedField": false,
                                                 "isPrimaryKey": true,
-                                                "lockType": "PartiallyLocked",
+                                                "lockType": "PKLocked",
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -9606,7 +9624,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                               onClick={[Function]}
                                             >
                                               <span
-                                                className="list__properties__checkbox--no-highlight"
+                                                className="list__properties__no-highlight"
                                                 onClick={[Function]}
                                               >
                                                 <FontAwesomeIcon
@@ -9682,7 +9700,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                               onClick={[Function]}
                                             >
                                               <span
-                                                className="list__properties__checkbox--no-highlight"
+                                                className="list__properties__no-highlight"
                                                 onClick={[Function]}
                                               >
                                                 <FontAwesomeIcon
@@ -9758,7 +9776,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                               onClick={[Function]}
                                             >
                                               <span
-                                                className="list__properties__checkbox--no-highlight"
+                                                className="list__properties__no-highlight"
                                                 onClick={[Function]}
                                               >
                                                 <FontAwesomeIcon
@@ -9920,7 +9938,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           },
                                           "updatedField": false,
                                           "isPrimaryKey": true,
-                                          "lockType": "PartiallyLocked",
+                                          "lockType": "PKLocked",
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -11167,7 +11185,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             },
             "updatedField": false,
             "isPrimaryKey": true,
-            "lockType": "PartiallyLocked",
+            "lockType": "PKLocked",
           },
           Immutable.Record {
             "conceptURI": null,
@@ -12298,7 +12316,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 },
                 "updatedField": false,
                 "isPrimaryKey": true,
-                "lockType": "PartiallyLocked",
+                "lockType": "PKLocked",
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -13979,7 +13997,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       },
                                                       "updatedField": false,
                                                       "isPrimaryKey": true,
-                                                      "lockType": "PartiallyLocked",
+                                                      "lockType": "PKLocked",
                                                     }
                                                   }
                                                   helpNoun="list"
@@ -14142,7 +14160,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   },
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": true,
-                                                                  "lockType": "PartiallyLocked",
+                                                                  "lockType": "PKLocked",
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -14302,7 +14320,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         <FormControl
                                                                           bsClass="form-control"
                                                                           componentClass="input"
-                                                                          disabled={true}
+                                                                          disabled={false}
                                                                           id="domainpropertiesrow-name-0-0"
                                                                           name="domainpropertiesrow-name"
                                                                           onChange={[Function]}
@@ -14311,7 +14329,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         >
                                                                           <input
                                                                             className="form-control"
-                                                                            disabled={true}
+                                                                            disabled={false}
                                                                             id="domainpropertiesrow-name-0-0"
                                                                             name="domainpropertiesrow-name"
                                                                             onChange={[Function]}
@@ -14347,28 +14365,9 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             value="int"
                                                                           >
                                                                             <option
-                                                                              key="0"
                                                                               value="int"
                                                                             >
                                                                               Integer
-                                                                            </option>
-                                                                            <option
-                                                                              key="1"
-                                                                              value="users"
-                                                                            >
-                                                                              User
-                                                                            </option>
-                                                                            <option
-                                                                              key="2"
-                                                                              value="lookup"
-                                                                            >
-                                                                              Lookup
-                                                                            </option>
-                                                                            <option
-                                                                              key="3"
-                                                                              value="sample"
-                                                                            >
-                                                                              Sample
                                                                             </option>
                                                                           </select>
                                                                         </FormControl>
@@ -14389,7 +14388,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             bsClass="checkbox"
                                                                             checked={true}
                                                                             className="domain-field-checkbox"
-                                                                            disabled={false}
+                                                                            disabled={true}
                                                                             id="domainpropertiesrow-required-0-0"
                                                                             inline={false}
                                                                             name="domainpropertiesrow-required"
@@ -14397,14 +14396,14 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             title=""
                                                                           >
                                                                             <div
-                                                                              className="domain-field-checkbox checkbox"
+                                                                              className="domain-field-checkbox checkbox disabled"
                                                                             >
                                                                               <label
                                                                                 title=""
                                                                               >
                                                                                 <input
                                                                                   checked={true}
-                                                                                  disabled={false}
+                                                                                  disabled={true}
                                                                                   id="domainpropertiesrow-required-0-0"
                                                                                   name="domainpropertiesrow-required"
                                                                                   onChange={[Function]}
@@ -14616,7 +14615,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     },
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": true,
-                                                                    "lockType": "PartiallyLocked",
+                                                                    "lockType": "PKLocked",
                                                                   }
                                                                 }
                                                                 index={0}
@@ -14648,7 +14647,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                           format={null}
                                                                           index={0}
                                                                           label="Integer Options"
-                                                                          lockType="PartiallyLocked"
+                                                                          lockType="PKLocked"
                                                                           onChange={[Function]}
                                                                         >
                                                                           <div>
@@ -15006,7 +15005,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               },
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": true,
-                                                                              "lockType": "PartiallyLocked",
+                                                                              "lockType": "PKLocked",
                                                                             }
                                                                           }
                                                                           index={0}
@@ -15506,7 +15505,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               },
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": true,
-                                                                              "lockType": "PartiallyLocked",
+                                                                              "lockType": "PKLocked",
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -15719,7 +15718,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -17078,7 +17077,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -19335,7 +19334,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -22714,7 +22713,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -25195,7 +25194,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -26554,7 +26553,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -31663,7 +31662,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -33022,7 +33021,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -35279,7 +35278,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -37536,7 +37535,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       />
                                                                                     </FormControl>
                                                                                     <div
-                                                                                      className="domain-text-label"
+                                                                                      className=""
                                                                                     >
                                                                                       Unlimited
                                                                                     </div>
@@ -40559,7 +40558,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                       <div
                                                                                         className="domain-field-label domain-no-wrap"
                                                                                       >
-                                                                                        Create Range Expression Validator
+                                                                                        Create Range Validator
                                                                                         <LabelHelpTip
                                                                                           body={[Function]}
                                                                                           customStyle={Object {}}
@@ -42938,7 +42937,7 @@ Array [
               className="margin-top row"
             >
               <div
-                className="col-lg-4 col-xs-3"
+                className="col-lg-2 col-xs-3"
               >
                 Name *
               </div>
@@ -42954,12 +42953,15 @@ Array [
                   value=""
                 />
               </div>
+              <div
+                className="col-lg-2"
+              />
             </div>
             <div
               className="margin-top row"
             >
               <div
-                className="col-lg-4 col-xs-3"
+                className="col-lg-2 col-xs-3"
               >
                 Description
               </div>
@@ -42973,6 +42975,9 @@ Array [
                   value=""
                 />
               </div>
+              <div
+                className="col-lg-2"
+              />
             </div>
           </div>
           <div
@@ -42990,7 +42995,7 @@ Array [
                 className="list__properties__checkbox-row"
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <svg
@@ -43022,7 +43027,7 @@ Array [
                 className="list__properties__checkbox-row"
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <svg
@@ -43054,7 +43059,7 @@ Array [
                 className="list__properties__checkbox-row"
               >
                 <span
-                  className="list__properties__checkbox--no-highlight"
+                  className="list__properties__no-highlight"
                   onClick={[Function]}
                 >
                   <svg

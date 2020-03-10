@@ -114,7 +114,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
 
         return (
             <div className={range ? '' : 'domain-validation-group'}>
-                <div className={'domain-field-label domain-no-wrap'}>{'Create ' + (range ? 'Range': 'Regular') + ' Expression Validator'}
+                <div className={'domain-field-label domain-no-wrap'}>{'Create ' + (range ? 'Range': 'Regular Expression') + ' Validator'}
                     <LabelHelpTip title={'Add ' + (range ? 'Range' : 'Regex') + ' Validator'} body={range ? this.getRangeValidatorHelpText : this.getRegexValidatorHelpText}/>
                 </div>
                 <div>

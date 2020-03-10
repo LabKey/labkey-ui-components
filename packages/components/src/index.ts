@@ -179,7 +179,7 @@ import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
-import { SelectInput } from './components/forms/input/SelectInput';
+import { SelectInput, SelectInputProps } from './components/forms/input/SelectInput';
 import { DatePickerInput } from './components/forms/input/DatePickerInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
@@ -368,6 +368,7 @@ export {
     BulkUpdateForm,
     LookupSelectInput,
     SelectInput,
+    SelectInputProps, // TODO this probably doesn't need to be exported, long-term.  Used by the <Select> element in Biologics, which may wnat to be moved here instead.
     DatePickerInput,
     QuerySelect,
     QuerySelectOwnProps,

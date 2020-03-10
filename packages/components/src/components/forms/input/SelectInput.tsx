@@ -100,7 +100,6 @@ export interface SelectInputProps extends DisableableInputProps {
     autoValue?: boolean
     backspaceRemoves?: boolean
     deleteRemoves?: boolean
-    cache?: boolean
     clearCacheOnChange?: boolean
     clearable?: boolean
     containerClass?: string
@@ -160,7 +159,6 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         allowCreate: false,
         autoload: true,
         autoValue: true,
-        cache: false,
         clearCacheOnChange: true,
         containerClass: 'form-group row',
         delimiter: DELIMITER,
@@ -172,7 +170,6 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         valueKey: 'value'
     }};
 
-    _cache = {};
     _id: string;
     change: boolean = false; // indicates if the initial value has been changed or not
 
@@ -193,6 +190,14 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     };
 
     componentWillReceiveProps(nextProps: SelectInputProps) {
+        // Issue 36478, Issue 38631: reset the reactSelect input cache object on prop change
+        // We need to do this fairly aggressively and this may not catch all cases, but this is the best
+        // bet yet.  It can happen, probably because of bad timing between loading and refreshing the display
+        // here, that the cache value for the key LOAD_ON_FOCUS (from QuerySelect) will get set to an empty
+        // list of options.  Once that is stashed in the ReactSelect cache, it's pretty much impossible to get
+        // rid of it through normal component update operations, so we do this surgery here.
+        this.refs.reactSelect._cache = {};
+
         if (!this.change && !equalValues(this.props.value, nextProps.value)) {
             if (nextProps.autoValue) { // This allows for "late-bound" value
                 this._setOptionsAndValue(initOptions(nextProps));
@@ -204,9 +209,6 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                 })
             }
         }
-
-        // Issue 36478: reset the select input cache object on prop change
-        this._cache = {};
 
         this.change = false;
     }
@@ -280,11 +282,11 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     }
 
     handleChange(selectedOptions) {
-        const { cache, clearCacheOnChange, name, onChange } = this.props;
+        const { clearCacheOnChange, name, onChange } = this.props;
 
         this.change = true;
 
-        if (cache !== false && clearCacheOnChange) {
+        if (clearCacheOnChange) {
             this.refs.reactSelect._cache = {};
         }
 
@@ -416,14 +418,12 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         const {
             addLabelText,
             autoload,
-            cache,
             backspaceRemoves,
             deleteRemoves,
             clearable,
             delimiter,
             disabled,
             filterOptions,
-            autoValue,
             ignoreCase,
             isLoading,
             labelKey,
@@ -478,7 +478,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
 
         if (this.isAsync()) {
             const asyncProps = Object.assign(selectProps, {
-                cache: cache !== false ? this._cache : false,
+                cache: false,  // Issue 38631 and Issue 36478 we say no to the cache so it will get cleared of all intermittent results.
                 loadOptions
             });
 

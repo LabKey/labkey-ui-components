@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBH
-*Released*: TBD
+### version 0.33.1
+*Released*: 10 March 2020
 * Issue 39819: List designer
     - Changed spacing between 
     - Phrasing update, "Create Range Validator" => "Create Range Expression Validator"

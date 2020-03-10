@@ -20,7 +20,7 @@ import {IParentAlias} from "./models";
 import {addDomainField} from "../actions";
 import {initSampleSetSelects,} from "../../samples/actions";
 import {SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from "../../../constants";
-import {fromJS, List, Map} from "immutable";
+import {fromJS, List, Map, OrderedMap} from "immutable";
 import {Domain} from "@labkey/api";
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
@@ -213,15 +213,52 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         this.setState(()=>({model:newModel}));
     };
 
+    updateAliasValue = (id:string, field: string, newValue: any): IParentAlias => {
+        const {model} = this.state;
+        const {parentAliases} = model;
+        return {
+            ...parentAliases.get(id),
+            isDupe: false,             //Clear error because of change
+            [field]: newValue,
+        } as IParentAlias;
+    };
+
     parentAliasChange = (id:string, field: string, newValue: any) => {
         const {model} = this.state;
         const {parentAliases} = model;
-        const changedAlias = {
-            ...parentAliases.get(id),
-            [field]: newValue,
-        };
+        const changedAlias = this.updateAliasValue(id, field, newValue);
 
         const newAliases = parentAliases.set(id, changedAlias);
+        const newModel = model.merge({parentAliases: newAliases}) as SampleTypeModel;
+        this.setState(() => ({model: newModel}));
+    };
+
+    updateDupes = (id: string):void => {
+        const {model} = this.state;
+        if (!model) {
+            return;
+        }
+
+        const {parentAliases} = model;
+        const dupes = model.getDuplicateAlias();
+        let newAliases = OrderedMap<string, IParentAlias>();
+        parentAliases.forEach((alias: IParentAlias) => {
+            const isDupe = dupes && dupes.has(alias.id);
+            let changedAlias = alias;
+            if (isDupe !== alias.isDupe) {
+                changedAlias = this.updateAliasValue(alias.id, 'isDupe', isDupe);
+            }
+
+            if (alias.id === id) {
+                changedAlias = {
+                    ...changedAlias,
+                    ignoreAliasError: false
+                };
+            }
+
+            newAliases = newAliases.set(alias.id, changedAlias);
+        });
+
         const newModel = model.merge({parentAliases: newAliases}) as SampleTypeModel;
         this.setState(() => ({model: newModel}));
     };
@@ -256,6 +293,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     updateModel={this.onFieldChange}
+                    updateDupeParentAliases={this.updateDupes}
                 />
             </>
         )
@@ -316,7 +354,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         return SampleTypeModel.isValid(this.state.model) && !invalidDomainField;
     };
 
-    onFinish = () => {
+    onFinish = (): void => {
         const { beforeFinish } = this.props;
         const { model } = this.state;
 
@@ -364,7 +402,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         this.props.onComplete(response);
     }
 
-    onFinishFailure(error: React.ReactNode) {
+    onFinishFailure(error: React.ReactNode): void {
         this.setState(() => ({
             error,
             submitting: false

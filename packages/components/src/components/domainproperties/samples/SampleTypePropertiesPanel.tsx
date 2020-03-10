@@ -21,6 +21,7 @@ interface OwnProps {
     onParentAliasChange: (id:string, field: string, newValue: any) => void
     onAddParentAlias: (id:string, newAlias: IParentAlias ) => void
     onRemoveParentAlias: (id:string) => void
+    updateDupeParentAliases?: (id:string) => void
 }
 
 //Splitting these out to clarify where they end-up
@@ -85,7 +86,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props> {
     };
 
     parentAliasChanges = (id:string, field: string, newValue: any): void => {
-        const {onParentAliasChange} = this.props;
+        const {onParentAliasChange,} = this.props;
         onParentAliasChange(id, field, newValue);
     };
 
@@ -99,6 +100,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props> {
             parentValue: undefined,
             ignoreAliasError: true,
             ignoreSelectError: true,
+            isDupe: false,
         };
 
         onAddParentAlias(newId, newParentAlias);
@@ -116,22 +118,24 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props> {
     };
 
     renderParentAliases = () => {
-        const {model, parentOptions} = this.props;
+        const {model, parentOptions, updateDupeParentAliases} = this.props;
         const {parentAliases} = model;
 
         if (!parentAliases || !parentOptions)
             return [];
 
-        return parentAliases.valueSeq().map((alias) =>
-            <SampleSetParentAliasRow
+        return parentAliases.valueSeq().map((alias:IParentAlias) => {
+            return (
+                <SampleSetParentAliasRow
                 key={alias.id}
                 id={alias.id}
                 parentAlias={alias}
                 parentOptions={parentOptions}
                 onAliasChange={this.parentAliasChanges}
                 onRemove={this.removeParentAlias}
-            />
-        );
+                updateDupeParentAliases={updateDupeParentAliases}
+            />);
+        });
     };
 
     removeParentAlias = (index: string): void => {

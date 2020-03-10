@@ -1,4 +1,4 @@
-import {fromJS, Map, Record} from "immutable";
+import {fromJS, Map, OrderedMap, Record, Set} from "immutable";
 import {SEVERITY_LEVEL_ERROR} from "../constants";
 import { DomainDesign, DomainDetails } from "../models";
 import { IParentOption } from "../../entities/models";
@@ -17,7 +17,7 @@ export class SampleTypeModel extends Record({
     name: string;
     nameExpression: string;
     description: string;
-    parentAliases?: Map<string, IParentAlias>;
+    parentAliases?: OrderedMap<string, IParentAlias>;
     importAliases?: Map<string, string>;
     domainId?: number;
     domain?: DomainDesign;
@@ -71,7 +71,7 @@ export class SampleTypeModel extends Record({
             return true;
 
         //return true if alias is null or blank; or if parentValue option is not set
-        return !alias.alias || alias.alias.trim() === '' || !alias.parentValue;
+        return !alias.alias || alias.alias.trim() === '' || !alias.parentValue || alias.isDupe;
     }
 
     hasValidProperties(): boolean {
@@ -82,6 +82,24 @@ export class SampleTypeModel extends Record({
             && !hasInvalidAliases
         );
     }
+
+    /**
+     * returns a Set of ids corresponding to the aliases that have duplicate alias values
+     */
+    getDuplicateAlias(): Set<string> {
+        const {parentAliases} = this;
+        let dupesAliases = Set<string>();
+        let dupeIds = Set<string>();
+
+        parentAliases.forEach((alias:IParentAlias) => {
+            if (dupesAliases.has(alias.alias))
+                dupeIds = dupeIds.add(alias.id);
+            else
+                dupesAliases = dupesAliases.add(alias.alias);
+        });
+
+        return dupeIds;
+    }
 }
 
 export interface IParentAlias {
@@ -90,4 +108,5 @@ export interface IParentAlias {
     parentValue: IParentOption;
     ignoreAliasError: boolean
     ignoreSelectError: boolean
+    isDupe: boolean
 }

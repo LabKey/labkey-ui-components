@@ -18,6 +18,7 @@ interface IParentAliasRow {
     parentOptions?: Array<IParentOption>
     onAliasChange: (id:string, alias:string, newValue: any) => void
     onRemove: (index: string) => void
+    updateDupeParentAliases?: (id:string) => void
 }
 
 export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
@@ -57,7 +58,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
     };
 
     onAliasBlur = (e: React.ChangeEvent<FormControl>): void => {
-        this.props.onAliasChange(this.props.id, 'ignoreAliasError', false);
+        this.props.updateDupeParentAliases(this.props.id);
     };
 
     onSelectBlur = () => {
@@ -69,7 +70,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
         if (!parentOptions)
             return null;
 
-        const {alias, parentValue, ignoreAliasError, ignoreSelectError} = parentAlias;
+        const {alias, parentValue, ignoreAliasError, ignoreSelectError, isDupe} = parentAlias;
 
         const aliasBlank = !alias || alias.trim().length === 0;
 
@@ -83,7 +84,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         canMouseOverTooltip={true}
                     />
                 </Col>
-                <Col xs={3} className={classNames({'has-error': !ignoreAliasError && aliasBlank})}>
+                <Col xs={3} className={classNames({'has-error': !ignoreAliasError && (aliasBlank || isDupe)})}>
                     <FormControl
                         ref = {this.nameInput}
                         name={"alias"}

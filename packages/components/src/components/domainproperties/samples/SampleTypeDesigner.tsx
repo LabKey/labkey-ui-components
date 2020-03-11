@@ -17,7 +17,7 @@ import {
 import DomainForm from "../DomainForm";
 import {IParentOption} from "../../entities/models";
 import {IParentAlias} from "./models";
-import {addDomainField} from "../actions";
+import {addDomainField, getDomainPanelStatus, getUpdatedVisitedPanelsList} from "../actions";
 import {initSampleSetSelects,} from "../../samples/actions";
 import {SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from "../../../constants";
 import {fromJS, List, Map, OrderedMap} from "immutable";
@@ -38,6 +38,9 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
     value: "{{this_sample_set}}"
 } as IParentOption;
+
+const PROPERTIES_PANEL_INDEX: number = 0;
+const DOMAIN_PANEL_INDEX: number = 1;
 
 export const SAMPLE_SET_IMPORT_PREFIX :string = 'materialInputs/';
 export const DATA_CLASS_IMPORT_PREFIX :string = 'dataInputs/';
@@ -63,18 +66,25 @@ interface Props {
     appPropertiesOnly?: boolean,
 }
 
-interface State {
+interface OwnState {
     model: SampleTypeModel
     parentOptions: Array<IParentOption>
     invalidDomainField: string
-
-    activePanelIndex: number
-
     submitting: boolean
-    currentPanelIndex: number
 
     error: React.ReactNode
 }
+
+//TODO Move this somewhere it can be shared
+interface PanelledPageState {
+    visitedPanels?: List<number>,
+    validatePanel?: number,
+    firstState?: boolean,
+    currentPanelIndex?: number
+    activePanelIndex?: number
+}
+
+type State = OwnState & PanelledPageState
 
 export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     private _dirty = false;
@@ -99,12 +109,16 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
 
         this.state = {
             submitting: false,
-            currentPanelIndex: 0,
             model,
             invalidDomainField: undefined,
-            activePanelIndex: 0,
             parentOptions: undefined,
             error: undefined,
+
+            visitedPanels: List<number>(),
+            validatePanel: undefined,
+            firstState: true,
+            currentPanelIndex: PROPERTIES_PANEL_INDEX,
+            activePanelIndex: PROPERTIES_PANEL_INDEX,
         };
     }
 
@@ -278,11 +292,40 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         this.setState(() => ({model: newModel}));
     };
 
+    //TODO REVIEW recommendations on where to put this that is shareable?
+    onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
+        const { visitedPanels, currentPanelIndex } = this.state;
+        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
+
+        if (!collapsed) {
+            this.setState(
+                () => ({
+                    visitedPanels: updatedVisitedPanels,
+                    currentPanelIndex: index,
+                    firstState: false,
+                    validatePanel: currentPanelIndex,
+                }), callback());
+        } else {
+            if (currentPanelIndex === index) {
+                this.setState(
+                    () => ({
+                        visitedPanels: updatedVisitedPanels,
+                        currentPanelIndex: undefined,
+                        firstState: false,
+                        validatePanel: currentPanelIndex,
+                    }), callback());
+            } else {
+                callback();
+            }
+        }
+    };
+
     renderDetailsPanel = () => {
-        const {noun, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
-        const {model, parentOptions,} = this.state;
+        const {noun, nameExpressionInfoUrl, nameExpressionPlaceholder, useTheme } = this.props;
+        const {model, parentOptions, validatePanel, currentPanelIndex, visitedPanels, firstState} = this.state;
+
         return (
-            <>
+            <>Sample Type
                 <SampleTypePropertiesPanel
                     model={model}
                     parentOptions={parentOptions}
@@ -294,6 +337,14 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     updateModel={this.onFieldChange}
                     updateDupeParentAliases={this.updateDupes}
+                    useTheme={useTheme}
+
+                    collapsible={true}
+                    onToggle={(collapsed, callback) => this.onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
+                    panelStatus={model.isNew() ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
+                    controlledCollapse={true}
+                    initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
+                    validate={validatePanel === PROPERTIES_PANEL_INDEX}
                 />
             </>
         )
@@ -327,22 +378,28 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
 
     renderDomainPanel = () => {
         const {noun, containerTop, useTheme, appPropertiesOnly} = this.props;
-        const {model} = this.state;
+        const {model, currentPanelIndex, visitedPanels, firstState, validatePanel} = this.state;
         const {domain} = model;
 
         return (
             <>
                 {domain &&
                 <DomainForm
-                        domain={domain}
-                        onChange={this.domainChangeHandler}
-                        showHeader={true}
-                        initCollapsed={true}
-                        collapsible={true}
-                        helpNoun={noun.toLowerCase()}
-                        useTheme={useTheme}
-                        appPropertiesOnly={appPropertiesOnly}
-                        containerTop={containerTop}
+                    domain={domain}
+                    onChange={this.domainChangeHandler}
+                    showHeader={true}
+                    helpNoun={noun.toLowerCase()}
+                    useTheme={useTheme}
+                    appPropertiesOnly={appPropertiesOnly}
+                    containerTop={containerTop}
+
+                    collapsible={true}
+                    onToggle={(collapsed, callback) => this.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback)}
+                    panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
+                    controlledCollapse={true}
+                    initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
+                    validate={validatePanel === DOMAIN_PANEL_INDEX}
+
                 />
                 }
             </>

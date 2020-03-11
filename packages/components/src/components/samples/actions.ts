@@ -57,16 +57,6 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
             reject(errorResponse);
         });
     });
-
-
-
-    // selectRows({
-    //     schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-    //     queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-    //     columns: 'LSID, Name, RowId'
-    // }).then(results => {
-    //
-    // });
 }
 
 export function getSampleSet(config: IEntityTypeDetails): Promise<any> {

@@ -2,8 +2,19 @@
 
 exports[`<SampleTypePropertiesPanel/> default props 1`] = `
 <div
-  className="panel panel-default"
+  className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
+  <div
+    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    id="sample-type-properties-hdr"
+    onClick={[Function]}
+  >
+    <span
+      className="domain-panel-title"
+    >
+      Properties
+    </span>
+  </div>
   <div
     className="panel-body"
   >
@@ -223,8 +234,19 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
 
 exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
 <div
-  className="panel panel-default"
+  className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
+  <div
+    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    id="sample-type-properties-hdr"
+    onClick={[Function]}
+  >
+    <span
+      className="domain-panel-title"
+    >
+      Properties
+    </span>
+  </div>
   <div
     className="panel-body"
   >

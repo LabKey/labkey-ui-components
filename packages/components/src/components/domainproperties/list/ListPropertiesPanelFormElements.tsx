@@ -26,7 +26,7 @@ export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
         const value = (model.name === null) ? "" : model.name;
         return(
             <Row className={'margin-top'}>
-                <Col xs={3} lg={4}>
+                <Col xs={3} lg={2}>
                     Name *
                 </Col>
 
@@ -39,6 +39,8 @@ export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
                         onChange={onInputChange}
                     />
                 </Col>
+
+                <Col lg={2}/>
             </Row>
         );
     }
@@ -51,7 +53,7 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
 
         return(
             <Row className={'margin-top'}>
-                <Col xs={3} lg={4}>
+                <Col xs={3} lg={2}>
                     Description
                 </Col>
 
@@ -63,6 +65,8 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
                         onChange={onInputChange}
                     />
                 </Col>
+
+                <Col lg={2}/>
             </Row>
         );
     }
@@ -98,7 +102,7 @@ export class CheckBox extends React.PureComponent<CheckBoxProps> {
         );
 
         return (
-            <span className='list__properties__checkbox--no-highlight' onClick={onClick}>
+            <span className='list__properties__no-highlight' onClick={onClick}>
                 {checkedOrNot}
             </span>
         );

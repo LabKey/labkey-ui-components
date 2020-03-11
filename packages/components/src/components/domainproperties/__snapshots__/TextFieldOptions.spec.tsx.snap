@@ -261,7 +261,7 @@ exports[`TextFieldOptions Text data type 1`] = `
               />
             </FormControl>
             <span
-              className="domain-text-options-length domain-field-float-left domain-text-label"
+              className="domain-text-options-length domain-field-float-left"
             >
               No longer than X characters
             </span>

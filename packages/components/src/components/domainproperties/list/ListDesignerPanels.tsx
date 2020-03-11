@@ -3,7 +3,7 @@ import { Alert, Button } from "react-bootstrap";
 import { List } from "immutable";
 import { ActionURL } from "@labkey/api";
 import { ListPropertiesPanel } from "./ListPropertiesPanel";
-import { DomainDesign, IAppDomainHeader } from "../models";
+import {DomainDesign, DomainField, IAppDomainHeader} from "../models";
 import DomainForm from "../DomainForm";
 import {
     getDomainBottomErrorMessage,

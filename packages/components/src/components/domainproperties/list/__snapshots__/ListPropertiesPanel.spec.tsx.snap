@@ -77,7 +77,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
           className="margin-top row"
         >
           <div
-            className="col-lg-4 col-xs-3"
+            className="col-lg-2 col-xs-3"
           >
             Name *
           </div>
@@ -93,12 +93,15 @@ exports[`ListPropertiesPanel existing list 1`] = `
               value="NIMHDemographics"
             />
           </div>
+          <div
+            className="col-lg-2"
+          />
         </div>
         <div
           className="margin-top row"
         >
           <div
-            className="col-lg-4 col-xs-3"
+            className="col-lg-2 col-xs-3"
           >
             Description
           </div>
@@ -112,6 +115,9 @@ exports[`ListPropertiesPanel existing list 1`] = `
               value=""
             />
           </div>
+          <div
+            className="col-lg-2"
+          />
         </div>
       </div>
       <div
@@ -129,7 +135,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
             className="list__properties__checkbox-row"
           >
             <span
-              className="list__properties__checkbox--no-highlight"
+              className="list__properties__no-highlight"
               onClick={[Function]}
             >
               <svg
@@ -161,7 +167,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
             className="list__properties__checkbox-row"
           >
             <span
-              className="list__properties__checkbox--no-highlight"
+              className="list__properties__no-highlight"
               onClick={[Function]}
             >
               <svg
@@ -193,7 +199,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
             className="list__properties__checkbox-row"
           >
             <span
-              className="list__properties__checkbox--no-highlight"
+              className="list__properties__no-highlight"
               onClick={[Function]}
             >
               <svg
@@ -323,7 +329,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
           className="margin-top row"
         >
           <div
-            className="col-lg-4 col-xs-3"
+            className="col-lg-2 col-xs-3"
           >
             Name *
           </div>
@@ -339,12 +345,15 @@ exports[`ListPropertiesPanel list with error 1`] = `
               value="NIMHDemographics"
             />
           </div>
+          <div
+            className="col-lg-2"
+          />
         </div>
         <div
           className="margin-top row"
         >
           <div
-            className="col-lg-4 col-xs-3"
+            className="col-lg-2 col-xs-3"
           >
             Description
           </div>
@@ -358,6 +367,9 @@ exports[`ListPropertiesPanel list with error 1`] = `
               value=""
             />
           </div>
+          <div
+            className="col-lg-2"
+          />
         </div>
       </div>
       <div
@@ -375,7 +387,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
             className="list__properties__checkbox-row"
           >
             <span
-              className="list__properties__checkbox--no-highlight"
+              className="list__properties__no-highlight"
               onClick={[Function]}
             >
               <svg
@@ -407,7 +419,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
             className="list__properties__checkbox-row"
           >
             <span
-              className="list__properties__checkbox--no-highlight"
+              className="list__properties__no-highlight"
               onClick={[Function]}
             >
               <svg
@@ -439,7 +451,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
             className="list__properties__checkbox-row"
           >
             <span
-              className="list__properties__checkbox--no-highlight"
+              className="list__properties__no-highlight"
               onClick={[Function]}
             >
               <svg
@@ -542,7 +554,7 @@ exports[`ListPropertiesPanel new list 1`] = `
           className="margin-top row"
         >
           <div
-            className="col-lg-4 col-xs-3"
+            className="col-lg-2 col-xs-3"
           >
             Name *
           </div>
@@ -558,12 +570,15 @@ exports[`ListPropertiesPanel new list 1`] = `
               value=""
             />
           </div>
+          <div
+            className="col-lg-2"
+          />
         </div>
         <div
           className="margin-top row"
         >
           <div
-            className="col-lg-4 col-xs-3"
+            className="col-lg-2 col-xs-3"
           >
             Description
           </div>
@@ -577,6 +592,9 @@ exports[`ListPropertiesPanel new list 1`] = `
               value=""
             />
           </div>
+          <div
+            className="col-lg-2"
+          />
         </div>
       </div>
       <div
@@ -594,7 +612,7 @@ exports[`ListPropertiesPanel new list 1`] = `
             className="list__properties__checkbox-row"
           >
             <span
-              className="list__properties__checkbox--no-highlight"
+              className="list__properties__no-highlight"
               onClick={[Function]}
             >
               <svg
@@ -626,7 +644,7 @@ exports[`ListPropertiesPanel new list 1`] = `
             className="list__properties__checkbox-row"
           >
             <span
-              className="list__properties__checkbox--no-highlight"
+              className="list__properties__no-highlight"
               onClick={[Function]}
             >
               <svg
@@ -658,7 +676,7 @@ exports[`ListPropertiesPanel new list 1`] = `
             className="list__properties__checkbox-row"
           >
             <span
-              className="list__properties__checkbox--no-highlight"
+              className="list__properties__no-highlight"
               onClick={[Function]}
             >
               <svg

@@ -15,7 +15,7 @@
  */
 import { Record } from "immutable";
 import { SEVERITY_LEVEL_ERROR } from "../constants";
-import { DomainDesign } from "../models";
+import {DomainDesign, DomainField} from "../models";
 
 export interface AdvancedSettingsForm {
     titleColumn?: string;
@@ -103,6 +103,16 @@ export class ListModel extends Record({
             return new ListModel({...defaultSettings, domain});
         } else {
             let domain = DomainDesign.create(raw.domainDesign);
+
+            // Issue39818: Set the key field of an existing list to be PKLocked.
+            const fields = domain.fields;
+            const pkField = fields.findIndex(i => (i.isPrimaryKey));
+            if (pkField > -1) {
+                const pkFieldLocked = fields.get(pkField).merge({ lockType:"PKLocked" }) as DomainField;
+                const updatedFields = fields.set(pkField, pkFieldLocked);
+                domain = domain.set('fields', updatedFields) as DomainDesign;
+            }
+
             return new ListModel({...raw.options, domain});
         }
     }

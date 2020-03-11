@@ -13,6 +13,10 @@
     & > .checkbox {
         margin: 3px;
     }
+
+    & input[type='checkbox'] {
+        margin-top: 15%;
+    }
 }
 
 .filetree-container {

@@ -105,7 +105,13 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
         const isValid = updatedModel && updatedModel.hasValidProperties();
-        this.setState(() => ({isValid}), () => onChange(updatedModel));
+        this.setState(() => ({isValid}),
+            () => {
+                // Issue 39918: only consider the model changed if there is a newModel param
+                if (newModel) {
+                    onChange(updatedModel)
+                }
+            });
     }
 
     toggleLocalPanel = (evt: any): void => {

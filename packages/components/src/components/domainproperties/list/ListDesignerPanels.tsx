@@ -90,13 +90,14 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
         });
     };
 
-    onDomainChange = (domain: DomainDesign): void => {
+    onDomainChange = (domain: DomainDesign, dirty: boolean) => {
         const { onChange } = this.props;
 
         this.setState((state) => ({
             model: state.model.merge({domain}) as ListModel
         }), () => {
-            if (onChange) {
+            // Issue 39918: use the dirty property that DomainForm onChange passes
+            if (onChange && dirty) {
                 onChange(this.state.model);
             }
         });

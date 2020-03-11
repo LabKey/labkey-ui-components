@@ -301,13 +301,13 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                         <>
                             {this.renderNewParentSection()}
                             {/*{this.renderAddParentButton()}*/}
-                            {this.renderEditControls()}
                         </> :
                         <>
                             {this.renderParentData()}
                         </>
                     }
                 </Panel.Body>
+                {editing && this.renderEditControls()}
             </Panel>
         )
     }

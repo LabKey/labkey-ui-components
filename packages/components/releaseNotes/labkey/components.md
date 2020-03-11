@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 only
 * Fix problem with QuerySelect and SelectInput not playing nicely together when you want to
 select a schema for the QuerySelect to use.
+* Refine and simplify styling for buttons on DetailEditing to work with sibling panels that sit below it
 
 
 ### version 0.33.0

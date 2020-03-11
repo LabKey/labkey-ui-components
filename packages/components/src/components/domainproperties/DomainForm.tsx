@@ -129,7 +129,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         appPropertiesOnly: false,
         domainIndex: 0,
         successBsStyle: 'success',
-        domainFormDisplayOptions: DomainFormDisplayOptions.defaultProps
+        domainFormDisplayOptions: DomainFormDisplayOptions.defaultProps // add configurations options to DomainForm through this object
     };
 
     constructor(props) {

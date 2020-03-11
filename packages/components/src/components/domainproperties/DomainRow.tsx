@@ -158,6 +158,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             period = '. ';
         }
 
+        if (field.wrappedColumnName) {
+            details.push(period + 'Wrapped column - ' + field.wrappedColumnName);
+        }
+
         if (field.isPrimaryKey) {
             details.push(period + 'Primary Key');
             period = '. ';

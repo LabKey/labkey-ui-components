@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
-import { ActionURL, Filter, Utils } from '@labkey/api';
+import { ActionURL, Filter, Query, Utils } from '@labkey/api';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
 import {
-    decodePart,
     getSchemaQuery,
     intersect,
     resolveKey,
@@ -445,7 +444,7 @@ export interface IQueryGridModel {
     baseFilters?: List<Filter.IFilter>
     bindURL?: boolean
     containerPath?: string
-    containerFilter?: string // TODO why can't I use the @labkey/api enum def of containerFilter?
+    containerFilter?: Query.ContainerFilter,
     data?: Map<any, Map<string, any>>
     dataIds?: List<any>
     displayColumns?: List<string>
@@ -568,7 +567,7 @@ export class QueryGridModel extends Record({
     baseFilters: List<Filter.IFilter>;
     bindURL: boolean;
     containerPath?: string;
-    containerFilter?: string;
+    containerFilter?: Query.ContainerFilter;
     data: Map<any, Map<string, any>>;
     dataIds: List<any>;
     displayColumns: List<string>;

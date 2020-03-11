@@ -383,7 +383,7 @@ export class QueryColumn extends Record({
     }
 
     isLookup(): boolean {
-        return this.lookup !== undefined;
+        return this.lookup !== undefined && this.lookup.isPublic;
     }
 
     isSampleLookup(): boolean {

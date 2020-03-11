@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 39911: EditableGrid issue with pasting values into a cell that has a lookup that is not public
+
 ### version 0.33.3
 *Released*: 10 March 2020
 * Issue 39817: Don't show RegEx validator options for non-string fields
@@ -12,9 +16,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.33.1
 *Released*: 10 March 2020
 * Issue 39819: List designer
-    - Changed spacing between 
+    - Changed spacing between
     - Phrasing update, "Create Range Validator" => "Create Range Expression Validator"
-    - Updated caret and checkbox expand + collapse behavior for Advanced Settings' Search Indexing Options 
+    - Updated caret and checkbox expand + collapse behavior for Advanced Settings' Search Indexing Options
     - Phrasing update, "Field used for display title" => "Default display field"
     - Phrasing update, "Discussion links" => "Discussion Threads"
     - Change color for string field options' "Unlimited" and "No longer than X characters" options so that they don't look disabled.

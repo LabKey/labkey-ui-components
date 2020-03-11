@@ -146,24 +146,22 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         const { canSubmit } = this.state;
 
         return (
-            <>
-                <div className="pull-left bottom-spacing">
-                    <Button
-                        onClick={this.onCancel}>
-                        {cancelText}
-                    </Button>
-                </div>
-                <div className="btn-group pull-right">
-                    <Button
-                        bsStyle={"success"}
-                        type="submit"
-                        disabled={!canSubmit}
-                        onClick={this.onSubmit}
-                    >
-                        {submitText}
-                    </Button>
-                </div>
-            </>
+            <div className="btn-group full-width bottom-spacing">
+                <Button
+                    className="pull-left"
+                    onClick={this.onCancel}>
+                    {cancelText}
+                </Button>
+                <Button
+                    className="pull-right"
+                    bsStyle={"success"}
+                    type="submit"
+                    disabled={!canSubmit}
+                    onClick={this.onSubmit}
+                >
+                    {submitText}
+                </Button>
+            </div>
         )
     }
 

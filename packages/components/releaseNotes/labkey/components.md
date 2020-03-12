@@ -1,9 +1,33 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.33.0-fb-queryMetadataEditor-0.4
+### version 0.35.0-fb-queryMetadataEditor-0.1
 *Released*: TBD
 * Item 6803: Added support for queryMetadataEditor and domainFormDisplayOptions object to show/hide DomainForm components
+
+### version 0.34.0
+*Released*: 11 March 2020
+* Use Query.ContainerFilter enum as provided by @labkey/api
+
+### version 0.33.3
+*Released*: 10 March 2020
+* Issue 39817: Don't show RegEx validator options for non-string fields
+
+### version 0.33.2
+*Released*: 10 March 2020
+* Issue 39818: List designer PK fields should be shown as Required upon load
+
+### version 0.33.1
+*Released*: 10 March 2020
+* Issue 39819: List designer
+    - Changed spacing between
+    - Phrasing update, "Create Range Validator" => "Create Range Expression Validator"
+    - Updated caret and checkbox expand + collapse behavior for Advanced Settings' Search Indexing Options
+    - Phrasing update, "Field used for display title" => "Default display field"
+    - Phrasing update, "Discussion links" => "Discussion Threads"
+    - Change color for string field options' "Unlimited" and "No longer than X characters" options so that they don't look disabled.
+    - Use title-case for Advanced List Settings' titles instead of sentence-case
+* Issue 39877: List designer: max text length options should not be visible for text key field of list
 
 ### version 0.33.0
 *Released*: 5 March 2020

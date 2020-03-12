@@ -45,14 +45,16 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
         const { field, index, onChange, onMultiChange, domainIndex, domainFormDisplayOptions } = this.props;
 
         switch(field.dataType.name) {
-            case 'string': {
+            case 'string':
                 if (domainFormDisplayOptions && domainFormDisplayOptions.showTextOptions) {
-                    return <TextFieldOptions index={index} domainIndex={domainIndex} label='Text Options' scale={field.scale} onChange={onChange} lockType={field.lockType}/>;
+                    if (field.isPrimaryKey) // Issue39877: Max text length options should not be visible for text key field of list
+                        return;
+                    return <TextFieldOptions index={index} domainIndex={domainIndex} label='Text Options'
+                                             scale={field.scale} onChange={onChange} lockType={field.lockType}/>;
                 }
                 else {
                     return null;
                 }
-            }
             case 'flag':
                 return <TextFieldOptions index={index} domainIndex={domainIndex} label='Flag Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'multiLine':

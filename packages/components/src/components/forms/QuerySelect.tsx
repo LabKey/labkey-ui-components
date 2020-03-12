@@ -303,6 +303,9 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 initiallyDisabled: initiallyDisabled,
                 disabled: true,
                 formsy: this.props.formsy,
+                containerClass: this.props.containerClass,
+                inputClass: this.props.inputClass,
+                labelClass: this.props.labelClass,
                 isLoading: false,
                 label,
                 name: this.props.name || this.props.componentId + '-error',
@@ -343,6 +346,8 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
             const inputProps = {
                 allowDisable: allowDisable,
                 containerClass: this.props.containerClass,
+                inputClass: this.props.inputClass,
+                labelClass: this.props.labelClass,
                 description: description,
                 initiallyDisabled: initiallyDisabled,
                 disabled: true,

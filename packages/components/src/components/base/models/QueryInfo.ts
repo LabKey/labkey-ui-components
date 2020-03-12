@@ -206,7 +206,18 @@ export class QueryInfo extends Record({
         return List<QueryColumn>();
     }
 
+    getAllColumns(viewName?: string, omittedColumns?: List<string>): List<QueryColumn> {
+        // initialReduction is getDisplayColumns() because they include custom metadata from the view, like alternate
+        // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for
+        // additional context.
+        return List<QueryColumn>(this.columns.values()).reduce((result, rawColumn) => {
+            if(!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
+                return result.push(rawColumn);
+            }
 
+            return result;
+        }, this.getDisplayColumns(viewName, omittedColumns));
+    }
 
     getInsertColumns(): List<QueryColumn> {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set

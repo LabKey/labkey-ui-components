@@ -342,6 +342,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
             // even while QuerySelects are being initialized
             const inputProps = {
                 allowDisable: allowDisable,
+                containerClass: this.props.containerClass,
                 description: description,
                 initiallyDisabled: initiallyDisabled,
                 disabled: true,

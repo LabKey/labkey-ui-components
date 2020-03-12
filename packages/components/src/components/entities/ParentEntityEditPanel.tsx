@@ -4,14 +4,12 @@ import {
     AddEntityButton,
     capitalizeFirstChar,
     EntityDataType,
+    gridIdInvalidate,
     gridInvalidate,
     LoadingSpinner,
     naturalSort,
     QueryGridModel,
-    QuerySelect,
     resolveErrorMessage,
-    SchemaQuery,
-    SelectInput,
     updateRows
 } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
@@ -19,7 +17,6 @@ import { getEntityTypeOptions } from './actions';
 import { List, Map } from 'immutable';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
-import { DELIMITER } from '../forms/input/SelectInput';
 
 interface Props {
     canUpdate: boolean
@@ -35,7 +32,6 @@ interface Props {
 interface State {
     editing: boolean
     error: React.ReactNode
-    canSubmit: boolean
     loading: boolean
     parentTypeOptions: List<IEntityTypeOption>
     chosenValue: string | Array<any>
@@ -55,7 +51,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         this.state = {
             editing: false,
             error: undefined,
-            canSubmit: false,
             loading: true,
             parentTypeOptions: undefined,
             chosenValue: undefined,
@@ -76,7 +71,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     loading: false,
                     parentTypeOptions,
                     currentParents,
-                    canSubmit: !currentParents.isEmpty()
                 }));
             }
         )
@@ -86,10 +80,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         return !this.state.currentParents.isEmpty()
     }
 
-    // IParentOption has query and schema along with label and value
-    //   label, lsid, rowid, value, query, and schema (where label, value, and query are all the same, essentially)
-    // IEntityTypeOption has lsid and rowId along with label and value
-    //   label, value, lsid, rowId
     getInitialParentChoices(parentTypeOptions: List<IEntityTypeOption>) : List<EntityChoice> {
         let parentValuesByType = Map<string, EntityChoice>();
 
@@ -115,11 +105,12 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                             if (!parentValuesByType.has(typeOption.query)) {
                                 parentValuesByType = parentValuesByType.set(typeOption.query, {
                                     type: typeOption,
+                                    ids: [],
                                     value: []
                                 })
                             }
                             let updatedChoice = parentValuesByType.get(typeOption.query);
-                            updatedChoice.value.push(inputs.getIn([index, 'value']));
+                            updatedChoice.ids.push(inputs.getIn([index, 'value']));
                             parentValuesByType = parentValuesByType.set(typeOption.query, updatedChoice)
                         }
                     });
@@ -134,20 +125,18 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         this.setState((state) => ({editing: !state.editing}))
     };
 
-    changeEntityType(fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index): void  {
+    changeEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index): void  => {
         this.setState((state) => ({
-            currentParents: state.currentParents.set(index, {type: selectedOption, value: []}),
-            canSubmit: false,
+            currentParents: state.currentParents.set(index, {type: selectedOption, values: [], ids: []}),
             chosenValue: undefined
         }));
     };
 
-    onParentValueChange (name: string, value: string | Array<any>, index: number) {
+    onParentValueChange = (name: string, value: string | Array<any>, index: number) => {
         this.setState((state) => {
                 let newChoice = state.currentParents.get(index);
-                newChoice.value = Array.isArray(value) ? value : [value];
+                newChoice.values =  Array.isArray(value) ? value : (value === undefined ? [] : [value]);
                 return {
-                    canSubmit: value !== undefined,
                     currentParents: state.currentParents.set(index, newChoice),
                     chosenValue: value
                 };
@@ -168,9 +157,9 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         const schemaQuery = queryInfo.schemaQuery;
         let updatedValues = {};
         currentParents.forEach((parentChoice) => {
-            // Label may seem wrong here as, but it is the same as query when extracted from the original query to get
+            // Label may seem wrong here, but it is the same as query when extracted from the original query to get
             // the entity types.
-            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value.join(';');
+            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.values.join(';');
         });
 
         queryInfo.getPkCols().forEach((pkCol) => {
@@ -189,6 +178,9 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             rows: [updatedValues]
         }).then(() => {
             gridInvalidate(childModel); // TODO more invalidation required here
+            currentParents.forEach((parentChoice) => {
+                gridIdInvalidate('parent-data-' + parentChoice.type.label);
+            });
             this.setState(() => ({editing: false}));
         }).catch((error) => {
             console.error(error);
@@ -198,9 +190,12 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         });
     };
 
+    canSubmit() {
+        return this.state.currentParents.find((parent) => parent.values.length > 0);
+    }
+
     renderEditControls() {
         const { cancelText, submitText } = this.props;
-        const { canSubmit } = this.state;
 
         return (
             <div className="full-width bottom-spacing">
@@ -214,7 +209,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     className="pull-right"
                     bsStyle={"success"}
                     type="submit"
-                    disabled={!canSubmit}
+                    disabled={!this.canSubmit()}
                     onClick={this.onSubmit}
                 >
                     {submitText}
@@ -223,71 +218,25 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         )
     }
 
-    // FIXME something not quite right here with the QuerySelect values. Using "Name" as the valueColumn
-    // seems necessary to get distinct values in the QuerySelect, but using LSID seems necessary
-    // to get the initial values to show up.
-    renderParentSelection(entityChoice: EntityChoice, index: number) {
-        const { parentDataType } = this.props;
-        const typeName = entityChoice.type ? entityChoice.type.label : undefined;
-        const parentSchemaQuery = typeName ? SchemaQuery.create(this.props.parentDataType.instanceSchemaName, typeName) : undefined;
-        const lcTypeName = typeName ? typeName.toLowerCase() : undefined;
-
-        return (
-            <div className={'bottom-spacing'} key={lcTypeName}>
-                <SelectInput
-                    formsy={false}
-                    inputClass="col-sm-6"
-                    label={parentDataType.typeNounSingular}
-                    labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                    name={"parentEntityType" + index}
-                    placeholder={'Select a ' + parentDataType.typeNounSingular + ' ...'}
-                    onChange={(fieldName, formName, selectedOption) => this.changeEntityType(fieldName, formName, selectedOption, index)}
-                    options={this.state.parentTypeOptions.toArray()}
-                    required
-                    value={lcTypeName}
-                />
-                {lcTypeName && (
-                    <QuerySelect
-                        componentId={"parentEntityValue_" + lcTypeName} // important that this key off of the schemaQuery or it won't update when the SelectInput chages
-                        containerClass="row"
-                        disabled={lcTypeName === undefined}
-                        formsy={false}
-                        label={capitalizeFirstChar(parentDataType.nounSingular) + " ID"}
-                        inputClass="col-sm-6"
-                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                        name={lcTypeName + "_value"}
-                        onQSChange={(name: string, value: string | Array<any>) => this.onParentValueChange(name, value, index)}
-                        preLoad
-                        previewOptions
-                        multiple
-                        schemaQuery={parentSchemaQuery}
-                        showLabel={true}
-                        valueColumn="Name"
-                        showLoading={false}
-                        loadOnChange={false}
-                        value={entityChoice.value.join(DELIMITER)}
-                    />
-                )}
-            </div>
-        )
-    }
-
-    renderEditableParents() {
-        return this.state.currentParents.map((entityChoice, index) => {
-            return this.renderParentSelection(entityChoice, index);
-        }).toArray();
-    }
-
     renderSingleParentPanels() {
         const { parentDataType } = this.props;
 
         return this.state.currentParents.map((choice, index) => (
-            <SingleParentEntityPanel
-                key={choice.type.label}
-                parentDataType={parentDataType}
-                parentTypeQueryName={choice.type.label}
-                parentLSIDs={choice.value}
-            />
+            <>
+                {this.state.editing && <hr/>}
+                <SingleParentEntityPanel
+                    key={choice.type.label}
+                    parentDataType={parentDataType}
+                    parentTypeOptions={this.state.parentTypeOptions}
+                    parentTypeQueryName={choice.type.label}
+                    parentLSIDs={choice.ids}
+                    index={index}
+                    editing={this.state.editing}
+                    onChangeParentType={this.changeEntityType}
+                    onChangeParentValue={this.onParentValueChange}
+                />
+            </>
+
         )).toArray();
     }
 
@@ -301,13 +250,14 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                <SingleParentEntityPanel
                    parentDataType={parentDataType}
                    childNounSingular={childNounSingular}
+                   index={0}
                />
             )
         }
     }
 
     onAddParent = () => {
-        console.log("Adding more parents not currently implemented.");
+        console.warn("Adding more parents not currently implemented.");
     };
 
     renderAddParentButton() {
@@ -339,16 +289,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     <Panel.Heading>{heading}</Panel.Heading>
                     <Panel.Body>
                         <div className={'bottom-spacing'}><b>{capitalizeFirstChar(parentDataType.nounPlural)} for {childName}</b></div>
-                        {loading ? <LoadingSpinner/> :
-                            editing ?
-                            <>
-                                {this.renderEditableParents()}
-                                {/*{this.renderAddParentButton()}*/}
-                            </> :
-                            <>
-                                {this.renderParentData()}
-                            </>
-                        }
+                        {loading ? <LoadingSpinner/> : this.renderParentData()}
                     </Panel.Body>
                 </Panel>
                 {editing && this.renderEditControls()}

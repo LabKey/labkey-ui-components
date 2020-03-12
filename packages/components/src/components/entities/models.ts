@@ -158,7 +158,8 @@ export class EntityTypeOption implements IEntityTypeOption {
 // represents an entity type (e.g., Sample Set 1) and the values chosen of that type (e.g., S-1, S-2)
 export interface EntityChoice {
     type: IEntityTypeOption
-    value: Array<string>
+    ids: Array<string>
+    value: string
 }
 
 interface MaterialOutput {

@@ -21,6 +21,7 @@ import {
     importGeneralAssayRun,
     inferDomainFromFile,
 } from './components/base/actions';
+import { QueryInfo } from './components/base/models/QueryInfo';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -35,7 +36,6 @@ import {
     MessageLevel,
     QueryColumn,
     QueryGridModel,
-    QueryInfo,
     QueryInfoStatus,
     QueryLookup,
     SchemaDetails,

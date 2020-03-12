@@ -41,13 +41,13 @@ import {
 } from './models';
 import { Progress } from '../base/Progress';
 import { AppURL } from '../../url/AppURL';
+import { QueryInfo } from '../base/models/QueryInfo';
 import {
     IGridLoader,
     IGridResponse,
     insertColumnFilter,
     QueryColumn,
     QueryGridModel,
-    QueryInfo,
     SchemaQuery,
 } from '../base/models/model';
 import { capitalizeFirstChar, } from '../../util/utils';

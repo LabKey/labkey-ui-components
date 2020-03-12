@@ -20,7 +20,8 @@ import { Filter, Query, QueryDOM } from '@labkey/api';
 import { URLResolver } from '../util/URLResolver';
 import { getQueryMetadata } from '../global';
 import { caseInsensitive, resolveKeyFromJson, resolveSchemaQuery } from '../util/utils';
-import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo } from '../components/base/models/model';
+import { QueryInfo } from '../components/base/models/QueryInfo';
+import { QueryColumn, QueryInfoStatus, SchemaQuery, ViewInfo } from '../components/base/models/model';
 
 let queryDetailsCache: {[key: string]: Promise<QueryInfo>} = {};
 
@@ -79,7 +80,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
     return queryDetailsCache[key];
 }
 
-function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
+export function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
     let queryInfo;
     const metadata = getQueryMetadata();
 

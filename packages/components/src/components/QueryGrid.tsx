@@ -33,6 +33,7 @@ interface QueryGridProps {
     model?: QueryGridModel
     schemaQuery?: SchemaQuery
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+    highlightLastSelectedRow?: boolean
 }
 
 interface QueryGridState {
@@ -217,6 +218,22 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         }
     }
 
+    /**
+     * @returns the row index for the selected row. If multiple rows are selected, get the last selected index
+     */
+    getLastSelectedRowInd(model: QueryGridModel): List<number> {
+        const lastSelectedId = model.selectedIds.last();
+        return List<number>([model.dataIds.indexOf(lastSelectedId)]);
+    }
+
+    getHighlightRowIds(): List<number> {
+        const { highlightLastSelectedRow } = this.props;
+        const model = this.getModel(this.props);
+
+        return highlightLastSelectedRow ? this.getLastSelectedRowInd(model) : undefined;
+    }
+
+
     render() {
         const model = this.getModel(this.props);
         if (!model) {
@@ -235,6 +252,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             columns: this.getColumns(),
             condensed: true,
             data: model.getData(),
+            highlightRowIds: this.getHighlightRowIds(),
             gridId: model.getId(),
             messages: model.messages,
             headerCell: this.headerCell,

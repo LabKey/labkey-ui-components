@@ -231,6 +231,7 @@ class GridMessages extends React.PureComponent<GridMessagesProps, any> {
 
 interface GridBodyProps {
     data: List<Map<string, any>>
+    highlightRowIds?: List<number>
     columns: List<Column>
     emptyText: string
     isLoading: boolean
@@ -258,14 +259,14 @@ class GridBody extends React.PureComponent<GridBodyProps, any> {
         );
     }
 
-    renderRow(row: any, r: number): any {
+    renderRow(row: any, r: number, highlight?: boolean): any {
         const { columns, rowKey } = this.props;
         const key = rowKey ? row.get(rowKey) : r;
 
         // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
         // "textAlign" property correctly for <td> elements.
         return (
-            <tr key={key}>
+            <tr key={key} className={classNames({'grid-row-highlight': highlight})}>
                 {columns.map((column: Column, c: number) => (
                     column.tableCell ? column.cell(row.get(column.index), row, column, r, c) : (
                         <td key={column.index} style={{textAlign: column.align || 'left'} as any}>
@@ -291,10 +292,15 @@ class GridBody extends React.PureComponent<GridBodyProps, any> {
     }
 
     render() {
-        const { data, transpose } = this.props;
-        const rowRender = transpose ? this.renderRowTranspose : this.renderRow;
+        const { data, transpose, highlightRowIds } = this.props;
 
-        return <tbody>{data.count() > 0 ? data.map(rowRender) : this.renderDefaultRow()}</tbody>;
+        return <tbody>{data.count() > 0 ? data.map((row, ind) => {
+            if (transpose)
+                return this.renderRowTranspose(row, ind);
+
+            const highlight = highlightRowIds && highlightRowIds.contains(ind);
+            return this.renderRow(row, ind, highlight);
+        }) : this.renderDefaultRow()}</tbody>;
     }
 }
 
@@ -307,6 +313,7 @@ export interface GridProps {
     condensed?: boolean
     columns?: List<any>
     data?: GridData
+    highlightRowIds?: List<number>
     emptyText?: string
     gridId?: string
     headerCell?: any
@@ -363,7 +370,8 @@ export class Grid extends React.PureComponent<GridProps, any> {
             showHeader,
             striped,
             tableRef,
-            transpose
+            transpose,
+            highlightRowIds
         } = this.props;
 
         const gridData = processData(data);
@@ -384,7 +392,8 @@ export class Grid extends React.PureComponent<GridProps, any> {
             isLoading,
             loadingText,
             rowKey,
-            transpose
+            transpose,
+            highlightRowIds
         };
 
         const tableClasses = classNames({

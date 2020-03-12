@@ -259,6 +259,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             header={capitalizeFirstChar(usersView) + ' Users'}
                             buttons={this.renderButtons}
                             onSelectionChange={this.onRowSelectionChange}
+                            highlightLastSelectedRow={true}
                             model={this.getUsersModel()}
                         />
                     </Col>

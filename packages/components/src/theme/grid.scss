@@ -6,6 +6,10 @@
   text-align: left;
 }
 
+.grid-row-highlight {
+  background-color: $yellow-shadow !important;
+}
+
 .panel.fixed-panel {
   min-height: 45em;
   max-height: 45em;

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* add highlightLastSelectedRow to QueryGridPanel
+
 ### version 0.34.0
 *Released*: 11 March 2020
 * Use Query.ContainerFilter enum as provided by @labkey/api

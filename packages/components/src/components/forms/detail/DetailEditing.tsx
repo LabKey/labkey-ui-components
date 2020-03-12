@@ -220,7 +220,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
         const {cancelText, submitText} = this.props;
         const { canSubmit } = this.state;
         return (
-            <div className="btn-group full-width bottom-spacing">
+            <div className="full-width bottom-spacing">
                 <Button
                     className="pull-left"
                     onClick={this.handleClick}>

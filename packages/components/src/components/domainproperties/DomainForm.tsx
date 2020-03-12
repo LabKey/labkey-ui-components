@@ -24,11 +24,13 @@ import {
     DomainField,
     DomainFieldError,
     DomainPanelStatus,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     FILE_TYPE,
     FLAG_TYPE,
     HeaderRenderer,
     IAppDomainHeader,
     IDomainField,
+    IDomainFormDisplayOptions,
     IFieldChange,
     PROP_DESC_TYPES,
     PropDescType,
@@ -59,7 +61,6 @@ import { Alert } from '../base/Alert';
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { CollapsiblePanelHeader } from "./CollapsiblePanelHeader";
 import { ImportDataFilePreview } from "./ImportDataFilePreview";
-import {DomainFormDisplayOptions, IDomainFormDisplayOptions} from "./DomainFormDisplayOptions";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -87,7 +88,6 @@ interface IDomainFormInput {
     domainIndex?: number
     successBsStyle?: string
     setFileImportData?: (file: File) => any // having this prop set is also an indicator that you want to show the file preview grid with the import data option
-    hideAddFieldsButton?: boolean
     domainFormDisplayOptions?: IDomainFormDisplayOptions
 }
 
@@ -126,10 +126,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         showHeader: true,
         initCollapsed: false,
         isNew: false,
-        appPropertiesOnly: false,
+        appPropertiesOnly: false, // TODO: convert them into more options in the IDomainFormDisplayOptions interface
         domainIndex: 0,
         successBsStyle: 'success',
-        domainFormDisplayOptions: DomainFormDisplayOptions.defaultProps // add configurations options to DomainForm through this object
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS // add configurations options to DomainForm through this object
     };
 
     constructor(props) {
@@ -492,9 +492,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderAddFieldOption() {
 
-        const { hideAddFieldsButton } = this.props;
+        const { domainFormDisplayOptions } = this.props;
 
-        if (!hideAddFieldsButton) {
+        if (domainFormDisplayOptions.showAddFieldsButton) {
             if (this.shouldShowInferFromFile()) {
                 return (
                     <div className={'margin-top'}>

@@ -839,6 +839,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               Object {
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
+                "showAddFieldsButton": true,
                 "showRequired": true,
                 "showTextOptions": true,
                 "showValidators": true,
@@ -2153,6 +2154,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               Object {
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
+                "showAddFieldsButton": true,
                 "showRequired": true,
                 "showTextOptions": true,
                 "showValidators": true,
@@ -3658,6 +3660,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               Object {
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
+                "showAddFieldsButton": true,
                 "showRequired": true,
                 "showTextOptions": true,
                 "showValidators": true,
@@ -4890,6 +4893,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               Object {
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
+                "showAddFieldsButton": true,
                 "showRequired": true,
                 "showTextOptions": true,
                 "showValidators": true,

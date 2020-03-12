@@ -1541,6 +1541,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -2249,6 +2250,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -2957,6 +2959,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -7207,6 +7210,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -8726,6 +8730,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -9730,6 +9735,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -9900,6 +9906,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -10471,6 +10478,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -11386,6 +11394,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -11834,6 +11843,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -12004,6 +12014,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -12575,6 +12586,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -13472,6 +13484,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -14076,6 +14089,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -14246,6 +14260,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -14817,6 +14832,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -15679,6 +15695,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -18103,6 +18120,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -18810,6 +18828,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -19517,6 +19536,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -22055,6 +22075,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -22762,6 +22783,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -28472,6 +28494,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -29476,6 +29499,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -29646,6 +29670,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -30247,6 +30272,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -31162,6 +31188,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -31766,6 +31793,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -31936,6 +31964,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -32537,6 +32566,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -33434,6 +33464,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -34194,6 +34225,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -34364,6 +34396,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -34965,6 +34998,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -35827,6 +35861,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -41115,6 +41150,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -42633,6 +42669,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -43637,6 +43674,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -43807,6 +43845,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -44408,6 +44447,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -45323,6 +45363,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -45927,6 +45968,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -46097,6 +46139,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -46698,6 +46741,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -47595,6 +47639,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -48355,6 +48400,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -48525,6 +48571,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -49126,6 +49173,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -49988,6 +50036,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,

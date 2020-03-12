@@ -118,22 +118,6 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
     });
 }
 
-export function fetchQueryMetadata(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
-    return new Promise((resolve, reject) => {
-        Query.getQueryMetadata({
-            containerPath: LABKEY.container.path,
-            schemaName,
-            queryName,
-            success: (data) => {
-                resolve(DomainDesign.create(data.domainDesign ? data.domainDesign : data, undefined));
-            },
-            failure: (error) => {
-                reject(error);
-            }
-        })
-    });
-}
-
 export function fetchQueries(containerPath: string, schemaName: string): Promise<List<QueryInfoLite>> {
     const key = [containerPath, schemaName].join('|').toLowerCase();
 

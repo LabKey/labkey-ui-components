@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
-import { DATETIME_TYPE, DomainField, IFieldChange, PropDescType } from './models';
+import { DATETIME_TYPE, DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DomainField, IDomainFormDisplayOptions, IFieldChange, PropDescType  } from './models';
 import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
 import {
     DOMAIN_DEFAULT_TYPES,
@@ -30,7 +30,6 @@ import {
     helpLinkNode,
     MISSING_VALUES_TOPIC
 } from '../../util/helpLinks';
-import {DomainFormDisplayOptions, IDomainFormDisplayOptions} from "./DomainFormDisplayOptions";
 
 interface AdvancedSettingsProps {
     domainId?: number
@@ -69,7 +68,7 @@ interface AdvancedSettingsState {
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
 
     static defaultProps = {
-        domainFormDisplayOptions: DomainFormDisplayOptions.defaultProps
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
     };
 
     constructor(props) {

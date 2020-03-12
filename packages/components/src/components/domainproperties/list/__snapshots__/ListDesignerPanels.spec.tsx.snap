@@ -13467,6 +13467,7 @@ exports[`ListDesignerPanel existing list 1`] = `
           Object {
             "isDragDisabled": false,
             "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
             "showRequired": true,
             "showTextOptions": true,
             "showValidators": true,
@@ -14055,6 +14056,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -14230,6 +14232,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -14715,6 +14718,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -15616,6 +15620,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -16372,6 +16377,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -16558,6 +16564,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -17120,6 +17127,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -18058,6 +18066,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -18669,6 +18678,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -18855,6 +18865,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -19417,6 +19428,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -20355,6 +20367,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -20966,6 +20979,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -21152,6 +21166,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -21716,6 +21731,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -22876,6 +22892,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -23643,6 +23660,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -23829,6 +23847,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -24393,6 +24412,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -25553,6 +25573,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -26320,6 +26341,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -26506,6 +26528,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -27068,6 +27091,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -28006,6 +28030,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -28617,6 +28642,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -28792,6 +28818,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -29319,6 +29346,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -29943,6 +29971,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -30543,6 +30572,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -30729,6 +30759,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -31293,6 +31324,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -32453,6 +32485,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -33220,6 +33253,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -33406,6 +33440,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -33968,6 +34003,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -34906,6 +34942,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -35517,6 +35554,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -35703,6 +35741,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -36265,6 +36304,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -37203,6 +37243,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -37814,6 +37855,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -38000,6 +38042,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -38562,6 +38605,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -39500,6 +39544,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -40111,6 +40156,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -40286,6 +40332,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -40813,6 +40860,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -41676,6 +41724,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,
@@ -42432,6 +42481,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     Object {
                                                       "isDragDisabled": false,
                                                       "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
                                                       "showRequired": true,
                                                       "showTextOptions": true,
                                                       "showValidators": true,
@@ -42607,6 +42657,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                 Object {
                                                                   "isDragDisabled": false,
                                                                   "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
                                                                   "showRequired": true,
                                                                   "showTextOptions": true,
                                                                   "showValidators": true,
@@ -43134,6 +43185,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   Object {
                                                                     "isDragDisabled": false,
                                                                     "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
                                                                     "showRequired": true,
                                                                     "showTextOptions": true,
                                                                     "showValidators": true,
@@ -43978,6 +44030,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                             Object {
                                                                               "isDragDisabled": false,
                                                                               "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
                                                                               "showRequired": true,
                                                                               "showTextOptions": true,
                                                                               "showValidators": true,

@@ -220,6 +220,15 @@ export const READONLY_DESC_TYPES = List([
     TIME_TYPE,
 ]);
 
+export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
+    showRequired: true,
+    showValidators: true,
+    isDragDisabled: false,
+    showTextOptions: true,
+    phiLevelDisabled: false,
+    showAddFieldsButton: true
+};
+
 interface IDomainDesign {
     name: string
     container: string
@@ -1407,3 +1416,12 @@ export interface IAppDomainHeader {
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
+
+export interface IDomainFormDisplayOptions {
+    showRequired?: boolean
+    showValidators?: boolean
+    isDragDisabled?: boolean
+    showTextOptions?: boolean
+    phiLevelDisabled?: boolean
+    showAddFieldsButton?: boolean
+}

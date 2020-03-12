@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { DomainField, IFieldChange } from './models';
+import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { TextFieldOptions } from './TextFieldOptions';
 import { BooleanFieldOptions } from './BooleanFieldOptions';
@@ -26,7 +26,6 @@ import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndVa
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { Col } from 'react-bootstrap';
-import {IDomainFormDisplayOptions} from "./DomainFormDisplayOptions";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField

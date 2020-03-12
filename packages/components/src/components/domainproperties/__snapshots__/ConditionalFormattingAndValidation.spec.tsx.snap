@@ -6,6 +6,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
     Object {
       "isDragDisabled": false,
       "phiLevelDisabled": false,
+      "showAddFieldsButton": true,
       "showRequired": true,
       "showTextOptions": true,
       "showValidators": true,
@@ -482,6 +483,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
     Object {
       "isDragDisabled": false,
       "phiLevelDisabled": false,
+      "showAddFieldsButton": true,
       "showRequired": true,
       "showTextOptions": true,
       "showValidators": true,

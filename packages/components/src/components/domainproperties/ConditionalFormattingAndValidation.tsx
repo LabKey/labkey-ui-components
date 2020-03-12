@@ -4,7 +4,7 @@ import { List } from 'immutable';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
 import { DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR } from './constants';
-import { ConditionalFormat, DomainField, PropertyValidator } from './models';
+import { ConditionalFormat, DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DomainField, IDomainFormDisplayOptions, PropertyValidator } from './models';
 import { ValidatorModal } from './validation/ValidatorModal';
 import { RegexValidationOptions } from './validation/RegexValidationOptions';
 import { RangeValidationOptions } from './validation/RangeValidationOptions';
@@ -16,7 +16,6 @@ import {
     FIELD_EDITOR_REGEX_TOPIC,
     helpLinkNode
 } from '../../util/helpLinks';
-import {DomainFormDisplayOptions, IDomainFormDisplayOptions} from "./DomainFormDisplayOptions";
 
 interface ConditionalFormattingAndValidationProps {
     index: number,
@@ -38,7 +37,7 @@ interface ConditionalFormattingAndValidationState {
 export class ConditionalFormattingAndValidation extends React.PureComponent<ConditionalFormattingAndValidationProps, ConditionalFormattingAndValidationState> {
 
     static defaultProps = {
-        domainFormDisplayOptions: DomainFormDisplayOptions.defaultProps
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
     };
 
     constructor(props) {

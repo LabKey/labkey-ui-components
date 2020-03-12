@@ -35,9 +35,11 @@ import {
     SEVERITY_LEVEL_WARN,
 } from './constants';
 import {
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DomainField,
     DomainFieldError,
     FieldErrors,
+    IDomainFormDisplayOptions,
     IFieldChange,
     PropDescType,
     resolveAvailableTypes,
@@ -52,7 +54,6 @@ import { DragDropHandle } from "../base/DragDropHandle";
 import { SCHEMAS } from '../base/models/schemas';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {DomainFormDisplayOptions, IDomainFormDisplayOptions} from "./DomainFormDisplayOptions";
 import {FIELD_EDITOR_TOPIC} from "../../util/helpLinks";
 
 interface IDomainRowProps {
@@ -92,7 +93,7 @@ interface IDomainRowState {
 export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowState> {
 
     static defaultProps = {
-        domainFormDisplayOptions: DomainFormDisplayOptions.defaultProps
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
     };
 
     constructor(props) {

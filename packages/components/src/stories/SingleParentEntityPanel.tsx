@@ -27,7 +27,7 @@ storiesOf('SingleParentEntityPanel', module)
         return (
             <SingleParentEntityPanel childNounSingular={"Sample"}
                                      parentDataType={DataClassDataType}
-                                     parentValues={undefined}
+                                     parentLSIDs={undefined}
                                      parentTypeQueryName={undefined}
              />
         )
@@ -38,30 +38,8 @@ storiesOf('SingleParentEntityPanel', module)
                 childNounSingular={"Sample"}
                 parentDataType={{...DataClassDataType, appUrlPrefixParts: ['sources']}}
                 parentTypeQueryName={"Second Source"}
-                parentValues={fromJS([{
-                    displayValue: 'Sec-32',
-                    value: "url:lsid:blah",
-                    url: "/labkey/Sam%20Man/experiment-showData.view?rowId=57093&dataClassId=322"
-                }])}
+                parentLSIDs={["url:lsid:blah"]}
             />
         )
     })
-    // .add('multiple parents', () => {
-    //     return (
-    //         <SingleParentEntityPanel
-    //             childNounSingular={"Sample"}
-    //             parentDataType={{...DataClassDataType, appUrlPrefixParts: ['sources']}}
-    //             parentTypeQueryName={"Multi-Source Parent"}
-    //             parentValues={fromJS([{
-    //                 displayValue: 'Sec-32',
-    //                 value: "url:lsid:blah",
-    //                 url: "/labkey/Sam%20Man/experiment-showData.view?rowId=57093&dataClassId=322"
-    //             }, {
-    //                 displayValue: 'Sec-44',
-    //                 value: "url:lsid:blah",
-    //                 url: "/labkey/Sam%20Man/experiment-showData.view?rowId=57093&dataClassId=324"
-    //             }])}
-    //         />
-    //     )
-    // })
 ;

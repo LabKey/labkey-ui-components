@@ -19,7 +19,8 @@ export const SampleTypeDataType : EntityDataType = {
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     inputColumnName: "Inputs/Materials/First",
     inputTypeColumnName: "Inputs/Materials/First/SampleSet",
-    inputTypeValueField: "LSID"
+    inputTypeValueField: "LSID",
+    insertColumnNamePrefix: "MaterialInputs/",
 };
 
 export const DataClassDataType : EntityDataType = {
@@ -37,5 +38,6 @@ export const DataClassDataType : EntityDataType = {
     deleteHelpLinkTopic: "dataClass", // no topic specific to deleting data classes yet, so we refer to data classes in general
     inputColumnName: "Inputs/Data/First",
     inputTypeColumnName: "Inputs/Data/First/DataClass",
-    inputTypeValueField: "rowId"
+    inputTypeValueField: "rowId",
+    insertColumnNamePrefix: "DataInputs/",
 };

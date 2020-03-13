@@ -80,10 +80,11 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
-    setIsValid(): void {
-        const { model } = this.props;
-        const isValid = model && model.hasValidProperties();
-        this.setState(() => ({isValid}));
+    setIsValid(newModel?: ListModel): void {
+        const { model, onChange } = this.props;
+        const updatedModel = newModel || model;
+        const isValid = updatedModel && updatedModel.hasValidProperties();
+        this.setState(() => ({isValid}), () => onChange(updatedModel));
     }
 
     toggleLocalPanel = (evt: any): void => {
@@ -106,7 +107,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
             domain: newDomain,
         }) as ListModel;
 
-        onChange(newModel);
+        this.setIsValid(newModel);
     };
 
     onCheckBoxChange = (name, checked): void => {
@@ -128,7 +129,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     applyAdvancedProperties = (advancedSettingsForm: AdvancedSettingsForm) : void => {
         const { model, onChange } = this.props;
         const newModel = model.merge(advancedSettingsForm) as ListModel;
-        onChange(newModel);
+        this.setIsValid(newModel);
     };
 
     render() {

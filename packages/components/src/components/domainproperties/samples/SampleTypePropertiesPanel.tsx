@@ -196,7 +196,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
                 <Panel
                     className={getDomainPanelClass(collapsed, controlledCollapse, useTheme)}
                     expanded={!collapsed}
-                    onToggle={function () {} /*TODO anything here? */}
+                    onToggle={function () {}}
                 >
                     <CollapsiblePanelHeader
                         id={PROPERTIES_HEADER_ID}

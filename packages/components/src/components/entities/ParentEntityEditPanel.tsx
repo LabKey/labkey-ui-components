@@ -338,11 +338,26 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     };
 
     renderAddParentButton() {
-        return (
-            <AddEntityButton
-                onClick={this.onAddParent} entity={this.props.parentDataType.nounSingular}
-            />
-        )
+        const { parentTypeOptions } = this.state;
+        if (!parentTypeOptions || parentTypeOptions.size === 0)
+            return null;
+        else {
+            const { parentDataType } = this.props;
+            const { currentParents } = this.state;
+
+            const disabled = parentTypeOptions.size <= currentParents.size;
+            const title = disabled ? 'Only ' + parentTypeOptions.size + ' ' + (parentTypeOptions.size === 1 ? parentDataType.descriptionSingular : parentDataType.descriptionPlural) + ' available.' : undefined;
+
+            return (
+                <AddEntityButton
+                    onClick={this.onAddParent}
+                    title={title}
+                    disabled={disabled}
+                    entity={this.props.parentDataType.nounSingular}
+                />
+            )
+        }
+
     }
 
     render() {
@@ -368,7 +383,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                         {error && <Alert>{error}</Alert>}
                         <div className={'bottom-spacing'}><b>{capitalizeFirstChar(parentDataType.nounPlural)} for {childName}</b></div>
                         {loading ? <LoadingSpinner/> : this.renderParentData()}
-                        {this.renderAddParentButton()}
+                        {editing && this.renderAddParentButton()}
                     </Panel.Body>
                 </Panel>
                 {editing && this.renderEditControls()}

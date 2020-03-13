@@ -107,7 +107,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
     };
 
     renderParentSelection() {
-        const { parentDataType, parentTypeOptions, index } = this.props;
+        const { parentDataType, parentTypeOptions, parentLSIDs, index } = this.props;
         const { chosenType } = this.state;
 
         const model = this.getParentModel();
@@ -118,7 +118,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         const parentSchemaQuery = chosenType ? SchemaQuery.create(this.props.parentDataType.instanceSchemaName, chosenType) : undefined;
         const lcTypeName = chosenType ? chosenType.toLowerCase() : undefined;
 
-        const parentValues = model ? model.getData().map((row) => row.getIn(['Name', 'value'])).toArray() : [];
+        const parentValues = model && parentLSIDs && parentLSIDs.length > 0 ? model.getData().map((row) => row.getIn(['Name', 'value'])).toArray() : undefined;
 
         return (
             <div className={'bottom-spacing'} key={'parent-selections-' + index}>
@@ -154,7 +154,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                         valueColumn="Name"
                         showLoading={true}
                         loadOnChange={false}
-                        value={parentValues.join(DELIMITER)}
+                        value={parentValues ? parentValues.join(DELIMITER) : undefined}
                     />
                 )}
             </div>

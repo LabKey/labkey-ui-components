@@ -1,31 +1,33 @@
 import React from 'reactn';
 import { Button, Panel } from 'react-bootstrap';
 import {
-    AddEntityButton, Alert, AppURL,
+    AddEntityButton,
+    Alert,
     capitalizeFirstChar,
-    EntityDataType, getQueryGridModel, getStateQueryGridModel,
-    gridIdInvalidate, gridInit,
-    gridInvalidate, invalidateLineageResults,
+    EntityDataType,
+    getQueryGridModel,
     LoadingSpinner,
-    naturalSort, Progress,
+    naturalSort,
+    Progress,
+    queryGridInvalidate,
     QueryGridModel,
-    resolveErrorMessage, SchemaQuery,
+    resolveErrorMessage,
+    SchemaQuery,
     updateRows
 } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { getEntityTypeOptions } from './actions';
 import { List, Map } from 'immutable';
-import { EntityChoice, EntityInsertPanelTabs, IEntityTypeOption } from './models';
+import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { DELIMITER } from '../forms/input/SelectInput';
-import { DETAIL_TABLE_CLASSES } from '../forms/constants';
-import { Filter } from '@labkey/api';
 
 interface Props {
     canUpdate: boolean
     childName: string
     childNounSingular: string
     childModel: QueryGridModel
+    onUpdate?: () => void
     parentDataType: EntityDataType
     title: string
     cancelText: string
@@ -67,20 +69,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
     componentWillMount() {
         this.init();
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        // if (prevState.editing && prevState.isDirty && !this.state.editing && !this.state.isDirty ) {
-        //     console.log("reinitializing child model now");
-        //     gridInit(this.getChildModel(), true, this);
-        //     this.setState(() => ({
-        //         currentParents: this.getInitialParentChoices(this.state.parentTypeOptions)
-        //     }));
-        // }
-        // const currentParents = this.getInitialParentChoices(this.state.parentTypeOptions);
-        // this.setState(() => ({
-        //     currentParents,
-        // }));
     }
 
     init()  {
@@ -187,7 +175,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
         this.setState(() => ({submitting: true}));
 
-        const { parentDataType } = this.props;
+        const { parentDataType, onUpdate } = this.props;
         const { currentParents } = this.state;
         const childModel = this.getChildModel();
 
@@ -217,17 +205,22 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             }
         });
 
-        currentParents.forEach((parentChoice) => {
-            gridIdInvalidate('parent-data-' + parentChoice.type.label);
-        });
         return updateRows({
             schemaQuery,
             rows: [updatedValues]
         }).then(() => {
+            this.setState(() => ({
+                submitting: false,
+                isDirty: false,
+                editing: false
+            }));
 
-            gridInvalidate(childModel);
-            invalidateLineageResults();
-            this.setState(() => ({submitting: false, isDirty: false, editing: false}));
+            currentParents.forEach((parentChoice) => {
+                queryGridInvalidate(SchemaQuery.create(this.props.parentDataType.instanceSchemaName, parentChoice.type.label), true);
+            });
+            if (onUpdate) {
+                onUpdate();
+            }
         }).catch((error) => {
             console.error(error);
             this.setState(() => ({
@@ -284,9 +277,10 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         const { parentDataType } = this.props;
 
         return this.state.currentParents.map((choice, index) => (
-            <>
+            <div key={index}>
                 {this.state.editing && <hr/>}
                 <SingleParentEntityPanel
+                    key={index}
                     parentDataType={parentDataType}
                     parentTypeOptions={this.state.parentTypeOptions}
                     parentTypeQueryName={choice.type.label}
@@ -297,7 +291,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     onChangeParentValue={this.onParentValueChange}
                     onInitialParentValue={this.onInitialParentValue}
                 />
-            </>
+            </div>
 
         )).toArray();
     }

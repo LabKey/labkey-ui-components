@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - refactor SampleSetDeleteConfirmModal as EntityTypeDeleteConfirm model for use with sample type and source type
     - refactor deleteSampleSet as deleteEntityType for use with sample type and source type
 
+### version 0.34.0
+*Released*: 11 March 2020
+* Use Query.ContainerFilter enum as provided by @labkey/api
+
 ### version 0.33.3
 *Released*: 10 March 2020
 * Issue 39817: Don't show RegEx validator options for non-string fields

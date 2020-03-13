@@ -1,0 +1,157 @@
+{
+  "schemaName" : [ "exp", "data" ],
+  "queryName" : "Source 1",
+  "metaData" : {
+    "importTemplates" : [ {
+      "label" : "Download Template",
+      "url" : "/labkey/Sam%20Man/query-exportExcelTemplate.view?schemaName=exp.data&query.queryName=Source%201&headerType=DisplayFieldKey"
+    } ],
+    "root" : "rows",
+    "totalProperty" : "rowCount",
+    "description" : "The first source",
+    "id" : "RowId",
+    "fields" : [ {
+      "fieldKey" : [ "RowId" ],
+      "description" : "Contains a unique id for this data object",
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "serial",
+      "defaultValue" : null,
+      "scale" : 10,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : true,
+      "hidden" : true,
+      "keyField" : true,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : true,
+      "userEditable" : false,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 10,
+      "shortCaption" : "Row Id",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Row Id"
+    }, {
+      "fieldKey" : [ "Name" ],
+      "description" : "Contains a short name for this data object\nIf not provided, a unique name will be generated from the expression:\nP-${genId}",
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "varchar",
+      "defaultValue" : null,
+      "scale" : 200,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 40,
+      "shortCaption" : "Name",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Name"
+    }, {
+      "fieldKey" : [ "data1" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "int4",
+      "defaultValue" : null,
+      "scale" : 4000,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : true,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 40,
+      "shortCaption" : "Data1",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Data1"
+    } ],
+    "title" : "Source 1",
+    "importMessage" : null
+  },
+  "rows" : [ {
+    "data" : {
+      "RowId" : {
+        "url" : "/labkey/Sam%20Man/experiment-showData.view?rowId=57069",
+        "value" : 57069
+      },
+      "data1" : {
+        "value" : 321
+      },
+      "Name" : {
+        "url" : "/labkey/Sam%20Man/experiment-showData.view?rowId=57069",
+        "value" : "Blood-1001"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "url" : "/labkey/Sam%20Man/experiment-showData.view?rowId=57068",
+        "value" : 57068
+      },
+      "data1" : {
+        "value" : 321
+      },
+      "Name" : {
+        "url" : "/labkey/Sam%20Man/experiment-showData.view?rowId=57068",
+        "value" : "Blood-1002"
+      }
+    }
+  } ],
+  "rowCount" : 2
+}

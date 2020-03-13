@@ -13,7 +13,7 @@ import {PARENT_ALIAS_HELPER_TEXT} from "../../../constants";
 import {DERIVE_SAMPLES_ALIAS_TOPIC} from "../../../util/helpLinks";
 import {SampleSetParentAliasRow} from "../../samples/SampleSetParentAliasRow";
 import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
-import {getDomainAlertClasses, getDomainPanelClass,} from "../actions";
+import {getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList,} from "../actions";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
@@ -88,6 +88,14 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
         this.state = {
             isValid: true,
         };
+    }
+
+    componentDidMount(): void {
+        updateDomainPanelClassList(this.props.useTheme, undefined, PROPERTIES_HEADER_ID);
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+        updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
     //Generates a temporary id for add/delete of the import aliases
@@ -186,7 +194,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
         return (
             <>
                 <Panel
-                    className={getDomainPanelClass(collapsed,true, useTheme)}
+                    className={getDomainPanelClass(collapsed, controlledCollapse, useTheme)}
                     expanded={!collapsed}
                     onToggle={function () {} /*TODO anything here? */}
                 >

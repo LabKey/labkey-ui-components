@@ -30,11 +30,12 @@ interface Props {
     editing?: boolean
     onChangeParentType?: (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index: number) => any
     onChangeParentValue?: (name: string, value: string | Array<any>, index: number) => any
+    onInitialParentValue?: (value: string, selectedValues: List<any>, index: number) => any
 }
 
 interface State {
     chosenValue: string | Array<any>
-    chosenType: IEntityTypeOption
+    chosenType: string
 }
 
 export class SingleParentEntityPanel extends React.Component<Props, State> {
@@ -43,7 +44,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         super(props);
         this.state = {
             chosenValue: undefined,
-            chosenType: undefined
+            chosenType: props.parentTypeQueryName
         }
     }
 
@@ -59,14 +60,20 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
     }
 
     getParentModel() : QueryGridModel {
-        const { parentDataType, parentTypeQueryName, parentLSIDs } = this.props;
-        if (!parentTypeQueryName || !parentLSIDs || parentLSIDs.length === 0)
+        const { parentDataType, parentLSIDs } = this.props;
+        const { chosenType } = this.state;
+
+        if (!chosenType)
             return undefined;
 
-        const model = getStateQueryGridModel('parent-data-' + parentTypeQueryName, SchemaQuery.create(parentDataType.instanceSchemaName, parentTypeQueryName), {
+        let baseFilters = List<any>();
+        if (parentLSIDs && parentLSIDs.length > 0) {
+            baseFilters = baseFilters.push(Filter.create("LSID", parentLSIDs, Filter.Types.IN));
+        }
+        const model = getStateQueryGridModel('parent-data-' + chosenType, SchemaQuery.create(parentDataType.instanceSchemaName, chosenType), {
             bindURL: false,
             allowSelection: false,
-            baseFilters: List([Filter.create("LSID", parentLSIDs, Filter.Types.IN)]),
+            baseFilters,
             requiredColumns: this.props.requiredColumns || List<string>(),
             omittedColumns: this.props.omittedColumns || List<string>(),
         });
@@ -75,7 +82,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
 
     onChangeParentType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption) => {
         this.setState(() => ({
-            chosenType: selectedOption
+            chosenType: formValue
         }),() => {
             if (this.props.onChangeParentType) {
                 this.props.onChangeParentType(fieldName, formValue, selectedOption, this.props.index)
@@ -83,7 +90,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         })
     };
 
-    onChangeParentValue = (name: string, value: string | Array<any>) => {
+    onChangeParentValue = (name: string, value: string | Array<any>, items: any) => {
         this.setState(() => ({
             chosenValue: value
         }), () => {
@@ -93,20 +100,28 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         });
     };
 
+    onInitValue = (value: any, selectedValues: List<any>) => {
+        if (this.props.onInitialParentValue) {
+            this.props.onInitialParentValue(value, selectedValues, this.props.index)
+        }
+    };
+
     renderParentSelection() {
-        const { parentDataType, parentTypeOptions, parentTypeQueryName, index } = this.props;
+        const { parentDataType, parentTypeOptions, index } = this.props;
+        const { chosenType } = this.state;
+
         const model = this.getParentModel();
 
-        if (!model || model.isLoading || !parentTypeOptions)
+        if ((model && model.isLoading) || !parentTypeOptions)
             return <LoadingSpinner/>;
 
-        const parentSchemaQuery = parentTypeQueryName ? SchemaQuery.create(this.props.parentDataType.instanceSchemaName, parentTypeQueryName) : undefined;
-        const lcTypeName = parentTypeQueryName ? parentTypeQueryName.toLowerCase() : undefined;
+        const parentSchemaQuery = chosenType ? SchemaQuery.create(this.props.parentDataType.instanceSchemaName, chosenType) : undefined;
+        const lcTypeName = chosenType ? chosenType.toLowerCase() : undefined;
 
-        const parentValues = model.getData().map((row) => row.getIn(['Name', 'value'])).toArray();
+        const parentValues = model ? model.getData().map((row) => row.getIn(['Name', 'value'])).toArray() : [];
 
         return (
-            <div className={'bottom-spacing'} key={lcTypeName}>
+            <div className={'bottom-spacing'} key={'parent-selections-' + index}>
                 <SelectInput
                     formsy={false}
                     inputClass="col-sm-6"
@@ -130,6 +145,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
                         name={lcTypeName + "_value"}
                         onQSChange={this.onChangeParentValue}
+                        onInitValue={this.onInitValue}
                         preLoad
                         previewOptions
                         multiple
@@ -146,9 +162,10 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
     }
 
     renderParentHeader() {
-        const { parentDataType, parentTypeQueryName } = this.props;
+        const { editing, parentDataType } = this.props;
+        const { chosenType } = this.state;
 
-        if (parentDataType && parentTypeQueryName) {
+        if (parentDataType && chosenType) {
             const { appUrlPrefixParts } = parentDataType;
             return (
                 <table className={DETAIL_TABLE_CLASSES}>
@@ -157,14 +174,14 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                             <td>{parentDataType.typeNounSingular}</td>
                             <td>
                                 {appUrlPrefixParts ?
-                                    <a href={AppURL.create(...appUrlPrefixParts, parentTypeQueryName).toHref()}>{parentTypeQueryName}</a> : parentTypeQueryName}
+                                    <a href={AppURL.create(...appUrlPrefixParts, chosenType).toHref()}>{chosenType}</a> : chosenType}
                             </td>
                         </tr>
                     </tbody>
                 </table>
             )
         }
-        else {
+        else if (!editing) {
             const lcChildNoun = this.props.childNounSingular.toLowerCase();
             return (
                 <table className={DETAIL_TABLE_CLASSES}>
@@ -191,7 +208,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         const model = this.getParentModel();
 
         return (
-            <div className={'top-spacing'}>
+            <div className={'top-spacing'} key={'grid-' + this.props.index}>
                 {this.renderParentHeader()}
                 {model && (
                     <QueryGridPanel

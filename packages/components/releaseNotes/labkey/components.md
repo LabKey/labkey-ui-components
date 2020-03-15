@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * add highlightLastSelectedRow to QueryGridPanel
+* change user-detail action to map to core.users instead of core.siteusers since site users require Project Admin or higher
 
 ### version 0.34.0
 *Released*: 11 March 2020

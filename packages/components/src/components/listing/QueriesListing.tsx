@@ -86,6 +86,7 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
                 this.setState(() => ({queries}));
             })
             .catch((error) => {
+                console.error(error);
                 this.setState(() => ({error: error.exception}));
             });
     }

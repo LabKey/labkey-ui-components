@@ -106,7 +106,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
             if (row.size > 0) {
                 const {parentDataType} = this.props;
-                // for each parent in the model, extract the name and type and then create a QueryGrid with a single row
                 const inputs: List<Map<string, any>> = row.get(parentDataType.inputColumnName);
                 const inputTypes: List<Map<string, any>> = row.get(parentDataType.inputTypeColumnName);
                 if (inputs && inputTypes) {

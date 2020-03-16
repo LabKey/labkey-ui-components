@@ -3,8 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ## version TBD
 *Released*: TBD
-* Add ParentEntityEditPanel for CRUD operations on parents.  Initially supporting display
-only
+* Add ParentEntityEditPanel for CRUD operations on parents. Initially not supporting delete
+(because there is no back end support for completely removing lineage).
 * Fix problem with QuerySelect and SelectInput not playing nicely together when you want to
 select a schema for the QuerySelect to use.
 * Refine and simplify styling for buttons on DetailEditing to work with sibling panels that sit below it

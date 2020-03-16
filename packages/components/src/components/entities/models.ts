@@ -50,7 +50,7 @@ export interface IDerivePayload {
 // that can be used to retrieve the set of fields defined for that type and/or
 // the list of values (e.g., S-123, S-234) that can be chosen as actual parents.
 // Needs(?) to extend Option for use in ReactSelects, but otherwise very much
-// a duplicate of EntityParentType (modulo the value being a DisplayObject vs TValue
+// a duplicate of EntityParentType (modulo the value being a DisplayObject vs TValue)
 export interface IParentOption extends Option {
     query?: string
     schema?: string
@@ -158,8 +158,8 @@ export class EntityTypeOption implements IEntityTypeOption {
 // represents an entity type (e.g., Sample Set 1) and the values chosen of that type (e.g., S-1, S-2)
 export interface EntityChoice {
     type: IEntityTypeOption
-    ids: Array<string>
-    value: string
+    ids: Array<string> // LSIDs or RowIds
+    value: string // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
 }
 
 interface MaterialOutput {

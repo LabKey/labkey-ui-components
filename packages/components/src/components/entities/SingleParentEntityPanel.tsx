@@ -163,13 +163,13 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                         onQSChange={this.onChangeParentValue}
                         onInitValue={this.onInitValue}
                         preLoad
+                        loadOnChange // set to true so we'll reload to eliminate the last selected value from the list.
                         previewOptions
                         multiple
                         schemaQuery={parentSchemaQuery}
                         showLabel={true}
                         valueColumn="Name"
                         showLoading={true}
-                        loadOnChange={false}
                         value={this.props.chosenValue ? this.props.chosenValue : (parentValues ? parentValues.join(DELIMITER) : undefined)}
                     />
                 )}

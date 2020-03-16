@@ -305,7 +305,7 @@ export class URLResolver {
                 const url = row.get('url');
                 if (url) {
                     const params = ActionURL.getParameters(url);
-                    return AppURL.create('q', 'core', 'users', params.userId);
+                    return AppURL.create('q', 'core', 'siteusers', params.userId);
                 }
             }),
 

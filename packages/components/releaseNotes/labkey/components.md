@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Fix problem with QuerySelect and SelectInput not playing nicely together when you want to
 select a schema for the QuerySelect to use.
 * Refine and simplify styling for buttons on DetailEditing to work with sibling panels that sit below it
+* When invalidating the grid, don't call clearSelected if model does not allow selections
 
 
 ### version 0.34.1

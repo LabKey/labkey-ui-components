@@ -275,26 +275,36 @@ export function clearError(model: QueryGridModel) {
 }
 
 export function schemaGridInvalidate(schemaName: string, remove: boolean = false) {
-    getQueryGridModelsForSchema(schemaName).map((model) => gridRemoveOrInvalidate(model, remove));
+    getQueryGridModelsForSchema(schemaName).map((model) => gridClearSelectionAndInvalidate(model, remove));
 }
 
 export function queryGridInvalidate(schemaQuery: SchemaQuery, remove: boolean = false) {
-    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridRemoveOrInvalidate(model, remove));
+    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridClearSelectionAndInvalidate(model, remove));
 }
 
 export function gridIdInvalidate(gridIdPrefix: string, remove: boolean = false) {
-    getQueryGridModelsForGridId(gridIdPrefix).map((model) => gridRemoveOrInvalidate(model, remove));
+    getQueryGridModelsForGridId(gridIdPrefix).map((model) => gridClearSelectionAndInvalidate(model, remove));
+}
+
+function gridClearSelectionAndInvalidate(model: QueryGridModel, remove: boolean) {
+    if (model.allowSelection) {
+        clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath)
+            .then(() => {
+                gridRemoveOrInvalidate(model, remove);
+            });
+    }
+    else {
+        gridRemoveOrInvalidate(model, remove);
+    }
+
 }
 
 function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
-    clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath)
-        .then(() => {
-            if (remove) {
-                removeQueryGridModel(model);
-            } else {
-                gridInvalidate(model);
-            }
-        });
+    if (remove) {
+        removeQueryGridModel(model);
+    } else {
+        gridInvalidate(model);
+    }
 }
 
 export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {

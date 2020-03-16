@@ -163,7 +163,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         containerClass: 'form-group row',
         delimiter: DELIMITER,
         inputClass: 'col-sm-9 col-xs-12',
-        labelClass: 'control-label col-sm-3 text-left',
+        labelClass: 'control-label col-sm-3 text-left col-xs-12',
         labelKey: 'label',
         saveOnBlur: false,
         showLabel: true,
@@ -397,7 +397,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                         addLabelAsterisk: addLabelAsterisk,
                         isFormsy: false,
                         required: required,
-                        labelClass: !allowDisable ? 'control-label text-left col-sm-3 col-xs-12' : undefined
+                        labelClass: !allowDisable ? this.props.labelClass : undefined
                     }}
                     showLabel={showLabel}
                     showToggle={allowDisable}

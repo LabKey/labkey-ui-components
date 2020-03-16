@@ -88,6 +88,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "updatedField": false,
         "isPrimaryKey": false,
         "lockType": "NotLocked",
+        "wrappedColumnName": undefined,
       }
     }
   >
@@ -677,6 +678,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "updatedField": false,
         "isPrimaryKey": false,
         "lockType": "NotLocked",
+        "wrappedColumnName": undefined,
       }
     }
   >
@@ -1327,6 +1329,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "updatedField": false,
         "isPrimaryKey": false,
         "lockType": "NotLocked",
+        "wrappedColumnName": undefined,
       }
     }
   >
@@ -1977,6 +1980,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "updatedField": false,
         "isPrimaryKey": false,
         "lockType": "NotLocked",
+        "wrappedColumnName": undefined,
       }
     }
   >

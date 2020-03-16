@@ -221,6 +221,15 @@ export const READONLY_DESC_TYPES = List([
     TIME_TYPE,
 ]);
 
+export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
+    showRequired: true,
+    showValidators: true,
+    isDragDisabled: false,
+    showTextOptions: true,
+    phiLevelDisabled: false,
+    showAddFieldsButton: true
+};
+
 interface IDomainDesign {
     name: string
     container: string
@@ -625,7 +634,8 @@ export class DomainField extends Record({
     original: undefined,
     updatedField: false,
     isPrimaryKey: false,
-    lockType: DOMAIN_FIELD_NOT_LOCKED
+    lockType: DOMAIN_FIELD_NOT_LOCKED,
+    wrappedColumnName: undefined
 
 }) implements IDomainField {
     conceptURI?: string;
@@ -671,6 +681,7 @@ export class DomainField extends Record({
     updatedField: boolean;
     isPrimaryKey: boolean;
     lockType: string;
+    wrappedColumnName?: string;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -1141,9 +1152,9 @@ export class QueryInfoLite extends Record({
 
     getLookupInfo(rangeURI?: string): List<{name: string, type: PropDescType}> {
         let infos = List<{name: string, type: PropDescType}>();
-        let pkCols = this.getPkColumns()
-            .filter(col => col.name.toLowerCase() !== 'container')
-            .toList();
+
+        // allow for queries with only 1 primary key or with 2 primary key columns when one of them is container (see Issue 39879)
+        let pkCols = this.getPkColumns().size > 1 ? this.getPkColumns().filter(col => col.name.toLowerCase() !== 'container').toList() : this.getPkColumns();
 
         if (pkCols.size === 1) {
 
@@ -1410,6 +1421,15 @@ export interface IAppDomainHeader {
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
+
+export interface IDomainFormDisplayOptions {
+    showRequired?: boolean
+    showValidators?: boolean
+    isDragDisabled?: boolean
+    showTextOptions?: boolean
+    phiLevelDisabled?: boolean
+    showAddFieldsButton?: boolean
+}
 
 /**
  * General object to describe a DomainKind as received from Domain.getDomainDetails

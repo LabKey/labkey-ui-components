@@ -2,7 +2,7 @@
 
 exports[`<SampleTypePropertiesPanel/> default props 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
@@ -234,7 +234,7 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
 
 exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"

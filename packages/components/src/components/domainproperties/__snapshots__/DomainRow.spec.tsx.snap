@@ -213,6 +213,16 @@ exports[`DomainRow Sample Field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainFormDisplayOptions={
+                  Object {
+                    "isDragDisabled": false,
+                    "phiLevelDisabled": false,
+                    "showAddFieldsButton": true,
+                    "showRequired": true,
+                    "showTextOptions": true,
+                    "showValidators": true,
+                  }
+                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -293,11 +303,11 @@ exports[`DomainRow Sample Field 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   }
                 }
                 helpNoun="domain"
                 index={0}
-                isDragDisabled={false}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -378,6 +388,16 @@ exports[`DomainRow Sample Field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showAddFieldsButton": true,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
+                            }
                             domainIndex={1}
                             field={
                               Immutable.Record {
@@ -455,6 +475,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 "updatedField": false,
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
+                                "wrappedColumnName": undefined,
                               }
                             }
                             helpNoun="domain"
@@ -912,6 +933,16 @@ exports[`DomainRow Sample Field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainFormDisplayOptions={
+                                Object {
+                                  "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
+                                  "showAddFieldsButton": true,
+                                  "showRequired": true,
+                                  "showTextOptions": true,
+                                  "showValidators": true,
+                                }
+                              }
                               domainIndex={1}
                               field={
                                 Immutable.Record {
@@ -989,6 +1020,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   "updatedField": false,
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
+                                  "wrappedColumnName": undefined,
                                 }
                               }
                               index={0}
@@ -1343,6 +1375,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={0}
@@ -1766,6 +1799,16 @@ exports[`DomainRow Sample Field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainFormDisplayOptions={
+                                          Object {
+                                            "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
+                                            "showAddFieldsButton": true,
+                                            "showRequired": true,
+                                            "showTextOptions": true,
+                                            "showValidators": true,
+                                          }
+                                        }
                                         domainIndex={1}
                                         field={
                                           Immutable.Record {
@@ -1843,6 +1886,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={0}
@@ -2291,6 +2335,16 @@ exports[`DomainRow client side warning on field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainFormDisplayOptions={
+                  Object {
+                    "isDragDisabled": false,
+                    "phiLevelDisabled": false,
+                    "showAddFieldsButton": true,
+                    "showRequired": true,
+                    "showTextOptions": true,
+                    "showValidators": true,
+                  }
+                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -2371,6 +2425,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   }
                 }
                 fieldError={
@@ -2387,7 +2442,6 @@ exports[`DomainRow client side warning on field 1`] = `
                 }
                 helpNoun="domain"
                 index={1}
-                isDragDisabled={false}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -2468,6 +2522,16 @@ exports[`DomainRow client side warning on field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showAddFieldsButton": true,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
+                            }
                             domainIndex={1}
                             field={
                               Immutable.Record {
@@ -2545,6 +2609,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 "updatedField": false,
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
+                                "wrappedColumnName": undefined,
                               }
                             }
                             helpNoun="domain"
@@ -3140,6 +3205,16 @@ exports[`DomainRow client side warning on field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainFormDisplayOptions={
+                                Object {
+                                  "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
+                                  "showAddFieldsButton": true,
+                                  "showRequired": true,
+                                  "showTextOptions": true,
+                                  "showValidators": true,
+                                }
+                              }
                               domainIndex={1}
                               field={
                                 Immutable.Record {
@@ -3217,6 +3292,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   "updatedField": false,
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
+                                  "wrappedColumnName": undefined,
                                 }
                               }
                               index={1}
@@ -3329,6 +3405,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={1}
@@ -3752,6 +3829,16 @@ exports[`DomainRow client side warning on field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainFormDisplayOptions={
+                                          Object {
+                                            "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
+                                            "showAddFieldsButton": true,
+                                            "showRequired": true,
+                                            "showTextOptions": true,
+                                            "showValidators": true,
+                                          }
+                                        }
                                         domainIndex={1}
                                         field={
                                           Immutable.Record {
@@ -3829,6 +3916,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={1}
@@ -4277,6 +4365,16 @@ exports[`DomainRow date time field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainFormDisplayOptions={
+                  Object {
+                    "isDragDisabled": false,
+                    "phiLevelDisabled": false,
+                    "showAddFieldsButton": true,
+                    "showRequired": true,
+                    "showTextOptions": true,
+                    "showValidators": true,
+                  }
+                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -4357,11 +4455,11 @@ exports[`DomainRow date time field 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   }
                 }
                 helpNoun="domain"
                 index={0}
-                isDragDisabled={false}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -4442,6 +4540,16 @@ exports[`DomainRow date time field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showAddFieldsButton": true,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
+                            }
                             domainIndex={1}
                             field={
                               Immutable.Record {
@@ -4519,6 +4627,7 @@ exports[`DomainRow date time field 1`] = `
                                 "updatedField": false,
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
+                                "wrappedColumnName": undefined,
                               }
                             }
                             helpNoun="domain"
@@ -4956,6 +5065,16 @@ exports[`DomainRow date time field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainFormDisplayOptions={
+                                Object {
+                                  "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
+                                  "showAddFieldsButton": true,
+                                  "showRequired": true,
+                                  "showTextOptions": true,
+                                  "showValidators": true,
+                                }
+                              }
                               domainIndex={1}
                               field={
                                 Immutable.Record {
@@ -5033,6 +5152,7 @@ exports[`DomainRow date time field 1`] = `
                                   "updatedField": false,
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
+                                  "wrappedColumnName": undefined,
                                 }
                               }
                               index={0}
@@ -5383,6 +5503,7 @@ exports[`DomainRow date time field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={0}
@@ -5806,6 +5927,16 @@ exports[`DomainRow date time field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainFormDisplayOptions={
+                                          Object {
+                                            "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
+                                            "showAddFieldsButton": true,
+                                            "showRequired": true,
+                                            "showTextOptions": true,
+                                            "showValidators": true,
+                                          }
+                                        }
                                         domainIndex={1}
                                         field={
                                           Immutable.Record {
@@ -5883,6 +6014,7 @@ exports[`DomainRow date time field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={0}
@@ -6487,6 +6619,16 @@ exports[`DomainRow decimal field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainFormDisplayOptions={
+                  Object {
+                    "isDragDisabled": false,
+                    "phiLevelDisabled": false,
+                    "showAddFieldsButton": true,
+                    "showRequired": true,
+                    "showTextOptions": true,
+                    "showValidators": true,
+                  }
+                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -6567,11 +6709,11 @@ exports[`DomainRow decimal field 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   }
                 }
                 helpNoun="domain"
                 index={2}
-                isDragDisabled={false}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -6652,6 +6794,16 @@ exports[`DomainRow decimal field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showAddFieldsButton": true,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
+                            }
                             domainIndex={1}
                             field={
                               Immutable.Record {
@@ -6729,6 +6881,7 @@ exports[`DomainRow decimal field 1`] = `
                                 "updatedField": false,
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
+                                "wrappedColumnName": undefined,
                               }
                             }
                             helpNoun="domain"
@@ -7166,6 +7319,16 @@ exports[`DomainRow decimal field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainFormDisplayOptions={
+                                Object {
+                                  "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
+                                  "showAddFieldsButton": true,
+                                  "showRequired": true,
+                                  "showTextOptions": true,
+                                  "showValidators": true,
+                                }
+                              }
                               domainIndex={1}
                               field={
                                 Immutable.Record {
@@ -7243,6 +7406,7 @@ exports[`DomainRow decimal field 1`] = `
                                   "updatedField": false,
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
+                                  "wrappedColumnName": undefined,
                                 }
                               }
                               index={2}
@@ -7628,6 +7792,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={2}
@@ -8051,6 +8216,16 @@ exports[`DomainRow decimal field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainFormDisplayOptions={
+                                          Object {
+                                            "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
+                                            "showAddFieldsButton": true,
+                                            "showRequired": true,
+                                            "showTextOptions": true,
+                                            "showValidators": true,
+                                          }
+                                        }
                                         domainIndex={1}
                                         field={
                                           Immutable.Record {
@@ -8128,6 +8303,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={2}
@@ -8732,6 +8908,16 @@ exports[`DomainRow participant id field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainFormDisplayOptions={
+                  Object {
+                    "isDragDisabled": false,
+                    "phiLevelDisabled": false,
+                    "showAddFieldsButton": true,
+                    "showRequired": true,
+                    "showTextOptions": true,
+                    "showValidators": true,
+                  }
+                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -8812,11 +8998,11 @@ exports[`DomainRow participant id field 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   }
                 }
                 helpNoun="domain"
                 index={0}
-                isDragDisabled={false}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -8897,6 +9083,16 @@ exports[`DomainRow participant id field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showAddFieldsButton": true,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
+                            }
                             domainIndex={1}
                             field={
                               Immutable.Record {
@@ -8974,6 +9170,7 @@ exports[`DomainRow participant id field 1`] = `
                                 "updatedField": false,
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
+                                "wrappedColumnName": undefined,
                               }
                             }
                             helpNoun="domain"
@@ -9435,6 +9632,16 @@ exports[`DomainRow participant id field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainFormDisplayOptions={
+                                Object {
+                                  "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
+                                  "showAddFieldsButton": true,
+                                  "showRequired": true,
+                                  "showTextOptions": true,
+                                  "showValidators": true,
+                                }
+                              }
                               domainIndex={1}
                               field={
                                 Immutable.Record {
@@ -9512,6 +9719,7 @@ exports[`DomainRow participant id field 1`] = `
                                   "updatedField": false,
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
+                                  "wrappedColumnName": undefined,
                                 }
                               }
                               index={0}
@@ -9624,6 +9832,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={0}
@@ -10047,6 +10256,16 @@ exports[`DomainRow participant id field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainFormDisplayOptions={
+                                          Object {
+                                            "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
+                                            "showAddFieldsButton": true,
+                                            "showRequired": true,
+                                            "showTextOptions": true,
+                                            "showValidators": true,
+                                          }
+                                        }
                                         domainIndex={1}
                                         field={
                                           Immutable.Record {
@@ -10124,6 +10343,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={0}
@@ -10728,6 +10948,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainFormDisplayOptions={
+                  Object {
+                    "isDragDisabled": false,
+                    "phiLevelDisabled": false,
+                    "showAddFieldsButton": true,
+                    "showRequired": true,
+                    "showTextOptions": true,
+                    "showValidators": true,
+                  }
+                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -10808,6 +11038,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   }
                 }
                 fieldError={
@@ -10824,7 +11055,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 }
                 helpNoun="domain"
                 index={1}
-                isDragDisabled={false}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -10905,6 +11135,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showAddFieldsButton": true,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
+                            }
                             domainIndex={1}
                             field={
                               Immutable.Record {
@@ -10982,6 +11222,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 "updatedField": false,
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
+                                "wrappedColumnName": undefined,
                               }
                             }
                             helpNoun="domain"
@@ -11500,6 +11741,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainFormDisplayOptions={
+                                Object {
+                                  "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
+                                  "showAddFieldsButton": true,
+                                  "showRequired": true,
+                                  "showTextOptions": true,
+                                  "showValidators": true,
+                                }
+                              }
                               domainIndex={1}
                               field={
                                 Immutable.Record {
@@ -11577,6 +11828,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   "updatedField": false,
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
+                                  "wrappedColumnName": undefined,
                                 }
                               }
                               index={1}
@@ -11689,6 +11941,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={1}
@@ -12112,6 +12365,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainFormDisplayOptions={
+                                          Object {
+                                            "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
+                                            "showAddFieldsButton": true,
+                                            "showRequired": true,
+                                            "showTextOptions": true,
+                                            "showValidators": true,
+                                          }
+                                        }
                                         domainIndex={1}
                                         field={
                                           Immutable.Record {
@@ -12189,6 +12452,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={1}
@@ -12637,6 +12901,16 @@ exports[`DomainRow string field test 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainFormDisplayOptions={
+                  Object {
+                    "isDragDisabled": false,
+                    "phiLevelDisabled": false,
+                    "showAddFieldsButton": true,
+                    "showRequired": true,
+                    "showTextOptions": true,
+                    "showValidators": true,
+                  }
+                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -12717,11 +12991,11 @@ exports[`DomainRow string field test 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   }
                 }
                 helpNoun="domain"
                 index={1}
-                isDragDisabled={false}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -12802,6 +13076,16 @@ exports[`DomainRow string field test 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showAddFieldsButton": true,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
+                            }
                             domainIndex={1}
                             field={
                               Immutable.Record {
@@ -12879,6 +13163,7 @@ exports[`DomainRow string field test 1`] = `
                                 "updatedField": false,
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
+                                "wrappedColumnName": undefined,
                               }
                             }
                             helpNoun="domain"
@@ -13340,6 +13625,16 @@ exports[`DomainRow string field test 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainFormDisplayOptions={
+                                Object {
+                                  "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
+                                  "showAddFieldsButton": true,
+                                  "showRequired": true,
+                                  "showTextOptions": true,
+                                  "showValidators": true,
+                                }
+                              }
                               domainIndex={1}
                               field={
                                 Immutable.Record {
@@ -13417,6 +13712,7 @@ exports[`DomainRow string field test 1`] = `
                                   "updatedField": false,
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
+                                  "wrappedColumnName": undefined,
                                 }
                               }
                               index={1}
@@ -13820,6 +14116,7 @@ exports[`DomainRow string field test 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={1}
@@ -14243,6 +14540,16 @@ exports[`DomainRow string field test 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainFormDisplayOptions={
+                                          Object {
+                                            "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
+                                            "showAddFieldsButton": true,
+                                            "showRequired": true,
+                                            "showTextOptions": true,
+                                            "showValidators": true,
+                                          }
+                                        }
                                         domainIndex={1}
                                         field={
                                           Immutable.Record {
@@ -14320,6 +14627,7 @@ exports[`DomainRow string field test 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={1}
@@ -14924,6 +15232,16 @@ exports[`DomainRow with empty domain form 1`] = `
                     "FIXED_NON_EDITABLE",
                   ]
                 }
+                domainFormDisplayOptions={
+                  Object {
+                    "isDragDisabled": false,
+                    "phiLevelDisabled": false,
+                    "showAddFieldsButton": true,
+                    "showRequired": true,
+                    "showTextOptions": true,
+                    "showValidators": true,
+                  }
+                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -15004,11 +15322,11 @@ exports[`DomainRow with empty domain form 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   }
                 }
                 helpNoun="domain"
                 index={1}
-                isDragDisabled={false}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -15089,6 +15407,16 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "FIXED_NON_EDITABLE",
                               ]
                             }
+                            domainFormDisplayOptions={
+                              Object {
+                                "isDragDisabled": false,
+                                "phiLevelDisabled": false,
+                                "showAddFieldsButton": true,
+                                "showRequired": true,
+                                "showTextOptions": true,
+                                "showValidators": true,
+                              }
+                            }
                             domainIndex={1}
                             field={
                               Immutable.Record {
@@ -15166,6 +15494,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "updatedField": false,
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
+                                "wrappedColumnName": undefined,
                               }
                             }
                             helpNoun="domain"
@@ -15676,6 +16005,16 @@ exports[`DomainRow with empty domain form 1`] = `
                             className="collapse"
                           >
                             <DomainRowExpandedOptions
+                              domainFormDisplayOptions={
+                                Object {
+                                  "isDragDisabled": false,
+                                  "phiLevelDisabled": false,
+                                  "showAddFieldsButton": true,
+                                  "showRequired": true,
+                                  "showTextOptions": true,
+                                  "showValidators": true,
+                                }
+                              }
                               domainIndex={1}
                               field={
                                 Immutable.Record {
@@ -15753,6 +16092,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   "updatedField": false,
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
+                                  "wrappedColumnName": undefined,
                                 }
                               }
                               index={1}
@@ -16156,6 +16496,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={1}
@@ -16579,6 +16920,16 @@ exports[`DomainRow with empty domain form 1`] = `
                                       className="col-xs-12"
                                     >
                                       <ConditionalFormattingAndValidation
+                                        domainFormDisplayOptions={
+                                          Object {
+                                            "isDragDisabled": false,
+                                            "phiLevelDisabled": false,
+                                            "showAddFieldsButton": true,
+                                            "showRequired": true,
+                                            "showTextOptions": true,
+                                            "showValidators": true,
+                                          }
+                                        }
                                         domainIndex={1}
                                         field={
                                           Immutable.Record {
@@ -16656,6 +17007,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "updatedField": false,
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
                                           }
                                         }
                                         index={1}

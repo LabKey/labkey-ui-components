@@ -36,7 +36,7 @@ export class RemoveEntityButton extends React.Component<RemoveEntityButtonProps,
                 <span
                     className="container--action-button"
                     onClick={onClick}>
-                    <i className="fa fa-times container--removal-icon"/>{entity ? (' Remove ' + entity + ' ' + index) : ''}
+                    <i className="fa fa-times container--removal-icon"/>{entity ? (' Remove ' + entity + ' ' + (index || '')) : ''}
                 </span>
             </div>
         )

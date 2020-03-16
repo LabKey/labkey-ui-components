@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 select a schema for the QuerySelect to use.
 * Refine and simplify styling for buttons on DetailEditing to work with sibling panels that sit below it
 * When invalidating the grid, don't call clearSelected if model does not allow selections
+* Issue 39307: Call onChange and loadOptions after model has been updated so changed selection is taken into account.
 
 
 ### version 0.34.1

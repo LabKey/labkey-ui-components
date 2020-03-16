@@ -267,15 +267,15 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
 
         this.setState(() => ({
             model: model.setSelection(value)
-        }));
+        }), () => {
+            if (loadOnChange && Utils.isFunction(selectRef.loadOptions)) {
+                selectRef.loadOptions(FOCUS_FLAG);
+            }
 
-        if (loadOnChange && Utils.isFunction(selectRef.loadOptions)) {
-            selectRef.loadOptions(FOCUS_FLAG);
-        }
-
-        if (Utils.isFunction(onQSChange)) {
-            onQSChange(name, value, selectedOptions);
-        }
+            if (Utils.isFunction(onQSChange)) {
+                onQSChange(name, value, selectedOptions);
+            }
+        });
     }
 
     optionRenderer(option) {

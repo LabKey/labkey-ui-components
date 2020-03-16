@@ -6,9 +6,11 @@ import {
     EntityDataType,
     getQueryGridModel,
     getStateQueryGridModel,
-    gridInit, LoadingSpinner,
+    gridInit,
+    LoadingSpinner,
     QueryGridModel,
     QuerySelect,
+    RemoveEntityButton,
     SchemaQuery,
     SelectInput
 } from '../..';
@@ -20,6 +22,7 @@ import { DELIMITER } from '../forms/input/SelectInput';
 
 interface Props {
     childNounSingular?: string
+    chosenValue?: string | Array<any>
     parentDataType: EntityDataType
     parentLSIDs?: Array<string>
     parentTypeQueryName?: string
@@ -28,13 +31,13 @@ interface Props {
     parentTypeOptions?: List<IEntityTypeOption>
     index: number
     editing?: boolean
+    onRemoveParentType?: (index: number) => any
     onChangeParentType?: (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index: number) => any
     onChangeParentValue?: (name: string, value: string | Array<any>, index: number) => any
     onInitialParentValue?: (value: string, selectedValues: List<any>, index: number) => any
 }
 
 interface State {
-    chosenValue: string | Array<any>
     chosenType: string
 }
 
@@ -43,7 +46,6 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            chosenValue: undefined,
             chosenType: props.parentTypeQueryName
         }
     }
@@ -90,14 +92,16 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         })
     };
 
+    removeParent = () => {
+        if (this.props.onRemoveParentType) {
+            this.props.onRemoveParentType(this.props.index)
+        }
+    };
+
     onChangeParentValue = (name: string, value: string | Array<any>, items: any) => {
-        this.setState(() => ({
-            chosenValue: value
-        }), () => {
-            if (this.props.onChangeParentValue) {
-                this.props.onChangeParentValue(name, value, this.props.index);
-            }
-        });
+        if (this.props.onChangeParentValue) {
+            this.props.onChangeParentValue(name, value, this.props.index);
+        }
     };
 
     onInitValue = (value: any, selectedValues: List<any>) => {
@@ -122,28 +126,40 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
 
         return (
             <div className={'bottom-spacing'} key={'parent-selections-' + index}>
-                <SelectInput
-                    formsy={false}
-                    inputClass="col-sm-6"
-                    label={parentDataType.typeNounSingular}
-                    labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                    name={"parentEntityType" + index}
-                    placeholder={'Select a ' + parentDataType.typeNounSingular + ' ...'}
-                    onChange={this.onChangeParentType}
-                    options={parentTypeOptions.toArray()}
-                    required
-                    value={lcTypeName}
-                />
+                <div className="form-group row" >
+                    <SelectInput
+                        formsy={false}
+                        containerClass=''
+                        inputClass="col-sm-6"
+                        label={parentDataType.typeNounSingular + ' ' + (index + 1)}
+                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+                        name={lcTypeName ? lcTypeName : 'entityType' + index}
+                        placeholder={'Select a ' + parentDataType.typeNounSingular + ' ...'}
+                        onChange={this.onChangeParentType}
+                        options={parentTypeOptions.toArray()}
+                        required
+                        value={lcTypeName}
+                    />
+
+                    {this.props.onRemoveParentType && (
+                        <RemoveEntityButton
+                            labelClass={'entity-insert--remove-parent'}
+                            entity={parentDataType.typeNounSingular}
+                            index={index+1}
+                            onClick={() => this.props.onRemoveParentType(index)}
+                        />
+                    )}
+                </div>
                 {lcTypeName && (
                     <QuerySelect
-                        componentId={"parentEntityValue_" + lcTypeName} // important that this key off of the schemaQuery or it won't update when the SelectInput chages
+                        componentId={"parentEntityValue_" + lcTypeName} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                         containerClass="row"
                         disabled={lcTypeName === undefined}
                         formsy={false}
-                        label={capitalizeFirstChar(parentDataType.nounSingular) + " ID"}
+                        label={capitalizeFirstChar(parentDataType.nounSingular) + " IDs"}
                         inputClass="col-sm-6"
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                        name={lcTypeName + "_value"}
+                        name={"parentEntityValue_" + lcTypeName}
                         onQSChange={this.onChangeParentValue}
                         onInitValue={this.onInitValue}
                         preLoad
@@ -154,7 +170,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                         valueColumn="Name"
                         showLoading={true}
                         loadOnChange={false}
-                        value={parentValues ? parentValues.join(DELIMITER) : undefined}
+                        value={this.props.chosenValue ? this.props.chosenValue : (parentValues ? parentValues.join(DELIMITER) : undefined)}
                     />
                 )}
             </div>
@@ -181,7 +197,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                 </table>
             )
         }
-        else if (!editing) {
+        else if (!editing && this.props.childNounSingular) {
             const lcChildNoun = this.props.childNounSingular.toLowerCase();
             return (
                 <table className={DETAIL_TABLE_CLASSES}>

@@ -22,6 +22,33 @@ import { SingleParentEntityPanel } from '../components/entities/SingleParentEnti
 import { fromJS, List } from 'immutable';
 import { IEntityTypeOption } from '../components/entities/models';
 
+const parentTypeOptions = List<IEntityTypeOption>([
+    {
+        label: "Second Source",
+        lsid: "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+        rowId: 322,
+        value: "second source",
+        query: "Second Source",
+        schema: "exp.data",
+    },
+    {
+        label: "Source 1",
+        lsid: "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+        rowId: 321,
+        value: "source 1",
+        query: "Source 1",
+        schema: "exp.data",
+    },
+    {
+        label: "Vendor 3",
+        lsid: "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+        rowId: 323,
+        value: "vendor 3",
+        query: "Vendor 3",
+        schema: "exp.data",
+    }
+]);
+
 storiesOf('SingleParentEntityPanel', module)
     .addDecorator(withKnobs)
     .add("No parents", () => {
@@ -30,38 +57,14 @@ storiesOf('SingleParentEntityPanel', module)
                 childNounSingular={"Sample"}
                 parentDataType={DataClassDataType}
                 parentLSIDs={undefined}
+                parentTypeOptions={parentTypeOptions}
                 parentTypeQueryName={undefined}
                 index={0}
+                editing={boolean("Editing? ", false)}
              />
         )
     })
     .add("single parent", () => {
-        const parentTypeOptions = List<IEntityTypeOption>([
-            {
-                label: "Second Source",
-                lsid: "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
-                rowId: 322,
-                value: "second source",
-                query: "Second Source",
-                schema: "exp.data",
-            },
-            {
-                label: "Source 1",
-                lsid: "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
-                rowId: 321,
-                value: "source 1",
-                query: "Source 1",
-                schema: "exp.data",
-            },
-            {
-                label: "Vendor 3",
-                lsid: "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
-                rowId: 323,
-                value: "vendor 3",
-                query: "Vendor 3",
-                schema: "exp.data",
-            }
-        ]);
         return (
             <SingleParentEntityPanel
                 childNounSingular={"Sample"}
@@ -69,8 +72,9 @@ storiesOf('SingleParentEntityPanel', module)
                 parentTypeQueryName={"Second Source"}
                 parentLSIDs={["url:lsid:blah"]}
                 parentTypeOptions={parentTypeOptions}
-                index={1}
+                index={0}
                 editing={boolean("Editing? ", false)}
+                onRemoveParentType={() => {console.log("No really removing anything.")}}
             />
         )
     })

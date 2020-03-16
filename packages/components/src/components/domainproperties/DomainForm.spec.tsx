@@ -662,5 +662,62 @@ describe('DomainForm', () => {
         expect(wrapper.find('#' + _headerId).text()).toBe(_headerText);
         wrapper.unmount();
     });
+
+    test('domain form with hide required', () => {
+        let fields = [];
+        fields.push({
+            name: 'key',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test'
+        });
+
+        const domain = DomainDesign.create({
+            name: "Hide required",
+            description: 'domain form with no required fields',
+            domainURI: 'test',
+            domainId: 1,
+            fields: fields,
+            indices: []
+        });
+
+        const form  = mount(<DomainForm
+            domain={domain}
+            onChange={jest.fn()}
+            domainFormDisplayOptions={{
+                showRequired: false,
+                showValidators: true,
+                isDragDisabled: false,
+                showTextOptions: true,
+                phiLevelDisabled: false,
+            }}
+        />);
+
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
+    });
+
+    test('domain form with hide add fields button', () => {
+        const domain = DomainDesign.create({});
+
+        const form  = mount(<DomainForm
+            domain={domain}
+            onChange={jest.fn()}
+            domainFormDisplayOptions={{
+                showRequired: false,
+                showValidators: true,
+                isDragDisabled: false,
+                showTextOptions: true,
+                phiLevelDisabled: false,
+            }}
+        />);
+
+        // Add button
+        const findButton = form.find({className: 'domain-form-add-btn'});
+        expect(findButton.length).toEqual(0);
+
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
+    });
 });
 

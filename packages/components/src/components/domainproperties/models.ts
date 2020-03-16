@@ -220,6 +220,15 @@ export const READONLY_DESC_TYPES = List([
     TIME_TYPE,
 ]);
 
+export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
+    showRequired: true,
+    showValidators: true,
+    isDragDisabled: false,
+    showTextOptions: true,
+    phiLevelDisabled: false,
+    showAddFieldsButton: true
+};
+
 interface IDomainDesign {
     name: string
     container: string
@@ -624,7 +633,8 @@ export class DomainField extends Record({
     original: undefined,
     updatedField: false,
     isPrimaryKey: false,
-    lockType: DOMAIN_FIELD_NOT_LOCKED
+    lockType: DOMAIN_FIELD_NOT_LOCKED,
+    wrappedColumnName: undefined
 
 }) implements IDomainField {
     conceptURI?: string;
@@ -670,6 +680,7 @@ export class DomainField extends Record({
     updatedField: boolean;
     isPrimaryKey: boolean;
     lockType: string;
+    wrappedColumnName?: string;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -1409,3 +1420,12 @@ export interface IAppDomainHeader {
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
+
+export interface IDomainFormDisplayOptions {
+    showRequired?: boolean
+    showValidators?: boolean
+    isDragDisabled?: boolean
+    showTextOptions?: boolean
+    phiLevelDisabled?: boolean
+    showAddFieldsButton?: boolean
+}

@@ -222,8 +222,17 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 editing: false
             }));
 
+            // clear out the original parents' grid data (which may no longer be represented in the current parents
+            let cleared = [];
             this.state.originalParents.forEach((parentChoice) => {
+                cleared.push(parentChoice.type.label);
                 queryGridInvalidate(SchemaQuery.create(this.props.parentDataType.instanceSchemaName, parentChoice.type.label), true);
+            });
+            // also clear out the current parents' grid data if it hasn't already been cleared
+            this.state.currentParents.forEach((parentChoice) => {
+                if (cleared.indexOf(parentChoice.type.label) < 0) {
+                    queryGridInvalidate(SchemaQuery.create(this.props.parentDataType.instanceSchemaName, parentChoice.type.label), true);
+                }
             });
             if (onUpdate) {
                 onUpdate();

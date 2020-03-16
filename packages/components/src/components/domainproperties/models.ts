@@ -1140,9 +1140,9 @@ export class QueryInfoLite extends Record({
 
     getLookupInfo(rangeURI?: string): List<{name: string, type: PropDescType}> {
         let infos = List<{name: string, type: PropDescType}>();
-        let pkCols = this.getPkColumns()
-            .filter(col => col.name.toLowerCase() !== 'container')
-            .toList();
+
+        // allow for queries with only 1 primary key or with 2 primary key columns when one of them is container (see Issue 39879)
+        let pkCols = this.getPkColumns().size > 1 ? this.getPkColumns().filter(col => col.name.toLowerCase() !== 'container').toList() : this.getPkColumns();
 
         if (pkCols.size === 1) {
 

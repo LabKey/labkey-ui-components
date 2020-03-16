@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* QueriesListing fix for display error message when schema does not exist
+
 ### version 0.34.1
 *Released*: 16 March 2020
 * Merge forward changes from release20.3-SNAPSHOT branch

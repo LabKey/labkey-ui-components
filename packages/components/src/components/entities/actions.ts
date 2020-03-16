@@ -1,13 +1,4 @@
-import {
-    buildURL,
-    getQueryGridModel,
-    getSelected, getStateQueryGridModel,
-    naturalSort,
-    QueryGridModel,
-    SchemaQuery,
-    SCHEMAS,
-    selectRows, ViewInfo
-} from '../..';
+import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 import {
@@ -205,13 +196,13 @@ function getChosenParentData(model: EntityIdCreationModel, parentSchemaQueries: 
 
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
-// TODO will need an extra parameter for filtering by category
-export function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: string) : Promise<Map<string, List<any>>> {
+export function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: string, filterArray?: Array<Filter.IFilter>) : Promise<Map<string, List<any>>> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: typeListSchemaQuery.schemaName,
             queryName: typeListSchemaQuery.queryName,
-            columns: 'LSID,Name,RowId'
+            columns: 'LSID,Name,RowId',
+            filterArray
         }).then(
             (result) => {
                 const rows = fromJS(result.models[result.key]);
@@ -239,9 +230,10 @@ export function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchem
  * @param model
  * @param schemaQueries a map between the type schema name (e.g., "samples") and the listing SchemaQuery (e.g., exp.SampleSets)
  * @param targetQueryName the name of the listing schema query that represents the initial target for creation.
- * @param allowParents
+ * @param allowParents are parents of this entity type allowed or not
+ * @param filterArray (optional) set of filters to use for getting entity type options
  */
-export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: Map<string, SchemaQuery>, targetQueryName: string, allowParents: boolean) : Promise<Partial<EntityIdCreationModel>> {
+export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: Map<string, SchemaQuery>, targetQueryName: string, allowParents: boolean, filterArray?: Array<Filter.IFilter>) : Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
         let promises = [];
 
@@ -249,7 +241,7 @@ export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: M
 
         // get all the schemaQuery data
         schemaQueries.forEach((typeListSchemaQuery, typeSchemaName) => {
-            promises.push(getEntityTypeOptions(typeListSchemaQuery, typeSchemaName));
+            promises.push(getEntityTypeOptions(typeListSchemaQuery, typeSchemaName, filterArray));
         });
 
         let partial : Partial<EntityIdCreationModel> = {};

@@ -1,9 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.35.0-fb-queryMetadataEditor-0.2
-*Released*: TBD
-* Item 6803: Added support for queryMetadataEditor and domainFormDisplayOptions object to show/hide DomainForm components
+### version 0.35.0
+*Released*: 16 March 2020
+* Item 6803: Added support for Query Metadata Editor and added DomainFormProp - domainFormDisplayOptions to show/hide DomainForm components
 
 ### version 0.34.1
 *Released*: 16 March 2020

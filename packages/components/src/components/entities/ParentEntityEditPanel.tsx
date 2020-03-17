@@ -94,7 +94,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     }
 
     hasParents() : boolean {
-        return !this.state.currentParents.isEmpty()
+        return this.state.currentParents && !this.state.currentParents.isEmpty()
     }
 
     getInitialParentChoices(parentTypeOptions: List<IEntityTypeOption>) : List<EntityChoice> {

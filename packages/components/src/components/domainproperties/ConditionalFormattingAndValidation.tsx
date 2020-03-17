@@ -4,7 +4,7 @@ import { List } from 'immutable';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
 import { DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR } from './constants';
-import { ConditionalFormat, DomainField, PropertyValidator } from './models';
+import { ConditionalFormat, DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DomainField, IDomainFormDisplayOptions, PropertyValidator } from './models';
 import { ValidatorModal } from './validation/ValidatorModal';
 import { RegexValidationOptions } from './validation/RegexValidationOptions';
 import { RangeValidationOptions } from './validation/RangeValidationOptions';
@@ -25,6 +25,7 @@ interface ConditionalFormattingAndValidationProps {
     showingModal: (boolean) => any
     hideConditionalFormatting?: boolean
     successBsStyle?: string
+    domainFormDisplayOptions?: IDomainFormDisplayOptions
 }
 
 interface ConditionalFormattingAndValidationState {
@@ -34,6 +35,10 @@ interface ConditionalFormattingAndValidationState {
 }
 
 export class ConditionalFormattingAndValidation extends React.PureComponent<ConditionalFormattingAndValidationProps, ConditionalFormattingAndValidationState> {
+
+    static defaultProps = {
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
+    };
 
     constructor(props) {
         super(props);
@@ -107,33 +112,38 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
     };
 
     renderValidator = (range: boolean) => {
-        const { field, index, domainIndex } = this.props;
+        const { field, index, domainIndex, domainFormDisplayOptions } = this.props;
 
         const validators = range ? field.rangeValidators : field.regexValidators;
         const count = validators ? validators.size : 0;
 
         return (
-            <div className={range ? '' : 'domain-validation-group'}>
-                <div className={'domain-field-label domain-no-wrap'}>{'Create ' + (range ? 'Range': 'Regular') + ' Expression Validator'}
-                    <LabelHelpTip title={'Add ' + (range ? 'Range' : 'Regex') + ' Validator'} body={range ? this.getRangeValidatorHelpText : this.getRegexValidatorHelpText}/>
+            <>
+            { domainFormDisplayOptions.showValidators &&
+                <div className={range ? '' : 'domain-validation-group'}>
+                    <div className={'domain-field-label domain-no-wrap'}>{'Create ' + (range ? 'Range': 'Regular Expression') + ' Validator'}
+                        <LabelHelpTip title={'Add ' + (range ? 'Range' : 'Regex') + ' Validator'} body={range ? this.getRangeValidatorHelpText : this.getRegexValidatorHelpText}/>
+                    </div>
+                    <div>
+                        <Button
+                            className="domain-validation-button"
+                            name={createFormInputName((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR))}
+                            id={createFormInputId((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR), domainIndex, index)}
+                            disabled={isFieldFullyLocked(field.lockType)}
+                            onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}
+                        >
+                            {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : (range ? 'Add Range' : 'Add Regex')}
+                        </Button>
+                        {count === 0 ? <span className='domain-text-label'>None Set</span> :
+                            <a className='domain-validator-link'
+                               onClick={ isFieldFullyLocked(field.lockType) ? () => {} : (range ? this.showHideRangeValidator : this.showHideRegexValidator)}>
+                                {'' + count + ' Active validator' + (count > 1 ? 's' : '')}
+                            </a>}
+                    </div>
                 </div>
-                <div>
-                    <Button
-                        className="domain-validation-button"
-                        name={createFormInputName((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR))}
-                        id={createFormInputId((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR), domainIndex, index)}
-                        disabled={isFieldFullyLocked(field.lockType)}
-                        onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}
-                    >
-                        {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : (range ? 'Add Range' : 'Add Regex')}
-                    </Button>
-                    {count === 0 ? <span className='domain-text-label'>None Set</span> :
-                        <a className='domain-validator-link'
-                           onClick={ isFieldFullyLocked(field.lockType) ? () => {} : (range ? this.showHideRangeValidator : this.showHideRegexValidator)}>
-                            {'' + count + ' Active validator' + (count > 1 ? 's' : '')}
-                        </a>}
-                </div>
-            </div>)
+                }
+             </>
+        )
     };
 
     renderConditionalFormats = () => {
@@ -184,7 +194,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
                         {!hideConditionalFormatting && this.renderConditionalFormats()}
-                        {this.renderValidator(false)}
+                        {DomainField.hasRegExValidation(field) && this.renderValidator(false)}
                         {DomainField.hasRangeValidation(field) && this.renderValidator(true)}
                         {showCondFormat &&
                             <CondFormatModal

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { DomainField, IFieldChange } from './models';
+import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { TextFieldOptions } from './TextFieldOptions';
 import { BooleanFieldOptions } from './BooleanFieldOptions';
@@ -36,16 +36,25 @@ interface IDomainRowExpandedOptionsProps {
     appPropertiesOnly?: boolean
     domainIndex: number
     successBsStyle?: string
+    domainFormDisplayOptions?: IDomainFormDisplayOptions
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
 
     typeDependentOptions = () => {
-        const { field, index, onChange, onMultiChange, domainIndex } = this.props;
+        const { field, index, onChange, onMultiChange, domainIndex, domainFormDisplayOptions } = this.props;
 
         switch(field.dataType.name) {
             case 'string':
-                return <TextFieldOptions index={index} domainIndex={domainIndex} label='Text Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
+                if (domainFormDisplayOptions && domainFormDisplayOptions.showTextOptions) {
+                    if (field.isPrimaryKey) // Issue39877: Max text length options should not be visible for text key field of list
+                        return;
+                    return <TextFieldOptions index={index} domainIndex={domainIndex} label='Text Options'
+                                             scale={field.scale} onChange={onChange} lockType={field.lockType}/>;
+                }
+                else {
+                    return null;
+                }
             case 'flag':
                 return <TextFieldOptions index={index} domainIndex={domainIndex} label='Flag Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'multiLine':
@@ -85,7 +94,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
     };
 
     render() {
-        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex, successBsStyle } = this.props;
+        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex, successBsStyle, domainFormDisplayOptions } = this.props;
 
         return(
             <div className='domain-row-container'>
@@ -107,6 +116,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                 showingModal={showingModal}
                                 hideConditionalFormatting={appPropertiesOnly}
                                 successBsStyle={successBsStyle}
+                                domainFormDisplayOptions={domainFormDisplayOptions}
                             />
                         </Col>
                     }

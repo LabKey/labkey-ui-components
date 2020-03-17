@@ -35,9 +35,11 @@ import {
     SEVERITY_LEVEL_WARN,
 } from './constants';
 import {
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DomainField,
     DomainFieldError,
     FieldErrors,
+    IDomainFormDisplayOptions,
     IFieldChange,
     PropDescType,
     resolveAvailableTypes,
@@ -52,6 +54,7 @@ import { DragDropHandle } from "../base/DragDropHandle";
 import { SCHEMAS } from '../base/models/schemas';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {FIELD_EDITOR_TOPIC} from "../../util/helpLinks";
 
 interface IDomainRowProps {
     domainId?: number
@@ -67,7 +70,6 @@ interface IDomainRowProps {
     fieldError?: DomainFieldError
     onDelete: (any) => void
     onExpand: (index?: number) => void
-    isDragDisabled: boolean
     showDefaultValueSettings: boolean
     defaultDefaultValueType: string
     defaultValueOptions: List<string>
@@ -75,6 +77,7 @@ interface IDomainRowProps {
     showFilePropertyType?: boolean
     domainIndex: number
     successBsStyle?: string
+    domainFormDisplayOptions?: IDomainFormDisplayOptions
 }
 
 interface IDomainRowState {
@@ -89,6 +92,10 @@ interface IDomainRowState {
  */
 export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowState> {
 
+    static defaultProps = {
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
+    };
+
     constructor(props) {
         super(props);
 
@@ -96,14 +103,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             showAdv: false,
             closing: false,
             showingModal: false,
-            isDragDisabled: props.isDragDisabled
+            isDragDisabled: props.domainFormDisplayOptions.isDragDisabled
         };
     }
 
     componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled
-        if (nextProps.isDragDisabled !== this.props.isDragDisabled) {
-            this.setDragDisabled(nextProps.isDragDisabled, false);
+        if (nextProps.domainFormDisplayOptions.isDragDisabled !== this.props.domainFormDisplayOptions.isDragDisabled) {
+            this.setDragDisabled(nextProps.domainFormDisplayOptions.isDragDisabled, false);
         }
     }
 
@@ -150,6 +157,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         let period = '';
         if (details.length > 0) {
             period = '. ';
+        }
+
+        if (field.wrappedColumnName) {
+            details.push(period + 'Wrapped column - ' + field.wrappedColumnName);
         }
 
         if (field.isPrimaryKey) {
@@ -293,13 +304,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     onShowAdvanced = (): any => {
         this.setState(() => ({showAdv: true}));
 
-        this.setDragDisabled(this.props.isDragDisabled, true);
+        this.setDragDisabled(this.props.domainFormDisplayOptions.isDragDisabled, true);
     };
 
     onHideAdvanced = (): any => {
         this.setState(() => ({showAdv: false}));
 
-        this.setDragDisabled(this.props.isDragDisabled, false);
+        this.setDragDisabled(this.props.domainFormDisplayOptions.isDragDisabled, false);
     };
 
     onDelete = (): any => {
@@ -335,7 +346,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     };
 
     renderBaseFields() {
-        const { index, field, availableTypes, appPropertiesOnly, showFilePropertyType, domainIndex } = this.props;
+        const { index, field, availableTypes, appPropertiesOnly, showFilePropertyType, domainIndex, domainFormDisplayOptions } = this.props;
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)}>
@@ -370,14 +381,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 </Col>
                 <Col xs={2}>
                     <div className='domain-field-checkbox-container'>
-                        <Checkbox
-                            className='domain-field-checkbox'
-                            name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
-                            id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
-                            checked={field.required}
-                            onChange={this.onFieldChange}
-                            disabled={isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
-                        />
+                        {
+                            domainFormDisplayOptions.showRequired &&
+                            <Checkbox
+                                className='domain-field-checkbox'
+                                name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
+                                id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
+                                checked={field.required}
+                                onChange={this.onFieldChange}
+                                disabled={isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
+                            />
+                        }
                     </div>
                 </Col>
             </div>
@@ -424,7 +438,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     render() {
         const { closing, isDragDisabled, showAdv, showingModal } = this.state;
         const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId, domainIndex,
-            helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions, appPropertiesOnly, successBsStyle } = this.props;
+            helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions, appPropertiesOnly,
+            successBsStyle, domainFormDisplayOptions } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", domainIndex, index)} index={index} isDragDisabled={showingModal || isDragDisabled}>
@@ -475,6 +490,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                         showingModal={this.showingModal}
                                         appPropertiesOnly={appPropertiesOnly}
                                         successBsStyle={successBsStyle}
+                                        domainFormDisplayOptions={domainFormDisplayOptions}
                                     />
                                 </div>
                             </Collapse>

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.35.1
+*Released*: 16 March 2020
 * Enhance createQueryGridModelFilteredBySample
     - Allow using lsid instead of rowid for createQueryGridModelFilteredBySample
     - Allow omit sample columns in generated model

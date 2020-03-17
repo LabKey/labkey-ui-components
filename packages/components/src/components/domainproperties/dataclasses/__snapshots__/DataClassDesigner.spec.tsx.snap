@@ -1129,6 +1129,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1205,6 +1206,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1281,6 +1283,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -1409,6 +1412,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1485,6 +1489,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1561,6 +1566,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -1697,6 +1703,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -1773,6 +1780,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -1849,6 +1857,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -2219,6 +2228,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                       "updatedField": false,
                                       "isPrimaryKey": false,
                                       "lockType": "NotLocked",
+                                      "wrappedColumnName": undefined,
                                     },
                                     Immutable.Record {
                                       "conceptURI": null,
@@ -2295,6 +2305,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                       "updatedField": false,
                                       "isPrimaryKey": false,
                                       "lockType": "NotLocked",
+                                      "wrappedColumnName": undefined,
                                     },
                                     Immutable.Record {
                                       "conceptURI": null,
@@ -2371,6 +2382,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                       "updatedField": false,
                                       "isPrimaryKey": false,
                                       "lockType": "NotLocked",
+                                      "wrappedColumnName": undefined,
                                     },
                                   ],
                                   "indices": Immutable.List [],
@@ -3577,6 +3589,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -3653,6 +3666,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -3729,6 +3743,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -3857,6 +3872,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -3933,6 +3949,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -4009,6 +4026,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -4017,6 +4035,16 @@ exports[`DataClassDesigner initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": null,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={0}
@@ -4597,6 +4625,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={58021}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -4689,11 +4727,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={0}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-0"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -4773,6 +4811,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={58021}
                                                               domainIndex={0}
@@ -4863,6 +4911,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -5326,6 +5375,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -5414,6 +5473,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={0}
@@ -5830,6 +5890,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={0}
@@ -6253,6 +6314,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -6341,6 +6412,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -6854,6 +6926,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={58021}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -6935,11 +7017,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={1}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-1"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -7020,6 +7102,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "LAST_ENTERED",
                                                                 ]
                                                               }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={58021}
                                                               domainIndex={0}
                                                               field={
@@ -7098,6 +7190,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -7555,6 +7648,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -7632,6 +7735,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={1}
@@ -8022,6 +8126,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={1}
@@ -8445,6 +8550,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -8522,6 +8637,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -9035,6 +9151,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={58021}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -9116,11 +9242,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={2}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-2"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -9201,6 +9327,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "LAST_ENTERED",
                                                                 ]
                                                               }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={58021}
                                                               domainIndex={0}
                                                               field={
@@ -9279,6 +9415,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -9718,6 +9855,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -9795,6 +9942,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={2}
@@ -10147,6 +10295,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={2}
@@ -10570,6 +10719,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -10647,6 +10806,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}

@@ -509,6 +509,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             data type
              has been set for this 
             sample
+            .
           </td>
         </tr>
         <tr
@@ -522,6 +523,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             data
              ID has been set for this 
             sample
+            .
           </td>
         </tr>
       </tbody>

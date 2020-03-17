@@ -516,6 +516,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                           data type
                            has been set for this 
                           testing
+                          .
                         </td>
                       </tr>
                       <tr
@@ -529,6 +530,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                           data
                            ID has been set for this 
                           testing
+                          .
                         </td>
                       </tr>
                     </tbody>

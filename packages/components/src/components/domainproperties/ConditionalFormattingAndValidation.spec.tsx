@@ -1,8 +1,8 @@
-import { mount } from 'enzyme';
+import {mount} from 'enzyme';
 import React from 'react';
 import toJson from 'enzyme-to-json';
-import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
-import { BOOLEAN_TYPE, DATETIME_TYPE, DomainField, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from './models';
+import {ConditionalFormattingAndValidation} from './ConditionalFormattingAndValidation';
+import {BOOLEAN_TYPE, DATETIME_TYPE, DomainField, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE} from './models';
 import propertyValidatorRange from '../../test/data/propertyValidator-range.json';
 import propertyValidatorRegex from '../../test/data/propertyValidator-regex.json';
 import conditionalFormat1 from '../../test/data/conditionalFormat1.json';
@@ -118,6 +118,34 @@ describe('ConditionalFormattingAndValidation', () => {
         validatorStrings = cfv.find({className: 'domain-validator-link'});
         expect(validatorStrings.length).toEqual(1);
         expect(validatorStrings.at(0).text()).toEqual(formatsString);
+
+        expect(toJson(cfv)).toMatchSnapshot();
+        cfv.unmount();
+    });
+
+    test('No validators', () => {
+        const props = {
+            index: 1,
+            domainIndex: 1,
+            field: DomainField.create({rangeURI: TEXT_TYPE.rangeURI}),
+            setDragDisabled: jest.fn(),
+            onChange: jest.fn(),
+            showingModal: jest.fn(),
+            domainFormDisplayOptions:{
+                showRequired: true,
+                showValidators: false,
+                isDragDisabled: false,
+                showTextOptions: true,
+                phiLevelDisabled: false,
+            }
+        };
+
+        const cfv  = mount(<ConditionalFormattingAndValidation
+            {...props}
+        />);
+
+        let validatorStrings = cfv.find({className: 'domain-validator-link'});
+        expect(validatorStrings.length).toEqual(0);
 
         expect(toJson(cfv)).toMatchSnapshot();
         cfv.unmount();

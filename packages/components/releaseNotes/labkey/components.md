@@ -5,6 +5,26 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * add highlightLastSelectedRow to QueryGridPanel
 
+### version 0.35.2
+*Released*: 17 March 2020
+* QueriesListing fix for display error message when schema does not exist
+
+### version 0.35.1
+*Released*: 16 March 2020
+* Enhance createQueryGridModelFilteredBySample
+    - Allow using lsid instead of rowid for createQueryGridModelFilteredBySample
+    - Allow omit sample columns in generated model
+    - Get all sample columns instead of one sample column per domain type
+
+### version 0.35.0
+*Released*: 16 March 2020
+* Item 6803: Added support for Query Metadata Editor and added DomainFormProp - domainFormDisplayOptions to show/hide DomainForm components
+
+### version 0.34.1
+*Released*: 16 March 2020
+* Merge forward changes from release20.3-SNAPSHOT branch
+    - includes hotfix changes from version 0.31.4
+
 ### version 0.34.0
 *Released*: 11 March 2020
 * Use Query.ContainerFilter enum as provided by @labkey/api
@@ -39,6 +59,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 3 March 2020
 * Fix issue 39085
     - factored out "fetchSamples" from "loadSelectedSamples" to allow for fetching and and transformation independent of getting selection
+
+### version 0.31.4
+*Released*: 6 March 2020
+* Fixes for List Designer issues targeting LabKey release 20.3
+    - Issue 39846: List designer - "Name" doesn't validate immediately
+    - Issue 39879: Domain designer - lookup queries which only have container PK are filtered out of the select input
 
 ### version 0.31.3
 *Released*: 28 February 2020

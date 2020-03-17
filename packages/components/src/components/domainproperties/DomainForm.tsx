@@ -24,11 +24,13 @@ import {
     DomainField,
     DomainFieldError,
     DomainPanelStatus,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     FILE_TYPE,
     FLAG_TYPE,
     HeaderRenderer,
     IAppDomainHeader,
     IDomainField,
+    IDomainFormDisplayOptions,
     IFieldChange,
     PROP_DESC_TYPES,
     PropDescType,
@@ -86,6 +88,7 @@ interface IDomainFormInput {
     domainIndex?: number
     successBsStyle?: string
     setFileImportData?: (file: File) => any // having this prop set is also an indicator that you want to show the file preview grid with the import data option
+    domainFormDisplayOptions?: IDomainFormDisplayOptions
 }
 
 interface IDomainFormState {
@@ -123,9 +126,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         showHeader: true,
         initCollapsed: false,
         isNew: false,
-        appPropertiesOnly: false,
+        appPropertiesOnly: false, // TODO: convert them into more options in the IDomainFormDisplayOptions interface
         domainIndex: 0,
-        successBsStyle: 'success'
+        successBsStyle: 'success',
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS // add configurations options to DomainForm through this object
     };
 
     constructor(props) {
@@ -176,11 +180,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 return false;
             }
 
-            if (type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties) {
-                return false;
-            }
+            return !(type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties);
 
-            return true;
         }) as List<PropDescType>
     };
 
@@ -491,28 +492,31 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderAddFieldOption() {
 
-        if (this.shouldShowInferFromFile()) {
-            return (
-                <div className={'margin-top'}>
-                    or&nbsp;
-                    <span className={'domain-form-add-link'} onClick={this.initNewDesign}>
+        const { domainFormDisplayOptions } = this.props;
+
+        if (domainFormDisplayOptions.showAddFieldsButton) {
+            if (this.shouldShowInferFromFile()) {
+                return (
+                    <div className={'margin-top'}>
+                        or&nbsp;
+                        <span className={'domain-form-add-link'} onClick={this.initNewDesign}>
                         manually define fields
                     </span>
-                </div>
-            )
-        }
-        else {
-            // TODO remove domain-form-add-btn after use in 19.3
-            return (
-                <Row className='domain-add-field-row'>
-                    <Col xs={12}>
-                        <AddEntityButton
-                            entity="Field"
-                            buttonClass="domain-form-add-btn"
-                            onClick={this.onAddField}/>
-                    </Col>
-                </Row>
-            )
+                    </div>
+                )
+            } else {
+                // TODO remove domain-form-add-btn after use in 19.3
+                return (
+                    <Row className='domain-add-field-row'>
+                        <Col xs={12}>
+                            <AddEntityButton
+                                entity="Field"
+                                buttonClass="domain-form-add-btn"
+                                onClick={this.onAddField}/>
+                        </Col>
+                    </Row>
+                )
+            }
         }
     }
 
@@ -568,6 +572,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderRowHeaders() {
+        const { domainFormDisplayOptions } = this.props;
+
         return (
             <div className='domain-floating-hdr'>
                 <Row className='domain-form-hdr-row'>
@@ -578,9 +584,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <Col xs={4}>
                             <b>Data Type</b>
                         </Col>
-                        <Col xs={2} className='domain-form-hdr-center'>
-                            <b>Required</b>
-                        </Col>
+                        {
+                            domainFormDisplayOptions.showRequired &&
+                            <Col xs={2} className='domain-form-hdr-center'>
+                                <b>Required</b>
+                            </Col>
+                        }
                     </Col>
                     <Col xs={6}>
                         <b>Details</b>
@@ -730,7 +739,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm() {
-        const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex, successBsStyle } = this.props;
+        const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex, successBsStyle, domainFormDisplayOptions } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
@@ -771,7 +780,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 onDelete={this.onDeleteField}
                                                 maxPhiLevel={maxPhiLevel}
                                                 dragging={dragId === i}
-                                                isDragDisabled={filtered}
                                                 availableTypes={availableTypes}
                                                 showDefaultValueSettings={domain.showDefaultValueSettings}
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
@@ -779,6 +787,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 appPropertiesOnly={appPropertiesOnly}
                                                 showFilePropertyType={showFilePropertyType}
                                                 successBsStyle={successBsStyle}
+                                                domainFormDisplayOptions={domainFormDisplayOptions}
                                             />
                                         }))}
                                         {provided.placeholder}

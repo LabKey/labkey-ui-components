@@ -231,7 +231,7 @@ class GridMessages extends React.PureComponent<GridMessagesProps, any> {
 
 interface GridBodyProps {
     data: List<Map<string, any>>
-    highlightRowIds?: List<number>
+    highlightRowIndexes?: List<number>
     columns: List<Column>
     emptyText: string
     isLoading: boolean
@@ -292,13 +292,13 @@ class GridBody extends React.PureComponent<GridBodyProps, any> {
     }
 
     render() {
-        const { data, transpose, highlightRowIds } = this.props;
+        const { data, transpose, highlightRowIndexes } = this.props;
 
         return <tbody>{data.count() > 0 ? data.map((row, ind) => {
             if (transpose)
                 return this.renderRowTranspose(row, ind);
 
-            const highlight = highlightRowIds && highlightRowIds.contains(ind);
+            const highlight = highlightRowIndexes && highlightRowIndexes.contains(ind);
             return this.renderRow(row, ind, highlight);
         }) : this.renderDefaultRow()}</tbody>;
     }
@@ -313,7 +313,7 @@ export interface GridProps {
     condensed?: boolean
     columns?: List<any>
     data?: GridData
-    highlightRowIds?: List<number>
+    highlightRowIndexes?: List<number>
     emptyText?: string
     gridId?: string
     headerCell?: any
@@ -371,7 +371,7 @@ export class Grid extends React.PureComponent<GridProps, any> {
             striped,
             tableRef,
             transpose,
-            highlightRowIds
+            highlightRowIndexes
         } = this.props;
 
         const gridData = processData(data);
@@ -393,7 +393,7 @@ export class Grid extends React.PureComponent<GridProps, any> {
             loadingText,
             rowKey,
             transpose,
-            highlightRowIds
+            highlightRowIndexes
         };
 
         const tableClasses = classNames({

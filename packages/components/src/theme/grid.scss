@@ -6,8 +6,8 @@
   text-align: left;
 }
 
-.grid-row-highlight {
-  background-color: $yellow-shadow !important;
+.table-striped > tbody > tr.grid-row-highlight {
+  background-color: $yellow-shadow;
 }
 
 .panel.fixed-panel {

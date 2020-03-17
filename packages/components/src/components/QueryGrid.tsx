@@ -226,7 +226,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         return List<number>([model.dataIds.indexOf(lastSelectedId)]);
     }
 
-    getHighlightRowIds(): List<number> {
+    getHighlightRowIndexes(): List<number> {
         const { highlightLastSelectedRow } = this.props;
         const model = this.getModel(this.props);
 
@@ -252,7 +252,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             columns: this.getColumns(),
             condensed: true,
             data: model.getData(),
-            highlightRowIds: this.getHighlightRowIds(),
+            highlightRowIndexes: this.getHighlightRowIndexes(),
             gridId: model.getId(),
             messages: model.messages,
             headerCell: this.headerCell,

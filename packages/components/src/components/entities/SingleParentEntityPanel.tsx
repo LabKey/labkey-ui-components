@@ -65,8 +65,9 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         const { parentDataType, parentLSIDs } = this.props;
         const { chosenType } = this.state;
 
-        if (!chosenType)
+        if (!chosenType) {
             return undefined;
+        }
 
         let baseFilters = List<any>();
         if (parentLSIDs && parentLSIDs.length > 0) {
@@ -116,8 +117,9 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
 
         const model = this.getParentModel();
 
-        if ((model && model.isLoading) || !parentTypeOptions)
+        if ((model && model.isLoading) || !parentTypeOptions) {
             return <LoadingSpinner/>;
+        }
 
         const parentSchemaQuery = chosenType ? SchemaQuery.create(this.props.parentDataType.instanceSchemaName, chosenType) : undefined;
         const lcTypeName = chosenType ? chosenType.toLowerCase() : undefined;
@@ -205,13 +207,13 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                         <tr key={'type-name'}>
                             <td>{parentDataType.typeNounSingular}</td>
                             <td >
-                                No {parentDataType.typeNounSingular.toLowerCase()} has been set for this {lcChildNoun}
+                                No {parentDataType.typeNounSingular.toLowerCase()} has been set for this {lcChildNoun}.
                             </td>
                         </tr>
                         <tr key={'parent-id'}>
                             <td>{capitalizeFirstChar(parentDataType.nounSingular) + " ID"}</td>
                             <td >
-                                No {parentDataType.nounSingular.toLowerCase()} ID has been set for this {lcChildNoun}
+                                No {parentDataType.nounSingular.toLowerCase()} ID has been set for this {lcChildNoun}.
                             </td>
                         </tr>
                     </tbody>

@@ -5,6 +5,7 @@ import {
     Alert,
     capitalizeFirstChar,
     EntityDataType,
+    getActionErrorMessage,
     getQueryGridModel,
     LoadingSpinner,
     naturalSort,
@@ -30,8 +31,8 @@ interface Props {
     onUpdate?: () => void
     parentDataType: EntityDataType
     title: string
-    cancelText: string
-    submitText: string
+    cancelText?: string
+    submitText?: string
 }
 
 interface State {
@@ -86,7 +87,11 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     currentParents,
                 }));
             }
-        )
+        ).catch((reason) => {
+            this.setState(() => ({
+                error: getActionErrorMessage("Unable to load " + parentDataType.descriptionSingular + " data.", parentDataType.descriptionPlural, true)
+            }))
+        })
     }
 
     getChildModel() {

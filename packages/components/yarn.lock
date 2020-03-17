@@ -1329,10 +1329,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@labkey/api@0.0.41-fb-39867-stacktrace.1":
-  version "0.0.41-fb-39867-stacktrace.1"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.41-fb-39867-stacktrace.1.tgz#d2e79841dfc8cb313986c3a4076724b0ff4c552a"
-  integrity sha1-0ueYQd/IyzE5hsOkB2cksP9MVSo=
+"@labkey/api@0.0.41-fb-39867-stacktrace.2":
+  version "0.0.41-fb-39867-stacktrace.2"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.41-fb-39867-stacktrace.2.tgz#e250853d224b2b7b670300ca644309a2fc04c0b4"
+  integrity sha1-4lCFPSJLK3tnAwDKZEMJovwEwLQ=
 
 "@labkey/eslint-config-base@0.0.5":
   version "0.0.5"

@@ -82,8 +82,11 @@ import assayAminoAcidsDataQueryInfo from '../test/data/assayAminoAcidsData-getQu
 import assayAminoAcidsDataQuery from '../test/data/assayAminoAcidsData-getQuery.json';
 import sampleWithParentsQuery from '../test/data/sampleWithParents-getQuery.json';
 import sampleWithParentsQueryDetails from '../test/data/sampleWithParents-getQueryDetails.json';
-import sourceQueryDetails from '../test/data/source-getQueryDetails.json';
-import sourceQuery from '../test/data/source-getQuery.json';
+import sampleWithTwoSourcesQuery from '../test/data/sampleWithTwoSources-getQuery.json';
+import secondSourceQuery from '../test/data/secondSource-getQuery.json';
+import secondSourceQueryDetails from '../test/data/secondSource-getQueryDetails.json';
+import source1Query from '../test/data/source1-getQuery.json';
+import source1QueryDetails from '../test/data/source1-getQueryDetails.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 
@@ -114,7 +117,8 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         'mixtures': mixturesQueryInfo,
         'mixturespaging': mixturesQueryInfo,
         'expressionsystem': expressionsystemQueryInfo,
-        'second source': sourceQueryDetails,
+        'second source': secondSourceQueryDetails,
+        'source 1': source1QueryDetails,
     },
     'labbook': {
         'labbookexperiment': labbookQueryInfo,
@@ -131,6 +135,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         'name expression set': nameExpressionQueryInfo,
         'name%20expression%20set': nameExpressionQueryInfo,
         'examples': sampleWithParentsQueryDetails,
+        'multisource': sampleWithParentsQueryDetails,
     },
     'schema': {
         'gridwithoutdata': mixturesQueryInfo,
@@ -166,7 +171,8 @@ const QUERY_RESPONSES = fromJS({
         'mixtures': mixturesQuery,
         'mixturespaging': mixturesQueryPaging,
         'expressionsystem': expSystemLineageQuery,
-        'second source': sourceQuery,
+        'second source': secondSourceQuery,
+        'source 1': source1Query,
     },
     'labbook': {
         'labbookexperiment': labbookQuery,
@@ -181,6 +187,7 @@ const QUERY_RESPONSES = fromJS({
         'samplesetwithallfieldtypes': samplesLineageQuery,
         'name expression set': nameExpressionSelectedQuery,
         'examples': sampleWithParentsQuery,
+        'multisource': sampleWithTwoSourcesQuery,
     },
     'schema': {
         'gridwithoutdata': noDataQuery,
@@ -359,7 +366,9 @@ export function initQueryGridMocks() {
         const schemaName = queryParams.schemaName.toLowerCase();
         const queryName = queryParams.queryName.toLowerCase();
         const responseBody = QUERY_DETAILS_RESPONSES.getIn([schemaName, queryName]);
-
+        console.log('getQueryDetails: schemaName', schemaName);
+        console.log('getQueryDetails: queryName', queryName);
+        console.log('getQueryDetails: responseBody', responseBody.toJS());
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -375,6 +384,9 @@ export function initQueryGridMocks() {
         const queryName = params['query.queryName'].toLowerCase();
         const schemaName = params.schemaName.toLowerCase();
         let responseBody = QUERY_RESPONSES.getIn([schemaName, queryName]);
+        console.log('getQuery: schemaName', schemaName);
+        console.log('getQuery: queryName', queryName);
+        console.log('getQuery: responseBody', responseBody.toJS());
 
         if (!responseBody) {
             console.log(`getQuery response not found! schemaName: "${schemaName}" queryName: "${queryName}"`);

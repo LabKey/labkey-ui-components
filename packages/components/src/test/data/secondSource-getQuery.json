@@ -199,21 +199,21 @@
   "rows" : [ {
     "data" : {
       "RowId" : {
-        "value" : 57093,
-        "url" : "/labkey/Sam%20Man/experiment-showData.view?rowId=57093"
+        "value" : 57088,
+        "url" : "/labkey/Sam%20Man/experiment-showData.view?rowId=57088"
       },
       "intvalue" : {
-        "value" : 41
+        "value" : 4
       },
       "floatval" : {
-        "value" : 3.1415
+        "value" : 3.14
       },
       "textvalue" : {
-        "value" : "Text"
+        "value" : "REQT"
       },
       "Name" : {
-        "value" : "Sec-32",
-        "url" : "/labkey/Sam%20Man/experiment-showData.view?rowId=57093"
+        "value" : "Sec-2",
+        "url" : "/labkey/Sam%20Man/experiment-showData.view?rowId=57088"
       }
     }
   } ],

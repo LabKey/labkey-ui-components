@@ -1,6 +1,6 @@
 import React from 'react';
-import {SampleTypeModel} from './models';
-import {SampleTypePropertiesPanel} from "./SampleTypePropertiesPanel";
+import { SampleTypeModel } from './models';
+import { SampleTypePropertiesPanel } from "./SampleTypePropertiesPanel";
 import {
     Alert,
     DomainDesign,
@@ -11,7 +11,8 @@ import {
     naturalSort,
     resolveErrorMessage,
     SAMPLE_TYPE,
-    saveDomain, SCHEMAS,
+    saveDomain,
+    SCHEMAS,
     WizardNavButtons
 } from "../../..";
 import DomainForm from "../DomainForm";
@@ -45,7 +46,7 @@ const DOMAIN_PANEL_INDEX: number = 1;
 export const SAMPLE_SET_IMPORT_PREFIX :string = 'materialInputs/';
 export const DATA_CLASS_IMPORT_PREFIX :string = 'dataInputs/';
 const DATA_CLASS_SCHEMA_KEY:string = 'exp/dataclasses';
-const SAMPLEID_RESERVED_ERROR = 'The ' + DEFAULT_SAMPLE_FIELD_CONFIG.name + ' field name is reserved for imported or generated sample ids.';
+const SAMPLE_ID_RESERVED_ERROR = 'The ' + DEFAULT_SAMPLE_FIELD_CONFIG.name + ' field name is reserved for imported or generated sample ids.';
 
 interface Props {
     onCancel: () => void
@@ -105,7 +106,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
 
         initQueryGridState();
         const domainDetails = this.props.initModel || DomainDetails.create();
-        const model = SampleTypeModel.create(domainDetails);
+        const model = SampleTypeModel.create(domainDetails, domainDetails.domainDesign ? domainDetails.domainDesign.name : undefined);
 
         this.state = {
             submitting: false,
@@ -358,13 +359,13 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
             newDomain.fields.forEach(field => {
                 if (field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase()) {
                     invalidDomainField = field.name;
-                    error = SAMPLEID_RESERVED_ERROR;
+                    error = SAMPLE_ID_RESERVED_ERROR;
                 }
             });
         }
 
         //If error field cleared and error message matches then clear it.
-        if (!invalidDomainField && error === SAMPLEID_RESERVED_ERROR) //Splice || regex better?
+        if (!invalidDomainField && error === SAMPLE_ID_RESERVED_ERROR) //Splice || regex better?
             error = undefined;
 
         this._dirty = true;

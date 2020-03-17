@@ -18,12 +18,13 @@ export interface EntityDetailsProps {
     data?: Map<string, any>
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
+    nameReadOnly?: boolean
 }
 
 export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, any> {
 
     render() {
-        const { nameExpressionInfoUrl, nameExpressionPlaceholder, noun, onFormChange, formValues, data } = this.props;
+        const { nameExpressionInfoUrl, nameExpressionPlaceholder, noun, onFormChange, formValues, data, nameReadOnly } = this.props;
         const moreInfoLink = nameExpressionInfoUrl ? <p><a target={'_blank'} href={nameExpressionInfoUrl}>More info</a></p> : '';
 
         return (
@@ -47,7 +48,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                             placeholder={`Enter a name for this ${noun.toLowerCase()}`}
                             onChange={onFormChange}
                             value={getEntityNameValue(formValues, data)}
-                            disabled={isExistingEntity(formValues, data)}
+                            disabled={isExistingEntity(formValues, data) || nameReadOnly }
                         />
                     </Col>
                 </Row>

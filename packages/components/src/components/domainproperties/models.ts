@@ -1442,10 +1442,12 @@ export class DomainDetails extends Record({
     domainDesign: undefined,
     options: undefined,
     domainKindName: undefined,
+    nameReadOnly: false
 }) {
     domainDesign: DomainDesign;
     options: Map<string, any>;
     domainKindName: string;
+    nameReadOnly?: boolean;
 
     static create(rawDesign: Map<string, any> = Map(), domainKindType: string = Domain.KINDS.UNKNOWN): DomainDetails {
 
@@ -1454,7 +1456,8 @@ export class DomainDetails extends Record({
             const domainDesign = DomainDesign.create(rawDesign.get('domainDesign'));
             const domainKindName = rawDesign.get('domainKindName', domainKindType);
             const options = Map(rawDesign.get('options'));
-            design = new DomainDetails({domainDesign, domainKindName, options});
+            const nameReadOnly = rawDesign.get('nameReadOnly');
+            design = new DomainDetails({domainDesign, domainKindName, options, nameReadOnly});
         }
         else {
             design = new DomainDetails({

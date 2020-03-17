@@ -6,6 +6,7 @@ import { IParentOption } from "../../entities/models";
 export class SampleTypeModel extends Record({
     rowId: undefined,
     name: undefined,
+    nameReadOnly: false,
     nameExpression: undefined,
     description: undefined,
     parentAliases: undefined,
@@ -15,6 +16,7 @@ export class SampleTypeModel extends Record({
 }) {
     rowId: number;
     name: string;
+    nameReadOnly?: boolean;
     nameExpression: string;
     description: string;
     parentAliases?: OrderedMap<string, IParentAlias>;
@@ -26,7 +28,7 @@ export class SampleTypeModel extends Record({
         super(values);
     }
 
-    static create(raw?: DomainDetails): SampleTypeModel {
+    static create(raw?: DomainDetails, name?: string): SampleTypeModel {
         if (!raw)
             return new SampleTypeModel();
 
@@ -43,6 +45,8 @@ export class SampleTypeModel extends Record({
 
         return new SampleTypeModel({
             ...options.toJS(),
+            name,
+            nameReadOnly: raw.nameReadOnly,
             importAliases,
             domain
         });

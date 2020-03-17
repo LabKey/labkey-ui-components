@@ -169,14 +169,15 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
         return parentAliases.valueSeq().map((alias:IParentAlias) => {
             return (
                 <SampleSetParentAliasRow
-                key={alias.id}
-                id={alias.id}
-                parentAlias={alias}
-                parentOptions={parentOptions}
-                onAliasChange={this.parentAliasChanges}
-                onRemove={this.removeParentAlias}
-                updateDupeParentAliases={updateDupeParentAliases}
-            />);
+                    key={alias.id}
+                    id={alias.id}
+                    parentAlias={alias}
+                    parentOptions={parentOptions}
+                    onAliasChange={this.parentAliasChanges}
+                    onRemove={this.removeParentAlias}
+                    updateDupeParentAliases={updateDupeParentAliases}
+                />
+            );
         });
     };
 
@@ -221,6 +222,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
                             noun={noun}
                             onFormChange={this.onFormChange}
                             data={model}
+                            nameReadOnly={model.nameReadOnly}
                             nameExpressionInfoUrl={nameExpressionInfoUrl}
                             nameExpressionPlaceholder={nameExpressionPlaceholder}
                         />

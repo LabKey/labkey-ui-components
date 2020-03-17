@@ -36,6 +36,20 @@ storiesOf('SampleTypeDesigner', module)
             nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
         />
     })
+    .add('create with read-only name', () => {
+        return (
+            <SampleTypeDesigner
+                initModel={DomainDetails.create(Map<string, any> ({
+                    domainDesign: {name: "Can't Touch Me"},
+                    nameReadOnly: true
+                }))}
+                onCancel={() => console.log('Cancel clicked')}
+                onComplete={() => console.log('Create clicked')}
+                nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://wwDodomw.labkey.org')}
+                nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+            />
+        )
+    })
     .add('for update', () => {
         let design = DomainDetails.create(Map(domainData), Domain.KINDS.SAMPLE_TYPE);
 

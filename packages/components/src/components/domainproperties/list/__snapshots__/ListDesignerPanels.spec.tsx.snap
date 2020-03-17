@@ -96,6 +96,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": true,
             "lockType": "PKLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -183,6 +184,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -270,6 +272,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -357,6 +360,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -444,6 +448,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -531,6 +536,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -607,6 +613,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -694,6 +701,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -781,6 +789,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -868,6 +877,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -955,6 +965,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1031,6 +1042,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1107,6 +1119,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -1248,6 +1261,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": true,
               "lockType": "PKLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1335,6 +1349,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1422,6 +1437,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1509,6 +1525,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1596,6 +1613,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1683,6 +1701,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1759,6 +1778,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1846,6 +1866,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1933,6 +1954,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -2020,6 +2042,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -2107,6 +2130,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -2183,6 +2207,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -2259,6 +2284,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -2407,6 +2433,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": true,
                   "lockType": "PKLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2494,6 +2521,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2581,6 +2609,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2668,6 +2697,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2755,6 +2785,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2842,6 +2873,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2918,6 +2950,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -3005,6 +3038,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -3092,6 +3126,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -3179,6 +3214,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -3266,6 +3302,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -3342,6 +3379,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -3418,6 +3456,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -3808,6 +3847,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": true,
                                           "lockType": "PKLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -3895,6 +3935,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -3982,6 +4023,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4069,6 +4111,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4156,6 +4199,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4243,6 +4287,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4319,6 +4364,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4406,6 +4452,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4493,6 +4540,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4580,6 +4628,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4667,6 +4716,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4743,6 +4793,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -4819,6 +4870,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                       ],
                                       "indices": Immutable.List [],
@@ -4975,6 +5027,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": true,
                                                 "lockType": "PKLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5062,6 +5115,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5149,6 +5203,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5236,6 +5291,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5323,6 +5379,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5410,6 +5467,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5486,6 +5544,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5573,6 +5632,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5660,6 +5720,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5747,6 +5808,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5834,6 +5896,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5910,6 +5973,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -5986,6 +6050,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                             ],
                                             "indices": Immutable.List [],
@@ -6185,6 +6250,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": true,
                                                 "lockType": "PKLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6272,6 +6338,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6359,6 +6426,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6446,6 +6514,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6533,6 +6602,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6620,6 +6690,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6696,6 +6767,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6783,6 +6855,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6870,6 +6943,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -6957,6 +7031,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -7044,6 +7119,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -7120,6 +7196,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -7196,6 +7273,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                             ],
                                             "indices": Immutable.List [],
@@ -7386,6 +7464,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": true,
                                           "lockType": "PKLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -7473,6 +7552,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -7560,6 +7640,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -7647,6 +7728,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -7734,6 +7816,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -7821,6 +7904,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -7897,6 +7981,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -7984,6 +8069,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -8071,6 +8157,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -8158,6 +8245,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -8245,6 +8333,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -8321,6 +8410,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -8397,6 +8487,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                       ],
                                       "indices": Immutable.List [],
@@ -8553,6 +8644,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": true,
                                                 "lockType": "PKLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -8640,6 +8732,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -8727,6 +8820,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -8814,6 +8908,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -8901,6 +8996,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -8988,6 +9084,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -9064,6 +9161,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -9151,6 +9249,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -9238,6 +9337,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -9325,6 +9425,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -9412,6 +9513,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -9488,6 +9590,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                               Immutable.Record {
                                                 "conceptURI": null,
@@ -9564,6 +9667,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "updatedField": false,
                                                 "isPrimaryKey": false,
                                                 "lockType": "NotLocked",
+                                                "wrappedColumnName": undefined,
                                               },
                                             ],
                                             "indices": Immutable.List [],
@@ -9939,6 +10043,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": true,
                                           "lockType": "PKLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10026,6 +10131,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10113,6 +10219,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10200,6 +10307,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10287,6 +10395,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10374,6 +10483,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10450,6 +10560,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10537,6 +10648,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10624,6 +10736,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10711,6 +10824,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10798,6 +10912,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10874,6 +10989,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -10950,6 +11066,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "updatedField": false,
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
+                                          "wrappedColumnName": undefined,
                                         },
                                       ],
                                       "indices": Immutable.List [],
@@ -11186,6 +11303,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": true,
             "lockType": "PKLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -11273,6 +11391,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -11360,6 +11479,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -11447,6 +11567,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -11534,6 +11655,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -11621,6 +11743,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -11697,6 +11820,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -11784,6 +11908,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -11871,6 +11996,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -11958,6 +12084,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -12045,6 +12172,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -12121,6 +12249,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -12197,6 +12326,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -12317,6 +12447,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": true,
                 "lockType": "PKLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -12404,6 +12535,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -12491,6 +12623,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -12578,6 +12711,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -12665,6 +12799,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -12752,6 +12887,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -12828,6 +12964,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -12915,6 +13052,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -13002,6 +13140,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -13089,6 +13228,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -13176,6 +13316,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -13252,6 +13393,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -13328,6 +13470,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -13336,6 +13479,16 @@ exports[`ListDesignerPanel existing list 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": null,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={0}
@@ -13917,6 +14070,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -13998,11 +14161,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": true,
                                                       "lockType": "PKLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={0}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-0"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -14083,6 +14246,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "LAST_ENTERED",
                                                                 ]
                                                               }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={2280}
                                                               domainIndex={0}
                                                               field={
@@ -14161,6 +14334,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": true,
                                                                   "lockType": "PKLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -14539,6 +14713,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -14616,6 +14800,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": true,
                                                                     "lockType": "PKLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={0}
@@ -15006,6 +15191,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": true,
                                                                               "lockType": "PKLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={0}
@@ -15429,6 +15615,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -15506,6 +15702,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": true,
                                                                               "lockType": "PKLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -16019,6 +16216,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -16111,11 +16318,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={1}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-1"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -16195,6 +16402,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={2280}
                                                               domainIndex={0}
@@ -16285,6 +16502,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -16748,6 +16966,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -16836,6 +17064,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={1}
@@ -17252,6 +17481,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={1}
@@ -17675,6 +17905,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -17763,6 +18003,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -18276,6 +18517,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -18368,11 +18619,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={2}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-2"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -18452,6 +18703,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={2280}
                                                               domainIndex={0}
@@ -18542,6 +18803,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -19005,6 +19267,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -19093,6 +19365,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={2}
@@ -19509,6 +19782,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={2}
@@ -19932,6 +20206,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -20020,6 +20304,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -20533,6 +20818,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -20625,11 +20920,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={3}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-3"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -20709,6 +21004,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={2280}
                                                               domainIndex={0}
@@ -20799,6 +21104,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -21264,6 +21570,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -21352,6 +21668,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={3}
@@ -21990,6 +22307,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={3}
@@ -22413,6 +22731,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -22501,6 +22829,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -23014,6 +23343,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -23106,11 +23445,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={4}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-4"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -23190,6 +23529,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={2280}
                                                               domainIndex={0}
@@ -23280,6 +23629,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -23745,6 +24095,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -23833,6 +24193,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={4}
@@ -24471,6 +24832,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={4}
@@ -24894,6 +25256,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -24982,6 +25354,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -25495,6 +25868,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -25587,11 +25970,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={5}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-5"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -25671,6 +26054,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={2280}
                                                               domainIndex={0}
@@ -25761,6 +26154,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -26224,6 +26618,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -26312,6 +26716,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={5}
@@ -26728,6 +27133,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={5}
@@ -27151,6 +27557,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -27239,6 +27655,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -27752,6 +28169,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -27833,11 +28260,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={6}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-6"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -27918,6 +28345,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "LAST_ENTERED",
                                                                 ]
                                                               }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={2280}
                                                               domainIndex={0}
                                                               field={
@@ -27996,6 +28433,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -28435,6 +28873,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -28512,6 +28960,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={6}
@@ -28625,6 +29074,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={6}
@@ -29048,6 +29498,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -29125,6 +29585,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -29482,6 +29943,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -29574,11 +30045,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={7}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-7"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -29658,6 +30129,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={2280}
                                                               domainIndex={0}
@@ -29748,6 +30229,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -30213,6 +30695,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -30301,6 +30793,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={7}
@@ -30939,6 +31432,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={7}
@@ -31362,6 +31856,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -31450,6 +31954,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -31963,6 +32468,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -32055,11 +32570,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={8}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-8"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -32139,6 +32654,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={2280}
                                                               domainIndex={0}
@@ -32229,6 +32754,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -32692,6 +33218,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -32780,6 +33316,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={8}
@@ -33196,6 +33733,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={8}
@@ -33619,6 +34157,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -33707,6 +34255,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -34220,6 +34769,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -34312,11 +34871,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={9}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-9"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -34396,6 +34955,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={2280}
                                                               domainIndex={0}
@@ -34486,6 +35055,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -34949,6 +35519,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -35037,6 +35617,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={9}
@@ -35453,6 +36034,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={9}
@@ -35876,6 +36458,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -35964,6 +36556,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -36477,6 +37070,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -36569,11 +37172,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={10}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-10"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -36653,6 +37256,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "FIXED_EDITABLE",
                                                                   "LAST_ENTERED",
                                                                 ]
+                                                              }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
                                                               }
                                                               domainId={2280}
                                                               domainIndex={0}
@@ -36743,6 +37356,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -37206,6 +37820,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -37294,6 +37918,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={10}
@@ -37710,6 +38335,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={10}
@@ -38133,6 +38759,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -38221,6 +38857,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -38734,6 +39371,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -38815,11 +39462,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={11}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-11"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -38900,6 +39547,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "LAST_ENTERED",
                                                                 ]
                                                               }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={2280}
                                                               domainIndex={0}
                                                               field={
@@ -38978,6 +39635,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -39417,6 +40075,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -39494,6 +40162,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={11}
@@ -39846,6 +40515,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={11}
@@ -40269,6 +40939,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -40346,6 +41026,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -40859,6 +41540,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "LAST_ENTERED",
                                                     ]
                                                   }
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={2280}
                                                   domainIndex={0}
                                                   dragging={false}
@@ -40940,11 +41631,11 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="list"
                                                   index={12}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-12"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -41025,6 +41716,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "LAST_ENTERED",
                                                                 ]
                                                               }
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={2280}
                                                               domainIndex={0}
                                                               field={
@@ -41103,6 +41804,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="list"
@@ -41542,6 +42244,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={0}
                                                                 field={
                                                                   Immutable.Record {
@@ -41619,6 +42331,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={12}
@@ -41952,6 +42665,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={12}
@@ -42375,6 +43089,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={0}
                                                                           field={
                                                                             Immutable.Record {
@@ -42452,6 +43176,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}

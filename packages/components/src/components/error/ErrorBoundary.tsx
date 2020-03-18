@@ -26,26 +26,23 @@ export class ErrorBoundary extends React.PureComponent<{}, ErrorBoundaryState> {
     componentDidCatch(error, errorInfo) {
         const { Mothership } = getServerContext();
 
+        this.setState(() => ({
+            error,
+            errorInfo,
+            hasError: true,
+            stackTrace: error?.stack ? error.stack : undefined
+        }));
+
         if (Mothership) {
             // process stack trace against available source maps
             Mothership.processStackTrace(error, (stackTrace) => {
-                this.setState(() => ({
-                    error,
-                    errorInfo,
-                    hasError: true,
-                    stackTrace: stackTrace || error.stack,
+                this.setState((state) => ({
+                    stackTrace: stackTrace || state.stackTrace,
                 }));
             });
 
             // log error as this error was caught by React
             Mothership.logError(error);
-        } else {
-            this.setState(() => ({
-                error,
-                errorInfo,
-                hasError: true,
-                stackTrace: error.stack,
-            }));
         }
     }
 

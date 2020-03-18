@@ -47,9 +47,9 @@ export class ErrorPage extends React.PureComponent<ErrorPageProps> {
                                     <dd>{this.isFeatureEnabled(ExperimentalFeatures.javascriptMothership) ? 'Yes' : 'No'}</dd>
                                 </dl>
                                 <h4>Stacktrace</h4>
-                                <pre>{stackTrace}</pre>
+                                <pre>{stackTrace ? stackTrace : 'Stacktrace not available'}</pre>
                                 <h4>Component stack</h4>
-                                <pre>{errorInfo.componentStack}</pre>
+                                <pre>{errorInfo?.componentStack ? errorInfo.componentStack : 'Component stack not available'}</pre>
                             </div>
                         </div>
                     </Page>

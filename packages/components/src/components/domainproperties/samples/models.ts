@@ -13,6 +13,7 @@ export class SampleTypeModel extends Record({
     importAliases: undefined,
     domainId: undefined,
     domain: undefined,
+    exception: undefined,
 }) {
     rowId: number;
     name: string;
@@ -23,6 +24,7 @@ export class SampleTypeModel extends Record({
     importAliases?: Map<string, string>;
     domainId?: number;
     domain?: DomainDesign;
+    exception: string;
 
     constructor(values?: {[key:string]: any}) {
         super(values);

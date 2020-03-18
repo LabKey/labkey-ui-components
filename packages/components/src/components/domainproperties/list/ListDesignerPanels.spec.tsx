@@ -50,7 +50,6 @@ describe('ListDesignerPanel', () => {
 
         expect(listDesignerPanels.find(ListPropertiesPanel)).toHaveLength(1);
         expect(listDesignerPanels.find(DomainForm)).toHaveLength(1);
-        expect(listDesignerPanels.find('.domain-assay-buttons')).toHaveLength(1);
         listDesignerPanels.unmount();
     });
 

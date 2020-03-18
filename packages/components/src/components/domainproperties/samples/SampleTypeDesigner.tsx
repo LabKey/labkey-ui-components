@@ -12,17 +12,24 @@ import {
     resolveErrorMessage,
     SAMPLE_TYPE,
     saveDomain,
-    SCHEMAS,
-    WizardNavButtons
+    SCHEMAS
 } from "../../..";
 import DomainForm from "../DomainForm";
 import {IParentOption} from "../../entities/models";
 import {IParentAlias} from "./models";
-import {addDomainField, getDomainPanelStatus, getUpdatedVisitedPanelsList} from "../actions";
+import {
+    addDomainField,
+    getDomainBottomErrorMessage,
+    getDomainHeaderName,
+    getDomainPanelStatus,
+    getUpdatedVisitedPanelsList
+} from "../actions";
 import {initSampleSetSelects,} from "../../samples/actions";
 import {SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from "../../../constants";
 import {fromJS, List, Map, OrderedMap} from "immutable";
 import {Domain} from "@labkey/api";
+import { Button } from "react-bootstrap";
+import { SEVERITY_LEVEL_ERROR } from "../constants";
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -65,6 +72,7 @@ interface Props {
     containerTop?: number, // This sets the height of the sticky header, default is 60
     useTheme?: boolean,
     appPropertiesOnly?: boolean,
+    successBsStyle?: string
 }
 
 interface OwnState {
@@ -72,7 +80,6 @@ interface OwnState {
     parentOptions: Array<IParentOption>
     invalidDomainField: string
     submitting: boolean
-
     error: React.ReactNode
 }
 
@@ -326,7 +333,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         const {model, parentOptions, validatePanel, currentPanelIndex, visitedPanels, firstState} = this.state;
 
         return (
-            <>Sample Type
+            <>
                 <SampleTypePropertiesPanel
                     model={model}
                     parentOptions={parentOptions}
@@ -353,8 +360,10 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
 
     domainChangeHandler = (newDomain: DomainDesign): void => {
         const {defaultSampleFieldConfig} = this.props;
-        let {model, error} = this.state;
-        let invalidDomainField = undefined;
+        const {model} = this.state;
+        let invalidDomainField;
+        let error;
+
         if (newDomain && newDomain.fields) {
             newDomain.fields.forEach(field => {
                 if (field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase()) {
@@ -365,20 +374,20 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         }
 
         //If error field cleared and error message matches then clear it.
-        if (!invalidDomainField && error === SAMPLE_ID_RESERVED_ERROR) //Splice || regex better?
+        if (!invalidDomainField && this.state.error === SAMPLE_ID_RESERVED_ERROR) //Splice || regex better?
             error = undefined;
 
         this._dirty = true;
-        model = model.merge({domain:newDomain}) as SampleTypeModel;
+
         this.setState(() => ({
-            model,
+            model: model.merge({domain:newDomain}) as SampleTypeModel,
             invalidDomainField,
             error,
         }));
     };
 
     renderDomainPanel = () => {
-        const {noun, containerTop, useTheme, appPropertiesOnly} = this.props;
+        const {noun, containerTop, useTheme, appPropertiesOnly, successBsStyle} = this.props;
         const {model, currentPanelIndex, visitedPanels, firstState, validatePanel} = this.state;
         const {domain} = model;
 
@@ -393,6 +402,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                     useTheme={useTheme}
                     appPropertiesOnly={appPropertiesOnly}
                     containerTop={containerTop}
+                    successBsStyle={successBsStyle}
 
                     collapsible={true}
                     onToggle={(collapsed, callback) => this.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback)}
@@ -400,29 +410,26 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                     controlledCollapse={true}
                     initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
                     validate={validatePanel === DOMAIN_PANEL_INDEX}
-
                 />
                 }
             </>
         );
     };
 
-    isFormValid = (): boolean => {
-        const {invalidDomainField} = this.state;
-        return SampleTypeModel.isValid(this.state.model) && !invalidDomainField;
-    };
-
     onFinish = (): void => {
         const { beforeFinish } = this.props;
-        const { model } = this.state;
+        const { model, invalidDomainField } = this.state;
+        const {name, domain, description, nameExpression } = model;
+
+        if (invalidDomainField) {
+            return;
+        }
 
         this.setSubmitting(true);
 
         if (beforeFinish) {
             beforeFinish(model);
         }
-
-        const {name, domain, description, nameExpression } = model;
 
         let domainDesign = domain.merge({
             name: name, //This will be the Sample Type Name
@@ -449,8 +456,15 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
             .then((savedDomain) => {
                 this.onFinishSuccess(savedDomain);
             })
-            .catch((errorDomain) => {
-                this.onFinishFailure(resolveErrorMessage(errorDomain));
+            .catch((response) => {
+                const updatedModel = response.exception
+                    ? model.set('exception', response.exception) as SampleTypeModel
+                    : model.merge({
+                        // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
+                        domain: domain.merge({domainException: response.domainException}) as DomainDesign,
+                        exception: undefined
+                    }) as SampleTypeModel;
+                this.setState(() => ({model: updatedModel, submitting: false}));
             });
 
     };
@@ -475,26 +489,40 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
     }
 
     render() {
-        const { onCancel } = this.props;
+        const { onCancel, successBsStyle } = this.props;
         const { submitting, error, model } = this.state;
-        if (!model)
-            return null;
+
+        let errorDomains = List<string>();
+        if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
+            errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
+        }
+
+        // TODO refactor this designer component to use the visitedPanels, like ListDesignerPanels
+        const bottomErrorMsg = getDomainBottomErrorMessage(model.exception, errorDomains, model.hasValidProperties(), List<number>());
 
         return (
             <>
                 {this.renderDetailsPanel()}
                 {this.renderDomainPanel()}
-                {error && <Alert>{error}</Alert>}
-                <WizardNavButtons
-                    containerClassName="margin-top"
-                    cancel={onCancel}
-                    finish={true}
-                    canFinish={this.isFormValid()}
-                    isFinishing={submitting}
-                    nextStep={this.onFinish}
-                    finishText={"Save"}
-                    isFinishingText={"Saving..."}
-                />
+                {(error || bottomErrorMsg) && (
+                    <div className="domain-form-panel">
+                        {error && <Alert bsStyle="danger">{error}</Alert>}
+                        {bottomErrorMsg && <Alert bsStyle="danger">{bottomErrorMsg}</Alert>}
+                    </div>
+                )}
+                <div className='domain-form-panel'>
+                    <Button onClick={onCancel}>
+                        Cancel
+                    </Button>
+                    <Button
+                        className="pull-right"
+                        bsStyle={successBsStyle || 'success'}
+                        disabled={submitting}
+                        onClick={this.onFinish}
+                    >
+                        Save
+                    </Button>
+                </div>
             </>
         );
     }

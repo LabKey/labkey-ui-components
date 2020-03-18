@@ -213,16 +213,16 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
 
     static getImportAliasesAsMap(model: SampleTypeModel): Map<string,string> {
         const {name, parentAliases } = model;
-
-
         let aliases = {};
 
         if (parentAliases) {
             parentAliases.map((alias: IParentAlias) => {
                 const {parentValue} = alias;
-                let value = parentValue.value as string;
-                if (parentValue === NEW_SAMPLE_SET_OPTION)
+
+                let value = parentValue ? parentValue.value as string : '';
+                if (parentValue === NEW_SAMPLE_SET_OPTION) {
                     value = SAMPLE_SET_IMPORT_PREFIX + name;
+                }
 
                 aliases[alias.alias] = value;
             });
@@ -422,6 +422,11 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         const {name, domain, description, nameExpression } = model;
 
         if (invalidDomainField) {
+            return;
+        }
+
+        if (model.getDuplicateAlias(true).size > 0) {
+            this.setState(() => ({error: 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ')}));
             return;
         }
 

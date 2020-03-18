@@ -92,19 +92,25 @@ export class SampleTypeModel extends Record({
     /**
      * returns a Set of ids corresponding to the aliases that have duplicate alias values
      */
-    getDuplicateAlias(): Set<string> {
+    getDuplicateAlias(returnAliases = false): Set<string> {
         const {parentAliases} = this;
-        let dupesAliases = Set<string>();
+        let uniqueAliases = Set<string>();
+        let dupeAliases = Set<string>();
         let dupeIds = Set<string>();
 
-        parentAliases.forEach((alias:IParentAlias) => {
-            if (dupesAliases.has(alias.alias))
-                dupeIds = dupeIds.add(alias.id);
-            else
-                dupesAliases = dupesAliases.add(alias.alias);
-        });
+        if (parentAliases) {
+            parentAliases.forEach((alias:IParentAlias) => {
+                if (uniqueAliases.has(alias.alias)) {
+                    dupeIds = dupeIds.add(alias.id);
+                    dupeAliases = dupeAliases.add(alias.alias);
+                }
+                else {
+                    uniqueAliases = uniqueAliases.add(alias.alias);
+                }
+            });
+        }
 
-        return dupeIds;
+        return returnAliases ? dupeAliases : dupeIds;
     }
 }
 

@@ -1024,6 +1024,11 @@ export class QuerySort extends Record({
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
+
+    toRequestString() {
+        const { dir, fieldKey } = this;
+        return dir === '-' ? '-' + fieldKey : fieldKey;
+    }
 }
 
 export class SchemaDetails extends Record({

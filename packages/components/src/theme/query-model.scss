@@ -1,0 +1,30 @@
+.grid-panel__bar,
+.grid-panel__grid {
+    padding: 1em;
+}
+
+.grid-panel__bar {
+    display: flex;
+}
+
+.grid-panel__bar-left {
+    flex: 1;
+}
+
+.grid-panel__bar-right {
+}
+
+.grid-bar {
+
+}
+
+.grid-bar__section {
+    display: flex;
+}
+
+.grid-bar__left {
+    flex: 1;
+}
+
+.grid-bar__right {
+}

@@ -12,6 +12,10 @@ select a schema for the QuerySelect to use.
 * Issue 39307: Call onChange and loadOptions after model has been updated so changed selection is taken into account.
 
 
+### version 0.35.3
+*Released*: 18 March 2020
+* add highlightLastSelectedRow to QueryGridPanel
+
 ### version 0.35.2
 *Released*: 17 March 2020
 * QueriesListing fix for display error message when schema does not exist

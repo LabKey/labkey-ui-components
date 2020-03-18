@@ -82,7 +82,9 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr
+          className=""
+        >
           <td
             style={
               Object {
@@ -126,7 +128,9 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
             30
           </td>
         </tr>
-        <tr>
+        <tr
+          className=""
+        >
           <td
             style={
               Object {
@@ -170,7 +174,9 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
             30
           </td>
         </tr>
-        <tr>
+        <tr
+          className=""
+        >
           <td
             style={
               Object {
@@ -263,7 +269,9 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr
+          className=""
+        >
           <td
             style={
               Object {
@@ -285,7 +293,9 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
             }
           />
         </tr>
-        <tr>
+        <tr
+          className=""
+        >
           <td
             style={
               Object {

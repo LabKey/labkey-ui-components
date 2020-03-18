@@ -366,9 +366,7 @@ export function initQueryGridMocks() {
         const schemaName = queryParams.schemaName.toLowerCase();
         const queryName = queryParams.queryName.toLowerCase();
         const responseBody = QUERY_DETAILS_RESPONSES.getIn([schemaName, queryName]);
-        console.log('getQueryDetails: schemaName', schemaName);
-        console.log('getQueryDetails: queryName', queryName);
-        console.log('getQueryDetails: responseBody', responseBody.toJS());
+
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -384,9 +382,6 @@ export function initQueryGridMocks() {
         const queryName = params['query.queryName'].toLowerCase();
         const schemaName = params.schemaName.toLowerCase();
         let responseBody = QUERY_RESPONSES.getIn([schemaName, queryName]);
-        console.log('getQuery: schemaName', schemaName);
-        console.log('getQuery: queryName', queryName);
-        console.log('getQuery: responseBody', responseBody.toJS());
 
         if (!responseBody) {
             console.log(`getQuery response not found! schemaName: "${schemaName}" queryName: "${queryName}"`);

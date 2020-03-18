@@ -6,7 +6,6 @@ import { ErrorPage } from './ErrorPage';
 interface ErrorBoundaryState {
     error: Error
     errorInfo: ErrorInfo
-    hasError: boolean
     stackTrace: string
 }
 
@@ -18,7 +17,6 @@ export class ErrorBoundary extends React.PureComponent<{}, ErrorBoundaryState> {
         this.state = {
             error: undefined,
             errorInfo: undefined,
-            hasError: false,
             stackTrace: undefined
         };
     }
@@ -29,7 +27,6 @@ export class ErrorBoundary extends React.PureComponent<{}, ErrorBoundaryState> {
         this.setState(() => ({
             error,
             errorInfo,
-            hasError: true,
             stackTrace: error?.stack ? error.stack : undefined
         }));
 
@@ -47,7 +44,7 @@ export class ErrorBoundary extends React.PureComponent<{}, ErrorBoundaryState> {
     }
 
     render() {
-        if (this.state.hasError) {
+        if (this.state.error !== undefined) {
             const { error, errorInfo, stackTrace } = this.state;
 
             return (

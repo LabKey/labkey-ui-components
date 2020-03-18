@@ -46,6 +46,7 @@ interface Props {
     onChangeTab?: (tabInd : number) => any,
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
     advancedExportOption?: Object
+    highlightLastSelectedRow?: boolean
 }
 
 interface State {
@@ -190,7 +191,8 @@ export class QueryGridPanel extends React.Component<Props, State> {
             onReportClicked,
             onCreateReportClicked,
             onSelectionChange,
-            advancedExportOption
+            advancedExportOption,
+            highlightLastSelectedRow
         } = this.props;
         const activeModel = this.getModel();
         let gridBar;
@@ -220,7 +222,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
                     <div className="col-md-12">
                         {this.renderTabs()}
                         {activeModel
-                            ? <QueryGrid model={activeModel} onSelectionChange={onSelectionChange}/>
+                            ? <QueryGrid model={activeModel} onSelectionChange={onSelectionChange} highlightLastSelectedRow={highlightLastSelectedRow}/>
                             : <LoadingSpinner/>
                         }
                     </div>

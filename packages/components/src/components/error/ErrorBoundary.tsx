@@ -36,6 +36,9 @@ export class ErrorBoundary extends React.PureComponent<{}, ErrorBoundaryState> {
                     stackTrace: stackTrace || error.stack,
                 }));
             });
+
+            // log error as this error was caught by React
+            Mothership.logError(error);
         } else {
             this.setState(() => ({
                 error,

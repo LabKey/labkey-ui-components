@@ -51,6 +51,7 @@
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",
+    "immer": "6.0.1",
     "immutable": "3.8.2",
     "jquery": "3.4.1",
     "moment": "2.24.0",

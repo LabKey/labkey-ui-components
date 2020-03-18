@@ -15,7 +15,7 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 
 import { QueryGridPanel } from '../components/QueryGridPanel';
 import { DataViewInfo, getStateQueryGridModel } from '../models';
@@ -55,7 +55,7 @@ class QueryGridPanelWrapper extends React.Component {
     render() {
         // add marginTop so that we can see tooltips on the buttons
         return <div style={{marginTop: '20px'}}>
-            <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />
+            <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} highlightLastSelectedRow={boolean("Highlight last selection?", true)} />
         </div>
     }
 }
@@ -75,7 +75,7 @@ class QueryGridPanelPagingWrapper extends React.Component {
     render() {
         // add marginTop so that we can see tooltips on the buttons
         return <div style={{marginTop: '20px'}}>
-            <QueryGridPanel model={this.getQueryGridModel()} />
+            <QueryGridPanel model={this.getQueryGridModel()} highlightLastSelectedRow={boolean("Highlight last selection?", true)} />
         </div>
     }
 }

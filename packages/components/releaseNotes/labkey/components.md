@@ -1,6 +1,21 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.35.3
+*Released*: 18 March 2020
+* add highlightLastSelectedRow to QueryGridPanel
+
+### version 0.35.2
+*Released*: 17 March 2020
+* QueriesListing fix for display error message when schema does not exist
+
+### version 0.35.1
+*Released*: 16 March 2020
+* Enhance createQueryGridModelFilteredBySample
+    - Allow using lsid instead of rowid for createQueryGridModelFilteredBySample
+    - Allow omit sample columns in generated model
+    - Get all sample columns instead of one sample column per domain type
+
 ### version 0.35.0
 *Released*: 16 March 2020
 * Item 6803: Added support for Query Metadata Editor and added DomainFormProp - domainFormDisplayOptions to show/hide DomainForm components

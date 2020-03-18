@@ -17,7 +17,7 @@ import {
     updateRows
 } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
-import { getEntityTypeOptions } from './actions';
+import { getEntityTypeOptions, getInitialParentChoices, getUpdatedRowForParentChanges } from './actions';
 import { List, Map } from 'immutable';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
@@ -79,7 +79,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         getEntityTypeOptions(typeListingSchemaQuery, instanceSchemaName, filterArray)
             .then((optionsMap) => {
                 const parentTypeOptions = optionsMap.get(typeListingSchemaQuery.queryName);
-                const currentParents = this.getInitialParentChoices(parentTypeOptions);
+                const currentParents = getInitialParentChoices(parentTypeOptions, parentDataType, this.getChildModel());
                 this.setState(() => ({
                     loading: false,
                     parentTypeOptions,
@@ -100,47 +100,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
     hasParents() : boolean {
         return this.state.currentParents && !this.state.currentParents.isEmpty()
-    }
-
-    getInitialParentChoices(parentTypeOptions: List<IEntityTypeOption>) : List<EntityChoice> {
-        let parentValuesByType = Map<string, EntityChoice>();
-
-        const childModel = this.getChildModel();
-        if (childModel && childModel.isLoaded) {
-            const row = childModel.getRow();
-
-            if (row.size > 0) {
-                const {parentDataType} = this.props;
-                const inputs: List<Map<string, any>> = row.get(parentDataType.inputColumnName);
-                const inputTypes: List<Map<string, any>> = row.get(parentDataType.inputTypeColumnName);
-                if (inputs && inputTypes) {
-
-                    // group the inputs by parent type so we can show each in its own grid.
-                    inputTypes.forEach((typeMap, index) => {
-                        // I'm not sure when the type could have more than one value here, but 'value' is an array
-                        const typeValue = typeMap.getIn(['value', 0]);
-                        const typeOption = parentTypeOptions.find((option) => option[parentDataType.inputTypeValueField] === typeValue);
-                        if (!typeOption) {
-                            console.warn("Unable to find parent type.", typeValue);
-                        }
-                        else {
-                            if (!parentValuesByType.has(typeOption.query)) {
-                                parentValuesByType = parentValuesByType.set(typeOption.query, {
-                                    type: typeOption,
-                                    ids: [],
-                                    value: undefined
-                                })
-                            }
-                            let updatedChoice = parentValuesByType.get(typeOption.query);
-                            updatedChoice.ids.push(inputs.getIn([index, 'value']));
-                            parentValuesByType = parentValuesByType.set(typeOption.query, updatedChoice)
-                        }
-                    });
-                }
-            }
-        }
-        // having collected the values by type, create a list, sorted by the type label and return that.
-        return parentValuesByType.sortBy(choice => choice.type.label, naturalSort).toList();
     }
 
     toggleEdit = () => {
@@ -193,32 +152,12 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         const { currentParents } = this.state;
         const childModel = this.getChildModel();
 
-        const queryData = childModel.getRow();
         const queryInfo = childModel.queryInfo;
         const schemaQuery = queryInfo.schemaQuery;
-        let updatedValues = {};
-        currentParents.forEach((parentChoice) => {
-            // Label may seem wrong here, but it is the same as query when extracted from the original query to get
-            // the entity types.
-            if (parentChoice.value && parentChoice.value.length > 0) {
-                updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value;
-            }
-        });
-
-        queryInfo.getPkCols().forEach((pkCol) => {
-            const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
-
-            if (pkVal !== undefined && pkVal !== null) {
-                updatedValues[pkCol.fieldKey] = pkVal;
-            }
-            else {
-                console.warn('Unable to find value for pkCol \"' + pkCol.fieldKey + '\"');
-            }
-        });
 
         return updateRows({
             schemaQuery,
-            rows: [updatedValues]
+            rows: [getUpdatedRowForParentChanges(parentDataType, currentParents, childModel)]
         }).then(() => {
             this.setState(() => ({
                 submitting: false,
@@ -226,7 +165,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 editing: false
             }));
 
-            // clear out the original parents' grid data (which may no longer be represented in the current parents
+            // clear out the original parents' grid data (which may no longer be represented in the current parents)
             let cleared = [];
             this.state.originalParents.forEach((parentChoice) => {
                 cleared.push(parentChoice.type.label);

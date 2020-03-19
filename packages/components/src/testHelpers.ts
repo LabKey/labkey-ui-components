@@ -1,4 +1,5 @@
 import { Map } from 'immutable';
+import { LabKey } from '@labkey/api';
 import mock, { proxy } from "xhr-mock";
 import { initQueryGridState } from './global';
 import { initQueryGridMocks, initLineageMocks, initUserPropsMocks } from './stories/mock';
@@ -8,15 +9,17 @@ import { initQueryGridMocks, initLineageMocks, initUserPropsMocks } from './stor
  * to all of the same mock API responses we use in storybook.
  */
 export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?: Map<string, any>) {
-    LABKEY.container = {
-        path: "testContainer",
-        formats: {
-            dateFormat: "yyyy-MM-dd",
-            dateTimeFormat: "yyyy-MM-dd HH:mm",
-            numberFormat: null
-        }
-    };
-    LABKEY.contextPath = 'labkey';
+    initMockServerContext({
+        container: {
+            formats: {
+                dateFormat: 'yyyy-MM-dd',
+                dateTimeFormat: 'yyyy-MM-dd HH:mm',
+                numberFormat: null,
+            },
+            path: 'testContainer',
+        },
+        contextPath: 'labkey',
+    });
 
     initQueryGridState(metadata, columnRenderers);
 
@@ -25,4 +28,10 @@ export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?:
     initLineageMocks();
     initUserPropsMocks();
     mock.use(proxy);
+}
+
+declare let LABKEY: LabKey;
+
+export function initMockServerContext(context: Partial<LabKey>): void {
+    Object.assign(LABKEY, context);
 }

@@ -12,6 +12,14 @@ select a schema for the QuerySelect to use.
 * Issue 39307: Call onChange and loadOptions after model has been updated so changed selection is taken into account.
 * Issue 39863: Use POST instead of GET when getting delete confirmation data
 
+### version 0.37.0
+*Released*: 19 March 2020
+* Item 6848: Merge Sample Type creation/update UI into single designer component.
+
+### version 0.36.0
+*Released*: 19 March 2020
+* 39867: ErrorBoundary HoC, ErrorPage to display uncaught React exceptions
+
 ### version 0.35.3
 *Released*: 18 March 2020
 * add highlightLastSelectedRow to QueryGridPanel

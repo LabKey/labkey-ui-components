@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { QueryModel } from './QueryModel';
 import { Actions } from './withQueryModels';
-import { getOrDefault } from './utils';
 import { Alert, Grid, LoadingSpinner, Tip } from '..';
 import { fromJS, List, Map } from 'immutable';
 import { PagingButton } from '../components/gridbar/QueryGridPaging';
@@ -16,59 +15,135 @@ interface Props {
 
 interface RequiresModel {
     model: QueryModel;
+    actions: Actions;
 }
 
 class PaginationInfo extends PureComponent<RequiresModel> {
     render() {
         const { offset, maxRows, rowCount } = this.props.model;
+        const min = offset !== rowCount ? offset + 1 : offset;
+        let message = `${min} - `;
         let max = offset + maxRows;
 
         if (max > rowCount) {
             max = rowCount;
         }
 
+        message += `${max}`;
+
+        if (max !== rowCount) {
+            message += ` of ${rowCount}`;
+        }
+
         return (
             <div className="pagination-info">
-                {offset + 1} - {max} of {rowCount}
+                {message}
             </div>
         );
     }
 }
 
 class Pagination extends PureComponent<RequiresModel> {
+    getCurrentPage = () => {
+        const { offset, maxRows } = this.props.model;
+        return offset > 0 ? Math.floor(offset / maxRows) + 1 : 1;
+    };
+
+    getLastPage = () => {
+        const { maxRows, rowCount } = this.props.model;
+        return maxRows && maxRows > 0 ? Math.ceil(rowCount / maxRows) : 1;
+    };
+
+    isPreviousDisabled = () => {
+        return this.props.model.offset === 0;
+    };
+
+    isNextDisabled = () => {
+        const { offset, maxRows, rowCount } = this.props.model;
+        return (offset + maxRows) >= rowCount;
+    };
+
+    isFirstDisabled = () => {
+        return this.getCurrentPage() === 1;
+    };
+
+    isLastDisabled = () => {
+        return this.getCurrentPage() === this.getLastPage();
+    };
+
+    loadNextPage = () => {
+        const { model, actions } = this.props;
+
+        // Have to check because click handlers always fire.
+        if (!this.isNextDisabled()) {
+            actions.loadNextPage(model.id);
+        }
+    };
+
+    loadPreviousPage = () => {
+        const { model, actions } = this.props;
+
+        // Have to check because click handlers always fire.
+        if (!this.isPreviousDisabled()) {
+            actions.loadPreviousPage(model.id);
+        }
+    };
+
+    loadFirstPage = () => {
+        const { model, actions } = this.props;
+
+        // Have to check because click handlers always fire.
+        if (!this.isFirstDisabled()) {
+            actions.loadFirstPage(model.id);
+        }
+    };
+
+    loadLastPage = () => {
+        const { model, actions } = this.props;
+
+        // Have to check because click handlers always fire.
+        if (!this.isLastDisabled()) {
+            actions.loadLastPage(model.id);
+        }
+    };
+
     render() {
-        const { id, offset, maxRows, rowCount } = this.props.model;
-        const lastPageNumber = maxRows && maxRows > 0 ? Math.ceil(rowCount / maxRows) : 1;
-        const currentPage = offset > 0 ? Math.floor(rowCount / offset) + 1 : 1;
-        const prevDisabled = offset === 0;
-        const nextDisabled = (offset + maxRows) >= rowCount;
+        const { id } = this.props.model;
+        const lastPage = this.getLastPage();
         const prevIcon = 'fa-chevron-left';
         const nextIcon = 'fa-chevron-right';
 
         return (
             <ButtonGroup>
-                {/* TODO: prev onClick */}
-                <PagingButton disabled={prevDisabled} iconClass={prevIcon} tooltip={"Previous Page"} onClick={() => {}}/>
+                <PagingButton
+                    disabled={this.isPreviousDisabled()}
+                    iconClass={prevIcon}
+                    tooltip={"Previous Page"}
+                    onClick={this.loadPreviousPage}
+                />
+
                 <Tip caption="Current Page">
-                    <DropdownButton id={`current-page-drop-${id}`} pullRight title={currentPage}>
+                    <DropdownButton id={`current-page-drop-${id}`} pullRight title={this.getCurrentPage()}>
                         <MenuItem header>Jump To</MenuItem>
 
-                        {/* TODO: first onClick */}
-                        <MenuItem key={'first'} disabled onClick={() => {}}>
+                        <MenuItem key={'first'} disabled={this.isFirstDisabled()} onClick={this.loadFirstPage}>
                             First Page
                         </MenuItem>
 
-                        {/* TODO: last onClick */}
-                        <MenuItem key={'last'} disabled onClick={() => {}}>
+                        <MenuItem key={'last'} disabled={this.isLastDisabled()} onClick={this.loadLastPage}>
                             Last Page
                         </MenuItem>
 
-                        <MenuItem header>{lastPageNumber} Total Pages</MenuItem>
+                        <MenuItem header>{lastPage} Total Pages</MenuItem>
                     </DropdownButton>
                 </Tip>
 
-                {/* TODO: next onClick */}
-                <PagingButton disabled={nextDisabled} iconClass={nextIcon} tooltip={"Next Page"} onClick={() => {}}/>
+                <PagingButton
+                    disabled={this.isNextDisabled()}
+                    iconClass={nextIcon}
+                    tooltip={"Next Page"}
+                    onClick={this.loadNextPage}
+                />
             </ButtonGroup>
         );
     }
@@ -86,7 +161,7 @@ export class GridPanel extends PureComponent<Props> {
     }
 
     render() {
-        const { model } = this.props;
+        const { model, actions } = this.props;
 
         if (model.error !== undefined) {
             return <Alert>{model.error ? model.error : 'Something went wrong while loading data.'}</Alert>
@@ -111,8 +186,8 @@ export class GridPanel extends PureComponent<Props> {
                     <div className={"grid-panel__bar-left"} />
 
                     <div className={"grid-panel__bar-right"}>
-                        <PaginationInfo model={model} />
-                        <Pagination model={model} />
+                        <PaginationInfo model={model} actions={actions} />
+                        <Pagination model={model} actions={actions} />
                         {pageSizeSelector}
                         {viewSelector}
                     </div>

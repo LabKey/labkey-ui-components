@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - add Category select input for DataClassPropertiesPanel (for appPropertiesOnly)
     - refactor SampleSetDeleteConfirmModal as EntityTypeDeleteConfirm model for use with sample type and source type
     - refactor deleteSampleSet as deleteEntityType for use with sample type and source type
+    - add BeforeUnload.tsx HOC
 
 ### version 0.35.3
 *Released*: 18 March 2020

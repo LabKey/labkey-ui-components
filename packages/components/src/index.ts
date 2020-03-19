@@ -59,6 +59,7 @@ import {
     toggleDevTools,
     valueIsEmpty,
 } from './util/utils';
+import { BeforeUnload } from './util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './util/messaging';
 import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL';
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
@@ -622,7 +623,8 @@ export {
     Theme,
     SVGIcon,
 
-    // util functions
+    // utils
+    BeforeUnload,
     caseInsensitive,
     capitalizeFirstChar,
     getSchemaQuery,

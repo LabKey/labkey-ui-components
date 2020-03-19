@@ -14,38 +14,47 @@
  * limitations under the License.
  */
 import React from 'react';
-import { fromJS, Map } from 'immutable';
+import {Map} from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
-import { SampleSetDetailsPanel } from '../components/samples/SampleSetDetailsPanel';
+import domainData from '../test/data/property-getDomain-sampleType.json';
 
 import './stories.scss';
+import {DomainDetails} from "../components/domainproperties/models";
+import {SampleTypeDesigner} from "../components/domainproperties/samples/SampleTypeDesigner";
+import {Domain} from "@labkey/api";
 
-storiesOf('SampleSetDetailsPanel', module)
+
+storiesOf('SampleTypeDesigner', module)
     .addDecorator(withKnobs)
     .add('for create', () => {
-        return <SampleSetDetailsPanel
+        return <SampleTypeDesigner
+            initModel={DomainDetails.create()}
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
-            nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org')}
+            nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://wwDodomw.labkey.org')}
             nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
         />
     })
+    .add('create with read-only name', () => {
+        return (
+            <SampleTypeDesigner
+                initModel={DomainDetails.create(Map<string, any> ({
+                    domainDesign: {name: "Can't Touch Me"},
+                    nameReadOnly: true
+                }))}
+                onCancel={() => console.log('Cancel clicked')}
+                onComplete={() => console.log('Create clicked')}
+                nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://wwDodomw.labkey.org')}
+                nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+            />
+        )
+    })
     .add('for update', () => {
-        const data = Map<string, any>(fromJS({
-            "lsid": "urn:lsid:labkey.com:SampleSet.Folder-6:Fruits",
-            "importAliases": {
-                "banana": "materialInputs/Fruits",
-                "apples": "materialInputs/Fruits"
-            },
-            "name": "Fruits",
-            "description": 'This is only a test...',
-            "nameExpression": 'S-${genId}-${randomId}',
-            "rowId": 1,
-        }));
+        let design = DomainDetails.create(Map(domainData), Domain.KINDS.SAMPLE_TYPE);
 
-        return <SampleSetDetailsPanel
-            data={data}
+        return <SampleTypeDesigner
+            initModel={ design }
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}

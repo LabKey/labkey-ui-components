@@ -90,8 +90,8 @@ import { Section } from './components/base/Section';
 import { FileAttachmentForm } from './components/files/FileAttachmentForm';
 import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files/models';
 import { FilesListing } from './components/files/FilesListing';
-import { FilesListingForm } from './components/files/FilesListingForm'
-import { FileAttachmentEntry } from './components/files/FileAttachmentEntry'
+import { FilesListingForm } from './components/files/FilesListingForm';
+import { FileAttachmentEntry } from './components/files/FileAttachmentEntry';
 import { WebDavFile, getWebDavFiles, uploadWebDavFile } from './components/files/WebDav';
 import { FileTree } from './components/files/FileTree';
 import { Notification } from './components/notifications/Notification';
@@ -171,6 +171,7 @@ import { EditableGridLoaderFromSelection } from './components/editable/EditableG
 import { EditableGridModal } from './components/editable/EditableGridModal';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { CollapsiblePanel } from './components/CollapsiblePanel';
+import { ErrorBoundary } from './components/error/ErrorBoundary';
 import { AliasRenderer } from './renderers/AliasRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
@@ -199,8 +200,7 @@ import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
-import { deleteSampleSet, fetchSamples, getSampleSet, loadSelectedSamples } from './components/samples/actions';
-import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
+import { deleteSampleSet, fetchSamples, getSampleSet, getSampleTypeDetails, loadSelectedSamples } from './components/samples/actions';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
@@ -265,6 +265,7 @@ import {
     IAppDomainHeader,
     IBannerMessage,
     IDomainField,
+    DomainDetails,
     IFieldChange,
     SAMPLE_TYPE,
 } from './components/domainproperties/models';
@@ -291,7 +292,8 @@ import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
 import { EntityDataType } from './components/entities/models';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
-
+import { SampleTypeModel } from "./components/domainproperties/samples/models";
+import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
 
 export {
     // global state functions
@@ -364,6 +366,7 @@ export {
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridModal,
+    ErrorBoundary,
     QueryGridPanel,
     CollapsiblePanel,
     BulkAddUpdateForm,
@@ -400,10 +403,12 @@ export {
     fetchDataClass,
 
     // samples-related
-    SampleSetDetailsPanel,
+    SampleTypeDesigner,
+    SampleTypeModel,
     deleteSampleSet,
     fetchSamples,
     getSampleSet,
+    getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
 
@@ -519,6 +524,7 @@ export {
     IFieldChange,
     IBannerMessage,
     IAppDomainHeader,
+    DomainDetails,
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,

@@ -238,7 +238,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     </div>
                 )}
 
-                <div className='domain-form-panel domain-assay-buttons'>
+                <div className='domain-form-panel'>
                     <Button onClick={onCancel}>
                         Cancel
                     </Button>

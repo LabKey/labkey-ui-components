@@ -39,6 +39,18 @@ export interface IDerivePayload {
     targetType: string
 }
 
+// the set of options for selecting a type (e.g., the list of sample types).
+// {
+//     value:   'Sample Type 1',
+//     label:   'Sample Type 1',
+//     schema:  'samples',
+//     query:  'Sample Type 1'
+// }
+// capturing the schema name (e.g., samples) and query name (e.g., SampleSet1)
+// that can be used to retrieve the set of fields defined for that type and/or
+// the list of values (e.g., S-123, S-234) that can be chosen as actual parents.
+// Needs(?) to extend Option for use in ReactSelects, but otherwise very much
+// a duplicate of EntityParentType (modulo the value being a DisplayObject vs TValue)
 export interface IParentOption extends Option {
     query?: string
     schema?: string
@@ -122,6 +134,7 @@ export class EntityParentType extends Record({
     }
 }
 
+// represents a chosen entity type (e.g., Sample Set 1)
 export interface IEntityTypeOption extends Option {
     lsid: string
     rowId: number
@@ -140,6 +153,13 @@ export class EntityTypeOption implements IEntityTypeOption {
             }
         }
     }
+}
+
+// represents an entity type (e.g., Sample Set 1) and the values chosen of that type (e.g., S-1, S-2)
+export interface EntityChoice {
+    type: IEntityTypeOption
+    ids: Array<string> // LSIDs or RowIds
+    value: string // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
 }
 
 interface MaterialOutput {
@@ -498,10 +518,17 @@ export interface EntityDataType {
     nounSingular: string
     nounAsParentSingular: string
     nounPlural: string
+    typeNounSingular: string
     descriptionSingular: string // (e.g., parent sample type) used in EntityInsertPanel for a message about how many of these types are available
     descriptionPlural: string
     uniqueFieldKey: string
     dependencyText: string // text describing the dependencies that may prevent the entity from being deleted (e.g., 'derived sample or assay data dependencies')
     deleteHelpLinkTopic: string // help topic for finding out more about dependencies and deletion
+    inputColumnName: string // used for extracting or querying for the parents of this type
+    inputTypeColumnName: string // used for extracting or querying for the types for the input columns
+    inputTypeValueField: string
+    appUrlPrefixParts?: Array<string> // the prefix used for creating links to this type in the application
+    insertColumnNamePrefix: string // when updating this value as an input, the name of that column (e.g, MaterialInputs)
+    filterArray?: Array<Filter.IFilter> // A list of filters to use when selecting the set of values
 }
 

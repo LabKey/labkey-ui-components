@@ -38,7 +38,7 @@ exports[`<RemoveEntityButton /> Specify entity without index 1`] = `
     <i
       className="fa fa-times container--removal-icon"
     />
-     Remove Test undefined
+     Remove Test 
   </span>
 </div>
 `;

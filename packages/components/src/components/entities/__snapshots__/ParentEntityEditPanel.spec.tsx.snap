@@ -1,0 +1,709 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ParentEntityEditPanel> editing, no data 1`] = `
+<ParentEntityEditPanel
+  canUpdate={false}
+  cancelText="Cancel"
+  childModel={
+    Immutable.Record {
+      "id": "id",
+      "schema": "samples",
+      "query": "example",
+      "queryParameters": undefined,
+      "allowSelection": true,
+      "baseFilters": Immutable.List [],
+      "bindURL": true,
+      "containerPath": undefined,
+      "containerFilter": undefined,
+      "data": Immutable.Map {},
+      "dataIds": Immutable.List [],
+      "displayColumns": undefined,
+      "editable": false,
+      "editing": false,
+      "filterArray": Immutable.List [],
+      "includeDetailsColumn": false,
+      "includeUpdateColumn": false,
+      "isError": true,
+      "isLoaded": true,
+      "isLoading": false,
+      "isPaged": false,
+      "keyValue": undefined,
+      "loader": undefined,
+      "maxRows": 20,
+      "message": undefined,
+      "messages": undefined,
+      "offset": 0,
+      "omittedColumns": Immutable.List [],
+      "pageNumber": 1,
+      "queryInfo": undefined,
+      "requiredColumns": Immutable.List [],
+      "selectedIds": Immutable.List [],
+      "selectedLoaded": false,
+      "selectedState": 2,
+      "selectedQuantity": 0,
+      "showSearchBox": true,
+      "showViewSelector": true,
+      "hideEmptyViewSelector": false,
+      "showChartSelector": true,
+      "showExport": true,
+      "hideEmptyChartSelector": false,
+      "sortable": true,
+      "sorts": undefined,
+      "title": undefined,
+      "totalRows": 0,
+      "urlParams": Immutable.List [
+        "p",
+        "reportId",
+      ],
+      "urlParamValues": Immutable.Map {},
+      "urlPrefix": undefined,
+      "view": undefined,
+    }
+  }
+  childName="Test"
+  childNounSingular="Testing"
+  parentDataType={
+    Object {
+      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+      "deleteHelpLinkTopic": "dataClass",
+      "dependencyText": "derived sample dependencies",
+      "descriptionPlural": "parent types",
+      "descriptionSingular": "parent type",
+      "inputColumnName": "Inputs/Data/First",
+      "inputTypeColumnName": "Inputs/Data/First/DataClass",
+      "inputTypeValueField": "rowId",
+      "insertColumnNamePrefix": "DataInputs/",
+      "instanceSchemaName": "exp.data",
+      "nounAsParentSingular": "Parent",
+      "nounPlural": "data",
+      "nounSingular": "data",
+      "typeListingSchemaQuery": Immutable.Record {
+        "schemaName": "exp",
+        "queryName": "DataClasses",
+        "viewName": undefined,
+      },
+      "typeNounSingular": "Data Type",
+      "uniqueFieldKey": "Name",
+    }
+  }
+  submitText="Save"
+  title="Test 123"
+>
+  <Uncontrolled(Panel)
+    bsStyle="info"
+  >
+    <Panel
+      bsClass="panel"
+      bsStyle="info"
+      onToggle={[Function]}
+    >
+      <div
+        className="panel panel-info"
+      >
+        <PanelHeading
+          bsClass="panel"
+          componentClass="div"
+        >
+          <div
+            className="panel-heading"
+          >
+            <DetailPanelHeader
+              canUpdate={false}
+              editing={true}
+              isEditable={false}
+              onClickFn={[Function]}
+              title="Test 123"
+              useEditIcon={true}
+            >
+              <div
+                className="detail__edit--heading"
+              >
+                Editing 
+                Test 123
+              </div>
+            </DetailPanelHeader>
+          </div>
+        </PanelHeading>
+        <PanelBody
+          bsClass="panel"
+          collapsible={false}
+        >
+          <div
+            className="panel-body"
+          >
+            <div
+              className="bottom-spacing"
+            >
+              <b>
+                Data
+                 for 
+                Test
+              </b>
+            </div>
+            <div
+              key="1"
+            >
+              <hr />
+              <SingleParentEntityPanel
+                childNounSingular="Testing"
+                editing={true}
+                index={0}
+                onChangeParentType={[Function]}
+                onChangeParentValue={[Function]}
+                onInitialParentValue={[Function]}
+                parentDataType={
+                  Object {
+                    "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                    "deleteHelpLinkTopic": "dataClass",
+                    "dependencyText": "derived sample dependencies",
+                    "descriptionPlural": "parent types",
+                    "descriptionSingular": "parent type",
+                    "inputColumnName": "Inputs/Data/First",
+                    "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                    "inputTypeValueField": "rowId",
+                    "insertColumnNamePrefix": "DataInputs/",
+                    "instanceSchemaName": "exp.data",
+                    "nounAsParentSingular": "Parent",
+                    "nounPlural": "data",
+                    "nounSingular": "data",
+                    "typeListingSchemaQuery": Immutable.Record {
+                      "schemaName": "exp",
+                      "queryName": "DataClasses",
+                      "viewName": undefined,
+                    },
+                    "typeNounSingular": "Data Type",
+                    "uniqueFieldKey": "Name",
+                  }
+                }
+              >
+                <LoadingSpinner
+                  msg="Loading..."
+                  wrapperClassName=""
+                >
+                  <span
+                    className=""
+                  >
+                    <i
+                      aria-hidden="true"
+                      className="fa fa-spinner fa-pulse"
+                    />
+                     
+                    Loading...
+                  </span>
+                </LoadingSpinner>
+              </SingleParentEntityPanel>
+            </div>
+          </div>
+        </PanelBody>
+      </div>
+    </Panel>
+  </Uncontrolled(Panel)>
+  <div
+    className="full-width bottom-spacing"
+  >
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="default"
+      className="pull-left"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <button
+        className="pull-left btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </Button>
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="success"
+      className="pull-right"
+      disabled={true}
+      onClick={[Function]}
+      type="submit"
+    >
+      <button
+        className="pull-right btn btn-success"
+        disabled={true}
+        onClick={[Function]}
+        type="submit"
+      >
+        Save
+      </button>
+    </Button>
+  </div>
+  <Progress
+    delay={350}
+    estimate={0}
+    modal={true}
+    title="Updating data"
+    toggle={false}
+    updateIncrement={50}
+  >
+    <Modal
+      animation={true}
+      autoFocus={true}
+      backdrop={true}
+      bsClass="modal"
+      bsSize="large"
+      dialogComponentClass={[Function]}
+      enforceFocus={true}
+      keyboard={true}
+      manager={
+        ModalManager {
+          "add": [Function],
+          "containers": Array [],
+          "data": Array [],
+          "handleContainerOverflow": true,
+          "hideSiblingNodes": true,
+          "isTopModal": [Function],
+          "modals": Array [],
+          "remove": [Function],
+        }
+      }
+      onHide={[Function]}
+      renderBackdrop={[Function]}
+      restoreFocus={true}
+      show={false}
+    >
+      <Modal
+        autoFocus={true}
+        backdrop={true}
+        backdropClassName="modal-backdrop"
+        backdropTransition={[Function]}
+        containerClassName="modal-open"
+        enforceFocus={true}
+        keyboard={true}
+        manager={
+          ModalManager {
+            "add": [Function],
+            "containers": Array [],
+            "data": Array [],
+            "handleContainerOverflow": true,
+            "hideSiblingNodes": true,
+            "isTopModal": [Function],
+            "modals": Array [],
+            "remove": [Function],
+          }
+        }
+        onEntering={[Function]}
+        onExited={[Function]}
+        onHide={[Function]}
+        renderBackdrop={[Function]}
+        restoreFocus={true}
+        show={false}
+        transition={[Function]}
+      />
+    </Modal>
+  </Progress>
+</ParentEntityEditPanel>
+`;
+
+exports[`<ParentEntityEditPanel> error state 1`] = `
+<ParentEntityEditPanel
+  canUpdate={false}
+  cancelText="Cancel"
+  childModel={
+    Immutable.Record {
+      "id": "id",
+      "schema": "samples",
+      "query": "example",
+      "queryParameters": undefined,
+      "allowSelection": true,
+      "baseFilters": Immutable.List [],
+      "bindURL": true,
+      "containerPath": undefined,
+      "containerFilter": undefined,
+      "data": Immutable.Map {},
+      "dataIds": Immutable.List [],
+      "displayColumns": undefined,
+      "editable": false,
+      "editing": false,
+      "filterArray": Immutable.List [],
+      "includeDetailsColumn": false,
+      "includeUpdateColumn": false,
+      "isError": true,
+      "isLoaded": true,
+      "isLoading": false,
+      "isPaged": false,
+      "keyValue": undefined,
+      "loader": undefined,
+      "maxRows": 20,
+      "message": undefined,
+      "messages": undefined,
+      "offset": 0,
+      "omittedColumns": Immutable.List [],
+      "pageNumber": 1,
+      "queryInfo": undefined,
+      "requiredColumns": Immutable.List [],
+      "selectedIds": Immutable.List [],
+      "selectedLoaded": false,
+      "selectedState": 2,
+      "selectedQuantity": 0,
+      "showSearchBox": true,
+      "showViewSelector": true,
+      "hideEmptyViewSelector": false,
+      "showChartSelector": true,
+      "showExport": true,
+      "hideEmptyChartSelector": false,
+      "sortable": true,
+      "sorts": undefined,
+      "title": undefined,
+      "totalRows": 0,
+      "urlParams": Immutable.List [
+        "p",
+        "reportId",
+      ],
+      "urlParamValues": Immutable.Map {},
+      "urlPrefix": undefined,
+      "view": undefined,
+    }
+  }
+  childName="Test"
+  childNounSingular="Testing"
+  parentDataType={
+    Object {
+      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+      "deleteHelpLinkTopic": "dataClass",
+      "dependencyText": "derived sample dependencies",
+      "descriptionPlural": "parent types",
+      "descriptionSingular": "parent type",
+      "inputColumnName": "Inputs/Data/First",
+      "inputTypeColumnName": "Inputs/Data/First/DataClass",
+      "inputTypeValueField": "rowId",
+      "insertColumnNamePrefix": "DataInputs/",
+      "instanceSchemaName": "exp.data",
+      "nounAsParentSingular": "Parent",
+      "nounPlural": "data",
+      "nounSingular": "data",
+      "typeListingSchemaQuery": Immutable.Record {
+        "schemaName": "exp",
+        "queryName": "DataClasses",
+        "viewName": undefined,
+      },
+      "typeNounSingular": "Data Type",
+      "uniqueFieldKey": "Name",
+    }
+  }
+  submitText="Save"
+  title="Test 123"
+>
+  <Uncontrolled(Panel)
+    bsStyle="default"
+  >
+    <Panel
+      bsClass="panel"
+      bsStyle="default"
+      onToggle={[Function]}
+    >
+      <div
+        className="panel panel-default"
+      >
+        <PanelHeading
+          bsClass="panel"
+          componentClass="div"
+        >
+          <div
+            className="panel-heading"
+          >
+            <DetailPanelHeader
+              canUpdate={false}
+              editing={false}
+              isEditable={false}
+              onClickFn={[Function]}
+              title="Test 123"
+              useEditIcon={true}
+            >
+              <div
+                className="detail__edit--heading"
+              >
+                Test 123
+              </div>
+            </DetailPanelHeader>
+          </div>
+        </PanelHeading>
+        <PanelBody
+          bsClass="panel"
+          collapsible={false}
+        >
+          <div
+            className="panel-body"
+          >
+            <Alert
+              bsStyle="danger"
+            >
+              <Alert
+                bsClass="alert"
+                bsStyle="danger"
+                closeLabel="Close alert"
+              >
+                <div
+                  className="alert alert-danger"
+                  role="alert"
+                >
+                  My error message
+                </div>
+              </Alert>
+            </Alert>
+            <div
+              className="bottom-spacing"
+            >
+              <b>
+                Data
+                 for 
+                Test
+              </b>
+            </div>
+            <div
+              key="1"
+            >
+              <hr />
+              <SingleParentEntityPanel
+                childNounSingular="Testing"
+                editing={false}
+                index={0}
+                onChangeParentType={[Function]}
+                onChangeParentValue={[Function]}
+                onInitialParentValue={[Function]}
+                parentDataType={
+                  Object {
+                    "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                    "deleteHelpLinkTopic": "dataClass",
+                    "dependencyText": "derived sample dependencies",
+                    "descriptionPlural": "parent types",
+                    "descriptionSingular": "parent type",
+                    "inputColumnName": "Inputs/Data/First",
+                    "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                    "inputTypeValueField": "rowId",
+                    "insertColumnNamePrefix": "DataInputs/",
+                    "instanceSchemaName": "exp.data",
+                    "nounAsParentSingular": "Parent",
+                    "nounPlural": "data",
+                    "nounSingular": "data",
+                    "typeListingSchemaQuery": Immutable.Record {
+                      "schemaName": "exp",
+                      "queryName": "DataClasses",
+                      "viewName": undefined,
+                    },
+                    "typeNounSingular": "Data Type",
+                    "uniqueFieldKey": "Name",
+                  }
+                }
+              >
+                <div
+                  className="top-spacing"
+                  key="grid-0"
+                >
+                  <table
+                    className="table table-responsive table-condensed detail-component--table__fixed"
+                  >
+                    <tbody>
+                      <tr
+                        key="type-name"
+                      >
+                        <td>
+                          Data Type
+                        </td>
+                        <td>
+                          No 
+                          data type
+                           has been set for this 
+                          testing
+                          .
+                        </td>
+                      </tr>
+                      <tr
+                        key="parent-id"
+                      >
+                        <td>
+                          Data ID
+                        </td>
+                        <td>
+                          No 
+                          data
+                           ID has been set for this 
+                          testing
+                          .
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </SingleParentEntityPanel>
+            </div>
+          </div>
+        </PanelBody>
+      </div>
+    </Panel>
+  </Uncontrolled(Panel)>
+</ParentEntityEditPanel>
+`;
+
+exports[`<ParentEntityEditPanel> loading state 1`] = `
+<ParentEntityEditPanel
+  canUpdate={false}
+  cancelText="Cancel"
+  childModel={
+    Immutable.Record {
+      "id": "id",
+      "schema": "samples",
+      "query": "example",
+      "queryParameters": undefined,
+      "allowSelection": true,
+      "baseFilters": Immutable.List [],
+      "bindURL": true,
+      "containerPath": undefined,
+      "containerFilter": undefined,
+      "data": Immutable.Map {},
+      "dataIds": Immutable.List [],
+      "displayColumns": undefined,
+      "editable": false,
+      "editing": false,
+      "filterArray": Immutable.List [],
+      "includeDetailsColumn": false,
+      "includeUpdateColumn": false,
+      "isError": true,
+      "isLoaded": true,
+      "isLoading": false,
+      "isPaged": false,
+      "keyValue": undefined,
+      "loader": undefined,
+      "maxRows": 20,
+      "message": undefined,
+      "messages": undefined,
+      "offset": 0,
+      "omittedColumns": Immutable.List [],
+      "pageNumber": 1,
+      "queryInfo": undefined,
+      "requiredColumns": Immutable.List [],
+      "selectedIds": Immutable.List [],
+      "selectedLoaded": false,
+      "selectedState": 2,
+      "selectedQuantity": 0,
+      "showSearchBox": true,
+      "showViewSelector": true,
+      "hideEmptyViewSelector": false,
+      "showChartSelector": true,
+      "showExport": true,
+      "hideEmptyChartSelector": false,
+      "sortable": true,
+      "sorts": undefined,
+      "title": undefined,
+      "totalRows": 0,
+      "urlParams": Immutable.List [
+        "p",
+        "reportId",
+      ],
+      "urlParamValues": Immutable.Map {},
+      "urlPrefix": undefined,
+      "view": undefined,
+    }
+  }
+  childName="Test"
+  childNounSingular="Testing"
+  parentDataType={
+    Object {
+      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+      "deleteHelpLinkTopic": "dataClass",
+      "dependencyText": "derived sample dependencies",
+      "descriptionPlural": "parent types",
+      "descriptionSingular": "parent type",
+      "inputColumnName": "Inputs/Data/First",
+      "inputTypeColumnName": "Inputs/Data/First/DataClass",
+      "inputTypeValueField": "rowId",
+      "insertColumnNamePrefix": "DataInputs/",
+      "instanceSchemaName": "exp.data",
+      "nounAsParentSingular": "Parent",
+      "nounPlural": "data",
+      "nounSingular": "data",
+      "typeListingSchemaQuery": Immutable.Record {
+        "schemaName": "exp",
+        "queryName": "DataClasses",
+        "viewName": undefined,
+      },
+      "typeNounSingular": "Data Type",
+      "uniqueFieldKey": "Name",
+    }
+  }
+  submitText="Save"
+  title="Test 123"
+>
+  <Uncontrolled(Panel)
+    bsStyle="default"
+  >
+    <Panel
+      bsClass="panel"
+      bsStyle="default"
+      onToggle={[Function]}
+    >
+      <div
+        className="panel panel-default"
+      >
+        <PanelHeading
+          bsClass="panel"
+          componentClass="div"
+        >
+          <div
+            className="panel-heading"
+          >
+            <DetailPanelHeader
+              canUpdate={false}
+              editing={false}
+              isEditable={false}
+              onClickFn={[Function]}
+              title="Test 123"
+              useEditIcon={true}
+            >
+              <div
+                className="detail__edit--heading"
+              >
+                Test 123
+              </div>
+            </DetailPanelHeader>
+          </div>
+        </PanelHeading>
+        <PanelBody
+          bsClass="panel"
+          collapsible={false}
+        >
+          <div
+            className="panel-body"
+          >
+            <div
+              className="bottom-spacing"
+            >
+              <b>
+                Data
+                 for 
+                Test
+              </b>
+            </div>
+            <LoadingSpinner
+              msg="Loading..."
+              wrapperClassName=""
+            >
+              <span
+                className=""
+              >
+                <i
+                  aria-hidden="true"
+                  className="fa fa-spinner fa-pulse"
+                />
+                 
+                Loading...
+              </span>
+            </LoadingSpinner>
+          </div>
+        </PanelBody>
+      </div>
+    </Panel>
+  </Uncontrolled(Panel)>
+</ParentEntityEditPanel>
+`;

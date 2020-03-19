@@ -19,29 +19,24 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import { getStateQueryGridModel } from '../models';
 import { gridInit } from '../actions';
-import { DetailEditing } from '../components/forms/detail/DetailEditing';
 import { getQueryGridModel } from '../global';
 import './stories.scss';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 import { SCHEMAS } from '../components/base/models/schemas';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
-import { Panel } from 'react-bootstrap';
+import { DataClassDataType, ParentEntityEditPanel } from '..';
 
 interface Props {
     canUpdate: boolean
-    asSubPanel?: boolean
-    withSibling?: boolean
     title?: string,
     cancelText?: string,
     submitText?: string,
-    onEditToggle?: (editing: boolean) => any,
+    childName: string,
+    childNounSingular: string
+    multipleSources?: boolean
 }
 
-function onEditToggle(isEditing) {
-    console.log('Editing state updated to ' + isEditing);
-}
-
-class DetailEditingPage extends React.Component<Props, any> {
+class ParentEntityEditPage extends React.Component<Props, any> {
 
     componentWillMount() {
         this.initModel();
@@ -53,7 +48,7 @@ class DetailEditingPage extends React.Component<Props, any> {
     }
 
     getQueryGridModel(): QueryGridModel {
-        const model = getStateQueryGridModel('detailediting', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Samples'), {}, 123);
+        const model = getStateQueryGridModel('detailediting', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, this.props.multipleSources ? 'multisource' : 'examples'), {}, 53412);
         return getQueryGridModel(model.getId()) || model;
     }
 
@@ -62,54 +57,49 @@ class DetailEditingPage extends React.Component<Props, any> {
     };
 
     render() {
-        const {canUpdate, asSubPanel, title, cancelText, submitText, onEditToggle} = this.props;
+        const { canUpdate, childName, childNounSingular, title} = this.props;
         const model = this.getQueryGridModel();
         if (!model.isLoaded) {
             return <LoadingSpinner/>
         }
 
         return (
-            <>
-                <DetailEditing
-                    queryModel={model}
-                    canUpdate={canUpdate}
-                    asSubPanel={asSubPanel}
-                    title={title}
-                    cancelText={cancelText}
-                    submitText={submitText}
-                    onUpdate={this.onUpdate}
-                    useEditIcon={false}
-                    onEditToggle={onEditToggle}
-                />
-                {this.props.withSibling && (
-                    <Panel>
-                        <Panel.Heading>Sibling Panel</Panel.Heading>
-                        <Panel.Body>Don't tread on me.</Panel.Body>
-                    </Panel>
-                )}
-            </>
-
+            <ParentEntityEditPanel
+                childModel={model}
+                canUpdate={canUpdate}
+                childName={childName}
+                childNounSingular={childNounSingular}
+                title={title}
+                parentDataType={DataClassDataType}
+            />
         )
     }
 }
 
-storiesOf('DetailEditing', module)
+storiesOf('ParentEntityEditPanel', module)
     .addDecorator(withKnobs)
-    .add("readonly", () => {
+    .add("single source", () => {
         return (
-            <DetailEditingPage canUpdate={false}/>
-        )
-    })
-    .add("editable", () => {
-        return (
-            <DetailEditingPage
-                canUpdate={true}
-                asSubPanel={boolean("As sub panel?", true)}
-                onEditToggle={boolean("Use onEditToggle (check console log)?", true) ? onEditToggle : null}
+            <ParentEntityEditPage
+                canUpdate={boolean('Can update?', true)}
+                childName={text("Child name", "B-123")}
+                childNounSingular={text("Child noun", "Sample")}
                 title={text("Title", "Details")}
                 submitText={text("Submit Text", "Save")}
                 cancelText={text("Cancel Text", "Cancel")}
-                withSibling={boolean("With sibling", false)}
+            />
+        )
+    })
+    .add('multiple sources', () => {
+        return (
+            <ParentEntityEditPage
+                canUpdate={boolean('Can update?', true)}
+                childName={text("Child name", "B-123")}
+                childNounSingular={text("Child noun", "Sample")}
+                title={text("Title", "Details")}
+                submitText={text("Submit Text", "Save")}
+                cancelText={text("Cancel Text", "Cancel")}
+                multipleSources={true}
             />
         )
     })

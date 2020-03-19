@@ -48,12 +48,6 @@ describe("<SampleTypePropertiesPanel/>", () => {
     });
 
     test("nameExpressionInfoUrl", (done) => {
-        // const tree = renderer.create(
-        //     <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()}
-        //        nameExpressionInfoUrl={'#anything'}
-        //     />
-        // );
-
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 model={SampleTypeModel.create()}
@@ -72,57 +66,6 @@ describe("<SampleTypePropertiesPanel/>", () => {
         });
     });
 
-    // test("button clicks", () => {
-    //     const onCompleteFn = jest.fn();
-    //     const onCancelFn = jest.fn();
-    //     const component = (
-    //         <SampleSetDetailsPanel onCancel={onCancelFn} onComplete={onCompleteFn}/>
-    //     );
-    //
-    //     const wrapper = mount(component);
-    //     const cancelBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Cancel');
-    //     const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Save');
-    //     expect(onCancelFn).toHaveBeenCalledTimes(0);
-    //     expect(onCompleteFn).toHaveBeenCalledTimes(0);
-    //
-    //     cancelBtn.simulate('click');
-    //     expect(onCancelFn).toHaveBeenCalledTimes(1);
-    //     expect(onCompleteFn).toHaveBeenCalledTimes(0);
-    //
-    //     // try clicking Save button, but it should be disabled because we haven't given the form a valid Name value yet
-    //     expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
-    //     completeBtn.simulate('click');
-    //     expect(onCancelFn).toHaveBeenCalledTimes(1);
-    //     expect(onCompleteFn).toHaveBeenCalledTimes(0);
-    //
-    //     wrapper.unmount();
-    // });
-
-    // test("valid name", () => {
-    //     const component = (
-    //         <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()}/>
-    //     );
-    //
-    //     const wrapper = mount(component);
-    //
-    //     // Name input should be visible and enabled for new sample set
-    //     expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME)).toHaveLength(1);
-    //     expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME).prop('disabled')).toBeFalsy();
-    //
-    //     const completeBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'Save');
-    //     expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
-    //
-    //     // simulate Name input value change by updating the component state
-    //     wrapper.setState({formValues: {[ENTITY_FORM_IDS.NAME]: 'test'}});
-    //     expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeFalsy();
-    //
-    //     // change name to empty string and expect button to be disabled again
-    //     wrapper.setState({formValues: {[ENTITY_FORM_IDS.NAME]: ''}});
-    //     expect(completeBtn.getDOMNode().hasAttribute('disabled')).toBeTruthy();
-    //
-    //     wrapper.unmount();
-    // });
-    //
     test("Load existing SampleTypeModel", () => {
         const nameExpVal = 'S-${genId}';
         const descVal = 'My sample set description.';

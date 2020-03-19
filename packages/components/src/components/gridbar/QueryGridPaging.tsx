@@ -89,9 +89,9 @@ export class QueryGridPaging extends React.Component<Props, any> {
                     <div className="btn-group">
                         <PagingButton
                             disabled={currentPage <= 1}
-                            tooltip={'Previous Page'}
+                            tooltip="Previous Page"
                             onClick={this.prevPage}
-                            iconClass={"fa-chevron-left"}
+                            iconClass="fa-chevron-left"
                         />
 
                         <Tip caption="Current Page" trigger={['hover']}>
@@ -121,9 +121,9 @@ export class QueryGridPaging extends React.Component<Props, any> {
 
                         <PagingButton
                             disabled={max === total}
-                            tooltip={'Next Page'}
+                            tooltip="Next Page"
                             onClick={this.nextPage}
-                            iconClass={"fa-chevron-right"}
+                            iconClass="fa-chevron-right"
                         />
                     </div>
                 ) : null}

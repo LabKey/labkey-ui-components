@@ -152,6 +152,7 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
                         formsy={false}
                         showLabel={false}
                         preLoad={true}
+                        loadOnChange={true}
                         onQSChange={this.onChange}
                         value={model.sampleSet}
                     />
@@ -178,6 +179,7 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
                         formsy={false}
                         showLabel={false}
                         preLoad={true}
+                        loadOnChange={true}
                         onQSChange={this.onChange}
                         value={model.category}
                     />

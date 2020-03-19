@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version TBD
-*Released*: TBD
+## version 0.38.0
+*Released*: 19 March 2020
 * Add ParentEntityEditPanel for CRUD operations on parents. Initially not supporting delete
 (because there is no back end support for completely removing lineage).
 * Fix problem with QuerySelect and SelectInput not playing nicely together when you want to

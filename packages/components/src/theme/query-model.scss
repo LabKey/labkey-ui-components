@@ -1,6 +1,5 @@
-.grid-panel__bar,
-.grid-panel__grid {
-    padding: 1em;
+.grid-panel {
+    padding: 0 1em;
 }
 
 .grid-panel__bar {
@@ -22,9 +21,15 @@
     display: flex;
 }
 
-.grid-bar__left {
-    flex: 1;
+.grid-bar__section > * {
+    margin-left: 1em;
 }
 
-.grid-bar__right {
+.grid-panel__info-bar {
+    min-height: 48px; /* Prevents grid from jumping when pages are loading */
+}
+
+.pagination-info {
+    line-height: 34px; /* The height of button bars */
+    vertical-align: middle;
 }

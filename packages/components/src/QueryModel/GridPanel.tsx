@@ -23,22 +23,20 @@ class PaginationInfo extends PureComponent<RequiresModel> {
         const { model } = this.props;
         let message = '';
 
-        if (!model.isLoading()) {
-            const { offset, maxRows, rowCount } = model;
-            const min = offset !== rowCount ? offset + 1 : offset;
-            let max = offset + maxRows;
+        const { offset, maxRows, rowCount } = model;
+        const min = offset !== rowCount ? offset + 1 : offset;
+        let max = offset + maxRows;
 
-            message = `${min} - `;
+        message = `${min} - `;
 
-            if (max > rowCount) {
-                max = rowCount;
-            }
+        if (max > rowCount) {
+            max = rowCount;
+        }
 
-            message += `${max}`;
+        message += `${max}`;
 
-            if (max !== rowCount) {
-                message += ` of ${rowCount}`;
-            }
+        if (max !== rowCount) {
+            message += ` of ${rowCount}`;
         }
 
         return (
@@ -131,9 +129,7 @@ export class GridPanel extends PureComponent<Props> {
         const viewSelector = undefined;
         let grid;
 
-        if (model.isLoading()) {
-            grid = <LoadingSpinner />;
-        } else {
+        if (model.orderedRows !== undefined) {
             const data = model.orderedRows.map(i => model.rows[i]);
             const messages: List<Map<string, string>> = fromJS(model.messages);
             const columns = List(model.getDisplayColumns());
@@ -141,19 +137,28 @@ export class GridPanel extends PureComponent<Props> {
         }
 
         return (
-            <div className={"grid-panel"}>
-                <div className={"grid-panel__bar"}>
-                    <div className={"grid-panel__bar-left"} />
+            <div className="grid-panel">
+                <div className="grid-panel__bar">
+                    <div className="grid-panel__bar-left">
+                        <div className="grid-bar__section" />
+                    </div>
 
-                    <div className={"grid-panel__bar-right"}>
-                        <PaginationInfo model={model} actions={actions} />
-                        <PaginationButtons model={model} actions={actions} />
-                        {pageSizeSelector}
-                        {viewSelector}
+                    <div className="grid-panel__bar-right">
+                        <div className="grid-bar__section">
+                            <PaginationInfo model={model} actions={actions} />
+                            <PaginationButtons model={model} actions={actions} />
+                            {pageSizeSelector}
+                            {viewSelector}
+                        </div>
                     </div>
                 </div>
 
-                <div className={"grid-panel__grid"}>
+                <div className="grid-panel__info-bar">
+                    {/* Loading State and Selection Status */}
+                    {model.isLoading() ? <LoadingSpinner /> : <span />}
+                </div>
+
+                <div className="grid-panel__grid">
                     {grid}
                 </div>
             </div>

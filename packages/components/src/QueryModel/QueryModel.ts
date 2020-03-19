@@ -20,7 +20,7 @@ export enum LoadingState {
  *
  * @param schemaQuery: SchemaQuery
  */
-export function createQueryModelId(schemaQuery: SchemaQuery) {
+export function createQueryModelId(schemaQuery: SchemaQuery): string {
     const { schemaName, queryName, viewName } = schemaQuery;
     return `${schemaName}-${queryName}${viewName !== undefined ? '-' + viewName : ''}`;
 }

@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - refactor SampleSetDeleteConfirmModal as EntityTypeDeleteConfirm model for use with sample type and source type
     - refactor deleteSampleSet as deleteEntityType for use with sample type and source type
 
+### version 0.35.3
+*Released*: 18 March 2020
+* add highlightLastSelectedRow to QueryGridPanel
+
 ### version 0.35.2
 *Released*: 17 March 2020
 * QueriesListing fix for display error message when schema does not exist

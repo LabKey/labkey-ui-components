@@ -3116,7 +3116,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr
+                className=""
+              >
                 <td
                   style={
                     Object {

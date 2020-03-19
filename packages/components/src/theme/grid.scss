@@ -6,6 +6,10 @@
   text-align: left;
 }
 
+.table-striped > tbody > tr.grid-row-highlight {
+  background-color: $yellow-shadow;
+}
+
 .panel.fixed-panel {
   min-height: 45em;
   max-height: 45em;

@@ -33,9 +33,11 @@ export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
                 title={'Permanently delete ' + noun.toLowerCase() + ' type?'}
                 msg={
                     <span>
-                        The {noun.toLowerCase()} type and all of its {dependencies} will be permanently deleted.&nbsp;
-                        <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>&nbsp;
-                            Do you want to proceed?</p>
+                        The {noun.toLowerCase()} type and all of its {dependencies} will be permanently deleted.
+                        <p className={'top-spacing'}>
+                            <strong>Deletion cannot be undone. </strong>
+                            Do you want to proceed?
+                        </p>
                     </span>
                 }
                 onConfirm={onConfirm}

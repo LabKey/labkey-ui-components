@@ -21,7 +21,7 @@ const ERROR_MSG = 'Contains errors or is missing required values.';
 const DEFAULT_CONTEXT = {collapsed: false};
 const FORM_IDS = {
     CATEGORY: ENTITY_FORM_ID_PREFIX + 'category',
-    SAMPLE_SET_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet'
+    SAMPLE_TYPE_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet'
 };
 
 interface Props {
@@ -132,7 +132,7 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
         this.setIsValid(newModel);
     };
 
-    renderSampleSetSelect() {
+    renderSampleTypeSelect() {
         const { model, nounSingular } = this.props;
 
         return (
@@ -146,8 +146,8 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
                 </Col>
                 <Col xs={9}>
                     <QuerySelect
-                        componentId={FORM_IDS.SAMPLE_SET_ID}
-                        name={FORM_IDS.SAMPLE_SET_ID}
+                        componentId={FORM_IDS.SAMPLE_TYPE_ID}
+                        name={FORM_IDS.SAMPLE_TYPE_ID}
                         schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SETS}
                         formsy={false}
                         showLabel={false}
@@ -230,7 +230,7 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
                             nameExpressionPlaceholder={nameExpressionPlaceholder}
                         />
                         {!appPropertiesOnly && this.renderCategorySelect()}
-                        {!appPropertiesOnly && this.renderSampleSetSelect()}
+                        {!appPropertiesOnly && this.renderSampleTypeSelect()}
                     </Panel.Body>
                 </Panel>
                 {!isValid &&

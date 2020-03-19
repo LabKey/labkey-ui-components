@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 39913: Switch from dismissCoreWarnings.api to dismissWarnings.api
+
 ### version 0.37.0
 *Released*: 19 March 2020
 * Item 6848: Merge Sample Type creation/update UI into single designer component.

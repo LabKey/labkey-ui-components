@@ -50,7 +50,8 @@ interface CollapsiblePanelProps {
 }
 
 interface State {
-    isValid: boolean
+    //Used to ignore initial error states, changed to false on any change
+    ignoreError: boolean
 }
 
 type Props = OwnProps & EntityProps & CollapsiblePanelProps;
@@ -86,7 +87,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            isValid: true,
+            ignoreError: true,
         };
     }
 
@@ -107,9 +108,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
     static contextType = DomainPropertiesPanelContext;
     context!: React.ContextType<typeof DomainPropertiesPanelContext>;
     setIsValid(): void {
-        const { model } = this.props;
-        const isValid = model && model.hasValidProperties();
-        this.setState(() => ({isValid}));
+        this.setState((state) => this.setState({ignoreError:false}));
     }
 
     toggleLocalPanel = (evt: any): void => {
@@ -125,6 +124,9 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
         const id = evt.target.id;
         const value = evt.target.value;
         updateModel(model.set(getFormNameFromId(id), value) as SampleTypeModel);
+
+        if (this.state.ignoreError)
+            this.setIsValid();
     };
 
     parentAliasChanges = (id:string, field: string, newValue: any): void => {
@@ -182,15 +184,16 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
     };
 
     removeParentAlias = (index: string): void => {
-        let {onRemoveParentAlias} = this.props;
+        const {onRemoveParentAlias} = this.props;
         onRemoveParentAlias(index);
         this.setIsValid();
     };
 
     render = () => {
         const {model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, noun, collapsible, controlledCollapse, panelStatus, useTheme} = this.props;
-        const {isValid} = this.state;
         const {collapsed} = this.context;
+        const {ignoreError} = this.state;
+        const isValid = ignoreError || model && model.hasValidProperties();
 
         return (
             <>

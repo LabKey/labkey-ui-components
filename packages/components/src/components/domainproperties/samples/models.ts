@@ -76,8 +76,10 @@ export class SampleTypeModel extends Record({
         if (!alias)
             return true;
 
-        //return true if alias is null or blank; or if parentValue option is not set
-        return !alias.alias || alias.alias.trim() === '' || !alias.parentValue || alias.isDupe;
+        const aliasValueInvalid = !alias.ignoreAliasError && (!alias.alias || alias.alias.trim() === '');
+        const parentValueInvalid = !alias.ignoreSelectError && !alias.parentValue;
+
+        return aliasValueInvalid || parentValueInvalid || alias.isDupe;
     }
 
     hasValidProperties(): boolean {

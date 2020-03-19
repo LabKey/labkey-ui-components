@@ -103,7 +103,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         loadQueryInfo = async (id: string, loadRows: boolean = false) => {
             const { loadQueryInfo } = this.props.modelLoader;
 
-            this.setState(produce((draft) => {
+            this.setState(produce((draft: State) => {
                 draft.queryModels[id].queryInfoLoadingState = LoadingState.LOADING;
             }));
 
@@ -132,41 +132,86 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         };
 
         loadNextPage = (id: string) => {
-            this.setState(produce((draft) => {
+            let shouldLoad = false;
+            this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
-                model.offset = model.offset + model.maxRows;
-            }), () => this.loadRows(id));
+
+                if (!model.isLastPage()) {
+                    shouldLoad = true;
+                    model.offset = model.offset + model.maxRows;
+                }
+            }), () => {
+                if (shouldLoad) {
+                    this.loadRows(id);
+                }
+            });
         };
 
         loadPreviousPage = (id: string) => {
-            this.setState(produce((draft) => {
+            let shouldLoad = false;
+            this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
-                model.offset = model.offset - model.maxRows;
-            }), () => this.loadRows(id));
+
+                if (!model.isFirstPage()) {
+                    shouldLoad = true;
+                    model.offset = model.offset - model.maxRows;
+                }
+            }), () => {
+                if (shouldLoad) {
+                    this.loadRows(id);
+                }
+            });
         };
 
         loadFirstPage = (id: string) => {
-            this.setState(produce((draft) => {
+            let shouldLoad = false;
+            this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
-                model.offset = 0
-            }), () => this.loadRows(id));
+
+                if (!model.isFirstPage()) {
+                    shouldLoad = true;
+                    model.offset = 0
+                }
+            }), () => {
+                if (shouldLoad) {
+                    this.loadRows(id);
+                }
+            });
         };
 
         loadLastPage = (id: string) => {
-            this.setState(produce((draft) => {
+            let shouldLoad = false;
+            this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
-                const { maxRows, rowCount } = model;
-                const lastPage = maxRows && maxRows > 0 ? Math.floor(rowCount / maxRows) : 0;
-                model.offset = lastPage * model.maxRows;
-            }), () => this.loadRows(id));
+
+                if (!model.isLastPage()) {
+                    shouldLoad = true;
+                    model.offset = model.getLastPageOffset();
+                }
+            }), () => {
+                if (shouldLoad) {
+                    this.loadRows(id);
+                }
+            });
         };
 
         addModel = (queryConfig: QueryConfig, load: boolean = true) => {
-            // TODO: Instantiate, add to state, load if flag is true.
+            let id;
+            this.setState(produce((draft: State) => {
+                // Instantiate the model first because queryConfig.id is optional and is auto-generated in the
+                // QueryModel constructor if not set.
+                const queryModel = new QueryModel(queryConfig);
+                id = queryModel.id;
+                draft.queryModels[queryModel.id] = queryModel;
+            }), () => {
+                if (load) {
+                    this.loadModel(id);
+                }
+            });
         };
 
         setOffset = (id: string, offset: number, load: boolean = true) => {
-            this.setState(produce((draft) => {
+            this.setState(produce((draft: State) => {
                 draft.queryModels[id].offset = offset;
             }), () => {
                 if (load) {
@@ -176,7 +221,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         };
 
         setMaxRows = (id: string, maxRows: number, load: boolean = true) => {
-            this.setState(produce((draft) => {
+            this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
                 model.maxRows = maxRows;
                 model.offset = 0;

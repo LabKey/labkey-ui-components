@@ -236,4 +236,26 @@ export class QueryModel implements IQueryModel {
             rowsLoadingState === LoadingState.LOADING
         );
     }
+
+    getPageCount(): number {
+        const { maxRows, rowCount } = this;
+        return maxRows > 0 ? Math.ceil(rowCount / maxRows) : 1;
+    }
+
+    getCurrentPage(): number {
+        const { offset, maxRows } = this;
+        return offset > 0 ? Math.floor(offset / maxRows) + 1 : 1;
+    }
+
+    getLastPageOffset(): number {
+        return (this.getPageCount() - 1) * this.maxRows;
+    }
+
+    isLastPage(): boolean {
+        return this.getCurrentPage() === this.getPageCount();
+    }
+
+    isFirstPage(): boolean {
+        return this.getCurrentPage() === 1;
+    }
 }

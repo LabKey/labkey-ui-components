@@ -44,104 +44,57 @@ class PaginationInfo extends PureComponent<RequiresModel> {
 }
 
 class Pagination extends PureComponent<RequiresModel> {
-    getCurrentPage = () => {
-        const { offset, maxRows } = this.props.model;
-        return offset > 0 ? Math.floor(offset / maxRows) + 1 : 1;
-    };
-
-    getLastPage = () => {
-        const { maxRows, rowCount } = this.props.model;
-        return maxRows && maxRows > 0 ? Math.ceil(rowCount / maxRows) : 1;
-    };
-
-    isPreviousDisabled = () => {
-        return this.props.model.offset === 0;
-    };
-
-    isNextDisabled = () => {
-        const { offset, maxRows, rowCount } = this.props.model;
-        return (offset + maxRows) >= rowCount;
-    };
-
-    isFirstDisabled = () => {
-        return this.getCurrentPage() === 1;
-    };
-
-    isLastDisabled = () => {
-        return this.getCurrentPage() === this.getLastPage();
-    };
-
     loadNextPage = () => {
         const { model, actions } = this.props;
-
-        // Have to check because click handlers always fire.
-        if (!this.isNextDisabled()) {
-            actions.loadNextPage(model.id);
-        }
+        actions.loadNextPage(model.id);
     };
 
     loadPreviousPage = () => {
         const { model, actions } = this.props;
-
-        // Have to check because click handlers always fire.
-        if (!this.isPreviousDisabled()) {
-            actions.loadPreviousPage(model.id);
-        }
+        actions.loadPreviousPage(model.id);
     };
 
     loadFirstPage = () => {
         const { model, actions } = this.props;
-
-        // Have to check because click handlers always fire.
-        if (!this.isFirstDisabled()) {
-            actions.loadFirstPage(model.id);
-        }
+        actions.loadFirstPage(model.id);
     };
 
     loadLastPage = () => {
         const { model, actions } = this.props;
-
-        // Have to check because click handlers always fire.
-        if (!this.isLastDisabled()) {
-            actions.loadLastPage(model.id);
-        }
+        actions.loadLastPage(model.id);
     };
 
     render() {
-        const { id } = this.props.model;
-        const lastPage = this.getLastPage();
-        const prevIcon = 'fa-chevron-left';
-        const nextIcon = 'fa-chevron-right';
-
+        const { model } = this.props;
         return (
             <ButtonGroup>
                 <PagingButton
-                    disabled={this.isPreviousDisabled()}
-                    iconClass={prevIcon}
-                    tooltip={"Previous Page"}
+                    disabled={model.isFirstPage()}
+                    iconClass="fa-chevron-left"
+                    tooltip="Previous Page"
                     onClick={this.loadPreviousPage}
                 />
 
                 <Tip caption="Current Page">
-                    <DropdownButton id={`current-page-drop-${id}`} pullRight title={this.getCurrentPage()}>
+                    <DropdownButton id={`current-page-drop-${model.id}`} pullRight title={model.getCurrentPage()}>
                         <MenuItem header>Jump To</MenuItem>
 
-                        <MenuItem key={'first'} disabled={this.isFirstDisabled()} onClick={this.loadFirstPage}>
+                        <MenuItem key={'first'} disabled={model.isFirstPage()} onClick={this.loadFirstPage}>
                             First Page
                         </MenuItem>
 
-                        <MenuItem key={'last'} disabled={this.isLastDisabled()} onClick={this.loadLastPage}>
+                        <MenuItem key={'last'} disabled={model.isLastPage()} onClick={this.loadLastPage}>
                             Last Page
                         </MenuItem>
 
-                        <MenuItem header>{lastPage} Total Pages</MenuItem>
+                        <MenuItem header>{model.getPageCount()} Total Pages</MenuItem>
                     </DropdownButton>
                 </Tip>
 
                 <PagingButton
-                    disabled={this.isNextDisabled()}
-                    iconClass={nextIcon}
-                    tooltip={"Next Page"}
+                    disabled={model.isLastPage()}
+                    iconClass="fa-chevron-right"
+                    tooltip="Next Page"
                     onClick={this.loadNextPage}
                 />
             </ButtonGroup>

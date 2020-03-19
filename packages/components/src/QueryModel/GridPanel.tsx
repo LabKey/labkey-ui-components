@@ -21,22 +21,24 @@ interface RequiresModel {
 class PaginationInfo extends PureComponent<RequiresModel> {
     render() {
         const { model } = this.props;
+        const { offset, maxRows, rowCount } = model;
         let message = '';
 
-        const { offset, maxRows, rowCount } = model;
-        const min = offset !== rowCount ? offset + 1 : offset;
-        let max = offset + maxRows;
+        if (model.rowCount !== undefined) {
+            const min = offset !== rowCount ? offset + 1 : offset;
+            let max = offset + maxRows;
 
-        message = `${min} - `;
+            message = `${min} - `;
 
-        if (max > rowCount) {
-            max = rowCount;
-        }
+            if (max > rowCount) {
+                max = rowCount;
+            }
 
-        message += `${max}`;
+            message += `${max}`;
 
-        if (max !== rowCount) {
-            message += ` of ${rowCount}`;
+            if (max !== rowCount) {
+                message += ` of ${rowCount}`;
+            }
         }
 
         return (
@@ -125,8 +127,6 @@ export class GridPanel extends PureComponent<Props> {
             return <Alert>{model.error ? model.error : 'Something went wrong while loading data.'}</Alert>
         }
 
-        const pageSizeSelector = undefined;
-        const viewSelector = undefined;
         let grid;
 
         if (model.orderedRows !== undefined) {
@@ -155,7 +155,7 @@ export class GridPanel extends PureComponent<Props> {
 
                 <div className="grid-panel__info-bar">
                     {/* Loading State and Selection Status */}
-                    {model.isLoading() ? <LoadingSpinner /> : <span />}
+                    {model.isLoading() && <LoadingSpinner />}
                 </div>
 
                 <div className="grid-panel__grid">

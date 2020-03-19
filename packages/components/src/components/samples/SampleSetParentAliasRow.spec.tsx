@@ -3,7 +3,8 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
 import { SampleSetParentAliasRow } from './SampleSetParentAliasRow';
-import { IParentAlias, IParentOption } from '../entities/models';
+import { IParentOption } from "../entities/models";
+import { IParentAlias } from '../domainproperties/samples/models';
 
 describe("<SampleSetParentAliasRow/>", () => {
 
@@ -39,8 +40,8 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("With values", () => {
 
-        const parentAlias: IParentAlias = {alias: "testAlias", id: "testId", ignoreAliasError: false, ignoreSelectError: false, parentValue: {value: "materialInputs/test", label:"Test Label"}};
-        const option: IParentOption = {label: "test", query: "sampleset", schema: "exp", value: "materialInputs/test"};
+        const parentAlias: IParentAlias = {alias: "testAlias", id: "testId", ignoreAliasError: false, ignoreSelectError: false, parentValue: {value: "materialInputs/test", label:"Test Label"}} as IParentAlias;
+        const option: IParentOption = {label: "test", query: "sampleset", schema: "exp", value: "materialInputs/test"} as IParentOption;
 
         const component = (
             <SampleSetParentAliasRow  id={parentAlias.id}  onAliasChange={jest.fn()} onRemove={jest.fn()} parentAlias={parentAlias} parentOptions={[option]} />
@@ -57,8 +58,8 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("With parent value not an option in select", () => {
 
-        const parentAlias: IParentAlias = {alias: "testAlias", id: "testId", ignoreAliasError: false, ignoreSelectError: false, parentValue: {value: "materialInputs/test", label:"Test Label"}};
-        const option:IParentOption = {label: "test", query: "sampleset", schema: "exp", value: "materialInputs/notFound"};
+        const parentAlias: IParentAlias = {alias: "testAlias", id: "testId", ignoreAliasError: false, ignoreSelectError: false, parentValue: {value: "materialInputs/test", label:"Test Label"}} as IParentAlias;
+        const option:IParentOption = {label: "test", query: "sampleset", schema: "exp", value: "materialInputs/notFound"} as IParentOption;
 
         const component = (
             <SampleSetParentAliasRow  id={parentAlias.id}  onAliasChange={jest.fn()} onRemove={jest.fn()} parentAlias={parentAlias} parentOptions={[option]} />
@@ -75,9 +76,9 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("Simulate delete behavior", () => {
 
-        const parentAlias: IParentAlias = {alias: "testAlias", id: "testId", ignoreAliasError: false, ignoreSelectError: false, parentValue: {value: "materialInputs/option2", label:"Test Label"}};
-        const option1: IParentOption = {label: "option1", query: "sampleset", schema: "exp", value: "materialInputs/option1"};
-        const option2: IParentOption = {label: "option2", query: "sampleset", schema: "exp", value: "materialInputs/option2"};
+        const parentAlias: IParentAlias = {alias: "testAlias", id: "testId", ignoreAliasError: false, ignoreSelectError: false, parentValue: {value: "materialInputs/option2", label:"Test Label"}} as IParentAlias;
+        const option1: IParentOption = {label: "option1", query: "sampleset", schema: "exp", value: "materialInputs/option1"} as IParentOption;
+        const option2: IParentOption = {label: "option2", query: "sampleset", schema: "exp", value: "materialInputs/option2"} as IParentOption;
 
         const mockRemove = jest.fn();
 
@@ -103,19 +104,19 @@ describe("<SampleSetParentAliasRow/>", () => {
             parentValue: {value: "materialInputs/option2", label: "Test Label"},
             ignoreAliasError: false,
             ignoreSelectError: false,
-        };
+        } as IParentAlias;
         const option1: IParentOption = {
             label: "option1",
             query: "sampleset",
             schema: "exp",
             value: "materialInputs/option1"
-        };
+        } as IParentOption;
         const option2: IParentOption = {
             label: "option2",
             query: "sampleset",
             schema: "exp",
             value: "materialInputs/option2"
-        };
+        } as IParentOption;
 
         const mockChange = jest.fn();
 
@@ -133,17 +134,5 @@ describe("<SampleSetParentAliasRow/>", () => {
         expect(mockChange).toHaveBeenCalledTimes(1);
         expect(mockChange).toBeCalledWith('testId', 'alias', 'change');
         mockChange.mockClear();
-
-        //*Verify Select changes*//
-        //// TODO: Can't find the correct element within the ReactSelect to trigger change event
-        ////    https://stackoverflow.com/questions/41991077/testing-react-select-component
-        // const selectInput = wrapper.find('.sampleset-insert--parent-select');
-        // const selectInput = wrapper.find('input[role="combobox"]');
-        // const selectInput = wrapper.find(SelectInput);
-        // const selectInput = wrapper.find('.Select-control');
-        // expect(mockChange).toHaveBeenCalledTimes(0);
-        // selectInput.simulate('change', {name:'parentValue', option1}).simulate('blur');
-        // expect(mockChange).toHaveBeenCalledTimes(1);
-        // expect(mockChange).toBeCalledWith('testId', 'parentValue', option1);
     });
 });

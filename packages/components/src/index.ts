@@ -89,8 +89,8 @@ import { Section } from './components/base/Section';
 import { FileAttachmentForm } from './components/files/FileAttachmentForm';
 import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files/models';
 import { FilesListing } from './components/files/FilesListing';
-import { FilesListingForm } from './components/files/FilesListingForm'
-import { FileAttachmentEntry } from './components/files/FileAttachmentEntry'
+import { FilesListingForm } from './components/files/FilesListingForm';
+import { FileAttachmentEntry } from './components/files/FileAttachmentEntry';
 import { WebDavFile, getWebDavFiles, uploadWebDavFile } from './components/files/WebDav';
 import { FileTree } from './components/files/FileTree';
 import { Notification } from './components/notifications/Notification';
@@ -199,9 +199,14 @@ import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
-import { deleteSampleSet, fetchSamples, getSampleSet, loadSelectedSamples } from './components/samples/actions';
+import {
+    deleteSampleSet,
+    getSampleSet,
+    getSampleTypeDetails,
+    loadSelectedSamples,
+    fetchSamples,
+} from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
-import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
@@ -263,6 +268,7 @@ import {
     IAppDomainHeader,
     IBannerMessage,
     IDomainField,
+    DomainDetails,
     IFieldChange,
     SAMPLE_TYPE,
 } from './components/domainproperties/models';
@@ -289,7 +295,8 @@ import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
 import { EntityDataType } from './components/entities/models';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
-
+import { SampleTypeModel } from "./components/domainproperties/samples/models";
+import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
 
 export {
     // global state functions
@@ -394,11 +401,13 @@ export {
 
     // samples-related
     DataClassDesigner,
-    SampleSetDetailsPanel,
+    SampleTypeDesigner,
+    SampleTypeModel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
     fetchSamples,
     getSampleSet,
+    getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
 
@@ -513,6 +522,7 @@ export {
     IFieldChange,
     IBannerMessage,
     IAppDomainHeader,
+    DomainDetails,
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,

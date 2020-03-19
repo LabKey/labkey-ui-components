@@ -127,7 +127,6 @@ Array [
             >
               <input
                 className="form-control"
-                disabled={false}
                 id="entity-name"
                 onChange={[Function]}
                 placeholder="Enter a name for this source"
@@ -546,7 +545,6 @@ Array [
             >
               <input
                 className="form-control"
-                disabled={false}
                 id="entity-name"
                 onChange={[Function]}
                 placeholder="Enter a name for this data class"

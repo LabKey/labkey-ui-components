@@ -122,7 +122,6 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
         >
           <input
             className="form-control"
-            disabled={false}
             id="entity-name"
             onChange={[Function]}
             placeholder="Enter a name for this source"
@@ -320,7 +319,6 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
         >
           <input
             className="form-control"
-            disabled={false}
             id="entity-name"
             onChange={[Function]}
             placeholder="Enter a name for this data class"

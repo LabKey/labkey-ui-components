@@ -170,6 +170,7 @@ import { EditableGridLoaderFromSelection } from './components/editable/EditableG
 import { EditableGridModal } from './components/editable/EditableGridModal';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { CollapsiblePanel } from './components/CollapsiblePanel';
+import { ErrorBoundary } from './components/error/ErrorBoundary';
 import { AliasRenderer } from './renderers/AliasRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
@@ -368,6 +369,7 @@ export {
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridModal,
+    ErrorBoundary,
     QueryGridPanel,
     CollapsiblePanel,
     BulkAddUpdateForm,

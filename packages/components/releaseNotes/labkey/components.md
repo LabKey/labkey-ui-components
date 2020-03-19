@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.3#.#
-*Released*: ## March 2020
+### version 0.36.0
+*Released*: 19 March 2020
 * 39867: ErrorBoundary HoC, ErrorPage to display uncaught React exceptions
 
 ### version 0.35.3

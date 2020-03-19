@@ -10,7 +10,7 @@ select a schema for the QuerySelect to use.
 * Refine and simplify styling for buttons on DetailEditing to work with sibling panels that sit below it
 * When invalidating the grid, don't call clearSelected if model does not allow selections
 * Issue 39307: Call onChange and loadOptions after model has been updated so changed selection is taken into account.
-
+* Issue 39863: Use POST instead of GET when getting delete confirmation data
 
 ### version 0.35.3
 *Released*: 18 March 2020

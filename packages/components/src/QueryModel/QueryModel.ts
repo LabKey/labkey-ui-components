@@ -1,5 +1,5 @@
 import { Filter } from '@labkey/api';
-import { QueryColumn, QueryInfo, SchemaQuery } from '..';
+import { naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
 import { List } from 'immutable';
 import { immerable } from 'immer';
 import { QuerySort } from '../components/base/models/model';
@@ -227,14 +227,11 @@ export class QueryModel implements IQueryModel {
         return sortStrings.join(',');
     }
 
-    isLoading(): boolean {
-        const { queryInfoLoadingState, rowsLoadingState } = this;
-        return (
-            queryInfoLoadingState === LoadingState.INITIALIZED ||
-            queryInfoLoadingState === LoadingState.LOADING ||
-            rowsLoadingState === LoadingState.INITIALIZED ||
-            rowsLoadingState === LoadingState.LOADING
-        );
+    /**
+     * Returns the data needed for a <Grid /> component to render.
+     */
+    getGridData() {
+        return this.orderedRows.map(i => this.rows[i]);
     }
 
     getPageCount(): number {
@@ -249,6 +246,24 @@ export class QueryModel implements IQueryModel {
 
     getLastPageOffset(): number {
         return (this.getPageCount() - 1) * this.maxRows;
+    }
+
+    getViews(): ViewInfo[] {
+        return this.queryInfo?.views.sortBy(v => v.label, naturalSort).toArray();
+    }
+
+    hasData(): boolean {
+        return this.rows !== undefined;
+    }
+
+    isLoading(): boolean {
+        const { queryInfoLoadingState, rowsLoadingState } = this;
+        return (
+            queryInfoLoadingState === LoadingState.INITIALIZED ||
+            queryInfoLoadingState === LoadingState.LOADING ||
+            rowsLoadingState === LoadingState.INITIALIZED ||
+            rowsLoadingState === LoadingState.LOADING
+        );
     }
 
     isLastPage(): boolean {

@@ -37,52 +37,49 @@ export class GridPanel extends PureComponent<Props> {
             return <Alert>{error}</Alert>
         }
 
-        let grid;
-
-        if (hasData) {
-            grid = (
-                <Grid
-                    calcWidths
-                    condensed
-                    gridId={id}
-                    messages={fromJS(messages)}
-                    columns={List(model.getDisplayColumns())}
-                    data={model.getGridData()}
-                />
-            );
-        }
-
         return (
-            <div className="grid-panel">
-                <div className="grid-panel__bar">
-                    <div className="grid-panel__bar-left">
-                        <div className="grid-bar__section" />
-                    </div>
+            <div className="grid-panel panel panel-default">
+                <div className="panel-body">
+                    <div className="grid-panel__bar">
+                        <div className="grid-panel__bar-left">
+                            <div className="grid-bar__section" />
+                        </div>
 
-                    <div className="grid-panel__bar-right">
-                        <div className="grid-bar__section">
-                            {paginate && <PaginationInfo model={model} actions={actions} />}
-                            {paginate && <PaginationButtons model={model} actions={actions} />}
-                            {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
-                            {
-                                (showViewSelector && queryInfo) &&
-                                <ViewSelector
-                                    model={model}
-                                    actions={actions}
-                                    hideEmptyViewSelector={hideEmptyViewSelector}
-                                />
-                            }
+                        <div className="grid-panel__bar-right">
+                            <div className="grid-bar__section">
+                                {paginate && <PaginationInfo model={model} actions={actions} />}
+                                {paginate && <PaginationButtons model={model} actions={actions} />}
+                                {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
+                                {
+                                    (showViewSelector && queryInfo) &&
+                                    <ViewSelector
+                                        model={model}
+                                        actions={actions}
+                                        hideEmptyViewSelector={hideEmptyViewSelector}
+                                    />
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="grid-panel__info">
-                    {/* Loading State and Selection Status */}
-                    {model.isLoading() && <LoadingSpinner />}
-                </div>
+                    <div className="grid-panel__info">
+                        {/* Loading State and Selection Status */}
+                        {model.isLoading() && <LoadingSpinner />}
+                    </div>
 
-                <div className="grid-panel__grid">
-                    {grid}
+                    <div className="grid-panel__grid">
+                        {
+                            hasData &&
+                            <Grid
+                                calcWidths
+                                condensed
+                                gridId={id}
+                                messages={fromJS(messages)}
+                                columns={List(model.getDisplayColumns())}
+                                data={model.getGridData()}
+                            />
+                        }
+                    </div>
                 </div>
             </div>
         );

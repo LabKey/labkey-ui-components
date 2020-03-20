@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.38.1
+*Released*: 20 March 2020
+* Issue 39913: Switch from dismissCoreWarnings.api to dismissWarnings.api
+
 ## version 0.38.0
 *Released*: 19 March 2020
 * Add ParentEntityEditPanel for CRUD operations on parents. Initially not supporting delete

@@ -37,6 +37,8 @@ describe('AssayPropertiesPanel', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
+                controlledCollapse={false}
+                initCollapsed={false}
                 onChange={jest.fn}
             />
         );
@@ -49,6 +51,8 @@ describe('AssayPropertiesPanel', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
+                controlledCollapse={false}
+                initCollapsed={false}
                 asPanel={false}
                 appPropertiesOnly={true}
                 helpTopic={'defineAssaySchema'}
@@ -64,6 +68,8 @@ describe('AssayPropertiesPanel', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
+                controlledCollapse={false}
+                initCollapsed={false}
                 helpTopic={null}
                 appPropertiesOnly={true}
                 onChange={jest.fn}
@@ -78,6 +84,7 @@ describe('AssayPropertiesPanel', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
+                controlledCollapse={false}
                 collapsible={false}
                 initCollapsed={true}
                 onChange={jest.fn}
@@ -98,6 +105,8 @@ describe('AssayPropertiesPanel', () => {
                     editableRuns: true,
                     editableResults: true
                 })}
+                controlledCollapse={false}
+                initCollapsed={false}
                 onChange={jest.fn}
             />
         );
@@ -111,6 +120,8 @@ describe('AssayPropertiesPanel', () => {
         const component = (
             <AssayPropertiesPanel
                 model={AssayProtocolModel.create({protocolId: 1, name: name})}
+                controlledCollapse={false}
+                initCollapsed={false}
                 collapsible={true}
                 onChange={jest.fn}
             />
@@ -136,7 +147,15 @@ describe('AssayPropertiesPanel', () => {
     });
 
     test('visible properties based on empty AssayProtocolModel', () => {
-        const simpleModelWrapper = mount(<AssayPropertiesPanel model={EMPTY_MODEL} onChange={jest.fn}/>);
+        const simpleModelWrapper = mount(
+            <AssayPropertiesPanel
+                model={EMPTY_MODEL}
+                controlledCollapse={false}
+                initCollapsed={false}
+                onChange={jest.fn}
+            />
+        );
+
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(QCStatesInput)).toHaveLength(0);
@@ -167,7 +186,15 @@ describe('AssayPropertiesPanel', () => {
             moduleTransformScripts: ['validation.pl']
         });
 
-        const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn}/>);
+        const simpleModelWrapper = mount(
+            <AssayPropertiesPanel
+                model={model}
+                controlledCollapse={false}
+                initCollapsed={false}
+                onChange={jest.fn}
+            />
+        );
+
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(PlateMetadataInput)).toHaveLength(1);
@@ -197,7 +224,15 @@ describe('AssayPropertiesPanel', () => {
             moduleTransformScripts: ['validation.pl']
         });
 
-        const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn} appPropertiesOnly={true}/>);
+        const simpleModelWrapper = mount(
+            <AssayPropertiesPanel
+                model={model}
+                controlledCollapse={false}
+                initCollapsed={false}
+                onChange={jest.fn}
+                appPropertiesOnly={true}
+            />
+        );
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(PlateMetadataInput)).toHaveLength(0);

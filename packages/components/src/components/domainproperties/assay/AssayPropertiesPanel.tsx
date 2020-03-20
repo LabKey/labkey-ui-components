@@ -24,7 +24,10 @@ import { Alert } from '../../base/Alert';
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { HelpTopicURL } from "../HelpTopicURL";
-import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
+import {
+    InjectedDomainPropertiesPanelCollapseProps,
+    withDomainPropertiesPanelCollapse
+} from "../DomainPropertiesPanelCollapse";
 
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
@@ -54,45 +57,21 @@ interface Props {
     onChange: (model: AssayProtocolModel) => any
     appPropertiesOnly?: boolean
     asPanel?: boolean
-    initCollapsed?: boolean
-    collapsible?: boolean
-    controlledCollapse?: boolean
     validate?: boolean
     useTheme?: boolean
     panelStatus?: DomainPanelStatus
     helpTopic?: string
-    onToggle?: (collapsed: boolean, callback: () => any) => any
 }
 
 interface State {
     isValid: boolean
 }
 
-export class AssayPropertiesPanel extends React.PureComponent<Props> {
-    render() {
-        const { controlledCollapse, collapsible, initCollapsed, onToggle } = this.props;
-
-        return (
-            <DomainPropertiesPanelProvider
-                controlledCollapse={controlledCollapse}
-                collapsible={collapsible}
-                initCollapsed={initCollapsed}
-                onToggle={onToggle}
-            >
-                <AssayPropertiesPanelImpl {...this.props} />
-            </DomainPropertiesPanelProvider>
-        )
-    }
-}
-
-class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
-    static contextType = DomainPropertiesPanelContext;
-    context!: React.ContextType<typeof DomainPropertiesPanelContext>;
+class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
 
     static defaultProps = {
         appPropertiesOnly: false,
         asPanel: true,
-        initCollapsed: false,
         validate: false,
         helpTopic: DEFINE_ASSAY_SCHEMA_TOPIC,
     };
@@ -134,7 +113,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
     }
 
     toggleLocalPanel = (evt: any): void => {
-        const { togglePanel, collapsed } = this.context;
+        const { togglePanel, collapsed } = this.props;
         this.setIsValid();
         togglePanel(evt, !collapsed);
     };
@@ -238,9 +217,8 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
     }
 
     renderPanel() {
-        const { collapsible, controlledCollapse, model, panelStatus, useTheme, helpTopic } = this.props;
+        const { collapsed, collapsible, controlledCollapse, model, panelStatus, useTheme, helpTopic } = this.props;
         const { isValid } = this.state;
-        const { collapsed } = this.context;
 
         return (
             <>
@@ -283,6 +261,8 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
         )
     }
 }
+
+export const AssayPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(AssayPropertiesPanelImpl);
 
 interface SectionHeadingProps {
     title: string

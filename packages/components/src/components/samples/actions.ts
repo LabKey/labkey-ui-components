@@ -15,8 +15,8 @@
  */
 import {ActionURL, Ajax, Domain, Filter, Query, Utils} from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
-
 import { IEntityTypeDetails, IParentOption, } from '../entities/models';
+import { deleteEntityType } from "../entities/actions";
 import { getSelection } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
@@ -95,22 +95,7 @@ export function getSampleTypeDetails(query: SchemaQuery, domainId?: number): Pro
 }
 
 export function deleteSampleSet(rowId: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', 'deleteMaterialSource.api'),
-            method: 'POST',
-            params: {
-                singleObjectRowId: rowId,
-                forceDelete: true
-            },
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((response) => {
-                reject(response);
-            }),
-        });
-    });
+    return deleteEntityType('deleteMaterialSource', rowId);
 }
 
 /**

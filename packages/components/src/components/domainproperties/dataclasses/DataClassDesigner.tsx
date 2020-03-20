@@ -11,7 +11,8 @@ import {
     getDomainBottomErrorMessage,
     getDomainPanelStatus,
     getDomainHeaderName,
-    getUpdatedVisitedPanelsList
+    getUpdatedVisitedPanelsList,
+    saveDomain
 } from "../actions";
 
 interface Props {
@@ -21,20 +22,20 @@ interface Props {
     nameExpressionPlaceholder?: string
     headerText?: string
 
+    initModel?: DataClassModel
     onChange?: (model: DataClassModel) => void
     onCancel: () => void
     onComplete: (model: DataClassModel) => void
-    initModel?: DataClassModel
+    useTheme?: boolean
     containerTop?: number // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean
-    useTheme?: boolean
     successBsStyle?: string
 }
 
 interface State {
+    model: DataClassModel
     submitting: boolean
     currentPanelIndex: number
-    model: DataClassModel
     visitedPanels: List<number>
     validatePanel: number
     firstState: boolean
@@ -46,9 +47,9 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
+            model: props.initModel || DataClassModel.create({}),
             submitting: false,
             currentPanelIndex: 0,
-            model: props.initModel || DataClassModel.create({}),
             visitedPanels: List<number>(),
             validatePanel: undefined,
             firstState: true
@@ -92,7 +93,21 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
             this.setState(() => ({validatePanel: undefined}), () => {
                 if (this.isValid()) {
                     this.setState(() => ({submitting: true}));
-                    console.log('TODO: THE DATA CLASS MODEL');
+
+                    saveDomain(model.domain, 'DataClass', model.getOptions(), model.name)
+                        .then((response) => {
+                            let updatedModel = model.set('exception', undefined) as DataClassModel;
+                            updatedModel = updatedModel.merge({domain: response}) as DataClassModel;
+
+                            this.setState(() => ({model: updatedModel, submitting: false}));
+                            this.props.onComplete(updatedModel);
+                        })
+                        .catch((response) => {
+                            const updatedModel = response.exception
+                                ? model.set('exception', response.exception) as DataClassModel
+                                : model.merge({domain: response, exception: undefined}) as DataClassModel;
+                            this.setState(() => ({model: updatedModel, submitting: false}));
+                        });
                 }
             });
         });
@@ -102,13 +117,14 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
         return DataClassModel.isValid(this.state.model);
     }
 
-    onDomainChange = (domain: DomainDesign) => {
+    onDomainChange = (domain: DomainDesign, dirty: boolean) => {
         const { onChange } = this.props;
 
         this.setState((state) => ({
             model: state.model.merge({domain}) as DataClassModel
         }), () => {
-            if (onChange) {
+            // Issue 39918: use the dirty property that DomainForm onChange passes
+            if (onChange && dirty) {
                 onChange(this.state.model);
             }
         });
@@ -133,7 +149,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
             errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
         }
 
-        const bottomErrorMsg = getDomainBottomErrorMessage(undefined, errorDomains, model.hasValidProperties(), visitedPanels);
+        const bottomErrorMsg = getDomainBottomErrorMessage(model.exception, errorDomains, model.hasValidProperties(), visitedPanels);
 
         return (
             <>
@@ -157,7 +173,8 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                     key={model.domain.domainId || 0}
                     domainIndex={0}
                     domain={model.domain}
-                    headerPrefix={model.name}
+                    headerTitle={'Fields'}
+                    helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     controlledCollapse={true}
                     initCollapsed={currentPanelIndex !== 1}
                     validate={validatePanel === 1}
@@ -169,7 +186,6 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
-                    helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                 />
                 {bottomErrorMsg &&
                     <div className={'domain-form-panel'}>
@@ -177,8 +193,17 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                     </div>
                 }
                 <div className={'domain-form-panel domain-designer-buttons'}>
-                    <Button onClick={onCancel}>Cancel</Button>
-                    <Button className='pull-right' bsStyle={successBsStyle || 'success'} disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
+                    <Button onClick={onCancel}>
+                        Cancel
+                    </Button>
+                    <Button
+                        className='pull-right'
+                        bsStyle={successBsStyle || 'success'}
+                        disabled={this.state.submitting}
+                        onClick={this.onFinish}
+                    >
+                        Save
+                    </Button>
                 </div>
             </>
         )

@@ -65,7 +65,7 @@ interface Props {
 }
 
 interface State {
-    validProperties: boolean
+    isValid: boolean
 }
 
 export class AssayPropertiesPanel extends React.PureComponent<Props> {
@@ -101,14 +101,14 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            validProperties: true
+            isValid: true
         };
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         const { validate } = this.props;
         if (nextProps.validate && validate !== nextProps.validate) {
-            this.setValidProperties();
+            this.setIsValid();
         }
     }
 
@@ -120,15 +120,22 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
         updateDomainPanelClassList(prevProps.useTheme, undefined, 'assay-properties-hdr');
     }
 
-    setValidProperties() {
-        const { model } = this.props;
-        const validProperties = model && model.hasValidProperties();
-        this.setState(() => ({validProperties}));
+    setIsValid(newModel?: AssayProtocolModel) {
+        const { model, onChange } = this.props;
+        const updatedModel = newModel || model;
+        const isValid = updatedModel && updatedModel.hasValidProperties();
+        this.setState(() => ({isValid}),
+            () => {
+                // Issue 39918: only consider the model changed if there is a newModel param
+                if (newModel) {
+                    onChange(updatedModel)
+                }
+            });
     }
 
     toggleLocalPanel = (evt: any): void => {
         const { togglePanel, collapsed } = this.context;
-        this.setValidProperties();
+        this.setIsValid();
         togglePanel(evt, !collapsed);
     };
 
@@ -156,14 +163,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
             [id.replace(FORM_ID_PREFIX, '')]: value
         }) as AssayProtocolModel;
 
-        const valid = (newModel.hasValidProperties() === true ? true : this.state.validProperties);
-
-        this.setState(() => (
-            // Only clear validation errors here. New errors found on collapse or submit.
-            {validProperties: valid}),
-        () => {
-            this.props.onChange(newModel);
-        });
+        this.setIsValid(newModel);
     };
 
     renderBasicProperties() {
@@ -239,7 +239,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
 
     renderPanel() {
         const { collapsible, controlledCollapse, model, panelStatus, useTheme, helpTopic } = this.props;
-        const { validProperties } = this.state;
+        const { isValid } = this.state;
         const { collapsed } = this.context;
 
         return (
@@ -255,7 +255,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
                         panelStatus={panelStatus}
                         togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
                         useTheme={useTheme}
-                        isValid={validProperties}
+                        isValid={isValid}
                         iconHelpMsg={ERROR_MSG}
                     />
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
@@ -263,7 +263,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props, State> {
                         {this.renderForm()}
                     </Panel.Body>
                 </Panel>
-                {!validProperties &&
+                {!isValid &&
                     <div
                         onClick={(evt: any) => this.toggleLocalPanel(evt)}
                         className={getDomainAlertClasses(collapsed, true, useTheme)}

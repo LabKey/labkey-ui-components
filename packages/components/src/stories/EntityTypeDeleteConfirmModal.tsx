@@ -15,16 +15,18 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, withKnobs } from '@storybook/addon-knobs';
-import { SampleSetDeleteConfirmModal } from '../components/samples/SampleSetDeleteConfirmModal';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { EntityTypeDeleteConfirmModal } from '../components/entities/EntityTypeDeleteConfirmModal';
 
 import './stories.scss';
 
-storiesOf('SampleSetDeleteConfirmModal', module)
+storiesOf('EntityTypeDeleteConfirmModal', module)
     .addDecorator(withKnobs)
     .add('with knobs', () => {
-        return <SampleSetDeleteConfirmModal
+        return <EntityTypeDeleteConfirmModal
             rowId={0}
+            noun={text('noun', 'sample')}
+            deleteConfirmationActionName={text('lkDeleteAction', 'deleteMaterialSource')}
             showDependenciesLink={boolean('showDependenciesLink', false)}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}

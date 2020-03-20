@@ -59,6 +59,7 @@ import {
     toggleDevTools,
     valueIsEmpty,
 } from './util/utils';
+import { BeforeUnload } from './util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './util/messaging';
 import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL';
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
@@ -200,15 +201,10 @@ import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
-import {
-    deleteSampleSet,
-    getSampleSet,
-    getSampleTypeDetails,
-    loadSelectedSamples,
-    fetchSamples,
-} from './components/samples/actions';
-import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
+import { deleteSampleSet, fetchSamples, getSampleSet, getSampleTypeDetails, loadSelectedSamples } from './components/samples/actions';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
+import { DataClassModel } from './components/domainproperties/dataclasses/models';
+import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel';
@@ -242,6 +238,7 @@ import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
 import { EntityDeleteConfirmModal } from './components/entities/EntityDeleteConfirmModal';
+import { EntityTypeDeleteConfirmModal } from './components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
@@ -401,11 +398,15 @@ export {
     ChangePasswordModal,
     SiteUsersGridPanel,
 
-    // samples-related
+    // data class
     DataClassDesigner,
+    DataClassModel,
+    deleteDataClass,
+    fetchDataClass,
+
+    // samples-related
     SampleTypeDesigner,
     SampleTypeModel,
-    SampleSetDeleteConfirmModal,
     deleteSampleSet,
     fetchSamples,
     getSampleSet,
@@ -487,6 +488,7 @@ export {
     getDataDeleteConfirmationData,
 
     // entities
+    EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
     EntityDataType,
     EntityInsertPanel,
@@ -630,7 +632,8 @@ export {
     Theme,
     SVGIcon,
 
-    // util functions
+    // utils
+    BeforeUnload,
     caseInsensitive,
     capitalizeFirstChar,
     getSchemaQuery,

@@ -1,20 +1,19 @@
 import React, { PureComponent } from 'react';
-import { QueryModel } from './QueryModel';
-import { Actions } from './withQueryModels';
+import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { Alert, Grid, LoadingSpinner } from '..';
 import { fromJS, List } from 'immutable';
 import { PaginationButtons, PaginationInfo } from './Pagination';
 import { PageSizeSelector } from './PageSizeSelector';
 import { ViewSelector } from './ViewSelector';
 
-interface Props {
-    model: QueryModel;
-    actions: Actions;
+interface GridPanelProps {
     isPaged?: boolean;
     showViewSelector?: boolean;
     hideEmptyViewSelector?: boolean;
     pageSizes?: number[];
 }
+
+type Props = GridPanelProps & RequiresModelAndActions;
 
 export class GridPanel extends PureComponent<Props> {
     static defaultProps = {
@@ -89,3 +88,19 @@ export class GridPanel extends PureComponent<Props> {
         );
     }
 }
+
+
+class GridPanelWithModelImpl extends PureComponent<GridPanelProps & InjectedQueryModels> {
+    render() {
+        const { queryModels, actions, ...props } = this.props;
+        return <GridPanel actions={actions} model={Object.values(queryModels)[0]} {...props} />;
+    }
+}
+
+/**
+ * GridPanelWithModel is a GridPanel component that also accepts the props for withQueryModels, however it assumes
+ * that there will only ever be one model.
+ *
+ * In the future when GridPanel supports multiple models we will render tabs.
+ */
+export const GridPanelWithModel = withQueryModels<GridPanelProps>(GridPanelWithModelImpl);

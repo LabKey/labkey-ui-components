@@ -152,7 +152,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
 
-                if (!model.isLastPage()) {
+                if (!model.isLastPage) {
                     shouldLoad = true;
                     model.offset = model.offset + model.maxRows;
                 }
@@ -164,7 +164,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
 
-                if (!model.isFirstPage()) {
+                if (!model.isFirstPage) {
                     shouldLoad = true;
                     model.offset = model.offset - model.maxRows;
                 }
@@ -176,7 +176,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
 
-                if (!model.isFirstPage()) {
+                if (!model.isFirstPage) {
                     shouldLoad = true;
                     model.offset = 0
                 }
@@ -188,9 +188,9 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
 
-                if (!model.isLastPage()) {
+                if (!model.isLastPage) {
                     shouldLoad = true;
-                    model.offset = model.getLastPageOffset();
+                    model.offset = model.lastPageOffset;
                 }
             }), () => this.maybeLoad(id, shouldLoad));
         };

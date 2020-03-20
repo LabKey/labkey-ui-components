@@ -8,10 +8,10 @@ import { RequiresModelAndActions } from './withQueryModels';
 export class PaginationInfo extends PureComponent<RequiresModelAndActions> {
     render() {
         const { model } = this.props;
-        const { offset, maxRows, rowCount } = model;
+        const { hasData, offset, maxRows, rowCount } = model;
         let message = '';
 
-        if (model.hasData()) {
+        if (hasData) {
             const min = offset !== rowCount ? offset + 1 : offset;
             let max = offset + maxRows;
 
@@ -40,25 +40,25 @@ class PageSelector extends PureComponent<RequiresModelAndActions> {
     render() {
         const { model, actions } = this.props;
         const { loadFirstPage, loadLastPage } = actions;
-        const isLoading = model.isLoading();
+        const { id, isLoading, currentPage, isFirstPage, isLastPage, pageCount } = model;
 
         return (
             <Tip caption="Current Page" trigger={['hover']}>
-                <DropdownButton id={`current-page-drop-${model.id}`} pullRight title={model.getCurrentPage()}>
+                <DropdownButton id={`current-page-drop-${id}`} pullRight title={currentPage}>
                     <MenuItem header>
                         Jump To
                     </MenuItem>
 
-                    <MenuItem disabled={isLoading || model.isFirstPage()} onClick={() => loadFirstPage(model.id)}>
+                    <MenuItem disabled={isLoading || isFirstPage} onClick={() => loadFirstPage(id)}>
                         First Page
                     </MenuItem>
 
-                    <MenuItem disabled={isLoading || model.isLastPage()} onClick={() => loadLastPage(model.id)}>
+                    <MenuItem disabled={isLoading || isLastPage} onClick={() => loadLastPage(id)}>
                         Last Page
                     </MenuItem>
 
                     <MenuItem header>
-                        {isLoading ? '...' :  model.getPageCount()} Total Pages
+                        {isLoading ? '...' :  pageCount} Total Pages
                     </MenuItem>
                 </DropdownButton>
             </Tip>
@@ -69,24 +69,24 @@ class PageSelector extends PureComponent<RequiresModelAndActions> {
 export class PaginationButtons extends PureComponent<RequiresModelAndActions> {
     render() {
         const { model, actions } = this.props;
-        const isLoading = model.isLoading();
+        const { id, isLoading, isFirstPage, isLastPage } = model;
 
         return (
             <ButtonGroup>
                 <PagingButton
-                    disabled={isLoading || model.isFirstPage()}
+                    disabled={isLoading || isFirstPage}
                     iconClass="fa-chevron-left"
                     tooltip="Previous Page"
-                    onClick={() => actions.loadPreviousPage(model.id)}
+                    onClick={() => actions.loadPreviousPage(id)}
                 />
 
                 <PageSelector model={model} actions={actions} />
 
                 <PagingButton
-                    disabled={isLoading || model.isLastPage()}
+                    disabled={isLoading || isLastPage}
                     iconClass="fa-chevron-right"
                     tooltip="Next Page"
-                    onClick={() => actions.loadNextPage(model.id)}
+                    onClick={() => actions.loadNextPage(id)}
                 />
             </ButtonGroup>
         );

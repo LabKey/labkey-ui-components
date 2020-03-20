@@ -136,15 +136,15 @@ export class QueryModel implements IQueryModel {
         return this.queryInfo?.getColumn(fieldKey);
     }
 
-    getDisplayColumns(): QueryColumn[] {
+    get displayColumns(): QueryColumn[] {
         return this.queryInfo?.getDisplayColumns(this.schemaQuery.viewName, List(this.omittedColumns)).toArray();
     }
 
-    getAllColumns(): QueryColumn[] {
+    get allColumns(): QueryColumn[] {
         return this.queryInfo?.getAllColumns(this.schemaQuery.viewName, List(this.omittedColumns)).toArray();
     }
 
-    getKeyColumns(): QueryColumn[] {
+    get keyColumns(): QueryColumn[] {
         return this.queryInfo?.getPkCols().toArray();
     }
 
@@ -156,11 +156,11 @@ export class QueryModel implements IQueryModel {
      * Applying other base filters will be problematic (Issue 39719) in that they could possibly exclude the row you are
      * trying to get details for.
      */
-    getDetailFilters(): Filter.IFilter[] {
+    get detailFilters(): Filter.IFilter[] {
         return this.baseFilters.filter((filter) => (filter.getColumnName().toLowerCase() === 'replaced'));
     }
 
-    getFilters(): Filter.IFilter[] {
+    get filters(): Filter.IFilter[] {
         const { baseFilters, filterArray, queryInfo, keyValue, schemaQuery } = this;
 
         if (!queryInfo) {
@@ -181,13 +181,13 @@ export class QueryModel implements IQueryModel {
                 console.warn(warning, queryInfo.pkCols.toJS());
             }
 
-            return [...pkFilter, ...this.getDetailFilters()];
+            return [...pkFilter, ...this.detailFilters];
         }
 
         return [ ...baseFilters, ...filterArray, ...queryInfo.getFilters(schemaQuery.viewName).toArray() ]
     }
 
-    getColumnString(): string {
+    get columnString(): string {
         const { queryInfo, requiredColumns, omittedColumns } = this;
 
         if (!queryInfo) {
@@ -196,8 +196,8 @@ export class QueryModel implements IQueryModel {
             throw new Error('Cannot construct column string, no QueryInfo available');
         }
 
-        const keyColumnFieldKeys = this.getKeyColumns().map(fieldKeyMapper);
-        const displayColumnFieldKeys = this.getDisplayColumns().map(fieldKeyMapper);
+        const keyColumnFieldKeys = this.keyColumns.map(fieldKeyMapper);
+        const displayColumnFieldKeys = this.displayColumns.map(fieldKeyMapper);
         let fieldKeys = [...requiredColumns, ...keyColumnFieldKeys, ...displayColumnFieldKeys];
 
         if (omittedColumns.length) {
@@ -208,7 +208,7 @@ export class QueryModel implements IQueryModel {
         return fieldKeys.join(',');
     }
 
-    getSortString(): string {
+    get sortString(): string {
         const { sorts, schemaQuery, queryInfo } = this;
 
         if (!queryInfo) {
@@ -231,33 +231,33 @@ export class QueryModel implements IQueryModel {
     /**
      * Returns the data needed for a <Grid /> component to render.
      */
-    getGridData() {
+    get gridData() {
         return this.orderedRows.map(i => this.rows[i]);
     }
 
-    getPageCount(): number {
+    get pageCount(): number {
         const { maxRows, rowCount } = this;
         return maxRows > 0 ? Math.ceil(rowCount / maxRows) : 1;
     }
 
-    getCurrentPage(): number {
+    get currentPage(): number {
         const { offset, maxRows } = this;
         return offset > 0 ? Math.floor(offset / maxRows) + 1 : 1;
     }
 
-    getLastPageOffset(): number {
-        return (this.getPageCount() - 1) * this.maxRows;
+    get lastPageOffset(): number {
+        return (this.pageCount - 1) * this.maxRows;
     }
 
-    getViews(): ViewInfo[] {
+    get views(): ViewInfo[] {
         return this.queryInfo?.views.sortBy(v => v.label, naturalSort).toArray();
     }
 
-    hasData(): boolean {
+    get hasData(): boolean {
         return this.rows !== undefined;
     }
 
-    isLoading(): boolean {
+    get isLoading(): boolean {
         const { queryInfoLoadingState, rowsLoadingState } = this;
         return (
             queryInfoLoadingState === LoadingState.INITIALIZED ||
@@ -267,11 +267,11 @@ export class QueryModel implements IQueryModel {
         );
     }
 
-    isLastPage(): boolean {
-        return this.getCurrentPage() === this.getPageCount();
+    get isLastPage(): boolean {
+        return this.currentPage === this.pageCount;
     }
 
-    isFirstPage(): boolean {
-        return this.getCurrentPage() === 1;
+    get isFirstPage(): boolean {
+        return this.currentPage === 1;
     }
 }

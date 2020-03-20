@@ -30,7 +30,7 @@ export class GridPanel extends PureComponent<Props> {
     render() {
         const { model, actions, isPaged, showViewSelector, hideEmptyViewSelector, pageSizes } = this.props;
         const { id, error, messages, queryInfo } = model;
-        const hasData = model.hasData();
+        const hasData = model.hasData;
         const paginate = isPaged && hasData;
 
         if (model.error !== undefined) {
@@ -64,7 +64,7 @@ export class GridPanel extends PureComponent<Props> {
 
                     <div className="grid-panel__info">
                         {/* Loading State and Selection Status */}
-                        {model.isLoading() && <LoadingSpinner />}
+                        {model.isLoading && <LoadingSpinner />}
                     </div>
 
                     <div className="grid-panel__grid">
@@ -75,8 +75,8 @@ export class GridPanel extends PureComponent<Props> {
                                 condensed
                                 gridId={id}
                                 messages={fromJS(messages)}
-                                columns={List(model.getDisplayColumns())}
-                                data={model.getGridData()}
+                                columns={List(model.displayColumns)}
+                                data={model.gridData}
                             />
                         }
                     </div>

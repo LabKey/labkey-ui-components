@@ -9,12 +9,10 @@ type Props = {};
 
 class GridPanelWrapper extends PureComponent<Props & InjectedQueryModels> {
     render() {
-        console.log(this.props.queryModels);
         const model = this.props.queryModels.mixtures;
-        console.log('GridPanelWrapper - model', model);
         return (
             <div style={{marginTop: '2em'}}>
-                <GridPanel model={model} actions={this.props.actions} />
+                <GridPanel model={model} actions={this.props.actions} hideEmptyViewSelector />
             </div>
         );
     }

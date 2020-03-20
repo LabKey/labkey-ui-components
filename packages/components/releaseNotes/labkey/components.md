@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.39.0
+*Released*: 20 March 2020
 * Item 6835: Data Class designer updates for use in Sample Manager
     - add fetchDataClass function for call to Domain.getDomainDetails and resolve as DataClassModel
     - use saveDomain function in DataClassDesigner for create and update

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.38.1
+*Released*: 20 March 2020
 * Issue 39913: Switch from dismissCoreWarnings.api to dismissWarnings.api
 
 ## version 0.38.0

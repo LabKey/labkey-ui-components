@@ -295,7 +295,14 @@ import { SampleTypeModel } from "./components/domainproperties/samples/models";
 import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
 
 import { QueryModel } from './QueryModel/QueryModel';
-import { withQueryModels } from './QueryModel/withQueryModels';
+import {
+    withQueryModels,
+    MakeQueryModels,
+    InjectedQueryModels,
+    Actions,
+    QueryConfigMap,
+    QueryModelMap,
+} from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 
 export {
@@ -680,7 +687,12 @@ export {
 
     // QueryModel
     QueryModel,
+    QueryConfigMap,
+    QueryModelMap,
+    withQueryModels,
+    MakeQueryModels,
+    Actions,
+    InjectedQueryModels,
     GridPanel,
     GridPanelWithModel,
-    withQueryModels,
 }

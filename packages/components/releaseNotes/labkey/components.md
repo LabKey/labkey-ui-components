@@ -5,6 +5,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 39913: Switch from dismissCoreWarnings.api to dismissWarnings.api
 
+## version 0.38.0
+*Released*: 19 March 2020
+* Add ParentEntityEditPanel for CRUD operations on parents. Initially not supporting delete
+(because there is no back end support for completely removing lineage).
+* Fix problem with QuerySelect and SelectInput not playing nicely together when you want to
+select a schema for the QuerySelect to use.
+* Refine and simplify styling for buttons on DetailEditing to work with sibling panels that sit below it
+* When invalidating the grid, don't call clearSelected if model does not allow selections
+* Issue 39307: Call onChange and loadOptions after model has been updated so changed selection is taken into account.
+* Issue 39863: Use POST instead of GET when getting delete confirmation data
+
 ### version 0.37.0
 *Released*: 19 March 2020
 * Item 6848: Merge Sample Type creation/update UI into single designer component.

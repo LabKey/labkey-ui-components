@@ -180,7 +180,7 @@ import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
-import { SelectInput } from './components/forms/input/SelectInput';
+import { SelectInput, SelectInputProps } from './components/forms/input/SelectInput';
 import { DatePickerInput } from './components/forms/input/DatePickerInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
@@ -195,6 +195,7 @@ import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
+import { ParentEntityEditPanel } from './components/entities/ParentEntityEditPanel';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
@@ -376,6 +377,7 @@ export {
     BulkUpdateForm,
     LookupSelectInput,
     SelectInput,
+    SelectInputProps, // TODO this probably doesn't need to be exported, long-term.  Used by the <Select> element in Biologics, which may wnat to be moved here instead.
     DatePickerInput,
     QuerySelect,
     QuerySelectOwnProps,
@@ -490,6 +492,7 @@ export {
     EntityInsertPanel,
     SampleTypeDataType,
     DataClassDataType,
+    ParentEntityEditPanel,
 
     // Navigation
     MenuSectionConfig,

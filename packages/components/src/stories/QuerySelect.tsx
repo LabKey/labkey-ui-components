@@ -77,6 +77,8 @@ class QuerySelectWrapper extends React.PureComponent<any, State> {
                     schemaQuery={type ? DATA_CLASSES[type.toUpperCase()] : ''}
                     showLabel={false}
                     valueColumn="Name"
+                    showLoading={false}
+                    loadOnChange={false}
                 />
             </div>
         )

@@ -37,6 +37,9 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
             lcMessage.match(/query.*in schema.*does not exist/) !== null) {
             return "There was a problem retrieving your " + (noun || "data") + ". Your session may have expired or the " + (noun || "data") + " may no longer be valid.  Try refreshing your page.";
         }
+        else if (lcMessage.indexOf('either rowid or lsid is required') >= 0) {
+            return "There was a problem retrieving or updating your " + (noun || 'data') + ".  The request did not contain the proper identifiers.  Make sure the " + (noun || 'data') + " are still valid.";
+        }
     }
     return errorMsg;
 }

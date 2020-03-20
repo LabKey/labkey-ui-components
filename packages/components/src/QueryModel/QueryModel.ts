@@ -1,7 +1,8 @@
-import { Filter } from '@labkey/api';
-import { naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
 import { List } from 'immutable';
 import { immerable } from 'immer';
+import { Filter } from '@labkey/api';
+
+import { naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
 import { QuerySort } from '../components/base/models/model';
 import { getOrDefault } from './utils';
 

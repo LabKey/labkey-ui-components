@@ -222,7 +222,9 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             let shouldLoad = false;
             this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
+
                 if (model.maxRows !== maxRows) {
+                    shouldLoad = true;
                     model.maxRows = maxRows;
                     model.offset = 0;
                 }

@@ -17,9 +17,9 @@ import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse
 } from "../DomainPropertiesPanelCollapse";
+import { PROPERTIES_PANEL_ERROR_MSG } from "../constants";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
-const ERROR_MSG = 'Contains errors or is missing required values.';
 
 //Splitting these out to clarify where they end-up
 interface OwnProps {
@@ -189,7 +189,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
                         controlledCollapse={controlledCollapse}
                         panelStatus={panelStatus}
                         isValid={isValid}
-                        iconHelpMsg={ERROR_MSG}
+                        iconHelpMsg={PROPERTIES_PANEL_ERROR_MSG}
                         useTheme={useTheme}
                     />
 
@@ -226,7 +226,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
                         onClick={(evt: any) => this.toggleLocalPanel(evt)}
                         className={getDomainAlertClasses(collapsed, true, useTheme)}
                 >
-                    <Alert bsStyle="danger">{ERROR_MSG}</Alert>
+                    <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
                 </div>
                 }
             </>

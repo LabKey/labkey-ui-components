@@ -9,6 +9,7 @@ import {ListPropertiesPanel} from "./ListPropertiesPanel";
 import {Alert} from "react-bootstrap";
 import renderer from 'react-test-renderer';
 import toJson from "enzyme-to-json";
+import { PROPERTIES_PANEL_ERROR_MSG } from "../constants";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
@@ -82,7 +83,7 @@ describe('ListDesignerPanel', () => {
 
 
         expect(listDesignerPanels.find(Alert)).toHaveLength(2);
-        expect(listDesignerPanels.find(Alert).at(0).text()).toEqual('Contains errors or is missing required values.');
+        expect(listDesignerPanels.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
         expect(listDesignerPanels.find(Alert).at(1).text()).toEqual('Please correct errors in the properties panel before saving.');
         listDesignerPanels.unmount();
     });

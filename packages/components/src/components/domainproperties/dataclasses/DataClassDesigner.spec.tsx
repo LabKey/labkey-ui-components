@@ -5,6 +5,7 @@ import toJson from "enzyme-to-json";
 import { DataClassDesigner } from "./DataClassDesigner";
 import { DataClassModel } from "./models";
 import { Alert } from "../../base/Alert";
+import { PROPERTIES_PANEL_ERROR_MSG } from "../constants";
 import getDomainDetailsJSON from "../../../test/data/dataclass-getDomainDetails.json";
 
 
@@ -68,7 +69,7 @@ describe('DataClassDesigner', () => {
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
 
         expect(wrapped.find(Alert)).toHaveLength(2);
-        expect(wrapped.find(Alert).at(0).text()).toEqual('Contains errors or is missing required values.');
+        expect(wrapped.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
         expect(wrapped.find(Alert).at(1).text()).toEqual('Please correct errors in the properties panel before saving.');
         wrapped.unmount();
     });

@@ -29,8 +29,7 @@ import {
     withDomainPropertiesPanelCollapse
 } from "../DomainPropertiesPanelCollapse";
 import { SectionHeading } from "../SectionHeading";
-
-const ERROR_MSG = 'Contains errors or is missing required values.';
+import { PROPERTIES_PANEL_ERROR_MSG } from "../constants";
 
 const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {
@@ -235,7 +234,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                         togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
                         useTheme={useTheme}
                         isValid={isValid}
-                        iconHelpMsg={ERROR_MSG}
+                        iconHelpMsg={PROPERTIES_PANEL_ERROR_MSG}
                     />
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         {helpTopic && <HelpTopicURL nounPlural={'assays'} helpTopic={helpTopic}/>}
@@ -247,7 +246,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                         onClick={(evt: any) => this.toggleLocalPanel(evt)}
                         className={getDomainAlertClasses(collapsed, true, useTheme)}
                     >
-                        <Alert bsStyle="danger">{ERROR_MSG}</Alert>
+                        <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
                     </div>
                 }
             </>

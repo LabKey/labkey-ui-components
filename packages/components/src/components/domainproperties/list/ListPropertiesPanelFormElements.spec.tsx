@@ -4,13 +4,14 @@ import { mount } from 'enzyme';
 import {
     AllowableActions,
     BasicPropertiesFields,
-    BasicPropertiesTitle, CheckBoxRow,
+    CheckBoxRow,
     DescriptionInput,
     NameInput
 } from "./ListPropertiesPanelFormElements";
 import getDomainDetailsJSON from '../../../test/data/property-getDomainDetails.json';
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
 import renderer from "react-test-renderer";
+import {BasicPropertiesTitle} from "../PropertiesPanelFormElements";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);

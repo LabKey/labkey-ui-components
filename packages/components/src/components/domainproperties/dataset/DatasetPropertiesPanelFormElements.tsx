@@ -19,38 +19,13 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
 import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
-import { ListModel } from './models';
-import { BasicPropertiesTitle } from "../PropertiesPanelFormElements";
+import { DatasetModel } from './models';
+import {BasicPropertiesTitle, TextInputWithLabel} from "../PropertiesPanelFormElements";
+import {SelectInput} from "../../../index";
 
 interface BasicPropertiesInputsProps {
-    model: ListModel;
+    model: DatasetModel;
     onInputChange: (any) => void;
-}
-
-export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
-    render() {
-        const { model, onInputChange } = this.props;
-        const value = (model.name === null) ? "" : model.name;
-        return(
-            <Row className={'margin-top'}>
-                <Col xs={3} lg={2}>
-                    Name *
-                </Col>
-
-                <Col xs={9} lg={8}>
-                    <FormControl
-                        id="name"
-                        type="text"
-                        placeholder="Enter a name for this list"
-                        value={value}
-                        onChange={onInputChange}
-                    />
-                </Col>
-
-                <Col lg={2}/>
-            </Row>
-        );
-    }
 }
 
 export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsProps> {
@@ -79,6 +54,38 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
     }
 }
 
+export class CategoryInput extends React.PureComponent<BasicPropertiesInputsProps> {
+    render() {
+        const { model, onInputChange } = this.props;
+
+        return(
+            <Row className={'margin-top'}>
+                <Col xs={4} lg={2}>
+                    Category
+                </Col>
+
+                <Col xs={8} lg={7}>
+                    <SelectInput
+                        onChange={onInputChange}
+                        value={model.category}
+                        options={[]}
+                        inputClass="" // This attr is necessary for proper styling
+                        labelClass=""
+                        valueKey="name"
+                        labelKey="label"
+                        formsy={false}
+                        multiple={false}
+                        required={false}
+                        placeholder="Select dataset category"
+                    />
+                </Col>
+
+                <Col lg={3}/>
+            </Row>
+        );
+    }
+}
+
 export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesInputsProps> {
     render() {
         const { model, onInputChange } = this.props;
@@ -86,9 +93,22 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
             <Col xs={12} md={7}>
                 <BasicPropertiesTitle title="Basic Properties" />
 
-                <NameInput model={model} onInputChange={onInputChange} />
+                <TextInputWithLabel
+                    name="Name *"
+                    value={model.name}
+                    placeholder="Enter a name for this dataset"
+                    onInputChange={onInputChange}
+                />
 
                 <DescriptionInput model={model} onInputChange={onInputChange} />
+
+                <CategoryInput model={model} onInputChange={onInputChange} />
+
+                <TextInputWithLabel
+                    name="Label"
+                    value={model.label}
+                    onInputChange={onInputChange}
+                />
             </Col>
         );
     }
@@ -142,41 +162,41 @@ export class CheckBoxRow extends React.PureComponent<CheckBoxRowProps> {
 }
 
 interface AllowableActionContainerProps {
-    model: ListModel;
+    model: DatasetModel;
     onCheckBoxChange: (name, checked) => void;
 }
 class AllowableActionContainer extends React.PureComponent<AllowableActionContainerProps> {
     render() {
         const { onCheckBoxChange } = this.props;
-        const { allowDelete, allowUpload, allowExport } = this.props.model;
+        // const { allowDelete, allowUpload, allowExport } = this.props.model;
 
         return (
             <div className='list__properties__allowable-actions'>
-                <CheckBoxRow
-                    text="Delete"
-                    checked={allowDelete}
-                    onCheckBoxChange={onCheckBoxChange}
-                    name="allowDelete"
-                />
-                <CheckBoxRow
-                    text="Upload"
-                    checked={allowUpload}
-                    onCheckBoxChange={onCheckBoxChange}
-                    name="allowUpload"
-                />
-                <CheckBoxRow
-                    text="Export & Print"
-                    checked={allowExport}
-                    onCheckBoxChange={onCheckBoxChange}
-                    name="allowExport"
-                />
+                {/*<CheckBoxRow*/}
+                {/*    text="Delete"*/}
+                {/*    checked={allowDelete}*/}
+                {/*    onCheckBoxChange={onCheckBoxChange}*/}
+                {/*    name="allowDelete"*/}
+                {/*/>*/}
+                {/*<CheckBoxRow*/}
+                {/*    text="Upload"*/}
+                {/*    checked={allowUpload}*/}
+                {/*    onCheckBoxChange={onCheckBoxChange}*/}
+                {/*    name="allowUpload"*/}
+                {/*/>*/}
+                {/*<CheckBoxRow*/}
+                {/*    text="Export & Print"*/}
+                {/*    checked={allowExport}*/}
+                {/*    onCheckBoxChange={onCheckBoxChange}*/}
+                {/*    name="allowExport"*/}
+                {/*/>*/}
             </div>
         );
     }
 }
 
 interface AllowableActionsProps {
-    model: ListModel;
+    model: DatasetModel;
     onCheckBoxChange: (name: string, checked: boolean) => void;
 }
 export class AllowableActions extends React.PureComponent<AllowableActionsProps> {

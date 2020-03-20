@@ -10,23 +10,18 @@
     flex: 1;
 }
 
-.grid-panel__bar-right {
-}
-
-.grid-bar {
-
-}
-
 .grid-bar__section {
     display: flex;
 }
 
-.grid-bar__section > * {
+.grid-bar__section > *,
+.grid-bar__info-bar > * {
     margin-left: 1em;
 }
 
-.grid-panel__info-bar {
+.grid-panel__info {
     min-height: 48px; /* Prevents grid from jumping when pages are loading */
+    display: flex;
 }
 
 .pagination-info {

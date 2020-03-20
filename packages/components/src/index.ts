@@ -294,6 +294,10 @@ import { SampleTypeDataType, DataClassDataType } from './components/entities/con
 import { SampleTypeModel } from "./components/domainproperties/samples/models";
 import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
 
+import { QueryModel } from './QueryModel/QueryModel';
+import { withQueryModels } from './QueryModel/withQueryModels';
+import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
+
 export {
     // global state functions
     initQueryGridState,
@@ -672,5 +676,11 @@ export {
     PermissionsProviderProps,
     SecurityPolicy,
     SecurityRole,
-    Principal
+    Principal,
+
+    // QueryModel
+    QueryModel,
+    GridPanel,
+    GridPanelWithModel,
+    withQueryModels,
 }

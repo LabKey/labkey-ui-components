@@ -109,6 +109,17 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             }
         };
 
+        /**
+         * Helper for various actions that may or may want to trigger loadRows, useful for reducing boilerplate.
+         * @param id: The id of the QueryModel you want to load
+         * @param shouldLoad: boolean, if true will load the model, if false does nothing.
+         */
+        maybeLoad = (id: string, shouldLoad: boolean) => {
+            if (shouldLoad) {
+                this.loadRows(id);
+            }
+        };
+
         loadQueryInfo = async (id: string, loadRows: boolean = false) => {
             const { loadQueryInfo } = this.props.modelLoader;
 
@@ -122,11 +133,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     const model = draft.queryModels[id];
                     model.queryInfo = queryInfo;
                     model.queryInfoLoadingState = LoadingState.LOADED;
-                }), () => {
-                    if (loadRows) {
-                        this.loadRows(id);
-                    }
-                });
+                }), () => this.maybeLoad(id, loadRows));
             } catch(error) {
                 this.setError(id, error);
             }
@@ -137,7 +144,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         };
 
         loadAllModels = () => {
-            Object.keys(this.state.queryModels).forEach(id => this.loadModel(id));
+            Object.keys(this.state.queryModels).forEach(this.loadModel);
         };
 
         loadNextPage = (id: string) => {
@@ -149,11 +156,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     shouldLoad = true;
                     model.offset = model.offset + model.maxRows;
                 }
-            }), () => {
-                if (shouldLoad) {
-                    this.loadRows(id);
-                }
-            });
+            }), () => this.maybeLoad(id, shouldLoad));
         };
 
         loadPreviousPage = (id: string) => {
@@ -165,11 +168,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     shouldLoad = true;
                     model.offset = model.offset - model.maxRows;
                 }
-            }), () => {
-                if (shouldLoad) {
-                    this.loadRows(id);
-                }
-            });
+            }), () => this.maybeLoad(id, shouldLoad));
         };
 
         loadFirstPage = (id: string) => {
@@ -181,11 +180,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     shouldLoad = true;
                     model.offset = 0
                 }
-            }), () => {
-                if (shouldLoad) {
-                    this.loadRows(id);
-                }
-            });
+            }), () => this.maybeLoad(id, shouldLoad));
         };
 
         loadLastPage = (id: string) => {
@@ -197,11 +192,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     shouldLoad = true;
                     model.offset = model.getLastPageOffset();
                 }
-            }), () => {
-                if (shouldLoad) {
-                    this.loadRows(id);
-                }
-            });
+            }), () => this.maybeLoad(id, shouldLoad));
         };
 
         addModel = (queryConfig: QueryConfig, load: boolean = true) => {
@@ -212,49 +203,43 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                 const queryModel = new QueryModel(queryConfig);
                 id = queryModel.id;
                 draft.queryModels[queryModel.id] = queryModel;
-            }), () => {
-                if (load) {
-                    this.loadModel(id);
-                }
-            });
+            }), () => this.maybeLoad(id, load));
         };
 
-        setOffset = (id: string, offset: number, load: boolean = true) => {
-            this.setState(produce((draft: State) => {
-                draft.queryModels[id].offset = offset;
-            }), () => {
-                if (load) {
-                    this.loadRows(id);
-                }
-            });
-        };
-
-        setMaxRows = (id: string, maxRows: number, load: boolean = true) => {
+        setOffset = (id: string, offset: number) => {
+            let shouldLoad = false;
             this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
-                model.maxRows = maxRows;
-                model.offset = 0;
-            }), () => {
-                if (load) {
-                    this.loadRows(id);
+
+                if (model.offset !== offset) {
+                    shouldLoad = true;
+                    model.offset = offset;
                 }
-            });
+            }), () => this.maybeLoad(id, shouldLoad));
         };
 
-        setView = (id: string, viewName: string, load: boolean = true) => {
-            if (this.state.queryModels[id].schemaQuery.viewName === viewName) {
-                return;
-            }
-
+        setMaxRows = (id: string, maxRows: number) => {
+            let shouldLoad = false;
             this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
-                const { schemaName, queryName } = model.schemaQuery;
-                model.schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
-            }), () => {
-                if (load) {
-                    this.loadRows(id);
+                if (model.maxRows !== maxRows) {
+                    model.maxRows = maxRows;
+                    model.offset = 0;
                 }
-            });
+            }), () => this.maybeLoad(id, shouldLoad));
+        };
+
+        setView = (id: string, viewName: string) => {
+            let shouldLoad = false;
+            this.setState(produce((draft: State) => {
+                const model = draft.queryModels[id];
+
+                if (model.schemaQuery.viewName !== viewName) {
+                    shouldLoad = true;
+                    const { schemaName, queryName } = model.schemaQuery;
+                    model.schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
+                }
+            }), () => this.maybeLoad(id, shouldLoad));
         };
 
         componentDidMount(): void {

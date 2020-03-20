@@ -5,7 +5,6 @@ import {EntityDetailsForm,} from "../entities/EntityDetailsForm";
 import {IParentOption} from "../../entities/models";
 import {IParentAlias} from "./models";
 import {DomainPanelStatus} from "../models";
-import {DomainPropertiesPanelContext, DomainPropertiesPanelProvider} from "../DomainPropertiesPanelContext";
 import {getFormNameFromId,} from "../entities/actions";
 import {Col, Panel, Row} from "react-bootstrap";
 import {AddEntityButton, Alert, generateId, helpLinkNode} from "../../..";
@@ -14,6 +13,10 @@ import {DERIVE_SAMPLES_ALIAS_TOPIC} from "../../../util/helpLinks";
 import {SampleSetParentAliasRow} from "../../samples/SampleSetParentAliasRow";
 import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
 import {getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList,} from "../actions";
+import {
+    InjectedDomainPropertiesPanelCollapseProps,
+    withDomainPropertiesPanelCollapse
+} from "../DomainPropertiesPanelCollapse";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
@@ -38,15 +41,11 @@ interface EntityProps {
 
 //Splitting these out to clarify where they end-up
 interface CollapsiblePanelProps {
-    initCollapsed?: boolean
-    collapsible?: boolean
-    controlledCollapse?: boolean
     appPropertiesOnly?: boolean
     validate?: boolean
     useTheme?: boolean
     panelStatus?: DomainPanelStatus
     helpTopic?: string
-    onToggle?: (collapsed:boolean, callback: () => any) => any
 }
 
 interface State {
@@ -56,29 +55,13 @@ interface State {
 
 type Props = OwnProps & EntityProps & CollapsiblePanelProps;
 
-export class SampleTypePropertiesPanel extends React.PureComponent<Props, State> {
-    render() {
-        const {controlledCollapse, collapsible, initCollapsed, onToggle} = this.props;
 
-        return (
-            <DomainPropertiesPanelProvider
-                controlledCollapse={controlledCollapse}
-                collapsible={collapsible}
-                initCollapsed={initCollapsed}
-                onToggle={onToggle}
-            >
-                <SampleTypePropertiesPanelImpl {...this.props} />
-            </DomainPropertiesPanelProvider>
-        );
-    }
-}
+class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
 
-class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
     static defaultProps = {
         noun: 'Sample Type',
         nameExpressionInfoUrl: '',
         nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}',
-        initCollapsed: false,
         validate: false,
         appPropertiesOnly: false,
     };
@@ -104,20 +87,15 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
         return generateId("sampletype-parent-import-alias-");
     }
 
-    //#################### Header methods --- TODO migrate these to HOC?
-    static contextType = DomainPropertiesPanelContext;
-    context!: React.ContextType<typeof DomainPropertiesPanelContext>;
     setIsValid(): void {
-        this.setState((state) => this.setState({ignoreError:false}));
+        this.setState(() => this.setState({ignoreError:false}));
     }
 
     toggleLocalPanel = (evt: any): void => {
-        const { togglePanel, collapsed } = this.context;
+        const { togglePanel, collapsed } = this.props;
         this.setIsValid();
         togglePanel(evt, !collapsed);
     };
-
-    //#################### END Header methods
 
     onFormChange = (evt: any): void => {
         const {model, updateModel } = this.props;
@@ -190,8 +168,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
     };
 
     render = () => {
-        const {model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, noun, collapsible, controlledCollapse, panelStatus, useTheme} = this.props;
-        const {collapsed} = this.context;
+        const {model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, noun, collapsed, collapsible, controlledCollapse, panelStatus, useTheme} = this.props;
         const {ignoreError} = this.state;
         const isValid = ignoreError || model && model.hasValidProperties();
 
@@ -254,5 +231,7 @@ class SampleTypePropertiesPanelImpl extends React.Component<Props, State> {
                 }
             </>
         )
-    };
+    }
 }
+
+export const SampleTypePropertiesPanel = withDomainPropertiesPanelCollapse<Props>(SampleTypePropertiesPanelImpl);

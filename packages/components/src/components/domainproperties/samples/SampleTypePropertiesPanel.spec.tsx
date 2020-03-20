@@ -33,6 +33,8 @@ describe("<SampleTypePropertiesPanel/>", () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 model={SampleTypeModel.create()}
+                controlledCollapse={false}
+                initCollapsed={false}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
@@ -51,6 +53,8 @@ describe("<SampleTypePropertiesPanel/>", () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 model={SampleTypeModel.create()}
+                controlledCollapse={false}
+                initCollapsed={false}
                 updateModel={jest.fn}
                 nameExpressionInfoUrl={'#anything'}
                 onAddParentAlias={jest.fn}
@@ -81,6 +85,8 @@ describe("<SampleTypePropertiesPanel/>", () => {
         const component = (
             <SampleTypePropertiesPanel
                 model={SampleTypeModel.create(data)}
+                controlledCollapse={false}
+                initCollapsed={false}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}

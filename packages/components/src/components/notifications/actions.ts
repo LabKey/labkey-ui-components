@@ -51,7 +51,7 @@ export function setTrialBannerDismissSessionKey() : Promise<any> {
 
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('core', 'dismissCoreWarnings.api'),
+            url: buildURL('core', 'dismissWarnings.api'),
             method: 'POST'
         })
     });

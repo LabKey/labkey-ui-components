@@ -1,8 +1,9 @@
-import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
+import { buildURL, getQueryGridModel, getSelected, naturalSort, QueryGridModel, SchemaQuery, selectRows } from '../..';
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 import {
     DisplayObject,
+    EntityChoice,
     EntityDataType,
     EntityIdCreationModel,
     EntityParentType,
@@ -32,7 +33,7 @@ export function getDeleteConfirmationData(selectionKey: string, dataType: Entity
         }
         return Ajax.request({
             url: buildURL('experiment', dataType.deleteConfirmationActionName, params),
-            method: "GET",
+            method: "POST",
             success: Utils.getCallbackWrapper((response) => {
                 if (response.success) {
                     resolve(response.data);
@@ -108,7 +109,7 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
 
             return getSelectedParents(SchemaQuery.create(schema, query), [Filter.create('RowId', value)])
                 .then((response) => resolve(response))
-                .catch((reason) => reject(reason));;
+                .catch((reason) => reject(reason));
         }
         else {
             resolve(List<EntityParentType>());
@@ -123,7 +124,7 @@ function resolveEntityParentTypeFromIds(schemaQuery: SchemaQuery, response: any)
 
     // The transformation done here makes the entities compatible with the editable grid
     orderedModels[key].forEach((id) => {
-        const row = extractFromRow(rows.get(id));
+        const row = extractEntityTypeOptionFromRow(rows.get(id));
         data = data.push({
             displayValue: row.label,
             value: row.rowId
@@ -140,7 +141,7 @@ function resolveEntityParentTypeFromIds(schemaQuery: SchemaQuery, response: any)
     ]);
 }
 
-function extractFromRow(row: Map<string, any>): IEntityTypeOption {
+function extractEntityTypeOptionFromRow(row: Map<string, any>): IEntityTypeOption {
     const name = row.getIn(['Name', 'value']);
     return {
         label: name,
@@ -196,13 +197,13 @@ function getChosenParentData(model: EntityIdCreationModel, parentSchemaQueries: 
 
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
-// TODO will need an extra parameter for filtering by category
-function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: string) : Promise<Map<string, List<any>>> {
+export function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: string, filterArray?: Array<Filter.IFilter>) : Promise<Map<string, List<any>>> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: typeListSchemaQuery.schemaName,
             queryName: typeListSchemaQuery.queryName,
-            columns: 'LSID,Name,RowId'
+            columns: 'LSID,Name,RowId',
+            filterArray
         }).then(
             (result) => {
                 const rows = fromJS(result.models[result.key]);
@@ -210,7 +211,7 @@ function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: 
                 optionMap = optionMap.set(typeListSchemaQuery.queryName, rows
                     .map(row => {
                         return ({
-                            ...extractFromRow(row),
+                            ...extractEntityTypeOptionFromRow(row),
                             schema: typeSchemaName, // e.g. "samples" or "dataclasses"
                         });
                     })
@@ -230,9 +231,10 @@ function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchemaName: 
  * @param model
  * @param schemaQueries a map between the type schema name (e.g., "samples") and the listing SchemaQuery (e.g., exp.SampleSets)
  * @param targetQueryName the name of the listing schema query that represents the initial target for creation.
- * @param allowParents
+ * @param allowParents are parents of this entity type allowed or not
+ * @param filterArray (optional) set of filters to use for getting entity type options
  */
-export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: Map<string, SchemaQuery>, targetQueryName: string, allowParents: boolean) : Promise<Partial<EntityIdCreationModel>> {
+export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: Map<string, SchemaQuery>, targetQueryName: string, allowParents: boolean, filterArray?: Array<Filter.IFilter>) : Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
         let promises = [];
 
@@ -240,7 +242,7 @@ export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: M
 
         // get all the schemaQuery data
         schemaQueries.forEach((typeListSchemaQuery, typeSchemaName) => {
-            promises.push(getEntityTypeOptions(typeListSchemaQuery, typeSchemaName));
+            promises.push(getEntityTypeOptions(typeListSchemaQuery, typeSchemaName, filterArray));
         });
 
         let partial : Partial<EntityIdCreationModel> = {};
@@ -274,6 +276,72 @@ export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: M
             reject(reason);
         });
     });
+}
+
+export function getInitialParentChoices(parentTypeOptions: List<IEntityTypeOption>, parentDataType: EntityDataType, childModel: QueryGridModel) : List<EntityChoice> {
+    let parentValuesByType = Map<string, EntityChoice>();
+
+    if (childModel && childModel.isLoaded) {
+        const row = childModel.getRow();
+
+        if (row.size > 0) {
+            const inputs: List<Map<string, any>> = row.get(parentDataType.inputColumnName);
+            const inputTypes: List<Map<string, any>> = row.get(parentDataType.inputTypeColumnName);
+            if (inputs && inputTypes) {
+
+                // group the inputs by parent type so we can show each in its own grid.
+                inputTypes.forEach((typeMap, index) => {
+                    // I'm not sure when the type could have more than one value here, but 'value' is an array
+                    const typeValue = typeMap.getIn(['value', 0]);
+                    const typeOption = parentTypeOptions.find((option) => option[parentDataType.inputTypeValueField] === typeValue);
+                    if (!typeOption) {
+                        console.warn("Unable to find parent type.", typeValue);
+                    }
+                    else {
+                        if (!parentValuesByType.has(typeOption.query)) {
+                            parentValuesByType = parentValuesByType.set(typeOption.query, {
+                                type: typeOption,
+                                ids: [],
+                                value: undefined
+                            })
+                        }
+                        let updatedChoice = parentValuesByType.get(typeOption.query);
+                        updatedChoice.ids.push(inputs.getIn([index, 'value']));
+                        parentValuesByType = parentValuesByType.set(typeOption.query, updatedChoice)
+                    }
+                });
+            }
+        }
+    }
+    // having collected the values by type, create a list, sorted by the type label and return that.
+    return parentValuesByType.sortBy(choice => choice.type.label, naturalSort).toList();
+}
+
+export function getUpdatedRowForParentChanges(parentDataType: EntityDataType, currentParents: List<EntityChoice>, childModel: QueryGridModel) {
+    const queryData = childModel.getRow();
+    const queryInfo = childModel.queryInfo;
+
+    let updatedValues = {};
+    currentParents.forEach((parentChoice) => {
+        // Label may seem wrong here, but it is the same as query when extracted from the original query to get
+        // the entity types.
+        if (parentChoice.value && parentChoice.value.length > 0) {
+            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value;
+        }
+    });
+
+    queryInfo.getPkCols().forEach((pkCol) => {
+        const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
+
+        if (pkVal !== undefined && pkVal !== null) {
+            updatedValues[pkCol.fieldKey] = pkVal;
+        }
+        else {
+            console.warn('Unable to find value for pkCol \"' + pkCol.fieldKey + '\"');
+        }
+    });
+    return updatedValues;
+
 }
 
 export function deleteEntityType(deleteActionName: string, rowId: number): Promise<any> {

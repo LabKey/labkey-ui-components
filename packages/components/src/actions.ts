@@ -1454,7 +1454,7 @@ export function initLookup(column: QueryColumn, maxRows: number, values?: List<s
 }
 
 function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
-    if (!col.isLookup()) {
+    if (!col.isPublicLookup()) {
         return false;
     }
 
@@ -2125,7 +2125,7 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                         let cv: List<ValueDescriptor>;
                         let msg: CellMessage;
 
-                        if (col && col.isLookup()) {
+                        if (col && col.isPublicLookup()) {
                             const { message, values } = parsePasteCellLookup(col, getLookup(col), value);
                             cv = values;
 
@@ -2168,7 +2168,7 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                     let cv: List<ValueDescriptor>;
                     let msg: CellMessage;
 
-                    if (col && col.isLookup()) {
+                    if (col && col.isPublicLookup()) {
                         const {message, values} = parsePasteCellLookup(col, getLookup(col), value);
                         cv = values;
 

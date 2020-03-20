@@ -238,6 +238,14 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     shouldLoad = true;
                     const { schemaName, queryName } = model.schemaQuery;
                     model.schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
+                    // We need to reset all data for the model because changing the view will change things such as
+                    // columns and rowCount. If we don't do this we'll render a grid with empty rows/columns.
+                    model.messages = undefined;
+                    model.offset = 0;
+                    model.orderedRows = undefined;
+                    model.rows = undefined;
+                    model.rowCount = undefined;
+                    model.rowsLoadingState = LoadingState.INITIALIZED;
                 }
             }), () => this.maybeLoad(id, shouldLoad));
         };

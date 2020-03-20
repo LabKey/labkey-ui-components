@@ -1,18 +1,26 @@
 import React, { ComponentType, PureComponent } from 'react';
+import produce from 'immer';
+
+import { SchemaQuery } from '..';
 import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
-import produce from 'immer';
 
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean) => void;
     loadModel: (id: string) => void;
     loadAllModels: () => void;
-    setOffset: (id: string, offset: number, load?: boolean) => void;
-    setMaxRows: (id: string, maxRows: number, load?: boolean) => void;
     loadNextPage: (id: string) => void;
     loadPreviousPage: (id: string) => void;
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
+    setOffset: (id: string, offset: number, load?: boolean) => void;
+    setMaxRows: (id: string, maxRows: number, load?: boolean) => void;
+    setView: (id: string, viewName: string, load?: boolean) => void;
+}
+
+export interface RequiresModelAndActions {
+    model: QueryModel;
+    actions: Actions;
 }
 
 export interface InjectedQueryModels {
@@ -59,12 +67,13 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                 addModel: this.addModel,
                 loadModel: this.loadModel,
                 loadAllModels: this.loadAllModels,
-                setOffset: this.setOffset,
-                setMaxRows: this.setMaxRows,
                 loadNextPage: this.loadNextPage,
                 loadPreviousPage: this.loadPreviousPage,
                 loadFirstPage: this.loadFirstPage,
                 loadLastPage: this.loadLastPage,
+                setOffset: this.setOffset,
+                setMaxRows: this.setMaxRows,
+                setView: this.setView,
             };
         }
 
@@ -225,6 +234,22 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                 const model = draft.queryModels[id];
                 model.maxRows = maxRows;
                 model.offset = 0;
+            }), () => {
+                if (load) {
+                    this.loadRows(id);
+                }
+            });
+        };
+
+        setView = (id: string, viewName: string, load: boolean = true) => {
+            if (this.state.queryModels[id].schemaQuery.viewName === viewName) {
+                return;
+            }
+
+            this.setState(produce((draft: State) => {
+                const model = draft.queryModels[id];
+                const { schemaName, queryName } = model.schemaQuery;
+                model.schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
             }), () => {
                 if (load) {
                     this.loadRows(id);

@@ -34,6 +34,7 @@ export const EXP_TABLES = {
     ASSAY_RUNS:             SchemaQuery.create(EXP_SCHEMA, 'AssayRuns'),
     DATA:                   SchemaQuery.create(EXP_SCHEMA, 'Data'),
     DATA_CLASSES:           SchemaQuery.create(EXP_SCHEMA, 'DataClasses'),
+    DATA_CLASS_CATEGORY_TYPE: SchemaQuery.create(EXP_SCHEMA, 'DataClassCategoryType'),
     MATERIALS:              SchemaQuery.create(EXP_SCHEMA, 'Materials'),
     PROTOCOLS:              SchemaQuery.create(EXP_SCHEMA, 'Protocols'),
     SCHEMA:                 EXP_SCHEMA,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Panel, Row } from 'react-bootstrap';
+import { Col,Panel, Row } from 'react-bootstrap';
 import { EntityDetailsForm } from "../entities/EntityDetailsForm";
 import { LabelOverlay } from "../../forms/LabelOverlay";
 import { QuerySelect } from "../../forms/QuerySelect";
@@ -14,12 +14,14 @@ import { getFormNameFromId } from "../entities/actions";
 import { DataClassModel } from "./models";
 import { HelpTopicURL } from "../HelpTopicURL";
 import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
+import { initQueryGridState } from "../../../global";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
-
+const DEFAULT_CONTEXT = {collapsed: false};
 const FORM_IDS = {
-    MATERIAL_SOURCE_ID: ENTITY_FORM_ID_PREFIX + 'materialSourceId'
+    CATEGORY: ENTITY_FORM_ID_PREFIX + 'category',
+    SAMPLE_TYPE_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet'
 };
 
 interface Props {
@@ -62,7 +64,8 @@ export class DataClassPropertiesPanel extends React.PureComponent<Props> {
     }
 }
 
-class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
+//Note: exporting this class for jest test case
+export class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     static contextType = DomainPropertiesPanelContext;
     context!: React.ContextType<typeof DomainPropertiesPanelContext>;
 
@@ -76,6 +79,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
 
     constructor(props) {
         super(props);
+        initQueryGridState(); //needed for QuerySelect usage
 
         this.state = {
             isValid: true
@@ -97,10 +101,17 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
         updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
-    setIsValid() {
+    setIsValid(newModel?: DataClassModel) {
         const { model, onChange } = this.props;
-        const isValid = model && model.hasValidProperties();
-        this.setState(() => ({isValid}), () => onChange(model));
+        const updatedModel = newModel || model;
+        const isValid = updatedModel && updatedModel.hasValidProperties();
+        this.setState(() => ({isValid}),
+            () => {
+                // Issue 39918: only consider the model changed if there is a newModel param
+                if (newModel) {
+                    onChange(updatedModel)
+                }
+            });
     }
 
     toggleLocalPanel = (evt: any): void => {
@@ -116,11 +127,12 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     };
 
     onChange = (id: string, value: any) => {
-        const { model, onChange } = this.props;
-        onChange(model.set(getFormNameFromId(id), value) as DataClassModel);
+        const { model } = this.props;
+        const newModel = model.set(getFormNameFromId(id), value) as DataClassModel;
+        this.setIsValid(newModel);
     };
 
-    renderSampleSetSelect() {
+    renderSampleTypeSelect() {
         const { model, nounSingular } = this.props;
 
         return (
@@ -134,17 +146,42 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                 </Col>
                 <Col xs={9}>
                     <QuerySelect
-                        componentId={FORM_IDS.MATERIAL_SOURCE_ID}
-                        name={FORM_IDS.MATERIAL_SOURCE_ID}
+                        componentId={FORM_IDS.SAMPLE_TYPE_ID}
+                        name={FORM_IDS.SAMPLE_TYPE_ID}
                         schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SETS}
                         formsy={false}
                         showLabel={false}
                         preLoad={true}
-                        // fireQSChangeOnInit={true} // TODO remove these props with final implementation if they are not needed
-                        // loadOnChange={true}
-                        // loadOnFocus={true}
+                        loadOnChange={true}
                         onQSChange={this.onChange}
-                        value={model.materialSourceId} // TODO this isn't loading with initial value selected in update case (at least not in storybook)
+                        value={model.sampleSet}
+                    />
+                </Col>
+            </Row>
+        )
+    }
+
+    renderCategorySelect() {
+        const { model } = this.props;
+
+        return (
+            <Row>
+                <Col xs={3}>
+                    Category
+                </Col>
+                <Col xs={9}>
+                    <QuerySelect
+                        componentId={FORM_IDS.CATEGORY}
+                        name={FORM_IDS.CATEGORY}
+                        schemaQuery={SCHEMAS.EXP_TABLES.DATA_CLASS_CATEGORY_TYPE}
+                        displayColumn={'Value'}
+                        valueColumn={'Value'}
+                        formsy={false}
+                        showLabel={false}
+                        preLoad={true}
+                        loadOnChange={true}
+                        onQSChange={this.onChange}
+                        value={model.category}
                     />
                 </Col>
             </Row>
@@ -154,7 +191,7 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
     render() {
         const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
         const { isValid } = this.state;
-        const { collapsed } = this.context;
+        const { collapsed } = this.context || DEFAULT_CONTEXT;
 
         return (
             <>
@@ -178,10 +215,12 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                     />
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         <Row className={'margin-bottom'}>
-                            <Col xs={9}>
-                                {headerText && <div className={'entity-form--headerhelp'}>{headerText}</div>}
-                            </Col>
-                            <Col xs={3}>
+                            {headerText &&
+                                <Col xs={9}>
+                                    <div className={'entity-form--headerhelp'}>{headerText}</div>
+                                </Col>
+                            }
+                            <Col xs={headerText ? 3 : 12}>
                                 <HelpTopicURL helpTopic={DEFINE_DATA_CLASS_TOPIC} nounPlural={nounPlural}/>
                             </Col>
                         </Row>
@@ -192,7 +231,8 @@ class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
                             nameExpressionInfoUrl={nameExpressionInfoUrl}
                             nameExpressionPlaceholder={nameExpressionPlaceholder}
                         />
-                        {!appPropertiesOnly && this.renderSampleSetSelect()}
+                        {!appPropertiesOnly && this.renderCategorySelect()}
+                        {!appPropertiesOnly && this.renderSampleTypeSelect()}
                     </Panel.Body>
                 </Panel>
                 {!isValid &&

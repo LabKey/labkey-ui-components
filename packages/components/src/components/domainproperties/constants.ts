@@ -15,6 +15,7 @@
  */
 import { List } from 'immutable';
 import { GridColumn } from '../base/Grid';
+import {Domain} from "@labkey/api";
 
 export const DOMAIN_FIELD_PREFIX = 'domainpropertiesrow';
 export const DOMAIN_FIELD_NAME = 'name';
@@ -193,3 +194,5 @@ export const FIELD_NAME_CHAR_WARNING_INFO = 'SQL queries, R scripts, and other c
     + 'names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. '
     + 'Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, '
     + 'SPSS, and MATLAB.';
+
+export const DEFAULT_NAMING_PATTERN = 'S-${genId}';

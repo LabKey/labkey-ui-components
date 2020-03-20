@@ -2,8 +2,8 @@ import {ListModel} from "./models";
 import {mount} from "enzyme";
 import React from "react";
 import {SetKeyFieldNamePanel} from "./SetKeyFieldNamePanel";
-import getDomainDetailsJSON from "../../../test/data/property-getDomainDetails.json";
-import getDomainDetailsWithAutoIncPKJSON from "../../../test/data/property-getDomainDetails-withAutoIntPK.json";
+import getDomainDetailsJSON from "../../../test/data/list-getDomainDetails.json";
+import getDomainDetailsWithAutoIncPKJSON from "../../../test/data/list-getDomainDetails-withAutoIntPK.json";
 import renderer from "react-test-renderer";
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
 

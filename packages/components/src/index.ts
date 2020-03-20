@@ -59,6 +59,7 @@ import {
     toggleDevTools,
     valueIsEmpty,
 } from './util/utils';
+import { BeforeUnload } from './util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './util/messaging';
 import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL';
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
@@ -89,8 +90,8 @@ import { Section } from './components/base/Section';
 import { FileAttachmentForm } from './components/files/FileAttachmentForm';
 import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files/models';
 import { FilesListing } from './components/files/FilesListing';
-import { FilesListingForm } from './components/files/FilesListingForm'
-import { FileAttachmentEntry } from './components/files/FileAttachmentEntry'
+import { FilesListingForm } from './components/files/FilesListingForm';
+import { FileAttachmentEntry } from './components/files/FileAttachmentEntry';
 import { WebDavFile, getWebDavFiles, uploadWebDavFile } from './components/files/WebDav';
 import { FileTree } from './components/files/FileTree';
 import { Notification } from './components/notifications/Notification';
@@ -170,6 +171,7 @@ import { EditableGridLoaderFromSelection } from './components/editable/EditableG
 import { EditableGridModal } from './components/editable/EditableGridModal';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { CollapsiblePanel } from './components/CollapsiblePanel';
+import { ErrorBoundary } from './components/error/ErrorBoundary';
 import { AliasRenderer } from './renderers/AliasRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
@@ -179,7 +181,7 @@ import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
-import { SelectInput } from './components/forms/input/SelectInput';
+import { SelectInput, SelectInputProps } from './components/forms/input/SelectInput';
 import { DatePickerInput } from './components/forms/input/DatePickerInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
@@ -194,14 +196,15 @@ import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
+import { ParentEntityEditPanel } from './components/entities/ParentEntityEditPanel';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
 import { SearchResultsModel } from './components/search/models';
-import { deleteSampleSet, fetchSamples, getSampleSet, loadSelectedSamples } from './components/samples/actions';
-import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
-import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
+import { deleteSampleSet, fetchSamples, getSampleSet, getSampleTypeDetails, loadSelectedSamples } from './components/samples/actions';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
+import { DataClassModel } from './components/domainproperties/dataclasses/models';
+import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel';
@@ -235,6 +238,7 @@ import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
 import { EntityDeleteConfirmModal } from './components/entities/EntityDeleteConfirmModal';
+import { EntityTypeDeleteConfirmModal } from './components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
@@ -262,6 +266,7 @@ import {
     IAppDomainHeader,
     IBannerMessage,
     IDomainField,
+    DomainDetails,
     IFieldChange,
     SAMPLE_TYPE,
 } from './components/domainproperties/models';
@@ -288,7 +293,8 @@ import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
 import { EntityDataType } from './components/entities/models';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
-
+import { SampleTypeModel } from "./components/domainproperties/samples/models";
+import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
 
 export {
     // global state functions
@@ -361,12 +367,14 @@ export {
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridModal,
+    ErrorBoundary,
     QueryGridPanel,
     CollapsiblePanel,
     BulkAddUpdateForm,
     BulkUpdateForm,
     LookupSelectInput,
     SelectInput,
+    SelectInputProps, // TODO this probably doesn't need to be exported, long-term.  Used by the <Select> element in Biologics, which may wnat to be moved here instead.
     DatePickerInput,
     QuerySelect,
     QuerySelectOwnProps,
@@ -390,13 +398,19 @@ export {
     ChangePasswordModal,
     SiteUsersGridPanel,
 
-    // samples-related
+    // data class
     DataClassDesigner,
-    SampleSetDetailsPanel,
-    SampleSetDeleteConfirmModal,
+    DataClassModel,
+    deleteDataClass,
+    fetchDataClass,
+
+    // samples-related
+    SampleTypeDesigner,
+    SampleTypeModel,
     deleteSampleSet,
     fetchSamples,
     getSampleSet,
+    getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
 
@@ -474,11 +488,13 @@ export {
     getDataDeleteConfirmationData,
 
     // entities
+    EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
     EntityDataType,
     EntityInsertPanel,
     SampleTypeDataType,
     DataClassDataType,
+    ParentEntityEditPanel,
 
     // Navigation
     MenuSectionConfig,
@@ -511,6 +527,7 @@ export {
     IFieldChange,
     IBannerMessage,
     IAppDomainHeader,
+    DomainDetails,
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
@@ -615,7 +632,8 @@ export {
     Theme,
     SVGIcon,
 
-    // util functions
+    // utils
+    BeforeUnload,
     caseInsensitive,
     capitalizeFirstChar,
     getSchemaQuery,

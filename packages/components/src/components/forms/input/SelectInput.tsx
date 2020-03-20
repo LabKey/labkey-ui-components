@@ -100,7 +100,6 @@ export interface SelectInputProps extends DisableableInputProps {
     autoValue?: boolean
     backspaceRemoves?: boolean
     deleteRemoves?: boolean
-    cache?: boolean
     clearCacheOnChange?: boolean
     clearable?: boolean
     containerClass?: string
@@ -160,21 +159,19 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         allowCreate: false,
         autoload: true,
         autoValue: true,
-        cache: false,
         clearCacheOnChange: true,
         containerClass: 'form-group row',
         delimiter: DELIMITER,
         inputClass: 'col-sm-9 col-xs-12',
-        labelClass: 'control-label col-sm-3 text-left',
+        labelClass: 'control-label col-sm-3 text-left col-xs-12',
         labelKey: 'label',
         saveOnBlur: false,
         showLabel: true,
         valueKey: 'value'
     }};
 
-    _cache = {};
     _id: string;
-    change: boolean = false;
+    change: boolean = false; // indicates if the initial value has been changed or not
 
     constructor(props: SelectInputProps) {
         super(props);
@@ -193,20 +190,25 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     };
 
     componentWillReceiveProps(nextProps: SelectInputProps) {
-        // This allows for "late-bound" value
-        if (this.props.autoValue && !this.change && !equalValues(this.props.value, nextProps.value)) {
-            if (nextProps.autoValue)
+        // Issue 36478, Issue 38631: reset the reactSelect input cache object on prop change
+        // We need to do this fairly aggressively and this may not catch all cases, but this is the best
+        // bet yet.  It can happen, probably because of bad timing between loading and refreshing the display
+        // here, that the cache value for the key LOAD_ON_FOCUS (from QuerySelect) will get set to an empty
+        // list of options.  Once that is stashed in the ReactSelect cache, it's pretty much impossible to get
+        // rid of it through normal component update operations, so we do this surgery here.
+        this.refs.reactSelect._cache = {};
+
+        if (!this.change && !equalValues(this.props.value, nextProps.value)) {
+            if (nextProps.autoValue) { // This allows for "late-bound" value
                 this._setOptionsAndValue(initOptions(nextProps));
+            }
             else {
                 this.setState({
                     selectedOptions: nextProps.selectedOptions,
-                    originalOptions: nextProps.selectedOptions,
-                });
+                    originalOptions: nextProps.selectedOptions
+                })
             }
         }
-
-        // Issue 36478: reset the select input cache object on prop change
-        this._cache = {};
 
         this.change = false;
     }
@@ -280,11 +282,11 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     }
 
     handleChange(selectedOptions) {
-        const { cache, clearCacheOnChange, name, onChange } = this.props;
+        const { clearCacheOnChange, name, onChange } = this.props;
 
         this.change = true;
 
-        if (cache !== false && clearCacheOnChange) {
+        if (clearCacheOnChange) {
             this.refs.reactSelect._cache = {};
         }
 
@@ -395,7 +397,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                         addLabelAsterisk: addLabelAsterisk,
                         isFormsy: false,
                         required: required,
-                        labelClass: !allowDisable ? 'control-label text-left col-sm-3 col-xs-12' : undefined
+                        labelClass: !allowDisable ? this.props.labelClass : undefined
                     }}
                     showLabel={showLabel}
                     showToggle={allowDisable}
@@ -416,14 +418,12 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         const {
             addLabelText,
             autoload,
-            cache,
             backspaceRemoves,
             deleteRemoves,
             clearable,
             delimiter,
             disabled,
             filterOptions,
-            autoValue,
             ignoreCase,
             isLoading,
             labelKey,
@@ -478,7 +478,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
 
         if (this.isAsync()) {
             const asyncProps = Object.assign(selectProps, {
-                cache: cache !== false ? this._cache : false,
+                cache: false,  // Issue 38631 and Issue 36478 we say no to the cache so it will get cleared of all intermittent results.
                 loadOptions
             });
 

@@ -13,57 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ajax, Filter, Utils } from '@labkey/api';
+import {ActionURL, Ajax, Domain, Filter, Query, Utils} from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
-
 import { IEntityTypeDetails, IParentOption, } from '../entities/models';
+import { deleteEntityType } from "../entities/actions";
 import { getSelection } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';
 import { naturalSort } from '../../util/utils';
 import { selectRows } from '../../query/api';
+import {DomainDetails} from "../domainproperties/models";
 
-export function initSampleSetSelects(isUpdate: boolean, ssName: string, placeholderOption: IParentOption, prefix: string, ) :Promise<List<IParentOption>> {
-    return selectRows({
-        schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-        columns: 'LSID, Name, RowId'
-    }).then(results => {
-        const sampleSets = fromJS(results.models[results.key]);
+export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
+    let promises = [];
 
-        let sets = List<IParentOption>();
-        sampleSets.forEach(row => {
-            const name = row.getIn(['Name', 'value']);
-            let label = placeholderOption && name === ssName ? placeholderOption.label : name;
-            sets = sets.push({
-                value: prefix + name,
-                label: label,
-                schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
-            });
-        });
+    //Get Sample Types
+    promises.push(
+            selectRows({
+            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
+            queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+            columns: 'LSID, Name, RowId, Folder',
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+        })
+    );
 
-        if(!isUpdate) {
-            sets = sets.push(placeholderOption);
-        }
+    //Get Data Classes
+    if (includeDataClasses) {
+        promises.push(
+            selectRows({
+                schemaName: SCHEMAS.EXP_TABLES.DATA_CLASSES.schemaName,
+                queryName: SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName,
+                columns: 'LSID, Name, RowId, Folder',
+                containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+            })
+        );
+    }
 
-        return sets.sortBy(p => p.label, naturalSort) as List<IParentOption>;
-    });
-}
-
-export function createSampleSet(config: IEntityTypeDetails): Promise<any> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', 'createSampleSetApi.api'),
-            method: 'POST',
-            params: config,
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((response) => {
-                reject(response);
-            }),
+    return new Promise<any[]>((resolve, reject) => {
+        return Promise.all(promises).then((responses) => {
+            resolve(responses);
+        }).catch((errorResponse) => {
+            reject(errorResponse);
         });
     });
 }
@@ -84,39 +75,27 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     });
 }
 
-export function updateSampleSet(config: IEntityTypeDetails): Promise<any> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', 'updateMaterialSourceApi.api'),
-            method: 'POST',
-            params: config,
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((response) => {
+export function getSampleTypeDetails(query: SchemaQuery, domainId?: number): Promise<any> {
+    return new Promise<DomainDetails>((resolve, reject) => {
+        const sampleSetConfig = {
+            domainId,
+            containerPath: ActionURL.getContainer(),
+            queryName: query.getQuery(),
+            schemaName: query.getSchema(),
+            success: (response) => {
+                resolve(DomainDetails.create(Map(response)));
+            },
+            failure:(response) => {
                 reject(response);
-            }),
-        });
+            }
+        } as Domain.GetDomainOptions;
+
+        return Domain.getDomainDetails(sampleSetConfig);
     });
 }
 
 export function deleteSampleSet(rowId: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', 'deleteMaterialSource.api'),
-            method: 'POST',
-            params: {
-                singleObjectRowId: rowId,
-                forceDelete: true
-            },
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper((response) => {
-                reject(response);
-            }),
-        });
-    });
+    return deleteEntityType('deleteMaterialSource', rowId);
 }
 
 /**

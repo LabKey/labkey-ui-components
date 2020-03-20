@@ -25,10 +25,12 @@ import './stories.scss';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 import { SCHEMAS } from '../components/base/models/schemas';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
+import { Panel } from 'react-bootstrap';
 
 interface Props {
     canUpdate: boolean
     asSubPanel?: boolean
+    withSibling?: boolean
     title?: string,
     cancelText?: string,
     submitText?: string,
@@ -67,17 +69,26 @@ class DetailEditingPage extends React.Component<Props, any> {
         }
 
         return (
-            <DetailEditing
-                queryModel={model}
-                canUpdate={canUpdate}
-                asSubPanel={asSubPanel}
-                title={title}
-                cancelText={cancelText}
-                submitText={submitText}
-                onUpdate={this.onUpdate}
-                useEditIcon={false}
-                onEditToggle={onEditToggle}
-            />
+            <>
+                <DetailEditing
+                    queryModel={model}
+                    canUpdate={canUpdate}
+                    asSubPanel={asSubPanel}
+                    title={title}
+                    cancelText={cancelText}
+                    submitText={submitText}
+                    onUpdate={this.onUpdate}
+                    useEditIcon={false}
+                    onEditToggle={onEditToggle}
+                />
+                {this.props.withSibling && (
+                    <Panel>
+                        <Panel.Heading>Sibling Panel</Panel.Heading>
+                        <Panel.Body>Don't tread on me.</Panel.Body>
+                    </Panel>
+                )}
+            </>
+
         )
     }
 }
@@ -98,6 +109,8 @@ storiesOf('DetailEditing', module)
                 title={text("Title", "Details")}
                 submitText={text("Submit Text", "Save")}
                 cancelText={text("Cancel Text", "Cancel")}
+                withSibling={boolean("With sibling", false)}
             />
         )
-    });
+    })
+;

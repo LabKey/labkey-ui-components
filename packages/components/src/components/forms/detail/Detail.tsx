@@ -20,8 +20,7 @@ import { List, Map, OrderedMap } from 'immutable';
 import { DefaultRenderer } from '../../../renderers/DefaultRenderer';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
-
-const className = 'table table-responsive table-condensed detail-component--table__fixed';
+import { DETAIL_TABLE_CLASSES } from '../constants';
 
 export const _defaultRenderer = (d) => {
     return <DefaultRenderer data={d} />;
@@ -116,7 +115,7 @@ export class Detail extends React.Component<DetailProps, any> {
                         }, OrderedMap<string, any>());
 
                         return (
-                            <table className={className} key={i}>
+                            <table className={DETAIL_TABLE_CLASSES} key={i}>
                                 <tbody>
                                 {fields.map((field: DetailField, key: string) => {
                                     // 'data-caption' tag for test hooks

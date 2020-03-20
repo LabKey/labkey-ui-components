@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
-import { ActionURL, Filter, Utils } from '@labkey/api';
+import { ActionURL, Filter, Query, Utils } from '@labkey/api';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
 import {
-    decodePart,
     getSchemaQuery,
     intersect,
     resolveKey,
@@ -445,7 +444,7 @@ export interface IQueryGridModel {
     baseFilters?: List<Filter.IFilter>
     bindURL?: boolean
     containerPath?: string
-    containerFilter?: string // TODO why can't I use the @labkey/api enum def of containerFilter?
+    containerFilter?: Query.ContainerFilter,
     data?: Map<any, Map<string, any>>
     dataIds?: List<any>
     displayColumns?: List<string>
@@ -568,7 +567,7 @@ export class QueryGridModel extends Record({
     baseFilters: List<Filter.IFilter>;
     bindURL: boolean;
     containerPath?: string;
-    containerFilter?: string;
+    containerFilter?: Query.ContainerFilter;
     data: Map<any, Map<string, any>>;
     dataIds: List<any>;
     displayColumns: List<string>;
@@ -1698,14 +1697,19 @@ export class AssayDefinitionModel extends Record({
         return false;
     }
 
-    private getSampleColumnByDomain(domainType: AssayDomainTypes): QueryColumn {
+    private getSampleColumnsByDomain(domainType: AssayDomainTypes): ScopedSampleColumn[] {
+        let ret = [];
         const columns = this.getDomainByType(domainType);
 
         if (columns) {
-            return columns.find(c => c.isSampleLookup());
+            columns.forEach(column => {
+                if (column.isSampleLookup()) {
+                    ret.push({column, domain : domainType});
+                }
+            });
         }
 
-        return null;
+        return ret;
     }
 
     /**
@@ -1715,10 +1719,10 @@ export class AssayDefinitionModel extends Record({
         let ret = [];
         // The order matters here, we care about result, run, and batch in that order.
         for (const domain of [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH]) {
-            const column = this.getSampleColumnByDomain(domain);
+            const columns = this.getSampleColumnsByDomain(domain);
 
-            if (column) {
-                ret.push({column, domain});
+            if (columns && columns.length > 0) {
+                ret = ret.concat(columns);
             }
         }
 
@@ -1755,15 +1759,16 @@ export class AssayDefinitionModel extends Record({
         return List(sampleCols.map(this.sampleColumnFieldKey));
     }
 
-    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string) {
+    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string, useLsid?: boolean) {
+        const keyCol = useLsid ? '/LSID' : '/RowId';
         if (sampleColumns.size == 1) {
             // generate simple equals filter
             let sampleColumn = sampleColumns.get(0);
-            return Filter.create(`${sampleColumn}/RowId`, value, singleFilter);
+            return Filter.create(sampleColumn + keyCol, value, singleFilter);
         } else {
             // generate an OR filter to include all sample columns
             let whereClause = '(' + sampleColumns.map(sampleCol => {
-                let fieldKey = (sampleCol + '/RowId').replace(/\//g, '.');
+                let fieldKey = (sampleCol + keyCol).replace(/\//g, '.');
                 return whereClausePart(fieldKey, value);
             }).join(' OR ') + ')';
             return Filter.create('*', whereClause, WHERE_FILTER_TYPE);

@@ -1537,6 +1537,16 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "instructions": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
+          }
+        }
         domainIndex={0}
         helpNoun="field designer"
         helpTopic={null}
@@ -2236,6 +2246,16 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "instructions": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
+          }
+        }
         domainIndex={1}
         helpNoun="field designer"
         helpTopic={null}
@@ -2933,6 +2953,16 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={2}
@@ -3748,6 +3778,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -3824,6 +3855,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -3900,6 +3932,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -4059,6 +4092,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -4135,6 +4169,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -4211,6 +4246,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -4379,6 +4415,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -4455,6 +4492,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -4531,6 +4569,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -4960,6 +4999,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -5036,6 +5076,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -5112,6 +5153,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -5453,6 +5495,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -5529,6 +5572,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -5605,6 +5649,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -5961,6 +6006,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -6037,6 +6083,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -6113,6 +6160,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -6438,6 +6486,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -6514,6 +6563,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -6590,6 +6640,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -6956,6 +7007,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -7032,6 +7084,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -7108,6 +7161,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -7150,6 +7204,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={0}
@@ -7268,6 +7332,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -7344,6 +7409,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -7420,6 +7486,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -7948,6 +8015,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": undefined,
@@ -8024,6 +8092,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": undefined,
@@ -8100,6 +8169,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -8225,6 +8295,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -8301,6 +8372,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -8377,6 +8449,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -8488,6 +8561,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -8564,6 +8638,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -8640,6 +8715,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -8648,6 +8724,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={1}
@@ -8766,6 +8852,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -8842,6 +8929,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -8918,6 +9006,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -9642,6 +9731,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     ]
                                                   }
                                                   defaultValueOptions={Immutable.List []}
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={null}
                                                   domainIndex={1}
                                                   dragging={false}
@@ -9723,11 +9822,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={0}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-0"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -9803,6 +9902,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -9881,6 +9990,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -10364,6 +10474,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={true}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={1}
                                                                 field={
                                                                   Immutable.Record {
@@ -10441,6 +10561,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={0}
@@ -10845,6 +10966,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={0}
@@ -11268,6 +11390,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={1}
                                                                           field={
                                                                             Immutable.Record {
@@ -11345,6 +11477,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={true}
@@ -11706,6 +11839,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     ]
                                                   }
                                                   defaultValueOptions={Immutable.List []}
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={null}
                                                   domainIndex={1}
                                                   dragging={false}
@@ -11787,11 +11930,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={1}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-1"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -11867,6 +12010,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -11945,6 +12098,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -12428,6 +12582,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={true}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={1}
                                                                 field={
                                                                   Immutable.Record {
@@ -12505,6 +12669,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={1}
@@ -12891,6 +13056,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={1}
@@ -13314,6 +13480,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={1}
                                                                           field={
                                                                             Immutable.Record {
@@ -13391,6 +13567,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={true}
@@ -13752,6 +13929,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     ]
                                                   }
                                                   defaultValueOptions={Immutable.List []}
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={null}
                                                   domainIndex={1}
                                                   dragging={false}
@@ -13833,11 +14020,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={2}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-2"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -13913,6 +14100,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -13991,6 +14188,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -14474,6 +14672,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={true}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={1}
                                                                 field={
                                                                   Immutable.Record {
@@ -14551,6 +14759,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={2}
@@ -14902,6 +15111,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={2}
@@ -15325,6 +15535,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={1}
                                                                           field={
                                                                             Immutable.Record {
@@ -15402,6 +15622,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={true}
@@ -17583,6 +17804,16 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "instructions": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
+          }
+        }
         domainIndex={0}
         helpNoun="field designer"
         helpTopic={null}
@@ -18281,6 +18512,16 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "instructions": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
+          }
+        }
         domainIndex={1}
         helpNoun="field designer"
         helpTopic={null}
@@ -18977,6 +19218,16 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={2}
@@ -21508,6 +21759,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "instructions": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
+          }
+        }
         domainIndex={1}
         helpNoun="field designer"
         helpTopic={null}
@@ -22204,6 +22465,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={2}
@@ -23019,6 +23290,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -23095,6 +23367,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -23171,6 +23444,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -23329,6 +23603,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -23405,6 +23680,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -23481,6 +23757,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -23649,6 +23926,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -23725,6 +24003,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -23801,6 +24080,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -24230,6 +24510,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -24306,6 +24587,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -24382,6 +24664,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -24723,6 +25006,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -24799,6 +25083,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -24875,6 +25160,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -25231,6 +25517,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -25307,6 +25594,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -25383,6 +25671,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -25708,6 +25997,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -25784,6 +26074,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -25860,6 +26151,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -26227,6 +26519,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -26303,6 +26596,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -26379,6 +26673,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -26711,6 +27006,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -26787,6 +27083,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -26863,6 +27160,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -27169,6 +27467,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": undefined,
@@ -27245,6 +27544,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": undefined,
@@ -27321,6 +27621,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -27446,6 +27747,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -27522,6 +27824,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -27598,6 +27901,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -27709,6 +28013,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -27785,6 +28090,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -27861,6 +28167,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -27869,6 +28176,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={1}
@@ -27987,6 +28304,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -28063,6 +28381,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -28139,6 +28458,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -28863,6 +29183,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     ]
                                                   }
                                                   defaultValueOptions={Immutable.List []}
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={null}
                                                   domainIndex={1}
                                                   dragging={false}
@@ -28944,11 +29274,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={0}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-0"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -29024,6 +29354,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -29102,6 +29442,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -29615,6 +29956,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={1}
                                                                 field={
                                                                   Immutable.Record {
@@ -29692,6 +30043,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={0}
@@ -30096,6 +30448,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={0}
@@ -30519,6 +30872,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={1}
                                                                           field={
                                                                             Immutable.Record {
@@ -30596,6 +30959,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -31113,6 +31477,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     ]
                                                   }
                                                   defaultValueOptions={Immutable.List []}
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={null}
                                                   domainIndex={1}
                                                   dragging={false}
@@ -31194,11 +31568,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={1}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-1"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -31274,6 +31648,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -31352,6 +31736,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -31865,6 +32250,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={1}
                                                                 field={
                                                                   Immutable.Record {
@@ -31942,6 +32337,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={1}
@@ -32328,6 +32724,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={1}
@@ -32751,6 +33148,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={1}
                                                                           field={
                                                                             Immutable.Record {
@@ -32828,6 +33235,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -33345,6 +33753,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     ]
                                                   }
                                                   defaultValueOptions={Immutable.List []}
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={null}
                                                   domainIndex={1}
                                                   dragging={false}
@@ -33426,11 +33844,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={2}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-2"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -33506,6 +33924,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -33584,6 +34012,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -34097,6 +34526,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={1}
                                                                 field={
                                                                   Immutable.Record {
@@ -34174,6 +34613,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={2}
@@ -34525,6 +34965,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={2}
@@ -34948,6 +35389,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={1}
                                                                           field={
                                                                             Immutable.Record {
@@ -35025,6 +35476,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -35646,6 +36098,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -35722,6 +36175,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -35798,6 +36252,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -35956,6 +36411,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -36032,6 +36488,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -36108,6 +36565,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -36276,6 +36734,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -36352,6 +36811,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -36428,6 +36888,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "updatedField": false,
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
+                    "wrappedColumnName": undefined,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -36857,6 +37318,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -36933,6 +37395,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -37009,6 +37472,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -37350,6 +37814,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -37426,6 +37891,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -37502,6 +37968,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -37858,6 +38325,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -37934,6 +38402,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -38010,6 +38479,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -38335,6 +38805,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -38411,6 +38882,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -38487,6 +38959,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -38854,6 +39327,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -38930,6 +39404,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -39006,6 +39481,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -39338,6 +39814,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -39414,6 +39891,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": undefined,
@@ -39490,6 +39968,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   "updatedField": false,
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
+                                                  "wrappedColumnName": undefined,
                                                 },
                                               ],
                                               "indices": Immutable.List [],
@@ -39844,6 +40323,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -39920,6 +40400,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -39996,6 +40477,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -40038,6 +40520,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={0}
@@ -40156,6 +40648,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -40232,6 +40725,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -40308,6 +40802,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -40835,6 +41330,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": undefined,
@@ -40911,6 +41407,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
           Immutable.Record {
             "conceptURI": undefined,
@@ -40987,6 +41484,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "updatedField": false,
             "isPrimaryKey": false,
             "lockType": "NotLocked",
+            "wrappedColumnName": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -41112,6 +41610,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -41188,6 +41687,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -41264,6 +41764,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "updatedField": false,
               "isPrimaryKey": false,
               "lockType": "NotLocked",
+              "wrappedColumnName": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -41375,6 +41876,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -41451,6 +41953,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -41527,6 +42030,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "updatedField": false,
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
+                "wrappedColumnName": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -41535,6 +42039,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+            "showAddFieldsButton": true,
+            "showRequired": true,
+            "showTextOptions": true,
+            "showValidators": true,
           }
         }
         domainIndex={1}
@@ -41653,6 +42167,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -41729,6 +42244,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -41805,6 +42321,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "updatedField": false,
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
+                  "wrappedColumnName": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -42529,6 +43046,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     ]
                                                   }
                                                   defaultValueOptions={Immutable.List []}
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={null}
                                                   domainIndex={1}
                                                   dragging={false}
@@ -42610,11 +43137,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={0}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-0"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -42690,6 +43217,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -42768,6 +43305,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -43281,6 +43819,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={1}
                                                                 field={
                                                                   Immutable.Record {
@@ -43358,6 +43906,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={0}
@@ -43762,6 +44311,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={0}
@@ -44185,6 +44735,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={1}
                                                                           field={
                                                                             Immutable.Record {
@@ -44262,6 +44822,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -44779,6 +45340,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     ]
                                                   }
                                                   defaultValueOptions={Immutable.List []}
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={null}
                                                   domainIndex={1}
                                                   dragging={false}
@@ -44860,11 +45431,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={1}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-1"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -44940,6 +45511,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -45018,6 +45599,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -45531,6 +46113,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={1}
                                                                 field={
                                                                   Immutable.Record {
@@ -45608,6 +46200,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={1}
@@ -45994,6 +46587,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={1}
@@ -46417,6 +47011,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={1}
                                                                           field={
                                                                             Immutable.Record {
@@ -46494,6 +47098,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}
@@ -47011,6 +47616,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     ]
                                                   }
                                                   defaultValueOptions={Immutable.List []}
+                                                  domainFormDisplayOptions={
+                                                    Object {
+                                                      "isDragDisabled": false,
+                                                      "phiLevelDisabled": false,
+                                                      "showAddFieldsButton": true,
+                                                      "showRequired": true,
+                                                      "showTextOptions": true,
+                                                      "showValidators": true,
+                                                    }
+                                                  }
                                                   domainId={null}
                                                   domainIndex={1}
                                                   dragging={false}
@@ -47092,11 +47707,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "updatedField": false,
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
+                                                      "wrappedColumnName": undefined,
                                                     }
                                                   }
                                                   helpNoun="field designer"
                                                   index={2}
-                                                  isDragDisabled={false}
                                                   key="domain-row-key-2"
                                                   maxPhiLevel="NotPHI"
                                                   onChange={[Function]}
@@ -47172,6 +47787,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           >
                                                             <AdvancedSettings
                                                               defaultValueOptions={Immutable.List []}
+                                                              domainFormDisplayOptions={
+                                                                Object {
+                                                                  "isDragDisabled": false,
+                                                                  "phiLevelDisabled": false,
+                                                                  "showAddFieldsButton": true,
+                                                                  "showRequired": true,
+                                                                  "showTextOptions": true,
+                                                                  "showValidators": true,
+                                                                }
+                                                              }
                                                               domainId={null}
                                                               domainIndex={1}
                                                               field={
@@ -47250,6 +47875,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   "updatedField": false,
                                                                   "isPrimaryKey": false,
                                                                   "lockType": "NotLocked",
+                                                                  "wrappedColumnName": undefined,
                                                                 }
                                                               }
                                                               helpNoun="field designer"
@@ -47763,6 +48389,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             >
                                                               <DomainRowExpandedOptions
                                                                 appPropertiesOnly={false}
+                                                                domainFormDisplayOptions={
+                                                                  Object {
+                                                                    "isDragDisabled": false,
+                                                                    "phiLevelDisabled": false,
+                                                                    "showAddFieldsButton": true,
+                                                                    "showRequired": true,
+                                                                    "showTextOptions": true,
+                                                                    "showValidators": true,
+                                                                  }
+                                                                }
                                                                 domainIndex={1}
                                                                 field={
                                                                   Immutable.Record {
@@ -47840,6 +48476,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     "updatedField": false,
                                                                     "isPrimaryKey": false,
                                                                     "lockType": "NotLocked",
+                                                                    "wrappedColumnName": undefined,
                                                                   }
                                                                 }
                                                                 index={2}
@@ -48191,6 +48828,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           index={2}
@@ -48614,6 +49252,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         className="col-xs-12"
                                                                       >
                                                                         <ConditionalFormattingAndValidation
+                                                                          domainFormDisplayOptions={
+                                                                            Object {
+                                                                              "isDragDisabled": false,
+                                                                              "phiLevelDisabled": false,
+                                                                              "showAddFieldsButton": true,
+                                                                              "showRequired": true,
+                                                                              "showTextOptions": true,
+                                                                              "showValidators": true,
+                                                                            }
+                                                                          }
                                                                           domainIndex={1}
                                                                           field={
                                                                             Immutable.Record {
@@ -48691,6 +49339,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "updatedField": false,
                                                                               "isPrimaryKey": false,
                                                                               "lockType": "NotLocked",
+                                                                              "wrappedColumnName": undefined,
                                                                             }
                                                                           }
                                                                           hideConditionalFormatting={false}

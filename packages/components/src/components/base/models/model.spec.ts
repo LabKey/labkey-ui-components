@@ -268,7 +268,7 @@ describe("AssayDefinitionModel", () => {
    test("hasLookup()", () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
         expect(modelWithSampleId.hasLookup(SchemaQuery.create('samples', 'Samples'))).toBeTruthy();
-        expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Study'))).toBeFalsy();
+        expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Study'))).toBeTruthy();
         expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Other'))).toBeFalsy();
    });
 

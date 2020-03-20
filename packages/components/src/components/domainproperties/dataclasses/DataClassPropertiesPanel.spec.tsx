@@ -15,6 +15,8 @@ describe('DataClassPropertiesPanel', () => {
         const form =
             <DataClassPropertiesPanel
                 model={DataClassModel.create({})}
+                controlledCollapse={false}
+                initCollapsed={false}
                 onChange={jest.fn()}
             />;
 
@@ -26,6 +28,8 @@ describe('DataClassPropertiesPanel', () => {
         const form =
             <DataClassPropertiesPanel
                 model={DataClassModel.create({})}
+                controlledCollapse={false}
+                initCollapsed={false}
                 onChange={jest.fn()}
                 nounSingular={'Source'}
                 nounPlural={'Sources'}
@@ -46,6 +50,9 @@ describe('DataClassPropertiesPanel', () => {
         let wrapped = mount(
             <DataClassPropertiesPanelImpl
                 model={DataClassModel.create(getDomainDetailsJSON)}
+                collapsed={false}
+                controlledCollapse={true}
+                togglePanel={jest.fn()}
                 panelStatus={'TODO'}
                 onChange={jest.fn()}
             />

@@ -13,12 +13,14 @@ import { ENTITY_FORM_ID_PREFIX } from "../entities/constants";
 import { getFormNameFromId } from "../entities/actions";
 import { DataClassModel } from "./models";
 import { HelpTopicURL } from "../HelpTopicURL";
-import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
 import { initQueryGridState } from "../../../global";
+import {
+    InjectedDomainPropertiesPanelCollapseProps,
+    withDomainPropertiesPanelCollapse
+} from "../DomainPropertiesPanelCollapse";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
-const DEFAULT_CONTEXT = {collapsed: false};
 const FORM_IDS = {
     CATEGORY: ENTITY_FORM_ID_PREFIX + 'category',
     SAMPLE_TYPE_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet'
@@ -34,46 +36,22 @@ interface Props {
     model: DataClassModel
     onChange: (model: DataClassModel) => any
     appPropertiesOnly?: boolean
-    initCollapsed?: boolean
-    collapsible?: boolean
-    controlledCollapse?: boolean
     validate?: boolean
     useTheme?: boolean
     panelStatus?: DomainPanelStatus
-    onToggle?: (collapsed: boolean, callback: () => any) => any
 }
 
 interface State {
     isValid: boolean
 }
 
-export class DataClassPropertiesPanel extends React.PureComponent<Props> {
-    render() {
-        const { controlledCollapse, collapsible, initCollapsed, onToggle } = this.props;
-
-        return (
-            <DomainPropertiesPanelProvider
-                controlledCollapse={controlledCollapse}
-                collapsible={collapsible}
-                initCollapsed={initCollapsed}
-                onToggle={onToggle}
-            >
-                <DataClassPropertiesPanelImpl {...this.props} />
-            </DomainPropertiesPanelProvider>
-        )
-    }
-}
-
 //Note: exporting this class for jest test case
-export class DataClassPropertiesPanelImpl extends React.Component<Props, State> {
-    static contextType = DomainPropertiesPanelContext;
-    context!: React.ContextType<typeof DomainPropertiesPanelContext>;
+export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
 
     static defaultProps = {
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
         appPropertiesOnly: false,
-        initCollapsed: false,
         validate: false
     };
 
@@ -86,7 +64,7 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+    componentWillReceiveProps(nextProps: Readonly<Props>): void {
         const { validate } = this.props;
         if (nextProps.validate && validate !== nextProps.validate) {
             this.setIsValid();
@@ -115,7 +93,7 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
     }
 
     toggleLocalPanel = (evt: any): void => {
-        const { togglePanel, collapsed } = this.context;
+        const { togglePanel, collapsed } = this.props;
         this.setIsValid();
         togglePanel(evt, !collapsed)
     };
@@ -189,9 +167,8 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
     }
 
     render() {
-        const { collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
+        const { collapsed, collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
         const { isValid } = this.state;
-        const { collapsed } = this.context || DEFAULT_CONTEXT;
 
         return (
             <>
@@ -247,3 +224,5 @@ export class DataClassPropertiesPanelImpl extends React.Component<Props, State> 
         )
     }
 }
+
+export const DataClassPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(DataClassPropertiesPanelImpl);

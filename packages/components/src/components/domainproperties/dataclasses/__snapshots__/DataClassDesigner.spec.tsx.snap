@@ -1585,7 +1585,6 @@ exports[`DataClassDesigner initModel 1`] = `
       appPropertiesOnly={false}
       collapsed={false}
       controlledCollapse={true}
-      initCollapsed={false}
       model={
         Immutable.Record {
           "rowId": 802,

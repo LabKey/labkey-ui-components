@@ -131,11 +131,16 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
           <div
             className="col-xs-12"
           >
-            <div
-              className="domain-field-section-heading domain-field-section-hdr"
+            <SectionHeading
+              cls="domain-field-section-hdr"
+              title="Conditional Formatting and Validation Options"
             >
-              Conditional Formatting and Validation Options
-            </div>
+              <div
+                className="domain-field-section-heading domain-field-section-hdr"
+              >
+                Conditional Formatting and Validation Options
+              </div>
+            </SectionHeading>
           </div>
         </Col>
       </div>
@@ -548,11 +553,16 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
           <div
             className="col-xs-12"
           >
-            <div
-              className="domain-field-section-heading domain-field-section-hdr"
+            <SectionHeading
+              cls="domain-field-section-hdr"
+              title="Conditional Formatting and Validation Options"
             >
-              Conditional Formatting and Validation Options
-            </div>
+              <div
+                className="domain-field-section-heading domain-field-section-hdr"
+              >
+                Conditional Formatting and Validation Options
+              </div>
+            </SectionHeading>
           </div>
         </Col>
       </div>
@@ -851,11 +861,16 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
           <div
             className="col-xs-12"
           >
-            <div
-              className="domain-field-section-heading domain-field-section-hdr"
+            <SectionHeading
+              cls="domain-field-section-hdr"
+              title="Conditional Formatting and Validation Options"
             >
-              Conditional Formatting and Validation Options
-            </div>
+              <div
+                className="domain-field-section-heading domain-field-section-hdr"
+              >
+                Conditional Formatting and Validation Options
+              </div>
+            </SectionHeading>
           </div>
         </Col>
       </div>

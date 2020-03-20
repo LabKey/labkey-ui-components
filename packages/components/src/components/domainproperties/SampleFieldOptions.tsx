@@ -7,6 +7,7 @@ import { encodeLookup, IDomainField, ITypeDependentProps, PropDescType, QueryInf
 import { List } from 'immutable';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLinks';
+import { SectionHeading } from "./SectionHeading";
 
 interface SampleFieldProps extends ITypeDependentProps {
     original: Partial<IDomainField>
@@ -81,7 +82,7 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading margin-top'}>{label}</div>
+                        <SectionHeading title={label}/>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>

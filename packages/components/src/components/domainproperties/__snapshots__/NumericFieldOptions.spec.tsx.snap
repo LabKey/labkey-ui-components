@@ -27,11 +27,15 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
           <div
             className="col-xs-12"
           >
-            <div
-              className="domain-field-section-heading"
+            <SectionHeading
+              title="Numeric Field Options"
             >
-              Numeric Field Options
-            </div>
+              <div
+                className="domain-field-section-heading"
+              >
+                Numeric Field Options
+              </div>
+            </SectionHeading>
           </div>
         </Col>
       </div>

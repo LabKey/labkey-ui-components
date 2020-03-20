@@ -26,11 +26,15 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
           <div
             className="col-xs-12"
           >
-            <div
-              className="domain-field-section-heading"
+            <SectionHeading
+              title="Boolean Field Options"
             >
-              Boolean Field Options
-            </div>
+              <div
+                className="domain-field-section-heading"
+              >
+                Boolean Field Options
+              </div>
+            </SectionHeading>
           </div>
         </Col>
       </div>

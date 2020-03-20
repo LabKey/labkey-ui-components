@@ -128,11 +128,15 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading"
+                      <SectionHeading
+                        title="Boolean Field Options"
                       >
-                        Boolean Field Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading"
+                        >
+                          Boolean Field Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -434,11 +438,16 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Name and Linking Options"
                       >
-                        Name and Linking Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Name and Linking Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -946,11 +955,16 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Conditional Formatting and Validation Options"
                       >
-                        Conditional Formatting and Validation Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Conditional Formatting and Validation Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -1269,11 +1283,15 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading"
+                      <SectionHeading
+                        title="Date and Time Options"
                       >
-                        Date and Time Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading"
+                        >
+                          Date and Time Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -1593,11 +1611,16 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Name and Linking Options"
                       >
-                        Name and Linking Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Name and Linking Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -2105,11 +2128,16 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Conditional Formatting and Validation Options"
                       >
-                        Conditional Formatting and Validation Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Conditional Formatting and Validation Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -2679,11 +2707,16 @@ exports[`DomainExpandedOptions No text options 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Name and Linking Options"
                       >
-                        Name and Linking Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Name and Linking Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -3190,11 +3223,16 @@ exports[`DomainExpandedOptions No text options 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Conditional Formatting and Validation Options"
                       >
-                        Conditional Formatting and Validation Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Conditional Formatting and Validation Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -3668,11 +3706,15 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading"
+                      <SectionHeading
+                        title="Integer Options"
                       >
-                        Integer Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading"
+                        >
+                          Integer Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -4028,11 +4070,16 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Name and Linking Options"
                       >
-                        Name and Linking Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Name and Linking Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -4540,11 +4587,16 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Conditional Formatting and Validation Options"
                       >
-                        Conditional Formatting and Validation Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Conditional Formatting and Validation Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -5105,11 +5157,16 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Name and Linking Options"
                       >
-                        Name and Linking Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Name and Linking Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>
@@ -5617,11 +5674,16 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                     <div
                       className="col-xs-12"
                     >
-                      <div
-                        className="domain-field-section-heading domain-field-section-hdr"
+                      <SectionHeading
+                        cls="domain-field-section-hdr"
+                        title="Conditional Formatting and Validation Options"
                       >
-                        Conditional Formatting and Validation Options
-                      </div>
+                        <div
+                          className="domain-field-section-heading domain-field-section-hdr"
+                        >
+                          Conditional Formatting and Validation Options
+                        </div>
+                      </SectionHeading>
                     </div>
                   </Col>
                 </div>

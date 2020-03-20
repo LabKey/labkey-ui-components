@@ -1086,11 +1086,15 @@ exports[`DomainRow Sample Field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading margin-top"
+                                                  <SectionHeading
+                                                    title="Sample Options"
                                                   >
-                                                    Sample Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading"
+                                                    >
+                                                      Sample Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -1398,11 +1402,16 @@ exports[`DomainRow Sample Field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Name and Linking Options"
                                                   >
-                                                    Name and Linking Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Name and Linking Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -1910,11 +1919,16 @@ exports[`DomainRow Sample Field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Conditional Formatting and Validation Options"
                                                   >
-                                                    Conditional Formatting and Validation Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Conditional Formatting and Validation Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -3428,11 +3442,16 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Name and Linking Options"
                                                   >
-                                                    Name and Linking Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Name and Linking Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -3940,11 +3959,16 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Conditional Formatting and Validation Options"
                                                   >
-                                                    Conditional Formatting and Validation Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Conditional Formatting and Validation Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -5202,11 +5226,15 @@ exports[`DomainRow date time field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading"
+                                                  <SectionHeading
+                                                    title="Date and Time Options"
                                                   >
-                                                    Date and Time Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading"
+                                                    >
+                                                      Date and Time Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -5526,11 +5554,16 @@ exports[`DomainRow date time field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Name and Linking Options"
                                                   >
-                                                    Name and Linking Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Name and Linking Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -6038,11 +6071,16 @@ exports[`DomainRow date time field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Conditional Formatting and Validation Options"
                                                   >
-                                                    Conditional Formatting and Validation Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Conditional Formatting and Validation Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -7455,11 +7493,15 @@ exports[`DomainRow decimal field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading"
+                                                  <SectionHeading
+                                                    title="Decimal Options"
                                                   >
-                                                    Decimal Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading"
+                                                    >
+                                                      Decimal Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -7815,11 +7857,16 @@ exports[`DomainRow decimal field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Name and Linking Options"
                                                   >
-                                                    Name and Linking Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Name and Linking Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -8327,11 +8374,16 @@ exports[`DomainRow decimal field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Conditional Formatting and Validation Options"
                                                   >
-                                                    Conditional Formatting and Validation Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Conditional Formatting and Validation Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -9855,11 +9907,16 @@ exports[`DomainRow participant id field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Name and Linking Options"
                                                   >
-                                                    Name and Linking Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Name and Linking Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -10367,11 +10424,16 @@ exports[`DomainRow participant id field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Conditional Formatting and Validation Options"
                                                   >
-                                                    Conditional Formatting and Validation Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Conditional Formatting and Validation Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -11964,11 +12026,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Name and Linking Options"
                                                   >
-                                                    Name and Linking Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Name and Linking Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -12476,11 +12543,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Conditional Formatting and Validation Options"
                                                   >
-                                                    Conditional Formatting and Validation Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Conditional Formatting and Validation Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -13761,11 +13833,15 @@ exports[`DomainRow string field test 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading"
+                                                  <SectionHeading
+                                                    title="Text Options"
                                                   >
-                                                    Text Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading"
+                                                    >
+                                                      Text Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -14139,11 +14215,16 @@ exports[`DomainRow string field test 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Name and Linking Options"
                                                   >
-                                                    Name and Linking Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Name and Linking Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -14651,11 +14732,16 @@ exports[`DomainRow string field test 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Conditional Formatting and Validation Options"
                                                   >
-                                                    Conditional Formatting and Validation Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Conditional Formatting and Validation Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -16141,11 +16227,15 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading"
+                                                  <SectionHeading
+                                                    title="Text Options"
                                                   >
-                                                    Text Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading"
+                                                    >
+                                                      Text Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -16519,11 +16609,16 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Name and Linking Options"
                                                   >
-                                                    Name and Linking Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Name and Linking Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>
@@ -17031,11 +17126,16 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <div
-                                                    className="domain-field-section-heading domain-field-section-hdr"
+                                                  <SectionHeading
+                                                    cls="domain-field-section-hdr"
+                                                    title="Conditional Formatting and Validation Options"
                                                   >
-                                                    Conditional Formatting and Validation Options
-                                                  </div>
+                                                    <div
+                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                    >
+                                                      Conditional Formatting and Validation Options
+                                                    </div>
+                                                  </SectionHeading>
                                                 </div>
                                               </Col>
                                             </div>

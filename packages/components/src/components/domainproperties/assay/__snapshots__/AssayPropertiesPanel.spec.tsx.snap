@@ -231,33 +231,13 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
               className="domain-field-padding-bottom"
             >
               <SectionHeading
-                helpTopic="defineAssaySchema"
                 title="Basic Properties"
               >
-                <Row
-                  bsClass="row"
-                  componentClass="div"
+                <div
+                  className="domain-field-section-heading"
                 >
-                  <div
-                    className="row"
-                  >
-                    <Col
-                      bsClass="col"
-                      componentClass="div"
-                      xs={9}
-                    >
-                      <div
-                        className="col-xs-9"
-                      >
-                        <div
-                          className="domain-field-section-heading"
-                        >
-                          Basic Properties
-                        </div>
-                      </div>
-                    </Col>
-                  </div>
-                </Row>
+                  Basic Properties
+                </div>
               </SectionHeading>
               <NameInput
                 appPropertiesOnly={true}
@@ -817,30 +797,11 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
               <SectionHeading
                 title="Editing Settings"
               >
-                <Row
-                  bsClass="row"
-                  componentClass="div"
+                <div
+                  className="domain-field-section-heading"
                 >
-                  <div
-                    className="row"
-                  >
-                    <Col
-                      bsClass="col"
-                      componentClass="div"
-                      xs={12}
-                    >
-                      <div
-                        className="col-xs-12"
-                      >
-                        <div
-                          className="domain-field-section-heading"
-                        >
-                          Editing Settings
-                        </div>
-                      </div>
-                    </Col>
-                  </div>
-                </Row>
+                  Editing Settings
+                </div>
               </SectionHeading>
               <EditableRunsInput
                 appPropertiesOnly={true}
@@ -1439,33 +1400,13 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                         className="domain-field-padding-bottom"
                       >
                         <SectionHeading
-                          helpTopic="defineAssaySchema"
                           title="Basic Properties"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={9}
-                              >
-                                <div
-                                  className="col-xs-9"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Basic Properties
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Basic Properties
+                          </div>
                         </SectionHeading>
                         <NameInput
                           appPropertiesOnly={false}
@@ -2025,30 +1966,11 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                         <SectionHeading
                           title="Editing Settings"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Editing Settings
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Editing Settings
+                          </div>
                         </SectionHeading>
                         <EditableRunsInput
                           appPropertiesOnly={false}
@@ -2336,30 +2258,11 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                         <SectionHeading
                           title="Import Settings"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Import Settings
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Import Settings
+                          </div>
                         </SectionHeading>
                         <AutoCopyDataInput
                           model={
@@ -2963,33 +2866,13 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                         className="domain-field-padding-bottom"
                       >
                         <SectionHeading
-                          helpTopic="defineAssaySchema"
                           title="Basic Properties"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={9}
-                              >
-                                <div
-                                  className="col-xs-9"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Basic Properties
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Basic Properties
+                          </div>
                         </SectionHeading>
                         <NameInput
                           appPropertiesOnly={false}
@@ -3549,30 +3432,11 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                         <SectionHeading
                           title="Editing Settings"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Editing Settings
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Editing Settings
+                          </div>
                         </SectionHeading>
                         <EditableRunsInput
                           appPropertiesOnly={false}
@@ -3860,30 +3724,11 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                         <SectionHeading
                           title="Import Settings"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Import Settings
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Import Settings
+                          </div>
                         </SectionHeading>
                         <AutoCopyDataInput
                           model={
@@ -4363,33 +4208,13 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                         className="domain-field-padding-bottom"
                       >
                         <SectionHeading
-                          helpTopic="defineAssaySchema"
                           title="Basic Properties"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={9}
-                              >
-                                <div
-                                  className="col-xs-9"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Basic Properties
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Basic Properties
+                          </div>
                         </SectionHeading>
                         <NameInput
                           appPropertiesOnly={false}
@@ -4827,30 +4652,11 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                         <SectionHeading
                           title="Editing Settings"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Editing Settings
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Editing Settings
+                          </div>
                         </SectionHeading>
                         <EditableRunsInput
                           appPropertiesOnly={false}
@@ -5077,30 +4883,11 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                         <SectionHeading
                           title="Import Settings"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Import Settings
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Import Settings
+                          </div>
                         </SectionHeading>
                         <AutoCopyDataInput
                           model={
@@ -5611,33 +5398,13 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                         className="domain-field-padding-bottom"
                       >
                         <SectionHeading
-                          helpTopic={null}
                           title="Basic Properties"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Basic Properties
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Basic Properties
+                          </div>
                         </SectionHeading>
                         <NameInput
                           appPropertiesOnly={true}
@@ -6197,30 +5964,11 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                         <SectionHeading
                           title="Editing Settings"
                         >
-                          <Row
-                            bsClass="row"
-                            componentClass="div"
+                          <div
+                            className="domain-field-section-heading"
                           >
-                            <div
-                              className="row"
-                            >
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={12}
-                              >
-                                <div
-                                  className="col-xs-12"
-                                >
-                                  <div
-                                    className="domain-field-section-heading"
-                                  >
-                                    Editing Settings
-                                  </div>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
+                            Editing Settings
+                          </div>
                         </SectionHeading>
                         <EditableRunsInput
                           appPropertiesOnly={true}

@@ -28,6 +28,7 @@ import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse
 } from "../DomainPropertiesPanelCollapse";
+import { SectionHeading } from "../SectionHeading";
 
 const ERROR_MSG = 'Contains errors or is missing required values.';
 
@@ -146,12 +147,12 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
     };
 
     renderBasicProperties() {
-        const { model, appPropertiesOnly, helpTopic } = this.props;
+        const { model, appPropertiesOnly } = this.props;
 
         return (
             <>
                 <div className='domain-field-padding-bottom'>
-                    <SectionHeading title={'Basic Properties'} helpTopic={helpTopic}/>
+                    <SectionHeading title={'Basic Properties'}/>
                     <NameInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>
                     <DescriptionInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>
                     {model.allowPlateTemplateSelection() && <PlateTemplatesInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
@@ -263,21 +264,3 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
 }
 
 export const AssayPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(AssayPropertiesPanelImpl);
-
-interface SectionHeadingProps {
-    title: string
-    paddingTop?: boolean
-    helpTopic?: string
-}
-
-function SectionHeading(props: SectionHeadingProps) {
-    return (
-        <Row>
-            <Col xs={props.helpTopic ? 9 : 12}>
-                <div className={'domain-field-section-heading'}>
-                    {props.title}
-                </div>
-            </Col>
-        </Row>
-    )
-}

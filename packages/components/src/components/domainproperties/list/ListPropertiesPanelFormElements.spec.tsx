@@ -1,16 +1,17 @@
 import React from 'react';
-import {ListModel} from "./models";
 import { mount } from 'enzyme';
+import renderer from "react-test-renderer";
+import {ListModel} from "./models";
+import {SectionHeading} from "../SectionHeading";
 import {
     AllowableActions,
     BasicPropertiesFields,
-    BasicPropertiesTitle, CheckBoxRow,
+    CheckBoxRow,
     DescriptionInput,
     NameInput
 } from "./ListPropertiesPanelFormElements";
 import getDomainDetailsJSON from '../../../test/data/list-getDomainDetails.json';
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
-import renderer from "react-test-renderer";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
@@ -46,7 +47,7 @@ describe('BasicPropertiesFields', () => {
             />
         );
 
-        expect(basicPropertiesFields.find(BasicPropertiesTitle)).toHaveLength(1);
+        expect(basicPropertiesFields.find(SectionHeading)).toHaveLength(1);
         expect(basicPropertiesFields.find(NameInput)).toHaveLength(1);
         expect(basicPropertiesFields.find(DescriptionInput)).toHaveLength(1);
         basicPropertiesFields.unmount();

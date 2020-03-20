@@ -4,20 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
 import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
 import { ListModel } from './models';
+import { SectionHeading } from "../SectionHeading";
 
 interface BasicPropertiesInputsProps {
     model: ListModel;
     onInputChange: (any) => void;
-}
-
-interface BasicPropertiesTitleProps {
-    title: string
-}
-
-export class BasicPropertiesTitle extends React.PureComponent<BasicPropertiesTitleProps> {
-    render() {
-        return <div className="domain-field-section-heading">{this.props.title}</div>;
-    }
 }
 
 export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
@@ -77,7 +68,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
         const { model, onInputChange } = this.props;
         return (
             <Col xs={12} md={7}>
-                <BasicPropertiesTitle title="Basic Properties" />
+                <SectionHeading title="Basic Properties" />
 
                 <NameInput model={model} onInputChange={onInputChange} />
 
@@ -177,7 +168,7 @@ export class AllowableActions extends React.PureComponent<AllowableActionsProps>
         return (
             <>
                 <Col xs={12} md={3}>
-                    <BasicPropertiesTitle title="Allow these Actions" />
+                    <SectionHeading title="Allow these Actions" />
 
                     <AllowableActionContainer model={this.props.model} onCheckBoxChange={this.props.onCheckBoxChange} />
                 </Col>

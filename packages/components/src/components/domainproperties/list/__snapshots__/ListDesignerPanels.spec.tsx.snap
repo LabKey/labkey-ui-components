@@ -4918,7 +4918,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                 <div
                                   className="col-md-7 col-xs-12"
                                 >
-                                  <BasicPropertiesTitle
+                                  <SectionHeading
                                     title="Basic Properties"
                                   >
                                     <div
@@ -4926,7 +4926,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                     >
                                       Basic Properties
                                     </div>
-                                  </BasicPropertiesTitle>
+                                  </SectionHeading>
                                   <NameInput
                                     model={
                                       Immutable.Record {
@@ -8535,7 +8535,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                 <div
                                   className="col-md-3 col-xs-12"
                                 >
-                                  <BasicPropertiesTitle
+                                  <SectionHeading
                                     title="Allow these Actions"
                                   >
                                     <div
@@ -8543,7 +8543,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                     >
                                       Allow these Actions
                                     </div>
-                                  </BasicPropertiesTitle>
+                                  </SectionHeading>
                                   <AllowableActionContainer
                                     model={
                                       Immutable.Record {
@@ -14846,11 +14846,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Integer Options"
                                                                                     >
-                                                                                      Integer Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Integer Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -15208,11 +15212,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -15722,11 +15731,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -17109,11 +17123,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Text Options"
                                                                                     >
-                                                                                      Text Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Text Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -17498,11 +17516,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -18023,11 +18046,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -19410,11 +19438,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Text Options"
                                                                                     >
-                                                                                      Text Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Text Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -19799,11 +19831,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -20324,11 +20361,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -22324,11 +22366,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -22849,11 +22896,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -24849,11 +24901,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -25374,11 +25431,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -26761,11 +26823,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Text Options"
                                                                                     >
-                                                                                      Text Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Text Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -27150,11 +27216,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -27675,11 +27746,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -29091,11 +29167,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -29605,11 +29686,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -31449,11 +31535,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -31974,11 +32065,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -33361,11 +33457,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Text Options"
                                                                                     >
-                                                                                      Text Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Text Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -33750,11 +33850,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -34275,11 +34380,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -35662,11 +35772,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Text Options"
                                                                                     >
-                                                                                      Text Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Text Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -36051,11 +36165,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -36576,11 +36695,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -37963,11 +38087,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Text Options"
                                                                                     >
-                                                                                      Text Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Text Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -38352,11 +38480,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -38877,11 +39010,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -40208,11 +40346,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Date and Time Options"
                                                                                     >
-                                                                                      Date and Time Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Date and Time Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -40532,11 +40674,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -41046,11 +41193,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -42376,11 +42528,15 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Boolean Field Options"
                                                                                     >
-                                                                                      Boolean Field Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Boolean Field Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -42682,11 +42838,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -43196,11 +43357,16 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>

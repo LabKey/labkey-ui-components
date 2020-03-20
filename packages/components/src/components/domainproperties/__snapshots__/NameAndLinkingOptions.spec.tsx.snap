@@ -102,11 +102,16 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           <div
             className="col-xs-12"
           >
-            <div
-              className="domain-field-section-heading domain-field-section-hdr"
+            <SectionHeading
+              cls="domain-field-section-hdr"
+              title="Name and Linking Options"
             >
-              Name and Linking Options
-            </div>
+              <div
+                className="domain-field-section-heading domain-field-section-hdr"
+              >
+                Name and Linking Options
+              </div>
+            </SectionHeading>
           </div>
         </Col>
       </div>

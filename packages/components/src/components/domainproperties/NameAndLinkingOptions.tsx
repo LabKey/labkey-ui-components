@@ -11,6 +11,7 @@ import {
 import { DomainField } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
+import { SectionHeading } from "./SectionHeading";
 
 interface NameAndLinkingProps {
     index: number,
@@ -57,7 +58,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading domain-field-section-hdr'}>Name and Linking Options</div>
+                        <SectionHeading title={'Name and Linking Options'} cls={'domain-field-section-hdr'}/>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>

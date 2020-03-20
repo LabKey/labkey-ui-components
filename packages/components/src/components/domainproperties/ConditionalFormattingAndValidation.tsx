@@ -16,6 +16,7 @@ import {
     FIELD_EDITOR_REGEX_TOPIC,
     helpLinkNode
 } from '../../util/helpLinks';
+import { SectionHeading } from "./SectionHeading";
 
 interface ConditionalFormattingAndValidationProps {
     index: number,
@@ -188,7 +189,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading domain-field-section-hdr'}>{title}</div>
+                        <SectionHeading title={title} cls={'domain-field-section-hdr'}/>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>

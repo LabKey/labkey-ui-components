@@ -6,6 +6,7 @@ import { DEFAULT_SCALE_LINEAR, DEFAULT_SCALE_LOG, DOMAIN_FIELD_DEFAULT_SCALE, DO
 import { ITypeDependentProps } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { helpLinkNode, NUMBER_FORMATS_TOPIC } from '../../util/helpLinks';
+import { SectionHeading } from "./SectionHeading";
 
 interface NumericFieldProps extends ITypeDependentProps {
     format: string,
@@ -41,7 +42,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading'}>{label}</div>
+                        <SectionHeading title={label}/>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>

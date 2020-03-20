@@ -500,33 +500,13 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                   className="domain-field-padding-bottom"
                                 >
                                   <SectionHeading
-                                    helpTopic="defineAssaySchema"
                                     title="Basic Properties"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={9}
-                                        >
-                                          <div
-                                            className="col-xs-9"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Basic Properties
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Basic Properties
+                                    </div>
                                   </SectionHeading>
                                   <NameInput
                                     appPropertiesOnly={true}
@@ -1086,30 +1066,11 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                   <SectionHeading
                                     title="Editing Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Editing Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Editing Settings
+                                    </div>
                                   </SectionHeading>
                                   <EditableRunsInput
                                     appPropertiesOnly={true}
@@ -4834,33 +4795,13 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                   className="domain-field-padding-bottom"
                                 >
                                   <SectionHeading
-                                    helpTopic="defineAssaySchema"
                                     title="Basic Properties"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={9}
-                                        >
-                                          <div
-                                            className="col-xs-9"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Basic Properties
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Basic Properties
+                                    </div>
                                   </SectionHeading>
                                   <NameInput
                                     appPropertiesOnly={true}
@@ -5844,30 +5785,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                   <SectionHeading
                                     title="Editing Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Editing Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Editing Settings
+                                    </div>
                                   </SectionHeading>
                                   <EditableRunsInput
                                     appPropertiesOnly={true}
@@ -10599,11 +10521,15 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Text Options"
                                                                                     >
-                                                                                      Text Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Text Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -10977,11 +10903,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -11491,11 +11422,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Validation Options"
                                                                                     >
-                                                                                      Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -12707,11 +12643,15 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Integer Options"
                                                                                     >
-                                                                                      Integer Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Integer Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -13067,11 +13007,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -13581,11 +13526,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Validation Options"
                                                                                     >
-                                                                                      Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -14798,11 +14748,15 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Date and Time Options"
                                                                                     >
-                                                                                      Date and Time Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Date and Time Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -15122,11 +15076,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -15636,11 +15595,16 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Validation Options"
                                                                                     >
-                                                                                      Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -16448,33 +16412,13 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   className="domain-field-padding-bottom"
                                 >
                                   <SectionHeading
-                                    helpTopic="defineAssaySchema"
                                     title="Basic Properties"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={9}
-                                        >
-                                          <div
-                                            className="col-xs-9"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Basic Properties
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Basic Properties
+                                    </div>
                                   </SectionHeading>
                                   <NameInput
                                     appPropertiesOnly={false}
@@ -17034,30 +16978,11 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   <SectionHeading
                                     title="Editing Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Editing Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Editing Settings
+                                    </div>
                                   </SectionHeading>
                                   <EditableRunsInput
                                     appPropertiesOnly={false}
@@ -17345,30 +17270,11 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   <SectionHeading
                                     title="Import Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Import Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Import Settings
+                                    </div>
                                   </SectionHeading>
                                   <AutoCopyDataInput
                                     model={
@@ -20397,33 +20303,13 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   className="domain-field-padding-bottom"
                                 >
                                   <SectionHeading
-                                    helpTopic="defineAssaySchema"
                                     title="Basic Properties"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={9}
-                                        >
-                                          <div
-                                            className="col-xs-9"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Basic Properties
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Basic Properties
+                                    </div>
                                   </SectionHeading>
                                   <NameInput
                                     appPropertiesOnly={false}
@@ -20983,30 +20869,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   <SectionHeading
                                     title="Editing Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Editing Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Editing Settings
+                                    </div>
                                   </SectionHeading>
                                   <EditableRunsInput
                                     appPropertiesOnly={false}
@@ -21294,30 +21161,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   <SectionHeading
                                     title="Import Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Import Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Import Settings
+                                    </div>
                                   </SectionHeading>
                                   <AutoCopyDataInput
                                     model={
@@ -24327,33 +24175,13 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   className="domain-field-padding-bottom"
                                 >
                                   <SectionHeading
-                                    helpTopic="defineAssaySchema"
                                     title="Basic Properties"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={9}
-                                        >
-                                          <div
-                                            className="col-xs-9"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Basic Properties
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Basic Properties
+                                    </div>
                                   </SectionHeading>
                                   <NameInput
                                     appPropertiesOnly={false}
@@ -25337,30 +25165,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   <SectionHeading
                                     title="Editing Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Editing Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Editing Settings
+                                    </div>
                                   </SectionHeading>
                                   <EditableRunsInput
                                     appPropertiesOnly={false}
@@ -26340,30 +26149,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   <SectionHeading
                                     title="Import Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Import Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Import Settings
+                                    </div>
                                   </SectionHeading>
                                   <AutoCopyDataInput
                                     model={
@@ -30063,11 +29853,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Text Options"
                                                                                     >
-                                                                                      Text Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Text Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -30441,11 +30235,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -30955,11 +30754,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -32357,11 +32161,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Integer Options"
                                                                                     >
-                                                                                      Integer Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Integer Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -32717,11 +32525,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -33231,11 +33044,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -34634,11 +34452,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Date and Time Options"
                                                                                     >
-                                                                                      Date and Time Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Date and Time Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -34958,11 +34780,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -35472,11 +35299,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -37129,33 +36961,13 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   className="domain-field-padding-bottom"
                                 >
                                   <SectionHeading
-                                    helpTopic="defineAssaySchema"
                                     title="Basic Properties"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={9}
-                                        >
-                                          <div
-                                            className="col-xs-9"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Basic Properties
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Basic Properties
+                                    </div>
                                   </SectionHeading>
                                   <NameInput
                                     appPropertiesOnly={false}
@@ -38139,30 +37951,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   <SectionHeading
                                     title="Editing Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Editing Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Editing Settings
+                                    </div>
                                   </SectionHeading>
                                   <EditableRunsInput
                                     appPropertiesOnly={false}
@@ -39142,30 +38935,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   <SectionHeading
                                     title="Import Settings"
                                   >
-                                    <Row
-                                      bsClass="row"
-                                      componentClass="div"
+                                    <div
+                                      className="domain-field-section-heading"
                                     >
-                                      <div
-                                        className="row"
-                                      >
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={12}
-                                        >
-                                          <div
-                                            className="col-xs-12"
-                                          >
-                                            <div
-                                              className="domain-field-section-heading"
-                                            >
-                                              Import Settings
-                                            </div>
-                                          </div>
-                                        </Col>
-                                      </div>
-                                    </Row>
+                                      Import Settings
+                                    </div>
                                   </SectionHeading>
                                   <AutoCopyDataInput
                                     model={
@@ -43920,11 +43694,15 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Text Options"
                                                                                     >
-                                                                                      Text Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Text Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -44298,11 +44076,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -44812,11 +44595,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -46214,11 +46002,15 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Integer Options"
                                                                                     >
-                                                                                      Integer Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Integer Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -46574,11 +46366,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -47088,11 +46885,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -48491,11 +48293,15 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading"
+                                                                                    <SectionHeading
+                                                                                      title="Date and Time Options"
                                                                                     >
-                                                                                      Date and Time Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading"
+                                                                                      >
+                                                                                        Date and Time Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -48815,11 +48621,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Name and Linking Options"
                                                                                     >
-                                                                                      Name and Linking Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Name and Linking Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>
@@ -49329,11 +49140,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   <div
                                                                                     className="col-xs-12"
                                                                                   >
-                                                                                    <div
-                                                                                      className="domain-field-section-heading domain-field-section-hdr"
+                                                                                    <SectionHeading
+                                                                                      cls="domain-field-section-hdr"
+                                                                                      title="Conditional Formatting and Validation Options"
                                                                                     >
-                                                                                      Conditional Formatting and Validation Options
-                                                                                    </div>
+                                                                                      <div
+                                                                                        className="domain-field-section-heading domain-field-section-hdr"
+                                                                                      >
+                                                                                        Conditional Formatting and Validation Options
+                                                                                      </div>
+                                                                                    </SectionHeading>
                                                                                   </div>
                                                                                 </Col>
                                                                               </div>

@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { DOMAIN_FIELD_CUSTOM_LENGTH, DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH } from './constants';
 import { ITypeDependentProps } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import { SectionHeading } from "./SectionHeading";
 
 interface TextFieldProps extends ITypeDependentProps {
     scale: number
@@ -75,7 +76,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading'}>{label}</div>
+                        <SectionHeading title={label}/>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded '>

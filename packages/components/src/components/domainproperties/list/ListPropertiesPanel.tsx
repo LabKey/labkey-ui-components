@@ -6,24 +6,22 @@ import { DomainDesign, DomainPanelStatus } from "../models";
 import { AllowableActions, BasicPropertiesFields } from "./ListPropertiesPanelFormElements";
 import { AdvancedSettings } from "./ListPropertiesAdvancedSettings";
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
-import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
 import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
 import { HelpTopicURL } from "../HelpTopicURL";
 import {AdvancedSettingsForm, ListModel} from "./models";
+import {
+    InjectedDomainPropertiesPanelCollapseProps,
+    withDomainPropertiesPanelCollapse
+} from "../DomainPropertiesPanelCollapse";
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
-const DEFAULT_CONTEXT = {collapsed: false};
 
 interface Props {
     model: ListModel;
     panelStatus: DomainPanelStatus;
     onChange: (model: ListModel) => void;
-    controlledCollapse?: boolean;
-    initCollapsed?: boolean;
-    collapsible?: boolean;
-    onToggle?: (collapsed: boolean, callback: () => any) => any;
     validate?: boolean;
     useTheme?: boolean;
     successBsStyle?: string;
@@ -33,29 +31,10 @@ interface State {
     isValid: boolean;
 }
 
-export class ListPropertiesPanel extends React.PureComponent<Props> {
-    render() {
-        const { collapsible, controlledCollapse, initCollapsed, onToggle } = this.props;
-
-        return (
-            <DomainPropertiesPanelProvider
-                controlledCollapse={controlledCollapse}
-                collapsible={collapsible}
-                initCollapsed={initCollapsed}
-                onToggle={onToggle}>
-                <ListPropertiesPanelImpl {...this.props} />
-            </DomainPropertiesPanelProvider>
-        );
-    }
-}
-
 //Note: exporting this class for jest test case
-export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
-    static contextType = DomainPropertiesPanelContext;
-    context!: React.ContextType<typeof DomainPropertiesPanelContext>;
+export class ListPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
 
     static defaultProps = {
-        initCollapsed: false,
         validate: false,
     };
 
@@ -67,7 +46,7 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+    componentWillReceiveProps(nextProps: Readonly<Props>): void {
         const { validate } = this.props;
         if (nextProps.validate && validate !== nextProps.validate) {
             this.setIsValid();
@@ -96,7 +75,7 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     }
 
     toggleLocalPanel = (evt: any): void => {
-        const { togglePanel, collapsed } = this.context;
+        const { togglePanel, collapsed } = this.props;
         this.setIsValid();
         togglePanel(evt, !collapsed);
     };
@@ -141,9 +120,8 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle } = this.props;
+        const { collapsed, panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle } = this.props;
         const { isValid } = this.state;
-        const { collapsed } = this.context || DEFAULT_CONTEXT;
 
         return(
             <>
@@ -203,3 +181,5 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         )
     }
 }
+
+export const ListPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(ListPropertiesPanelImpl);

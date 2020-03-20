@@ -20,6 +20,8 @@ describe('ListPropertiesPanel', () => {
         const listPropertiesPanel =
             <ListPropertiesPanel
                 model={emptyNewModel}
+                controlledCollapse={false}
+                initCollapsed={false}
                 panelStatus={'NONE'}
                 onChange={jest.fn()}
             />;
@@ -32,6 +34,8 @@ describe('ListPropertiesPanel', () => {
         const listPropertiesPanel =
             <ListPropertiesPanel
                 model={populatedExistingModel}
+                controlledCollapse={false}
+                initCollapsed={false}
                 panelStatus={'COMPLETE'}
                 onChange={jest.fn()}
             />;
@@ -44,6 +48,8 @@ describe('ListPropertiesPanel', () => {
         const listPropertiesPanel =
             <ListPropertiesPanel
                 model={invalidModelHasException}
+                controlledCollapse={false}
+                initCollapsed={false}
                 panelStatus={'TODO'}
                 onChange={jest.fn()}
             />;
@@ -57,6 +63,8 @@ describe('ListPropertiesPanel', () => {
         const listPropertiesPanel = mount(
             <ListPropertiesPanel
                 model={populatedExistingModel}
+                controlledCollapse={false}
+                initCollapsed={false}
                 panelStatus={'COMPLETE'}
                 onChange={jest.fn()}
             />
@@ -75,6 +83,9 @@ describe('ListPropertiesPanel', () => {
         let listPropertiesPanel = mount(
             <ListPropertiesPanelImpl
                 model={populatedExistingModel}
+                controlledCollapse={false}
+                collapsed={false}
+                togglePanel={jest.fn()}
                 panelStatus={'TODO'}
                 onChange={jest.fn()}
             />
@@ -103,6 +114,8 @@ describe('ListPropertiesPanel', () => {
         const listPropertiesPanel = mount(
             <ListPropertiesPanel
                 model={emptyNewModel}
+                controlledCollapse={false}
+                initCollapsed={false}
                 panelStatus={'NONE'}
                 onChange={jest.fn()}
             />

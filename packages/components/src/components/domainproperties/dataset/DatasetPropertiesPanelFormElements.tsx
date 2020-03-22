@@ -15,13 +15,14 @@
  */
 
 import React from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
-import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
-import { DatasetModel } from './models';
+import {Col, Radio, Row} from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCheckSquare} from '@fortawesome/free-solid-svg-icons/faCheckSquare';
+import {faSquare} from '@fortawesome/free-regular-svg-icons/faSquare';
+import {DatasetModel} from './models';
 import {BasicPropertiesTitle, TextInputWithLabel} from "../PropertiesPanelFormElements";
 import {SelectInput} from "../../../index";
+import {Creatable} from 'react-select'
 
 interface BasicPropertiesInputsProps {
     model: DatasetModel;
@@ -54,21 +55,21 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
     }
 }
 
-export class CategoryInput extends React.PureComponent<BasicPropertiesInputsProps> {
+export class SelectPropertyInput extends React.PureComponent<any> {
     render() {
-        const { model, onInputChange } = this.props;
+        const { label, model, onInputChange, options } = this.props;
 
         return(
             <Row className={'margin-top'}>
                 <Col xs={4} lg={2}>
-                    Category
+                    {label}
                 </Col>
 
                 <Col xs={8} lg={7}>
                     <SelectInput
                         onChange={onInputChange}
                         value={model.category}
-                        options={[]}
+                        options={options}
                         inputClass="" // This attr is necessary for proper styling
                         labelClass=""
                         valueKey="name"
@@ -86,9 +87,50 @@ export class CategoryInput extends React.PureComponent<BasicPropertiesInputsProp
     }
 }
 
-export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesInputsProps> {
+export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesInputsProps, any> {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: this.props.model.categoryId,
+             availableCategories: []
+        };
+
+    }
+
+    componentDidMount() {
+        const { model } = this.props;
+        // Ajax call handling to get available categories
+        this.fetchCategories()
+            .then((data) => {
+                this.setState(() => ({
+                    value: model.categoryId,
+                    availableCategories: data.categories
+                }))
+            })
+
+    }
+
+    fetchCategories = async  () => {
+        // TODO: Replace this with server side call
+        return {
+            'categories': [
+                {label: 'A', value: 20},
+                {label: 'B', value: 21},
+                {label: 'C', value: 22}]
+        };
+    };
+
+    handleChange = (value) => {
+        console.log('Value Changed');
+        this.setState(() => ({value}));
+    };
+
     render() {
         const { model, onInputChange } = this.props;
+        const { availableCategories, value } = this.state;
+
         return (
             <Col xs={12} md={7}>
                 <BasicPropertiesTitle title="Basic Properties" />
@@ -102,7 +144,22 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
 
                 <DescriptionInput model={model} onInputChange={onInputChange} />
 
-                <CategoryInput model={model} onInputChange={onInputChange} />
+                <Row className={'margin-top'}>
+                    <Col xs={3} lg={2}>
+                        Category
+                    </Col>
+
+                    <Col xs={9} lg={8}>
+                        <Creatable
+                            placeholder="Select dataset category"
+                            onChange={this.handleChange}
+                            value={value}
+                            options={availableCategories}
+                        />
+                    </Col>
+
+                    <Col lg={2}/>
+                </Row>
 
                 <TextInputWithLabel
                     name="Label"
@@ -161,35 +218,33 @@ export class CheckBoxRow extends React.PureComponent<CheckBoxRowProps> {
     }
 }
 
-interface AllowableActionContainerProps {
+interface DataRowUniquenessContainerProps {
     model: DatasetModel;
     onCheckBoxChange: (name, checked) => void;
 }
-class AllowableActionContainer extends React.PureComponent<AllowableActionContainerProps> {
+
+class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {
     render() {
         const { onCheckBoxChange } = this.props;
         // const { allowDelete, allowUpload, allowExport } = this.props.model;
 
         return (
-            <div className='list__properties__allowable-actions'>
-                {/*<CheckBoxRow*/}
-                {/*    text="Delete"*/}
-                {/*    checked={allowDelete}*/}
-                {/*    onCheckBoxChange={onCheckBoxChange}*/}
-                {/*    name="allowDelete"*/}
-                {/*/>*/}
-                {/*<CheckBoxRow*/}
-                {/*    text="Upload"*/}
-                {/*    checked={allowUpload}*/}
-                {/*    onCheckBoxChange={onCheckBoxChange}*/}
-                {/*    name="allowUpload"*/}
-                {/*/>*/}
-                {/*<CheckBoxRow*/}
-                {/*    text="Export & Print"*/}
-                {/*    checked={allowExport}*/}
-                {/*    onCheckBoxChange={onCheckBoxChange}*/}
-                {/*    name="allowExport"*/}
-                {/*/>*/}
+            <div className='dataset_data_row_uniqueness_container'>
+                <Radio
+                    name="participantId"
+                    checked={false}>
+                    Participant ID only (demographic data)
+                </Radio>
+                <Radio
+                    name="timepoint"
+                    checked={true}>
+                    Participant ID and timepoint
+                </Radio>
+                <Radio
+                    name="additionalKeyField"
+                    checked={false}>
+                    Participant ID, timepoint, and additional key field
+                </Radio>
             </div>
         );
     }
@@ -203,10 +258,24 @@ export class AllowableActions extends React.PureComponent<AllowableActionsProps>
     render() {
         return (
             <>
-                <Col xs={12} md={3}>
-                    <BasicPropertiesTitle title="Allow these Actions" />
+                <Col xs={12} md={4}>
+                    <BasicPropertiesTitle
+                        title="Data Row Uniqueness"
+                    />
 
-                    <AllowableActionContainer model={this.props.model} onCheckBoxChange={this.props.onCheckBoxChange} />
+                    <div>
+                        Choose criteria for how particpants and visits are paired with or without an additional data column
+                    </div>
+
+                    <DataRowUniquenessContainer
+                        model={this.props.model}
+                        onCheckBoxChange={this.props.onCheckBoxChange}
+                    />
+
+                    <SelectPropertyInput
+                        label="Additional Key Field"
+                        model={this.props.model}
+                    />
                 </Col>
             </>
         );

@@ -20,26 +20,34 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { NEW_DATASET_MODEL } from "../test/data/constants";
 import { DatasetDesignerPanel } from "../components/domainproperties/dataset/DatasetDesignerPanel";
 import { DatasetModel } from "../components/domainproperties/dataset/models";
+import getDatasetDesign from '../test/data/dataset-getDatasetDesign.json';
 
 class NewDatasetDesigner extends React.PureComponent<any,any> {
     constructor(props) {
         super(props);
-
-        this.state = {}
     }
 
     render() {
         return (
           <DatasetDesignerPanel
-              initModel={DatasetModel.create(this.props.model)}
+              initModel={DatasetModel.create(this.props.model, undefined)}
           />
         );
     }
-
 }
 
 class EditDatasetDesigner extends React.PureComponent<any,any> {
+    constructor(props) {
+        super(props);
+    }
 
+    render() {
+        return (
+            <DatasetDesignerPanel
+                initModel={DatasetModel.create(null, this.props.model)}
+            />
+        );
+    }
 }
 
 storiesOf("DatasetDesigner", module)
@@ -47,5 +55,10 @@ storiesOf("DatasetDesigner", module)
     .add("create new dataset", () => {
         return (
             <NewDatasetDesigner model={NEW_DATASET_MODEL}/>
+        )
+    })
+    .add("edit dataset" ,() => {
+        return (
+            <EditDatasetDesigner model={getDatasetDesign}/>
         )
     });

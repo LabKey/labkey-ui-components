@@ -1,0 +1,19 @@
+{
+  "datasetDesign" : {
+    "datasetId": 1,
+    "name": "Dataset1",
+    "typeURI": "urn:lsid:labkey.com:StudyDataset.Folder-21:Dataset1-11622cd2-4b98-1038-bd0a-6fdd083ae070",
+    "category": "A",
+    "categoryId": 20,
+    "visitDatePropertyName": "date",
+    "keyProperty": null,
+    "isDemographicData": true,
+    "label": "Dataset One",
+    "cohortId": null,
+    "tag": "T1",
+    "showByDefault": true,
+    "description": "This is the first dataset",
+    "containerId": "1162245F-4B98-1038-BD0A-6FDD083AE070",
+    "entityId": "11622CD2-4B98-1038-BD0A-6FDD083AE070"
+  }
+}

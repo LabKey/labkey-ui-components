@@ -33,10 +33,18 @@ export interface AdvancedSettingsForm {
 }
 
 export class DatasetModel extends Record({
+    domain: undefined,
+    entityId : undefined,
+    createdBy : undefined,
+    created : undefined,
+    modifiedBy : undefined,
+    modified : undefined,
+    containerId : undefined,
     datasetId: undefined,
     name: undefined,
     typeURI: undefined,
     category: undefined,
+    categoryId: undefined,
     visitDatePropertyName: undefined,
     keyProperty: undefined,
     isDemographicData: undefined,
@@ -49,10 +57,12 @@ export class DatasetModel extends Record({
     sourceAssayURL: undefined,
     dataSharing: undefined
 }) {
+    domain: DomainDesign;
     datasetId: number;
     name: string;
     typeURI?: string;
     category?: string;
+    categoryId?: number;
     visitDatePropertyName?: string;
     keyProperty?: string;
     isDemographicData?: boolean;
@@ -69,10 +79,13 @@ export class DatasetModel extends Record({
         super(values);
     }
 
-    static create(newDataset=null): DatasetModel {
+    static create(newDataset=null, raw: any): DatasetModel {
         if (newDataset) {
             let domain = DomainDesign.create(undefined);
             return new DatasetModel({...newDataset, domain});
+        } else {
+            let domain = DomainDesign.create(undefined);
+            return new DatasetModel({...raw.datasetDesign, domain});
         }
     }
 }

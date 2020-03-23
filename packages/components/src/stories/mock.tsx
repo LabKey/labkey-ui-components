@@ -210,7 +210,7 @@ const QUERY_RESPONSES = fromJS({
 export function initMocks() {
     mock.setup();
 
-    initQueryGridMocks();
+    initQueryGridMocks(250);
     initLineageMocks();
     initUserPropsMocks();
 
@@ -373,8 +373,8 @@ export function initMocks() {
     mock.use(proxy);
 }
 
-export function initQueryGridMocks() {
-    mock.get(/.*\/query\/?.*\/getQueryDetails.*/, (req, res) => {
+export function initQueryGridMocks(delayMs = undefined) {
+    let getQueryDetails = (req, res) => {
         const queryParams = req.url().query;
         const schemaName = queryParams.schemaName.toLowerCase();
         const queryName = queryParams.queryName.toLowerCase();
@@ -384,9 +384,9 @@ export function initQueryGridMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
-    });
+    };
 
-    mock.post(/.*\/query\/?.*\/getQuery.*/,  (req, res) => {
+    let getQuery = (req, res) => {
         const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
             const [name, value] = param.split('=');
             result[name] = value;
@@ -423,9 +423,9 @@ export function initQueryGridMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
-    });
+    };
 
-    mock.post(/.*\/query\/?.*\/getSelected.*/, (req, res) => {
+    let getSelected = (req, res) => {
         const queryParams = req.url().query;
         const key = queryParams.key;
         let responseBody;
@@ -440,7 +440,18 @@ export function initQueryGridMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
-    });
+    };
+
+    if (delayMs !== undefined) {
+        // We have to wrap like this instead of defaulting to 0 otherwise it breaks a lot of our tests :-(
+        getQueryDetails = delay(getQueryDetails, delayMs);
+        getQuery = delay(getQuery, delayMs);
+        getSelected = delay(getSelected, delayMs);
+    }
+
+    mock.get(/.*\/query\/?.*\/getQueryDetails.*/, getQueryDetails);
+    mock.post(/.*\/query\/?.*\/getQuery.*/,  getQuery);
+    mock.post(/.*\/query\/?.*\/getSelected.*/, getSelected);
 
     //TODO response JSON?
     mock.post(/.*\/query\/?.*\/setSelected.*/, {

@@ -21,7 +21,6 @@ interface State {
 export function withDomainPropertiesPanelCollapse<Props>(ComponentToWrap: ComponentType<Props & InjectedDomainPropertiesPanelCollapseProps>)
     : ComponentType<Props & MakeDomainPropertiesPanelCollapseProps> {
     class ComponentWithDomainPropertiesPanelCollapse extends PureComponent<Props & MakeDomainPropertiesPanelCollapseProps, State> {
-        static defaultProps;
 
         constructor(props: Props & MakeDomainPropertiesPanelCollapseProps) {
             super(props);
@@ -75,10 +74,6 @@ export function withDomainPropertiesPanelCollapse<Props>(ComponentToWrap: Compon
             )
         }
     }
-
-    ComponentWithDomainPropertiesPanelCollapse.defaultProps = {
-        initCollapsed: false
-    };
 
     return ComponentWithDomainPropertiesPanelCollapse;
 }

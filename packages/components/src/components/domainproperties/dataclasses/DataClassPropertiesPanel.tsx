@@ -45,7 +45,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
         appPropertiesOnly: false
     };
 
-    constructor(props) {
+    constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
         initQueryGridState(); //needed for QuerySelect usage
 

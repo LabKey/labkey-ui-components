@@ -8,14 +8,17 @@ import { Alert } from "../../base/Alert";
 import { PROPERTIES_PANEL_ERROR_MSG } from "../constants";
 import getDomainDetailsJSON from "../../../test/data/dataclass-getDomainDetails.json";
 
+const BASE_PROPS = {
+    onComplete: jest.fn(),
+    onCancel: jest.fn()
+};
 
 describe('DataClassDesigner', () => {
 
     test('default properties', () => {
         const form =
             <DataClassDesigner
-                onComplete={jest.fn()}
-                onCancel={jest.fn()}
+                {...BASE_PROPS}
             />;
 
         const tree = renderer.create(form).toJSON();
@@ -25,8 +28,7 @@ describe('DataClassDesigner', () => {
     test('custom properties', () => {
         const form =
             <DataClassDesigner
-                onComplete={jest.fn()}
-                onCancel={jest.fn()}
+                {...BASE_PROPS}
                 nounSingular={'Source'}
                 nounPlural={'Sources'}
                 nameExpressionInfoUrl={'https://www.labkey.org/Documentation'}
@@ -45,8 +47,7 @@ describe('DataClassDesigner', () => {
     test('initModel', () => {
         const form =
             <DataClassDesigner
-                onComplete={jest.fn()}
-                onCancel={jest.fn()}
+                {...BASE_PROPS}
                 initModel={DataClassModel.create(getDomainDetailsJSON)}
             />;
         const wrapped = mount(form);
@@ -58,8 +59,7 @@ describe('DataClassDesigner', () => {
     test('open fields panel', () => {
         const wrapped = mount(
             <DataClassDesigner
-                onComplete={jest.fn()}
-                onCancel={jest.fn()}
+                {...BASE_PROPS}
             />
         );
 

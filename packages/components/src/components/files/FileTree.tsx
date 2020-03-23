@@ -88,19 +88,29 @@ const customStyle = {
 
 const DEFAULT_ROOT_PREFIX = '|root';
 const CHECK_ID_PREFIX = 'filetree-check-';
+
+// Place holder names for empty or loading display.  Uses asterisk which will never be in a file name.
 const EMPTY_FILE_NAME = '*empty';
 const LOADING_FILE_NAME = '*loading';
+
+const nodeIsLoading = (id: string): boolean => {
+    return id.endsWith('|' + LOADING_FILE_NAME);
+};
+
+const nodeIsEmpty = (id: string): boolean => {
+    return id.endsWith('|' + EMPTY_FILE_NAME);
+};
 
 const Header = (props) => {
     const { style, onSelect, node, customStyles, checked, handleCheckbox } = props;
     const iconType = node.children ? 'folder' : 'file-text';
     const icon = iconType === 'folder' ? faFolder : faFileAlt;
 
-    if (node.id.endsWith('|' + EMPTY_FILE_NAME)) {
+    if (nodeIsEmpty(node.id)) {
         return ( <div className="filetree-empty-directory">No Files Found</div> );
     }
 
-    if (node.id.endsWith('|' + LOADING_FILE_NAME)) {
+    if (nodeIsLoading(node.id)) {
         return (
             <div className="filetree-empty-directory">
                 <LoadingSpinner />
@@ -245,9 +255,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     onFileSelect = (id: string, checked: boolean, isDirectory: boolean): void => {
         const { onFileSelect } = this.props;
 
-        const fileName = this.getNameFromId(id);
-
-        if (fileName !== EMPTY_FILE_NAME) {
+        if (!nodeIsEmpty(id)) {
             onFileSelect(this.getNameFromId(id), this.getPathFromId(id), checked, isDirectory);
         }
     };
@@ -260,21 +268,26 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             });
         }
 
-        // Add or remove checked value from state
-        if (checked) {
-            this.setState(
-                state => ({ checked: state.checked.push(node.id) }),
-                () => this.onFileSelect(node.id, checked, !!node.children)
-            );
-        } else {
-            this.setState(
-                state => ({
-                    checked: state.checked.filter(check => {
-                        return check !== node.id;
-                    }) as List<string>,
-                }),
-                () => this.onFileSelect(node.id, checked, !!node.children)
-            );
+        // If node is not a loading or empty placeholder then add or remove checked value from state
+        if (!nodeIsLoading(node.id) && !nodeIsEmpty(node.id)) {
+            if (checked)
+            {
+                this.setState(
+                    state => ({checked: state.checked.push(node.id)}),
+                    () => this.onFileSelect(node.id, checked, !!node.children)
+                );
+            }
+            else
+            {
+                this.setState(
+                    state => ({
+                        checked: state.checked.filter(check => {
+                            return check !== node.id;
+                        }) as List<string>,
+                    }),
+                    () => this.onFileSelect(node.id, checked, !!node.children)
+                );
+            }
         }
     };
 

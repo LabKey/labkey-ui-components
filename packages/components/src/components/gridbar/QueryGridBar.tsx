@@ -60,24 +60,24 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             );
         }
 
-        const box = model && model.showSearchBox ? (
+        const box = model?.showSearchBox ? (
             <URLBox key={model.getId()} queryModel={model}/>
         ) : null;
 
-        const paging = model && model.isPaged ? (
+        const paging = model?.isPaged ? (
             <QueryGridPaging model={model}/>
         ) : null;
 
-        const pageSizeBtn = model && model.isPaged ? (
+        const pageSizeBtn = model?.isPaged ? (
             <PageSizeSelector model={model} />
         ) : null;
 
-        const exportBtn = model ? (
+        const exportBtn = model?.showExport ? (
             <Export model={model} advancedOption={advancedExportOption}/>
 
         ) : null;
 
-        const chart = model && model.showChartSelector ? (
+        const chart = model?.showChartSelector ? (
             <ChartSelector
                 model={model}
                 showSampleComparisonReports={showSampleComparisonReports}
@@ -86,7 +86,7 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             />
         ) : null;
 
-        const view = model && model.showViewSelector ? (
+        const view = model?.showViewSelector ? (
             <ViewSelector model={model} />
         ) : null;
 

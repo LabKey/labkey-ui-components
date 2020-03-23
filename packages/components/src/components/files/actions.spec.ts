@@ -183,7 +183,10 @@ describe("fileSizeLimitCompare", () => {
         type: 'test',
         lastModified: 1,
         name: "test.text",
-        slice: (start, end, compareType) : Blob => { return undefined }
+        slice: (start, end, compareType) : Blob => { return undefined },
+        arrayBuffer: undefined,
+        stream: undefined,
+        text: undefined
     };
 
     test("no limits", () => {

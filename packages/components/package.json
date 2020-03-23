@@ -129,7 +129,7 @@
     "ts-jest": "24.0.2",
     "ts-loader": "6.2.2",
     "typedoc": "0.17.3",
-    "typescript": "3.7.3",
+    "typescript": "3.8.3",
     "url-loader": "4.0.0",
     "watch": "1.0.2",
     "webpack": "4.42.0",

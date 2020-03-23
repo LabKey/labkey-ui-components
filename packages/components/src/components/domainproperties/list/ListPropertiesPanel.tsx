@@ -27,7 +27,7 @@ interface State {
 //Note: exporting this class for jest test case
 export class ListPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
 
-    constructor(props) {
+    constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
 
         this.state = {

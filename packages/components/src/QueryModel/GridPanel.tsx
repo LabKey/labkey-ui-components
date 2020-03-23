@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { ComponentType, PureComponent } from 'react';
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { Alert, Grid, LoadingSpinner } from '..';
 import { fromJS, List } from 'immutable';
@@ -11,6 +11,7 @@ interface GridPanelProps {
     showViewSelector?: boolean;
     hideEmptyViewSelector?: boolean;
     pageSizes?: number[];
+    ButtonsComponent?: ComponentType<RequiresModelAndActions>
 }
 
 type Props = GridPanelProps & RequiresModelAndActions;
@@ -28,13 +29,18 @@ export class GridPanel extends PureComponent<Props> {
     }
 
     render() {
-        const { model, actions, isPaged, showViewSelector, hideEmptyViewSelector, pageSizes } = this.props;
+        const { model, actions, isPaged, showViewSelector, hideEmptyViewSelector, pageSizes, ButtonsComponent } = this.props;
         const { id, error, messages, queryInfo } = model;
         const hasData = model.hasData;
         const paginate = isPaged && hasData;
+        let buttons;
 
         if (model.error !== undefined) {
             return <Alert>{error}</Alert>
+        }
+
+        if (ButtonsComponent !== undefined) {
+            buttons = <ButtonsComponent model={model} actions={actions} />;
         }
 
         return (
@@ -42,7 +48,9 @@ export class GridPanel extends PureComponent<Props> {
                 <div className="panel-body">
                     <div className="grid-panel__bar">
                         <div className="grid-panel__bar-left">
-                            <div className="grid-bar__section" />
+                            <div className="grid-bar__section">
+                                {buttons}
+                            </div>
                         </div>
 
                         <div className="grid-panel__bar-right">

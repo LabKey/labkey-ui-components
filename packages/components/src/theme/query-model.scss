@@ -14,17 +14,20 @@
     display: flex;
 }
 
-.grid-bar__section > *,
-.grid-bar__info-bar > * {
+.grid-bar__section > *:not(:first-child) {
     margin-left: 1em;
 }
 
 .grid-panel__info {
-    min-height: 48px; /* Prevents grid from jumping when pages are loading */
+    min-height: 22px; /* Prevents grid from jumping when pages are loading */
     display: flex;
 }
 
 .pagination-info {
     line-height: 34px; /* The height of button bars */
     vertical-align: middle;
+}
+.grid-panel__info,
+.grid-panel__grid {
+    margin-top: 1em;
 }

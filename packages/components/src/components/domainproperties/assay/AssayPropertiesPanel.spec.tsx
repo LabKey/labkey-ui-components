@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount } from 'enzyme';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
-import { DomainDesign } from '../models';
+import { DomainDesign, DomainPanelStatus } from '../models';
 import { AssayProtocolModel } from '../assay/models';
 import {
     AutoCopyDataInput,
@@ -22,6 +22,15 @@ import {
 } from './AssayPropertiesInput';
 import toJson from 'enzyme-to-json';
 
+const BASE_PROPS = {
+    panelStatus: 'NONE' as DomainPanelStatus,
+    validate: false,
+    useTheme: false,
+    controlledCollapse: false,
+    initCollapsed: false,
+    collapsed: false
+};
+
 const EMPTY_MODEL = AssayProtocolModel.create({
     providerName: 'General',
     domains: List([
@@ -36,9 +45,8 @@ describe('AssayPropertiesPanel', () => {
     test('default properties', () => {
         const form = mount(
             <AssayPropertiesPanel
+                {...BASE_PROPS}
                 model={EMPTY_MODEL}
-                controlledCollapse={false}
-                initCollapsed={false}
                 onChange={jest.fn}
             />
         );
@@ -50,9 +58,8 @@ describe('AssayPropertiesPanel', () => {
     test('asPanel, helpTopic, and appPropertiesOnly', () => {
         const form = mount(
             <AssayPropertiesPanel
+                {...BASE_PROPS}
                 model={EMPTY_MODEL}
-                controlledCollapse={false}
-                initCollapsed={false}
                 asPanel={false}
                 appPropertiesOnly={true}
                 helpTopic={'defineAssaySchema'}
@@ -67,9 +74,8 @@ describe('AssayPropertiesPanel', () => {
     test('without helpTopic', () => {
         const form = mount(
             <AssayPropertiesPanel
+                {...BASE_PROPS}
                 model={EMPTY_MODEL}
-                controlledCollapse={false}
-                initCollapsed={false}
                 helpTopic={null}
                 appPropertiesOnly={true}
                 onChange={jest.fn}
@@ -83,9 +89,8 @@ describe('AssayPropertiesPanel', () => {
     test('panelCls, initCollapsed, and markComplete', () => {
         const form = mount(
             <AssayPropertiesPanel
+                {...BASE_PROPS}
                 model={EMPTY_MODEL}
-                controlledCollapse={false}
-                collapsible={false}
                 initCollapsed={true}
                 onChange={jest.fn}
             />
@@ -98,6 +103,7 @@ describe('AssayPropertiesPanel', () => {
     test('with initial model', () => {
         const form = mount(
             <AssayPropertiesPanel
+                {...BASE_PROPS}
                 model={AssayProtocolModel.create({
                     protocolId: 1,
                     name: 'name should not be editable',
@@ -105,8 +111,6 @@ describe('AssayPropertiesPanel', () => {
                     editableRuns: true,
                     editableResults: true
                 })}
-                controlledCollapse={false}
-                initCollapsed={false}
                 onChange={jest.fn}
             />
         );
@@ -115,43 +119,11 @@ describe('AssayPropertiesPanel', () => {
         form.unmount();
     });
 
-    test('collapsible', (done) => {
-        const name = 'With Name';
-        const component = (
-            <AssayPropertiesPanel
-                model={AssayProtocolModel.create({protocolId: 1, name: name})}
-                controlledCollapse={false}
-                initCollapsed={false}
-                collapsible={true}
-                onChange={jest.fn}
-            />
-        );
-
-        const wrapper = mount(component);
-        expect(wrapper.find('.panel-body')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
-        expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
-        expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
-        wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
-        expect(wrapper.find('.panel-body')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
-        expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(0);
-        expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(1);
-        wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
-        expect(wrapper.find('.panel-body')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
-        expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
-        expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
-        wrapper.unmount();
-        done();
-    });
-
     test('visible properties based on empty AssayProtocolModel', () => {
         const simpleModelWrapper = mount(
             <AssayPropertiesPanel
+                {...BASE_PROPS}
                 model={EMPTY_MODEL}
-                controlledCollapse={false}
-                initCollapsed={false}
                 onChange={jest.fn}
             />
         );
@@ -188,9 +160,8 @@ describe('AssayPropertiesPanel', () => {
 
         const simpleModelWrapper = mount(
             <AssayPropertiesPanel
+                {...BASE_PROPS}
                 model={model}
-                controlledCollapse={false}
-                initCollapsed={false}
                 onChange={jest.fn}
             />
         );
@@ -226,9 +197,8 @@ describe('AssayPropertiesPanel', () => {
 
         const simpleModelWrapper = mount(
             <AssayPropertiesPanel
+                {...BASE_PROPS}
                 model={model}
-                controlledCollapse={false}
-                initCollapsed={false}
                 onChange={jest.fn}
                 appPropertiesOnly={true}
             />

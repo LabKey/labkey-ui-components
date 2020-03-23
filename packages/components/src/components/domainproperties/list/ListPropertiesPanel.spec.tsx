@@ -9,19 +9,27 @@ import {AdvancedSettings} from "./ListPropertiesAdvancedSettings";
 import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
 import { Alert } from '../../base/Alert';
 import renderer from "react-test-renderer";
+import { DomainPanelStatus } from "../models";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 const invalidModelHasException = populatedExistingModel.setIn(['domain', 'domainException'], {severity: "Error"}) as ListModel;
 
+const BASE_PROPS = {
+    panelStatus: 'NONE' as DomainPanelStatus,
+    validate: false,
+    useTheme: false,
+    controlledCollapse: false,
+    initCollapsed: false,
+    collapsed: false
+};
 
 describe('ListPropertiesPanel', () => {
     test('new list', () => {
         const listPropertiesPanel =
             <ListPropertiesPanel
+                {...BASE_PROPS}
                 model={emptyNewModel}
-                controlledCollapse={false}
-                initCollapsed={false}
                 panelStatus={'NONE'}
                 onChange={jest.fn()}
             />;
@@ -33,9 +41,8 @@ describe('ListPropertiesPanel', () => {
     test('existing list', () => {
         const listPropertiesPanel =
             <ListPropertiesPanel
+                {...BASE_PROPS}
                 model={populatedExistingModel}
-                controlledCollapse={false}
-                initCollapsed={false}
                 panelStatus={'COMPLETE'}
                 onChange={jest.fn()}
             />;
@@ -47,9 +54,8 @@ describe('ListPropertiesPanel', () => {
     test('list with error', () => {
         const listPropertiesPanel =
             <ListPropertiesPanel
+                {...BASE_PROPS}
                 model={invalidModelHasException}
-                controlledCollapse={false}
-                initCollapsed={false}
                 panelStatus={'TODO'}
                 onChange={jest.fn()}
             />;
@@ -62,9 +68,8 @@ describe('ListPropertiesPanel', () => {
     test('list visible properties', () => {
         const listPropertiesPanel = mount(
             <ListPropertiesPanel
+                {...BASE_PROPS}
                 model={populatedExistingModel}
-                controlledCollapse={false}
-                initCollapsed={false}
                 panelStatus={'COMPLETE'}
                 onChange={jest.fn()}
             />
@@ -82,9 +87,8 @@ describe('ListPropertiesPanel', () => {
     test('set state for isValid', () => {
         let listPropertiesPanel = mount(
             <ListPropertiesPanelImpl
+                {...BASE_PROPS}
                 model={populatedExistingModel}
-                controlledCollapse={false}
-                collapsed={false}
                 togglePanel={jest.fn()}
                 panelStatus={'TODO'}
                 onChange={jest.fn()}
@@ -113,9 +117,8 @@ describe('ListPropertiesPanel', () => {
     test('clicking advanced settings renders modal', () => {
         const listPropertiesPanel = mount(
             <ListPropertiesPanel
+                {...BASE_PROPS}
                 model={emptyNewModel}
-                controlledCollapse={false}
-                initCollapsed={false}
                 panelStatus={'NONE'}
                 onChange={jest.fn()}
             />

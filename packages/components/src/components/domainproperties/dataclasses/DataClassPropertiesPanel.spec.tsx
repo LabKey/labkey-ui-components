@@ -7,16 +7,25 @@ import { Alert } from "../../base/Alert";
 import { EntityDetailsForm } from "../entities/EntityDetailsForm";
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { QuerySelect } from "../../forms/QuerySelect";
+import { DomainPanelStatus } from "../models";
 import getDomainDetailsJSON from "../../../test/data/dataclass-getDomainDetails.json";
+
+const BASE_PROPS = {
+    panelStatus: 'NONE' as DomainPanelStatus,
+    validate: false,
+    useTheme: false,
+    controlledCollapse: false,
+    initCollapsed: false,
+    collapsed: false
+};
 
 describe('DataClassPropertiesPanel', () => {
 
     test('default properties', () => {
         const form =
             <DataClassPropertiesPanel
+                {...BASE_PROPS}
                 model={DataClassModel.create({})}
-                controlledCollapse={false}
-                initCollapsed={false}
                 onChange={jest.fn()}
             />;
 
@@ -27,9 +36,8 @@ describe('DataClassPropertiesPanel', () => {
     test('custom properties', () => {
         const form =
             <DataClassPropertiesPanel
+                {...BASE_PROPS}
                 model={DataClassModel.create({})}
-                controlledCollapse={false}
-                initCollapsed={false}
                 onChange={jest.fn()}
                 nounSingular={'Source'}
                 nounPlural={'Sources'}
@@ -49,8 +57,8 @@ describe('DataClassPropertiesPanel', () => {
     test('set state for isValid', () => {
         let wrapped = mount(
             <DataClassPropertiesPanelImpl
+                {...BASE_PROPS}
                 model={DataClassModel.create(getDomainDetailsJSON)}
-                collapsed={false}
                 controlledCollapse={true}
                 togglePanel={jest.fn()}
                 panelStatus={'TODO'}

@@ -1,24 +1,17 @@
 import React from 'react';
-import { Col,Panel, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { EntityDetailsForm } from "../entities/EntityDetailsForm";
 import { LabelOverlay } from "../../forms/LabelOverlay";
 import { QuerySelect } from "../../forms/QuerySelect";
 import { SCHEMAS } from "../../base/models/schemas";
-import { Alert } from "../../base/Alert";
 import { DEFINE_DATA_CLASS_TOPIC } from "../../../util/helpLinks";
-import { DomainPanelStatus } from "../models";
-import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
-import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { ENTITY_FORM_ID_PREFIX } from "../entities/constants";
 import { getFormNameFromId } from "../entities/actions";
 import { DataClassModel } from "./models";
 import { HelpTopicURL } from "../HelpTopicURL";
 import { initQueryGridState } from "../../../global";
-import {
-    InjectedDomainPropertiesPanelCollapseProps,
-    withDomainPropertiesPanelCollapse
-} from "../DomainPropertiesPanelCollapse";
-import { PROPERTIES_PANEL_ERROR_MSG } from "../constants";
+import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
+import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
@@ -26,20 +19,18 @@ const FORM_IDS = {
     SAMPLE_TYPE_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet'
 };
 
-interface Props {
-    nounSingular?: string
-    nounPlural?: string
-    nameExpressionInfoUrl?: string
-    nameExpressionPlaceholder?: string
-    headerText?: string
-
+interface OwnProps {
     model: DataClassModel
     onChange: (model: DataClassModel) => any
     appPropertiesOnly?: boolean
-    validate?: boolean
-    useTheme?: boolean
-    panelStatus?: DomainPanelStatus
+    headerText?: string
+    nameExpressionInfoUrl?: string
+    nameExpressionPlaceholder?: string
+    nounSingular?: string
+    nounPlural?: string
 }
+
+type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
     isValid: boolean
@@ -51,8 +42,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
     static defaultProps = {
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
-        appPropertiesOnly: false,
-        validate: false
+        appPropertiesOnly: false
     };
 
     constructor(props) {
@@ -64,22 +54,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>): void {
-        const { validate } = this.props;
-        if (nextProps.validate && validate !== nextProps.validate) {
-            this.setIsValid();
-        }
-    }
-
-    componentDidMount(): void {
-        updateDomainPanelClassList(this.props.useTheme, undefined, PROPERTIES_HEADER_ID);
-    }
-
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-        updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
-    }
-
-    setIsValid(newModel?: DataClassModel) {
+    updateValidStatus = (newModel?: DataClassModel) => {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
         const isValid = updatedModel && updatedModel.hasValidProperties();
@@ -90,12 +65,6 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
                     onChange(updatedModel)
                 }
             });
-    }
-
-    toggleLocalPanel = (evt: any): void => {
-        const { togglePanel, collapsed } = this.props;
-        this.setIsValid();
-        togglePanel(evt, !collapsed)
     };
 
     onFormChange = (evt: any) => {
@@ -107,7 +76,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
     onChange = (id: string, value: any) => {
         const { model } = this.props;
         const newModel = model.set(getFormNameFromId(id), value) as DataClassModel;
-        this.setIsValid(newModel);
+        this.updateValidStatus(newModel);
     };
 
     renderSampleTypeSelect() {
@@ -167,60 +136,38 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
     }
 
     render() {
-        const { collapsed, collapsible, controlledCollapse, panelStatus, model, useTheme, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
+        const { model, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
         const { isValid } = this.state;
 
         return (
-            <>
-                <Panel
-                    className={getDomainPanelClass(collapsed, true, useTheme)}
-                    expanded={!collapsed}
-                    onToggle={function(){}}
-                >
-                    <CollapsiblePanelHeader
-                        id={PROPERTIES_HEADER_ID}
-                        title={nounSingular + ' Properties'}
-                        titlePrefix={model.name}
-                        togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
-                        collapsed={collapsed}
-                        collapsible={collapsible}
-                        controlledCollapse={controlledCollapse}
-                        panelStatus={panelStatus}
-                        isValid={isValid}
-                        iconHelpMsg={PROPERTIES_PANEL_ERROR_MSG}
-                        useTheme={useTheme}
-                    />
-                    <Panel.Body collapsible={collapsible || controlledCollapse}>
-                        <Row className={'margin-bottom'}>
-                            {headerText &&
-                                <Col xs={9}>
-                                    <div className={'entity-form--headerhelp'}>{headerText}</div>
-                                </Col>
-                            }
-                            <Col xs={headerText ? 3 : 12}>
-                                <HelpTopicURL helpTopic={DEFINE_DATA_CLASS_TOPIC} nounPlural={nounPlural}/>
-                            </Col>
-                        </Row>
-                        <EntityDetailsForm
-                            noun={nounSingular}
-                            onFormChange={this.onFormChange}
-                            data={model}
-                            nameExpressionInfoUrl={nameExpressionInfoUrl}
-                            nameExpressionPlaceholder={nameExpressionPlaceholder}
-                        />
-                        {!appPropertiesOnly && this.renderCategorySelect()}
-                        {!appPropertiesOnly && this.renderSampleTypeSelect()}
-                    </Panel.Body>
-                </Panel>
-                {!isValid &&
-                    <div
-                        onClick={(evt: any) => this.toggleLocalPanel(evt)}
-                        className={getDomainAlertClasses(collapsed, true, useTheme)}
-                    >
-                        <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
-                    </div>
-                }
-            </>
+            <BasePropertiesPanel
+                {...this.props}
+                headerId={PROPERTIES_HEADER_ID}
+                title={nounSingular + ' Properties'}
+                titlePrefix={model.name}
+                updateValidStatus={this.updateValidStatus}
+                isValid={isValid}
+            >
+                <Row className={'margin-bottom'}>
+                    {headerText &&
+                        <Col xs={9}>
+                            <div className={'entity-form--headerhelp'}>{headerText}</div>
+                        </Col>
+                    }
+                    <Col xs={headerText ? 3 : 12}>
+                        <HelpTopicURL helpTopic={DEFINE_DATA_CLASS_TOPIC} nounPlural={nounPlural}/>
+                    </Col>
+                </Row>
+                <EntityDetailsForm
+                    noun={nounSingular}
+                    onFormChange={this.onFormChange}
+                    data={model}
+                    nameExpressionInfoUrl={nameExpressionInfoUrl}
+                    nameExpressionPlaceholder={nameExpressionPlaceholder}
+                />
+                {!appPropertiesOnly && this.renderCategorySelect()}
+                {!appPropertiesOnly && this.renderSampleTypeSelect()}
+            </BasePropertiesPanel>
         )
     }
 }

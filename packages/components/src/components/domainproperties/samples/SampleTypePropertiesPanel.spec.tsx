@@ -19,9 +19,18 @@ import { mount } from 'enzyme';
 import {fromJS, Map} from 'immutable';
 import { initUnitTestMocks } from "../../../testHelpers";
 import { ENTITY_FORM_IDS } from "../entities/constants";
-import {DomainDetails} from "../models";
+import { DomainDetails, DomainPanelStatus } from "../models";
 import {SampleTypePropertiesPanel} from "./SampleTypePropertiesPanel";
 import {SampleTypeModel} from "./models";
+
+const BASE_PROPS = {
+    panelStatus: 'NONE' as DomainPanelStatus,
+    validate: false,
+    useTheme: false,
+    controlledCollapse: false,
+    initCollapsed: false,
+    collapsed: false
+};
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -32,9 +41,8 @@ describe("<SampleTypePropertiesPanel/>", () => {
     test("default props", (done) => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
+                {...BASE_PROPS}
                 model={SampleTypeModel.create()}
-                controlledCollapse={false}
-                initCollapsed={false}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
@@ -52,9 +60,8 @@ describe("<SampleTypePropertiesPanel/>", () => {
     test("nameExpressionInfoUrl", (done) => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
+                {...BASE_PROPS}
                 model={SampleTypeModel.create()}
-                controlledCollapse={false}
-                initCollapsed={false}
                 updateModel={jest.fn}
                 nameExpressionInfoUrl={'#anything'}
                 onAddParentAlias={jest.fn}
@@ -84,9 +91,8 @@ describe("<SampleTypePropertiesPanel/>", () => {
 
         const component = (
             <SampleTypePropertiesPanel
+                {...BASE_PROPS}
                 model={SampleTypeModel.create(data)}
-                controlledCollapse={false}
-                initCollapsed={false}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}

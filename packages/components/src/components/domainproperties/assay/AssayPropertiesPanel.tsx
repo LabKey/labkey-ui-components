@@ -1,7 +1,6 @@
 import React from 'react';
-import { Col, Form, Panel, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
-import { DomainPanelStatus } from '../models';
 import { AssayProtocolModel } from '../assay/models';
 import {
     AutoCopyDataInput,
@@ -19,18 +18,16 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput,
 } from './AssayPropertiesInput';
-import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from '../actions';
-import { Alert } from '../../base/Alert';
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
-import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { HelpTopicURL } from "../HelpTopicURL";
 import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse
 } from "../DomainPropertiesPanelCollapse";
 import { SectionHeading } from "../SectionHeading";
-import { PROPERTIES_PANEL_ERROR_MSG } from "../constants";
+import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
 
+const PROPERTIES_HEADER_ID = 'assay-properties-hdr';
 const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {
     ASSAY_NAME: FORM_ID_PREFIX + 'name',
@@ -52,16 +49,15 @@ const BOOLEAN_FIELDS = [
     FORM_IDS.QC_ENABLED, FORM_IDS.SAVE_SCRIPT_FILES, FORM_IDS.PLATE_METADATA
 ];
 
-interface Props {
+interface OwnProps {
     model: AssayProtocolModel
     onChange: (model: AssayProtocolModel) => any
     appPropertiesOnly?: boolean
     asPanel?: boolean
-    validate?: boolean
-    useTheme?: boolean
-    panelStatus?: DomainPanelStatus
     helpTopic?: string
 }
+
+type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
     isValid: boolean
@@ -72,7 +68,6 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
     static defaultProps = {
         appPropertiesOnly: false,
         asPanel: true,
-        validate: false,
         helpTopic: DEFINE_ASSAY_SCHEMA_TOPIC,
     };
 
@@ -84,22 +79,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        const { validate } = this.props;
-        if (nextProps.validate && validate !== nextProps.validate) {
-            this.setIsValid();
-        }
-    }
-
-    componentDidMount(): void {
-        updateDomainPanelClassList(this.props.useTheme, undefined, 'assay-properties-hdr');
-    }
-
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-        updateDomainPanelClassList(prevProps.useTheme, undefined, 'assay-properties-hdr');
-    }
-
-    setIsValid(newModel?: AssayProtocolModel) {
+    updateValidStatus = (newModel?: AssayProtocolModel) => {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
         const isValid = updatedModel && updatedModel.hasValidProperties();
@@ -110,12 +90,6 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                     onChange(updatedModel)
                 }
             });
-    }
-
-    toggleLocalPanel = (evt: any): void => {
-        const { togglePanel, collapsed } = this.props;
-        this.setIsValid();
-        togglePanel(evt, !collapsed);
     };
 
     onInputChange = (evt) => {
@@ -142,7 +116,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
             [id.replace(FORM_ID_PREFIX, '')]: value
         }) as AssayProtocolModel;
 
-        this.setIsValid(newModel);
+        this.updateValidStatus(newModel);
     };
 
     renderBasicProperties() {
@@ -217,39 +191,21 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
     }
 
     renderPanel() {
-        const { collapsed, collapsible, controlledCollapse, model, panelStatus, useTheme, helpTopic } = this.props;
+        const { model, helpTopic } = this.props;
         const { isValid } = this.state;
 
         return (
-            <>
-                <Panel className={getDomainPanelClass(collapsed, true, useTheme)} expanded={!collapsed} onToggle={function(){}}>
-                    <CollapsiblePanelHeader
-                        id={'assay-properties-hdr'}
-                        title={'Assay Properties'}
-                        titlePrefix={model.name}
-                        collapsed={collapsed}
-                        collapsible={collapsible}
-                        controlledCollapse={controlledCollapse}
-                        panelStatus={panelStatus}
-                        togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
-                        useTheme={useTheme}
-                        isValid={isValid}
-                        iconHelpMsg={PROPERTIES_PANEL_ERROR_MSG}
-                    />
-                    <Panel.Body collapsible={collapsible || controlledCollapse}>
-                        {helpTopic && <HelpTopicURL nounPlural={'assays'} helpTopic={helpTopic}/>}
-                        {this.renderForm()}
-                    </Panel.Body>
-                </Panel>
-                {!isValid &&
-                    <div
-                        onClick={(evt: any) => this.toggleLocalPanel(evt)}
-                        className={getDomainAlertClasses(collapsed, true, useTheme)}
-                    >
-                        <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
-                    </div>
-                }
-            </>
+            <BasePropertiesPanel
+                {...this.props}
+                headerId={PROPERTIES_HEADER_ID}
+                title={'Assay Properties'}
+                titlePrefix={model.name}
+                updateValidStatus={this.updateValidStatus}
+                isValid={isValid}
+            >
+                {helpTopic && <HelpTopicURL nounPlural={'assays'} helpTopic={helpTopic}/>}
+                {this.renderForm()}
+            </BasePropertiesPanel>
         )
     }
 

@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 7002: Refactor domain designer components to share more with base components
-    - BasePropertiesPanel, SectionHeading, withDomainPropertiesPanelCollapse (isntead of DomainPropertiesPanelContext)
+    - BasePropertiesPanel, SectionHeading, withDomainPropertiesPanelCollapse (instead of DomainPropertiesPanelContext)
+    - BaseDomainDesigner component and withBaseDomainDesigner HOC
 
 ### version 0.39.0
 *Released*: 20 March 2020

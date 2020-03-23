@@ -51,14 +51,18 @@ function setAssayName(wrapper: any, value: string) {
     wrapper.find('input#' + nameInputId).simulate('focus').simulate('change', { target: nameInputValue});
 }
 
+const BASE_PROPS = {
+    onComplete: jest.fn(),
+    onCancel: jest.fn()
+};
+
 describe('AssayDesignerPanels', () => {
 
     test('default properties', () => {
         const form = mount(
             <AssayDesignerPanels
+                {...BASE_PROPS}
                 initModel={EMPTY_MODEL}
-                onCancel={jest.fn}
-                onComplete={jest.fn}
             />
         );
 
@@ -69,9 +73,8 @@ describe('AssayDesignerPanels', () => {
     test('initModel', () => {
         const form = mount(
             <AssayDesignerPanels
+                {...BASE_PROPS}
                 initModel={EXISTING_MODEL}
-                onCancel={jest.fn}
-                onComplete={jest.fn}
             />
         );
 
@@ -82,10 +85,9 @@ describe('AssayDesignerPanels', () => {
     test('hideEmptyBatchDomain for new assay', () => {
         const form = mount(
             <AssayDesignerPanels
+                {...BASE_PROPS}
                 initModel={EMPTY_MODEL}
                 hideEmptyBatchDomain={true}
-                onCancel={jest.fn}
-                onComplete={jest.fn}
             />
         );
 
@@ -96,10 +98,9 @@ describe('AssayDesignerPanels', () => {
     test('hideEmptyBatchDomain with initModel', () => {
         const form = mount(
             <AssayDesignerPanels
+                {...BASE_PROPS}
                 initModel={EXISTING_MODEL}
                 hideEmptyBatchDomain={true}
-                onCancel={jest.fn}
-                onComplete={jest.fn}
             />
         );
 
@@ -110,10 +111,9 @@ describe('AssayDesignerPanels', () => {
     test('appPropertiesOnly for new assay', () => {
         const form = mount(
             <AssayDesignerPanels
+                {...BASE_PROPS}
                 initModel={EMPTY_MODEL}
                 appPropertiesOnly={true}
-                onCancel={jest.fn}
-                onComplete={jest.fn}
             />
         );
 
@@ -124,10 +124,9 @@ describe('AssayDesignerPanels', () => {
     test('appPropertiesOnly with initModel', () => {
         const form = mount(
             <AssayDesignerPanels
+                {...BASE_PROPS}
                 initModel={EXISTING_MODEL}
                 appPropertiesOnly={true}
-                onCancel={jest.fn}
-                onComplete={jest.fn}
             />
         );
 
@@ -138,10 +137,9 @@ describe('AssayDesignerPanels', () => {
     test('new assay wizard', () => {
         const component = (
             <AssayDesignerPanels
+                {...BASE_PROPS}
                 initModel={EMPTY_MODEL}
                 successBsStyle={'primary'}
-                onCancel={jest.fn}
-                onComplete={jest.fn}
             />
         );
 
@@ -163,7 +161,12 @@ describe('AssayDesignerPanels', () => {
 
     test('infer from file', () => {
         function validateInferFromFile(model: AssayProtocolModel, shouldInfer: boolean) {
-            const component = (<AssayDesignerPanels initModel={model} onCancel={jest.fn} onComplete={jest.fn}/>);
+            const component = (
+                <AssayDesignerPanels
+                    {...BASE_PROPS}
+                    initModel={model}
+                />
+            );
             const wrapper = mount(component);
             setAssayName(wrapper, 'Foo');
             expect(wrapper.find(FileAttachmentForm)).toHaveLength(shouldInfer ? 1 : 0);
@@ -198,9 +201,8 @@ describe('AssayDesignerPanels', () => {
 
         const component = (
             <AssayDesignerPanels
+                {...BASE_PROPS}
                 initModel={EXISTING_MODEL}
-                onCancel={jest.fn}
-                onComplete={jest.fn}
                 appDomainHeaders={Map({'Sample': mockAppHeader})}
             />
         );

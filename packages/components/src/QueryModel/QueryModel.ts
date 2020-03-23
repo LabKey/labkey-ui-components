@@ -274,4 +274,12 @@ export class QueryModel implements IQueryModel {
     get isFirstPage(): boolean {
         return this.currentPage === 1;
     }
+
+    /**
+     * Indicates whether pagination can be rendered based on if the model has data, and if it has enough data. Different
+     * than the GridPanel isPaged setting.
+     */
+    get isPaged(): boolean {
+        return this.hasData && this.pageCount > 1;
+    }
 }

@@ -40,9 +40,10 @@ class PageSelector extends PureComponent<RequiresModelAndActions> {
     render() {
         const { model, actions } = this.props;
         const { loadFirstPage, loadLastPage } = actions;
-        const { id, isLoading, currentPage, isFirstPage, isLastPage, pageCount } = model;
+        const { id, currentPage, isFirstPage, isLastPage, isLoading, isPaged, pageCount } = model;
 
         return (
+            isPaged &&
             <Tip caption="Current Page" trigger={['hover']}>
                 <DropdownButton id={`current-page-drop-${id}`} pullRight title={currentPage}>
                     <MenuItem header>
@@ -69,9 +70,10 @@ class PageSelector extends PureComponent<RequiresModelAndActions> {
 export class PaginationButtons extends PureComponent<RequiresModelAndActions> {
     render() {
         const { model, actions } = this.props;
-        const { id, isLoading, isFirstPage, isLastPage } = model;
+        const { id, isFirstPage, isLastPage, isLoading, isPaged } = model;
 
         return (
+            isPaged &&
             <ButtonGroup>
                 <PagingButton
                     disabled={isLoading || isFirstPage}

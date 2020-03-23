@@ -74,7 +74,7 @@ export class PaginationButtons extends PureComponent<RequiresModelAndActions> {
 
         return (
             isPaged &&
-            <ButtonGroup>
+            <ButtonGroup className="pagination-button-group">
                 <PagingButton
                     disabled={isLoading || isFirstPage}
                     iconClass="fa-chevron-left"

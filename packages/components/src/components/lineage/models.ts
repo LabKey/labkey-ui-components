@@ -453,7 +453,7 @@ export class Lineage extends Record({
     /**
      * Generate a graph of the lineage for use with vis.js.
      *
-     * @remaks
+     * @remarks
      * First, the LabKey lineage is filtered according to the {@link LineageOptions.filters}
      * then the graph is translated into vis.js nodes and edges.  During translation, nodes
      * will be combined together according to {@link ILineageGroupingOptions.combineSize} and recursion

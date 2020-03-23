@@ -3,58 +3,18 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
-import { DataSet, Edge, Network, Node, Options } from 'vis';
+import { DataSet, Edge, Network, Node } from 'vis';
 
 import {
     isCombinedNode,
-    VisGraphClusterNode,
     VisGraphCombinedNode,
-    VisGraphNode,
+    VisGraphNodeType,
     VisGraphOptions,
 } from './VisGraphGenerator';
 import { LineageNode } from '../models';
+import { VisGraphControls } from './VisGraphControls';
 
-enum LayoutTypes {
-    VERTICAL = 'VERTICAL',
-    HORIZONTAL = 'HORIZONTAL'
-}
-
-interface IGraphLayout {
-    name: string
-    options: Options
-}
-
-let LAYOUTS = {
-    [LayoutTypes.VERTICAL]: {
-        name: 'Vertical',
-        options: {
-            layout: {
-                hierarchical: {
-                    enabled: true,
-                    direction: 'UD'
-                }
-            },
-            physics: {
-                enabled: false
-            }
-        }
-    },
-    [LayoutTypes.HORIZONTAL]: {
-        name: 'Horizontal',
-        options: {
-            layout: {
-                hierarchical: {
-                    enabled: true,
-                    direction: 'LR'
-                }
-            },
-            physics: {
-                enabled: false
-            }
-        }
-    }
-};
+export type HoverNodeCoords = {top: number, left: number, bottom: number, right: number};
 
 // defined in vis/lib/network/shapes.js
 interface InternalVisContext2D {
@@ -114,7 +74,7 @@ interface VisClickEvent {
 
 interface VisDeselectEvent extends VisClickEvent {
     previousSelection: {
-        edges: Array<number | string>,
+        edges: Array<number | string>
         nodes: Array<number | string>
     }
 }
@@ -128,11 +88,11 @@ interface VisHoverEvent {
 interface VisGraphProps {
     fitOnResize?: boolean
     lineageGridHref?: string
-    onNodeClick?: (clickedNode: VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode) => void
-    onNodeDoubleClick?: (clickedNode: VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode) => void
-    onNodeSelect?: (selectedNodes: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>) => void
-    onNodeDeselect?: (selectedNodes: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>, previousSelectedNodes: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>) => void
-    onNodeHover?: (node: VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode, coords: {top: number, left: number, bottom: number, right: number}) => void
+    onNodeClick?: (clickedNode: VisGraphNodeType) => void
+    onNodeDoubleClick?: (clickedNode: VisGraphNodeType) => void
+    onNodeSelect?: (selectedNodes: VisGraphNodeType[]) => void
+    onNodeDeselect?: (selectedNodes: VisGraphNodeType[], previousSelectedNodes: VisGraphNodeType[]) => void
+    onNodeHover?: (node: VisGraphNodeType, coords: HoverNodeCoords) => void
     onNodeBlur?: () => void
     options: VisGraphOptions
     seed?: string
@@ -150,7 +110,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
 
     data: {
         edges: DataSet<Edge>;
-        nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
+        nodes: DataSet<VisGraphNodeType>;
     };
     network: InternalVisNetwork;
 
@@ -161,13 +121,6 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
 
     constructor(props: VisGraphProps) {
         super(props);
-
-        this.fitGraph = this.fitGraph.bind(this);
-        this.getNetwork = this.getNetwork.bind(this);
-        this.showAllSettings = this.showAllSettings.bind(this);
-        this.hideAllSettings = this.hideAllSettings.bind(this);
-        this.onReset = this.onReset.bind(this);
-        this.doAfterDrawing = this.doAfterDrawing.bind(this);
 
         this.state = {
             selected: undefined
@@ -183,11 +136,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.seed !== nextProps.seed) {
-            return true;
-        }
-
-        return false;
+        return this.props.seed !== nextProps.seed;
     }
 
     componentDidUpdate() {
@@ -235,21 +184,21 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         }
     }
 
-    showAllSettings() {
+    showAllSettings = (): void => {
         this.network.setOptions({
             configure: true
         });
-    }
+    };
 
-    hideAllSettings() {
+    hideAllSettings = (): void => {
         this.network.setOptions({
             configure: false
         });
-    }
+    };
 
-    fitGraph() {
+    fitGraph = (): void => {
         this.network.fit();
-    }
+    };
 
     private getInternalNode(id: string | number): InternalVisNode {
         return this.network.body.nodes[id];
@@ -259,11 +208,11 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         return this.data.nodes.get({filter: isCombinedNode}) as Array<VisGraphCombinedNode>;
     }
 
-    public getNodes(ids: Array<string | number>): Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode> {
+    public getNodes(ids: Array<string | number>): VisGraphNodeType[] {
         return ids.map(id => this.getNode(id)).filter(n => n !== null && n !== undefined);
     }
 
-    public getNode(id: string | number): VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode | null {
+    public getNode(id: string | number): VisGraphNodeType | null {
         const node = this.data.nodes.get(id);
         if (node && this.network.isCluster(id)) {
             let nodesInCluster = this.network.getNodesInCluster(id);
@@ -280,14 +229,14 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
     // set a selection on the vis.js graph and fire the select handler as if the user clicked on a node in the graph
     public selectNodes(ids: Array<string>) {
         const selectedNodes = this.getNodes(ids);
-        this.doSelectNode(this.data, selectedNodes);
+        this.doSelectNode(selectedNodes);
 
         // get the actual ids from the nodes -- some may not have been found
         const actualIds = selectedNodes.map(n => n.id);
         this.network.setSelection({nodes: actualIds, edges: []});
     }
 
-    private doSelectNode(data, selectedNodes: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>) {
+    private doSelectNode(selectedNodes: VisGraphNodeType[]) {
         // change color of newly selected node
         let addToSelection = [];
         for (let i = 0; i < selectedNodes.length; i++) {
@@ -298,7 +247,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         }
 
         // add the newly selected node in the state
-        this.setState((prevState, props) => {
+        this.setState((prevState) => {
             selected: this.unique(prevState.selected, addToSelection)
         });
 
@@ -318,13 +267,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         return ret;
     }
 
-    private doDeselectNode(data, selectedNodes: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>, previousSelectedNodes: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>) {
-        if (this.props.onNodeDeselect) {
-            this.props.onNodeDeselect(selectedNodes, previousSelectedNodes);
-        }
-    }
-
-    private doClick(data, id: string | number) {
+    private doClick(id: string | number) {
         const clickedNode = this.getNode(id);
         if (clickedNode) {
             if (this.props.onNodeClick) {
@@ -334,7 +277,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         else {
             // it could happen that the graph was reset after an expanded node was selected in which case the selected node might no longer exist
             // the node specified by selected no longer exist so reset selected
-            this.setState((prevState, props) => {
+            this.setState((prevState) => {
                 let newSelected = undefined;
                 if (prevState.selected) {
                     newSelected = [];
@@ -348,9 +291,8 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         }
     }
 
-    private doAfterDrawing(ctx: CanvasRenderingContext2D & InternalVisContext2D) {
-        const combinedNodes = this.getCombinedNodes();
-        combinedNodes.forEach(combinedNode => {
+    private doAfterDrawing = (ctx: CanvasRenderingContext2D & InternalVisContext2D): void => {
+        this.getCombinedNodes().forEach(combinedNode => {
             const internalNode = this.getInternalNode(combinedNode.id);
             if (!internalNode) {
                 console.error('internal node not found for combined node: ' + combinedNode.id);
@@ -390,21 +332,20 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
             // remove clip
             ctx.restore();
         });
-    }
+    };
 
-    onReset(selectSeed: boolean) {
+    onReset = (selectSeed: boolean): void => {
         if (selectSeed) {
             this.selectNodes(this.props.options.initialSelection);
         }
         this.fitGraph();
-    }
+    };
 
-    getNetwork(): Network {
+    getNetwork = (): Network => {
         return this.network;
-    }
+    };
 
     private generateGraph(props: VisGraphProps) {
-        // console.log('VisGraph.generateGraph');
         const { fitOnResize, options } = props;
         const { selected } = this.state;
 
@@ -418,7 +359,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
 
         this.network.on('click', (visEvent: VisClickEvent) => {
             if (visEvent.nodes.length === 1) {
-                this.doClick(data, visEvent.nodes[0]);
+                this.doClick(visEvent.nodes[0]);
             }
         });
 
@@ -472,14 +413,15 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         });
 
         this.network.on('selectNode', (visEvent: VisClickEvent) => {
-            const selectedNodes = this.getNodes(visEvent.nodes);
-            this.doSelectNode(data, selectedNodes);
+            this.doSelectNode(this.getNodes(visEvent.nodes));
         });
 
         this.network.on('deselectNode', (visEvent: VisDeselectEvent) => {
             const selectedNodes = this.getNodes(visEvent.nodes);
             const previousSelectedNodes = this.getNodes(visEvent.previousSelection.nodes);
-            this.doDeselectNode(data, selectedNodes, previousSelectedNodes);
+            if (this.props.onNodeDeselect) {
+                this.props.onNodeDeselect(selectedNodes, previousSelectedNodes);
+            }
         });
 
         this.network.on('afterDrawing', this.doAfterDrawing);
@@ -512,100 +454,12 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         return (
             <div className="lineage-visgraph-ct">
                 <div ref="visgraph" style={{height: graphHeight}}/>
-                <GraphControls getNetwork={this.getNetwork}
-                               lineageGridHref={this.props.lineageGridHref}
-                               onReset={this.onReset}
-                              />
+                <VisGraphControls
+                    getNetwork={this.getNetwork}
+                    lineageGridHref={this.props.lineageGridHref}
+                    onReset={this.onReset}
+                />
             </div>
         );
-    }
-}
-
-interface GraphControlsProps {
-    getNetwork: () => Network
-    lineageGridHref?: string
-    onReset: (selectSeed) => any
-}
-
-class GraphControls extends React.Component<GraphControlsProps, any> {
-
-    constructor(props: GraphControlsProps) {
-        super(props);
-
-        this.graphReset = this.graphReset.bind(this);
-        this.panDown = this.panDown.bind(this);
-        this.panLeft = this.panLeft.bind(this);
-        this.panRight = this.panRight.bind(this);
-        this.panUp = this.panUp.bind(this);
-        this.zoomIn = this.zoomIn.bind(this);
-        this.zoomOut = this.zoomOut.bind(this);
-    }
-
-    graphReset(selectSeed: boolean) {
-        if (this.props.onReset) {
-            this.props.onReset(selectSeed);
-        }
-    }
-
-    panDown() {
-        this.props.getNetwork().moveTo({ offset: { y: -20, x:0 } });
-    }
-
-    panUp() {
-        this.props.getNetwork().moveTo({ offset: { y: 20, x:0 } });
-    }
-
-    panLeft() {
-        this.props.getNetwork().moveTo({ offset: { x: 20, y:0 } });
-    }
-
-    panRight() {
-        this.props.getNetwork().moveTo({ offset: { x: -20, y:0 } });
-    }
-
-    zoomIn() {
-        let network = this.props.getNetwork();
-        network.moveTo({
-            scale: network.getScale() + 0.05
-        });
-    }
-
-    zoomOut() {
-        let network = this.props.getNetwork();
-        let scale = network.getScale() - 0.05;
-        if (scale > 0) {
-            network.moveTo({ scale });
-        }
-    }
-
-    render() {
-        return (
-            <div className="lineage-visgraph-controls">
-                <div className="lineage-visgraph-control-settings">
-                    <div className="btn-group">
-                        <DropdownButton id="graph-control-dd" title={<i className="fa fa-undo"/>} pullRight>
-                            <MenuItem onClick={() => this.graphReset(true)}>Reset view and select seed</MenuItem>
-                            <MenuItem onClick={() => this.graphReset(false)}>Reset view</MenuItem>
-                        </DropdownButton>
-                    </div>
-                </div>
-                <div className="lineage-visgraph-control-zoom">
-                    <div className="btn-group">
-                        <Button onClick={this.zoomOut}><i className="fa fa-search-minus"/></Button>
-                        <Button onClick={this.zoomIn}><i className="fa fa-search-plus"/></Button>
-                    </div>
-                </div>
-                <div className="lineage-visgraph-control-pan">
-                    <Button className="lineage-visgraph-control-pan-up" onClick={this.panUp}>
-                        <i className="fa fa-arrow-up"/>
-                    </Button>
-                    <div className="btn-group">
-                        <Button onClick={this.panLeft}><i className="fa fa-arrow-left"/></Button>
-                        <Button onClick={this.panDown}><i className="fa fa-arrow-down"/></Button>
-                        <Button onClick={this.panRight}><i className="fa fa-arrow-right"/></Button>
-                    </div>
-                </div>
-            </div>
-        )
     }
 }

@@ -18,7 +18,7 @@ interface LineagePagingProps {
     model: LineageGridModel
 }
 
-export class LineagePaging extends React.Component<LineagePagingProps, any> {
+export class LineagePaging extends React.Component<LineagePagingProps> {
 
     shouldComponentUpdate(nextProps: LineagePagingProps) {
         const { model } = this.props;
@@ -75,7 +75,7 @@ interface LineageGridProps {
     model: LineageGridModel
 }
 
-class LineageButtons extends React.Component<LineageGridProps, any> {
+class LineageButtons extends React.PureComponent<LineageGridProps> {
 
     render() {
         const { model } = this.props;
@@ -121,7 +121,7 @@ class LineageButtons extends React.Component<LineageGridProps, any> {
     }
 }
 
-class LineageGridBar extends React.Component<LineageGridProps, any> {
+class LineageGridBar extends React.PureComponent<LineageGridProps> {
 
     render() {
         const { model } = this.props;
@@ -147,7 +147,7 @@ class LineageGridBar extends React.Component<LineageGridProps, any> {
     }
 }
 
-export class LineageGridDisplay extends React.Component<LineageGridProps, any> {
+export class LineageGridDisplay extends React.PureComponent<LineageGridProps> {
 
     getDataForPage(): List<Map<string, any>> {
         const { model } = this.props;

@@ -11,21 +11,6 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Grid, GridColumn } from '../base/Grid';
 import { Alert } from '../base/Alert';
 
-const columns = List([
-    new GridColumn({
-        index: 'name',
-        title: 'Sample Type'
-    }),
-    new GridColumn({
-        index: 'sampleCount',
-        title: 'Number of Samples'
-    }),
-    new GridColumn({
-        index: 'modified',
-        title: 'Most Recent (Date)'
-    })
-]);
-
 interface Props {
     seed: string
 }
@@ -34,7 +19,22 @@ interface State {
     lineage: Lineage
 }
 
-export class SampleTypeLineageCounts extends React.Component<Props, State> {
+export class SampleTypeLineageCounts extends React.PureComponent<Props, State> {
+
+    private columns = List([
+        new GridColumn({
+            index: 'name',
+            title: 'Sample Type'
+        }),
+        new GridColumn({
+            index: 'sampleCount',
+            title: 'Number of Samples'
+        }),
+        new GridColumn({
+            index: 'modified',
+            title: 'Most Recent (Date)'
+        })
+    ]);
 
     constructor(props: Props) {
         super(props);
@@ -73,7 +73,7 @@ export class SampleTypeLineageCounts extends React.Component<Props, State> {
         }
 
         return (
-            <Grid data={lineage.sampleStats} columns={columns}/>
+            <Grid data={lineage.sampleStats} columns={this.columns}/>
         )
     }
 }

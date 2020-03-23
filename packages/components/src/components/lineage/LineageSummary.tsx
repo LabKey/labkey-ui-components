@@ -2,7 +2,8 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'reactn';
+import React from 'react';
+import ReactN from 'reactn';
 import { Link } from 'react-router';
 import { List } from 'immutable';
 
@@ -23,7 +24,7 @@ interface Props {
     onNodeClick?: (node: LineageNode) => void
 }
 
-export class LineageSummary extends React.Component<Props, any> {
+export class LineageSummary extends ReactN.Component<Props, any> {
 
     componentDidMount() {
         const { seed } = this.props;
@@ -65,21 +66,18 @@ export class LineageSummary extends React.Component<Props, any> {
 
         const title = direction === LINEAGE_DIRECTIONS.Parent ? "Parents" : "Children";
 
-        return <>
-            {groups.map(groupName =>
-                <div key={groupName}>
-                    <LineageNodeList
-                        title={groupName + " " + title}
-                        nodes={nodesByType[groupName]}
-                        highlightNode={highlightNode}
-                        isNodeInGraph={this.props.isNodeInGraph}
-                        onNodeClick={this.props.onNodeClick}
-                        onNodeMouseOver={this.props.onNodeMouseOver}
-                        onNodeMouseOut={this.props.onNodeMouseOut}
-                    />
-                </div>
-            )}
-        </>;
+        return groups.map(groupName =>
+            <LineageNodeList
+                key={groupName}
+                title={groupName + " " + title}
+                nodes={nodesByType[groupName]}
+                highlightNode={highlightNode}
+                isNodeInGraph={this.props.isNodeInGraph}
+                onNodeClick={this.props.onNodeClick}
+                onNodeMouseOver={this.props.onNodeMouseOver}
+                onNodeMouseOut={this.props.onNodeMouseOut}
+            />
+        );
     }
 
     private empty(nodes?: List<LineageLink>) {
@@ -135,54 +133,50 @@ const COLLAPSED_LIST_SHOW_COUNT = 4;
 export class LineageNodeList extends React.Component<LineageNodeListProps, LineageNodeListState> {
 
     constructor(props) {
-        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
-
-        this.onCollapseClicked = this.onCollapseClicked.bind(this);
-        this.onExpandClicked = this.onExpandClicked.bind(this);
 
         this.state = {
             expanded: false
         }
     }
 
-    isNodeInGraph(node: LineageNode) {
+    isNodeInGraph = (node: LineageNode): boolean => {
         if (this.props.isNodeInGraph) {
             return this.props.isNodeInGraph(node);
         }
         return false;
-    }
+    };
 
-    onNodeMouseOver(node: LineageNode) {
+    onNodeMouseOver = (node: LineageNode): void => {
         if (this.props.onNodeMouseOver) {
             this.props.onNodeMouseOver(node);
         }
-    }
+    };
 
-    onNodeMouseOut(node: LineageNode) {
+    onNodeMouseOut = (node: LineageNode): void => {
         if (this.props.onNodeMouseOut) {
             this.props.onNodeMouseOut(node);
         }
-    }
+    };
 
-    onNodeClick(node: LineageNode) {
+    onNodeClick = (node: LineageNode): boolean => {
         if (this.props.onNodeClick) {
             this.props.onNodeClick(node);
         }
         return false;
-    }
+    };
 
-    onCollapseClicked() {
+    onCollapseClicked = (): void => {
         this.setState({
             expanded: false
         });
-    }
+    };
 
-    onExpandClicked() {
+    onExpandClicked = (): void => {
         this.setState({
             expanded: true
         });
-    }
+    };
 
     renderNode(node: LineageNode) {
         const { highlightNode } = this.props;
@@ -253,7 +247,7 @@ export class LineageNodeList extends React.Component<LineageNodeListProps, Linea
             }
         }
         else {
-            rendered = nodes.nodes.map(n  => this.renderNode(n));
+            rendered = nodes.nodes.map(n => this.renderNode(n));
         }
 
         return <details open={true}>

@@ -10,6 +10,8 @@ import { ILineageGroupingOptions, LineageGroupingOptions, LineageLink, LineageNo
 import { getBackupImageFromLineageNode, getImageFromLineageNode } from '../utils';
 import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from '../constants';
 
+export type VisGraphNodeType = VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode;
+
 export const DEFAULT_EDGE_PROPS = {
     arrows: {
         to: {
@@ -639,7 +641,7 @@ function createCombinedVisNode(nodes: Map<string, LineageNode>, containedNodeIds
         containedNodesByType,
         title,
         label: containedNodes.length + ' ' + typeLabel,
-    }
+    };
 
     if (commonNode) {
         // show the alternate icon image color if this node is the seed or has been selected

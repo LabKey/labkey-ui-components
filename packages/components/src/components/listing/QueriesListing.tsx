@@ -23,6 +23,7 @@ import { AppURL } from '../../url/AppURL';
 import { Grid, GridColumn } from '../base/Grid';
 import { fetchGetQueries } from '../base/models/schemas';
 import { QueryInfo } from '../base/models/model';
+import { Alert } from "../base/Alert";
 
 const columns = List([
     new GridColumn({
@@ -53,7 +54,8 @@ interface QueriesListingProps {
 }
 
 interface QueriesListingState {
-    queries: List<QueryInfo>
+    queries: List<QueryInfo>,
+    error: string
 }
 
 export class QueriesListing extends React.Component<QueriesListingProps, QueriesListingState> {
@@ -62,7 +64,8 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
         super(props);
 
         this.state = {
-            queries: undefined
+            queries: undefined,
+            error: undefined
         }
     }
 
@@ -78,14 +81,19 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
     }
 
     loadQueries(schemaName: string) {
-        fetchGetQueries(schemaName).then((queries) => {
-            this.setState(() => ({queries}));
-        });
+        fetchGetQueries(schemaName)
+            .then((queries) => {
+                this.setState(() => ({queries}));
+            })
+            .catch((error) => {
+                console.error(error);
+                this.setState(() => ({error: error.exception}));
+            });
     }
 
     render() {
         const { schemaName, hideEmpty, asPanel, title } = this.props;
-        const { queries } = this.state;
+        const { queries, error } = this.state;
 
         if (queries) {
             return (
@@ -104,27 +112,19 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
                                     {title || 'Queries'}
                                 </div>
                                 <div className="panel-body">
-                                    <QueriesListingDisplay queries={queries}/>
+                                    <Grid data={queries} columns={columns}/>
                                 </div>
                             </div>
-                            : <QueriesListingDisplay queries={queries}/>
+                            : <Grid data={queries} columns={columns}/>
                     }
                 </>
             );
         }
 
+        if (error) {
+            return <Alert>{error}</Alert>
+        }
+
         return <LoadingSpinner/>;
-    }
-}
-
-interface QueriesListingDisplayProps {
-    queries: List<QueryInfo>
-}
-
-export class QueriesListingDisplay extends React.Component<QueriesListingDisplayProps, any> {
-
-    render() {
-        const { queries } = this.props;
-        return <Grid data={queries} columns={columns}/>
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom'
-import { IParentAlias, IParentOption } from '../entities/models';
+import { IParentOption } from "../entities/models";
+import { IParentAlias } from '../domainproperties/samples/models';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import { SelectInput } from '../forms/input/SelectInput';
@@ -17,6 +18,7 @@ interface IParentAliasRow {
     parentOptions?: Array<IParentOption>
     onAliasChange: (id:string, alias:string, newValue: any) => void
     onRemove: (index: string) => void
+    updateDupeParentAliases?: (id:string) => void
 }
 
 export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
@@ -56,7 +58,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
     };
 
     onAliasBlur = (e: React.ChangeEvent<FormControl>): void => {
-        this.props.onAliasChange(this.props.id, 'ignoreAliasError', false);
+        this.props.updateDupeParentAliases(this.props.id);
     };
 
     onSelectBlur = () => {
@@ -68,13 +70,13 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
         if (!parentOptions)
             return null;
 
-        const {alias, parentValue, ignoreAliasError, ignoreSelectError} = parentAlias;
+        const {alias, parentValue, ignoreAliasError, ignoreSelectError, isDupe} = parentAlias;
 
         const aliasBlank = !alias || alias.trim().length === 0;
 
         return (
             <Row key={id} >
-                <Col xs={3}> {/* TODO:Error/validation styling on label {className={classNames('parent-alias-label', {'has-error': aliasBlank || !optionValue})}> */}
+                <Col xs={3}>
                     <LabelOverlay
                         label={'Parent Alias *'}
                         description={PARENT_ALIAS_HELPER_TEXT}
@@ -82,7 +84,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         canMouseOverTooltip={true}
                     />
                 </Col>
-                <Col xs={3} className={classNames({'has-error': !ignoreAliasError && aliasBlank})}>
+                <Col xs={3} className={classNames({'has-error': !ignoreAliasError && (aliasBlank || isDupe)})}>
                     <FormControl
                         ref = {this.nameInput}
                         name={"alias"}

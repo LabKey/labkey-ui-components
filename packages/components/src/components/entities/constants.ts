@@ -11,11 +11,16 @@ export const SampleTypeDataType : EntityDataType = {
     nounSingular: "sample",
     nounPlural: "samples",
     nounAsParentSingular: "Parent",
+    typeNounSingular: "Sample Type",
     descriptionSingular: "parent sample type",
     descriptionPlural: "parent sample types",
     uniqueFieldKey: 'Name',
     dependencyText: "derived sample or assay data dependencies",
-    deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC
+    deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
+    inputColumnName: "Inputs/Materials/First",
+    inputTypeColumnName: "Inputs/Materials/First/SampleSet",
+    inputTypeValueField: "LSID",
+    insertColumnNamePrefix: "MaterialInputs/",
 };
 
 export const DataClassDataType : EntityDataType = {
@@ -24,10 +29,15 @@ export const DataClassDataType : EntityDataType = {
     deleteConfirmationActionName: DATA_DELETE_CONFIRMATION_ACTION,
     nounSingular: "data",
     nounPlural: "data",
+    typeNounSingular: "Data Type",
     nounAsParentSingular: "Parent",
     descriptionSingular: "parent type",
     descriptionPlural: "parent types",
     uniqueFieldKey: 'Name',
     dependencyText: "derived sample dependencies",
-    deleteHelpLinkTopic: "dataClass" // no topic specific to deleting data classes yet, so we refer to data classes in general
+    deleteHelpLinkTopic: "dataClass", // no topic specific to deleting data classes yet, so we refer to data classes in general
+    inputColumnName: "Inputs/Data/First",
+    inputTypeColumnName: "Inputs/Data/First/DataClass",
+    inputTypeValueField: "rowId",
+    insertColumnNamePrefix: "DataInputs/",
 };

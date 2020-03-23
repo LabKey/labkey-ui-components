@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import {fromJS, List, Map, Record} from 'immutable';
+import {Domain} from '@labkey/api';
 import {
     ATTACHMENT_RANGE_URI,
     BINARY_RANGE_URI,
@@ -219,6 +220,15 @@ export const READONLY_DESC_TYPES = List([
     LONG_TYPE,
     TIME_TYPE,
 ]);
+
+export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
+    showRequired: true,
+    showValidators: true,
+    isDragDisabled: false,
+    showTextOptions: true,
+    phiLevelDisabled: false,
+    showAddFieldsButton: true
+};
 
 interface IDomainDesign {
     name: string
@@ -624,7 +634,8 @@ export class DomainField extends Record({
     original: undefined,
     updatedField: false,
     isPrimaryKey: false,
-    lockType: DOMAIN_FIELD_NOT_LOCKED
+    lockType: DOMAIN_FIELD_NOT_LOCKED,
+    wrappedColumnName: undefined
 
 }) implements IDomainField {
     conceptURI?: string;
@@ -670,6 +681,7 @@ export class DomainField extends Record({
     updatedField: boolean;
     isPrimaryKey: boolean;
     lockType: string;
+    wrappedColumnName?: string;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -1140,9 +1152,9 @@ export class QueryInfoLite extends Record({
 
     getLookupInfo(rangeURI?: string): List<{name: string, type: PropDescType}> {
         let infos = List<{name: string, type: PropDescType}>();
-        let pkCols = this.getPkColumns()
-            .filter(col => col.name.toLowerCase() !== 'container')
-            .toList();
+
+        // allow for queries with only 1 primary key or with 2 primary key columns when one of them is container (see Issue 39879)
+        let pkCols = this.getPkColumns().size > 1 ? this.getPkColumns().filter(col => col.name.toLowerCase() !== 'container').toList() : this.getPkColumns();
 
         if (pkCols.size === 1) {
 
@@ -1409,3 +1421,56 @@ export interface IAppDomainHeader {
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
+
+export interface IDomainFormDisplayOptions {
+    showRequired?: boolean
+    showValidators?: boolean
+    isDragDisabled?: boolean
+    showTextOptions?: boolean
+    phiLevelDisabled?: boolean
+    showAddFieldsButton?: boolean
+}
+
+/**
+ * General object to describe a DomainKind as received from Domain.getDomainDetails
+ *
+ * @property domainDesign The fields found on all items of this domain (e.g., copy per item)
+ * @property options The fields and properties shared by this type (e.g., one copy) ('options' used to match existing LKS api)
+ * @property domainKindName The name of the domainkind type this represents, currently supported can be found in Domain.KINDS
+ */
+export class DomainDetails extends Record({
+    domainDesign: undefined,
+    options: undefined,
+    domainKindName: undefined,
+    nameReadOnly: false
+}) {
+    domainDesign: DomainDesign;
+    options: Map<string, any>;
+    domainKindName: string;
+    nameReadOnly?: boolean;
+
+    static create(rawDesign: Map<string, any> = Map(), domainKindType: string = Domain.KINDS.UNKNOWN): DomainDetails {
+
+        let design;
+        if (rawDesign) {
+            const domainDesign = DomainDesign.create(rawDesign.get('domainDesign'));
+            const domainKindName = rawDesign.get('domainKindName', domainKindType);
+            const options = Map(rawDesign.get('options'));
+            const nameReadOnly = rawDesign.get('nameReadOnly');
+            design = new DomainDetails({domainDesign, domainKindName, options, nameReadOnly});
+        }
+        else {
+            design = new DomainDetails({
+                domainDesign: DomainDesign.create(null),
+                domainKindName: domainKindType,
+                options: Map<string, any>(),
+            });
+        }
+
+        return design;
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}

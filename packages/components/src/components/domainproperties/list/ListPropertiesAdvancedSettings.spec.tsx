@@ -1,6 +1,6 @@
 import React from "react";
 import {ListModel} from "./models";
-import getDomainDetailsJSON from "../../../test/data/property-getDomainDetails.json";
+import getDomainDetailsJSON from "../../../test/data/list-getDomainDetails.json";
 import {mount} from "enzyme";
 import {
     AdvancedSettings,

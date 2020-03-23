@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
-import { DATETIME_TYPE, DomainField, IFieldChange, PropDescType } from './models';
+import { DATETIME_TYPE, DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DomainField, IDomainFormDisplayOptions, IFieldChange, PropDescType  } from './models';
 import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
 import {
     DOMAIN_DEFAULT_TYPES,
@@ -46,6 +46,7 @@ interface AdvancedSettingsProps {
     showDefaultValueSettings: boolean
     domainIndex: number
     successBsStyle?: string
+    domainFormDisplayOptions?: IDomainFormDisplayOptions
 }
 
 interface AdvancedSettingsState {
@@ -65,6 +66,10 @@ interface AdvancedSettingsState {
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
+
+    static defaultProps = {
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
+    };
 
     constructor(props) {
         super(props);
@@ -338,7 +343,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     renderMiscOptions = () => {
-        const { index, field, domainIndex } = this.props;
+        const { index, field, domainIndex, domainFormDisplayOptions } = this.props;
         const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting, phiLevels } = this.state;
 
         return (
@@ -355,6 +360,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
                             onChange={this.handleChange}
                             value={PHI}
+                            disabled={domainFormDisplayOptions.phiLevelDisabled}
                         >
                             {
                                 phiLevels.map((level, i) => (

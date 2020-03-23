@@ -1,0 +1,124 @@
+{
+  "schemaName" : [ "exp" ],
+  "queryName" : "DataClassCategoryType",
+  "metaData" : {
+    "importTemplates" : [ {
+      "label" : "Download Template",
+      "url" : "/labkey/ELISA%20Assay/query-exportExcelTemplate.view?schemaName=exp&query.queryName=DataClassCategoryType&headerType=DisplayFieldKey"
+    } ],
+    "sortInfo" : {
+      "field" : "Value",
+      "direction" : "ASC"
+    },
+    "root" : "rows",
+    "totalProperty" : "rowCount",
+    "sortInfoArray" : [ {
+      "field" : "Value",
+      "direction" : "ASC"
+    } ],
+    "description" : "Contains the list of available data class category types.",
+    "id" : "RowId",
+    "fields" : [ {
+      "fieldKey" : [ "Value" ],
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "NVARCHAR",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "Value",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Value"
+    }, {
+      "fieldKey" : [ "RowId" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "INTEGER",
+      "defaultValue" : null,
+      "scale" : 0,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : true,
+      "keyField" : true,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : true,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "shortCaption" : "Row Id",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Row Id"
+    } ],
+    "title" : "DataClassCategoryType",
+    "importMessage" : null
+  },
+  "rows" : [ {
+    "data" : {
+      "RowId" : {
+        "value" : 1
+      },
+      "Value" : {
+        "value" : "media"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 0
+      },
+      "Value" : {
+        "value" : "registry"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 2
+      },
+      "Value" : {
+        "value" : "sources"
+      }
+    }
+  } ],
+  "rowCount" : 3
+}

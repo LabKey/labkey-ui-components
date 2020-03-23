@@ -92,4 +92,32 @@ describe('DomainExpandedOptions', () => {
         row.unmount();
     });
 
+    test('No text options', () => {
+        const field = DomainField.create({
+            name: 'key',
+            rangeURI: STRING_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test'
+        });
+
+        const row  = mount(<DomainRowExpandedOptions
+            field={field}
+            index={1}
+            domainIndex={1}
+            onChange={jest.fn()}
+            onMultiChange={jest.fn()}
+            showingModal={jest.fn()}
+            domainFormDisplayOptions={{
+                showRequired: true,
+                showValidators: true,
+                isDragDisabled: false,
+                showTextOptions: false,
+                phiLevelDisabled: false,
+            }}
+        />);
+
+        expect(toJson(row)).toMatchSnapshot();
+        row.unmount();
+    });
+
 });

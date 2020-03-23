@@ -42,6 +42,8 @@ import nameExpressionSelectedQuery from '../test/data/nameExpressionSet-selected
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
+import dataClassCategoryTypeQuery from '../test/data/dataClassCategoryType-getQuery.json';
+import dataClassCategoryTypeQueryInfo from '../test/data/dataClassCategoryType-getQueryDetails.json';
 import dataClassesQuery from '../test/data/dataClasses-getQuery.json';
 import dataClassesQueryInfo from '../test/data/dataClasses-getQueryDetails.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
@@ -80,6 +82,13 @@ import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTarget
 import browseData from '../test/data/example_browse_data_tree_api.json';
 import assayAminoAcidsDataQueryInfo from '../test/data/assayAminoAcidsData-getQueryDetails.json';
 import assayAminoAcidsDataQuery from '../test/data/assayAminoAcidsData-getQuery.json';
+import sampleWithParentsQuery from '../test/data/sampleWithParents-getQuery.json';
+import sampleWithParentsQueryDetails from '../test/data/sampleWithParents-getQueryDetails.json';
+import sampleWithTwoSourcesQuery from '../test/data/sampleWithTwoSources-getQuery.json';
+import secondSourceQuery from '../test/data/secondSource-getQuery.json';
+import secondSourceQueryDetails from '../test/data/secondSource-getQueryDetails.json';
+import source1Query from '../test/data/source1-getQuery.json';
+import source1QueryDetails from '../test/data/source1-getQueryDetails.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 
@@ -105,11 +114,14 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         'assaysheatmap': assaysHeatMapQueryInfo,
         'samplesets': sampleSetsQueryInfo,
         'dataclasses': dataClassesQueryInfo,
+        'dataclasscategorytype': dataClassCategoryTypeQueryInfo,
     },
     'exp.data': {
         'mixtures': mixturesQueryInfo,
         'mixturespaging': mixturesQueryInfo,
         'expressionsystem': expressionsystemQueryInfo,
+        'second source': secondSourceQueryDetails,
+        'source 1': source1QueryDetails,
     },
     'labbook': {
         'labbookexperiment': labbookQueryInfo,
@@ -125,6 +137,8 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         'samplesetwithallfieldtypes': sampleSetAllFieldTypesQueryInfo,
         'name expression set': nameExpressionQueryInfo,
         'name%20expression%20set': nameExpressionQueryInfo,
+        'examples': sampleWithParentsQueryDetails,
+        'multisource': sampleWithParentsQueryDetails,
     },
     'schema': {
         'gridwithoutdata': mixturesQueryInfo,
@@ -155,11 +169,14 @@ const QUERY_RESPONSES = fromJS({
         'assaysheatmap': assaysHeatMapQuery,
         'samplesets': sampleSetsQuery,
         'dataclasses': dataClassesQuery,
+        'dataclasscategorytype': dataClassCategoryTypeQuery,
     },
     'exp.data': {
         'mixtures': mixturesQuery,
         'mixturespaging': mixturesQueryPaging,
-        'expressionsystem': expSystemLineageQuery
+        'expressionsystem': expSystemLineageQuery,
+        'second source': secondSourceQuery,
+        'source 1': source1Query,
     },
     'labbook': {
         'labbookexperiment': labbookQuery,
@@ -173,6 +190,8 @@ const QUERY_RESPONSES = fromJS({
         'expressionsystemsamples': expSystemSamplesLineageQuery,
         'samplesetwithallfieldtypes': samplesLineageQuery,
         'name expression set': nameExpressionSelectedQuery,
+        'examples': sampleWithParentsQuery,
+        'multisource': sampleWithTwoSourcesQuery,
     },
     'schema': {
         'gridwithoutdata': noDataQuery,

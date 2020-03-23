@@ -6,34 +6,38 @@ import { buildURL } from '../../url/ActionURL';
 interface Props {
     onConfirm: () => any
     onCancel: () => any
-    showDependenciesLink: boolean
     rowId: number
+    noun: string
+    deleteConfirmationActionName?: string
+    showDependenciesLink: boolean
 }
 
-export class SampleSetDeleteConfirmModal extends React.Component<Props, any> {
+export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
 
     static defaultProps = {
         showDependenciesLink: false
     };
 
     render() {
-        const { onConfirm, onCancel, showDependenciesLink, rowId } = this.props;
+        const { onConfirm, onCancel, showDependenciesLink, rowId, deleteConfirmationActionName, noun } = this.props;
 
         let dependencies = <>dependencies</>;
-        if (showDependenciesLink) {
+        if (showDependenciesLink && deleteConfirmationActionName) {
             let params = Map<string, string>();
             params = params.set('singleObjectRowId', rowId.toString());
-            dependencies = <a href={buildURL('experiment', 'deleteMaterialSource', params.toJS())}>dependencies</a>;
+            dependencies = <a href={buildURL('experiment', deleteConfirmationActionName, params.toJS())}>dependencies</a>;
         }
 
         return (
             <ConfirmModal
-                title={'Permanently delete sample type?'}
+                title={'Permanently delete ' + noun.toLowerCase() + ' type?'}
                 msg={
                     <span>
-                        The sample type and all of its {dependencies} will be permanently deleted.&nbsp;
-                        <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>&nbsp;
-                            Do you want to proceed?</p>
+                        The {noun.toLowerCase()} type and all of its {dependencies} will be permanently deleted.
+                        <p className={'top-spacing'}>
+                            <strong>Deletion cannot be undone. </strong>
+                            Do you want to proceed?
+                        </p>
                     </span>
                 }
                 onConfirm={onConfirm}

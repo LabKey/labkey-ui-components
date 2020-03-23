@@ -84,8 +84,19 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
         )
     }
 
+    getTitlePrefix(): string {
+        let prefix = this.props.titlePrefix;
+
+        // ellipsis after certain length
+        if (prefix && prefix.length > 70) {
+            prefix = prefix.substr(0, 70) + '...';
+        }
+
+        return prefix ? prefix + ' - ' : '';
+    }
+
     renderHeader() {
-        const { children, titlePrefix, panelStatus, controlledCollapse, collapsible, title, headerDetails } = this.props;
+        const { children, panelStatus, controlledCollapse, collapsible, title, headerDetails } = this.props;
         const iconHelpMsg = ((panelStatus && panelStatus !== 'NONE') ? this.getHeaderIconHelpMsg() : undefined);
 
         return (
@@ -97,7 +108,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
                 {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
 
                 {/*Header name*/}
-                <span className={'domain-panel-title'}>{(titlePrefix ? titlePrefix + ' - ' : '') + title}</span>
+                <span className={'domain-panel-title'}>{this.getTitlePrefix() + title}</span>
 
                 {/*Expand/Collapse Icon*/}
                 {(controlledCollapse || collapsible) &&

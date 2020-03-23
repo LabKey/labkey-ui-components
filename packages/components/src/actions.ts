@@ -275,26 +275,36 @@ export function clearError(model: QueryGridModel) {
 }
 
 export function schemaGridInvalidate(schemaName: string, remove: boolean = false) {
-    getQueryGridModelsForSchema(schemaName).map((model) => gridRemoveOrInvalidate(model, remove));
+    getQueryGridModelsForSchema(schemaName).map((model) => gridClearSelectionAndInvalidate(model, remove));
 }
 
 export function queryGridInvalidate(schemaQuery: SchemaQuery, remove: boolean = false) {
-    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridRemoveOrInvalidate(model, remove));
+    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridClearSelectionAndInvalidate(model, remove));
 }
 
 export function gridIdInvalidate(gridIdPrefix: string, remove: boolean = false) {
-    getQueryGridModelsForGridId(gridIdPrefix).map((model) => gridRemoveOrInvalidate(model, remove));
+    getQueryGridModelsForGridId(gridIdPrefix).map((model) => gridClearSelectionAndInvalidate(model, remove));
+}
+
+function gridClearSelectionAndInvalidate(model: QueryGridModel, remove: boolean) {
+    if (model.allowSelection) {
+        clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath)
+            .then(() => {
+                gridRemoveOrInvalidate(model, remove);
+            });
+    }
+    else {
+        gridRemoveOrInvalidate(model, remove);
+    }
+
 }
 
 function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
-    clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath)
-        .then(() => {
-            if (remove) {
-                removeQueryGridModel(model);
-            } else {
-                gridInvalidate(model);
-            }
-        });
+    if (remove) {
+        removeQueryGridModel(model);
+    } else {
+        gridInvalidate(model);
+    }
 }
 
 export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {
@@ -2518,17 +2528,18 @@ export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
  * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
  * provide a filter for the sample column or columns defined in the assay design.
  */
-export function createQueryGridModelFilteredBySample(model: AssayDefinitionModel, gridId: string, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string): QueryGridModel {
+export function createQueryGridModelFilteredBySample(model: AssayDefinitionModel, gridId: string, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string, useLsid?: boolean, omitSampleCols?: boolean): QueryGridModel {
     const schemaQuery = SchemaQuery.create(model.protocolSchemaName, 'Data');
     const sampleColumns = model.getSampleColumnFieldKeys();
 
     if (sampleColumns && !sampleColumns.isEmpty()) {
-        let filter = model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart);
+        let filter = model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid);
         return getStateQueryGridModel(gridId, schemaQuery, () => ({
             baseFilters: List([filter]),
             isPaged: true,
             title: model.name,
-            urlPrefix: model.name
+            urlPrefix: model.name,
+            omittedColumns: omitSampleCols ? sampleColumns : List<string>()
         }));
     }
 }

@@ -8,7 +8,7 @@ import {
     DescriptionInput,
     NameInput
 } from "./ListPropertiesPanelFormElements";
-import getDomainDetailsJSON from '../../../test/data/property-getDomainDetails.json';
+import getDomainDetailsJSON from '../../../test/data/list-getDomainDetails.json';
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
 import renderer from "react-test-renderer";
 

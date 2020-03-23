@@ -18,6 +18,7 @@ import { fromJS, List, Map } from 'immutable';
 import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './AppURLResolver';
 import { URLResolver } from './URLResolver';
 import { AppURL } from '../url/AppURL';
+import { initMockServerContext } from '../testHelpers';
 
 describe('URL Resolvers', () => {
 
@@ -111,7 +112,9 @@ describe('URL Resolvers', () => {
 
     test('Should remap URLs within SelectRowsResult', () => {
 
-        LABKEY.contextPath = 'labkeyTest';
+        initMockServerContext({
+            contextPath: 'labkeyTest'
+        });
 
         // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber
         // avoid false positives by defining number of assertions in a test

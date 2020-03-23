@@ -57,7 +57,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         }
     }
 
-    onDomainChange = (index: number, updatedDomain: DomainDesign) => {
+    onDomainChange = (index: number, updatedDomain: DomainDesign, dirty: boolean) => {
         const { onChange } = this.props;
 
         this.setState((state) => {
@@ -70,7 +70,8 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                 protocolModel: updatedModel
             }
         }, () => {
-            if (onChange) {
+            // Issue 39918: use the dirty property that DomainForm onChange passes
+            if (onChange && dirty) {
                 onChange(this.state.protocolModel);
             }
         });
@@ -225,7 +226,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                             containerTop={containerTop}
                             helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
                             onChange={(updatedDomain, dirty) => {
-                                this.onDomainChange(i, updatedDomain);
+                                this.onDomainChange(i, updatedDomain, dirty);
                             }}
                             onToggle={(collapsed, callback) => {
                                 this.onTogglePanel((i + 1), collapsed, callback);

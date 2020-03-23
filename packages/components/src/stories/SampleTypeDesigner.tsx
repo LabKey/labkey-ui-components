@@ -17,12 +17,11 @@ import React from 'react';
 import {Map} from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
-import domainData from '../test/data/property-getDomain-sampleType.json';
-
-import './stories.scss';
+import {Domain} from "@labkey/api";
 import {DomainDetails} from "../components/domainproperties/models";
 import {SampleTypeDesigner} from "../components/domainproperties/samples/SampleTypeDesigner";
-import {Domain} from "@labkey/api";
+import domainData from '../test/data/property-getDomain-sampleType.json';
+import './stories.scss';
 
 
 storiesOf('SampleTypeDesigner', module)
@@ -59,5 +58,6 @@ storiesOf('SampleTypeDesigner', module)
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
             nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+            headerText={'Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.'}
         />
     });

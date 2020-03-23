@@ -19,9 +19,27 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
     className="panel-body"
   >
     <div
-      className="entity-form--headerhelp"
+      className="margin-bottom row"
     >
-      Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+              target="_blank"
+            >
+              Learn more about designing sample types
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
     <form
       className=""
@@ -251,9 +269,27 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
     className="panel-body"
   >
     <div
-      className="entity-form--headerhelp"
+      className="margin-bottom row"
     >
-      Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+              target="_blank"
+            >
+              Learn more about designing sample types
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
     <form
       className=""

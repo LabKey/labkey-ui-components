@@ -6,11 +6,12 @@ import {IParentAlias} from "./models";
 import {getFormNameFromId,} from "../entities/actions";
 import {Col, Row} from "react-bootstrap";
 import {AddEntityButton, generateId, helpLinkNode} from "../../..";
-import {PARENT_ALIAS_HELPER_TEXT} from "../../../constants";
-import {DERIVE_SAMPLES_ALIAS_TOPIC} from "../../../util/helpLinks";
+import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from "../../../constants";
+import { DERIVE_SAMPLES_ALIAS_TOPIC, DEFINE_SAMPLE_TYPE_TOPIC } from "../../../util/helpLinks";
 import {SampleSetParentAliasRow} from "../../samples/SampleSetParentAliasRow";
 import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
 import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
+import { HelpTopicURL } from "../HelpTopicURL";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
@@ -24,14 +25,15 @@ interface OwnProps {
     onRemoveParentAlias: (id:string) => void
     updateDupeParentAliases?: (id:string) => void
     appPropertiesOnly?: boolean
-    helpTopic?: string
+    headerText?: string
 }
 
 //Splitting these out to clarify where they end-up
 interface EntityProps {
-    noun?: string
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
+    nounSingular?: string
+    nounPlural?: string
 }
 
 interface State {
@@ -44,7 +46,8 @@ type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
 class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
 
     static defaultProps = {
-        noun: 'Sample Type',
+        nounSingular: SAMPLE_SET_DISPLAY_TEXT,
+        nounPlural: SAMPLE_SET_DISPLAY_TEXT + 's',
         nameExpressionInfoUrl: '',
         nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}',
         appPropertiesOnly: false,
@@ -142,7 +145,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
     };
 
     render = () => {
-        const { model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, noun } = this.props;
+        const { model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, nounSingular, nounPlural, headerText } = this.props;
         const { isValid } = this.state;
 
         return (
@@ -154,12 +157,18 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >
-                <div className={'entity-form--headerhelp'}>
-                    Sample types help you organize samples in your lab and allow you to add properties
-                    for easy tracking of data.
-                </div>
+                <Row className={'margin-bottom'}>
+                    {headerText &&
+                        <Col xs={9}>
+                            <div className={'entity-form--headerhelp'}>{headerText}</div>
+                        </Col>
+                    }
+                    <Col xs={headerText ? 3 : 12}>
+                        <HelpTopicURL helpTopic={DEFINE_SAMPLE_TYPE_TOPIC} nounPlural={nounPlural}/>
+                    </Col>
+                </Row>
                 <EntityDetailsForm
-                    noun={noun}
+                    noun={nounSingular}
                     onFormChange={this.onFormChange}
                     data={model}
                     nameReadOnly={model.nameReadOnly}

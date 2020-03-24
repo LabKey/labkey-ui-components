@@ -136,7 +136,6 @@ interface FileTreeProps {
     onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean) => void
 }
 
-
 interface FileTreeState {
     cursor: any
     checked: List<string>

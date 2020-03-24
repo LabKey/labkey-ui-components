@@ -295,6 +295,7 @@ import { SampleTypeModel } from "./components/domainproperties/samples/models";
 import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
 
 import { QueryModel } from './QueryModel/QueryModel';
+import { QueryModelLoader } from './QueryModel/QueryModelLoader';
 import {
     withQueryModels,
     MakeQueryModels,
@@ -689,6 +690,7 @@ export {
     QueryModel,
     QueryConfigMap,
     QueryModelMap,
+    QueryModelLoader,
     withQueryModels,
     MakeQueryModels,
     Actions,

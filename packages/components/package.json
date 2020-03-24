@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.39.3-fb-smSampleTypeDesignerPolish.0",
+  "version": "0.39.3-fb-smSampleTypeDesignerPolish.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

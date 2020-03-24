@@ -18,7 +18,6 @@ import {
 import { createLineageNodeCollections, LineageNodeCollection } from './vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
 import { LineageSummary } from './LineageSummary';
-import { WithNodeInteraction } from './actions'
 import { LineageFilter, LineageNode, LineageOptions } from './models';
 
 interface SelectedNodeProps {
@@ -30,7 +29,7 @@ interface SelectedNodeProps {
     summaryLineageOptions?: LineageOptions
 }
 
-export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & WithNodeInteraction> {
+export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps> {
 
     static defaultProps = {
         showSummary: true,
@@ -65,31 +64,6 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Wit
     handleLinkClick = (evt: React.MouseEvent): boolean => {
         evt.stopPropagation();
         return false;
-    };
-
-    onNodeMouseOver = (node: LineageNode): void => {
-        if (this.props.onNodeMouseOver) {
-            this.props.onNodeMouseOver(node);
-        }
-    };
-
-    onNodeMouseOut = (node: LineageNode): void => {
-        if (this.props.onNodeMouseOut) {
-            this.props.onNodeMouseOut(node);
-        }
-    };
-
-    isNodeInGraph = (node: LineageNode): boolean => {
-        if (this.props.isNodeInGraph) {
-            return this.props.isNodeInGraph(node);
-        }
-        return false;
-    };
-
-    onNodeClick = (node: LineageNode): void => {
-        if (this.props.onNodeClick) {
-            this.props.onNodeClick(node);
-        }
     };
 
     render() {
@@ -154,10 +128,6 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Wit
                 <LineageSummary
                     seed={node.lsid}
                     highlightNode={highlightNode}
-                    isNodeInGraph={this.isNodeInGraph}
-                    onNodeMouseOver={this.onNodeMouseOver}
-                    onNodeMouseOut={this.onNodeMouseOut}
-                    onNodeClick={this.onNodeClick}
                     options={summaryLineageOptions}
                 />
             )}
@@ -171,32 +141,7 @@ interface ClusterNodeDetailProps {
     nodesByType: {[key:string]: LineageNodeCollection}
 }
 
-export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps & WithNodeInteraction> {
-
-    onNodeMouseOver = (node: LineageNode): void => {
-        if (this.props.onNodeMouseOver) {
-            this.props.onNodeMouseOver(node);
-        }
-    };
-
-    onNodeMouseOut = (node: LineageNode): void => {
-        if (this.props.onNodeMouseOut) {
-            this.props.onNodeMouseOut(node);
-        }
-    };
-
-    isNodeInGraph = (node: LineageNode): boolean => {
-        if (this.props.isNodeInGraph) {
-            return this.props.isNodeInGraph(node);
-        }
-        return false;
-    };
-
-    onNodeClick = (node: LineageNode): void => {
-        if (this.props.onNodeClick) {
-            this.props.onNodeClick(node);
-        }
-    };
+export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
 
     render() {
         const { nodes, highlightNode } = this.props;
@@ -224,10 +169,6 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps & Wi
                         key={groupName}
                         title={groupName}
                         nodes={nodesByType[groupName]}
-                        onNodeClick={this.onNodeClick}
-                        onNodeMouseOut={this.onNodeMouseOut}
-                        onNodeMouseOver={this.onNodeMouseOver}
-                        isNodeInGraph={this.isNodeInGraph}
                         highlightNode={highlightNode}
                     />
                 )}

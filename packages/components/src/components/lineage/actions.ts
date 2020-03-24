@@ -2,6 +2,7 @@
  * Copyright (c) 2017-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { createContext } from 'react';
 import { fromJS, Iterable, List, Map, Seq } from 'immutable';
 import { Ajax, Filter, Utils } from '@labkey/api';
 import {
@@ -36,6 +37,10 @@ export interface WithNodeInteraction {
     onNodeMouseOut?: (node: LineageNode) => void
     onNodeClick?: (node: LineageNode) => void
 }
+
+const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);
+export const NodeInteractionProvider = NodeInteractionContext.Provider;
+export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 
 export function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
     return new Promise((resolve, reject) => {

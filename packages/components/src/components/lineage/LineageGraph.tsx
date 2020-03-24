@@ -7,7 +7,7 @@ import ReactN from 'reactn';
 import { List } from 'immutable';
 import { Alert, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '../..';
 
-import { loadLineageIfNeeded } from './actions';
+import { loadLineageIfNeeded, NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
 import {
     ILineageGroupingOptions,
@@ -69,11 +69,12 @@ interface LineageGraphDisplayProps extends LinageGraphProps {
 }
 
 interface LineageGraphDisplayState {
-    hoverNode?: VisGraphNodeType
-    selectedNodes?: Array<VisGraphNodeType>
+    hoverNode: VisGraphNodeType
+    nodeInteractions: WithNodeInteraction
+    selectedNodes: Array<VisGraphNodeType>
 }
 
-class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, LineageGraphDisplayState> {
+class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partial<LineageGraphDisplayState>> {
 
     static defaultProps = {
         filterIn: true,
@@ -87,7 +88,14 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
 
         this.visGraphRef = React.createRef();
 
-        this.state = {};
+        this.state = {
+            nodeInteractions: {
+                isNodeInGraph: this.isNodeInGraph,
+                onNodeMouseOver: this.onSummaryNodeMouseOver,
+                onNodeMouseOut: this.onSummaryNodeMouseOut,
+                onNodeClick: this.onSummaryNodeClick,
+            }
+        };
     }
 
     clearHover = (): void => {
@@ -178,10 +186,6 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
             node={lineageNode}
             entityModel={this.getNodeGridDataModel(lineageNode)}
             highlightNode={hoverNodeLsid}
-            isNodeInGraph={this.isNodeInGraph}
-            onNodeMouseOver={this.onSummaryNodeMouseOver}
-            onNodeMouseOut={this.onSummaryNodeMouseOut}
-            onNodeClick={this.onSummaryNodeClick}
             showSummary={showSummary}
         />;
     }
@@ -194,9 +198,6 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
             highlightNode={hoverNodeLsid}
             nodes={nodes}
             nodesByType={undefined}
-            onNodeMouseOver={this.onSummaryNodeMouseOver}
-            onNodeMouseOut={this.onSummaryNodeMouseOut}
-            onNodeClick={this.onSummaryNodeClick}
         />;
     }
 
@@ -209,9 +210,6 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
             highlightNode={hoverNodeLsid}
             nodes={node.containedNodes}
             nodesByType={node.containedNodesByType}
-            onNodeMouseOver={this.onSummaryNodeMouseOver}
-            onNodeMouseOut={this.onSummaryNodeMouseOut}
-            onNodeClick={this.onSummaryNodeClick}
         />;
     }
 
@@ -258,42 +256,46 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
             }));
 
             return (
-                <div className="row">
-                    <div className="col-md-8">
-                        <VisGraph
-                            ref={this.visGraphRef}
-                            onNodeDoubleClick={this.onVisGraphNodeDoubleClick}
-                            onNodeSelect={this.onVisGraphNodeSelect}
-                            onNodeDeselect={this.onVisGraphNodeDeselect}
-                            onNodeHover={this.updateHover}
-                            onNodeBlur={this.onVisGraphNodeBlur}
-                            options={graphOptions}
-                            seed={lineage.getSeed()}
-                        />
+                <NodeInteractionProvider value={this.state.nodeInteractions}>
+                    <div className="row">
+                        <div className="col-md-8">
+                            <VisGraph
+                                ref={this.visGraphRef}
+                                onNodeDoubleClick={this.onVisGraphNodeDoubleClick}
+                                onNodeSelect={this.onVisGraphNodeSelect}
+                                onNodeDeselect={this.onVisGraphNodeDeselect}
+                                onNodeHover={this.updateHover}
+                                onNodeBlur={this.onVisGraphNodeBlur}
+                                options={graphOptions}
+                                seed={lineage.getSeed()}
+                            />
+                        </div>
+                        <div className="col-md-4 lineage-node-detail-container">
+                            {this.renderSelectedNodes(lineage.getSeed())}
+                        </div>
                     </div>
-                    <div className="col-md-4 lineage-node-detail-container">
-                        {this.renderSelectedNodes(lineage.getSeed())}
-                    </div>
-                </div>
+                </NodeInteractionProvider>
             )
         }
         else {
             return (
-                <div className="row">
-                    <div className="col-md-8">
-                        <div className="top-spacing">
-                            <LoadingSpinner msg="Loading lineage..."/>
+                <NodeInteractionProvider value={this.state.nodeInteractions}>
+                    <div className="row">
+                        <div className="col-md-8">
+                            <div className="top-spacing">
+                                <LoadingSpinner msg="Loading lineage..."/>
+                            </div>
+                        </div>
+                        <div className="col-md-4 lineage-node-detail-container">
+                            {initialModel ? this.renderSelectedGraphNode(lsid, undefined, {
+                                id: lsid,
+                                cid: 0,
+                                kind: 'node',
+                                lineageNode: this.createInitialLineageNode()
+                            }, false) : <LoadingSpinner msg="Loading details..."/>}
                         </div>
                     </div>
-                    <div className="col-md-4 lineage-node-detail-container">
-                        {initialModel ? this.renderSelectedGraphNode(lsid, undefined, {
-                            id: lsid,
-                            cid: 0,
-                            kind: 'node',
-                            lineageNode: this.createInitialLineageNode()
-                        }, false) : <LoadingSpinner msg="Loading details..."/>}
-                    </div>
-                </div>
+                </NodeInteractionProvider>
             )
         }
     }

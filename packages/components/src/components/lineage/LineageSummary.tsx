@@ -9,7 +9,7 @@ import { LoadingSpinner } from '../..';
 
 import { LineageLink, LineageOptions, LineageResult } from './models';
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
-import { loadLineageIfNeeded, WithNodeInteraction } from './actions';
+import { loadLineageIfNeeded } from './actions';
 import { createLineageNodeCollections } from './vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
 
@@ -19,7 +19,7 @@ interface Props {
     options?: LineageOptions
 }
 
-export class LineageSummary extends ReactN.Component<Props & WithNodeInteraction> {
+export class LineageSummary extends ReactN.Component<Props> {
 
     componentDidMount() {
         const { seed } = this.props;
@@ -60,10 +60,6 @@ export class LineageSummary extends ReactN.Component<Props & WithNodeInteraction
                 title={groupName + " " + title}
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}
-                isNodeInGraph={this.props.isNodeInGraph}
-                onNodeClick={this.props.onNodeClick}
-                onNodeMouseOver={this.props.onNodeMouseOver}
-                onNodeMouseOut={this.props.onNodeMouseOut}
             />
         );
     }
@@ -83,7 +79,6 @@ export class LineageSummary extends ReactN.Component<Props & WithNodeInteraction
         const node = lineage.nodes.get(lineage.seed);
 
         if (!node) {
-            window['LL'] = lineage;
             return <div>Unable to resolve lineage for seed: {lineage.seed}</div>
         }
 

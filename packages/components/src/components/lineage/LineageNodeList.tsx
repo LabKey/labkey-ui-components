@@ -6,7 +6,7 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { SVGIcon } from '../..';
 
-import { WithNodeInteraction } from './actions';
+import { NodeInteractionConsumer, WithNodeInteraction } from './actions';
 import { LineageNode } from './models';
 import { getLineageNodeTitle, LineageNodeCollection } from './vis/VisGraphGenerator';
 
@@ -24,7 +24,7 @@ interface LineageNodeListState {
 const COLLAPSED_LIST_SHOW_COUNT = 4;
 
 // TODO move the inline styles to lineage.scss
-export class LineageNodeList extends PureComponent<LineageNodeListProps & WithNodeInteraction, LineageNodeListState> {
+export class LineageNodeList extends PureComponent<LineageNodeListProps, LineageNodeListState> {
 
     constructor(props) {
         super(props);
@@ -33,32 +33,6 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps & WithNo
             expanded: false
         }
     }
-
-    isNodeInGraph = (node: LineageNode): boolean => {
-        if (this.props.isNodeInGraph) {
-            return this.props.isNodeInGraph(node);
-        }
-        return false;
-    };
-
-    onNodeMouseOver = (node: LineageNode): void => {
-        if (this.props.onNodeMouseOver) {
-            this.props.onNodeMouseOver(node);
-        }
-    };
-
-    onNodeMouseOut = (node: LineageNode): void => {
-        if (this.props.onNodeMouseOut) {
-            this.props.onNodeMouseOut(node);
-        }
-    };
-
-    onNodeClick = (node: LineageNode): boolean => {
-        if (this.props.onNodeClick) {
-            this.props.onNodeClick(node);
-        }
-        return false;
-    };
 
     onCollapseClicked = (): void => {
         this.setState({
@@ -81,8 +55,6 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps & WithNo
         const iconURL = meta.iconURL;
         const lineageUrl = url + '/lineage';
 
-        const clickable = this.isNodeInGraph(node);
-
         return (
             <li
                 className="lineage-name"
@@ -93,13 +65,23 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps & WithNo
                 <SVGIcon iconDir={"_images"} iconSrc={iconURL}
                          style={{width:"1.2em", height:"1.2em", margin: "0.1em"}} />
                 &nbsp;
-                {clickable ?
-                    <a className="pointer"
-                       onMouseOver={e => this.onNodeMouseOver(node)}
-                       onMouseOut={e => this.onNodeMouseOut(node)}
-                       onClick={e => this.onNodeClick(node)}>{name}</a> :
-                    <span>{name}</span>
-                }
+                <NodeInteractionConsumer>
+                    {(context: WithNodeInteraction) => {
+                        if (context.isNodeInGraph(node)) {
+                            return (
+                                <>
+                                    <a className="pointer"
+                                       onMouseOver={e => context.onNodeMouseOver(node)}
+                                       onMouseOut={e => context.onNodeMouseOut(node)}
+                                       onClick={e => context.onNodeClick(node)}>{name}</a> :
+                                    <span>{name}</span>
+                                </>
+                            )
+                        }
+
+                        return null;
+                    }}
+                </NodeInteractionConsumer>
                 &nbsp;
                 <a href={url}
                    className='show-on-hover' style={{paddingLeft: '1px', paddingRight: '1px'}}>
@@ -141,14 +123,14 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps & WithNo
         if (includeCollapseExpand) {
             const skipCount = nodes.nodes.length - COLLAPSED_LIST_SHOW_COUNT;
 
-            rendered = nodes.nodes.slice(0, COLLAPSED_LIST_SHOW_COUNT).map(n  => this.renderNode(n));
+            rendered = nodes.nodes.slice(0, COLLAPSED_LIST_SHOW_COUNT).map(this.renderNode);
             rendered.push(this.renderCollapseExpandNode(skipCount));
             if (expanded) {
-                rendered = rendered.concat(nodes.nodes.slice(COLLAPSED_LIST_SHOW_COUNT).map(n  => this.renderNode(n)));
+                rendered = rendered.concat(nodes.nodes.slice(COLLAPSED_LIST_SHOW_COUNT).map(this.renderNode));
             }
         }
         else {
-            rendered = nodes.nodes.map(n => this.renderNode(n));
+            rendered = nodes.nodes.map(this.renderNode);
         }
 
         return (

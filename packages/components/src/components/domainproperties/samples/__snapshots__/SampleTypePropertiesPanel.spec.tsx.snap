@@ -48,15 +48,12 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <label
-            className="entity-form--overlaylabel"
+          <span
+            className="domain-no-wrap"
           >
-            <span>
-              Name
-            </span>
-             
+            Name
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -80,15 +77,11 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
                 />
               </svg>
             </span>
-            <span
-              className="required-symbol"
-            >
-               *
-            </span>
-          </label>
+             *
+          </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <input
             className="form-control"
@@ -105,11 +98,12 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <span>
+          <span
+            className="domain-no-wrap"
+          >
             Description
-             
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -133,10 +127,11 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
                 />
               </svg>
             </span>
+            
           </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <textarea
             className="form-control textarea-noresize"
@@ -150,11 +145,13 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <span>
-            Naming Pattern
-             
+          Naming 
+          <span
+            className="domain-no-wrap"
+          >
+            Pattern
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -178,10 +175,11 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
                 />
               </svg>
             </span>
+            
           </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <input
             className="form-control"
@@ -198,10 +196,10 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
       className="row"
     >
       <div
-        className="col-xs-3"
+        className="col-xs-2"
       />
       <div
-        className="col-xs-9"
+        className="col-xs-10"
       >
         <span>
           <div
@@ -298,15 +296,12 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <label
-            className="entity-form--overlaylabel"
+          <span
+            className="domain-no-wrap"
           >
-            <span>
-              Name
-            </span>
-             
+            Name
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -330,15 +325,11 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
                 />
               </svg>
             </span>
-            <span
-              className="required-symbol"
-            >
-               *
-            </span>
-          </label>
+             *
+          </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <input
             className="form-control"
@@ -355,11 +346,12 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <span>
+          <span
+            className="domain-no-wrap"
+          >
             Description
-             
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -383,10 +375,11 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
                 />
               </svg>
             </span>
+            
           </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <textarea
             className="form-control textarea-noresize"
@@ -400,11 +393,13 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <span>
-            Naming Pattern
-             
+          Naming 
+          <span
+            className="domain-no-wrap"
+          >
+            Pattern
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -428,10 +423,11 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
                 />
               </svg>
             </span>
+            
           </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <input
             className="form-control"
@@ -448,10 +444,10 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
       className="row"
     >
       <div
-        className="col-xs-3"
+        className="col-xs-2"
       />
       <div
-        className="col-xs-9"
+        className="col-xs-10"
       >
         <span>
           <div

@@ -109,7 +109,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
         return (
             <>
                 <span>
-                    {PARENT_ALIAS_HELPER_TEXT}
+                    <p>{PARENT_ALIAS_HELPER_TEXT}</p>
                     <p>{helpLinkNode(DERIVE_SAMPLES_ALIAS_TOPIC, "More info")}</p>
                 </span>
             </>
@@ -178,9 +178,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
                 {this.renderParentAliases()}
                 {parentOptions &&
                     <Row>
-                        <Col xs={3}>
+                        <Col xs={2}>
                         </Col>
-                        <Col xs={9}>
+                        <Col xs={10}>
                                 <span>
                                     <AddEntityButton
                                         entity="Parent Alias"

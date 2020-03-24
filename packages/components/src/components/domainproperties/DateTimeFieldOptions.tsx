@@ -4,9 +4,9 @@ import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, getNameFromId } from './actions';
 import { DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT } from './constants';
 import { ITypeDependentProps } from './models';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 import { DATE_FORMATS_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { SectionHeading } from "./SectionHeading";
+import { DomainFieldLabel } from "./DomainFieldLabel";
 
 interface DateTimeFieldProps extends ITypeDependentProps {
     format: string,
@@ -53,10 +53,10 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                 <Row className='domain-row-expanded'>
                     <Col xs={3}>
                         <div className={'domain-field-label'}>
-                            Format for Dates
-                            <LabelHelpTip
-                                title='Format String'
-                                body={this.getFormatHelpText} />
+                            <DomainFieldLabel
+                                label={'Format for Dates'}
+                                helpTipBody={this.getFormatHelpText}
+                            />
                         </div>
                     </Col>
                     <Col xs={9} />

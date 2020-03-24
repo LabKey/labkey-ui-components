@@ -9,7 +9,6 @@ import { ValidatorModal } from './validation/ValidatorModal';
 import { RegexValidationOptions } from './validation/RegexValidationOptions';
 import { RangeValidationOptions } from './validation/RangeValidationOptions';
 import { ConditionalFormatOptions } from './validation/ConditionalFormatOptions';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 import {
     FIELD_EDITOR_CONDITIONAL_FORMAT_TOPIC,
     FIELD_EDITOR_RANGE_VALIDATION_TOPIC,
@@ -17,6 +16,7 @@ import {
     helpLinkNode
 } from '../../util/helpLinks';
 import { SectionHeading } from "./SectionHeading";
+import { DomainFieldLabel } from "./DomainFieldLabel";
 
 interface ConditionalFormattingAndValidationProps {
     index: number,
@@ -122,8 +122,11 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
             { domainFormDisplayOptions.showValidators &&
                 <div className={range ? '' : 'domain-validation-group'}>
-                    <div className={'domain-field-label domain-no-wrap'}>{'Create ' + (range ? 'Range': 'Regular Expression') + ' Validator'}
-                        <LabelHelpTip title={'Add ' + (range ? 'Range' : 'Regex') + ' Validator'} body={range ? this.getRangeValidatorHelpText : this.getRegexValidatorHelpText}/>
+                    <div className={'domain-field-label domain-no-wrap'}>
+                        <DomainFieldLabel
+                            label={'Create ' + (range ? 'Range': 'Regular Expression') + ' Validator'}
+                            helpTipBody={range ? this.getRangeValidatorHelpText : this.getRegexValidatorHelpText}
+                        />
                     </div>
                     <div>
                         <Button
@@ -156,8 +159,11 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
 
         return (
             <div className='domain-validation-group'>
-                <div className={'domain-field-label domain-no-wrap'}>Create Conditional Format Criteria
-                    <LabelHelpTip title={'Add Conditional Format'} body={this.getConditionalFormatHelpText}/>
+                <div className={'domain-field-label domain-no-wrap'}>
+                    <DomainFieldLabel
+                        label={'Create Conditional Format Criteria'}
+                        helpTipBody={this.getConditionalFormatHelpText}
+                    />
                 </div>
                 <div>
                     <Button

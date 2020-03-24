@@ -239,7 +239,12 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
     <div
       className="col-lg-2 col-xs-3"
     >
-      Name *
+      <span
+        className="domain-no-wrap"
+      >
+        Name
+         *
+      </span>
     </div>
     <div
       className="col-lg-8 col-xs-9"
@@ -263,7 +268,12 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
     <div
       className="col-lg-2 col-xs-3"
     >
-      Description
+      <span
+        className="domain-no-wrap"
+      >
+        Description
+        
+      </span>
     </div>
     <div
       className="col-lg-8 col-xs-9"
@@ -297,7 +307,12 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
     <div
       className="col-lg-2 col-xs-3"
     >
-      Name *
+      <span
+        className="domain-no-wrap"
+      >
+        Name
+         *
+      </span>
     </div>
     <div
       className="col-lg-8 col-xs-9"
@@ -321,7 +336,12 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
     <div
       className="col-lg-2 col-xs-3"
     >
-      Description
+      <span
+        className="domain-no-wrap"
+      >
+        Description
+        
+      </span>
     </div>
     <div
       className="col-lg-8 col-xs-9"

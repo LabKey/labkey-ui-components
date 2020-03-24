@@ -91,7 +91,8 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                             Sample lookup to
                             <LabelHelpTip
                                 title='Sample Reference'
-                                body={this.getHelpText} />
+                                body={this.getHelpText}
+                            />
                         </div>
                     </Col>
                 </Row>

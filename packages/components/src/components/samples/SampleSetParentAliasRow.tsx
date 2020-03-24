@@ -8,8 +8,8 @@ import { SelectInput } from '../forms/input/SelectInput';
 
 import classNames from 'classnames';
 import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
-import { LabelOverlay } from '../forms/LabelOverlay';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
+import { DomainFieldLabel } from "../domainproperties/DomainFieldLabel";
 
 
 interface IParentAliasRow {
@@ -76,12 +76,11 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
 
         return (
             <Row key={id} >
-                <Col xs={3}>
-                    <LabelOverlay
-                        label={'Parent Alias *'}
-                        description={PARENT_ALIAS_HELPER_TEXT}
+                <Col xs={2}>
+                    <DomainFieldLabel
+                        label={'Parent Alias'}
                         required={true}
-                        canMouseOverTooltip={true}
+                        helpTipBody={() => PARENT_ALIAS_HELPER_TEXT}
                     />
                 </Col>
                 <Col xs={3} className={classNames({'has-error': !ignoreAliasError && (aliasBlank || isDupe)})}>

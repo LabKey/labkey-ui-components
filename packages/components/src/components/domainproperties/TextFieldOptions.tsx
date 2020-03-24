@@ -7,6 +7,7 @@ import { DOMAIN_FIELD_CUSTOM_LENGTH, DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE
 import { ITypeDependentProps } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { SectionHeading } from "./SectionHeading";
+import { DomainFieldLabel } from "./DomainFieldLabel";
 
 interface TextFieldProps extends ITypeDependentProps {
     scale: number
@@ -82,10 +83,9 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 <Row className='domain-row-expanded '>
                     <Col xs={12}>
                         <div className={'domain-field-label'}>
-                            Maximum Text Length
-                            <LabelHelpTip
-                                title="Max Text Length"
-                                body={this.getMaxCountHelpText}
+                            <DomainFieldLabel
+                                label={'Maximum Text Length'}
+                                helpTipBody={this.getMaxCountHelpText}
                             />
                         </div>
                     </Col>

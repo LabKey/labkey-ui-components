@@ -1,7 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { EntityDetailsForm } from "../entities/EntityDetailsForm";
-import { LabelOverlay } from "../../forms/LabelOverlay";
 import { QuerySelect } from "../../forms/QuerySelect";
 import { SCHEMAS } from "../../base/models/schemas";
 import { DEFINE_DATA_CLASS_TOPIC } from "../../../util/helpLinks";
@@ -12,6 +11,7 @@ import { HelpTopicURL } from "../HelpTopicURL";
 import { initQueryGridState } from "../../../global";
 import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
 import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
+import { DomainFieldLabel } from "../DomainFieldLabel";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
@@ -84,14 +84,13 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
 
         return (
             <Row>
-                <Col xs={3}>
-                    <LabelOverlay
+                <Col xs={2}>
+                    <DomainFieldLabel
                         label={'Sample Set'}
-                        description={`The default Sample Set where new samples will be created for this ${nounSingular.toLowerCase()}.`}
-                        canMouseOverTooltip={true}
+                        helpTipBody={() => `The default Sample Set where new samples will be created for this ${nounSingular.toLowerCase()}.`}
                     />
                 </Col>
-                <Col xs={9}>
+                <Col xs={10}>
                     <QuerySelect
                         componentId={FORM_IDS.SAMPLE_TYPE_ID}
                         name={FORM_IDS.SAMPLE_TYPE_ID}
@@ -113,10 +112,12 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
 
         return (
             <Row>
-                <Col xs={3}>
-                    Category
+                <Col xs={2}>
+                    <DomainFieldLabel
+                        label={'Category'}
+                    />
                 </Col>
-                <Col xs={9}>
+                <Col xs={10}>
                     <QuerySelect
                         componentId={FORM_IDS.CATEGORY}
                         name={FORM_IDS.CATEGORY}

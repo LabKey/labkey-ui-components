@@ -5,6 +5,7 @@ import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
 import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
 import { ListModel } from './models';
 import { SectionHeading } from "../SectionHeading";
+import { DomainFieldLabel } from "../DomainFieldLabel";
 
 interface BasicPropertiesInputsProps {
     model: ListModel;
@@ -18,7 +19,10 @@ export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
         return(
             <Row className={'margin-top'}>
                 <Col xs={3} lg={2}>
-                    Name *
+                    <DomainFieldLabel
+                        label={'Name'}
+                        required={true}
+                    />
                 </Col>
 
                 <Col xs={9} lg={8}>
@@ -45,7 +49,9 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
         return(
             <Row className={'margin-top'}>
                 <Col xs={3} lg={2}>
-                    Description
+                    <DomainFieldLabel
+                        label={'Description'}
+                    />
                 </Col>
 
                 <Col xs={9} lg={8}>

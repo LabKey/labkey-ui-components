@@ -1,13 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.39.3
+*Released*: 24 March 2020
 * Issue 39911: EditableGrid issue with pasting values into a cell that has a lookup that is not public
 
 ### version 0.39.2
 *Released*: 23 March 2020
-
 * Dependency version updates
 
 ### version 0.39.1

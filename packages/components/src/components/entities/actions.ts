@@ -318,16 +318,23 @@ export function getInitialParentChoices(parentTypeOptions: List<IEntityTypeOptio
     return parentValuesByType.sortBy(choice => choice.type.label, naturalSort).toList();
 }
 
-export function getUpdatedRowForParentChanges(parentDataType: EntityDataType, currentParents: List<EntityChoice>, childModel: QueryGridModel) {
+export function getUpdatedRowForParentChanges(parentDataType: EntityDataType, originalParents: List<EntityChoice>, currentParents: List<EntityChoice>, childModel: QueryGridModel) {
     const queryData = childModel.getRow();
     const queryInfo = childModel.queryInfo;
 
     let updatedValues = {};
-    currentParents.forEach((parentChoice) => {
-        // Label may seem wrong here, but it is the same as query when extracted from the original query to get
-        // the entity types.
-        updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || "";
-    });
+    if (currentParents.isEmpty()) { // have no current parents but have original parents, send in empty strings so original parents are removed.
+        originalParents.forEach((parentChoice) => {
+            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = "";
+        })
+    }
+    else {
+        currentParents.forEach((parentChoice) => {
+            // Label may seem wrong here, but it is the same as query when extracted from the original query to get
+            // the entity types.
+            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || "";
+        });
+    }
 
     queryInfo.getPkCols().forEach((pkCol) => {
         const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);

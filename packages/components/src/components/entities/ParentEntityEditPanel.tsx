@@ -155,7 +155,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         this.setState(() => ({submitting: true}));
 
         const { parentDataType, onUpdate } = this.props;
-        const { currentParents } = this.state;
+        const { currentParents, originalParents } = this.state;
         const childModel = this.getChildModel();
 
         const queryInfo = childModel.queryInfo;
@@ -163,7 +163,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
         return updateRows({
             schemaQuery,
-            rows: [getUpdatedRowForParentChanges(parentDataType, currentParents, childModel)]
+            rows: [getUpdatedRowForParentChanges(parentDataType, originalParents, currentParents, childModel)]
         }).then(() => {
             this.setState(() => ({
                 submitting: false,
@@ -193,10 +193,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             }));
         });
     };
-
-    someParentHasValue(parents: List<EntityChoice>) : boolean {
-        return parents.find((parent) => parent.value && parent.value.length > 0) !== undefined
-    }
 
     canSubmit() {
         return parentValuesDiffer(this.state.originalParents, this.state.currentParents)

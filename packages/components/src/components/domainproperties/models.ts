@@ -33,6 +33,7 @@ import {
     FLOAT_RANGE_URI,
     INT_RANGE_URI,
     LONG_RANGE_URI,
+    MAX_TEXT_LENGTH,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -811,6 +812,11 @@ export class DomainField extends Record({
         // Special case for users, needs different URI for uniqueness in UI but actually uses int URI
         if (json.rangeURI === USER_RANGE_URI) {
             json.rangeURI = INT_RANGE_URI;
+        }
+
+        // Issue 39938: revert back to max length of 4000 if user input is larger then this value
+        if (df.scale && (isNaN(df.scale) || df.scale > MAX_TEXT_LENGTH)) {
+            json.scale = MAX_TEXT_LENGTH;
         }
 
         // remove non-serializable fields

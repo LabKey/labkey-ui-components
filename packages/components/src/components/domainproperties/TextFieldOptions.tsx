@@ -52,10 +52,6 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
             value = parseInt(value);
         }
 
-        if (isNaN(value) || value > MAX_TEXT_LENGTH) {
-            value = MAX_TEXT_LENGTH;
-        }
-
         if (onChange && value !== scale) {
             onChange(scaleId, value);
         }

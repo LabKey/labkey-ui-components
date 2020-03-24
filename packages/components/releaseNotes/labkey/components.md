@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - BasePropertiesPanel, SectionHeading, withDomainPropertiesPanelCollapse (instead of DomainPropertiesPanelContext)
     - BaseDomainDesigner component and withBaseDomainDesigner HOC
     - DomainFieldLabel component for domain designer field input consistency
+    - Issue 39938: Domain field fix to revert back to max length of 4000 if user input is larger then this value
 
 ### version 0.39.3
 *Released*: 24 March 2020

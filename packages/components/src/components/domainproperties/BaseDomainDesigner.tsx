@@ -123,12 +123,17 @@ interface BaseDomainDesignerProps {
     onCancel: () => void
     onFinish: () => void
     successBsStyle?: string
+    saveBtnText?: string
 }
 
 export class BaseDomainDesigner extends React.PureComponent<BaseDomainDesignerProps, any> {
 
+    static defaultProps = {
+        saveBtnText: 'Save'
+    };
+
     render() {
-        const { children, domains, exception, name, visitedPanels, successBsStyle, submitting, onFinish, onCancel, hasValidProperties } = this.props;
+        const { children, domains, exception, name, visitedPanels, successBsStyle, submitting, onFinish, onCancel, hasValidProperties, saveBtnText } = this.props;
 
         // get a list of the domain names that have errors
         const errorDomains = domains.filter((domain) => {
@@ -159,7 +164,7 @@ export class BaseDomainDesigner extends React.PureComponent<BaseDomainDesignerPr
                         disabled={submitting}
                         onClick={onFinish}
                     >
-                        Save
+                        {saveBtnText}
                     </Button>
                 </div>
             </>

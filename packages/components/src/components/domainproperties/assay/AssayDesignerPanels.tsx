@@ -21,6 +21,7 @@ interface Props {
     appIsValidMsg?: (model: AssayProtocolModel) => string
     useTheme?: boolean
     successBsStyle?: string
+    saveBtnText?: string
 }
 
 interface State {
@@ -129,7 +130,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
     render() {
         const {
             appPropertiesOnly, containerTop, useTheme, successBsStyle, currentPanelIndex, validatePanel,
-            visitedPanels, firstState, onTogglePanel, submitting, onCancel
+            visitedPanels, firstState, onTogglePanel, submitting, onCancel, saveBtnText
         } = this.props;
         const { protocolModel } = this.state;
 
@@ -143,6 +144,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                 submitting={submitting}
                 onCancel={onCancel}
                 onFinish={this.onFinish}
+                saveBtnText={saveBtnText}
                 successBsStyle={successBsStyle}
             >
                 <AssayPropertiesPanel

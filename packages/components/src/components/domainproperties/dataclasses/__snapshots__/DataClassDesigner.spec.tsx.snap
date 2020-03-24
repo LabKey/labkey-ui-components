@@ -1859,6 +1859,7 @@ exports[`DataClassDesigner initModel 1`] = `
       name="test1"
       onCancel={[MockFunction]}
       onFinish={[Function]}
+      saveBtnText="Save"
       submitting={false}
       visitedPanels={Immutable.List []}
     >

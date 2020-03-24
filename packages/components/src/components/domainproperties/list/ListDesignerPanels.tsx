@@ -19,6 +19,7 @@ interface Props {
     useTheme?: boolean
     containerTop?: number // This sets the top of the sticky header, default is 0
     successBsStyle?: string
+    saveBtnText?: string
 }
 
 interface State {
@@ -151,7 +152,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
     render() {
         const {
             onCancel, useTheme, containerTop, successBsStyle, visitedPanels, currentPanelIndex, firstState,
-            validatePanel, submitting, onTogglePanel
+            validatePanel, submitting, onTogglePanel, saveBtnText
         } = this.props;
         const { model, fileImportData } = this.state;
 
@@ -165,6 +166,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 submitting={submitting}
                 onCancel={onCancel}
                 onFinish={this.onFinish}
+                saveBtnText={saveBtnText}
                 successBsStyle={successBsStyle}
             >
                 <ListPropertiesPanel

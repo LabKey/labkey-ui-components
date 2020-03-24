@@ -276,6 +276,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       hasValidProperties={false}
       onCancel={[MockFunction]}
       onFinish={[Function]}
+      saveBtnText="Save"
       submitting={false}
       visitedPanels={Immutable.List []}
     >
@@ -4812,6 +4813,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
       name="Test Assay Protocol"
       onCancel={[MockFunction]}
       onFinish={[Function]}
+      saveBtnText="Save"
       submitting={false}
       visitedPanels={Immutable.List []}
     >
@@ -17412,6 +17414,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
       hasValidProperties={false}
       onCancel={[MockFunction]}
       onFinish={[Function]}
+      saveBtnText="Save"
       submitting={false}
       visitedPanels={Immutable.List []}
     >
@@ -21596,6 +21599,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
       hasValidProperties={false}
       onCancel={[MockFunction]}
       onFinish={[Function]}
+      saveBtnText="Save"
       submitting={false}
       visitedPanels={Immutable.List []}
     >
@@ -25709,6 +25713,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
       name="Test Assay Protocol"
       onCancel={[MockFunction]}
       onFinish={[Function]}
+      saveBtnText="Save"
       submitting={false}
       visitedPanels={Immutable.List []}
     >
@@ -39425,6 +39430,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
       name="Test Assay Protocol"
       onCancel={[MockFunction]}
       onFinish={[Function]}
+      saveBtnText="Save"
       submitting={false}
       visitedPanels={Immutable.List []}
     >

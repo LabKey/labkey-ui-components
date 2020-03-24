@@ -23,6 +23,7 @@ interface Props {
     containerTop?: number // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean
     successBsStyle?: string
+    saveBtnText?: string
 }
 
 interface State {
@@ -97,7 +98,7 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
     render() {
         const {
             onCancel, appPropertiesOnly, containerTop, useTheme, nounSingular, nounPlural, nameExpressionInfoUrl,
-            nameExpressionPlaceholder, headerText, successBsStyle, onTogglePanel, submitting,
+            nameExpressionPlaceholder, headerText, successBsStyle, onTogglePanel, submitting, saveBtnText,
             currentPanelIndex, visitedPanels, validatePanel, firstState
         } = this.props;
         const { model } = this.state;
@@ -112,6 +113,7 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
                 submitting={submitting}
                 onCancel={onCancel}
                 onFinish={this.onFinish}
+                saveBtnText={saveBtnText}
                 successBsStyle={successBsStyle}
             >
                 <DataClassPropertiesPanel

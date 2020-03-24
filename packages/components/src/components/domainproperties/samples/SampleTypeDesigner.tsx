@@ -69,6 +69,7 @@ interface Props {
     useTheme?: boolean,
     appPropertiesOnly?: boolean,
     successBsStyle?: string
+    saveBtnText?: string
 }
 
 interface State {
@@ -379,7 +380,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const {
             containerTop, useTheme, appPropertiesOnly, successBsStyle, currentPanelIndex, visitedPanels, firstState,
             validatePanel, onTogglePanel, submitting, onCancel, nameExpressionPlaceholder, nameExpressionInfoUrl,
-            nounSingular, nounPlural, headerText
+            nounSingular, nounPlural, headerText, saveBtnText
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -393,6 +394,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 submitting={submitting}
                 onCancel={onCancel}
                 onFinish={this.onFinish}
+                saveBtnText={saveBtnText}
                 successBsStyle={successBsStyle}
             >
                 <SampleTypePropertiesPanel

@@ -17,7 +17,12 @@ import {
     updateRows
 } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
-import { getEntityTypeOptions, getInitialParentChoices, getUpdatedRowForParentChanges } from './actions';
+import {
+    getEntityTypeOptions,
+    getInitialParentChoices,
+    getUpdatedRowForParentChanges,
+    parentValuesDiffer
+} from './actions';
 import { List, Map } from 'immutable';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
@@ -40,7 +45,6 @@ interface State {
     error: React.ReactNode
     loading: boolean
     parentTypeOptions: List<IEntityTypeOption>
-    isDirty: boolean
     submitting: boolean
     originalParents: List<EntityChoice>
     currentParents: List<EntityChoice>
@@ -61,7 +65,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             error: undefined,
             loading: true,
             parentTypeOptions: undefined,
-            isDirty: false,
             submitting: false,
             originalParents: undefined,
             currentParents: undefined
@@ -79,11 +82,15 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         getEntityTypeOptions(typeListingSchemaQuery, instanceSchemaName, filterArray)
             .then((optionsMap) => {
                 const parentTypeOptions = optionsMap.get(typeListingSchemaQuery.queryName);
-                const currentParents = getInitialParentChoices(parentTypeOptions, parentDataType, this.getChildModel());
+                const originalParents = getInitialParentChoices(parentTypeOptions, parentDataType, this.getChildModel());
+                let currentParents = originalParents.reduce((list, parent) => {
+                    return list.push({...parent})
+                }, List<EntityChoice>());
+
                 this.setState(() => ({
                     loading: false,
                     parentTypeOptions,
-                    originalParents: currentParents,
+                    originalParents,
                     currentParents,
                 }));
             }
@@ -111,26 +118,25 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             const updatedParents = state.currentParents.set(index, {type: selectedOption, value: undefined, ids: undefined});
             return {
                 currentParents: updatedParents,
-                isDirty: this.someParentHasValue(updatedParents)
             }
         });
     };
 
     onParentValueChange = (name: string, value: string | Array<any>, index: number) => {
-        this.updateParentValue(value, index, true)
+        this.updateParentValue(value, index, false)
     };
 
     onInitialParentValue = (value: string, selectedValues: List<any>, index: number) => {
-        this.updateParentValue(value, index, false);
+        this.updateParentValue(value, index, true);
     };
 
-    updateParentValue(value: string | Array<any>, index: number, makeDirty: boolean) {
+    updateParentValue(value: string | Array<any>, index: number, updateOriginal: boolean) {
         this.setState((state) => {
             let newChoice = state.currentParents.get(index);
             newChoice.value = Array.isArray(value) ? value.join(DELIMITER) : value;
             return {
                 currentParents: state.currentParents.set(index, newChoice),
-                isDirty: state.isDirty || makeDirty
+                originalParents: updateOriginal ? state.originalParents.set(index, {...newChoice}) : state.originalParents,
             }
         });
     }
@@ -161,7 +167,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         }).then(() => {
             this.setState(() => ({
                 submitting: false,
-                isDirty: false,
                 editing: false
             }));
 
@@ -194,8 +199,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     }
 
     canSubmit() {
-        // TODO this will change when we can actually delete parents entirely.
-        return this.state.isDirty && this.someParentHasValue(this.state.currentParents);
+        return parentValuesDiffer(this.state.originalParents, this.state.currentParents)
     }
 
     renderProgress() {
@@ -257,7 +261,6 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         this.setState((state) => {
             return {
                 currentParents: state.currentParents.delete(index),
-                isDirty: true
             }
         });
     };

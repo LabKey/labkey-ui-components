@@ -12,6 +12,7 @@ import {
     IParentOption
 } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
+import { DELIMITER } from '../forms/input/SelectInput';
 
 export interface DeleteConfirmationData {
     canDelete: Array<any>
@@ -325,9 +326,7 @@ export function getUpdatedRowForParentChanges(parentDataType: EntityDataType, cu
     currentParents.forEach((parentChoice) => {
         // Label may seem wrong here, but it is the same as query when extracted from the original query to get
         // the entity types.
-        if (parentChoice.value && parentChoice.value.length > 0) {
-            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value;
-        }
+        updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || "";
     });
 
     queryInfo.getPkCols().forEach((pkCol) => {
@@ -361,4 +360,29 @@ export function deleteEntityType(deleteActionName: string, rowId: number): Promi
             }),
         });
     });
+}
+
+export function parentValuesDiffer(sortedOriginalParents: List<EntityChoice>, currentParents: List<EntityChoice>) : boolean {
+    const sortedCurrentParents = currentParents.sortBy(choice => choice.type ? choice.type.label : "~~NO_TYPE~~", naturalSort).toList();
+    const difference = sortedOriginalParents.find((original, index) => {
+        const current = sortedCurrentParents.get(index);
+        if (!current)
+            return true;
+        if (current.type && original.type.rowId !== current.type.rowId) {
+            return true;
+        }
+        const originalValues = original.value ? original.value.split(DELIMITER).sort(naturalSort).join(DELIMITER) : "";
+        const currentValues = current.value ? current.value.split(DELIMITER).sort(naturalSort).join(DELIMITER) : "";
+        if (originalValues !== currentValues) {
+            return true;
+        }
+    });
+    if (difference) {
+        return true;
+    }
+    // we have more current parents than the original and we have selected a value for at least one of these parents.
+    if (sortedCurrentParents.size > sortedOriginalParents.size) {
+        return sortedCurrentParents.slice(sortedOriginalParents.size).find((parent) => parent.value !== undefined) !== undefined;
+    }
+    return false;
 }

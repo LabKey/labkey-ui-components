@@ -1,7 +1,7 @@
 import { DataClassDataType, QueryGridModel, SchemaQuery } from '../..';
 import { fromJS, List, Map } from 'immutable';
-import { IEntityTypeOption } from './models';
-import { getInitialParentChoices } from './actions';
+import { EntityChoice, IEntityTypeOption } from './models';
+import { getInitialParentChoices, parentValuesDiffer } from './actions';
 
 describe("getInitialParentChoices", () => {
     const modelId = 'id';
@@ -255,5 +255,279 @@ describe("getInitialParentChoices", () => {
             "urn:lsid:labkey.com:Data.Folder-252:a49f277e-301e-1038-a031-328bafaf2618",
             "urn:lsid:labkey.com:Data.Folder-252:a49f277f-301e-1038-a031-328bafaf2618",
             "urn:lsid:labkey.com:Data.Folder-252:a49f2780-301e-1038-a031-328bafaf2618"])
+    });
+});
+
+describe("parentValuesDiffer", () => {
+    test("empty lists", () => {
+        expect(parentValuesDiffer(List<EntityChoice>(), List<EntityChoice>())).toBe(false)
+    });
+    let original = List<EntityChoice>([
+        {
+            type: {
+                lsid: "lsid1",
+                rowId: 1,
+                label: "Label 1"
+            },
+            ids: ["id1", "id2"],
+            value: "Val1,Val2"
+        },
+        {
+            type: {
+                lsid: "lsid2",
+                rowId: 2,
+                label: "Label 2"
+            },
+            ids: ["id3"],
+            value: "Val3"
+
+        }
+    ]);
+
+    test("non-empty without differences", () => {
+
+        let current = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid1",
+                    rowId: 1,
+                    label: "Label 1"
+                },
+                ids: ["id1", "id2"],
+                value: "Val1,Val2"
+            },
+            {
+                type: {
+                    lsid: "lsid2",
+                    rowId: 2,
+                    label: "Label 2"
+                },
+                ids: ["id3"],
+                value: "Val3"
+
+            }
+        ]);
+        expect(parentValuesDiffer(original, current)).toBe(false);
+    });
+
+    test("order change only", () => {
+
+        let current = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid2",
+                    rowId: 2,
+                    label: "Label 2"
+                },
+                ids: ["id3"],
+                value: "Val3"
+
+            },
+            {
+                type: {
+                    lsid: "lsid1",
+                    rowId: 1,
+                    label: "Label 1"
+                },
+                ids: ["id1", "id2"],
+                value: "Val1,Val2"
+            },
+
+        ]);
+        expect(parentValuesDiffer(original, current)).toBe(false);
+    });
+
+    test("original list smaller", () => {
+        let original = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid1",
+                    rowId: 1,
+                    label: "Label 1"
+                },
+                ids: ["id1", "id2"],
+                value: "Val1,Val2"
+            }
+        ]);
+        let current = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid2",
+                    rowId: 2,
+                    label: "Label 2"
+                },
+                ids: ["id3"],
+                value: "Val3"
+
+            },
+            {
+                type: {
+                    lsid: "lsid1",
+                    rowId: 1,
+                    label: "Label 1"
+                },
+                ids: ["id1", "id2"],
+                value: "Val1,Val2"
+            },
+
+        ]);
+        expect(parentValuesDiffer(original, current)).toBe(true);
+    });
+
+    test("original list larger", () => {
+        let current = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid2",
+                    rowId: 2,
+                    label: "Label 2"
+                },
+                ids: ["id3"],
+                value: "Val3"
+
+            }
+        ]);
+        expect(parentValuesDiffer(original, current)).toBe(true);
+    });
+
+    test ("same size, different types", () => {
+        let current = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid31",
+                    rowId: 31,
+                    label: "Label 31"
+                },
+                ids: ["id3.1"],
+                value: "Val3.1"
+            },
+            {
+                type: {
+                    lsid: "lsid2",
+                    rowId: 2,
+                    label: "Label 2"
+                },
+                ids: ["id3"],
+                value: "Val3"
+
+            }
+        ]);
+        expect(parentValuesDiffer(original, current)).toBe(true);
+    });
+
+    test("same types, different values", () => {
+        let current = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid1",
+                    rowId: 1,
+                    label: "Label 1"
+                },
+                ids: ["id1", "id2"],
+                value: "Val2,Val1.1"
+            },
+            {
+                type: {
+                    lsid: "lsid2",
+                    rowId: 2,
+                    label: "Label 2"
+                },
+                ids: ["id3"],
+                value: "Val3"
+
+            }
+        ]);
+        expect(parentValuesDiffer(original, current)).toBe(true);
+    });
+
+    test("same types, same values, different order", () => {
+        let current = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid1",
+                    rowId: 1,
+                    label: "Label 1"
+                },
+                ids: ["id1", "id2"],
+                value: "Val2,Val1"
+            },
+            {
+                type: {
+                    lsid: "lsid2",
+                    rowId: 2,
+                    label: "Label 2"
+                },
+                ids: ["id3"],
+                value: "Val3"
+
+            }
+        ]);
+        expect(parentValuesDiffer(original, current)).toBe(false);
+    });
+
+    test("current list with unspecified type", () => {
+        let current = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid1",
+                    rowId: 1,
+                    label: "Label 1"
+                },
+                ids: ["id1", "id2"],
+                value: "Val1,Val2"
+            },
+            {
+                type: {
+                    lsid: "lsid2",
+                    rowId: 2,
+                    label: "Label 2"
+                },
+                ids: ["id3"],
+                value: "Val3"
+
+            },
+            {
+                type: {
+                    lsid: undefined,
+                    label: undefined,
+                    rowId: undefined
+                }
+            }
+        ]);
+        expect(parentValuesDiffer(original, current)).toBe(false);
+    });
+
+    test ("current list with new type specified but no value", () => {
+        let current = List<EntityChoice>([
+            {
+                type: {
+                    lsid: "lsid1",
+                    rowId: 1,
+                    label: "Label 1"
+                },
+                ids: ["id1", "id2"],
+                value: "Val1,Val2"
+            },
+            {
+                type: {
+                    lsid: "lsid2",
+                    rowId: 2,
+                    label: "Label 2"
+                },
+                ids: ["id3"],
+                value: "Val3"
+
+            },
+            {
+                type: {
+                    lsid: undefined,
+                    label: "Label 4",
+                    rowId: 4
+                },
+                ids: undefined,
+                value: undefined
+            }
+        ]);
+        expect(parentValuesDiffer(original, current)).toBe(false);
     });
 });

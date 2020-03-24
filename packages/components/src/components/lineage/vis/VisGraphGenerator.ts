@@ -73,15 +73,15 @@ export const DEFAULT_NODE_PROPS = {
 
 // collection of lineage node, all of the same type
 export interface LineageNodeCollection {
-    displayType: string,
-    cpasType: string,
-    baseListURL: string,
-    listURL: string,
-    nodes: Array<LineageNode>
+    baseListURL: string
+    cpasType: string
+    displayType: string
+    listURL: string
+    nodes: LineageNode[]
 }
 
 // group the array of nodes into collections by type
-export function createLineageNodeCollections(nodes: Array<LineageNode>): {[key:string]: LineageNodeCollection}  {
+export function createLineageNodeCollections(nodes: LineageNode[]): {[key:string]: LineageNodeCollection}  {
     const nodesByType: {[key:string]: LineageNodeCollection} = {};
     for (let i = 0; i < nodes.length; i++) {
         let n = nodes[i];

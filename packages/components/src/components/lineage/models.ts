@@ -460,7 +460,6 @@ export class Lineage extends Record({
      * will be stopped when {@link ILineageGroupingOptions.generations} condition is met.
      */
     generateGraph(options?: LineageOptions): VisGraphOptions {
-        // console.log('Lineage.generateGraph');
         if (!options) {
             options = new LineageOptions();
         }

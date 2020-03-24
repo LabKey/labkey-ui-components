@@ -2,23 +2,19 @@
  * Copyright (c) 2019-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
+import { SVGIcon } from '../..';
 
+import { WithNodeInteraction } from './actions';
 import { LineageNode } from './models';
 import { getLineageNodeTitle, LineageNodeCollection } from './vis/VisGraphGenerator';
-import { SVGIcon } from '../base/SVGIcon';
 
 interface LineageNodeListProps {
     title: string
     highlightNode?: string
     listURL?: string
     nodes: LineageNodeCollection
-
-    isNodeInGraph?: (node: LineageNode) => boolean
-    onNodeMouseOver?: (node: LineageNode) => void
-    onNodeMouseOut?: (node: LineageNode) => void
-    onNodeClick?: (node: LineageNode) => void
 }
 
 interface LineageNodeListState {
@@ -28,7 +24,7 @@ interface LineageNodeListState {
 const COLLAPSED_LIST_SHOW_COUNT = 4;
 
 // TODO move the inline styles to lineage.scss
-export class LineageNodeList extends React.PureComponent<LineageNodeListProps, LineageNodeListState> {
+export class LineageNodeList extends PureComponent<LineageNodeListProps & WithNodeInteraction, LineageNodeListState> {
 
     constructor(props) {
         super(props);

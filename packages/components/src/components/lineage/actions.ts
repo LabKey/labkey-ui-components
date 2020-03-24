@@ -28,6 +28,13 @@ import { URLResolver } from '../..';
 
 const LINEAGE_METADATA_COLUMNS = List(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
+export interface WithNodeInteraction {
+    isNodeInGraph?: (node: LineageNode) => boolean
+    onNodeMouseOver?: (node: LineageNode) => void
+    onNodeMouseOut?: (node: LineageNode) => void
+    onNodeClick?: (node: LineageNode) => void
+}
+
 export function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
         // query for both parents and children to facilitate showing counts within the grid links

@@ -5,26 +5,21 @@
 import React from 'react';
 import ReactN from 'reactn';
 import { List } from 'immutable';
+import { LoadingSpinner } from '../..';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
-
-import { LineageFilter, LineageLink, LineageNode, LineageOptions, LineageResult } from './models';
+import { LineageLink, LineageOptions, LineageResult } from './models';
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
-import { loadLineageIfNeeded } from './actions';
+import { loadLineageIfNeeded, WithNodeInteraction } from './actions';
 import { createLineageNodeCollections } from './vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
 
 interface Props {
     seed: string
-    showRuns: boolean
     highlightNode?: string
-    isNodeInGraph?: (node: LineageNode) => boolean
-    onNodeMouseOver?: (node: LineageNode) => void
-    onNodeMouseOut?: (node: LineageNode) => void
-    onNodeClick?: (node: LineageNode) => void
+    options?: LineageOptions
 }
 
-export class LineageSummary extends ReactN.Component<Props, any> {
+export class LineageSummary extends ReactN.Component<Props & WithNodeInteraction> {
 
     componentDidMount() {
         const { seed } = this.props;
@@ -39,19 +34,12 @@ export class LineageSummary extends ReactN.Component<Props, any> {
     }
 
     getLineageResult(): LineageResult {
-        const { seed, showRuns } = this.props;
+        const { options, seed } = this.props;
 
         // need to access this.global directly to connect this component to the re-render cycle
         const lineage = this.global.QueryGrid_lineageResults.get(seed);
 
-        let options: LineageOptions;
-        if (!showRuns) {
-            options = new LineageOptions({
-                filters: List<LineageFilter>([new LineageFilter('type', ['Sample', 'Data'])])
-            });
-        }
-
-        return lineage ? lineage.filterResult(options) : undefined;
+        return lineage?.filterResult(options);
     }
 
     renderNodeList(direction, lineage, edges: List<LineageLink>, highlightNode) {
@@ -93,19 +81,26 @@ export class LineageSummary extends ReactN.Component<Props, any> {
         }
 
         const node = lineage.nodes.get(lineage.seed);
-        const parents: List<LineageLink> = node.get('parents');
-        const children: List<LineageLink> = node.get('children');
 
-        if (this.empty(parents) && this.empty(children)) {
+        if (!node) {
+            window['LL'] = lineage;
+            return <div>Unable to resolve lineage for seed: {lineage.seed}</div>
+        }
+
+        const { children, parents } = node;
+        const hasChildren = !this.empty(children);
+        const hasParents = !this.empty(parents);
+
+        if (!hasChildren && !hasParents) {
             return <div>No lineage for {node.name}</div>
         }
 
-        const hasBoth = !this.empty(parents) && !this.empty(children);
-
-        return <>
-            {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, lineage, parents, highlightNode)}
-            {hasBoth && <hr/>}
-            {this.renderNodeList(LINEAGE_DIRECTIONS.Children, lineage, children, highlightNode)}
-        </>;
+        return (
+            <>
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, lineage, parents, highlightNode)}
+                {hasChildren && hasParents && <hr/>}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, lineage, children, highlightNode)}
+            </>
+        );
     }
 }

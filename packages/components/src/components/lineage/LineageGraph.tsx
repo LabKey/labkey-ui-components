@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import ReactN from 'reactn';
 import { List } from 'immutable';
 import { Alert, AppURL, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '../..';
@@ -42,7 +42,7 @@ interface LinageGraphProps {
     initialModel?: QueryGridModel
 }
 
-export class LineageGraph extends ReactN.Component<LinageGraphProps, any> {
+export class LineageGraph extends ReactN.PureComponent<LinageGraphProps> {
 
     componentDidMount() {
         loadLineageIfNeeded(this.props.lsid, this.props.distance);
@@ -73,7 +73,7 @@ interface LineageGraphDisplayState {
     selectedNodes?: Array<VisGraphNodeType>
 }
 
-class LineageGraphDisplay extends React.PureComponent<LineageGraphDisplayProps, LineageGraphDisplayState> {
+class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, LineageGraphDisplayState> {
 
     static defaultProps = {
         filterIn: true,
@@ -184,24 +184,20 @@ class LineageGraphDisplay extends React.PureComponent<LineageGraphDisplayProps, 
         }
     }
 
-    renderSelectedGraphNode(seed: string, hoverNodeLsid: string, node: VisGraphNode, showLineageSummary: boolean = true) {
-        const lineageNode = node.lineageNode;
-        const model = this.getNodeGridDataModel(lineageNode);
+    renderSelectedGraphNode(seed: string, hoverNodeLsid: string, node: VisGraphNode, showSummary: boolean = true) {
+        const { lineageNode } = node;
 
-        return (
-            <SelectedNodeDetail
-                seed={seed}
-                node={lineageNode}
-                entityModel={model}
-                highlightNode={hoverNodeLsid}
-                isNodeInGraph={this.isNodeInGraph}
-                onNodeMouseOver={this.onSummaryNodeMouseOver}
-                onNodeMouseOut={this.onSummaryNodeMouseOut}
-                onNodeClick={this.onSummaryNodeClick}
-                hideLegacyLinks={this.props.hideLegacyLinks}
-                showLineageSummary={showLineageSummary}
-            />
-        );
+        return <SelectedNodeDetail
+            seed={seed}
+            node={lineageNode}
+            entityModel={this.getNodeGridDataModel(lineageNode)}
+            highlightNode={hoverNodeLsid}
+            isNodeInGraph={this.isNodeInGraph}
+            onNodeMouseOver={this.onSummaryNodeMouseOver}
+            onNodeMouseOut={this.onSummaryNodeMouseOut}
+            onNodeClick={this.onSummaryNodeClick}
+            showSummary={showSummary}
+        />;
     }
 
     renderSelectedClusterNode(seed: string, hoverNodeLsid: string, node: VisGraphClusterNode) {

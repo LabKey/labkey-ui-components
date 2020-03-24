@@ -230,6 +230,8 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     showAddFieldsButton: true
 };
 
+export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
+
 interface IDomainDesign {
     name: string
     container: string
@@ -927,18 +929,19 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
 
     let { queryName, rangeURI = INT_RANGE_URI } = decodeLookup(sampleQueryValue);
     let lookupType = field.lookupType || LOOKUP_TYPE;
-    let sampleField = 'all' === sampleQueryValue ?
+    let sampleField = 'all' === queryName ?
         {
+            // Use the exp.materials table for 'all'
             lookupSchema: SCHEMAS.EXP_TABLES.SCHEMA,
             lookupQuery: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
             lookupQueryValue: sampleQueryValue,
             lookupType: field.lookupType.set('rangeURI', rangeURI),
             rangeURI: rangeURI,
-        }:
-        {
+        }: {
+            // use the samples.<SampleType> table for specific sample types
             lookupSchema: SCHEMAS.SAMPLE_SETS.SCHEMA,
             lookupQuery: queryName,
-            lookupQueryValue: sampleQueryValue || 'all',
+            lookupQueryValue: sampleQueryValue || SAMPLE_TYPE_OPTION_VALUE,
             lookupType: lookupType.set('rangeURI', rangeURI),
             rangeURI: rangeURI,
         };

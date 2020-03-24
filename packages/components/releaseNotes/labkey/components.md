@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.39.4
+*Released*: 24 March 2020
+* Issue 39968: Cannot update assay result field to "All Samples"
+
 ### version 0.39.3
 *Released*: 24 March 2020
 * Issue 39911: EditableGrid issue with pasting values into a cell that has a lookup that is not public

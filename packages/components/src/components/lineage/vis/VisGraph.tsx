@@ -87,7 +87,6 @@ interface VisHoverEvent {
 
 interface VisGraphProps {
     fitOnResize?: boolean
-    lineageGridHref?: string
     onNodeClick?: (clickedNode: VisGraphNodeType) => void
     onNodeDoubleClick?: (clickedNode: VisGraphNodeType) => void
     onNodeSelect?: (selectedNodes: VisGraphNodeType[]) => void
@@ -116,7 +115,6 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
 
     refs: {
         visgraph: HTMLElement
-        settingsPopover: any
     };
 
     constructor(props: VisGraphProps) {
@@ -145,11 +143,9 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
 
     public highlightNode(node: LineageNode, hover: boolean) {
         if (node && this.data) {
-            const lsid = node.get('lsid');
-
             // findNode will return any cluster node ids that the node is within.
             // If the node is in a cluster, highlight it the cluster instead
-            const clusterIds = this.network.findNode(lsid);
+            const clusterIds = this.network.findNode(node.lsid);
             const topNodeId = clusterIds[0];
             if (topNodeId) {
 
@@ -183,18 +179,6 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
             this.data = undefined;
         }
     }
-
-    showAllSettings = (): void => {
-        this.network.setOptions({
-            configure: true
-        });
-    };
-
-    hideAllSettings = (): void => {
-        this.network.setOptions({
-            configure: false
-        });
-    };
 
     fitGraph = (): void => {
         this.network.fit();
@@ -456,7 +440,6 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
                 <div ref="visgraph" style={{height: graphHeight}}/>
                 <VisGraphControls
                     getNetwork={this.getNetwork}
-                    lineageGridHref={this.props.lineageGridHref}
                     onReset={this.onReset}
                 />
             </div>

@@ -4,6 +4,16 @@
  */
 import { fromJS, Iterable, List, Map, Seq } from 'immutable';
 import { Ajax, Filter, Utils } from '@labkey/api';
+import {
+    AppURL,
+    buildURL,
+    GridColumn,
+    ISelectRowsResult,
+    Location,
+    URLResolver,
+    SCHEMAS,
+    selectRows,
+} from '../..';
 
 import {
     Lineage,
@@ -14,17 +24,9 @@ import {
     LineageOptions,
     LineageResult,
 } from './models';
-import { ISelectRowsResult, selectRows } from '../../query/api';
 import { getLineageResult, updateLineageResult } from '../../global';
-import { Location } from '../../util/URL';
 import { LINEAGE_DIRECTIONS } from './constants';
 import { getLineageDepthFirstNodeList } from './utils';
-import { SCHEMAS } from '../base/models/schemas';
-import { AppURL } from '../../url/AppURL';
-import { buildURL } from '../../url/ActionURL';
-import { GridColumn } from '../base/Grid';
-import { SchemaQuery } from '../base/models/model';
-import { URLResolver } from '../..';
 
 const LINEAGE_METADATA_COLUMNS = List(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
@@ -65,52 +67,49 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
     });
 }
 
-function fetchSampleSetData(sampleSet: string, nodes: List<LineageNode>): Promise<ISelectRowsResult> {
-    return new Promise((resolve) => {
-        return selectRows({
-            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            queryName: sampleSet,
-            columns: LINEAGE_METADATA_COLUMNS.join(','),
-            filterArray: [
-                Filter.create("rowId", nodes.map(n => n.get('rowId')).toArray(), Filter.Types.IN),
-            ]
-        }).then((result) =>
-            resolve(result)
-        );
-    });
+function fetchSampleSetData(sampleSetName: string, nodes: List<LineageNode>): Promise<ISelectRowsResult> {
+    return selectRows({
+        schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+        queryName: sampleSetName,
+        columns: LINEAGE_METADATA_COLUMNS.join(','),
+        filterArray: [
+            Filter.create('rowId', nodes.map(n => n.rowId).toArray(), Filter.Types.IN),
+        ]
+    })
 }
 
-function fetchDataClassData(schemaQuery: SchemaQuery, nodes: List<LineageNode>): Promise<ISelectRowsResult> {
-    return new Promise((resolve) => {
-        return selectRows({
-            schemaName: schemaQuery.schemaName,
-            queryName: schemaQuery.queryName,
-            columns: LINEAGE_METADATA_COLUMNS.join(','),
-            filterArray: [
-                Filter.create("rowId", nodes.map(n => n.get('rowId')).toArray(), Filter.Types.IN),
-            ]
-        }).then((result) =>
-            resolve(result)
-        );
+function fetchDataClassData(dataClassName: string, nodes: List<LineageNode>): Promise<ISelectRowsResult> {
+    return selectRows({
+        schemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
+        queryName: dataClassName,
+        columns: LINEAGE_METADATA_COLUMNS.join(','),
+        filterArray: [
+            Filter.create('rowId', nodes.map(n => n.rowId).toArray(), Filter.Types.IN),
+        ]
     });
 }
 
 // get the lineage nodes filtered by nodeType then grouped by their queryName
 function getDataTypeMap(lineage: LineageResult, nodeType: string) : Seq.Keyed<any, Iterable<string, LineageNode>> {
-    let dataNodes = lineage.nodes.filter(node => node.get('type') === nodeType);
-    return dataNodes.groupBy(n => n.get('queryName'));
+    return lineage.nodes
+        .filter(n => n.type === nodeType)
+        .groupBy(n => n.queryName);
 }
 
 export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageResult> {
     return new Promise((resolve) => {
         let promises: Array<Promise<ISelectRowsResult>> = [];
 
-        getDataTypeMap(lineage, 'Sample').forEach((nodeList, sampleSet) => {
-            promises.push(fetchSampleSetData(sampleSet, nodeList.toList()));
+        getDataTypeMap(lineage, 'Sample').forEach((nodeList, sampleSetName) => {
+            if (sampleSetName) {
+                promises.push(fetchSampleSetData(sampleSetName, nodeList.toList()));
+            }
         });
 
-        getDataTypeMap(lineage, 'Data').forEach((nodeList, dataType) => {
-            promises.push(fetchDataClassData(SchemaQuery.create(SCHEMAS.DATA_CLASSES.SCHEMA, dataType), nodeList.toList()));
+        getDataTypeMap(lineage, 'Data').forEach((nodeList, dataClassName) => {
+            if (dataClassName) {
+                promises.push(fetchDataClassData(dataClassName, nodeList.toList()));
+            }
         });
 
         return Promise.all(promises)
@@ -185,18 +184,15 @@ export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promis
         loadLineageIfNeeded(seed, distance),
         fetchSampleSets()
     ]).then(values => {
-        const lineage = values[0];
-        const sampleSets = values[1];
-        const seed = lineage.getSeed();
-        const sampleStats = computeSampleCounts(lineage, sampleSets);
+        const [ lineage, sampleSets ] = values;
 
         let updatedLineage = new Lineage({
             result: lineage.result,
             error: lineage.error,
-            sampleStats
+            sampleStats: computeSampleCounts(lineage, sampleSets),
         });
 
-        updateLineageResult(seed, updatedLineage);
+        updateLineageResult(lineage.getSeed(), updatedLineage);
         return updatedLineage;
     });
 }

@@ -5,7 +5,7 @@
 import React, { PureComponent } from 'react';
 import ReactN from 'reactn';
 import { List } from 'immutable';
-import { Alert, AppURL, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '../..';
+import { Alert, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '../..';
 
 import { loadLineageIfNeeded } from './actions';
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
@@ -31,15 +31,15 @@ const omittedColumns = List(['Alias', 'Description', 'Name', 'SampleSet', 'DataC
 const requiredColumns = List(['Run']);
 
 interface LinageGraphProps {
-    lsid: string
-    navigate: (node: VisGraphNode) => any
-    members?: LINEAGE_DIRECTIONS
     distance?: number
     filters?: List<LineageFilter>
     filterIn?: boolean
     grouping?: ILineageGroupingOptions
     hideLegacyLinks?: boolean
     initialModel?: QueryGridModel
+    lsid: string
+    members?: LINEAGE_DIRECTIONS
+    navigate?: (node: VisGraphNode) => any
 }
 
 export class LineageGraph extends ReactN.PureComponent<LinageGraphProps> {
@@ -96,36 +96,20 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
 
     // if the node is in the graph, it is clickable in the summary panel
     isNodeInGraph = (node: LineageNode): boolean => {
-        let lsid = node.get('lsid');
-
-        const visGraph = this.visGraphRef.current;
-        if (visGraph) {
-            let network = visGraph.getNetwork();
-            let clusterIds = network.findNode(lsid);
-            return clusterIds.length > 0;
-        }
-
-        return false;
+        return this.visGraphRef.current?.getNetwork().findNode(node.lsid) > 0;
     };
 
     onSummaryNodeClick = (node: LineageNode): void => {
         this.onSummaryNodeMouseOut(node);
-        const visGraph = this.visGraphRef.current;
-        if (visGraph) {
-            // select the node
-            let lsid = node.get('lsid');
-            visGraph.selectNodes([lsid]);
-        }
+
+        this.visGraphRef.current?.selectNodes([node.lsid]);
     };
 
-    onSummaryNodeMouseEvent = (node: LineageNode, hover: boolean) => {
+    onSummaryNodeMouseEvent = (node: LineageNode, hover: boolean): void => {
         // clear the hoverNode so the popover will hide
         this.clearHover();
 
-        const visGraph = this.visGraphRef.current;
-        if (visGraph) {
-            visGraph.highlightNode(node, hover);
-        }
+        this.visGraphRef.current?.highlightNode(node, hover);
     };
 
     onSummaryNodeMouseOut = (node: LineageNode): void => {
@@ -137,18 +121,20 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
     };
 
     onVisGraphNodeDoubleClick = (visNode: VisGraphNode): void => {
-        this.props.navigate(visNode);
+        if (this.props.navigate) {
+            this.props.navigate(visNode);
+        }
     };
 
     onVisGraphNodeSelect = (selectedNodes: Array<VisGraphNodeType>): void => {
         this.setState({
-            selectedNodes
+            selectedNodes,
         });
     };
 
     onVisGraphNodeDeselect = (selectedNodes: Array<VisGraphNodeType>): void => {
         this.setState({
-            selectedNodes
+            selectedNodes,
         });
     };
 
@@ -254,12 +240,11 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
                 displayType: initialModel.queryInfo.title,
                 description: row.getIn(['Description', 'value'])
             }),
-            lsid
         })
     }
 
     render() {
-        const { lineage, filters, filterIn, grouping } = this.props;
+        const { initialModel, lineage, lsid, filters, filterIn, grouping } = this.props;
 
         if (lineage) {
             if (lineage.error) {
@@ -272,19 +257,11 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
                 grouping: grouping ? new LineageGroupingOptions(grouping): undefined,
             }));
 
-            const lineageGridHref = AppURL.create('lineage')
-                .addParams({
-                    seeds: lineage.getSeed(),
-                    distance: this.props.distance
-                })
-                .toHref();
-
             return (
-                <div className='row'>
-                    <div className='col-md-8'>
+                <div className="row">
+                    <div className="col-md-8">
                         <VisGraph
                             ref={this.visGraphRef}
-                            lineageGridHref={lineageGridHref}
                             onNodeDoubleClick={this.onVisGraphNodeDoubleClick}
                             onNodeSelect={this.onVisGraphNodeSelect}
                             onNodeDeselect={this.onVisGraphNodeDeselect}
@@ -294,7 +271,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
                             seed={lineage.getSeed()}
                         />
                     </div>
-                    <div className='col-md-4 lineage-node-detail-container'>
+                    <div className="col-md-4 lineage-node-detail-container">
                         {this.renderSelectedNodes(lineage.getSeed())}
                     </div>
                 </div>
@@ -302,19 +279,19 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Lineag
         }
         else {
             return (
-                <div className='row'>
-                    <div className='col-md-8'>
-                        <div className='top-spacing'>
-                            <LoadingSpinner  msg="Loading lineage..."/>
+                <div className="row">
+                    <div className="col-md-8">
+                        <div className="top-spacing">
+                            <LoadingSpinner msg="Loading lineage..."/>
                         </div>
                     </div>
-                    <div className='col-md-4 lineage-node-detail-container'>
-                        {this.props.initialModel ? this.renderSelectedGraphNode(this.props.lsid, undefined, {
-                            id: this.props.lsid,
+                    <div className="col-md-4 lineage-node-detail-container">
+                        {initialModel ? this.renderSelectedGraphNode(lsid, undefined, {
+                            id: lsid,
                             cid: 0,
                             kind: 'node',
                             lineageNode: this.createInitialLineageNode()
-                        }, false) : <LoadingSpinner msg={"Loading details..."}/>}
+                        }, false) : <LoadingSpinner msg="Loading details..."/>}
                     </div>
                 </div>
             )

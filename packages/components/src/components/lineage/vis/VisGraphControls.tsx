@@ -4,7 +4,6 @@ import { Network } from 'vis';
 
 interface GraphControlsProps {
     getNetwork: () => Network
-    lineageGridHref?: string
     onReset: (selectSeed) => any
 }
 
@@ -17,19 +16,19 @@ export class VisGraphControls extends React.PureComponent<GraphControlsProps> {
     };
 
     panDown = (): void => {
-        this.props.getNetwork().moveTo({ offset: { y: -20, x:0 } });
+        this.props.getNetwork().moveTo({ offset: { x: 0, y: -20 } });
     };
 
     panUp = (): void => {
-        this.props.getNetwork().moveTo({ offset: { y: 20, x:0 } });
+        this.props.getNetwork().moveTo({ offset: { x: 0, y: 20 } });
     };
 
     panLeft = (): void => {
-        this.props.getNetwork().moveTo({ offset: { x: 20, y:0 } });
+        this.props.getNetwork().moveTo({ offset: { x: 20, y: 0 } });
     };
 
     panRight = (): void => {
-        this.props.getNetwork().moveTo({ offset: { x: -20, y:0 } });
+        this.props.getNetwork().moveTo({ offset: { x: -20, y: 0 } });
     };
 
     zoomIn = (): void => {

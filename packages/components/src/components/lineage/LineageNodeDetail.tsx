@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import ReactN from 'reactn';
 import { List } from 'immutable';
 import {
@@ -113,46 +113,40 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Wit
             displayType = node.meta.displayType;
         }
 
-        return <>
-            <div className="margin-bottom lineage-node-detail" >
-                <i className="component-detail--child--img">
-                    <SVGIcon
-                        iconDir={'_images'}
-                        theme={Theme.ORANGE}
-                        iconSrc={model.queryInfo.getIconURL()}
-                        height="50px"
-                        width="50px"/>
-                </i>
-                <div className="text__truncate">
-                    <div className="lineage-name">
-                        <h4 className="no-margin-top lineage-name-data">
-                            {(lineageUrl && !isSeed) &&
-                            <a href={lineageUrl} onClick={this.handleLinkClick}>{name}</a>
-                            ||
-                            name
-                            }
-                            <div className='pull-right'>
-                                <a href={url}
-                                   className='lineage-data-link-left'
-                                   onClick={this.handleLinkClick}>
-                                    <span className='lineage-data-link--text'>Overview</span>
-                                </a>
-                                <a href={lineageUrl} className='lineage-data-link-right'
-                                   onClick={this.handleLinkClick}>
-                                    <span className='lineage-data-link--text'>Lineage</span>
-                                </a>
-                            </div>
-                        </h4>
-                    </div>
-                    {displayType && <small>{displayType}</small>}
-                    {aliases && <div>
-                        <small>
-                            {aliases.join(', ')}
-                        </small>
-                    </div>}
-                    {description && <small title={description}>{description}</small>}
+        const header = (
+            <>
+                {(lineageUrl && !isSeed) &&
+                <a href={lineageUrl} onClick={this.handleLinkClick}>{name}</a>
+                ||
+                name
+                }
+                <div className="pull-right">
+                    <a className="lineage-data-link-left"
+                       href={url}
+                       onClick={this.handleLinkClick}>
+                        <span className="lineage-data-link--text">Overview</span>
+                    </a>
+                    <a className="lineage-data-link-right"
+                       href={lineageUrl}
+                       onClick={this.handleLinkClick}>
+                        <span className="lineage-data-link--text">Lineage</span>
+                    </a>
                 </div>
-            </div>
+            </>
+        );
+
+        return <>
+            <NodeDetailHeader
+                header={header}
+                iconSrc={model.queryInfo.getIconURL()}>
+                {displayType && <small>{displayType}</small>}
+                {aliases && <div>
+                    <small>
+                        {aliases.join(', ')}
+                    </small>
+                </div>}
+                {description && <small title={description}>{description}</small>}
+            </NodeDetailHeader>
 
             <Detail queryModel={model} />
 
@@ -207,14 +201,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps & Wi
     render() {
         const { nodes, highlightNode } = this.props;
 
-        let nodesByType: {[key:string]: LineageNodeCollection};
-        if (this.props.nodesByType) {
-            nodesByType = this.props.nodesByType;
-        }
-        else {
-            nodesByType = createLineageNodeCollections(nodes);
-        }
-
+        const nodesByType = this.props.nodesByType ?? createLineageNodeCollections(nodes);
         const groups = Object.keys(nodesByType).sort();
 
         let iconURL;
@@ -228,37 +215,55 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps & Wi
             iconURL = 'default';
         }
 
-        return <>
+        return (
+            <>
+                <NodeDetailHeader header={title} iconSrc={iconURL} />
+
+                {groups.map(groupName =>
+                    <LineageNodeList
+                        key={groupName}
+                        title={groupName}
+                        nodes={nodesByType[groupName]}
+                        onNodeClick={this.onNodeClick}
+                        onNodeMouseOut={this.onNodeMouseOut}
+                        onNodeMouseOver={this.onNodeMouseOver}
+                        isNodeInGraph={this.isNodeInGraph}
+                        highlightNode={highlightNode}
+                    />
+                )}
+            </>
+        );
+    }
+}
+
+interface NodeDetailHeaderProps {
+    header: ReactNode
+    iconSrc: string
+}
+
+class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
+    render() {
+        const { children, header, iconSrc } = this.props;
+
+        return (
             <div className="margin-bottom lineage-node-detail">
                 <i className="component-detail--child--img">
                     <SVGIcon
                         iconDir="_images"
                         theme={Theme.ORANGE}
-                        iconSrc={iconURL}
+                        iconSrc={iconSrc}
                         height="50px"
                         width="50px"/>
                 </i>
                 <div className="text__truncate">
                     <div className="lineage-name">
                         <h4 className="no-margin-top lineage-name-data">
-                            {title}
+                            {header}
                         </h4>
                     </div>
+                    {children}
                 </div>
             </div>
-
-            {groups.map(groupName =>
-                <LineageNodeList
-                    key={groupName}
-                    title={groupName}
-                    nodes={nodesByType[groupName]}
-                    onNodeClick={this.onNodeClick}
-                    onNodeMouseOut={this.onNodeMouseOut}
-                    onNodeMouseOver={this.onNodeMouseOver}
-                    isNodeInGraph={this.isNodeInGraph}
-                    highlightNode={highlightNode}
-                />
-            )}
-        </>;
+        )
     }
 }

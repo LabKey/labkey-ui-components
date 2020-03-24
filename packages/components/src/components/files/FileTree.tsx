@@ -4,8 +4,8 @@ import React, { PureComponent } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFileAlt } from '@fortawesome/free-solid-svg-icons';
-import { Checkbox, Alert } from 'react-bootstrap';
-import { List } from 'immutable';
+import { Checkbox, Alert } from "react-bootstrap";
+import { List } from "immutable";
 import {LoadingSpinner} from "../..";
 
 const customStyle = {
@@ -97,7 +97,7 @@ const Header = (props) => {
     const icon = iconType === 'folder' ? faFolder : faFileAlt;
 
     if (node.id.endsWith('|' + EMPTY_FILE_NAME)) {
-        return ( <div className="filetree-empty-directory">No Files Found</div> );
+        return  ( <div className="filetree-empty-directory">No Files Found</div> );
     }
 
     if (node.id.endsWith('|' + LOADING_FILE_NAME)) {
@@ -135,6 +135,7 @@ interface FileTreeProps {
     loadData: (directory?: string) => Promise<any>
     onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean) => void
 }
+
 
 interface FileTreeState {
     cursor: any

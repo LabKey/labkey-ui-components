@@ -33,7 +33,8 @@ const testColumns = List([
             schemaName: 'alphabet',
             queryName: 'x',
             displayColumn: 'LookupX',
-            keyColumn: 'LookupX'
+            keyColumn: 'LookupX',
+            isPublic: true
         },
         shortCaption: 'A lookup'
     }),

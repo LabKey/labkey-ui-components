@@ -8,6 +8,21 @@ Components, models, actions, and utility functions for LabKey applications and p
     - BaseDomainDesigner component and withBaseDomainDesigner HOC
     - DomainFieldLabel component for domain designer field input consistency
 
+### version 0.39.3
+*Released*: 24 March 2020
+* Issue 39911: EditableGrid issue with pasting values into a cell that has a lookup that is not public
+
+### version 0.39.2
+*Released*: 23 March 2020
+* Dependency version updates
+
+### version 0.39.1
+*Released*: 23 March 2020
+* Run Builder related fixes
+    - Bug fix in file tree to make loading and empty placeholders not selectable when cascading a selection.
+    - File tree style update for checkboxes.
+    - Opt out of export button on QueryGridBar.
+
 ### version 0.39.0
 *Released*: 20 March 2020
 * Item 6835: Data Class designer updates for use in Sample Manager

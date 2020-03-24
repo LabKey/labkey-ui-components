@@ -221,14 +221,14 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             entityDataType: entityDataType,
         });
 
-        let schemaQueries = Map<string, SchemaQuery>();
-        schemaQueries = schemaQueries.set(entityDataType.instanceSchemaName, entityDataType.typeListingSchemaQuery);
+        let schemaQueries = Map<string, EntityDataType>();
+        schemaQueries = schemaQueries.set(entityDataType.instanceSchemaName, entityDataType);
         if (this.props.parentDataTypes) {
             this.props.parentDataTypes.forEach((dataType) => {
-                schemaQueries = schemaQueries.set(dataType.instanceSchemaName, dataType.typeListingSchemaQuery);
+                schemaQueries = schemaQueries.set(dataType.instanceSchemaName, dataType);
             });
         }
-        getEntityTypeData(insertModel, schemaQueries, entityDataType.typeListingSchemaQuery.queryName, allowParents, entityDataType.filterArray)
+        getEntityTypeData(insertModel, schemaQueries, entityDataType.typeListingSchemaQuery.queryName, allowParents)
             .then((partialModel) => {
                 const updatedModel = insertModel.merge(partialModel) as EntityIdCreationModel;
                 this.gridInit(updatedModel);

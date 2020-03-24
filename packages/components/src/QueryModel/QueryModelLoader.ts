@@ -11,17 +11,15 @@ export interface QueryModelLoader {
 
 export const DefaultQueryModelLoader: QueryModelLoader = {
     async loadQueryInfo(model) {
-        const { containerPath, schemaQuery } = model;
-        const { schemaName, queryName } = schemaQuery;
+        const { containerPath, schemaName, queryName } = model;
         const queryInfo = await getQueryDetails({ containerPath, schemaName, queryName });
         return queryInfo.merge({ columns: bindColumnRenderers(queryInfo.columns) });
     },
     async loadRows(model) {
-        const { schemaName, queryName, viewName } = model.schemaQuery;
         const result = await selectRows({
-            schemaName,
-            queryName,
-            viewName,
+            schemaName: model.schemaName,
+            queryName: model.queryName,
+            viewName: model.viewName,
             containerPath: model.containerPath,
             containerFilter: model.containerFilter,
             filterArray: model.filters,

@@ -132,16 +132,28 @@ export class QueryModel implements IQueryModel {
         this.queryInfoLoadingState = LoadingState.INITIALIZED;
     }
 
+    get schemaName() {
+        return this.schemaQuery.schemaName;
+    }
+
+    get queryName() {
+        return this.schemaQuery.queryName;
+    }
+
+    get viewName() {
+        return this.schemaQuery.viewName;
+    }
+
     getColumn(fieldKey: string): QueryColumn {
         return this.queryInfo?.getColumn(fieldKey);
     }
 
     get displayColumns(): QueryColumn[] {
-        return this.queryInfo?.getDisplayColumns(this.schemaQuery.viewName, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getDisplayColumns(this.viewName, List(this.omittedColumns)).toArray();
     }
 
     get allColumns(): QueryColumn[] {
-        return this.queryInfo?.getAllColumns(this.schemaQuery.viewName, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getAllColumns(this.viewName, List(this.omittedColumns)).toArray();
     }
 
     get keyColumns(): QueryColumn[] {
@@ -161,7 +173,7 @@ export class QueryModel implements IQueryModel {
     }
 
     get filters(): Filter.IFilter[] {
-        const { baseFilters, filterArray, queryInfo, keyValue, schemaQuery } = this;
+        const { baseFilters, filterArray, queryInfo, keyValue, viewName } = this;
 
         if (!queryInfo) {
             // Throw an error because this method is only used when making an API request, and if we don't have a
@@ -184,7 +196,7 @@ export class QueryModel implements IQueryModel {
             return [...pkFilter, ...this.detailFilters];
         }
 
-        return [ ...baseFilters, ...filterArray, ...queryInfo.getFilters(schemaQuery.viewName).toArray() ]
+        return [ ...baseFilters, ...filterArray, ...queryInfo.getFilters(viewName).toArray() ]
     }
 
     get columnString(): string {
@@ -209,7 +221,7 @@ export class QueryModel implements IQueryModel {
     }
 
     get sortString(): string {
-        const { sorts, schemaQuery, queryInfo } = this;
+        const { sorts, viewName, queryInfo } = this;
 
         if (!queryInfo) {
             // Throw an error because this method is only used when making an API request, and if we don't have a
@@ -218,7 +230,6 @@ export class QueryModel implements IQueryModel {
         }
 
         let sortStrings = sorts?.map(sortStringMapper) || [];
-        const { viewName } = schemaQuery;
         const viewSorts = queryInfo.getSorts(viewName).map(sortStringMapper).toArray();
 
         if (viewSorts.length > 0) {

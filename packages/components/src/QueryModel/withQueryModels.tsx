@@ -236,10 +236,9 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             this.setState(produce((draft: State) => {
                 const model = draft.queryModels[id];
 
-                if (model.schemaQuery.viewName !== viewName) {
+                if (model.viewName !== viewName) {
                     shouldLoad = true;
-                    const { schemaName, queryName } = model.schemaQuery;
-                    model.schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
+                    model.schemaQuery = SchemaQuery.create(model.schemaName, model.queryName, viewName);
                     // We need to reset all data for the model because changing the view will change things such as
                     // columns and rowCount. If we don't do this we'll render a grid with empty rows/columns.
                     model.messages = undefined;

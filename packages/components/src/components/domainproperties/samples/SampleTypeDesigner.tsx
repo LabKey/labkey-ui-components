@@ -49,9 +49,10 @@ const DATA_CLASS_SCHEMA_KEY:string = 'exp/dataclasses';
 const SAMPLE_ID_RESERVED_ERROR = 'The ' + DEFAULT_SAMPLE_FIELD_CONFIG.name + ' field name is reserved for imported or generated sample ids.';
 
 interface Props {
+    onChange?: (model: SampleTypeModel) => void
     onCancel: () => void
-    onComplete: (response: any) => void
-    beforeFinish?: (formValues: {}) => void
+    onComplete: (response: DomainDesign) => void
+    beforeFinish?: (model: SampleTypeModel) => void
     initModel: DomainDetails
     defaultSampleFieldConfig?: Partial<IDomainField>
     includeDataClasses?: boolean
@@ -78,7 +79,6 @@ interface State {
 }
 
 class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
-    private _dirty = false;
 
     static defaultProps = {
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
@@ -201,8 +201,14 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         return Map<string,string>(aliases);
     };
 
-    onFieldChange = (newModel: SampleTypeModel) => {
-        this.setState(() => ({model:newModel}));
+    onFieldChange = (model: SampleTypeModel) => {
+        const { onChange } = this.props;
+
+        this.setState(() => ({model}), () => {
+            if (onChange) {
+                onChange(model);
+            }
+        });
     };
 
     updateAliasValue = (id:string, field: string, newValue: any): IParentAlias => {
@@ -270,8 +276,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         this.setState(() => ({model: newModel}));
     };
 
-    domainChangeHandler = (newDomain: DomainDesign): void => {
-        const {defaultSampleFieldConfig} = this.props;
+    domainChangeHandler = (newDomain: DomainDesign, dirty: boolean) => {
+        const { defaultSampleFieldConfig, onChange } = this.props;
         const {model} = this.state;
         let invalidDomainField;
         let error;
@@ -286,16 +292,20 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         }
 
         //If error field cleared and error message matches then clear it.
-        if (!invalidDomainField && this.state.error === SAMPLE_ID_RESERVED_ERROR) //Splice || regex better?
+        if (!invalidDomainField && this.state.error === SAMPLE_ID_RESERVED_ERROR) { //Splice || regex better?
             error = undefined;
-
-        this._dirty = true;
+        }
 
         this.setState(() => ({
             model: model.merge({domain:newDomain}) as SampleTypeModel,
             invalidDomainField,
             error,
-        }));
+        }), () => {
+            // Issue 39918: use the dirty property that DomainForm onChange passes
+            if (onChange && dirty) {
+                onChange(model);
+            }
+        });
     };
 
     onFinish = (): void => {
@@ -345,7 +355,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         }
 
         saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name)
-            .then((response) => {
+            .then((response: DomainDesign) => {
                 this.props.setSubmitting(false, () => {
                     this.props.onComplete(response);
                 });

@@ -18,6 +18,7 @@ interface Props {
     onChange?: (model: DataClassModel) => void
     onCancel: () => void
     onComplete: (model: DataClassModel) => void
+    beforeFinish?: (model: DataClassModel) => void
     useTheme?: boolean
     containerTop?: number // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean
@@ -44,11 +45,15 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
     };
 
     saveDomain = () => {
-        const { setSubmitting } = this.props;
+        const { setSubmitting, beforeFinish } = this.props;
         const { model } = this.state;
 
+        if (beforeFinish) {
+            beforeFinish(model);
+        }
+
         saveDomain(model.domain, 'DataClass', model.getOptions(), model.name)
-            .then((response) => {
+            .then((response: DomainDesign) => {
                 let updatedModel = model.set('exception', undefined) as DataClassModel;
                 updatedModel = updatedModel.merge({domain: response}) as DataClassModel;
 

@@ -158,7 +158,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
       <div
         className="panel-heading"
       >
-        Security roles and assignments
+        Security Roles and Assignments
       </div>
       <div
         className="permissions-assignment-panel panel-body"
@@ -1051,7 +1051,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
       <div
         className="panel-heading"
       >
-        Security roles and assignments
+        Security Roles and Assignments
       </div>
       <div
         className="permissions-assignment-panel panel-body"

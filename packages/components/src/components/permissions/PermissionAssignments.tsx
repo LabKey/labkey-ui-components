@@ -35,7 +35,7 @@ interface State {
 export class PermissionAssignments extends React.PureComponent<Props, State> {
 
     static defaultProps = {
-        title: 'Security roles and assignments',
+        title: 'Security Roles and Assignments',
         showDetailsPanel: true
     };
 

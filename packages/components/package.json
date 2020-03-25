@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.39.3-fb-parentRemoval.2",
+  "version": "0.39.5-fb-parentRemoval.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

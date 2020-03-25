@@ -385,6 +385,11 @@ export class QueryColumn extends Record({
         return this.lookup !== undefined;
     }
 
+    // Issue 39911: a public lookup indicates that it is available in the user schema (i.e. can be seen in the schema browser)
+    isPublicLookup(): boolean {
+        return this.isLookup() && this.lookup.isPublic;
+    }
+
     isSampleLookup(): boolean {
         /**
          * 35881: Ensure that a column is a valid lookup to one of the following

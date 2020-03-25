@@ -97,7 +97,7 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
             throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);
         }
 
-        if (col.isLookup()) {
+        if (col.isPublicLookup()) {
             // undefined 'displayAsLookup' just respects the lookup.
             // Must be explicitly false to prevent drop-down.
             if (col.displayAsLookup !== false) {

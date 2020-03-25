@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update canSubmit check for ParentEntityEditPanel to check for actual differences and allow submission when all parents have been removed
 
+## version 0.39.4
+*Released*: 24 March 2020
+* Issue 39968: Cannot update assay result field to "All Samples"
+
+### version 0.39.3
+*Released*: 24 March 2020
+* Issue 39911: EditableGrid issue with pasting values into a cell that has a lookup that is not public
+
 ### version 0.39.2
 *Released*: 23 March 2020
 * Dependency version updates

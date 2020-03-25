@@ -186,7 +186,6 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
         grouping = new LineageGroupingOptions();
 
     const nodes = result.nodes;
-    const seedNode = nodes.get(result.seed);
 
     // The primary output of this function: the node objects to be consumed by vis.js
     // lsid -> VisGraphNode or VisGraphCombinedNode
@@ -240,7 +239,7 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
                 enabled: false
             },
 
-            nodes: DEFAULT_NODE_PROPS ,
+            nodes: DEFAULT_NODE_PROPS,
 
             edges: DEFAULT_EDGE_PROPS
         },
@@ -321,7 +320,7 @@ function _processNodes(seed: string, lsid: string, nodes: Map<string, LineageNod
     const currentNodeIsNotInCombinedNode = nodesInCombinedNode[lsid] === undefined;
     if (currentNodeIsNotInCombinedNode && visNodes[lsid] === undefined) {
         // console.log("  ".repeat(depth) + "created basic node");
-        visNodes[lsid] = createVisNode(node, lsid, lsid === seed, false);
+        visNodes[lsid] = createVisNode(node, lsid, lsid === seed);
     }
 
     if (options) {
@@ -554,7 +553,7 @@ export function findConnectedNodes(visEdges: Array<Edge>, id: string, dir?: 'fro
 }
 
 
-function createVisNode(node, id, isSeed: boolean, isCombined): VisGraphNode {
+function createVisNode(node: LineageNode, id: string , isSeed: boolean): VisGraphNode {
 
     // show the alternate icon image color if this node is the seed or has been selected
     let image = getImageFromLineageNode(node, isSeed, false);
@@ -662,11 +661,10 @@ function createCombinedVisNode(nodes: Map<string, LineageNode>, containedNodeIds
 
 // https://stackoverflow.com/a/13403498/351483
 // generate a random id like "ahl3dhtcxchvqbwyga2nhg"
-function randId() {
+function randId(): string {
     return Math.random().toString(36).substring(2, 15) +
            Math.random().toString(36).substring(2, 15);
 }
-
 
 export function getLineageNodeTitle(node: LineageNode, html: boolean): string {
     // encodeHtml if we are generating html for vis.js to use as the node's tooltip title

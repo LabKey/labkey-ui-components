@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Link } from 'react-router';
 import { SVGIcon } from '../..';
 
@@ -34,19 +34,13 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
         }
     }
 
-    onCollapseClicked = (): void => {
-        this.setState({
-            expanded: false
-        });
+    toggle = (): void => {
+        this.setState((state) => ({
+            expanded: !state.expanded
+        }));
     };
 
-    onExpandClicked = (): void => {
-        this.setState({
-            expanded: true
-        });
-    };
-
-    renderNode(node: LineageNode) {
+    renderNode = (node: LineageNode): ReactNode => {
         const { highlightNode } = this.props;
 
         const title = getLineageNodeTitle(node, false);
@@ -62,24 +56,24 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
                 style={{fontWeight: highlightNode === node.lsid ? 'bold' : 'normal'}}
                 title={title}
             >
-                <SVGIcon iconDir={"_images"} iconSrc={iconURL}
-                         style={{width:"1.2em", height:"1.2em", margin: "0.1em"}} />
+                <SVGIcon
+                    iconDir="_images"
+                    iconSrc={iconURL}
+                    style={{width:"1.2em", height:"1.2em", margin: "0.1em"}}
+                />
                 &nbsp;
                 <NodeInteractionConsumer>
                     {(context: WithNodeInteraction) => {
                         if (context.isNodeInGraph(node)) {
                             return (
-                                <>
-                                    <a className="pointer"
-                                       onMouseOver={e => context.onNodeMouseOver(node)}
-                                       onMouseOut={e => context.onNodeMouseOut(node)}
-                                       onClick={e => context.onNodeClick(node)}>{name}</a> :
-                                    <span>{name}</span>
-                                </>
-                            )
+                                <a className="pointer"
+                                   onClick={e => context.onNodeClick(node)}
+                                   onMouseOver={e => context.onNodeMouseOver(node)}
+                                   onMouseOut={e => context.onNodeMouseOut(node)}>{name}</a>
+                            );
                         }
 
-                        return null;
+                        return <span>{name}</span>;
                     }}
                 </NodeInteractionConsumer>
                 &nbsp;
@@ -93,19 +87,17 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
                 </a>
             </li>
         );
-    }
+    };
 
     renderCollapseExpandNode(skipCount) {
         const { expanded } = this.state;
-
-        const callback = expanded ? this.onCollapseClicked : this.onExpandClicked;
 
         return (
             <li key={'__skip'}>
                 <SVGIcon iconDir={"_images"} iconSrc="default"
                          style={{width:"1.2em", height:"1.2em", margin: "0.1em", opacity: 0}} />
                 &nbsp;
-                <a style={{cursor:'pointer'}} onClick={callback}>Show {skipCount} {expanded ? "less" : "more"}...</a>
+                <a style={{cursor:'pointer'}} onClick={this.toggle}>Show {skipCount} {expanded ? "less" : "more"}...</a>
                 &nbsp;
             </li>
         );

@@ -291,7 +291,7 @@ export function createGridModel(lineage: Lineage, members: LINEAGE_DIRECTIONS, d
     const nodeList = getLineageDepthFirstNodeList(result.nodes, result.seed, members, distance);
     let nodeCounts = Map<string, number>().asMutable();
     nodeList.forEach((node) => {
-        const lsid = node.get('lsid');
+        const { lsid } = node;
         if (nodeCounts.has(lsid)) {
             nodeCounts.set(lsid, nodeCounts.get(lsid) + 1);
         }

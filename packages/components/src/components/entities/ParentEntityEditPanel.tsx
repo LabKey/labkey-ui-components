@@ -210,6 +210,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
     renderEditControls() {
         const { cancelText, submitText } = this.props;
+        const { submitting } = this.state;
 
         return (
             <div className="full-width bottom-spacing">
@@ -223,7 +224,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     className="pull-right"
                     bsStyle={"success"}
                     type="submit"
-                    disabled={!this.canSubmit()}
+                    disabled={submitting || !this.canSubmit()}
                     onClick={this.onSubmit}
                 >
                     {submitText}

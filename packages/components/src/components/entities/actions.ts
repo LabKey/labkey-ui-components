@@ -334,14 +334,14 @@ export function getUpdatedRowForParentChanges(parentDataType: EntityDataType, or
     let updatedValues = {};
     if (currentParents.isEmpty()) { // have no current parents but have original parents, send in empty strings so original parents are removed.
         originalParents.forEach((parentChoice) => {
-            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = "";
+            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = null;
         })
     }
     else {
         currentParents.forEach((parentChoice) => {
             // Label may seem wrong here, but it is the same as query when extracted from the original query to get
             // the entity types.
-            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || "";
+            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || null;
         });
     }
 

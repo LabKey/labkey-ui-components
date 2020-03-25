@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - DomainFieldLabel component for domain designer field input consistency
     - Issue 39938: Domain field fix to revert back to max Integer length if user input is larger then 4000
 
+## version 0.39.4
+*Released*: 24 March 2020
+* Issue 39968: Cannot update assay result field to "All Samples"
+
 ### version 0.39.3
 *Released*: 24 March 2020
 * Issue 39911: EditableGrid issue with pasting values into a cell that has a lookup that is not public

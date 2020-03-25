@@ -41,6 +41,7 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
     TIME_RANGE_URI,
+    UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
 import { SCHEMAS } from '../base/models/schemas';
@@ -623,7 +624,7 @@ export class DomainField extends Record({
     regexValidators: List<PropertyValidator>(),
     recommendedVariable: false,
     required: false,
-    scale: undefined,
+    scale: MAX_TEXT_LENGTH,
     URL: undefined,
     shownInDetailsView: true,
     shownInInsertView: true,
@@ -814,9 +815,9 @@ export class DomainField extends Record({
             json.rangeURI = INT_RANGE_URI;
         }
 
-        // Issue 39938: revert back to max length of 4000 if user input is larger then this value
+        // Issue 39938: revert back to max Integer length if user input is larger then 4000
         if (df.scale && (isNaN(df.scale) || df.scale > MAX_TEXT_LENGTH)) {
-            json.scale = MAX_TEXT_LENGTH;
+            json.scale = UNLIMITED_TEXT_LENGTH;
         }
 
         // remove non-serializable fields

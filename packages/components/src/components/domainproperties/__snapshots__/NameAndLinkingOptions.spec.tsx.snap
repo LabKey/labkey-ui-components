@@ -35,7 +35,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "regexValidators": Immutable.List [],
       "recommendedVariable": false,
       "required": false,
-      "scale": undefined,
+      "scale": 4000,
       "URL": "This is a URL",
       "shownInDetailsView": true,
       "shownInInsertView": true,

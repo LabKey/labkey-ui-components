@@ -3999,7 +3999,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "regexValidators": Immutable.List [],
               "recommendedVariable": false,
               "required": false,
-              "scale": undefined,
+              "scale": 4000,
               "URL": undefined,
               "shownInDetailsView": true,
               "shownInInsertView": true,
@@ -4076,7 +4076,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "regexValidators": Immutable.List [],
               "recommendedVariable": false,
               "required": false,
-              "scale": undefined,
+              "scale": 4000,
               "URL": undefined,
               "shownInDetailsView": true,
               "shownInInsertView": true,
@@ -4153,7 +4153,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "regexValidators": Immutable.List [],
               "recommendedVariable": false,
               "required": false,
-              "scale": undefined,
+              "scale": 4000,
               "URL": undefined,
               "shownInDetailsView": true,
               "shownInInsertView": true,
@@ -4313,7 +4313,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -4390,7 +4390,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -4467,7 +4467,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -4615,7 +4615,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -4692,7 +4692,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -4769,7 +4769,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -4917,7 +4917,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -4994,7 +4994,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -5071,7 +5071,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -5235,7 +5235,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -5312,7 +5312,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -5389,7 +5389,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -5555,7 +5555,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "regexValidators": Immutable.List [],
                         "recommendedVariable": false,
                         "required": false,
-                        "scale": undefined,
+                        "scale": 4000,
                         "URL": undefined,
                         "shownInDetailsView": true,
                         "shownInInsertView": true,
@@ -5632,7 +5632,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "regexValidators": Immutable.List [],
                         "recommendedVariable": false,
                         "required": false,
-                        "scale": undefined,
+                        "scale": 4000,
                         "URL": undefined,
                         "shownInDetailsView": true,
                         "shownInInsertView": true,
@@ -5709,7 +5709,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "regexValidators": Immutable.List [],
                         "recommendedVariable": false,
                         "required": false,
-                        "scale": undefined,
+                        "scale": 4000,
                         "URL": undefined,
                         "shownInDetailsView": true,
                         "shownInInsertView": true,
@@ -6124,7 +6124,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -6201,7 +6201,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -6278,7 +6278,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -6626,7 +6626,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -6703,7 +6703,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -6780,7 +6780,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -7123,7 +7123,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -7200,7 +7200,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -7277,7 +7277,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -7608,7 +7608,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -7685,7 +7685,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -7762,7 +7762,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -8134,7 +8134,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -8211,7 +8211,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -8288,7 +8288,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -8459,7 +8459,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -8536,7 +8536,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -8613,7 +8613,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -9142,7 +9142,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -9219,7 +9219,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -9296,7 +9296,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -9422,7 +9422,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -9499,7 +9499,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -9576,7 +9576,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -9688,7 +9688,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -9765,7 +9765,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -9842,7 +9842,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -9979,7 +9979,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -10056,7 +10056,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -10133,7 +10133,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -10949,7 +10949,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           "regexValidators": Immutable.List [],
                                                           "recommendedVariable": false,
                                                           "required": false,
-                                                          "scale": undefined,
+                                                          "scale": 4000,
                                                           "URL": undefined,
                                                           "shownInDetailsView": true,
                                                           "shownInInsertView": true,
@@ -11117,7 +11117,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       "regexValidators": Immutable.List [],
                                                                       "recommendedVariable": false,
                                                                       "required": false,
-                                                                      "scale": undefined,
+                                                                      "scale": 4000,
                                                                       "URL": undefined,
                                                                       "shownInDetailsView": true,
                                                                       "shownInInsertView": true,
@@ -11688,7 +11688,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         "regexValidators": Immutable.List [],
                                                                         "recommendedVariable": false,
                                                                         "required": false,
-                                                                        "scale": undefined,
+                                                                        "scale": 4000,
                                                                         "URL": undefined,
                                                                         "shownInDetailsView": true,
                                                                         "shownInInsertView": true,
@@ -11764,6 +11764,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               label="Text Options"
                                                                               lockType="NotLocked"
                                                                               onChange={[Function]}
+                                                                              scale={4000}
                                                                             >
                                                                               <div>
                                                                                 <Row
@@ -11967,7 +11968,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                       >
                                                                                         <FormControl
                                                                                           bsClass="form-control"
-                                                                                          checked={true}
+                                                                                          checked={false}
                                                                                           className="domain-text-options-radio1 domain-field-float-left"
                                                                                           componentClass="input"
                                                                                           disabled={false}
@@ -11977,7 +11978,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                           value="maxLength"
                                                                                         >
                                                                                           <input
-                                                                                            checked={true}
+                                                                                            checked={false}
                                                                                             className="domain-text-options-radio1 domain-field-float-left form-control"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-maxLength-1-0"
@@ -11987,7 +11988,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                           />
                                                                                         </FormControl>
                                                                                         <div
-                                                                                          className=""
+                                                                                          className="domain-text-label"
                                                                                         >
                                                                                           Unlimited
                                                                                         </div>
@@ -12013,7 +12014,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                       >
                                                                                         <FormControl
                                                                                           bsClass="form-control"
-                                                                                          checked={false}
+                                                                                          checked={true}
                                                                                           className="domain-text-options-radio2 domain-field-float-left"
                                                                                           componentClass="input"
                                                                                           id="domainpropertiesrow-customLength-1-0"
@@ -12022,7 +12023,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                           value="customLength"
                                                                                         >
                                                                                           <input
-                                                                                            checked={false}
+                                                                                            checked={true}
                                                                                             className="domain-text-options-radio2 domain-field-float-left form-control"
                                                                                             id="domainpropertiesrow-customLength-1-0"
                                                                                             onChange={[Function]}
@@ -12031,7 +12032,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                           />
                                                                                         </FormControl>
                                                                                         <span
-                                                                                          className="domain-text-options-length domain-field-float-left domain-text-label"
+                                                                                          className="domain-text-options-length domain-field-float-left"
                                                                                         >
                                                                                           No longer than X characters
                                                                                         </span>
@@ -12039,7 +12040,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                           bsClass="form-control"
                                                                                           className="domain-text-length-field"
                                                                                           componentClass="input"
-                                                                                          disabled={true}
+                                                                                          disabled={false}
                                                                                           id="domainpropertiesrow-scale-1-0"
                                                                                           name="domainpropertiesrow-scale"
                                                                                           onChange={[Function]}
@@ -12048,7 +12049,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         >
                                                                                           <input
                                                                                             className="domain-text-length-field form-control"
-                                                                                            disabled={true}
+                                                                                            disabled={false}
                                                                                             id="domainpropertiesrow-scale-1-0"
                                                                                             name="domainpropertiesrow-scale"
                                                                                             onChange={[Function]}
@@ -12107,7 +12108,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -12642,7 +12643,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -13110,7 +13111,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           "regexValidators": Immutable.List [],
                                                           "recommendedVariable": false,
                                                           "required": false,
-                                                          "scale": undefined,
+                                                          "scale": 4000,
                                                           "URL": undefined,
                                                           "shownInDetailsView": true,
                                                           "shownInInsertView": true,
@@ -13278,7 +13279,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       "regexValidators": Immutable.List [],
                                                                       "recommendedVariable": false,
                                                                       "required": false,
-                                                                      "scale": undefined,
+                                                                      "scale": 4000,
                                                                       "URL": undefined,
                                                                       "shownInDetailsView": true,
                                                                       "shownInInsertView": true,
@@ -13849,7 +13850,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         "regexValidators": Immutable.List [],
                                                                         "recommendedVariable": false,
                                                                         "required": false,
-                                                                        "scale": undefined,
+                                                                        "scale": 4000,
                                                                         "URL": undefined,
                                                                         "shownInDetailsView": true,
                                                                         "shownInInsertView": true,
@@ -14250,7 +14251,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -14785,7 +14786,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -15253,7 +15254,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           "regexValidators": Immutable.List [],
                                                           "recommendedVariable": false,
                                                           "required": false,
-                                                          "scale": undefined,
+                                                          "scale": 4000,
                                                           "URL": undefined,
                                                           "shownInDetailsView": true,
                                                           "shownInInsertView": true,
@@ -15421,7 +15422,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       "regexValidators": Immutable.List [],
                                                                       "recommendedVariable": false,
                                                                       "required": false,
-                                                                      "scale": undefined,
+                                                                      "scale": 4000,
                                                                       "URL": undefined,
                                                                       "shownInDetailsView": true,
                                                                       "shownInInsertView": true,
@@ -15992,7 +15993,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         "regexValidators": Immutable.List [],
                                                                         "recommendedVariable": false,
                                                                         "required": false,
-                                                                        "scale": undefined,
+                                                                        "scale": 4000,
                                                                         "URL": undefined,
                                                                         "shownInDetailsView": true,
                                                                         "shownInInsertView": true,
@@ -16358,7 +16359,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -16893,7 +16894,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -25079,7 +25080,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "regexValidators": Immutable.List [],
               "recommendedVariable": false,
               "required": false,
-              "scale": undefined,
+              "scale": 4000,
               "URL": undefined,
               "shownInDetailsView": true,
               "shownInInsertView": true,
@@ -25156,7 +25157,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "regexValidators": Immutable.List [],
               "recommendedVariable": false,
               "required": false,
-              "scale": undefined,
+              "scale": 4000,
               "URL": undefined,
               "shownInDetailsView": true,
               "shownInInsertView": true,
@@ -25233,7 +25234,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "regexValidators": Immutable.List [],
               "recommendedVariable": false,
               "required": false,
-              "scale": undefined,
+              "scale": 4000,
               "URL": undefined,
               "shownInDetailsView": true,
               "shownInInsertView": true,
@@ -25393,7 +25394,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -25470,7 +25471,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -25547,7 +25548,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -25695,7 +25696,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -25772,7 +25773,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -25849,7 +25850,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -25996,7 +25997,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -26073,7 +26074,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -26150,7 +26151,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -26314,7 +26315,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -26391,7 +26392,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -26468,7 +26469,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -26634,7 +26635,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "regexValidators": Immutable.List [],
                         "recommendedVariable": false,
                         "required": false,
-                        "scale": undefined,
+                        "scale": 4000,
                         "URL": undefined,
                         "shownInDetailsView": true,
                         "shownInInsertView": true,
@@ -26711,7 +26712,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "regexValidators": Immutable.List [],
                         "recommendedVariable": false,
                         "required": false,
-                        "scale": undefined,
+                        "scale": 4000,
                         "URL": undefined,
                         "shownInDetailsView": true,
                         "shownInInsertView": true,
@@ -26788,7 +26789,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "regexValidators": Immutable.List [],
                         "recommendedVariable": false,
                         "required": false,
-                        "scale": undefined,
+                        "scale": 4000,
                         "URL": undefined,
                         "shownInDetailsView": true,
                         "shownInInsertView": true,
@@ -27203,7 +27204,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -27280,7 +27281,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -27357,7 +27358,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -27705,7 +27706,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -27782,7 +27783,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -27859,7 +27860,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -28202,7 +28203,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -28279,7 +28280,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -28356,7 +28357,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -28687,7 +28688,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -28764,7 +28765,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -28841,7 +28842,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -29195,7 +29196,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -29272,7 +29273,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -29349,7 +29350,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -29687,7 +29688,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -29764,7 +29765,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -29841,7 +29842,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -30153,7 +30154,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -30230,7 +30231,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -30307,7 +30308,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -30433,7 +30434,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -30510,7 +30511,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -30587,7 +30588,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -30699,7 +30700,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -30776,7 +30777,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -30853,7 +30854,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -30990,7 +30991,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -31067,7 +31068,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -31144,7 +31145,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -31960,7 +31961,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           "regexValidators": Immutable.List [],
                                                           "recommendedVariable": false,
                                                           "required": false,
-                                                          "scale": undefined,
+                                                          "scale": 4000,
                                                           "URL": undefined,
                                                           "shownInDetailsView": true,
                                                           "shownInInsertView": true,
@@ -32128,7 +32129,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       "regexValidators": Immutable.List [],
                                                                       "recommendedVariable": false,
                                                                       "required": false,
-                                                                      "scale": undefined,
+                                                                      "scale": 4000,
                                                                       "URL": undefined,
                                                                       "shownInDetailsView": true,
                                                                       "shownInInsertView": true,
@@ -32729,7 +32730,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         "regexValidators": Immutable.List [],
                                                                         "recommendedVariable": false,
                                                                         "required": false,
-                                                                        "scale": undefined,
+                                                                        "scale": 4000,
                                                                         "URL": undefined,
                                                                         "shownInDetailsView": true,
                                                                         "shownInInsertView": true,
@@ -32805,6 +32806,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               label="Text Options"
                                                                               lockType="NotLocked"
                                                                               onChange={[Function]}
+                                                                              scale={4000}
                                                                             >
                                                                               <div>
                                                                                 <Row
@@ -33008,7 +33010,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                       >
                                                                                         <FormControl
                                                                                           bsClass="form-control"
-                                                                                          checked={true}
+                                                                                          checked={false}
                                                                                           className="domain-text-options-radio1 domain-field-float-left"
                                                                                           componentClass="input"
                                                                                           disabled={false}
@@ -33018,7 +33020,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                           value="maxLength"
                                                                                         >
                                                                                           <input
-                                                                                            checked={true}
+                                                                                            checked={false}
                                                                                             className="domain-text-options-radio1 domain-field-float-left form-control"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-maxLength-1-0"
@@ -33028,7 +33030,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                           />
                                                                                         </FormControl>
                                                                                         <div
-                                                                                          className=""
+                                                                                          className="domain-text-label"
                                                                                         >
                                                                                           Unlimited
                                                                                         </div>
@@ -33054,7 +33056,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                       >
                                                                                         <FormControl
                                                                                           bsClass="form-control"
-                                                                                          checked={false}
+                                                                                          checked={true}
                                                                                           className="domain-text-options-radio2 domain-field-float-left"
                                                                                           componentClass="input"
                                                                                           id="domainpropertiesrow-customLength-1-0"
@@ -33063,7 +33065,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                           value="customLength"
                                                                                         >
                                                                                           <input
-                                                                                            checked={false}
+                                                                                            checked={true}
                                                                                             className="domain-text-options-radio2 domain-field-float-left form-control"
                                                                                             id="domainpropertiesrow-customLength-1-0"
                                                                                             onChange={[Function]}
@@ -33072,7 +33074,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                           />
                                                                                         </FormControl>
                                                                                         <span
-                                                                                          className="domain-text-options-length domain-field-float-left domain-text-label"
+                                                                                          className="domain-text-options-length domain-field-float-left"
                                                                                         >
                                                                                           No longer than X characters
                                                                                         </span>
@@ -33080,7 +33082,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                           bsClass="form-control"
                                                                                           className="domain-text-length-field"
                                                                                           componentClass="input"
-                                                                                          disabled={true}
+                                                                                          disabled={false}
                                                                                           id="domainpropertiesrow-scale-1-0"
                                                                                           name="domainpropertiesrow-scale"
                                                                                           onChange={[Function]}
@@ -33089,7 +33091,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         >
                                                                                           <input
                                                                                             className="domain-text-length-field form-control"
-                                                                                            disabled={true}
+                                                                                            disabled={false}
                                                                                             id="domainpropertiesrow-scale-1-0"
                                                                                             name="domainpropertiesrow-scale"
                                                                                             onChange={[Function]}
@@ -33148,7 +33150,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -33683,7 +33685,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -34317,7 +34319,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           "regexValidators": Immutable.List [],
                                                           "recommendedVariable": false,
                                                           "required": false,
-                                                          "scale": undefined,
+                                                          "scale": 4000,
                                                           "URL": undefined,
                                                           "shownInDetailsView": true,
                                                           "shownInInsertView": true,
@@ -34485,7 +34487,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       "regexValidators": Immutable.List [],
                                                                       "recommendedVariable": false,
                                                                       "required": false,
-                                                                      "scale": undefined,
+                                                                      "scale": 4000,
                                                                       "URL": undefined,
                                                                       "shownInDetailsView": true,
                                                                       "shownInInsertView": true,
@@ -35086,7 +35088,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         "regexValidators": Immutable.List [],
                                                                         "recommendedVariable": false,
                                                                         "required": false,
-                                                                        "scale": undefined,
+                                                                        "scale": 4000,
                                                                         "URL": undefined,
                                                                         "shownInDetailsView": true,
                                                                         "shownInInsertView": true,
@@ -35487,7 +35489,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -36022,7 +36024,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -36656,7 +36658,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           "regexValidators": Immutable.List [],
                                                           "recommendedVariable": false,
                                                           "required": false,
-                                                          "scale": undefined,
+                                                          "scale": 4000,
                                                           "URL": undefined,
                                                           "shownInDetailsView": true,
                                                           "shownInInsertView": true,
@@ -36824,7 +36826,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       "regexValidators": Immutable.List [],
                                                                       "recommendedVariable": false,
                                                                       "required": false,
-                                                                      "scale": undefined,
+                                                                      "scale": 4000,
                                                                       "URL": undefined,
                                                                       "shownInDetailsView": true,
                                                                       "shownInInsertView": true,
@@ -37425,7 +37427,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         "regexValidators": Immutable.List [],
                                                                         "recommendedVariable": false,
                                                                         "required": false,
-                                                                        "scale": undefined,
+                                                                        "scale": 4000,
                                                                         "URL": undefined,
                                                                         "shownInDetailsView": true,
                                                                         "shownInInsertView": true,
@@ -37791,7 +37793,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -38326,7 +38328,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -38975,7 +38977,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "regexValidators": Immutable.List [],
               "recommendedVariable": false,
               "required": false,
-              "scale": undefined,
+              "scale": 4000,
               "URL": undefined,
               "shownInDetailsView": true,
               "shownInInsertView": true,
@@ -39052,7 +39054,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "regexValidators": Immutable.List [],
               "recommendedVariable": false,
               "required": false,
-              "scale": undefined,
+              "scale": 4000,
               "URL": undefined,
               "shownInDetailsView": true,
               "shownInInsertView": true,
@@ -39129,7 +39131,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "regexValidators": Immutable.List [],
               "recommendedVariable": false,
               "required": false,
-              "scale": undefined,
+              "scale": 4000,
               "URL": undefined,
               "shownInDetailsView": true,
               "shownInInsertView": true,
@@ -39288,7 +39290,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -39365,7 +39367,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -39442,7 +39444,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -39590,7 +39592,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -39667,7 +39669,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -39744,7 +39746,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -39891,7 +39893,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -39968,7 +39970,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -40045,7 +40047,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -40209,7 +40211,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -40286,7 +40288,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -40363,7 +40365,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -40529,7 +40531,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "regexValidators": Immutable.List [],
                         "recommendedVariable": false,
                         "required": false,
-                        "scale": undefined,
+                        "scale": 4000,
                         "URL": undefined,
                         "shownInDetailsView": true,
                         "shownInInsertView": true,
@@ -40606,7 +40608,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "regexValidators": Immutable.List [],
                         "recommendedVariable": false,
                         "required": false,
-                        "scale": undefined,
+                        "scale": 4000,
                         "URL": undefined,
                         "shownInDetailsView": true,
                         "shownInInsertView": true,
@@ -40683,7 +40685,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "regexValidators": Immutable.List [],
                         "recommendedVariable": false,
                         "required": false,
-                        "scale": undefined,
+                        "scale": 4000,
                         "URL": undefined,
                         "shownInDetailsView": true,
                         "shownInInsertView": true,
@@ -41098,7 +41100,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -41175,7 +41177,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -41252,7 +41254,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -41600,7 +41602,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -41677,7 +41679,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -41754,7 +41756,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -42097,7 +42099,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -42174,7 +42176,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -42251,7 +42253,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -42582,7 +42584,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -42659,7 +42661,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -42736,7 +42738,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -43090,7 +43092,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -43167,7 +43169,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -43244,7 +43246,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -43582,7 +43584,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -43659,7 +43661,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -43736,7 +43738,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "regexValidators": Immutable.List [],
                                                       "recommendedVariable": false,
                                                       "required": false,
-                                                      "scale": undefined,
+                                                      "scale": 4000,
                                                       "URL": undefined,
                                                       "shownInDetailsView": true,
                                                       "shownInInsertView": true,
@@ -44096,7 +44098,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -44173,7 +44175,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -44250,7 +44252,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -44421,7 +44423,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -44498,7 +44500,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -44575,7 +44577,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -45103,7 +45105,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -45180,7 +45182,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -45257,7 +45259,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "regexValidators": Immutable.List [],
                 "recommendedVariable": false,
                 "required": false,
-                "scale": undefined,
+                "scale": 4000,
                 "URL": undefined,
                 "shownInDetailsView": true,
                 "shownInInsertView": true,
@@ -45383,7 +45385,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -45460,7 +45462,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -45537,7 +45539,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "regexValidators": Immutable.List [],
                   "recommendedVariable": false,
                   "required": false,
-                  "scale": undefined,
+                  "scale": 4000,
                   "URL": undefined,
                   "shownInDetailsView": true,
                   "shownInInsertView": true,
@@ -45649,7 +45651,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -45726,7 +45728,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -45803,7 +45805,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -45940,7 +45942,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -46017,7 +46019,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -46094,7 +46096,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "regexValidators": Immutable.List [],
                       "recommendedVariable": false,
                       "required": false,
-                      "scale": undefined,
+                      "scale": 4000,
                       "URL": undefined,
                       "shownInDetailsView": true,
                       "shownInInsertView": true,
@@ -46910,7 +46912,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           "regexValidators": Immutable.List [],
                                                           "recommendedVariable": false,
                                                           "required": false,
-                                                          "scale": undefined,
+                                                          "scale": 4000,
                                                           "URL": undefined,
                                                           "shownInDetailsView": true,
                                                           "shownInInsertView": true,
@@ -47078,7 +47080,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       "regexValidators": Immutable.List [],
                                                                       "recommendedVariable": false,
                                                                       "required": false,
-                                                                      "scale": undefined,
+                                                                      "scale": 4000,
                                                                       "URL": undefined,
                                                                       "shownInDetailsView": true,
                                                                       "shownInInsertView": true,
@@ -47679,7 +47681,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         "regexValidators": Immutable.List [],
                                                                         "recommendedVariable": false,
                                                                         "required": false,
-                                                                        "scale": undefined,
+                                                                        "scale": 4000,
                                                                         "URL": undefined,
                                                                         "shownInDetailsView": true,
                                                                         "shownInInsertView": true,
@@ -47755,6 +47757,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               label="Text Options"
                                                                               lockType="NotLocked"
                                                                               onChange={[Function]}
+                                                                              scale={4000}
                                                                             >
                                                                               <div>
                                                                                 <Row
@@ -47958,7 +47961,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                       >
                                                                                         <FormControl
                                                                                           bsClass="form-control"
-                                                                                          checked={true}
+                                                                                          checked={false}
                                                                                           className="domain-text-options-radio1 domain-field-float-left"
                                                                                           componentClass="input"
                                                                                           disabled={false}
@@ -47968,7 +47971,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                           value="maxLength"
                                                                                         >
                                                                                           <input
-                                                                                            checked={true}
+                                                                                            checked={false}
                                                                                             className="domain-text-options-radio1 domain-field-float-left form-control"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-maxLength-1-0"
@@ -47978,7 +47981,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                           />
                                                                                         </FormControl>
                                                                                         <div
-                                                                                          className=""
+                                                                                          className="domain-text-label"
                                                                                         >
                                                                                           Unlimited
                                                                                         </div>
@@ -48004,7 +48007,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                       >
                                                                                         <FormControl
                                                                                           bsClass="form-control"
-                                                                                          checked={false}
+                                                                                          checked={true}
                                                                                           className="domain-text-options-radio2 domain-field-float-left"
                                                                                           componentClass="input"
                                                                                           id="domainpropertiesrow-customLength-1-0"
@@ -48013,7 +48016,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                           value="customLength"
                                                                                         >
                                                                                           <input
-                                                                                            checked={false}
+                                                                                            checked={true}
                                                                                             className="domain-text-options-radio2 domain-field-float-left form-control"
                                                                                             id="domainpropertiesrow-customLength-1-0"
                                                                                             onChange={[Function]}
@@ -48022,7 +48025,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                           />
                                                                                         </FormControl>
                                                                                         <span
-                                                                                          className="domain-text-options-length domain-field-float-left domain-text-label"
+                                                                                          className="domain-text-options-length domain-field-float-left"
                                                                                         >
                                                                                           No longer than X characters
                                                                                         </span>
@@ -48030,7 +48033,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                           bsClass="form-control"
                                                                                           className="domain-text-length-field"
                                                                                           componentClass="input"
-                                                                                          disabled={true}
+                                                                                          disabled={false}
                                                                                           id="domainpropertiesrow-scale-1-0"
                                                                                           name="domainpropertiesrow-scale"
                                                                                           onChange={[Function]}
@@ -48039,7 +48042,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         >
                                                                                           <input
                                                                                             className="domain-text-length-field form-control"
-                                                                                            disabled={true}
+                                                                                            disabled={false}
                                                                                             id="domainpropertiesrow-scale-1-0"
                                                                                             name="domainpropertiesrow-scale"
                                                                                             onChange={[Function]}
@@ -48098,7 +48101,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -48633,7 +48636,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -49267,7 +49270,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           "regexValidators": Immutable.List [],
                                                           "recommendedVariable": false,
                                                           "required": false,
-                                                          "scale": undefined,
+                                                          "scale": 4000,
                                                           "URL": undefined,
                                                           "shownInDetailsView": true,
                                                           "shownInInsertView": true,
@@ -49435,7 +49438,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       "regexValidators": Immutable.List [],
                                                                       "recommendedVariable": false,
                                                                       "required": false,
-                                                                      "scale": undefined,
+                                                                      "scale": 4000,
                                                                       "URL": undefined,
                                                                       "shownInDetailsView": true,
                                                                       "shownInInsertView": true,
@@ -50036,7 +50039,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         "regexValidators": Immutable.List [],
                                                                         "recommendedVariable": false,
                                                                         "required": false,
-                                                                        "scale": undefined,
+                                                                        "scale": 4000,
                                                                         "URL": undefined,
                                                                         "shownInDetailsView": true,
                                                                         "shownInInsertView": true,
@@ -50437,7 +50440,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -50972,7 +50975,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -51606,7 +51609,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           "regexValidators": Immutable.List [],
                                                           "recommendedVariable": false,
                                                           "required": false,
-                                                          "scale": undefined,
+                                                          "scale": 4000,
                                                           "URL": undefined,
                                                           "shownInDetailsView": true,
                                                           "shownInInsertView": true,
@@ -51774,7 +51777,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       "regexValidators": Immutable.List [],
                                                                       "recommendedVariable": false,
                                                                       "required": false,
-                                                                      "scale": undefined,
+                                                                      "scale": 4000,
                                                                       "URL": undefined,
                                                                       "shownInDetailsView": true,
                                                                       "shownInInsertView": true,
@@ -52375,7 +52378,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         "regexValidators": Immutable.List [],
                                                                         "recommendedVariable": false,
                                                                         "required": false,
-                                                                        "scale": undefined,
+                                                                        "scale": 4000,
                                                                         "URL": undefined,
                                                                         "shownInDetailsView": true,
                                                                         "shownInInsertView": true,
@@ -52741,7 +52744,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,
@@ -53276,7 +53279,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "regexValidators": Immutable.List [],
                                                                                   "recommendedVariable": false,
                                                                                   "required": false,
-                                                                                  "scale": undefined,
+                                                                                  "scale": 4000,
                                                                                   "URL": undefined,
                                                                                   "shownInDetailsView": true,
                                                                                   "shownInInsertView": true,

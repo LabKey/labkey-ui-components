@@ -36,15 +36,15 @@ describe('TextFieldOptions', () => {
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 
-        // Verify max length is set for scale 4000
+        // Verify max length is not set for scale 4000
         let maxLength = textField.find({id: createFormInputId(DOMAIN_FIELD_MAX_LENGTH, 1, 1)}).not({bsClass: 'form-control'});
         expect(maxLength.length).toEqual(1);
-        expect(maxLength.props().checked).toEqual(true);
+        expect(maxLength.props().checked).toEqual(false);
 
-        // Custom length is not checked for scale 4000
+        // Custom length is checked for scale 4000
         let customLength = textField.find({id: createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, 1, 1)}).not({bsClass: 'form-control'});
         expect(customLength.length).toEqual(1);
-        expect(customLength.props().checked).toEqual(false);
+        expect(customLength.props().checked).toEqual(true);
 
         // Change scale and verify radio buttons
         const props2 = {

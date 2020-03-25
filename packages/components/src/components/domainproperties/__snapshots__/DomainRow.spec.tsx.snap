@@ -259,7 +259,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -431,7 +431,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 "regexValidators": Immutable.List [],
                                 "recommendedVariable": false,
                                 "required": false,
-                                "scale": undefined,
+                                "scale": 4000,
                                 "URL": undefined,
                                 "shownInDetailsView": true,
                                 "shownInInsertView": true,
@@ -976,7 +976,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   "regexValidators": Immutable.List [],
                                   "recommendedVariable": false,
                                   "required": false,
-                                  "scale": undefined,
+                                  "scale": 4000,
                                   "URL": undefined,
                                   "shownInDetailsView": true,
                                   "shownInInsertView": true,
@@ -1335,7 +1335,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -1870,7 +1870,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -2424,7 +2424,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -2608,7 +2608,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 "regexValidators": Immutable.List [],
                                 "recommendedVariable": false,
                                 "required": false,
-                                "scale": undefined,
+                                "scale": 4000,
                                 "URL": undefined,
                                 "shownInDetailsView": true,
                                 "shownInInsertView": true,
@@ -3291,7 +3291,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   "regexValidators": Immutable.List [],
                                   "recommendedVariable": false,
                                   "required": false,
-                                  "scale": undefined,
+                                  "scale": 4000,
                                   "URL": undefined,
                                   "shownInDetailsView": true,
                                   "shownInInsertView": true,
@@ -3404,7 +3404,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -3939,7 +3939,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -4493,7 +4493,7 @@ exports[`DomainRow date time field 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -4665,7 +4665,7 @@ exports[`DomainRow date time field 1`] = `
                                 "regexValidators": Immutable.List [],
                                 "recommendedVariable": false,
                                 "required": false,
-                                "scale": undefined,
+                                "scale": 4000,
                                 "URL": undefined,
                                 "shownInDetailsView": true,
                                 "shownInInsertView": true,
@@ -5190,7 +5190,7 @@ exports[`DomainRow date time field 1`] = `
                                   "regexValidators": Immutable.List [],
                                   "recommendedVariable": false,
                                   "required": false,
-                                  "scale": undefined,
+                                  "scale": 4000,
                                   "URL": undefined,
                                   "shownInDetailsView": true,
                                   "shownInInsertView": true,
@@ -5555,7 +5555,7 @@ exports[`DomainRow date time field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -6090,7 +6090,7 @@ exports[`DomainRow date time field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -6810,7 +6810,7 @@ exports[`DomainRow decimal field 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": true,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -6982,7 +6982,7 @@ exports[`DomainRow decimal field 1`] = `
                                 "regexValidators": Immutable.List [],
                                 "recommendedVariable": false,
                                 "required": true,
-                                "scale": undefined,
+                                "scale": 4000,
                                 "URL": undefined,
                                 "shownInDetailsView": true,
                                 "shownInInsertView": true,
@@ -7507,7 +7507,7 @@ exports[`DomainRow decimal field 1`] = `
                                   "regexValidators": Immutable.List [],
                                   "recommendedVariable": false,
                                   "required": true,
-                                  "scale": undefined,
+                                  "scale": 4000,
                                   "URL": undefined,
                                   "shownInDetailsView": true,
                                   "shownInInsertView": true,
@@ -7907,7 +7907,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": true,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -8442,7 +8442,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": true,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -9162,7 +9162,7 @@ exports[`DomainRow participant id field 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -9334,7 +9334,7 @@ exports[`DomainRow participant id field 1`] = `
                                 "regexValidators": Immutable.List [],
                                 "recommendedVariable": false,
                                 "required": false,
-                                "scale": undefined,
+                                "scale": 4000,
                                 "URL": undefined,
                                 "shownInDetailsView": true,
                                 "shownInInsertView": true,
@@ -9883,7 +9883,7 @@ exports[`DomainRow participant id field 1`] = `
                                   "regexValidators": Immutable.List [],
                                   "recommendedVariable": false,
                                   "required": false,
-                                  "scale": undefined,
+                                  "scale": 4000,
                                   "URL": undefined,
                                   "shownInDetailsView": true,
                                   "shownInInsertView": true,
@@ -9996,7 +9996,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -10531,7 +10531,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -11251,7 +11251,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -11435,7 +11435,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 "regexValidators": Immutable.List [],
                                 "recommendedVariable": false,
                                 "required": false,
-                                "scale": undefined,
+                                "scale": 4000,
                                 "URL": undefined,
                                 "shownInDetailsView": true,
                                 "shownInInsertView": true,
@@ -12041,7 +12041,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   "regexValidators": Immutable.List [],
                                   "recommendedVariable": false,
                                   "required": false,
-                                  "scale": undefined,
+                                  "scale": 4000,
                                   "URL": undefined,
                                   "shownInDetailsView": true,
                                   "shownInInsertView": true,
@@ -12154,7 +12154,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -12689,7 +12689,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -13243,7 +13243,7 @@ exports[`DomainRow string field test 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -13415,7 +13415,7 @@ exports[`DomainRow string field test 1`] = `
                                 "regexValidators": Immutable.List [],
                                 "recommendedVariable": false,
                                 "required": false,
-                                "scale": undefined,
+                                "scale": 4000,
                                 "URL": undefined,
                                 "shownInDetailsView": true,
                                 "shownInInsertView": true,
@@ -13964,7 +13964,7 @@ exports[`DomainRow string field test 1`] = `
                                   "regexValidators": Immutable.List [],
                                   "recommendedVariable": false,
                                   "required": false,
-                                  "scale": undefined,
+                                  "scale": 4000,
                                   "URL": undefined,
                                   "shownInDetailsView": true,
                                   "shownInInsertView": true,
@@ -14039,6 +14039,7 @@ exports[`DomainRow string field test 1`] = `
                                         label="Text Options"
                                         lockType="NotLocked"
                                         onChange={[Function]}
+                                        scale={4000}
                                       >
                                         <div>
                                           <Row
@@ -14242,7 +14243,7 @@ exports[`DomainRow string field test 1`] = `
                                                 >
                                                   <FormControl
                                                     bsClass="form-control"
-                                                    checked={true}
+                                                    checked={false}
                                                     className="domain-text-options-radio1 domain-field-float-left"
                                                     componentClass="input"
                                                     disabled={false}
@@ -14252,7 +14253,7 @@ exports[`DomainRow string field test 1`] = `
                                                     value="maxLength"
                                                   >
                                                     <input
-                                                      checked={true}
+                                                      checked={false}
                                                       className="domain-text-options-radio1 domain-field-float-left form-control"
                                                       disabled={false}
                                                       id="domainpropertiesrow-maxLength-1-1"
@@ -14262,7 +14263,7 @@ exports[`DomainRow string field test 1`] = `
                                                     />
                                                   </FormControl>
                                                   <div
-                                                    className=""
+                                                    className="domain-text-label"
                                                   >
                                                     Unlimited
                                                   </div>
@@ -14288,7 +14289,7 @@ exports[`DomainRow string field test 1`] = `
                                                 >
                                                   <FormControl
                                                     bsClass="form-control"
-                                                    checked={false}
+                                                    checked={true}
                                                     className="domain-text-options-radio2 domain-field-float-left"
                                                     componentClass="input"
                                                     id="domainpropertiesrow-customLength-1-1"
@@ -14297,7 +14298,7 @@ exports[`DomainRow string field test 1`] = `
                                                     value="customLength"
                                                   >
                                                     <input
-                                                      checked={false}
+                                                      checked={true}
                                                       className="domain-text-options-radio2 domain-field-float-left form-control"
                                                       id="domainpropertiesrow-customLength-1-1"
                                                       onChange={[Function]}
@@ -14306,7 +14307,7 @@ exports[`DomainRow string field test 1`] = `
                                                     />
                                                   </FormControl>
                                                   <span
-                                                    className="domain-text-options-length domain-field-float-left domain-text-label"
+                                                    className="domain-text-options-length domain-field-float-left"
                                                   >
                                                     No longer than X characters
                                                   </span>
@@ -14314,7 +14315,7 @@ exports[`DomainRow string field test 1`] = `
                                                     bsClass="form-control"
                                                     className="domain-text-length-field"
                                                     componentClass="input"
-                                                    disabled={true}
+                                                    disabled={false}
                                                     id="domainpropertiesrow-scale-1-1"
                                                     name="domainpropertiesrow-scale"
                                                     onChange={[Function]}
@@ -14323,7 +14324,7 @@ exports[`DomainRow string field test 1`] = `
                                                   >
                                                     <input
                                                       className="domain-text-length-field form-control"
-                                                      disabled={true}
+                                                      disabled={false}
                                                       id="domainpropertiesrow-scale-1-1"
                                                       name="domainpropertiesrow-scale"
                                                       onChange={[Function]}
@@ -14382,7 +14383,7 @@ exports[`DomainRow string field test 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -14917,7 +14918,7 @@ exports[`DomainRow string field test 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -15637,7 +15638,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "regexValidators": Immutable.List [],
                     "recommendedVariable": false,
                     "required": false,
-                    "scale": undefined,
+                    "scale": 4000,
                     "URL": undefined,
                     "shownInDetailsView": true,
                     "shownInInsertView": true,
@@ -15809,7 +15810,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "regexValidators": Immutable.List [],
                                 "recommendedVariable": false,
                                 "required": false,
-                                "scale": undefined,
+                                "scale": 4000,
                                 "URL": undefined,
                                 "shownInDetailsView": true,
                                 "shownInInsertView": true,
@@ -16407,7 +16408,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   "regexValidators": Immutable.List [],
                                   "recommendedVariable": false,
                                   "required": false,
-                                  "scale": undefined,
+                                  "scale": 4000,
                                   "URL": undefined,
                                   "shownInDetailsView": true,
                                   "shownInInsertView": true,
@@ -16482,6 +16483,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         label="Text Options"
                                         lockType="NotLocked"
                                         onChange={[Function]}
+                                        scale={4000}
                                       >
                                         <div>
                                           <Row
@@ -16685,7 +16687,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 >
                                                   <FormControl
                                                     bsClass="form-control"
-                                                    checked={true}
+                                                    checked={false}
                                                     className="domain-text-options-radio1 domain-field-float-left"
                                                     componentClass="input"
                                                     disabled={false}
@@ -16695,7 +16697,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     value="maxLength"
                                                   >
                                                     <input
-                                                      checked={true}
+                                                      checked={false}
                                                       className="domain-text-options-radio1 domain-field-float-left form-control"
                                                       disabled={false}
                                                       id="domainpropertiesrow-maxLength-1-1"
@@ -16705,7 +16707,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     />
                                                   </FormControl>
                                                   <div
-                                                    className=""
+                                                    className="domain-text-label"
                                                   >
                                                     Unlimited
                                                   </div>
@@ -16731,7 +16733,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 >
                                                   <FormControl
                                                     bsClass="form-control"
-                                                    checked={false}
+                                                    checked={true}
                                                     className="domain-text-options-radio2 domain-field-float-left"
                                                     componentClass="input"
                                                     id="domainpropertiesrow-customLength-1-1"
@@ -16740,7 +16742,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     value="customLength"
                                                   >
                                                     <input
-                                                      checked={false}
+                                                      checked={true}
                                                       className="domain-text-options-radio2 domain-field-float-left form-control"
                                                       id="domainpropertiesrow-customLength-1-1"
                                                       onChange={[Function]}
@@ -16749,7 +16751,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     />
                                                   </FormControl>
                                                   <span
-                                                    className="domain-text-options-length domain-field-float-left domain-text-label"
+                                                    className="domain-text-options-length domain-field-float-left"
                                                   >
                                                     No longer than X characters
                                                   </span>
@@ -16757,7 +16759,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     bsClass="form-control"
                                                     className="domain-text-length-field"
                                                     componentClass="input"
-                                                    disabled={true}
+                                                    disabled={false}
                                                     id="domainpropertiesrow-scale-1-1"
                                                     name="domainpropertiesrow-scale"
                                                     onChange={[Function]}
@@ -16766,7 +16768,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                   >
                                                     <input
                                                       className="domain-text-length-field form-control"
-                                                      disabled={true}
+                                                      disabled={false}
                                                       id="domainpropertiesrow-scale-1-1"
                                                       name="domainpropertiesrow-scale"
                                                       onChange={[Function]}
@@ -16825,7 +16827,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,
@@ -17360,7 +17362,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "regexValidators": Immutable.List [],
                                             "recommendedVariable": false,
                                             "required": false,
-                                            "scale": undefined,
+                                            "scale": 4000,
                                             "URL": undefined,
                                             "shownInDetailsView": true,
                                             "shownInInsertView": true,

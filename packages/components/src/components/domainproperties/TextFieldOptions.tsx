@@ -3,9 +3,14 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { createFormInputId, createFormInputName, getNameFromId } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
 import classNames from 'classnames';
-import { DOMAIN_FIELD_CUSTOM_LENGTH, DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH } from './constants';
+import {
+    DOMAIN_FIELD_CUSTOM_LENGTH,
+    DOMAIN_FIELD_MAX_LENGTH,
+    DOMAIN_FIELD_SCALE,
+    MAX_TEXT_LENGTH,
+    UNLIMITED_TEXT_LENGTH
+} from './constants';
 import { ITypeDependentProps } from './models';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 import { SectionHeading } from "./SectionHeading";
 import { DomainFieldLabel } from "./DomainFieldLabel";
 
@@ -28,7 +33,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
     }
 
     componentDidMount(): void {
-        this.setState({radio: (!this.props.scale || this.props.scale === MAX_TEXT_LENGTH
+        this.setState({radio: (!this.props.scale || this.props.scale > MAX_TEXT_LENGTH
                 ? DOMAIN_FIELD_MAX_LENGTH : DOMAIN_FIELD_CUSTOM_LENGTH)})
     }
 
@@ -46,7 +51,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
         if (fieldName !== DOMAIN_FIELD_SCALE) {
             this.setState({radio: value});  // set local state
             scaleId = createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index);  // updating scale
-            value = MAX_TEXT_LENGTH;  // set scale back to MAX_TEXT_LENGTH
+            value = value === DOMAIN_FIELD_MAX_LENGTH ? UNLIMITED_TEXT_LENGTH : MAX_TEXT_LENGTH;
         }
         else {
             value = parseInt(value);
@@ -59,9 +64,10 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
 
     getMaxCountHelpText = () => {
         return (
-            <div>
-                Sets the maximum character count for a text field.
-            </div>
+            <>
+                <p>Sets the maximum character count for a text field.</p>
+                <p>Anything over 4,000 characters will use the 'Unlimited' designation.</p>
+            </>
         )
     };
 
@@ -113,7 +119,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                      id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
                                      name={createFormInputName(DOMAIN_FIELD_SCALE)}
                                      className='domain-text-length-field'
-                                     value={typeof scale !== "undefined" && radio === DOMAIN_FIELD_CUSTOM_LENGTH ? scale : 4000}
+                                     value={typeof scale !== "undefined" && radio === DOMAIN_FIELD_CUSTOM_LENGTH ? scale : MAX_TEXT_LENGTH}
                                      onChange={this.handleChange}
                                      disabled={isFieldFullyLocked(lockType) || radio === DOMAIN_FIELD_MAX_LENGTH}
                         />

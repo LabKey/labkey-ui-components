@@ -8,12 +8,9 @@ import {
     getActionErrorMessage,
     getQueryGridModel,
     LoadingSpinner,
-    naturalSort,
     Progress,
-    queryGridInvalidate,
     QueryGridModel,
     resolveErrorMessage,
-    SchemaQuery,
     updateRows
 } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
@@ -21,9 +18,10 @@ import {
     getEntityTypeOptions,
     getInitialParentChoices,
     getUpdatedRowForParentChanges,
+    invalidateParentModels,
     parentValuesDiffer
 } from './actions';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { DELIMITER } from '../forms/input/SelectInput';
@@ -73,6 +71,10 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
     componentWillMount() {
         this.init();
+    }
+
+    componentWillUnmount() {
+        invalidateParentModels(this.state.originalParents, this.state.currentParents, this.props.parentDataType);
     }
 
     init()  {
@@ -170,18 +172,8 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 editing: false
             }));
 
-            // clear out the original parents' grid data (which may no longer be represented in the current parents)
-            let cleared = [];
-            this.state.originalParents.forEach((parentChoice) => {
-                cleared.push(parentChoice.type.label);
-                queryGridInvalidate(SchemaQuery.create(this.props.parentDataType.instanceSchemaName, parentChoice.type.label), true);
-            });
-            // also clear out the current parents' grid data if it hasn't already been cleared
-            this.state.currentParents.forEach((parentChoice) => {
-                if (cleared.indexOf(parentChoice.type.label) < 0) {
-                    queryGridInvalidate(SchemaQuery.create(this.props.parentDataType.instanceSchemaName, parentChoice.type.label), true);
-                }
-            });
+            invalidateParentModels(this.state.originalParents, this.state.currentParents, this.props.parentDataType);
+
             if (onUpdate) {
                 onUpdate();
             }

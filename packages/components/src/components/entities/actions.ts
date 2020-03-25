@@ -1,4 +1,13 @@
-import { buildURL, getQueryGridModel, getSelected, naturalSort, QueryGridModel, SchemaQuery, selectRows } from '../..';
+import {
+    buildURL,
+    getQueryGridModel,
+    getSelected,
+    naturalSort,
+    queryGridInvalidate,
+    QueryGridModel,
+    SchemaQuery,
+    selectRows
+} from '../..';
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 import {
@@ -392,4 +401,19 @@ export function parentValuesDiffer(sortedOriginalParents: List<EntityChoice>, cu
         return sortedCurrentParents.slice(sortedOriginalParents.size).find((parent) => parent.value !== undefined) !== undefined;
     }
     return false;
+}
+
+export function invalidateParentModels(originalParents: List<EntityChoice>, currentParents: List<EntityChoice>, parentDataType: EntityDataType) {
+    // clear out the original parents' grid data (which may no longer be represented in the current parents)
+    let cleared = [];
+    originalParents.forEach((parentChoice) => {
+        cleared.push(parentChoice.type.label);
+        queryGridInvalidate(SchemaQuery.create(parentDataType.instanceSchemaName, parentChoice.type.label), true);
+    });
+    // also clear out the current parents' grid data if it hasn't already been cleared
+    currentParents.forEach((parentChoice) => {
+        if (cleared.indexOf(parentChoice.type.label) < 0) {
+            queryGridInvalidate(SchemaQuery.create(parentDataType.instanceSchemaName, parentChoice.type.label), true);
+        }
+    });
 }

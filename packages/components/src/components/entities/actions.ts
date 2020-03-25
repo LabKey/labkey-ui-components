@@ -42,8 +42,9 @@ export function getDeleteConfirmationData(selectionKey: string, dataType: Entity
             }
         }
         return Ajax.request({
-            url: buildURL('experiment', dataType.deleteConfirmationActionName, params),
+            url: buildURL('experiment', dataType.deleteConfirmationActionName),
             method: "POST",
+            jsonData: params,
             success: Utils.getCallbackWrapper((response) => {
                 if (response.success) {
                     resolve(response.data);

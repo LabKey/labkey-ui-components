@@ -332,14 +332,15 @@ export function getUpdatedRowForParentChanges(parentDataType: EntityDataType, or
     const queryData = childModel.getRow();
     const queryInfo = childModel.queryInfo;
 
+    const definedCurrentParents = currentParents.filter((parent) => (parent.type !== null && parent.type !== undefined)).toList();
     let updatedValues = {};
-    if (currentParents.isEmpty()) { // have no current parents but have original parents, send in empty strings so original parents are removed.
+    if (definedCurrentParents.isEmpty()) { // have no current parents but have original parents, send in empty strings so original parents are removed.
         originalParents.forEach((parentChoice) => {
             updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = null;
         })
     }
     else {
-        currentParents.forEach((parentChoice) => {
+        definedCurrentParents.forEach((parentChoice) => {
             // Label may seem wrong here, but it is the same as query when extracted from the original query to get
             // the entity types.
             updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || null;
@@ -413,7 +414,7 @@ export function invalidateParentModels(originalParents: List<EntityChoice>, curr
     });
     // also clear out the current parents' grid data if it hasn't already been cleared
     currentParents.forEach((parentChoice) => {
-        if (cleared.indexOf(parentChoice.type.label) < 0) {
+        if (parentChoice.type && cleared.indexOf(parentChoice.type.label) < 0) {
             queryGridInvalidate(SchemaQuery.create(parentDataType.instanceSchemaName, parentChoice.type.label), true);
         }
     });

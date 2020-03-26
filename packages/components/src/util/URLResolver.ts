@@ -362,16 +362,18 @@ export class URLResolver {
 
                 // Lsid strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
                 name = name.replace(/\+/g, ' ');
+                const listURLParts = node.type === 'Sample' ? ['samples', name] : ['rd', 'dataclass', name];
+
                 return node.merge({
                     // listURL is the url to the grid for the data type.  It will be filtered to the rowIds of the lineage members
                     // create a URL that will be resolved/redirected in the application resolvers
-                    listURL: AppURL.create('rd', node.type === 'Sample' ? 'samples' : 'dataclass', name).toString(),
+                    listURL: AppURL.create(...listURLParts).toString(),
                     url: this.mapURL({
-                        url: node.get('url'),
+                        url: node.url,
                         row: node,
                         column: Map<string, any>(),
-                        schema: node.get('schemaName'),
-                        query: node.get('queryName')
+                        schema: node.schemaName,
+                        query: node.queryName
                     })
                 })
             }

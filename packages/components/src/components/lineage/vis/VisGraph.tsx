@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { DataSet, Edge, Network, Node } from 'vis-network';
+import { DataSet, Edge, IdType, Network, Node } from 'vis-network';
 
 import {
     isCombinedNode,
@@ -16,19 +16,19 @@ import { VisGraphControls } from './VisGraphControls';
 
 export type HoverNodeCoords = {top: number, left: number, bottom: number, right: number};
 
-// defined in vis/lib/network/shapes.js
-interface InternalVisContext2D {
-    circle(x: number, y: number, r: number);
-    square(x: number, y: number, r: number);
-    triangle(x: number, y: number, r: number);
-    triangleDown(x: number, y: number, r: number);
-    star(x: number, y: number, r: number);
-    diamond(x: number, y: number, r: number);
-    roundRect(x: number, y: number, w: number, h: number, r: number);
-    ellipse_vis(x: number, y: number, w: number, h: number);
-    database(x: number, y: number, w: number, h: number);
-    dashedLine(x: number, y: number, w: number, h: number);
-    hexagon(x: number, y: number, r: number);
+// Directly from https://github.com/visjs/vis-network/blob/v6.5.2/lib/network/shapes.ts#L9
+/**
+ * Draw a circle.
+ *
+ * @param ctx - The context this shape will be rendered to.
+ * @param x - The position of the center on the x axis.
+ * @param y - The position of the center on the y axis.
+ * @param r - The radius of the circle.
+ */
+function drawCircle(ctx: CanvasRenderingContext2D, x: number, y: number, r: number): void {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 2 * Math.PI, false);
+    ctx.closePath();
 }
 
 // defined in vis/lib/network/shapes.js
@@ -36,7 +36,7 @@ interface InternalVisNetwork extends Network {
     body: {
         container: HTMLElement
         nodes: {[key:string]: InternalVisNode}
-        nodeIndices: Array<string>
+        nodeIndices: Array<IdType>
     },
     layoutEngine: {
         _centerParent: (node: InternalVisNode) => void
@@ -141,36 +141,36 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         this.generateGraph(this.props);
     }
 
-    public highlightNode(node: LineageNode, hover: boolean) {
+    public highlightNode = (node: LineageNode, hover: boolean): void => {
         if (node && this.data) {
             // findNode will return any cluster node ids that the node is within.
             // If the node is in a cluster, highlight it the cluster instead
             const clusterIds = this.network.findNode(node.lsid);
-            const topNodeId = clusterIds[0];
-            if (topNodeId) {
+            if (clusterIds && clusterIds.length) {
+                const topNodeId = clusterIds[0];
+                if (topNodeId) {
+                    // reaching into the vis.js internal structure to get the graph's Node object
+                    let internalNode = this.getInternalNode(topNodeId);
+                    internalNode.hover = hover;
 
-                // reaching into the vis.js internal structure to get the graph's Node object
-                const internalNode = this.getInternalNode(topNodeId);
-                internalNode.hover = hover;
+                    this.moveNodeToTop(topNodeId as string);
 
-                this.moveNodeToTop(topNodeId);
-
-                // force a redraw to see the hover state applied to the node
-                this.network.redraw();
+                    // force a redraw to see the hover state applied to the node
+                    this.network.redraw();
+                }
             }
         }
-    }
+    };
 
     // move the node to the end of the list so it is drawn on top of any of it's neighbors
-    private moveNodeToTop(lsid) {
-        const body = this.network.body;
-        let nodeIndices = body.nodeIndices;
-        let idx = nodeIndices.indexOf(lsid);
+    private moveNodeToTop = (id: IdType): void => {
+        const { nodeIndices } = this.network.body;
+        let idx = nodeIndices.indexOf(id);
         nodeIndices.splice(idx, 1);
-        nodeIndices.push(lsid);
-    }
+        nodeIndices.push(id);
+    };
 
-    destroyGraph() {
+    destroyGraph = (): void => {
         if (this.network) {
             this.network.destroy();
             this.network = undefined;
@@ -178,28 +178,28 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         if (this.data) {
             this.data = undefined;
         }
-    }
+    };
 
     fitGraph = (): void => {
         this.network.fit();
     };
 
-    private getInternalNode(id: string | number): InternalVisNode {
+    private getInternalNode(id: IdType): InternalVisNode {
         return this.network.body.nodes[id];
     }
 
-    public getCombinedNodes(): Array<VisGraphCombinedNode> {
-        return this.data.nodes.get({filter: isCombinedNode}) as Array<VisGraphCombinedNode>;
+    public getCombinedNodes(): VisGraphCombinedNode[] {
+        return this.data.nodes.get({filter: isCombinedNode});
     }
 
-    public getNodes(ids: Array<string | number>): VisGraphNodeType[] {
+    public getNodes(ids: Array<IdType>): VisGraphNodeType[] {
         return ids.map(id => this.getNode(id)).filter(n => n !== null && n !== undefined);
     }
 
-    public getNode(id: string | number): VisGraphNodeType | null {
+    public getNode(id: IdType): VisGraphNodeType {
         const node = this.data.nodes.get(id);
         if (node && this.network.isCluster(id)) {
-            let nodesInCluster = this.network.getNodesInCluster(id);
+            const nodesInCluster = this.network.getNodesInCluster(id);
             return {
                 kind: 'cluster',
                 id,
@@ -211,14 +211,16 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
     }
 
     // set a selection on the vis.js graph and fire the select handler as if the user clicked on a node in the graph
-    public selectNodes(ids: Array<string>) {
+    public selectNodes = (ids: Array<string>): void => {
         const selectedNodes = this.getNodes(ids);
         this.doSelectNode(selectedNodes);
 
         // get the actual ids from the nodes -- some may not have been found
-        const actualIds = selectedNodes.map(n => n.id);
-        this.network.setSelection({nodes: actualIds, edges: []});
-    }
+        this.network.setSelection({
+            edges: [],
+            nodes: selectedNodes.map(n => n.id),
+        });
+    };
 
     private doSelectNode(selectedNodes: VisGraphNodeType[]) {
         // change color of newly selected node
@@ -231,9 +233,9 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         }
 
         // add the newly selected node in the state
-        this.setState((prevState) => {
+        this.setState((prevState) => ({
             selected: this.unique(prevState.selected, addToSelection)
-        });
+        }));
 
         if (this.props.onNodeSelect) {
             this.props.onNodeSelect(selectedNodes);
@@ -241,7 +243,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
     }
 
     // create a new array from the two arrays with any duplicates removed
-    private unique(a: Array<string>, b: Array<string>) {
+    private unique = (a: string[], b: string[]): string[] => {
         let ret = [].concat(a);
         for (let i = 0; i < b.length; i++) {
             let item = b[i];
@@ -249,9 +251,9 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
                 ret.push(item);
         }
         return ret;
-    }
+    };
 
-    private doClick(id: string | number) {
+    private doClick = (id: IdType): void => {
         const clickedNode = this.getNode(id);
         if (clickedNode) {
             if (this.props.onNodeClick) {
@@ -273,9 +275,9 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
                 return { selected: newSelected };
             })
         }
-    }
+    };
 
-    private doAfterDrawing = (ctx: CanvasRenderingContext2D & InternalVisContext2D): void => {
+    private doAfterDrawing = (ctx: CanvasRenderingContext2D): void => {
         this.getCombinedNodes().forEach(combinedNode => {
             const internalNode = this.getInternalNode(combinedNode.id);
             if (!internalNode) {
@@ -283,12 +285,11 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
                 return;
             }
 
-            const shape = internalNode.shape;
+            const { shape } = internalNode;
             const nodeCount = combinedNode.containedNodes.length;
 
-            // TODO: Use "drawCircle" instead of ctx.circle -- remove interface defined above
             // set up circle clip area
-            ctx.circle(internalNode.x, internalNode.y, shape.radius);
+            drawCircle(ctx, internalNode.x, internalNode.y, shape.radius);
             ctx.save();
             ctx.clip();
 

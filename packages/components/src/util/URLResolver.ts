@@ -59,20 +59,30 @@ export class URLResolver {
             }),
 
             new ActionMapper('experiment', 'showMaterialSource', (row, column) => {
-                let url = ['rd', 'samples'];
+                let identifier: string;
 
                 if (row.has('data')) {
-                    //Search link doesn't use the same url
-                    url = ['samples', row.get('data').get('name')];
-                }
-                else if (column.has('lookup')) {
-                    url.push(row.get('displayValue').toString());
-                }
-                else {
-                    url.push(row.get('value').toString());
+                    // search link doesn't use the same url
+                    identifier = row.getIn(['data', 'name']);
+                } else if (column.has('lookup')) {
+                    identifier = row.get('displayValue').toString();
+                } else {
+                    identifier = row.get('value').toString();
                 }
 
-                return AppURL.create(...url);
+                if (identifier !== undefined) {
+                    let url: string[];
+
+                    if (isNaN(parseInt(identifier))) {
+                        // string -- assume sample set name
+                        url = ['samples', identifier];
+                    } else {
+                        // numeric -- assume rowId and use resolver
+                        url = ['rd', 'samples', identifier];
+                    }
+
+                    return AppURL.create(...url);
+                }
             }),
 
             new ActionMapper('experiment', 'showMaterial', (row) => {

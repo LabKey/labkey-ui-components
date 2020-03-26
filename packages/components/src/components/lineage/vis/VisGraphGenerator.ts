@@ -6,7 +6,7 @@ import { List, Map, Record } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 import { DataSet, Edge, Network, Node } from 'vis-network';
 
-import { ILineageGroupingOptions, LineageGroupingOptions, LineageLink, LineageNode, LineageResult } from '../models';
+import { DEFAULT_GROUPING_OPTIONS, ILineageGroupingOptions, LineageLink, LineageNode, LineageResult } from '../models';
 import { getBackupImageFromLineageNode, getImageFromLineageNode } from '../utils';
 import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from '../constants';
 
@@ -182,8 +182,7 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
     if (result === undefined)
         throw new Error("raw lineage result needed to create graph");
 
-    if (grouping === undefined)
-        grouping = new LineageGroupingOptions();
+    const _grouping = Object.assign({}, DEFAULT_GROUPING_OPTIONS, grouping);
 
     const nodes = result.nodes;
 
@@ -205,10 +204,10 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
 
     result.mergedIn.forEach(startLsid => {
         // parents
-        processNodes(result.seed, startLsid, nodes, grouping, LINEAGE_DIRECTIONS.Parent, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
+        processNodes(result.seed, startLsid, nodes, _grouping, LINEAGE_DIRECTIONS.Parent, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
 
         // children
-        processNodes(result.seed, startLsid, nodes, grouping, LINEAGE_DIRECTIONS.Children, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
+        processNodes(result.seed, startLsid, nodes, _grouping, LINEAGE_DIRECTIONS.Children, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
     });
 
     return new VisGraphOptions({
@@ -260,7 +259,7 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
  * objects. We opted to create our own combined nodes rather than use vis.js's cluster node due
  * to vis.js performance issues when laying out large graph sizes with clustered nodes.
  *
- * The algoritm will stop traversing the graph when the conditions specified
+ * The algorithm will stop traversing the graph when the conditions specified
  * by {@link ILineageGroupingOptions.generations} have been met.
  *
  * The general approach is:
@@ -370,6 +369,10 @@ function _processNodes(seed: string, lsid: string, nodes: Map<string, LineageNod
                 queue.push(e.lsid);
             }
         });
+
+        if (options.combineSize === 1) {
+            throw new Error('combineSize must be >1 or disabled (0 or undefined)');
+        }
 
         if (options.combineSize && edges.size >= options.combineSize) {
             const containedNodes = edges.map(e => e.lsid).toArray();

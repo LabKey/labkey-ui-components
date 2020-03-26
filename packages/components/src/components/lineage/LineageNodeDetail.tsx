@@ -4,7 +4,6 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import ReactN from 'reactn';
-import { List } from 'immutable';
 import {
     Detail,
     getQueryGridModel,
@@ -20,23 +19,26 @@ import { LineageNodeList } from './LineageNodeList';
 import { LineageSummary } from './LineageSummary';
 import { LineageFilter, LineageNode, LineageOptions } from './models';
 
+export interface SummaryOptions {
+    showSummary?: boolean
+    summaryOptions?: LineageOptions
+}
+
 interface SelectedNodeProps {
     entityModel?: QueryGridModel
     highlightNode?: string
     node: LineageNode
     seed: string
-    showSummary?: boolean
-    summaryLineageOptions?: LineageOptions
 }
 
-export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps> {
+export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & SummaryOptions> {
 
     static defaultProps = {
         showSummary: true,
-        // TODO: Should likely calculate the summary listing based on the selected node's type
-        summaryLineageOptions: new LineageOptions({
-            filters: List<LineageFilter>([new LineageFilter('type', ['Sample', 'Data'])])
-        })
+        // TODO: Unfortunately, jest is unable to compile this at the moment. Need to investigate.
+        // summaryOptions: {
+        //     filters: [new LineageFilter('type', ['Sample', 'Data'])]
+        // }
     };
 
     componentDidMount() {
@@ -72,7 +74,7 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps> {
             return <LoadingSpinner msg="Loading details..."/>
         }
 
-        const { seed, node, highlightNode, showSummary, summaryLineageOptions } = this.props;
+        const { seed, node, highlightNode, showSummary, summaryOptions } = this.props;
         const url = node.url;
         const lineageUrl = url + '/lineage';
         const name = node.name;
@@ -128,7 +130,7 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps> {
                 <LineageSummary
                     seed={node.lsid}
                     highlightNode={highlightNode}
-                    options={summaryLineageOptions}
+                    options={summaryOptions}
                 />
             )}
         </>;

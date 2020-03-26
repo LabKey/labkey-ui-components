@@ -10,10 +10,7 @@ import { Alert, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQu
 import { loadLineageIfNeeded, NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
 import {
-    ILineageGroupingOptions,
     Lineage,
-    LineageFilter,
-    LineageGroupingOptions,
     LineageNode,
     LineageNodeMetadata,
     LineageOptions,
@@ -25,16 +22,13 @@ import {
     VisGraphNodeType,
 } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
-import { ClusterNodeDetail, SelectedNodeDetail } from './LineageNodeDetail';
+import { ClusterNodeDetail, SelectedNodeDetail, SummaryOptions } from './LineageNodeDetail';
 
 const omittedColumns = List(['Alias', 'Description', 'Name', 'SampleSet', 'DataClass']);
 const requiredColumns = List(['Run']);
 
-interface LinageGraphProps {
+interface LinageGraphOwnProps {
     distance?: number
-    filters?: List<LineageFilter>
-    filterIn?: boolean
-    grouping?: ILineageGroupingOptions
     hideLegacyLinks?: boolean
     initialModel?: QueryGridModel
     lsid: string
@@ -42,7 +36,7 @@ interface LinageGraphProps {
     navigate?: (node: VisGraphNode) => any
 }
 
-export class LineageGraph extends ReactN.PureComponent<LinageGraphProps> {
+export class LineageGraph extends ReactN.PureComponent<LinageGraphOwnProps & LineageOptions & SummaryOptions> {
 
     componentDidMount() {
         loadLineageIfNeeded(this.props.lsid, this.props.distance);
@@ -64,7 +58,7 @@ export class LineageGraph extends ReactN.PureComponent<LinageGraphProps> {
     }
 }
 
-interface LineageGraphDisplayProps extends LinageGraphProps {
+interface LineageGraphDisplayProps {
     lineage: Lineage
 }
 
@@ -74,16 +68,15 @@ interface LineageGraphDisplayState {
     selectedNodes: Array<VisGraphNodeType>
 }
 
-class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partial<LineageGraphDisplayState>> {
+class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & LinageGraphOwnProps & LineageOptions & SummaryOptions, Partial<LineageGraphDisplayState>> {
 
     static defaultProps = {
-        filterIn: true,
         distance: DEFAULT_LINEAGE_DISTANCE
     };
 
     private readonly visGraphRef = undefined;
 
-    constructor(props: LineageGraphDisplayProps) {
+    constructor(props: LineageGraphDisplayProps & LinageGraphOwnProps & LineageOptions & SummaryOptions) {
         super(props);
 
         this.visGraphRef = React.createRef();
@@ -178,7 +171,8 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partia
         }
     }
 
-    renderSelectedGraphNode(seed: string, hoverNodeLsid: string, node: VisGraphNode, showSummary: boolean = true) {
+    renderSelectedGraphNode(seed: string, hoverNodeLsid: string, node: VisGraphNode, showSummaryOverride?: boolean) {
+        const { showSummary, summaryOptions } = this.props;
         const { lineageNode } = node;
 
         return <SelectedNodeDetail
@@ -186,7 +180,8 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partia
             node={lineageNode}
             entityModel={this.getNodeGridDataModel(lineageNode)}
             highlightNode={hoverNodeLsid}
-            showSummary={showSummary}
+            showSummary={showSummaryOverride ?? showSummary}
+            summaryOptions={summaryOptions}
         />;
     }
 
@@ -242,18 +237,12 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partia
     }
 
     render() {
-        const { initialModel, lineage, lsid, filters, filterIn, grouping } = this.props;
+        const { initialModel, lineage, lsid } = this.props;
 
         if (lineage) {
             if (lineage.error) {
                 return <Alert>{lineage.error}</Alert>
             }
-
-            const graphOptions = lineage.generateGraph(new LineageOptions({
-                filters,
-                filterIn,
-                grouping: grouping ? new LineageGroupingOptions(grouping): undefined,
-            }));
 
             return (
                 <NodeInteractionProvider value={this.state.nodeInteractions}>
@@ -266,7 +255,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partia
                                 onNodeDeselect={this.onVisGraphNodeDeselect}
                                 onNodeHover={this.updateHover}
                                 onNodeBlur={this.onVisGraphNodeBlur}
-                                options={graphOptions}
+                                options={lineage.generateGraph(this.props)}
                                 seed={lineage.getSeed()}
                             />
                         </div>

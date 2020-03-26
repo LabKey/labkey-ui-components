@@ -286,6 +286,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
             const shape = internalNode.shape;
             const nodeCount = combinedNode.containedNodes.length;
 
+            // TODO: Use "drawCircle" instead of ctx.circle -- remove interface defined above
             // set up circle clip area
             ctx.circle(internalNode.x, internalNode.y, shape.radius);
             ctx.save();

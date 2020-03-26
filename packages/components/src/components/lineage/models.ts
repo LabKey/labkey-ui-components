@@ -31,32 +31,11 @@ export interface ILineageGroupingOptions {
     combineSize?: number
 }
 
-export class LineageGroupingOptions extends Record({
-    generations: LINEAGE_GROUPING_GENERATIONS.All,
-    parentDepth: DEFAULT_LINEAGE_DISTANCE+1,
-    childDepth: DEFAULT_LINEAGE_DISTANCE,
-    combineSize: 6
-}) {
-    generations?: LINEAGE_GROUPING_GENERATIONS;
-    parentDepth?: number;
-    childDepth?: number;
-    combineSize?: number;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-        if (values && values.clustering !== undefined)
-            throw new Error('clustering option is deprecated');
-
-        if (this.combineSize == 1)
-            throw new Error('combineSize must be >1 or disabled (0 or undefined)');
-    }
-}
-
 export class LineageFilter {
     field: string;
-    value: string | Array<string>;
+    value: string[];
 
-    constructor(field: string, value: string | Array<string>) {
+    constructor(field: string, value: any) {
         this.field = field;
         this.value = value;
     }
@@ -376,33 +355,26 @@ export class LineageResult extends Record({
     }
 }
 
-const LineageOptionDefaults = {
-    filters: List<LineageFilter>(),
-    filterIn: true,
-    grouping: undefined,
-    urlResolver: undefined
+export interface LineageOptions {
+    filterIn?: boolean
+    filters?: LineageFilter[]
+    grouping?: ILineageGroupingOptions
+    urlResolver?: Function
+}
+
+export const DEFAULT_GROUPING_OPTIONS: ILineageGroupingOptions = {
+    childDepth: DEFAULT_LINEAGE_DISTANCE,
+    combineSize: 6,
+    generations: LINEAGE_GROUPING_GENERATIONS.All,
+    parentDepth: DEFAULT_LINEAGE_DISTANCE + 1,
 };
 
-interface LineageOptionParams {
-    filters: List<LineageFilter>;
-    filterIn: boolean;
-    grouping: ILineageGroupingOptions;
-    urlResolver: Function;
-}
-
-export class LineageOptions extends Record(LineageOptionDefaults) implements LineageOptionParams {
-    filters: List<LineageFilter>;
-    filterIn: boolean;
-    grouping: ILineageGroupingOptions;
-    urlResolver: Function;
-
-    constructor(values: Partial<LineageOptionParams> = {}) {
-        if (values.filterIn === undefined)
-            values.filterIn = true;
-
-        super(values);
-    }
-}
+const DEFAULT_LINEAGE_OPTIONS: LineageOptions = {
+    filterIn: true,
+    filters: [],
+    grouping: DEFAULT_GROUPING_OPTIONS,
+    urlResolver: undefined,
+};
 
 export class Lineage extends Record({
     result: undefined,
@@ -424,15 +396,14 @@ export class Lineage extends Record({
     filterResult(options?: LineageOptions): LineageResult {
         const { seed } = this.result;
 
-        if (!options) {
-            options = new LineageOptions({});
-        }
+        // TODO: Not really concerned with grouping here...
+        const _options = Object.assign({}, DEFAULT_LINEAGE_OPTIONS, options);
 
         let nodes;
-        if (options.filters) {
+        if (_options.filters) {
             let result = this.result;
-            options.filters.forEach(filter => {
-                if (options.filterIn === true) {
+            _options.filters.forEach(filter => {
+                if (_options.filterIn === true) {
                     result = result.filterIn(filter.field, filter.value);
                 }
                 else {
@@ -460,10 +431,6 @@ export class Lineage extends Record({
      * will be stopped when {@link ILineageGroupingOptions.generations} condition is met.
      */
     generateGraph(options?: LineageOptions): VisGraphOptions {
-        if (!options) {
-            options = new LineageOptions();
-        }
-
         const result = this.filterResult(options);
         return generate(result, options.grouping);
     }

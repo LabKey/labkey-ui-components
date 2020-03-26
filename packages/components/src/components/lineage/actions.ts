@@ -22,7 +22,6 @@ import {
     LineageGridModel,
     LineageNode,
     LineageNodeMetadata,
-    LineageOptions,
     LineageResult,
 } from './models';
 import { getLineageResult, updateLineageResult } from '../../global';
@@ -65,7 +64,7 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
             failure: function() { // TODO: Handle how we hand back error
                 reject({
                     seed,
-                    message: 'Something went wrong retrieving lineage for seed ' + seed + '.'
+                    message: `Something went wrong retrieving lineage for seed "${seed}".`
                 });
             }
         });
@@ -284,9 +283,9 @@ export function getLocationString(location: Location): string {
 }
 
 export function createGridModel(lineage: Lineage, members: LINEAGE_DIRECTIONS, distance: number, columns: List<string | GridColumn>, pageNumber: number): LineageGridModel {
-    const result = lineage.filterResult(new LineageOptions({
-        filters: List<LineageFilter>([new LineageFilter('type', ['Sample', 'Data'])])
-    }));
+    const result = lineage.filterResult({
+        filters: [new LineageFilter('type', ['Sample', 'Data'])]
+    });
 
     const nodeList = getLineageDepthFirstNodeList(result.nodes, result.seed, members, distance);
     let nodeCounts = Map<string, number>().asMutable();

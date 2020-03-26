@@ -42,7 +42,12 @@ export class LineageSummary extends ReactN.Component<Props> {
         return lineage?.filterResult(options);
     }
 
-    renderNodeList(direction, lineage, edges: List<LineageLink>, highlightNode) {
+    renderNodeList(
+        direction: LINEAGE_DIRECTIONS,
+        lineage: LineageResult,
+        edges: List<LineageLink>,
+        highlightNode: string
+    ) {
         if (this.empty(edges)) {
             return;
         }

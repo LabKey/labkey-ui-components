@@ -137,8 +137,8 @@ export class BaseDomainDesigner extends React.PureComponent<BaseDomainDesignerPr
 
         // get a list of the domain names that have errors
         const errorDomains = domains.filter((domain) => {
-            return domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR
-        })
+                return domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR
+            })
             .map((domain) => {
                 return getDomainHeaderName(domain.name, undefined, name)
             })

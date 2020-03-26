@@ -54,7 +54,6 @@ import { DragDropHandle } from "../base/DragDropHandle";
 import { SCHEMAS } from '../base/models/schemas';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {FIELD_EDITOR_TOPIC} from "../../util/helpLinks";
 
 interface IDomainRowProps {
     domainId?: number
@@ -358,7 +357,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
                         id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
                         onChange={this.onNameChange}
-                        disabled={(isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}
+                        disabled={isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
                     />
                 </Col>
                 <Col xs={4}>

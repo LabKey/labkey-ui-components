@@ -46,7 +46,6 @@ const DOMAIN_PANEL_INDEX: number = 1;
 export const SAMPLE_SET_IMPORT_PREFIX :string = 'materialInputs/';
 export const DATA_CLASS_IMPORT_PREFIX :string = 'dataInputs/';
 const DATA_CLASS_SCHEMA_KEY:string = 'exp/dataclasses';
-const SAMPLE_ID_RESERVED_ERROR = 'The ' + DEFAULT_SAMPLE_FIELD_CONFIG.name + ' field name is reserved for imported or generated sample ids.';
 
 interface Props {
     onChange?: (model: SampleTypeModel) => void
@@ -75,7 +74,6 @@ interface Props {
 interface State {
     model: SampleTypeModel
     parentOptions: Array<IParentOption>
-    invalidDomainField: string
     error: React.ReactNode
 }
 
@@ -100,14 +98,13 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         this.state = {
             model,
-            invalidDomainField: undefined,
             parentOptions: undefined,
             error: undefined
         };
     }
 
     componentDidMount = (): void => {
-        const {includeDataClasses} = this.props;
+        const { includeDataClasses, setSubmitting } = this.props;
         const {model} = this.state;
 
         initSampleSetSelects(!model.isNew(), model.name, includeDataClasses)
@@ -115,7 +112,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 this.initParentOptions(model, results);
             })
             .catch((error) => {
-                this.props.setSubmitting(false, () => {
+                setSubmitting(false, () => {
                     this.setState(() => ({error: resolveErrorMessage(error)}));
                 });
             });
@@ -277,30 +274,12 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         this.setState(() => ({model: newModel}));
     };
 
-    domainChangeHandler = (newDomain: DomainDesign, dirty: boolean) => {
-        const { defaultSampleFieldConfig, onChange } = this.props;
+    domainChangeHandler = (domain: DomainDesign, dirty: boolean) => {
+        const { onChange } = this.props;
         const {model} = this.state;
-        let invalidDomainField;
-        let error;
-
-        if (newDomain && newDomain.fields) {
-            newDomain.fields.forEach(field => {
-                if (field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase()) {
-                    invalidDomainField = field.name;
-                    error = SAMPLE_ID_RESERVED_ERROR;
-                }
-            });
-        }
-
-        //If error field cleared and error message matches then clear it.
-        if (!invalidDomainField && this.state.error === SAMPLE_ID_RESERVED_ERROR) { //Splice || regex better?
-            error = undefined;
-        }
 
         this.setState(() => ({
-            model: model.merge({domain:newDomain}) as SampleTypeModel,
-            invalidDomainField,
-            error,
+            model: model.merge({domain}) as SampleTypeModel
         }), () => {
             // Issue 39918: use the dirty property that DomainForm onChange passes
             if (onChange && dirty) {
@@ -310,19 +289,27 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     onFinish = (): void => {
-        const { model, invalidDomainField } = this.state;
+        const { defaultSampleFieldConfig, setSubmitting } = this.props;
+        const { model } = this.state;
         const isValid = SampleTypeModel.isValid(model);
 
-        if (invalidDomainField) {
-            return;
-        }
-
-        if (model.getDuplicateAlias(true).size > 0) {
-            this.setState(() => ({error: 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ')}));
-            return;
-        }
-
         this.props.onFinish(isValid, this.saveDomain);
+
+        if (!isValid) {
+            let exception;
+
+            if (model.hasInvalidSampleField(defaultSampleFieldConfig)) {
+                exception = 'The ' + defaultSampleFieldConfig.name + ' field name is reserved for imported or generated sample ids.'
+            }
+            else if (model.getDuplicateAlias(true).size > 0) {
+                exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
+            }
+
+            const updatedModel = model.set('exception', exception) as SampleTypeModel;
+            setSubmitting(false, () => {
+                this.setState(() => ({model: updatedModel}));
+            });
+        }
     };
 
     saveDomain = () => {
@@ -357,7 +344,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name)
             .then((response: DomainDesign) => {
-                this.props.setSubmitting(false, () => {
+                setSubmitting(false, () => {
                     this.props.onComplete(response);
                 });
             })

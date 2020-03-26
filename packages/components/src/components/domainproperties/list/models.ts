@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { Record } from "immutable";
-import { SEVERITY_LEVEL_ERROR } from "../constants";
 import {DomainDesign, DomainField} from "../models";
 
 export interface AdvancedSettingsForm {
@@ -137,8 +136,7 @@ export class ListModel extends Record({
     }
 
     static isValid(model: ListModel): boolean {
-        const errDomain = !!model.domain.domainException && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR;
-        return !errDomain && model.hasValidProperties() && model.hasValidKeyType();
+        return model.hasValidProperties() && model.hasValidKeyType();
     }
 
     hasValidProperties(): boolean {

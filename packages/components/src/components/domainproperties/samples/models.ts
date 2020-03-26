@@ -89,13 +89,13 @@ export class SampleTypeModel extends Record({
         );
     }
 
-    hasInvalidSampleField(defaultSampleFieldConfig?: Partial<IDomainField>): boolean {
+    hasInvalidSampleField(defaultSampleFieldConfig: Partial<IDomainField>): boolean {
         if (this.domain && this.domain.fields && defaultSampleFieldConfig) {
-            this.domain.fields.forEach(field => {
-                if (field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase()) {
-                    return true;
-                }
+            const sampleField = this.domain.fields.find(field => {
+                return field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase();
             });
+
+            return sampleField !== undefined;
         }
 
         return false;

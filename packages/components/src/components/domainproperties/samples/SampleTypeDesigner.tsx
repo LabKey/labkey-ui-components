@@ -291,7 +291,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     onFinish = (): void => {
         const { defaultSampleFieldConfig, setSubmitting } = this.props;
         const { model } = this.state;
-        const isValid = SampleTypeModel.isValid(model);
+        const isValid = SampleTypeModel.isValid(model, defaultSampleFieldConfig);
 
         this.props.onFinish(isValid, this.saveDomain);
 

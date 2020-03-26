@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { Link } from 'react-router';
 import { SVGIcon } from '../..';
 
 import { NodeInteractionConsumer, WithNodeInteraction } from './actions';
@@ -129,7 +128,7 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
             <details open={true}>
                 <summary className='lineage-name'>
                     <h6 style={{marginBottom:'0.3em'}}>{title} ({nodes.nodes.length})
-                        &nbsp;{nodes.listURL && <Link className='show-on-hover' to={nodes.listURL}>View in grid</Link>}
+                        &nbsp;{nodes.listURL && <a className="show-on-hover" href={nodes.listURL}>View in grid</a>}
                     </h6>
                 </summary>
                 <ul style={{listStyleType: 'none', paddingLeft: '0', marginBottom: '1.5em'}}>

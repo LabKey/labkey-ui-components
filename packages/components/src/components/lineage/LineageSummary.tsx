@@ -7,8 +7,9 @@ import ReactN from 'reactn';
 import { List } from 'immutable';
 import { LoadingSpinner } from '../..';
 
-import { LineageLink, LineageOptions, LineageResult } from './models';
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
+import { DEFAULT_LINEAGE_DISTANCE } from './constants';
+import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
+import { LineageLink, LineageResult } from './models';
 import { loadLineageIfNeeded } from './actions';
 import { createLineageNodeCollections } from './vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';

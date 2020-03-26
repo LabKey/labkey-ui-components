@@ -18,14 +18,13 @@ import {
 
 import {
     Lineage,
-    LineageFilter,
     LineageGridModel,
     LineageNode,
     LineageNodeMetadata,
     LineageResult,
 } from './models';
 import { getLineageResult, updateLineageResult } from '../../global';
-import { LINEAGE_DIRECTIONS } from './constants';
+import { LINEAGE_DIRECTIONS, LineageFilter } from './types';
 import { getLineageDepthFirstNodeList } from './utils';
 
 const LINEAGE_METADATA_COLUMNS = List(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
@@ -152,8 +151,9 @@ export function loadLineageIfNeeded(seed: string, distance?: number): Promise<Li
     return fetchLineage(seed, distance)
         .then(result => getLineageNodeMetadata(result))
         .then(result => {
-            const urlResolver = new URLResolver();
-            const updatedResult = urlResolver.resolveLineageNodes(result);
+            // const urlResolver = new URLResolver();
+            // const updatedResult = urlResolver.resolveLineageNodes(result);
+            const updatedResult = result;
 
             // either update the global state to include the result or set it
             let lineage = getLineageResult(seed);

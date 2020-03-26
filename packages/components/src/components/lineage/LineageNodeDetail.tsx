@@ -17,7 +17,8 @@ import {
 import { createLineageNodeCollections, LineageNodeCollection } from './vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
 import { LineageSummary } from './LineageSummary';
-import { LineageFilter, LineageNode, LineageOptions } from './models';
+import { LineageNode } from './models';
+import { LineageFilter, LineageOptions } from './types';
 
 export interface SummaryOptions {
     showSummary?: boolean

@@ -6,9 +6,14 @@ import { List, Map, Record } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 import { DataSet, Edge, Network, Node } from 'vis-network';
 
-import { DEFAULT_GROUPING_OPTIONS, ILineageGroupingOptions, LineageLink, LineageNode, LineageResult } from '../models';
+import { LineageLink, LineageNode, LineageResult } from '../models';
 import { getBackupImageFromLineageNode, getImageFromLineageNode } from '../utils';
-import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from '../constants';
+import { DEFAULT_GROUPING_OPTIONS } from '../constants';
+import {
+    LINEAGE_DIRECTIONS,
+    LINEAGE_GROUPING_GENERATIONS,
+    LineageGroupingOptions,
+} from '../types';
 
 export type VisGraphNodeType = VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode;
 
@@ -55,7 +60,7 @@ export const DEFAULT_NODE_PROPS = {
     chosen: {
         node: function (values, id, selected, hovering) {
             if (selected || hovering) {
-                values.borderColor = '#FFA500'
+                values.borderColor = '#FFA500';
                 values.shadow = true;
             }
 
@@ -140,18 +145,18 @@ export interface VisGraphCombinedNode extends Node {
 export interface VisGraphClusterNode {
     kind: 'cluster'
     id: string | number
-    nodesInCluster: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>
+    nodesInCluster: Array<VisGraphNodeType>
 }
 
-export function isBasicNode(item: VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode): item is VisGraphNode {
+export function isBasicNode(item: VisGraphNodeType): item is VisGraphNode {
     return item.kind === 'node';
 }
 
-export function isCombinedNode(item: VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode): item is VisGraphCombinedNode {
+export function isCombinedNode(item: VisGraphNodeType): item is VisGraphCombinedNode {
     return item.kind === 'combined';
 }
 
-export function isClusterNode(item: VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode): item is VisGraphClusterNode {
+export function isClusterNode(item: VisGraphNodeType): item is VisGraphClusterNode {
     return item.kind === 'cluster';
 }
 
@@ -175,10 +180,9 @@ export class VisGraphOptions extends Record({
     public getCombinedNodes(): Array<VisGraphCombinedNode> {
         return this.nodes.get({filter: isCombinedNode}) as Array<VisGraphCombinedNode>;
     }
-
 }
 
-export function generate(result: LineageResult, grouping?: ILineageGroupingOptions): VisGraphOptions {
+export function generate(result: LineageResult, grouping?: LineageGroupingOptions): VisGraphOptions {
     if (result === undefined)
         throw new Error("raw lineage result needed to create graph");
 
@@ -254,13 +258,13 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
  * either {@link VisGraphNode} or {@link VisGraphCombinedNode} objects.
  * These collections will be fed into the vis.js {@link Network} to perform the graph layout.
  *
- * If a node has an edge count greater than {@link ILineageGroupingOptions.combineSize},
+ * If a node has an edge count greater than {@link LineageGroupingOptions.combineSize},
  * a {@link VisGraphCombinedNode} node will be created to hold the collection of {@link LineageNode}
  * objects. We opted to create our own combined nodes rather than use vis.js's cluster node due
  * to vis.js performance issues when laying out large graph sizes with clustered nodes.
  *
  * The algorithm will stop traversing the graph when the conditions specified
- * by {@link ILineageGroupingOptions.generations} have been met.
+ * by {@link LineageGroupingOptions.generations} have been met.
  *
  * The general approach is:
  *  starting from 'mergedIn' nodes (including the original seed)
@@ -279,7 +283,7 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
  *     - create edges from the node to all of edge targets
  */
 function processNodes(seed: string, startLisd: string, nodes: Map<string, LineageNode>,
-                      options: ILineageGroupingOptions, dir: LINEAGE_DIRECTIONS,
+                      options: LineageGroupingOptions, dir: LINEAGE_DIRECTIONS,
                       visEdges: { [p: string]: Edge },
                       visNodes: { [p: string]: VisGraphNode|VisGraphCombinedNode },
                       combinedNodes: {[key:string]: VisGraphCombinedNode},
@@ -293,7 +297,7 @@ function processNodes(seed: string, startLisd: string, nodes: Map<string, Lineag
 }
 
 function _processNodes(seed: string, lsid: string, nodes: Map<string, LineageNode>,
-                       options: ILineageGroupingOptions, dir: LINEAGE_DIRECTIONS,
+                       options: LineageGroupingOptions, dir: LINEAGE_DIRECTIONS,
                        visEdges: {[key:string]: Edge},
                        visNodes: {[key:string]: VisGraphNode|VisGraphCombinedNode},
                        combinedNodes: {[key:string]: VisGraphCombinedNode},

@@ -5,41 +5,20 @@
 import { List, Map, Record } from 'immutable';
 
 import {
+    DEFAULT_GROUPING_OPTIONS,
     DEFAULT_LINEAGE_DIRECTION,
     DEFAULT_LINEAGE_DISTANCE,
-    LINEAGE_DIRECTIONS,
-    LINEAGE_GROUPING_GENERATIONS,
+    DEFAULT_LINEAGE_OPTIONS,
 } from './constants';
+import {
+    LineageGroupingOptions,
+    LINEAGE_DIRECTIONS,
+    LineageOptions,
+} from './types'
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
 import { GridColumn } from '../base/Grid';
 import { QueryInfo } from '../base/models/model';
-
-/**
- * After the raw lineage result has been filtered, ILineageGroupingOptions determines
- * how many generations of nodes to include in the VisGraph and the threshold at which
- * to combine multiple nodes together.
- */
-export interface ILineageGroupingOptions {
-    /** Determines when to stop traversing generations of nodes. */
-    generations?: LINEAGE_GROUPING_GENERATIONS
-    /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the parent axis. */
-    parentDepth?: number
-    /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the child axis. */
-    childDepth?: number
-    /** When the number of parent or children edges is greater than or equal to this threshold, create a combined node. */
-    combineSize?: number
-}
-
-export class LineageFilter {
-    field: string;
-    value: string[];
-
-    constructor(field: string, value: any) {
-        this.field = field;
-        this.value = value;
-    }
-}
 
 // TODO add jest test coverage for this function
 function mergeNodes(aNodes: List<any>, bNodes: List<any>): List<any> {
@@ -355,27 +334,6 @@ export class LineageResult extends Record({
     }
 }
 
-export interface LineageOptions {
-    filterIn?: boolean
-    filters?: LineageFilter[]
-    grouping?: ILineageGroupingOptions
-    urlResolver?: Function
-}
-
-export const DEFAULT_GROUPING_OPTIONS: ILineageGroupingOptions = {
-    childDepth: DEFAULT_LINEAGE_DISTANCE,
-    combineSize: 6,
-    generations: LINEAGE_GROUPING_GENERATIONS.All,
-    parentDepth: DEFAULT_LINEAGE_DISTANCE + 1,
-};
-
-const DEFAULT_LINEAGE_OPTIONS: LineageOptions = {
-    filterIn: true,
-    filters: [],
-    grouping: DEFAULT_GROUPING_OPTIONS,
-    urlResolver: undefined,
-};
-
 export class Lineage extends Record({
     result: undefined,
     sampleStats: undefined,
@@ -427,8 +385,8 @@ export class Lineage extends Record({
      * @remarks
      * First, the LabKey lineage is filtered according to the {@link LineageOptions.filters}
      * then the graph is translated into vis.js nodes and edges.  During translation, nodes
-     * will be combined together according to {@link ILineageGroupingOptions.combineSize} and recursion
-     * will be stopped when {@link ILineageGroupingOptions.generations} condition is met.
+     * will be combined together according to {@link LineageGroupingOptions.combineSize} and recursion
+     * will be stopped when {@link LineageGroupingOptions.generations} condition is met.
      */
     generateGraph(options?: LineageOptions): VisGraphOptions {
         const result = this.filterResult(options);

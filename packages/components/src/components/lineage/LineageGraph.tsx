@@ -8,13 +8,9 @@ import { List } from 'immutable';
 import { Alert, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '../..';
 
 import { loadLineageIfNeeded, NodeInteractionProvider, WithNodeInteraction } from './actions';
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
-import {
-    Lineage,
-    LineageNode,
-    LineageNodeMetadata,
-    LineageOptions,
-} from './models';
+import { DEFAULT_LINEAGE_DISTANCE } from './constants';
+import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
+import { Lineage, LineageNode, LineageNodeMetadata, } from './models';
 import {
     VisGraphClusterNode,
     VisGraphCombinedNode,

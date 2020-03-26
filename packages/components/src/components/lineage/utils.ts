@@ -6,7 +6,7 @@ import { List, Map } from 'immutable';
 import { imageURL, Theme } from '../..';
 
 import { LineageLink, LineageNode } from './models';
-import { LINEAGE_DIRECTIONS } from './constants';
+import { LINEAGE_DIRECTIONS } from './types';
 
 export function getImageFromLineageNode(lineageNode: LineageNode, isSeed: boolean, isSelected: boolean): string {
     const iconURL = lineageNode.meta ? lineageNode.meta.iconURL : 'default';

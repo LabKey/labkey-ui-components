@@ -15,14 +15,15 @@
  */
 import React from 'react';
 import { Panel } from 'react-bootstrap';
-import { List } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
+import {
+    LineageGraph,
+    LineageGrid,
+    LINEAGE_GROUPING_GENERATIONS,
+    LineageFilter,
+} from '../..';
 
-import { LineageGraph } from '../components/lineage/LineageGraph';
-import { LineageGrid } from '../components/lineage/LineageGrid';
-import { LINEAGE_GROUPING_GENERATIONS } from '../components/lineage/constants';
-import { LineageFilter } from '../components/lineage/models';
 import './stories.scss';
 
 storiesOf('Lineage', module)
@@ -32,7 +33,7 @@ storiesOf('Lineage', module)
             <LineageGraph
                 lsid={'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2'}
                 grouping={{generations: LINEAGE_GROUPING_GENERATIONS.Specific}}
-                filters={List([new LineageFilter('type', ['Sample', 'Data'])])}
+                filters={[new LineageFilter('type', ['Sample', 'Data'])]}
                 navigate={(node) => console.log(node)}
             />
         )

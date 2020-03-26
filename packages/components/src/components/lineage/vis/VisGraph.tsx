@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { DataSet, Edge, Network, Node } from 'vis';
+import { DataSet, Edge, Network, Node } from 'vis-network';
 
 import {
     isCombinedNode,

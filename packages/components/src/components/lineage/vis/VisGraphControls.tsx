@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
-import { Network } from 'vis';
+import { Network } from 'vis-network';
 
 interface GraphControlsProps {
     getNetwork: () => Network

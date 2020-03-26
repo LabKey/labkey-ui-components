@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List } from 'immutable';
-import { Edge } from 'vis';
+import { Edge } from 'vis-network';
 import { Lineage, LineageFilter, LineageGroupingOptions, LineageOptions, LineageResult } from './models';
 import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
 import { LINEAGE_GROUPING_GENERATIONS } from './constants';

@@ -4,7 +4,7 @@
  */
 import { List, Map, Record } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
-import { DataSet, Edge, Network, Node } from 'vis';
+import { DataSet, Edge, Network, Node } from 'vis-network';
 
 import { ILineageGroupingOptions, LineageGroupingOptions, LineageLink, LineageNode, LineageResult } from '../models';
 import { getBackupImageFromLineageNode, getImageFromLineageNode } from '../utils';

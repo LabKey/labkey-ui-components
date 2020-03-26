@@ -4,9 +4,9 @@
  */
 import { Edge } from 'vis-network';
 
-import { Lineage, LineageFilter, LineageResult } from './models';
+import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from './types';
+import { Lineage, LineageResult } from './models';
 import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
-import { LINEAGE_GROUPING_GENERATIONS } from './constants';
 
 import {
     collapsedNodesTest1,
@@ -503,7 +503,9 @@ describe('Lineage Graph', () => {
             // generations = 'nearest'
             test('Should generate graph with seeds nearest generations', () => {
                 const visGraphOptions = generate(ESLineageResult, {
-                    generations: LINEAGE_GROUPING_GENERATIONS.Nearest,
+                    grouping: {
+                        generations: LINEAGE_GROUPING_GENERATIONS.Nearest,
+                    },
                 });
                 expect(visGraphOptions.nodes.length).toBe(3);
                 expect(visGraphOptions.edges.length).toBe(2);
@@ -517,7 +519,9 @@ describe('Lineage Graph', () => {
             // generations = 'nearest'
             test('Should generate graph with seeds nearest generations', () => {
                 const visGraphOptions = generate(sampleLineageResult, {
-                    generations: LINEAGE_GROUPING_GENERATIONS.Nearest,
+                    grouping: {
+                        generations: LINEAGE_GROUPING_GENERATIONS.Nearest,
+                    },
                 });
                 expect(visGraphOptions.nodes.length).toBe(2);
                 expect(visGraphOptions.edges.length).toBe(1);

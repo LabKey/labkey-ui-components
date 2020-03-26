@@ -14,7 +14,7 @@ import {
     Theme,
 } from '../..';
 
-import { createLineageNodeCollections, LineageNodeCollection } from './vis/VisGraphGenerator';
+import { createLineageNodeCollections, LineageNodeCollectionByType } from './vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
 import { LineageSummary } from './LineageSummary';
 import { LineageNode } from './models';
@@ -64,11 +64,6 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
         }
     }
 
-    handleLinkClick = (evt: React.MouseEvent): boolean => {
-        evt.stopPropagation();
-        return false;
-    };
-
     render() {
         const model = this.getQueryGridModel();
         if (!model || !model.isLoaded) {
@@ -76,38 +71,30 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
         }
 
         const { seed, node, highlightNode, showSummary, summaryOptions } = this.props;
-        const url = node.url;
-        const lineageUrl = url + '/lineage';
-        const name = node.name;
+        const { links, meta, name } = node;
+        const lineageUrl = links.lineage;
         const isSeed = seed === node.lsid;
 
-        let description;
-        let aliases;
-        let displayType;
-        if (node.meta) {
-            description = node.meta.description;
-            aliases = node.meta.aliases;
-            displayType = node.meta.displayType;
-        }
+        const { aliases, description, displayType } = meta;
 
         const header = (
             <>
                 {(lineageUrl && !isSeed) &&
-                <a href={lineageUrl} onClick={this.handleLinkClick}>{name}</a>
+                <a href={lineageUrl}>{name}</a>
                 ||
                 name
                 }
                 <div className="pull-right">
                     <a className="lineage-data-link-left"
-                       href={url}
-                       onClick={this.handleLinkClick}>
+                       href={node.links.overview}>
                         <span className="lineage-data-link--text">Overview</span>
                     </a>
-                    <a className="lineage-data-link-right"
-                       href={lineageUrl}
-                       onClick={this.handleLinkClick}>
-                        <span className="lineage-data-link--text">Lineage</span>
-                    </a>
+                    {lineageUrl !== undefined && (
+                        <a className="lineage-data-link-right"
+                           href={lineageUrl}>
+                            <span className="lineage-data-link--text">Lineage</span>
+                        </a>
+                    )}
                 </div>
             </>
         );
@@ -141,15 +128,16 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
 interface ClusterNodeDetailProps {
     highlightNode?: string
     nodes: Array<LineageNode>
-    nodesByType: {[key:string]: LineageNodeCollection}
+    nodesByType: LineageNodeCollectionByType
+    options?: LineageOptions
 }
 
 export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
 
     render() {
-        const { nodes, highlightNode } = this.props;
+        const { highlightNode, nodes, options } = this.props;
 
-        const nodesByType = this.props.nodesByType ?? createLineageNodeCollections(nodes);
+        const nodesByType = this.props.nodesByType ?? createLineageNodeCollections(nodes, options);
         const groups = Object.keys(nodesByType).sort();
 
         let iconURL;
@@ -193,11 +181,11 @@ class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
             <div className="margin-bottom lineage-node-detail">
                 <i className="component-detail--child--img">
                     <SVGIcon
-                        iconDir="_images"
                         theme={Theme.ORANGE}
                         iconSrc={iconSrc}
                         height="50px"
-                        width="50px"/>
+                        width="50px"
+                    />
                 </i>
                 <div className="text__truncate">
                     <div className="lineage-name">

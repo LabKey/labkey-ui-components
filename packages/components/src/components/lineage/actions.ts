@@ -24,8 +24,9 @@ import {
     LineageResult,
 } from './models';
 import { getLineageResult, updateLineageResult } from '../../global';
-import { LINEAGE_DIRECTIONS, LineageFilter } from './types';
+import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
 import { getLineageDepthFirstNodeList } from './utils';
+import { getURLResolver } from './LineageURLResolvers';
 
 const LINEAGE_METADATA_COLUMNS = List(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
@@ -142,7 +143,7 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
     });
 }
 
-export function loadLineageIfNeeded(seed: string, distance?: number): Promise<Lineage> {
+export function loadLineageIfNeeded(seed: string, distance?: number, options?: LineageOptions): Promise<Lineage> {
     const existing = getLineageResult(seed);
     if (existing) {
         return Promise.resolve(existing);
@@ -151,9 +152,7 @@ export function loadLineageIfNeeded(seed: string, distance?: number): Promise<Li
     return fetchLineage(seed, distance)
         .then(result => getLineageNodeMetadata(result))
         .then(result => {
-            // const urlResolver = new URLResolver();
-            // const updatedResult = urlResolver.resolveLineageNodes(result);
-            const updatedResult = result;
+            const updatedResult = getURLResolver(options).resolveNodes(result);
 
             // either update the global state to include the result or set it
             let lineage = getLineageResult(seed);

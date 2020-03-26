@@ -35,12 +35,12 @@ interface LinageGraphOwnProps {
 export class LineageGraph extends ReactN.PureComponent<LinageGraphOwnProps & LineageOptions & SummaryOptions> {
 
     componentDidMount() {
-        loadLineageIfNeeded(this.props.lsid, this.props.distance);
+        loadLineageIfNeeded(this.props.lsid, this.props.distance, this.props);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.lsid !== nextProps.lsid || this.props.distance !== nextProps.distance) {
-            loadLineageIfNeeded(nextProps.lsid, nextProps.distance);
+            loadLineageIfNeeded(nextProps.lsid, nextProps.distance, nextProps);
         }
     }
 
@@ -189,6 +189,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
             highlightNode={hoverNodeLsid}
             nodes={nodes}
             nodesByType={undefined}
+            options={this.props}
         />;
     }
 
@@ -201,6 +202,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
             highlightNode={hoverNodeLsid}
             nodes={node.containedNodes}
             nodesByType={node.containedNodesByType}
+            options={this.props}
         />;
     }
 

@@ -44,9 +44,8 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
 
         const title = getLineageNodeTitle(node, false);
 
-        const { name, meta, url } = node;
+        const { links, name, meta } = node;
         const iconURL = meta.iconURL;
-        const lineageUrl = url + '/lineage';
 
         return (
             <li
@@ -56,9 +55,8 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
                 title={title}
             >
                 <SVGIcon
-                    iconDir="_images"
+                    className="lineage-sm-icon"
                     iconSrc={iconURL}
-                    style={{width:"1.2em", height:"1.2em", margin: "0.1em"}}
                 />
                 &nbsp;
                 <NodeInteractionConsumer>
@@ -76,14 +74,16 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
                     }}
                 </NodeInteractionConsumer>
                 &nbsp;
-                <a href={url}
-                   className='show-on-hover' style={{paddingLeft: '1px', paddingRight: '1px'}}>
-                    <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Overview</small>
+                <a href={links.overview}
+                   className="show-on-hover lineage-data-link-left">
+                    <span className="lineage-data-link--text">Overview</span>
                 </a>
-                <a href={lineageUrl}
-                   className='show-on-hover' style={{paddingLeft: '5px', paddingRight: '5px'}}>
-                    <small style={{lineHeight: 1, color: '#777', fontSize: '75%'}}>Lineage</small>
-                </a>
+                {links.lineage !== undefined && (
+                    <a href={links.lineage}
+                       className="show-on-hover lineage-data-link-right">
+                        <span className="lineage-data-link--text">Lineage</span>
+                    </a>
+                )}
             </li>
         );
     };
@@ -93,8 +93,7 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
 
         return (
             <li key={'__skip'}>
-                <SVGIcon iconDir={"_images"} iconSrc="default"
-                         style={{width:"1.2em", height:"1.2em", margin: "0.1em", opacity: 0}} />
+                <SVGIcon className="lineage-sm-icon" />
                 &nbsp;
                 <a style={{cursor:'pointer'}} onClick={this.toggle}>Show {skipCount} {expanded ? "less" : "more"}...</a>
                 &nbsp;
@@ -126,7 +125,7 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
 
         return (
             <details open={true}>
-                <summary className='lineage-name'>
+                <summary className="lineage-name">
                     <h6 style={{marginBottom:'0.3em'}}>{title} ({nodes.nodes.length})
                         &nbsp;{nodes.listURL && <a className="show-on-hover" href={nodes.listURL}>View in grid</a>}
                     </h6>

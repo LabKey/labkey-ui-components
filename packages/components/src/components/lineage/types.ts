@@ -2,6 +2,8 @@
  * Copyright (c) 2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+// DO NOT IMPORT ANYTHING IN HERE! ONLY MEANT FOR TOP-LEVEL LINEAGE TYPES
+// Can cause circular dependency
 
 export enum LINEAGE_DIRECTIONS {
     Children = 'children',
@@ -43,6 +45,12 @@ export class LineageFilter {
         this.field = field;
         this.value = value;
     }
+}
+
+export interface LineageNodeLinks {
+    overview: string
+    lineage: string
+    list: string
 }
 
 export enum LineageURLResolvers {

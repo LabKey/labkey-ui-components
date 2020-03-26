@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Utils } from '@labkey/api';
 
 import { imageURL } from '../../url/ActionURL';
@@ -25,7 +25,7 @@ export enum Theme {
     ORANGE
 }
 
-export function iconURL(iconDir: string, prefix: string, theme?: Theme): string {
+export function iconURL(iconDir: string, prefix?: string, theme?: Theme): string {
 
     if (!prefix || !Utils.isString(prefix)) {
         prefix = 'default';
@@ -60,7 +60,7 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
     /**
      * The name of the icon directory you are pulling the image from (i.e. corresponds to the dir in the context/web location of the running server).
      */
-    iconDir: string
+    iconDir?: string
 
     /**
      * The iconSrc denotes which type of icon to use.
@@ -84,10 +84,11 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
     theme?: Theme
 }
 
-export class SVGIcon extends React.Component<Props, any> {
+export class SVGIcon extends PureComponent<Props> {
 
     static defaultProps = {
         activeTheme: Theme.LIGHT,
+        iconDir: '_images',
         iconSrc: 'default',
         theme: Theme.DEFAULT,
         height: '100%',
@@ -113,7 +114,8 @@ export class SVGIcon extends React.Component<Props, any> {
             <img
                 {...imgProps(this.props)}
                 alt={alt ? alt : (iconSrc + '-icon')}
-                src={iconURL(iconDir, iconSrc, this.getTheme())}/>
+                src={iconURL(iconDir, iconSrc, this.getTheme())}
+            />
         )
     }
 }

@@ -349,7 +349,7 @@ export class URLResolver {
         ]);
     }
 
-    private mapURL(mapper: MapURLOptions): string {
+    private mapURL = (mapper: MapURLOptions): string => {
 
         let _url = this.mappers.toSeq()
             .map(m =>
@@ -366,9 +366,9 @@ export class URLResolver {
         }
 
         return mapper.url;
-    }
+    };
 
-    public resolveLineageNodes(result: LineageResult, acceptedTypes: Array<string> = ['Sample', 'Data']) : LineageResult {
+    public resolveLineageNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
         let updatedNodes = result.nodes.map((node) => {
             if (acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
                 let parts = node.cpasType.split(':');
@@ -394,7 +394,7 @@ export class URLResolver {
             return node;
         });
         return result.set('nodes', updatedNodes) as LineageResult;
-    }
+    };
 
     /**
      * Returns a Promise resolving a valid selectRowsResult with URLs replaced with those mapped by this

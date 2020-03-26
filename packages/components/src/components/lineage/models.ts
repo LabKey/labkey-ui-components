@@ -3,9 +3,9 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable';
+import { GridColumn, QueryInfo } from '../..';
 
 import {
-    DEFAULT_GROUPING_OPTIONS,
     DEFAULT_LINEAGE_DIRECTION,
     DEFAULT_LINEAGE_DISTANCE,
     DEFAULT_LINEAGE_OPTIONS,
@@ -13,12 +13,11 @@ import {
 import {
     LineageGroupingOptions,
     LINEAGE_DIRECTIONS,
+    LineageNodeLinks,
     LineageOptions,
 } from './types'
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
-import { GridColumn } from '../base/Grid';
-import { QueryInfo } from '../base/models/model';
 
 // TODO add jest test coverage for this function
 function mergeNodes(aNodes: List<any>, bNodes: List<any>): List<any> {
@@ -106,7 +105,6 @@ export class LineageNode extends Record ({
     distance: undefined,
     listURL: undefined,
     lsid: undefined,
-    meta: undefined,
     name: undefined,
     parents: undefined,
     queryName: undefined,
@@ -115,13 +113,15 @@ export class LineageNode extends Record ({
     type: undefined,
     url: undefined,
 
+    // computed properties
+    links: {},
+    meta: undefined,
 } ) {
     children?: List<LineageLink>;
     cpasType?: string;
     distance?: number;
     listURL?: string;
     lsid?: string;
-    meta?: LineageNodeMetadata;
     name?: string;
     parents?: List<LineageLink>;
     queryName?: string;
@@ -129,6 +129,10 @@ export class LineageNode extends Record ({
     schemaName?: string;
     type?: string;
     url?: string;
+
+    // computed properties
+    links?: LineageNodeLinks;
+    meta?: LineageNodeMetadata;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -390,7 +394,7 @@ export class Lineage extends Record({
      */
     generateGraph(options?: LineageOptions): VisGraphOptions {
         const result = this.filterResult(options);
-        return generate(result, options.grouping);
+        return generate(result, options);
     }
 }
 

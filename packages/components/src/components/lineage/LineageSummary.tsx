@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import ReactN from 'reactn';
 import { List } from 'immutable';
 import { LoadingSpinner } from '../..';
@@ -23,16 +23,19 @@ interface Props {
 export class LineageSummary extends ReactN.Component<Props> {
 
     componentDidMount() {
-        const { seed } = this.props;
-        loadLineageIfNeeded(seed, DEFAULT_LINEAGE_DISTANCE);
+        this.load(this.props);
     }
 
     componentWillReceiveProps(nextProps: Props) {
         const { seed } = this.props;
         if (seed !== nextProps.seed) {
-            loadLineageIfNeeded(nextProps.seed, DEFAULT_LINEAGE_DISTANCE);
+            this.load(nextProps);
         }
     }
+
+    load = (props: Props) => {
+        loadLineageIfNeeded(props.seed, DEFAULT_LINEAGE_DISTANCE, props.options);
+    };
 
     getLineageResult(): LineageResult {
         const { options, seed } = this.props;
@@ -43,19 +46,19 @@ export class LineageSummary extends ReactN.Component<Props> {
         return lineage?.filterResult(options);
     }
 
-    renderNodeList(
+    renderNodeList = (
         direction: LINEAGE_DIRECTIONS,
         lineage: LineageResult,
         edges: List<LineageLink>,
         highlightNode: string
-    ) {
+    ): ReactNode => {
         if (this.empty(edges)) {
             return;
         }
 
         const nodes = edges.map(edge => lineage.nodes.get(edge.lsid)).toArray();
 
-        const nodesByType = createLineageNodeCollections(nodes);
+        const nodesByType = createLineageNodeCollections(nodes, this.props.options);
         const groups = Object.keys(nodesByType).sort();
 
         const title = direction === LINEAGE_DIRECTIONS.Parent ? "Parents" : "Children";
@@ -68,7 +71,7 @@ export class LineageSummary extends ReactN.Component<Props> {
                 highlightNode={highlightNode}
             />
         );
-    }
+    };
 
     private empty(nodes?: List<LineageLink>) {
         return !nodes || nodes.size === 0;

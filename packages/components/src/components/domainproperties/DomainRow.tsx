@@ -346,6 +346,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
     renderBaseFields() {
         const { index, field, availableTypes, appPropertiesOnly, showFilePropertyType, domainIndex, domainFormDisplayOptions } = this.props;
+        const lockNameForPK = !field.isNew() && isPrimaryKeyFieldLocked(field.lockType);
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)}>
@@ -357,7 +358,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
                         id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
                         onChange={this.onNameChange}
-                        disabled={isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
+                        disabled={isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType) || lockNameForPK}
                     />
                 </Col>
                 <Col xs={4}>

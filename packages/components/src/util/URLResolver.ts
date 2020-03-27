@@ -59,20 +59,30 @@ export class URLResolver {
             }),
 
             new ActionMapper('experiment', 'showMaterialSource', (row, column) => {
-                let url = ['rd', 'samples'];
+                let identifier: string;
 
                 if (row.has('data')) {
-                    //Search link doesn't use the same url
-                    url = ['samples', row.get('data').get('name')];
-                }
-                else if (column.has('lookup')) {
-                    url.push(row.get('displayValue').toString());
-                }
-                else {
-                    url.push(row.get('value').toString());
+                    // search link doesn't use the same url
+                    identifier = row.getIn(['data', 'name']);
+                } else if (column.has('lookup')) {
+                    identifier = row.get('displayValue').toString();
+                } else {
+                    identifier = row.get('value').toString();
                 }
 
-                return AppURL.create(...url);
+                if (identifier !== undefined) {
+                    let url: string[];
+
+                    if (isNaN(parseInt(identifier))) {
+                        // string -- assume sample set name
+                        url = ['samples', identifier];
+                    } else {
+                        // numeric -- assume rowId and use resolver
+                        url = ['rd', 'samples', identifier];
+                    }
+
+                    return AppURL.create(...url);
+                }
             }),
 
             new ActionMapper('experiment', 'showMaterial', (row) => {
@@ -362,16 +372,18 @@ export class URLResolver {
 
                 // Lsid strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
                 name = name.replace(/\+/g, ' ');
+                const listURLParts = node.type === 'Sample' ? ['samples', name] : ['rd', 'dataclass', name];
+
                 return node.merge({
                     // listURL is the url to the grid for the data type.  It will be filtered to the rowIds of the lineage members
                     // create a URL that will be resolved/redirected in the application resolvers
-                    listURL: AppURL.create('rd', node.type === 'Sample' ? 'samples' : 'dataclass', name).toString(),
+                    listURL: AppURL.create(...listURLParts).toString(),
                     url: this.mapURL({
-                        url: node.get('url'),
+                        url: node.url,
                         row: node,
                         column: Map<string, any>(),
-                        schema: node.get('schemaName'),
-                        query: node.get('queryName')
+                        schema: node.schemaName,
+                        query: node.queryName
                     })
                 })
             }

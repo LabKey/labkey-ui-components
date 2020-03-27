@@ -10,6 +10,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Domain designers updates for consistent handling of isValid state and error display
     - Issue 39938: Domain field fix to revert back to max Integer length if user input is larger then 4000
 
+## version 0.40.0
+*Released*: 27 March 2020
+* Remove SampleSetResolver for app URLs
+    - URL mappers updated use /samples/<sampleSetName> or /rd/samples/<rowId>
+
 ## version 0.39.4
 *Released*: 24 March 2020
 * Issue 39968: Cannot update assay result field to "All Samples"

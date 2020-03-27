@@ -15,7 +15,7 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './AppURLResolver';
+import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './AppURLResolver';
 import { URLResolver } from './URLResolver';
 import { AppURL } from '../url/AppURL';
 import { initMockServerContext } from '../testHelpers';
@@ -282,46 +282,6 @@ describe('App Route Resolvers', () => {
             samplesResolver.fetch(['rd', 'samples', 24]).then((url: AppURL) => {
                 expect(url.toString()).toBe('/media/woodson/24');
             }),
-        ]);
-    });
-
-    test('Should resolve /rd/samples/setname routes', () => {
-
-        const routes = List<string>().asMutable();
-        routes.push('elway');
-        routes.push('td');
-        routes.push('rodsmith');
-        routes.push('wood son');
-        const samplesetResolver = new SampleSetResolver(routes.asImmutable());
-
-        // test regex
-        // expect.assertions(10);
-        expect(samplesetResolver.matches(undefined)).toBe(false);
-        expect(samplesetResolver.matches('/rd/samples/123')).toBe(true);
-        expect(samplesetResolver.matches('/rd/samples/2.3')).toBe(true);
-        expect(samplesetResolver.matches('/rd/samples/elway')).toBe(true);
-        expect(samplesetResolver.matches('/rd/samples/TD/foo/bar')).toBe(true);
-        expect(samplesetResolver.matches('/rd/samples/RODsmith/foo/bar?bar=1')).toBe(true);
-
-        return Promise.all([
-            samplesetResolver.fetch(['rd', 'samples', 14]).then((result: boolean) => {
-                expect(result).toBe(true);
-            }),
-            samplesetResolver.fetch(['rd', 'samples', 'td']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/samples/td');
-            }),
-            samplesetResolver.fetch(['rd', 'samples', 'Elway', 'QB']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/samples/elway/qb');
-            }),
-            samplesetResolver.fetch(['rd', 'samples', 'woodson', '?']).then((result: boolean) => {
-                expect(result).toBe(true);
-            }),
-            samplesetResolver.fetch(['rd', 'samples', 'wood son', '?']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/samples/wood%20son/%3f');
-            }),
-            samplesetResolver.fetch(['rd', 'samples', 'wood%20son']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/samples/wood%20son');
-            })
         ]);
     });
 });

@@ -81,7 +81,8 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
           className="col-xs-3"
         >
           <label
-            className="entity-form--overlaylabel"
+            className="entity-form--overlaylabel text__truncate-and-wrap"
+            title="Name"
           >
             <span>
               Name
@@ -278,7 +279,8 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
           className="col-xs-3"
         >
           <label
-            className="entity-form--overlaylabel"
+            className="entity-form--overlaylabel text__truncate-and-wrap"
+            title="Name"
           >
             <span>
               Name

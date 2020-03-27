@@ -11,7 +11,8 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
       className="col-xs-3"
     >
       <label
-        className="entity-form--overlaylabel"
+        className="entity-form--overlaylabel text__truncate-and-wrap"
+        title="Name"
       >
         <span>
           Name
@@ -165,7 +166,8 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
       className="col-xs-3"
     >
       <label
-        className="entity-form--overlaylabel"
+        className="entity-form--overlaylabel text__truncate-and-wrap"
+        title="Name"
       >
         <span>
           Name
@@ -320,7 +322,8 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
       className="col-xs-3"
     >
       <label
-        className="entity-form--overlaylabel"
+        className="entity-form--overlaylabel text__truncate-and-wrap"
+        title="Name"
       >
         <span>
           Name
@@ -475,7 +478,8 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
       className="col-xs-3"
     >
       <label
-        className="entity-form--overlaylabel"
+        className="entity-form--overlaylabel text__truncate-and-wrap"
+        title="Name"
       >
         <span>
           Name

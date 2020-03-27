@@ -86,7 +86,8 @@ Array [
               className="col-xs-3"
             >
               <label
-                className="entity-form--overlaylabel"
+                className="entity-form--overlaylabel text__truncate-and-wrap"
+                title="Name"
               >
                 <span>
                   Name
@@ -504,7 +505,8 @@ Array [
               className="col-xs-3"
             >
               <label
-                className="entity-form--overlaylabel"
+                className="entity-form--overlaylabel text__truncate-and-wrap"
+                title="Name"
               >
                 <span>
                   Name
@@ -2431,7 +2433,8 @@ exports[`DataClassDesigner initModel 1`] = `
                                           type="Text (String)"
                                         >
                                           <label
-                                            className="entity-form--overlaylabel"
+                                            className="entity-form--overlaylabel text__truncate-and-wrap"
+                                            title="Name"
                                           >
                                             <span>
                                               Name

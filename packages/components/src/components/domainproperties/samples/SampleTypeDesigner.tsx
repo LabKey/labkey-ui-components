@@ -349,8 +349,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 });
             })
             .catch((response) => {
-                const updatedModel = response.exception
-                    ? model.set('exception', response.exception) as SampleTypeModel
+                const exception = resolveErrorMessage(response);
+                const updatedModel = exception
+                    ? model.set('exception', exception) as SampleTypeModel
                     : model.merge({
                         // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
                         domain: domain.merge({domainException: response.domainException}) as DomainDesign,

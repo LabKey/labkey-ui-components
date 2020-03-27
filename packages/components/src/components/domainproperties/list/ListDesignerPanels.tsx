@@ -10,6 +10,7 @@ import { ListModel } from "./models";
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { Progress } from "../../base/Progress";
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from "../BaseDomainDesigner";
+import { resolveErrorMessage } from "../../../util/messaging";
 
 interface Props {
     initModel?: ListModel
@@ -87,7 +88,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         .catch((error) => {
             console.error(error);
             setSubmitting(false, () => {
-                this.props.onComplete(model, error.exception);
+                this.props.onComplete(model, resolveErrorMessage(error));
             });
         });
     }
@@ -129,8 +130,9 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 }
             })
             .catch((response) => {
-                const updatedModel = response.exception
-                    ? model.set('exception', response.exception) as ListModel
+                const exception = resolveErrorMessage(response);
+                const updatedModel = exception
+                    ? model.set('exception', exception) as ListModel
                     : model.merge({domain: response, exception: undefined}) as ListModel;
 
                 setSubmitting(false, () => {

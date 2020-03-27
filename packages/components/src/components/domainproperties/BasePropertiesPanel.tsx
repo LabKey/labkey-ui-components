@@ -62,7 +62,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
                 <Panel
                     className={getDomainPanelClass(collapsed, true, useTheme)}
                     expanded={!collapsed}
-                    onToggle={function(){}}
+                    onToggle={function(){}} // this is added to suppress JS warning about providing an expanded prop without onToggle
                 >
                     <CollapsiblePanelHeader
                         id={headerId}

@@ -6,6 +6,7 @@ import DomainForm from "../DomainForm";
 import { DataClassPropertiesPanel } from "./DataClassPropertiesPanel";
 import { getDomainPanelStatus, saveDomain } from "../actions";
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from "../BaseDomainDesigner";
+import { resolveErrorMessage } from "../../../util/messaging";
 
 interface Props {
     nounSingular?: string
@@ -58,17 +59,20 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
                 let updatedModel = model.set('exception', undefined) as DataClassModel;
                 updatedModel = updatedModel.merge({domain: response}) as DataClassModel;
 
-                this.setState(() => ({model: updatedModel}));
                 setSubmitting(false, () => {
+                    this.setState(() => ({model: updatedModel}));
                     this.props.onComplete(updatedModel);
                 });
             })
             .catch((response) => {
-                const updatedModel = response.exception
-                    ? model.set('exception', response.exception) as DataClassModel
+                const exception = resolveErrorMessage(response);
+                const updatedModel = exception
+                    ? model.set('exception', exception) as DataClassModel
                     : model.merge({domain: response, exception: undefined}) as DataClassModel;
-                this.setState(() => ({model: updatedModel}));
-                setSubmitting(false);
+
+                setSubmitting(false, () => {
+                    this.setState(() => ({model: updatedModel}));
+                });
             });
     };
 

@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update canSubmit check for ParentEntityEditPanel to check for actual differences and allow submission when all parents have been removed
 
+## version 0.40.0
+*Released*: 27 March 2020
+* Remove SampleSetResolver for app URLs
+    - URL mappers updated use /samples/<sampleSetName> or /rd/samples/<rowId>
+
 ## version 0.39.4
 *Released*: 24 March 2020
 * Issue 39968: Cannot update assay result field to "All Samples"

@@ -2,9 +2,9 @@ import React from 'react';
 import { Alert, Col, FormControl, Row } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 import { AUTOINT_TYPE, DomainField, IAppDomainHeader, IDomainField, PropDescType } from '../models';
-import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { createNewDomainField } from "../actions";
 import { ListModel } from "./models";
+import { DomainFieldLabel } from "../DomainFieldLabel";
 
 const AUTO_INC_KEY_OPTION_TEXT = 'Auto integer key';
 const AUTO_INC_KEY_OPTION_VALUE = -1;
@@ -86,12 +86,10 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                 </div>
                 <Row className='list__set-key-panel'>
                     <Col xs={3}>
-                        Key Field Name *
-                        <LabelHelpTip
-                            title=""
-                            body={() => {
-                                return <> Only integer or text fields can be made the primary key. </>;
-                            }}
+                        <DomainFieldLabel
+                            label={'Key Field Name'}
+                            required={true}
+                            helpTipBody={() => 'Only integer or text fields can be made the primary key.'}
                         />
                     </Col>
                     <Col xs={5}>

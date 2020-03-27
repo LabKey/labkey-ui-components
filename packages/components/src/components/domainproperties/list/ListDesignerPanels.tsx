@@ -1,22 +1,16 @@
 import React from 'react';
-import { Alert, Button } from "react-bootstrap";
 import { List } from "immutable";
 import { ActionURL } from "@labkey/api";
 import { ListPropertiesPanel } from "./ListPropertiesPanel";
-import {DomainDesign, DomainField, IAppDomainHeader} from "../models";
+import {DomainDesign, IAppDomainHeader} from "../models";
 import DomainForm from "../DomainForm";
-import {
-    getDomainBottomErrorMessage,
-    getDomainHeaderName,
-    getDomainPanelStatus,
-    getUpdatedVisitedPanelsList,
-    saveDomain
-} from "../actions";
+import { getDomainPanelStatus, saveDomain } from "../actions";
 import { importData } from "../../../query/api";
-import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { ListModel } from "./models";
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { Progress } from "../../base/Progress";
+import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from "../BaseDomainDesigner";
+import { resolveErrorMessage } from "../../../util/messaging";
 
 interface Props {
     initModel?: ListModel
@@ -26,59 +20,24 @@ interface Props {
     useTheme?: boolean
     containerTop?: number // This sets the top of the sticky header, default is 0
     successBsStyle?: string
+    saveBtnText?: string
 }
 
 interface State {
     model: ListModel;
-    submitting: boolean;
-    currentPanelIndex: number;
-    visitedPanels: List<number>;
-    validatePanel: number;
-    firstState: boolean;
     fileImportData: File;
 }
 
-export class ListDesignerPanels extends React.PureComponent<Props, State> {
-    constructor(props) {
+class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+
+    constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
         this.state = {
             model: props.initModel || ListModel.create({}),
-            submitting: false,
-            currentPanelIndex: 0,
-            visitedPanels: List<number>(),
-            validatePanel: undefined,
-            firstState: true,
             fileImportData: undefined
         };
     }
-
-    onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
-        const { visitedPanels, currentPanelIndex } = this.state;
-        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
-
-        if (!collapsed) {
-            this.setState(
-                () => ({
-                    visitedPanels: updatedVisitedPanels,
-                    currentPanelIndex: index,
-                    firstState: false,
-                    validatePanel: currentPanelIndex,
-                }), callback());
-        } else {
-            if (currentPanelIndex === index) {
-                this.setState(
-                    () => ({
-                        visitedPanels: updatedVisitedPanels,
-                        currentPanelIndex: undefined,
-                        firstState: false,
-                        validatePanel: currentPanelIndex,
-                    }), callback());
-            } else {
-                callback();
-            }
-        }
-    };
 
     onPropertiesChange = (model: ListModel) => {
         const { onChange } = this.props;
@@ -108,6 +67,7 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
     };
 
     handleFileImport() {
+        const { setSubmitting } = this.props;
         const { fileImportData, model } = this.state;
 
         importData({
@@ -121,60 +81,65 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                 {'name': model.name})
         })
         .then((response) => {
-            this.setState(() => ({submitting: false}));
-            this.props.onComplete(model);
+            setSubmitting(false, () => {
+                this.props.onComplete(model);
+            });
         })
         .catch((error) => {
             console.error(error);
-            this.setState(() => ({submitting: false}));
-            this.props.onComplete(model, error.exception);
+            setSubmitting(false, () => {
+                this.props.onComplete(model, resolveErrorMessage(error));
+            });
         });
     }
 
     onFinish = () => {
-        const { model, visitedPanels, currentPanelIndex, fileImportData } = this.state;
-        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, currentPanelIndex);
+        const { setSubmitting } = this.props;
+        const { model } = this.state;
+        const isValid = ListModel.isValid(model);
 
-        // This first setState forces the current expanded panel to validate its fields and display and errors
-        // the callback setState then sets that to undefined so it doesn't keep validating every render
-        this.setState((state) => ({ validatePanel: state.currentPanelIndex, visitedPanels: updatedVisitedPanels }), () => {
-                this.setState(() => ({ validatePanel: undefined }), () => {
-                    if (this.isValid()) {
-                        this.setState(() => ({ submitting: true }));
+        this.props.onFinish(isValid, this.saveDomain);
 
-                        saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
-                            .then((response) => {
-                                let updatedModel = model.set('exception', undefined) as ListModel;
-                                updatedModel = updatedModel.merge({domain: response}) as ListModel;
-                                this.setState(() => ({model: updatedModel}));
-
-                                // If we're importing List file data, import file contents
-                                if (fileImportData) {
-                                    this.handleFileImport();
-                                }
-                                else {
-                                    this.setState(() => ({submitting: false}));
-                                    this.props.onComplete(updatedModel);
-                                }
-                            })
-                            .catch((response) => {
-                                const updatedModel = response.exception
-                                    ? model.set('exception', response.exception) as ListModel
-                                    : model.merge({domain: response, exception: undefined}) as ListModel;
-                                this.setState(() => ({model: updatedModel, submitting: false}));
-                            });
-                    }
-                    else if (!model.hasValidKeyType()) {
-                        const updatedModel = model.set('exception', 'You must specify a key field for your list in the fields panel to continue.') as ListModel;
-                        this.setState(() => ({model: updatedModel, submitting: false}));
-                    }
+        if (!isValid) {
+            const exception = !model.hasValidKeyType() ? 'You must specify a key field for your list in the fields panel to continue.' : undefined;
+            const updatedModel = model.set('exception', exception) as ListModel;
+            setSubmitting(false, () => {
+                this.setState(() => ({model: updatedModel}));
             });
-        });
+        }
     };
 
-    isValid(): boolean {
-        return ListModel.isValid(this.state.model);
-    }
+    saveDomain = () => {
+        const { setSubmitting } = this.props;
+        const { model, fileImportData } = this.state;
+
+        saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
+            .then((response) => {
+                let updatedModel = model.set('exception', undefined) as ListModel;
+                updatedModel = updatedModel.merge({domain: response}) as ListModel;
+                this.setState(() => ({model: updatedModel}));
+
+                // If we're importing List file data, import file contents
+                if (fileImportData) {
+                    this.handleFileImport();
+                }
+                else {
+                    setSubmitting(false, () => {
+                        this.props.onComplete(updatedModel);
+                    });
+                }
+            })
+            .catch((response) => {
+                const exception = resolveErrorMessage(response);
+                const updatedModel = exception
+                    ? model.set('exception', exception) as ListModel
+                    : model.merge({domain: response, exception: undefined}) as ListModel;
+
+                setSubmitting(false, () => {
+                    this.setState(() => ({model: updatedModel}));
+                });
+            });
+    };
 
     headerRenderer = (config: IAppDomainHeader) => {
         return (
@@ -187,18 +152,25 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { onCancel, useTheme, containerTop, successBsStyle } = this.props;
-        const { model, visitedPanels, currentPanelIndex, firstState, validatePanel, submitting, fileImportData } = this.state;
-
-        let errorDomains = List<string>();
-        if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
-            errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
-        }
-
-        const bottomErrorMsg = getDomainBottomErrorMessage(model.exception, errorDomains, model.hasValidProperties(), visitedPanels);
+        const {
+            onCancel, useTheme, containerTop, successBsStyle, visitedPanels, currentPanelIndex, firstState,
+            validatePanel, submitting, onTogglePanel, saveBtnText
+        } = this.props;
+        const { model, fileImportData } = this.state;
 
         return (
-            <>
+            <BaseDomainDesigner
+                name={model.name}
+                exception={model.exception}
+                domains={List.of(model.domain)}
+                hasValidProperties={model.hasValidProperties()}
+                visitedPanels={visitedPanels}
+                submitting={submitting}
+                onCancel={onCancel}
+                onFinish={this.onFinish}
+                saveBtnText={saveBtnText}
+                successBsStyle={successBsStyle}
+            >
                 <ListPropertiesPanel
                     model={model}
                     onChange={this.onPropertiesChange}
@@ -206,11 +178,10 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     initCollapsed={currentPanelIndex !== 0}
                     panelStatus={model.isNew() ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
                     validate={validatePanel === 0}
-                    onToggle={(collapsed, callback) => {this.onTogglePanel(0, collapsed, callback);}}
+                    onToggle={(collapsed, callback) => {onTogglePanel(0, collapsed, callback);}}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                 />
-
                 <DomainForm
                     key={model.domain.domainId || 0}
                     domainIndex={0}
@@ -226,32 +197,11 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
                     showInferFromFile={true}
                     containerTop={containerTop}
-                    onToggle={(collapsed, callback) => {this.onTogglePanel(1, collapsed, callback);}}
+                    onToggle={(collapsed, callback) => {onTogglePanel(1, collapsed, callback);}}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
                 />
-
-                {bottomErrorMsg && (
-                    <div className="domain-form-panel">
-                        <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
-                    </div>
-                )}
-
-                <div className='domain-form-panel'>
-                    <Button onClick={onCancel}>
-                        Cancel
-                    </Button>
-                    <Button
-                        className="pull-right"
-                        bsStyle={successBsStyle || 'success'}
-                        disabled={submitting}
-                        onClick={this.onFinish}
-                    >
-                        Save
-                    </Button>
-                </div>
-
                 <Progress
                     modal={true}
                     delay={1000}
@@ -259,7 +209,9 @@ export class ListDesignerPanels extends React.PureComponent<Props, State> {
                     title={"Importing data from selected file..."}
                     toggle={submitting && fileImportData !== undefined}
                 />
-            </>
+            </BaseDomainDesigner>
         );
     }
 }
+
+export const ListDesignerPanels = withBaseDomainDesigner<Props>(ListDesignerPanelsImpl);

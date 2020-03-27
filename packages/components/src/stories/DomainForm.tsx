@@ -17,7 +17,6 @@ import exceptionDataServer from '../test/data/property-domainExceptionFromServer
 import exceptionDataClient from '../test/data/property-domainExceptionClient.json';
 import fullyLockedData from '../test/data/property-getDomainWithFullyLockedFields.json';
 import partiallyLockedData from '../test/data/property-getDomainWithPartiallyLockedFields.json';
-import { initMocks } from './mock';
 import './stories.scss';
 
 interface Props {

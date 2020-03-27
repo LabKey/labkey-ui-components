@@ -9,8 +9,9 @@ import {
     DOMAIN_FIELD_URL
 } from './constants';
 import { DomainField } from './models';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
+import { SectionHeading } from "./SectionHeading";
+import { DomainFieldLabel } from "./DomainFieldLabel";
 
 interface NameAndLinkingProps {
     index: number,
@@ -57,7 +58,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading domain-field-section-hdr'}>Name and Linking Options</div>
+                        <SectionHeading title={'Name and Linking Options'} cls={'domain-field-section-hdr'}/>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
@@ -80,10 +81,10 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                      name={createFormInputName(DOMAIN_FIELD_LABEL)}
                                      onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                         <div className={'domain-field-label'}>
-                            Import Aliases
-                            <LabelHelpTip
-                                title='Import Aliases'
-                                body={this.getImportAliasHelpText}/>
+                            <DomainFieldLabel
+                                label={'Import Aliases'}
+                                helpTipBody={this.getImportAliasHelpText}
+                            />
                         </div>
                         <FormControl type="text" value={field.importAliases || ''}
                                      id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
@@ -92,10 +93,10 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                     </Col>
                     <Col xs={4}>
                         <div className={'domain-field-label'}>
-                            URL
-                            <LabelHelpTip
-                                title='URL'
-                                body={this.getURLHelpText} />
+                            <DomainFieldLabel
+                                label={'URL'}
+                                helpTipBody={this.getURLHelpText}
+                            />
                         </div>
                         <FormControl type="text" value={field.URL || ''}
                                      id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}

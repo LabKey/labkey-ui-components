@@ -152,12 +152,14 @@ function extractEntityTypeOptionFromRow(row: Map<string, any>): IEntityTypeOptio
     }
 }
 
-function getChosenParentData(model: EntityIdCreationModel, parentSchemaQueries: Map<string, SchemaQuery>, allowParents: boolean) : Promise<Partial<EntityIdCreationModel>> {
+function getChosenParentData(model: EntityIdCreationModel, parentEntityDataTypes: Map<string, EntityDataType>, allowParents: boolean) : Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
         let entityParents = EntityIdCreationModel.getEmptyEntityParents(
-            parentSchemaQueries.reduce((names, schemaQuery) => names.push(schemaQuery.queryName), List<string>()));
+            parentEntityDataTypes.reduce((names, entityDataType) => names.push(entityDataType.typeListingSchemaQuery.queryName), List<string>())
+        );
+
         if (allowParents) {
-            const parentSchemaNames = parentSchemaQueries.keySeq();
+            const parentSchemaNames = parentEntityDataTypes.keySeq();
             initParents(model.originalParents, model.selectionKey).then(
                 (chosenParents) => {
                     // if we have an initial parent, we want to start with a row in the grid (entityCount = 1) otherwise we start with none
@@ -167,7 +169,7 @@ function getChosenParentData(model: EntityIdCreationModel, parentSchemaQueries: 
                     if (validEntityCount === 1) {
                         resolve({
                             entityCount: validEntityCount,
-                            entityParents: entityParents.set(parentSchemaQueries.get(parentRep.schema).queryName, chosenParents),
+                            entityParents: entityParents.set(parentEntityDataTypes.get(parentRep.schema).typeListingSchemaQuery.queryName, chosenParents),
                         });
                     }
                     else { // if we did not find a valid parent, we clear out the parents and selection key from the model as they aren't relevant
@@ -229,20 +231,19 @@ export function getEntityTypeOptions(typeListSchemaQuery: SchemaQuery, typeSchem
 
 /**
  * @param model
- * @param schemaQueries a map between the type schema name (e.g., "samples") and the listing SchemaQuery (e.g., exp.SampleSets)
+ * @param entityDataTypes a map between the type schema name (e.g., "samples") and the EntityDataType
  * @param targetQueryName the name of the listing schema query that represents the initial target for creation.
  * @param allowParents are parents of this entity type allowed or not
- * @param filterArray (optional) set of filters to use for getting entity type options
  */
-export function getEntityTypeData(model: EntityIdCreationModel, schemaQueries: Map<string, SchemaQuery>, targetQueryName: string, allowParents: boolean, filterArray?: Array<Filter.IFilter>) : Promise<Partial<EntityIdCreationModel>> {
+export function getEntityTypeData(model: EntityIdCreationModel, entityDataTypes: Map<string, EntityDataType>, targetQueryName: string, allowParents: boolean) : Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
         let promises = [];
 
-        promises.push(getChosenParentData(model, schemaQueries, allowParents));
+        promises.push(getChosenParentData(model, entityDataTypes, allowParents));
 
         // get all the schemaQuery data
-        schemaQueries.forEach((typeListSchemaQuery, typeSchemaName) => {
-            promises.push(getEntityTypeOptions(typeListSchemaQuery, typeSchemaName, filterArray));
+        entityDataTypes.forEach((entityDataType: EntityDataType, typeSchemaName: string) => {
+            promises.push(getEntityTypeOptions(entityDataType.typeListingSchemaQuery, typeSchemaName, entityDataType.filterArray));
         });
 
         let partial : Partial<EntityIdCreationModel> = {};

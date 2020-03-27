@@ -4,8 +4,9 @@ import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
 import { DEFAULT_SCALE_LINEAR, DEFAULT_SCALE_LOG, DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT } from './constants';
 import { ITypeDependentProps } from './models';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 import { helpLinkNode, NUMBER_FORMATS_TOPIC } from '../../util/helpLinks';
+import { SectionHeading } from "./SectionHeading";
+import { DomainFieldLabel } from "./DomainFieldLabel";
 
 interface NumericFieldProps extends ITypeDependentProps {
     format: string,
@@ -41,16 +42,16 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading'}>{label}</div>
+                        <SectionHeading title={label}/>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={3}>
                         <div className={'domain-field-label'}>
-                            Format for Numbers
-                            <LabelHelpTip
-                                title='Format Strings'
-                                body={this.getFormatHelpText} />
+                            <DomainFieldLabel
+                                label={'Format for Numbers'}
+                                helpTipBody={this.getFormatHelpText}
+                            />
                         </div>
                     </Col>
                     <Col xs={2}>

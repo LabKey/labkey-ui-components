@@ -32,9 +32,6 @@ describe('ListModel', () => {
     test("isValid", () => {
         const validModel = ListModel.create(getDomainDetailsJSON);
         expect(ListModel.isValid(validModel)).toBeTruthy();
-
-        const invalidModelHasException = validModel.setIn(['domain', 'domainException'], {severity: "Error"}) as ListModel;
-        expect(ListModel.isValid(invalidModelHasException)).toBeFalsy();
     });
 
     test("hasValidProperties", () => {

@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.41.0
+*Released*: 27 March 2020
+* Item 7002: Refactor domain designer components to share more with base components
+    - BasePropertiesPanel, SectionHeading, withDomainPropertiesPanelCollapse (instead of DomainPropertiesPanelContext)
+    - BaseDomainDesigner component and withBaseDomainDesigner HOC
+    - DomainFieldLabel component for domain designer field input consistency
+    - Domain designers updates for consistent handling of isValid state and error display
+    - Issue 39938: Domain field fix to revert back to max Integer length if user input is larger then 4000
+
 ## version 0.40.0
 *Released*: 27 March 2020
 * Remove SampleSetResolver for app URLs

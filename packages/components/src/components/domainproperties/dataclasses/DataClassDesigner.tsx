@@ -1,19 +1,12 @@
 import React from 'react';
-import { Button } from "react-bootstrap";
-import { List } from 'immutable';
+import { List } from "immutable";
 import { DataClassModel } from "./models";
-import { Alert } from "../../base/Alert";
 import { DomainDesign } from "../models";
-import { SEVERITY_LEVEL_ERROR } from "../constants";
 import DomainForm from "../DomainForm";
 import { DataClassPropertiesPanel } from "./DataClassPropertiesPanel";
-import {
-    getDomainBottomErrorMessage,
-    getDomainPanelStatus,
-    getDomainHeaderName,
-    getUpdatedVisitedPanelsList,
-    saveDomain
-} from "../actions";
+import { getDomainPanelStatus, saveDomain } from "../actions";
+import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from "../BaseDomainDesigner";
+import { resolveErrorMessage } from "../../../util/messaging";
 
 interface Props {
     nounSingular?: string
@@ -26,96 +19,62 @@ interface Props {
     onChange?: (model: DataClassModel) => void
     onCancel: () => void
     onComplete: (model: DataClassModel) => void
+    beforeFinish?: (model: DataClassModel) => void
     useTheme?: boolean
     containerTop?: number // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean
     successBsStyle?: string
+    saveBtnText?: string
 }
 
 interface State {
     model: DataClassModel
-    submitting: boolean
-    currentPanelIndex: number
-    visitedPanels: List<number>
-    validatePanel: number
-    firstState: boolean
 }
 
-export class DataClassDesigner extends React.PureComponent<Props, State> {
+export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
 
-    constructor(props: Props) {
+    constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
         this.state = {
-            model: props.initModel || DataClassModel.create({}),
-            submitting: false,
-            currentPanelIndex: 0,
-            visitedPanels: List<number>(),
-            validatePanel: undefined,
-            firstState: true
+            model: props.initModel || DataClassModel.create({})
         }
     }
-
-    onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
-        const { visitedPanels, currentPanelIndex } = this.state;
-        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
-
-        if (!collapsed) {
-            this.setState(() => ({
-                visitedPanels: updatedVisitedPanels,
-                currentPanelIndex: index,
-                firstState: false,
-                validatePanel: currentPanelIndex
-            }), callback());
-        }
-        else {
-            if (currentPanelIndex === index) {
-                this.setState(() => ({
-                    visitedPanels: updatedVisitedPanels,
-                    currentPanelIndex: undefined,
-                    firstState: false,
-                    validatePanel: currentPanelIndex
-                }), callback());
-            }
-            else {
-                callback();
-            }
-        }
-    };
 
     onFinish = () => {
-        const { model, visitedPanels, currentPanelIndex } = this.state;
-        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, currentPanelIndex);
-
-        // This first setState forces the current expanded panel to validate its fields and display and errors
-        // the callback setState then sets that to undefined so it doesn't keep validating every render
-        this.setState((state) => ({validatePanel: state.currentPanelIndex, visitedPanels: updatedVisitedPanels}), () => {
-            this.setState(() => ({validatePanel: undefined}), () => {
-                if (this.isValid()) {
-                    this.setState(() => ({submitting: true}));
-
-                    saveDomain(model.domain, 'DataClass', model.getOptions(), model.name)
-                        .then((response) => {
-                            let updatedModel = model.set('exception', undefined) as DataClassModel;
-                            updatedModel = updatedModel.merge({domain: response}) as DataClassModel;
-
-                            this.setState(() => ({model: updatedModel, submitting: false}));
-                            this.props.onComplete(updatedModel);
-                        })
-                        .catch((response) => {
-                            const updatedModel = response.exception
-                                ? model.set('exception', response.exception) as DataClassModel
-                                : model.merge({domain: response, exception: undefined}) as DataClassModel;
-                            this.setState(() => ({model: updatedModel, submitting: false}));
-                        });
-                }
-            });
-        });
+        const isValid = DataClassModel.isValid(this.state.model);
+        this.props.onFinish(isValid, this.saveDomain);
     };
 
-    isValid(): boolean {
-        return DataClassModel.isValid(this.state.model);
-    }
+    saveDomain = () => {
+        const { setSubmitting, beforeFinish } = this.props;
+        const { model } = this.state;
+
+        if (beforeFinish) {
+            beforeFinish(model);
+        }
+
+        saveDomain(model.domain, 'DataClass', model.getOptions(), model.name)
+            .then((response: DomainDesign) => {
+                let updatedModel = model.set('exception', undefined) as DataClassModel;
+                updatedModel = updatedModel.merge({domain: response}) as DataClassModel;
+
+                setSubmitting(false, () => {
+                    this.setState(() => ({model: updatedModel}));
+                    this.props.onComplete(updatedModel);
+                });
+            })
+            .catch((response) => {
+                const exception = resolveErrorMessage(response);
+                const updatedModel = exception
+                    ? model.set('exception', exception) as DataClassModel
+                    : model.merge({domain: response, exception: undefined}) as DataClassModel;
+
+                setSubmitting(false, () => {
+                    this.setState(() => ({model: updatedModel}));
+                });
+            });
+    };
 
     onDomainChange = (domain: DomainDesign, dirty: boolean) => {
         const { onChange } = this.props;
@@ -141,18 +100,26 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { onCancel, appPropertiesOnly, containerTop, useTheme, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder, headerText, successBsStyle } = this.props;
-        const { model, currentPanelIndex, validatePanel, visitedPanels, firstState } = this.state;
-
-        let errorDomains = List<string>();
-        if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
-            errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
-        }
-
-        const bottomErrorMsg = getDomainBottomErrorMessage(model.exception, errorDomains, model.hasValidProperties(), visitedPanels);
+        const {
+            onCancel, appPropertiesOnly, containerTop, useTheme, nounSingular, nounPlural, nameExpressionInfoUrl,
+            nameExpressionPlaceholder, headerText, successBsStyle, onTogglePanel, submitting, saveBtnText,
+            currentPanelIndex, visitedPanels, validatePanel, firstState
+        } = this.props;
+        const { model } = this.state;
 
         return (
-            <>
+            <BaseDomainDesigner
+                name={model.name}
+                exception={model.exception}
+                domains={List.of(model.domain)}
+                hasValidProperties={model.hasValidProperties()}
+                visitedPanels={visitedPanels}
+                submitting={submitting}
+                onCancel={onCancel}
+                onFinish={this.onFinish}
+                saveBtnText={saveBtnText}
+                successBsStyle={successBsStyle}
+            >
                 <DataClassPropertiesPanel
                     nounSingular={nounSingular}
                     nounPlural={nounPlural}
@@ -166,7 +133,7 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                     panelStatus={model.isNew() ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState) : "COMPLETE"}
                     validate={validatePanel === 0}
                     appPropertiesOnly={appPropertiesOnly}
-                    onToggle={(collapsed, callback) => {this.onTogglePanel(0, collapsed, callback);}}
+                    onToggle={(collapsed, callback) => {onTogglePanel(0, collapsed, callback);}}
                     useTheme={useTheme}
                 />
                 <DomainForm
@@ -182,30 +149,14 @@ export class DataClassDesigner extends React.PureComponent<Props, State> {
                     showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.onDomainChange}
-                    onToggle={(collapsed, callback) => {this.onTogglePanel(1, collapsed, callback);}}
+                    onToggle={(collapsed, callback) => {onTogglePanel(1, collapsed, callback);}}
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                 />
-                {bottomErrorMsg &&
-                    <div className={'domain-form-panel'}>
-                        <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
-                    </div>
-                }
-                <div className={'domain-form-panel domain-designer-buttons'}>
-                    <Button onClick={onCancel}>
-                        Cancel
-                    </Button>
-                    <Button
-                        className='pull-right'
-                        bsStyle={successBsStyle || 'success'}
-                        disabled={this.state.submitting}
-                        onClick={this.onFinish}
-                    >
-                        Save
-                    </Button>
-                </div>
-            </>
+            </BaseDomainDesigner>
         )
     }
 }
+
+export const DataClassDesigner = withBaseDomainDesigner<Props>(DataClassDesignerImpl);

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { Record } from "immutable";
-import { SEVERITY_LEVEL_ERROR } from "../constants";
 import { DomainDesign } from "../models";
 
 export class DataClassModel extends Record({
@@ -65,8 +64,7 @@ export class DataClassModel extends Record({
     }
 
     static isValid(model: DataClassModel): boolean {
-        const errDomain = !!model.domain.domainException && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR;
-        return !errDomain && model.hasValidProperties();
+        return model.hasValidProperties();
     }
 
     hasValidProperties(): boolean {

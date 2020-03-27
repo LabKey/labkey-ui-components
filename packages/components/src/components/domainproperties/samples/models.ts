@@ -1,6 +1,5 @@
 import {fromJS, Map, OrderedMap, Record, Set} from "immutable";
-import {SEVERITY_LEVEL_ERROR} from "../constants";
-import { DomainDesign, DomainDetails } from "../models";
+import { DomainDesign, DomainDetails, IDomainField } from "../models";
 import { IParentOption } from "../../entities/models";
 
 export class SampleTypeModel extends Record({
@@ -63,16 +62,15 @@ export class SampleTypeModel extends Record({
         return !this.rowId;
     };
 
-    static isValid(model: SampleTypeModel) {
-        const errDomain = !!model.domain.domainException && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR;
-        return !errDomain && model.hasValidProperties();
+    static isValid(model: SampleTypeModel, defaultSampleFieldConfig?: Partial<IDomainField>) {
+        return model.hasValidProperties() && !model.hasInvalidSampleField(defaultSampleFieldConfig) && model.getDuplicateAlias(true).size === 0;
     }
 
     /**
      * Check if IParentAlias is invalid
      * @param alias
      */
-    static parentAliasInvalid(alias: IParentAlias): boolean {
+    parentAliasInvalid(alias: IParentAlias): boolean {
         if (!alias)
             return true;
 
@@ -84,11 +82,23 @@ export class SampleTypeModel extends Record({
 
     hasValidProperties(): boolean {
         const {parentAliases} = this;
-        const hasInvalidAliases = parentAliases && parentAliases.size > 0 && parentAliases.find(SampleTypeModel.parentAliasInvalid);
+        const hasInvalidAliases = parentAliases && parentAliases.size > 0 && parentAliases.find(this.parentAliasInvalid);
 
         return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
             && !hasInvalidAliases
         );
+    }
+
+    hasInvalidSampleField(defaultSampleFieldConfig: Partial<IDomainField>): boolean {
+        if (this.domain && this.domain.fields && defaultSampleFieldConfig) {
+            const sampleField = this.domain.fields.find(field => {
+                return field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase();
+            });
+
+            return sampleField !== undefined;
+        }
+
+        return false;
     }
 
     /**

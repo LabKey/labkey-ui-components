@@ -26,6 +26,7 @@ interface OwnProps {
     updateDupeParentAliases?: (id:string) => void
     appPropertiesOnly?: boolean
     headerText?: string
+    helpTopic?: string
 }
 
 //Splitting these out to clarify where they end-up
@@ -51,6 +52,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
         nameExpressionInfoUrl: '',
         nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}',
         appPropertiesOnly: false,
+        helpTopic: DEFINE_SAMPLE_TYPE_TOPIC
     };
 
     constructor(props) {
@@ -145,7 +147,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
     };
 
     render = () => {
-        const { model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, nounSingular, nounPlural, headerText } = this.props;
+        const { model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, nounSingular, nounPlural, headerText, helpTopic } = this.props;
         const { isValid } = this.state;
 
         return (
@@ -164,7 +166,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
                         </Col>
                     }
                     <Col xs={headerText ? 3 : 12}>
-                        <HelpTopicURL helpTopic={DEFINE_SAMPLE_TYPE_TOPIC} nounPlural={nounPlural}/>
+                        <HelpTopicURL helpTopic={helpTopic} nounPlural={nounPlural}/>
                     </Col>
                 </Row>
                 <EntityDetailsForm

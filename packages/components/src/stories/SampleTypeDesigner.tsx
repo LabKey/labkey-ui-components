@@ -33,6 +33,7 @@ storiesOf('SampleTypeDesigner', module)
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://wwDodomw.labkey.org')}
             nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+            helpTopic={text('helpTopic', undefined)}
         />
     })
     .add('create with read-only name', () => {
@@ -46,6 +47,7 @@ storiesOf('SampleTypeDesigner', module)
                 onComplete={() => console.log('Create clicked')}
                 nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://wwDodomw.labkey.org')}
                 nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+                helpTopic={text('helpTopic', undefined)}
             />
         )
     })
@@ -59,5 +61,6 @@ storiesOf('SampleTypeDesigner', module)
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
             nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
             headerText={'Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.'}
+            helpTopic={text('helpTopic', undefined)}
         />
     });

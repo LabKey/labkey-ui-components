@@ -56,6 +56,7 @@ interface Props {
     defaultSampleFieldConfig?: Partial<IDomainField>
     includeDataClasses?: boolean
     headerText?: string
+    helpTopic?: string
 
     //EntityDetailsForm props
     nounSingular?: string
@@ -368,7 +369,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const {
             containerTop, useTheme, appPropertiesOnly, successBsStyle, currentPanelIndex, visitedPanels, firstState,
             validatePanel, onTogglePanel, submitting, onCancel, nameExpressionPlaceholder, nameExpressionInfoUrl,
-            nounSingular, nounPlural, headerText, saveBtnText
+            nounSingular, nounPlural, headerText, saveBtnText, helpTopic
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -391,6 +392,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     headerText={headerText}
+                    helpTopic={helpTopic}
                     model={model}
                     parentOptions={parentOptions}
                     onParentAliasChange={this.parentAliasChange}

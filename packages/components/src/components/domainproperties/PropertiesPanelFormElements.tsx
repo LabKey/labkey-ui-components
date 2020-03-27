@@ -29,7 +29,7 @@ export class BasicPropertiesTitle extends React.PureComponent<BasicPropertiesTit
 
 interface TextInputWithLabelProps {
     name: string,
-    value?: string,
+    value?: any,
     placeholder?: string
     onInputChange: (any) => void;
 }

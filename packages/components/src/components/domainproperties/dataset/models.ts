@@ -51,7 +51,7 @@ export class DatasetModel extends Record({
     label: undefined,
     cohortId: undefined,
     tag: undefined,
-    showByDefault: undefined,
+    showInOverview: undefined,
     description: undefined,
     sourceAssayName: undefined,
     sourceAssayURL: undefined,
@@ -69,7 +69,7 @@ export class DatasetModel extends Record({
     label?: string;
     cohortId?: number;
     tag?: string;
-    showByDefault?: boolean;
+    showInOverview?: boolean;
     description?: string;
     sourceAssayName?: string;
     sourceAssayURL?: string;

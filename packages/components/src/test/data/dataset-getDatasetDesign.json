@@ -9,9 +9,9 @@
     "keyProperty": null,
     "isDemographicData": true,
     "label": "Dataset One",
-    "cohortId": null,
+    "cohortId": 1,
     "tag": "T1",
-    "showByDefault": true,
+    "showInOverview": true,
     "description": "This is the first dataset",
     "containerId": "1162245F-4B98-1038-BD0A-6FDD083AE070",
     "entityId": "11622CD2-4B98-1038-BD0A-6FDD083AE070"

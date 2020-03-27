@@ -23,6 +23,7 @@ import {DatasetModel} from './models';
 import {BasicPropertiesTitle, TextInputWithLabel} from "../PropertiesPanelFormElements";
 import {SelectInput} from "../../../index";
 import {Creatable} from 'react-select'
+import {fetchCategories} from "./actions";
 
 interface BasicPropertiesInputsProps {
     model: DatasetModel;
@@ -93,7 +94,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
         super(props);
 
         this.state = {
-            value: this.props.model.categoryId,
+             category: this.props.model.categoryId,
              availableCategories: []
         };
 
@@ -102,34 +103,23 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
     componentDidMount() {
         const { model } = this.props;
         // Ajax call handling to get available categories
-        this.fetchCategories()
+        fetchCategories()
             .then((data) => {
                 this.setState(() => ({
-                    value: model.categoryId,
+                    category: model.categoryId,
                     availableCategories: data.categories
                 }))
             })
 
     }
 
-    fetchCategories = async  () => {
-        // TODO: Replace this with server side call
-        return {
-            'categories': [
-                {label: 'A', value: 20},
-                {label: 'B', value: 21},
-                {label: 'C', value: 22}]
-        };
-    };
-
     handleChange = (value) => {
-        console.log('Value Changed');
         this.setState(() => ({value}));
     };
 
     render() {
         const { model, onInputChange } = this.props;
-        const { availableCategories, value } = this.state;
+        const { availableCategories, category } = this.state;
 
         return (
             <Col xs={12} md={7}>
@@ -153,7 +143,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                         <Creatable
                             placeholder="Select dataset category"
                             onChange={this.handleChange}
-                            value={value}
+                            value={category}
                             options={availableCategories}
                         />
                     </Col>

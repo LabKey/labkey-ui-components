@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from "classnames";
-import { Button, Col, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
+import {Button, Col, FormControl, FormGroup, Modal, Radio, Row} from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../..';
-import { CheckBox } from './DatasetPropertiesPanelFormElements';
+import {CheckBox, SelectPropertyInput} from './DatasetPropertiesPanelFormElements';
 import {AdvancedSettingsForm, DatasetModel} from "./models";
 import {
     CUSTOM_TEMPLATE_TIP,
@@ -13,456 +13,29 @@ import {
     DOCUMENT_TITLE_TIP,
     SEARCH_INDEXING_TIP
 } from "./constants";
-
-interface DisplayTitleProps {
-    model: DatasetModel
-    onSelectChange: (name, formValue, selected) => void;
-    titleColumn: string;
-}
-
-export class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
-    render() {
-        const {model, onSelectChange, titleColumn} = this.props;
-        // const fields = model.domain.fields;
-        // const disabled = fields.size === 0;
-        // const placeholder = disabled ? 'No fields have been defined yet' : 'Auto';
-
-        return (
-            <div className="list__advanced-settings-modal__display-title">
-                <SelectInput
-                    name="titleColumn"
-                    // options={fields.toArray()}
-                    // placeholder={placeholder}
-                    inputClass="" // This attr is necessary for proper styling
-                    valueKey="name"
-                    labelKey="name"
-                    key="name"
-                    formsy={false}
-                    multiple={false}
-                    required={false}
-                    // disabled={disabled}
-                    onChange={onSelectChange}
-                    value={titleColumn}
-                />
-            </div>
-        );
-    }
-}
-
-interface DiscussionLinksProps {
-    onRadioChange: (evt: any) => any;
-    discussionSetting: number;
-}
-
-class DiscussionLinks extends React.PureComponent<DiscussionLinksProps> {
-    render() {
-        const { onRadioChange, discussionSetting } = this.props;
-        const radioName = 'discussionSetting';
-
-        return (
-            <>
-                <FormGroup>
-                    <Radio name={radioName} value={0} checked={discussionSetting == 0} onChange={onRadioChange}>
-                        Disable discussions
-                    </Radio>
-                    <Radio name={radioName} value={1} checked={discussionSetting == 1} onChange={onRadioChange}>
-                        Allow one discussion per item
-                    </Radio>
-                    <Radio name={radioName} value={2} checked={discussionSetting == 2} onChange={onRadioChange}>
-                        Allow multiple discussions per item
-                    </Radio>
-                </FormGroup>
-            </>
-        );
-    }
-}
-
-interface TitleIndexFieldProps {
-    name: string;
-    titleTemplate: string;
-    onInputChange: (evt: any) => any;
-}
-
-class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
-    render() {
-        const { name, titleTemplate, onInputChange } = this.props;
-        const title = titleTemplate == null ? '' : titleTemplate;
-        return (
-            <div>
-                Document title
-                <LabelHelpTip title="Document title" body={() => {return <> {DOCUMENT_TITLE_TIP} </>;}}/>
-                <span>
-                    <FormControl
-                        className="list__advanced-settings-modal__text-field"
-                        id={name}
-                        type="text"
-                        placeholder="Use default"
-                        value={title}
-                        onChange={onInputChange}
-                    />
-                </span>
-            </div>
-        );
-    }
-}
-
-interface MetadataIndexFieldProps {
-    indexSetting: number;
-    name: string;
-    onRadioChange: (evt: any) => any;
-}
-
-class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
-    render() {
-        const { indexSetting, name, onRadioChange } = this.props;
-
-        // Note: Currently the radio values go from high to low in order to correspond with the previous
-        // designer's order of radio options. Once the old designer is deprecated, we could change these to
-        // count from low to high.
-        return (
-            <div>
-                <FormGroup>
-                    <Radio name={name} value={2} checked={indexSetting == 2} onChange={onRadioChange}>
-                        Include both metadata and data
-                        <LabelHelpTip title="Warning" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
-                    </Radio>
-                    <Radio name={name} value={1} checked={indexSetting == 1} onChange={onRadioChange}>
-                        Include data only
-                        <LabelHelpTip title="Warning" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
-                    </Radio>
-                    <Radio name={name} value={0} checked={indexSetting == 0} onChange={onRadioChange}>
-                        Include metadata only (name and description of list and fields)
-                    </Radio>
-                </FormGroup>
-            </div>
-        );
-    }
-}
-
-interface IndexFieldProps {
-    name: string;
-    onRadioChange: (evt: any) => any;
-    onInputChange: (evt: any) => any;
-    bodySetting: number;
-    bodyTemplate: string;
-}
-
-export class IndexField extends React.PureComponent<IndexFieldProps> {
-    render() {
-        const { name, onRadioChange, bodySetting, bodyTemplate, onInputChange } = this.props;
-        const id = (name == "entireListBodySetting") ? "entireListBodyTemplate" : "eachItemBodyTemplate";
-
-        return (
-            <div>
-                <FormGroup>
-                    <Radio name={name} value={0} checked={bodySetting == 0} onChange={onRadioChange}>
-                        Index all non-PHI text fields
-                    </Radio>
-                    <Radio name={name} value={1} checked={bodySetting == 1} onChange={onRadioChange}>
-                        Index all non-PHI fields (text, number, date, and boolean)
-                    </Radio>
-                    <Radio name={name} value={2} checked={bodySetting == 2} onChange={onRadioChange}>
-                        Index using custom template
-                        <LabelHelpTip title="" body={() => {return <> {CUSTOM_TEMPLATE_TIP} </>;}}/>
-                    </Radio>
-                </FormGroup>
-
-                {bodySetting == 2 &&
-                <FormControl
-                    id={id}
-                    type="text"
-                    value={bodyTemplate}
-                    onChange={onInputChange}
-                    className='list__advanced-settings-modal__custom-template-text-field'
-                />
-                }
-            </div>
-        );
-    }
-}
-
-interface SingleDocumentIndexFieldsProps {
-    onRadioChange: (evt: any) => any;
-    onInputChange: (evt: any) => any;
-    entireListTitleTemplate: string;
-    entireListIndexSetting: number;
-    entireListBodySetting: number;
-    entireListBodyTemplate: string;
-}
-
-export class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexFieldsProps> {
-    render() {
-        const {
-            onRadioChange,
-            onInputChange,
-            entireListTitleTemplate,
-            entireListIndexSetting,
-            entireListBodySetting,
-            entireListBodyTemplate,
-        } = this.props;
-
-        return (
-            <div className="list__advanced-settings-modal__single-doc-fields">
-                <TitleIndexField
-                    titleTemplate={entireListTitleTemplate}
-                    name="entireListTitleTemplate"
-                    onInputChange={onInputChange}
-                />
-
-                <MetadataIndexField
-                    name="entireListIndexSetting"
-                    onRadioChange={onRadioChange}
-                    indexSetting={entireListIndexSetting}
-                />
-
-                <IndexField
-                    name="entireListBodySetting"
-                    onRadioChange={onRadioChange}
-                    onInputChange={onInputChange}
-                    bodySetting={entireListBodySetting}
-                    bodyTemplate={entireListBodyTemplate}
-                />
-            </div>
-        );
-    }
-}
-
-interface SeparateDocumentIndexFieldsProps {
-    onRadioChange: (evt: any) => any;
-    onInputChange: (evt: any) => any;
-    eachItemTitleTemplate: string;
-    eachItemBodySetting: number;
-    eachItemBodyTemplate: string;
-}
-
-export class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
-    render() {
-        const {
-            onRadioChange,
-            onInputChange,
-            eachItemTitleTemplate,
-            eachItemBodySetting,
-            eachItemBodyTemplate,
-        } = this.props;
-
-        return (
-            <div className="list__advanced-settings-modal__single-doc-fields">
-                <TitleIndexField
-                    titleTemplate={eachItemTitleTemplate}
-                    name="eachItemTitleTemplate"
-                    onInputChange={onInputChange}
-                />
-
-                <IndexField
-                    name="eachItemBodySetting"
-                    onRadioChange={onRadioChange}
-                    onInputChange={onInputChange}
-                    bodySetting={eachItemBodySetting}
-                    bodyTemplate={eachItemBodyTemplate}
-                />
-            </div>
-        );
-    }
-}
-
-interface CollapsibleFieldsProps {
-    expanded: boolean;
-    fields: JSX.Element;
-    title: string;
-    expandFields: (expandedSection: string) => void;
-    collapseFields: () => void;
-    identifier: string;
-    checked: boolean;
-    onCheckboxChange: (name: string, checked: boolean) => void;
-}
-
-class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
-    expand = () => {
-        const { expanded, expandFields, identifier } = this.props;
-        const set = expanded ? '' : identifier;
-        expandFields(set);
-    };
-
-    onClick = () => {
-        const { identifier, checked, onCheckboxChange, collapseFields, expanded } = this.props;
-        onCheckboxChange(identifier, checked);
-        if (expanded && !checked) {
-            // If options are expanded, changing a checkbox from unchecked to checked does not expand or collapse
-        } else if (!checked) {
-            this.expand();
-        } else {
-            collapseFields();
-        }
-    };
-
-    render() {
-        const { expanded, fields, title, checked } = this.props;
-        const icon = expanded ? faAngleDown : faAngleRight;
-        const classes = classNames('list__advanced-settings-model__collapsible-field list__properties__no-highlight', {
-            'list__properties__checkbox-unchecked': !checked
-        });
-
-        return (
-            <div>
-                <span onClick={this.expand} className={classes}>
-                    <FontAwesomeIcon icon={icon} size="lg" />
-                </span>
-                <span className="list__advanced-settings-modal__index-checkbox">
-                    <CheckBox checked={checked} onClick={() => this.onClick()} />
-                    <span className="list__advanced-settings-modal__index-text">
-                        <span className='list__clickable' onClick={() => this.onClick()}>
-                            {title}
-                        </span>
-                        {expanded && fields}
-                    </span>
-                </span>
-            </div>
-        );
-    }
-}
-
-interface SearchIndexingProps {
-    onRadioChange: (evt: any) => any;
-    onInputChange: (evt: any) => any;
-    onCheckboxChange: (name, checked) => void;
-    entireListIndexSettings: any;
-    eachItemIndexSettings: any;
-    fileAttachmentIndex: boolean;
-}
-
-interface SearchIndexingState {
-    expanded: string;
-}
-
-export class SearchIndexing extends React.PureComponent<SearchIndexingProps, SearchIndexingState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            expanded: '', // Neither section initially expanded
-        };
-    }
-
-    expandFields = expandedSection => {
-        this.setState({ expanded: expandedSection });
-    };
-
-    collapseFields = () => {
-        this.setState({ expanded: '' });
-    };
-
-    render() {
-        const {
-            onRadioChange,
-            onCheckboxChange,
-            onInputChange,
-            entireListIndexSettings,
-            eachItemIndexSettings,
-            fileAttachmentIndex,
-        } = this.props;
-
-        const { expanded } = this.state;
-
-        const singleDocTitle = 'Index entire list as a single document';
-        const separateDocTitle = 'Index each item as a separate document';
-
-        return (
-            <div>
-                <CollapsibleFields
-                    expanded={expanded == 'entireListIndex'}
-                    fields={
-                        <SingleDocumentIndexFields
-                            onRadioChange={onRadioChange}
-                            onInputChange={onInputChange}
-                            {...entireListIndexSettings}
-                        />
-                    }
-                    title={singleDocTitle}
-                    identifier="entireListIndex"
-                    expandFields={this.expandFields}
-                    collapseFields={this.collapseFields}
-                    checked={entireListIndexSettings.entireListIndex}
-                    onCheckboxChange={onCheckboxChange}
-                />
-
-                <CollapsibleFields
-                    expanded={expanded == 'eachItemIndex'}
-                    fields={
-                        <SeparateDocumentIndexFields
-                            onRadioChange={onRadioChange}
-                            onInputChange={onInputChange}
-                            {...eachItemIndexSettings}
-                        />
-                    }
-                    title={separateDocTitle}
-                    identifier="eachItemIndex"
-                    expandFields={this.expandFields}
-                    collapseFields={this.collapseFields}
-                    checked={eachItemIndexSettings.eachItemIndex}
-                    onCheckboxChange={onCheckboxChange}
-                />
-
-                <span className='list__advanced-settings-model__index-checkbox'>
-                    <CheckBox
-                        checked={fileAttachmentIndex}
-                        onClick={() => onCheckboxChange('fileAttachmentIndex', fileAttachmentIndex)}
-                    />
-                    <span
-                        className="list__advanced-settings-modal__index-text list__clickable"
-                        onClick={() => onCheckboxChange('fileAttachmentIndex', fileAttachmentIndex)}
-                    >
-                        Index file attachments
-                    </span>
-                </span>
-            </div>
-        );
-    }
-}
-
-interface SettingsContainerProps {
-    fieldComponent: JSX.Element;
-    title: string;
-    tipBody: string | JSX.Element;
-    tipTitle?: string;
-}
-
-class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
-    render() {
-        const { fieldComponent, title, tipBody, tipTitle } = this.props;
-
-        return (
-            <div className="list__advanced-settings-modal__section-container">
-                <div className="list__advanced-settings-modal__heading">
-                    <span className="list__bold-text"> {title} </span>
-                    <LabelHelpTip
-                        title={tipTitle || title}
-                        body={() => {
-                            return <> {tipBody} </>;
-                        }}
-                    />
-                </div>
-
-                {fieldComponent}
-            </div>
-        );
-    }
-}
+import {BasicPropertiesTitle, TextInputWithLabel} from "../PropertiesPanelFormElements";
+import {CheckBoxRow} from "../list/ListPropertiesPanelFormElements";
+import {fetchCohorts} from "./actions";
+import "../../../theme/dataset.scss";
 
 interface AdvancedSettingsModalBottomProps {
     toggleModal: (isModalOpen: boolean) => void;
     applyChanges: () => void;
     successBsStyle?: string;
+    helpText?: string;
+    helpTopic?: string;
 }
 
 class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsModalBottomProps> {
     render() {
-        const { toggleModal, applyChanges, successBsStyle } = this.props;
+        const { toggleModal, applyChanges, successBsStyle, helpTopic, helpText } = this.props;
 
         return (
             <>
                 <Button onClick={() => toggleModal(false)} className='domain-adv-footer domain-adv-cancel-btn'>
                     Cancel
                 </Button>
-                {helpLinkNode('lists', "Learn more about using lists", 'domain-adv-footer domain-adv-link')}
+                {helpLinkNode(helpTopic, helpText, 'domain-adv-footer domain-adv-link')}
                 <Button onClick={applyChanges} bsStyle={successBsStyle || 'success'} className='domain-adv-footer domain-adv-apply-btn'>
                     Apply
                 </Button>
@@ -474,12 +47,14 @@ class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsMo
 interface AdvancedSettingsProps {
     model: DatasetModel;
     title: string;
-    applyAdvancedProperties: (advancedSettingsForm: AdvancedSettingsForm) => void;
-    successBsStyle?: string;
 }
 
-interface AdvancedSettingsState extends AdvancedSettingsForm{
+interface AdvancedSettingsState {
     modalOpen?: boolean;
+    cohortValue?: number;
+    availableCohorts?: any;
+    showInOverview?: boolean;
+    visitDateColumn?: number;
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -489,35 +64,30 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         this.state = {
             modalOpen: false,
+            cohortValue: this.props.model.cohortId,
             ...initialState,
         } as AdvancedSettingsState;
+    }
+
+    componentDidMount() {
+        const { model } = this.props;
+
+        // Ajax call handling to get available categories
+        fetchCohorts()
+            .then((data) => {
+                this.setState(() => ({
+                    cohortValue: model.cohortId,
+                    availableCohorts: data.cohorts
+                }));
+            })
+
     }
 
     setInitialState = () => {
         const model = this.props.model;
 
         return {
-            // titleColumn: model.titleColumn,
-            // discussionSetting: model.discussionSetting,
-            // fileAttachmentIndex: model.fileAttachmentIndex,
-            //
-            // // entire list
-            // entireListIndex: model.entireListIndex,
-            // // document title
-            // entireListTitleTemplate: model.entireListTitleTemplate,
-            // // metadata/data
-            // entireListIndexSetting: model.entireListIndexSetting,
-            // // index
-            // entireListBodySetting: model.entireListBodySetting,
-            // entireListBodyTemplate: model.entireListBodyTemplate,
-            //
-            // // each item
-            // eachItemIndex: model.eachItemIndex,
-            // // document title
-            // eachItemTitleTemplate: model.eachItemTitleTemplate,
-            // // index
-            // eachItemBodySetting: model.entireListBodySetting,
-            // eachItemBodyTemplate: model.eachItemBodyTemplate,
+            showInOverview: model.showInOverview
         };
     };
 
@@ -526,7 +96,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         // If modal is re-opened, reset unsaved values
         if (isModalOpen) {
-            this.setState(this.setInitialState());
+            //this.setState(this.setInitialState());
         }
     };
 
@@ -537,7 +107,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     onCheckboxChange = (name, checked) => {
-        this.setState({ [name]: !checked });
+        this.setState(() => ({ showInOverview: !checked }));
     };
 
     onInputChange = e => {
@@ -554,43 +124,22 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
     applyChanges = (): void => {
         const { modalOpen, ...advancedSettingsForm } = this.state;
-
-        this.props.applyAdvancedProperties(advancedSettingsForm as AdvancedSettingsForm);
-        this.toggleModal(false);
     };
 
     render() {
         const {
             modalOpen,
-            discussionSetting,
-            fileAttachmentIndex,
-            entireListIndex,
-            entireListTitleTemplate,
-            entireListIndexSetting,
-            entireListBodySetting,
-            eachItemIndex,
-            eachItemTitleTemplate,
-            eachItemBodySetting,
-            titleColumn,
-            entireListBodyTemplate,
-            eachItemBodyTemplate,
+            availableCohorts,
+            cohortValue,
+            showInOverview
         } = this.state;
-        const { title, model, successBsStyle } = this.props;
 
-        const entireListIndexSettings = {
-            entireListIndex,
-            entireListTitleTemplate,
-            entireListIndexSetting,
-            entireListBodySetting,
-            entireListBodyTemplate
-        };
+        const { title, model } = this.props;
 
-        const eachItemIndexSettings = {
-            eachItemIndex,
-            eachItemTitleTemplate,
-            eachItemBodySetting,
-            eachItemBodyTemplate,
-        };
+        const tagTip =
+            <>
+                Adding a tag provides an additional, flexible way to categorize this dataset.
+            </> as JSX.Element;
 
         let displayTitleTip =
             <>
@@ -610,52 +159,167 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                 <Modal show={modalOpen} onHide={() => this.toggleModal(false)}>
                     <Modal.Header closeButton>
-                        <Modal.Title> Advanced List Settings </Modal.Title>
+                        <Modal.Title> Advanced Dataset Settings </Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
-                        <SettingsContainer
-                            title="Default Display Field"
-                            tipBody={displayTitleTip}
-                            fieldComponent={
-                                <DisplayTitle
-                                    model={model}
-                                    onSelectChange={this.onSelectChange}
-                                    titleColumn={titleColumn}
-                                />
-                            }
-                        />
 
-                        <SettingsContainer
-                            title="Discussion Threads"
-                            tipBody={DISCUSSION_LINKS_TIP}
-                            fieldComponent={
-                                <DiscussionLinks
-                                    onRadioChange={this.onRadioChange}
-                                    discussionSetting={discussionSetting}
-                                />
-                            }
-                        />
+                        <BasicPropertiesTitle title="Miscellaneous Options" />
 
-                        <SettingsContainer
-                            title="Search Indexing Options"
-                            tipBody={SEARCH_INDEXING_TIP}
-                            fieldComponent={
-                                <SearchIndexing
-                                    onRadioChange={this.onRadioChange}
-                                    onCheckboxChange={this.onCheckboxChange}
-                                    onInputChange={this.onInputChange}
-                                    entireListIndexSettings={entireListIndexSettings}
-                                    eachItemIndexSettings={eachItemIndexSettings}
-                                    fileAttachmentIndex={fileAttachmentIndex}
+                        <div className={'margin-top'}>
+                            <CheckBoxRow
+                                text="Show dataset in overview"
+                                name="showInOverview"
+                                onCheckBoxChange={this.onCheckboxChange}
+                                checked={showInOverview}
+                            />
+                        </div>
+
+                        <Row className={'margin-top'}>
+                            <Col xs={4} >
+                                Dataset ID
+                                <LabelHelpTip
+                                    title={title}
+                                    body={() => {
+                                        return <> {displayTitleTip} </>;
+                                    }}
                                 />
-                            }
-                        />
+                            </Col>
+                            <Col xs={1}/>
+
+                            <Col xs={7} >
+                                <FormControl
+                                    id={name}
+                                    type="text"
+                                    placeholder="Auto Assign"
+                                    value={model.datasetId}
+                                    onChange={() => {}}
+                                />
+                            </Col>
+                        </Row>
+
+                        <Row className={'margin-top'}>
+
+                            <Col xs={5} >
+                                Visit Date Column
+                                <LabelHelpTip
+                                    title={title}
+                                    body={() => {
+                                        return <> {displayTitleTip} </>;
+                                    }}
+                                />
+                            </Col>
+
+                            <Col xs={7} >
+                                <div className='dataset_advanced_settings_select'>
+                                    <SelectInput
+                                        onChange={(value) => {this.setState(()=> ({cohortValue: value}))}}
+                                        value={cohortValue}
+                                        options={availableCohorts}
+                                        inputClass="dataset_advanced_settings_select"
+                                        labelClass=""
+                                        valueKey="name"
+                                        labelKey="label"
+                                        formsy={false}
+                                        multiple={false}
+                                        required={false}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+
+                        <Row className={'margin-top'}>
+
+                            <Col xs={5} >
+                                Cohort Association
+                                <LabelHelpTip
+                                    title={title}
+                                    body={() => {
+                                        return <> {displayTitleTip} </>;
+                                    }}
+                                />
+                            </Col>
+
+                            <Col xs={7} >
+                                <div className='dataset_advanced_settings_select'>
+                                    <SelectInput
+                                        onChange={(value) => {this.setState(()=> ({cohortValue: value}))}}
+                                        value={cohortValue}
+                                        options={availableCohorts}
+                                        inputClass="dataset_advanced_settings_select"
+                                        labelClass=""
+                                        formsy={false}
+                                        multiple={false}
+                                        required={false}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+
+                        <Row className={'margin-top'}>
+                            <Col xs={4} >
+                                Tag
+                                <LabelHelpTip
+                                    title="Tag"
+                                    body={() => {
+                                        return <> {tagTip} </>;
+                                    }}
+                                />
+                            </Col>
+
+                            <Col xs={1}/>
+
+                            <Col xs={7} >
+                                <FormControl
+                                    id="tag"
+                                    type="text"
+                                    value={model.tag}
+                                    onChange={() => {}}
+                                />
+                            </Col>
+                        </Row>
+
+                        <BasicPropertiesTitle title="Dataspace Project Options" />
+
+                        <Row className={'margin-top'}>
+
+                            <Col xs={5} >
+                                Share demographic data
+                                <LabelHelpTip
+                                    title={title}
+                                    body={() => {
+                                        return <> {displayTitleTip} </>;
+                                    }}
+                                />
+                            </Col>
+
+                            <Col xs={7} >
+                                <div className='dataset_advanced_settings_select'>
+                                    <SelectInput
+                                        onChange={(value) => {this.setState(()=> ({cohortValue: value}))}}
+                                        value={cohortValue}
+                                        options={availableCohorts}
+                                        inputClass="dataset_advanced_settings_select"
+                                        labelClass=""
+                                        valueKey="name"
+                                        labelKey="label"
+                                        formsy={false}
+                                        multiple={false}
+                                        required={false}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
 
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <AdvancedSettingsModalBottom toggleModal={this.toggleModal} applyChanges={this.applyChanges} successBsStyle={successBsStyle} />
+                        <AdvancedSettingsModalBottom
+                            toggleModal={this.toggleModal}
+                            applyChanges={this.applyChanges}
+                            helpTopic="createDataset"
+                            helpText="Learn more about datasets"
+                        />
                     </Modal.Footer>
                 </Modal>
             </Col>

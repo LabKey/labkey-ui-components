@@ -176,8 +176,12 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
 
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         <Row className={'margin-bottom'}>
-                            <Col xs={12}>
-                                <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural={'lists'}/>
+                            <Col xs={10}/>
+                            <Col xs={2}>
+                                <AdvancedSettings
+                                    title={"Advanced Settings"}
+                                    model={model}
+                                />
                             </Col>
                         </Row>
                         <Form>
@@ -185,16 +189,11 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
                                 model={model}
                                 onInputChange={this.onInputChange}
                             />
+
                             <AllowableActions
                                 model={model}
                                 onCheckBoxChange={this.onCheckBoxChange}
                             />
-                            {/*<AdvancedSettings*/}
-                            {/*    title={"Advanced Settings"}*/}
-                            {/*    model={model}*/}
-                            {/*    applyAdvancedProperties={this.applyAdvancedProperties}*/}
-                            {/*    successBsStyle={successBsStyle}*/}
-                            {/*/>*/}
                         </Form>
                     </Panel.Body>
                 </Panel>

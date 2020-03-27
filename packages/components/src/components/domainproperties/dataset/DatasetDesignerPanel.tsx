@@ -21,7 +21,8 @@ import {DatasetPropertiesPanel} from "./DatasetPropertiesPanel";
 import {DatasetModel} from "./models";
 
 interface DatasetDesignerPanelProps {
-    initModel?: DatasetModel
+    initModel?: DatasetModel;
+    useTheme?: boolean;
 }
 
 interface DatasetDesignerPanelState {
@@ -34,13 +35,14 @@ export class DatasetDesignerPanel extends React.PureComponent<DatasetDesignerPan
     }
 
     render() {
-        const { initModel } = this.props;
+        const { initModel, useTheme } = this.props;
 
         return (
             <>
                 <DatasetPropertiesPanel
                     model={initModel}
                     controlledCollapse={true}
+                    useTheme={useTheme}
                 />
             </>
         );

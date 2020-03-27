@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { createContext } from 'react';
-import { fromJS, Iterable, List, Map, Seq } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { Ajax, Filter, Utils } from '@labkey/api';
 import {
     AppURL,
@@ -11,7 +11,7 @@ import {
     GridColumn,
     ISelectRowsResult,
     Location,
-    URLResolver,
+    SchemaQuery,
     SCHEMAS,
     selectRows,
 } from '../..';
@@ -71,55 +71,31 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
     });
 }
 
-function fetchSampleSetData(sampleSetName: string, nodes: List<LineageNode>): Promise<ISelectRowsResult> {
-    return selectRows({
-        schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-        queryName: sampleSetName,
-        columns: LINEAGE_METADATA_COLUMNS.join(','),
-        filterArray: [
-            Filter.create('rowId', nodes.map(n => n.rowId).toArray(), Filter.Types.IN),
-        ]
-    })
-}
-
-function fetchDataClassData(dataClassName: string, nodes: List<LineageNode>): Promise<ISelectRowsResult> {
-    return selectRows({
-        schemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
-        queryName: dataClassName,
-        columns: LINEAGE_METADATA_COLUMNS.join(','),
-        filterArray: [
-            Filter.create('rowId', nodes.map(n => n.rowId).toArray(), Filter.Types.IN),
-        ]
-    });
-}
-
-// get the lineage nodes filtered by nodeType then grouped by their queryName
-function getDataTypeMap(lineage: LineageResult, nodeType: string) : Seq.Keyed<any, Iterable<string, LineageNode>> {
+function fetchNodeMetadata(lineage: LineageResult): Promise<ISelectRowsResult>[] {
     return lineage.nodes
-        .filter(n => n.type === nodeType)
-        .groupBy(n => n.queryName);
+        .filter(n => n.schemaName !== undefined && n.queryName !== undefined)
+        .groupBy(n => SchemaQuery.create(n.schemaName, n.queryName))
+        .map((nodes, schemaQuery) => {
+            return selectRows({
+                schemaName: schemaQuery.schemaName,
+                queryName: schemaQuery.queryName,
+                // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?
+                // See LineageNodeMetadata.create for why this is currently done
+                columns: LINEAGE_METADATA_COLUMNS.join(','),
+                filterArray: [
+                    Filter.create('rowId', nodes.map(n => n.rowId).toArray(), Filter.Types.IN)
+                ]
+            });
+        })
+        .toArray();
 }
 
 export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageResult> {
     return new Promise((resolve) => {
-        let promises: Array<Promise<ISelectRowsResult>> = [];
-
-        getDataTypeMap(lineage, 'Sample').forEach((nodeList, sampleSetName) => {
-            if (sampleSetName) {
-                promises.push(fetchSampleSetData(sampleSetName, nodeList.toList()));
-            }
-        });
-
-        getDataTypeMap(lineage, 'Data').forEach((nodeList, dataClassName) => {
-            if (dataClassName) {
-                promises.push(fetchDataClassData(dataClassName, nodeList.toList()));
-            }
-        });
-
-        return Promise.all(promises)
-            .then((results) => {
+        return Promise.all(fetchNodeMetadata(lineage))
+            .then(results => {
                 let metadata = {};
-                results.forEach((result: ISelectRowsResult) => {
+                results.forEach(result => {
                     const queryInfo = result.queries[result.key];
                     const model = fromJS(result.models[result.key]);
                     model.forEach((data) => {
@@ -128,14 +104,9 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
                     });
                 });
 
-                const nodes = lineage.nodes.reduce((prev, node, key) => {
-                    const lsid = node.lsid;
-                    let meta = metadata[lsid];
-                    node = node.set('meta', meta);
-                    return prev.set(key, node);
-                }, Map<string, LineageNode>());
-
-                return lineage.set('nodes', nodes) as LineageResult;
+                return lineage.set('nodes', lineage.nodes.map(node => (
+                    node.set('meta', metadata[node.lsid])
+                ))) as LineageResult;
             })
             .then((result) => {
                 resolve(result);

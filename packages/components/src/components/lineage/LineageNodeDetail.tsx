@@ -75,7 +75,9 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
         const lineageUrl = links.lineage;
         const isSeed = seed === node.lsid;
 
-        const { aliases, description, displayType } = meta;
+        const aliases = meta?.aliases;
+        const description = meta?.description;
+        const displayType = meta?.displayType;
 
         const header = (
             <>

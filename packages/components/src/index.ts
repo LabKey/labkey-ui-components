@@ -160,7 +160,6 @@ import {
     AssayResolver,
     AssayRunResolver,
     ListResolver,
-    SampleSetResolver,
     SamplesResolver
 } from './util/AppURLResolver';
 import { QueryGridPanel } from './components/QueryGridPanel';
@@ -348,7 +347,6 @@ export {
     AssayRunResolver,
     ListResolver,
     SamplesResolver,
-    SampleSetResolver,
     getLocation,
     replaceParameter,
     replaceParameters,

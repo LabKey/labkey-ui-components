@@ -161,7 +161,7 @@ Array [
                     />
                   </svg>
                 </span>
-
+                
               </span>
             </div>
             <div
@@ -181,7 +181,7 @@ Array [
             <div
               className="col-xs-2"
             >
-              Naming
+              Naming 
               <span
                 className="domain-no-wrap"
               >
@@ -209,7 +209,7 @@ Array [
                     />
                   </svg>
                 </span>
-
+                
               </span>
             </div>
             <div
@@ -375,7 +375,7 @@ Array [
               className="file-form-formats"
             >
               <strong>
-                Supported formats include:
+                Supported formats include: 
               </strong>
               .csv, .tsv, .txt, .xls, .xlsx
             </div>
@@ -577,7 +577,7 @@ Array [
                     />
                   </svg>
                 </span>
-
+                
               </span>
             </div>
             <div
@@ -597,7 +597,7 @@ Array [
             <div
               className="col-xs-2"
             >
-              Naming
+              Naming 
               <span
                 className="domain-no-wrap"
               >
@@ -625,7 +625,7 @@ Array [
                     />
                   </svg>
                 </span>
-
+                
               </span>
             </div>
             <div
@@ -651,7 +651,7 @@ Array [
               className="domain-no-wrap"
             >
               Category
-
+              
             </span>
           </div>
           <div
@@ -724,7 +724,7 @@ Array [
           <div
             className="col-xs-2"
           >
-            Sample
+            Sample 
             <span
               className="domain-no-wrap"
             >
@@ -752,7 +752,7 @@ Array [
                   />
                 </svg>
               </span>
-
+              
             </span>
           </div>
           <div
@@ -968,7 +968,7 @@ Array [
               className="file-form-formats"
             >
               <strong>
-                Supported formats include:
+                Supported formats include: 
               </strong>
               .csv, .tsv, .txt, .xls, .xlsx
             </div>
@@ -3630,7 +3630,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               helpTipBody={[Function]}
                                               label="Naming Pattern"
                                             >
-                                              Naming
+                                              Naming 
                                               <span
                                                 className="domain-no-wrap"
                                               >
@@ -4012,7 +4012,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                         helpTipBody={[Function]}
                                         label="Sample Set"
                                       >
-                                        Sample
+                                        Sample 
                                         <span
                                           className="domain-no-wrap"
                                         >
@@ -6404,7 +6404,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             helpTipBody={[Function]}
                                                                                             label="Maximum Text Length"
                                                                                           >
-                                                                                            Maximum Text
+                                                                                            Maximum Text 
                                                                                             <span
                                                                                               className="domain-no-wrap"
                                                                                             >
@@ -6870,7 +6870,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                               helpTipBody={[Function]}
                                                                                               label="Import Aliases"
                                                                                             >
-                                                                                              Import
+                                                                                              Import 
                                                                                               <span
                                                                                                 className="domain-no-wrap"
                                                                                               >
@@ -7360,7 +7360,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                               helpTipBody={[Function]}
                                                                                               label="Create Conditional Format Criteria"
                                                                                             >
-                                                                                              Create Conditional Format
+                                                                                              Create Conditional Format 
                                                                                               <span
                                                                                                 className="domain-no-wrap"
                                                                                               >
@@ -7526,7 +7526,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                               helpTipBody={[Function]}
                                                                                               label="Create Regular Expression Validator"
                                                                                             >
-                                                                                              Create Regular Expression
+                                                                                              Create Regular Expression 
                                                                                               <span
                                                                                                 className="domain-no-wrap"
                                                                                               >
@@ -8730,7 +8730,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             helpTipBody={[Function]}
                                                                                             label="Format for Numbers"
                                                                                           >
-                                                                                            Format for
+                                                                                            Format for 
                                                                                             <span
                                                                                               className="domain-no-wrap"
                                                                                             >
@@ -9169,7 +9169,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                               helpTipBody={[Function]}
                                                                                               label="Import Aliases"
                                                                                             >
-                                                                                              Import
+                                                                                              Import 
                                                                                               <span
                                                                                                 className="domain-no-wrap"
                                                                                               >
@@ -9648,7 +9648,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                               helpTipBody={[Function]}
                                                                                               label="Create Conditional Format Criteria"
                                                                                             >
-                                                                                              Create Conditional Format
+                                                                                              Create Conditional Format 
                                                                                               <span
                                                                                                 className="domain-no-wrap"
                                                                                               >
@@ -9814,7 +9814,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                               helpTipBody={[Function]}
                                                                                               label="Create Range Validator"
                                                                                             >
-                                                                                              Create Range
+                                                                                              Create Range 
                                                                                               <span
                                                                                                 className="domain-no-wrap"
                                                                                               >
@@ -11000,7 +11000,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             helpTipBody={[Function]}
                                                                                             label="Format for Dates"
                                                                                           >
-                                                                                            Format for
+                                                                                            Format for 
                                                                                             <span
                                                                                               className="domain-no-wrap"
                                                                                             >
@@ -11401,7 +11401,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                               helpTipBody={[Function]}
                                                                                               label="Import Aliases"
                                                                                             >
-                                                                                              Import
+                                                                                              Import 
                                                                                               <span
                                                                                                 className="domain-no-wrap"
                                                                                               >
@@ -11880,7 +11880,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                               helpTipBody={[Function]}
                                                                                               label="Create Conditional Format Criteria"
                                                                                             >
-                                                                                              Create Conditional Format
+                                                                                              Create Conditional Format 
                                                                                               <span
                                                                                                 className="domain-no-wrap"
                                                                                               >
@@ -12046,7 +12046,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                               helpTipBody={[Function]}
                                                                                               label="Create Range Validator"
                                                                                             >
-                                                                                              Create Range
+                                                                                              Create Range 
                                                                                               <span
                                                                                                 className="domain-no-wrap"
                                                                                               >
@@ -12271,7 +12271,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               <i
                                                 className="fa fa-plus-circle container--addition-icon"
                                               />
-                                               Add
+                                               Add 
                                               Field
                                             </span>
                                           </div>

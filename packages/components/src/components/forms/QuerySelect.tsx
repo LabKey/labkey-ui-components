@@ -199,15 +199,15 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
     }
 
     componentWillReceiveProps(nextProps: QuerySelectOwnProps) {
-        if (!this.state.model && nextProps.componentId !== this.props.componentId) {
+        if (nextProps.componentId !== this.props.componentId) {
             this.initModel(nextProps);
         }
     }
 
     initModel(props: QuerySelectOwnProps) {
-        initSelect(props, this.state.model)
+        initSelect(props)
             .then((model) => {
-                this.setState(() => ({model}));
+                this.setState(() => ({error: undefined, model}));
             }, (reason) => {
                 this.setState(() => ({error: reason}));
             });
@@ -267,15 +267,15 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
 
         this.setState(() => ({
             model: model.setSelection(value)
-        }));
+        }), () => {
+            if (loadOnChange && Utils.isFunction(selectRef.loadOptions)) {
+                selectRef.loadOptions(FOCUS_FLAG);
+            }
 
-        if (loadOnChange && Utils.isFunction(selectRef.loadOptions)) {
-            selectRef.loadOptions(FOCUS_FLAG);
-        }
-
-        if (Utils.isFunction(onQSChange)) {
-            onQSChange(name, value, selectedOptions);
-        }
+            if (Utils.isFunction(onQSChange)) {
+                onQSChange(name, value, selectedOptions);
+            }
+        });
     }
 
     optionRenderer(option) {
@@ -303,6 +303,9 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 initiallyDisabled: initiallyDisabled,
                 disabled: true,
                 formsy: this.props.formsy,
+                containerClass: this.props.containerClass,
+                inputClass: this.props.inputClass,
+                labelClass: this.props.labelClass,
                 isLoading: false,
                 label,
                 name: this.props.name || this.props.componentId + '-error',
@@ -342,6 +345,9 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
             // even while QuerySelects are being initialized
             const inputProps = {
                 allowDisable: allowDisable,
+                containerClass: this.props.containerClass,
+                inputClass: this.props.inputClass,
+                labelClass: this.props.labelClass,
                 description: description,
                 initiallyDisabled: initiallyDisabled,
                 disabled: true,
@@ -350,7 +356,8 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 name: this.props.name || this.props.componentId + '-loader',
                 placeholder: 'Loading...',
                 required,
-                type: 'text'
+                type: 'text',
+                value: undefined
             };
 
             return <SelectInput {...inputProps}/>

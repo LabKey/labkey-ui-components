@@ -1,6 +1,58 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.39.4
+*Released*: 24 March 2020
+* Issue 39968: Cannot update assay result field to "All Samples"
+
+### version 0.39.3
+*Released*: 24 March 2020
+* Issue 39911: EditableGrid issue with pasting values into a cell that has a lookup that is not public
+
+### version 0.39.2
+*Released*: 23 March 2020
+* Dependency version updates
+
+### version 0.39.1
+*Released*: 23 March 2020
+* Run Builder related fixes
+    - Bug fix in file tree to make loading and empty placeholders not selectable when cascading a selection.
+    - File tree style update for checkboxes.
+    - Opt out of export button on QueryGridBar.
+
+### version 0.39.0
+*Released*: 20 March 2020
+* Item 6835: Data Class designer updates for use in Sample Manager
+    - add fetchDataClass function for call to Domain.getDomainDetails and resolve as DataClassModel
+    - use saveDomain function in DataClassDesigner for create and update
+    - add Category select input for DataClassPropertiesPanel (for appPropertiesOnly)
+    - refactor SampleSetDeleteConfirmModal as EntityTypeDeleteConfirm model for use with sample type and source type
+    - refactor deleteSampleSet as deleteEntityType for use with sample type and source type
+    - add BeforeUnload.tsx HOC
+
+### version 0.38.1
+*Released*: 20 March 2020
+* Issue 39913: Switch from dismissCoreWarnings.api to dismissWarnings.api
+
+## version 0.38.0
+*Released*: 19 March 2020
+* Add ParentEntityEditPanel for CRUD operations on parents. Initially not supporting delete
+(because there is no back end support for completely removing lineage).
+* Fix problem with QuerySelect and SelectInput not playing nicely together when you want to
+select a schema for the QuerySelect to use.
+* Refine and simplify styling for buttons on DetailEditing to work with sibling panels that sit below it
+* When invalidating the grid, don't call clearSelected if model does not allow selections
+* Issue 39307: Call onChange and loadOptions after model has been updated so changed selection is taken into account.
+* Issue 39863: Use POST instead of GET when getting delete confirmation data
+
+### version 0.37.0
+*Released*: 19 March 2020
+* Item 6848: Merge Sample Type creation/update UI into single designer component.
+
+### version 0.36.0
+*Released*: 19 March 2020
+* 39867: ErrorBoundary HoC, ErrorPage to display uncaught React exceptions
+
 ### version 0.35.3
 *Released*: 18 March 2020
 * add highlightLastSelectedRow to QueryGridPanel

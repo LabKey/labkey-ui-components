@@ -57,21 +57,4 @@ describe("QueryGrid render", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("allow selection", () => {
-        const modelId = "gridWithSelection";
-        const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: "withSelection"
-        });
-        const model = new QueryGridModel({
-            id: modelId,
-            isLoaded: true,
-            schema: schemaQuery.schemaName,
-            query: schemaQuery.queryName,
-
-        });
-        // TODO make sure selection column shows up
-        // TODO ??? click and verify state
-    });
-
 });

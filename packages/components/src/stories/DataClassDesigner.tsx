@@ -18,6 +18,7 @@ import { storiesOf } from '@storybook/react';
 import { text, boolean, withKnobs } from '@storybook/addon-knobs';
 import { DataClassDesigner } from "../components/domainproperties/dataclasses/DataClassDesigner";
 import { DataClassModel } from "../components/domainproperties/dataclasses/models";
+import getDomainDetailsJSON from '../test/data/dataclass-getDomainDetails.json';
 import './stories.scss';
 
 storiesOf('DataClassDesigner', module)
@@ -40,13 +41,13 @@ storiesOf('DataClassDesigner', module)
         return <DataClassDesigner
             onCancel={() => console.log('cancel')}
             onComplete={(model) => console.log('complete', model.toJS())}
-            initModel={DataClassModel.create({rowId: 1, name: 'testing1', description: 'testing2', nameExpression: 'DC-${genId}', materialSourceId: 111})}
+            initModel={DataClassModel.create(getDomainDetailsJSON)}
             nounSingular={text('nounSingular', 'Source')}
             nounPlural={text('nounPlural', 'Sources')}
             appPropertiesOnly={boolean('appPropertiesOnly', true)}
             headerText={text('headerText', 'Use source types to connect your samples to their biological or physical origins.')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org/Documentation')}
-            nameExpressionPlaceholder={text('nameExpressionPlaceholder', 'Enter your source type naming patter here...')}
+            nameExpressionPlaceholder={text('nameExpressionPlaceholder', 'Enter your source type naming pattern here...')}
             successBsStyle={text('successBsStyle', 'success')}
         />
     });

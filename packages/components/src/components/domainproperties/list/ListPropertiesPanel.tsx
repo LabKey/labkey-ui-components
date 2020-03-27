@@ -14,6 +14,7 @@ import {AdvancedSettingsForm, ListModel} from "./models";
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 const ERROR_MSG = 'Contains errors or is missing required values.';
+const DEFAULT_CONTEXT = {collapsed: false};
 
 interface Props {
     model: ListModel;
@@ -48,7 +49,8 @@ export class ListPropertiesPanel extends React.PureComponent<Props> {
     }
 }
 
-class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
+//Note: exporting this class for jest test case
+export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     static contextType = DomainPropertiesPanelContext;
     context!: React.ContextType<typeof DomainPropertiesPanelContext>;
 
@@ -84,7 +86,13 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
         const isValid = updatedModel && updatedModel.hasValidProperties();
-        this.setState(() => ({isValid}), () => onChange(updatedModel));
+        this.setState(() => ({isValid}),
+            () => {
+                // Issue 39918: only consider the model changed if there is a newModel param
+                if (newModel) {
+                    onChange(updatedModel)
+                }
+            });
     }
 
     toggleLocalPanel = (evt: any): void => {
@@ -94,7 +102,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     };
 
     onChange = (identifier, value): void => {
-        const { model, onChange } = this.props;
+        const { model } = this.props;
 
         // Name must be set on Domain as well
         let newDomain = model.domain;
@@ -126,8 +134,8 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         this.onChange(id, value);
     };
 
-    applyAdvancedProperties = (advancedSettingsForm: AdvancedSettingsForm) : void => {
-        const { model, onChange } = this.props;
+    applyAdvancedProperties = (advancedSettingsForm: AdvancedSettingsForm) => {
+        const { model } = this.props;
         const newModel = model.merge(advancedSettingsForm) as ListModel;
         this.setIsValid(newModel);
     };
@@ -135,7 +143,7 @@ class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     render() {
         const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle } = this.props;
         const { isValid } = this.state;
-        const { collapsed } = this.context;
+        const { collapsed } = this.context || DEFAULT_CONTEXT;
 
         return(
             <>

@@ -193,7 +193,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);
                     }
 
-                    if (col.isLookup()) {
+                    if (col.isPublicLookup()) {
                         initLookup(col, undefined);
                         // undefined 'displayAsLookup' just respects the lookup.
                         // Must be explicitly false to prevent drop-down.

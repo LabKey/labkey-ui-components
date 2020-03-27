@@ -254,7 +254,7 @@ export class Cell extends React.PureComponent<Props, any> {
             return cell;
         }
 
-        if (col.isLookup() && col.lookup.isPublic) {
+        if (col.isPublicLookup()) {
             const lookupProps: LookupCellProps = {
                 col,
                 colIdx,

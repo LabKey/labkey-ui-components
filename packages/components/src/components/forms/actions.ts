@@ -29,19 +29,6 @@ import { QueryInfo } from '../base/models/model';
 
 const emptyMap = Map<string, any>();
 
-function selectShouldInit(model: QuerySelectModel): boolean {
-    // TODO: this is possibly the root of the problem where QuerySelects cannot handle a change to their SchemaQuery.
-    //  Why do we even do another type of check here? We already do this type of check in componentWillReceiveProps
-    //  Why put the logic in two places?
-    if (!model) {
-        return true;
-    }
-    else if (!model.queryInfo) {
-        return true;
-    }
-
-    return false;
-}
 
 function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
 
@@ -64,11 +51,11 @@ function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
     return displayColumn;
 }
 
-export function initSelect(props: QuerySelectOwnProps, model: QuerySelectModel): Promise<QuerySelectModel> {
+export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
     return new Promise((resolve, reject) => {
         const { componentId, schemaQuery, containerPath } = props;
 
-        if (selectShouldInit(model) && schemaQuery) {
+        if (schemaQuery) {
             getQueryDetails(schemaQuery).then(queryInfo => {
                 const valueColumn = initValueColumn(queryInfo, props.valueColumn);
                 const displayColumn = initDisplayColumn(queryInfo, props.displayColumn);
@@ -136,7 +123,7 @@ export function initSelect(props: QuerySelectOwnProps, model: QuerySelectModel):
             });
         }
         else {
-            resolve(model);
+            resolve(undefined);
         }
     });
 }

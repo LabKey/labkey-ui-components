@@ -52,7 +52,6 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
     >
       <input
         className="form-control"
-        disabled={false}
         id="entity-name"
         onChange={[MockFunction]}
         placeholder="Enter a name for this entity"
@@ -362,7 +361,6 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
     >
       <input
         className="form-control"
-        disabled={false}
         id="entity-name"
         onChange={[MockFunction]}
         placeholder="Enter a name for this entity"
@@ -518,7 +516,6 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
     >
       <input
         className="form-control"
-        disabled={false}
         id="entity-name"
         onChange={[MockFunction]}
         placeholder="Enter a name for this entity"

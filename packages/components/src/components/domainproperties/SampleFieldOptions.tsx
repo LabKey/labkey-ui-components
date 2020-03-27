@@ -3,7 +3,14 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, fetchQueries } from './actions';
 import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants';
-import { encodeLookup, IDomainField, ITypeDependentProps, PropDescType, QueryInfoLite } from './models';
+import {
+    encodeLookup,
+    IDomainField,
+    ITypeDependentProps,
+    PropDescType,
+    QueryInfoLite,
+    SAMPLE_TYPE_OPTION_VALUE
+} from './models';
 import { List } from 'immutable';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLinks';
@@ -109,7 +116,7 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                             {!loading &&
                                 <option
                                     key={createFormInputId( DOMAIN_FIELD_SAMPLE_TYPE + '-option-' + index, domainIndex, index)}
-                                    value={'all'}
+                                    value={SAMPLE_TYPE_OPTION_VALUE}
                                 >
                                     All Samples
                                 </option>

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import {fromJS, List, Map, Record} from 'immutable';
+import {Domain} from '@labkey/api';
 import {
     ATTACHMENT_RANGE_URI,
     BINARY_RANGE_URI,
@@ -228,6 +229,8 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     phiLevelDisabled: false,
     showAddFieldsButton: true
 };
+
+export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
 
 interface IDomainDesign {
     name: string
@@ -926,18 +929,19 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
 
     let { queryName, rangeURI = INT_RANGE_URI } = decodeLookup(sampleQueryValue);
     let lookupType = field.lookupType || LOOKUP_TYPE;
-    let sampleField = 'all' === sampleQueryValue ?
+    let sampleField = 'all' === queryName ?
         {
+            // Use the exp.materials table for 'all'
             lookupSchema: SCHEMAS.EXP_TABLES.SCHEMA,
             lookupQuery: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
             lookupQueryValue: sampleQueryValue,
             lookupType: field.lookupType.set('rangeURI', rangeURI),
             rangeURI: rangeURI,
-        }:
-        {
+        }: {
+            // use the samples.<SampleType> table for specific sample types
             lookupSchema: SCHEMAS.SAMPLE_SETS.SCHEMA,
             lookupQuery: queryName,
-            lookupQueryValue: sampleQueryValue || 'all',
+            lookupQueryValue: sampleQueryValue || SAMPLE_TYPE_OPTION_VALUE,
             lookupType: lookupType.set('rangeURI', rangeURI),
             rangeURI: rangeURI,
         };
@@ -1428,4 +1432,48 @@ export interface IDomainFormDisplayOptions {
     showTextOptions?: boolean
     phiLevelDisabled?: boolean
     showAddFieldsButton?: boolean
+}
+
+/**
+ * General object to describe a DomainKind as received from Domain.getDomainDetails
+ *
+ * @property domainDesign The fields found on all items of this domain (e.g., copy per item)
+ * @property options The fields and properties shared by this type (e.g., one copy) ('options' used to match existing LKS api)
+ * @property domainKindName The name of the domainkind type this represents, currently supported can be found in Domain.KINDS
+ */
+export class DomainDetails extends Record({
+    domainDesign: undefined,
+    options: undefined,
+    domainKindName: undefined,
+    nameReadOnly: false
+}) {
+    domainDesign: DomainDesign;
+    options: Map<string, any>;
+    domainKindName: string;
+    nameReadOnly?: boolean;
+
+    static create(rawDesign: Map<string, any> = Map(), domainKindType: string = Domain.KINDS.UNKNOWN): DomainDetails {
+
+        let design;
+        if (rawDesign) {
+            const domainDesign = DomainDesign.create(rawDesign.get('domainDesign'));
+            const domainKindName = rawDesign.get('domainKindName', domainKindType);
+            const options = Map(rawDesign.get('options'));
+            const nameReadOnly = rawDesign.get('nameReadOnly');
+            design = new DomainDetails({domainDesign, domainKindName, options, nameReadOnly});
+        }
+        else {
+            design = new DomainDetails({
+                domainDesign: DomainDesign.create(null),
+                domainKindName: domainKindType,
+                options: Map<string, any>(),
+            });
+        }
+
+        return design;
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
 }

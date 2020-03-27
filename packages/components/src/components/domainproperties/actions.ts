@@ -39,7 +39,7 @@ import {
     IFieldChange,
     PROP_DESC_TYPES,
     QueryInfoLite,
-    updateSampleField
+    updateSampleField,
 } from './models';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../util/utils';

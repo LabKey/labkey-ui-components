@@ -19,17 +19,21 @@ import { DomainDesign } from "../models";
 
 export class DataClassModel extends Record({
     rowId: undefined,
+    exception: undefined,
     name: undefined,
     nameExpression: undefined,
     description: undefined,
-    materialSourceId: undefined,
+    sampleSet: undefined,
+    category: undefined,
     domain: undefined
 }) {
     rowId: number;
+    exception: string;
     name: string;
     nameExpression: string;
     description: string;
-    materialSourceId: number;
+    sampleSet: number;
+    category: string;
     domain: DomainDesign;
 
     constructor(values?: {[key:string]: any}) {
@@ -42,14 +46,18 @@ export class DataClassModel extends Record({
             domain = DomainDesign.create(raw.domainDesign);
         }
 
+        if (raw.options) {
+            let model = new DataClassModel({...raw.options, domain});
+            if (model.category === null) {
+                model = model.set('category', undefined) as DataClassModel;
+            }
+            if (model.sampleSet === null) {
+                model = model.set('sampleSet', undefined) as DataClassModel;
+            }
+            return model;
+        }
+
         return new DataClassModel({...raw, domain});
-    }
-
-    static serialize(model: DataClassModel): any {
-        // need to serialize the DomainDesign object to remove the unrecognized fields
-        const domain = DomainDesign.serialize(model.domain);
-
-        return model.merge({domain}).toJS();
     }
 
     isNew(): boolean {
@@ -63,5 +71,16 @@ export class DataClassModel extends Record({
 
     hasValidProperties(): boolean {
         return (this.name !== undefined && this.name !==null && this.name.trim().length > 0);
+    }
+
+    getOptions(): Object {
+        return {
+            rowId: this.rowId,
+            name: this.name,
+            description: this.description,
+            nameExpression: this.nameExpression,
+            category: this.category,
+            sampleSet: this.sampleSet
+        }
     }
 }

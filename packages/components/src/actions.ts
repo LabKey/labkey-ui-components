@@ -275,26 +275,36 @@ export function clearError(model: QueryGridModel) {
 }
 
 export function schemaGridInvalidate(schemaName: string, remove: boolean = false) {
-    getQueryGridModelsForSchema(schemaName).map((model) => gridRemoveOrInvalidate(model, remove));
+    getQueryGridModelsForSchema(schemaName).map((model) => gridClearSelectionAndInvalidate(model, remove));
 }
 
 export function queryGridInvalidate(schemaQuery: SchemaQuery, remove: boolean = false) {
-    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridRemoveOrInvalidate(model, remove));
+    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridClearSelectionAndInvalidate(model, remove));
 }
 
 export function gridIdInvalidate(gridIdPrefix: string, remove: boolean = false) {
-    getQueryGridModelsForGridId(gridIdPrefix).map((model) => gridRemoveOrInvalidate(model, remove));
+    getQueryGridModelsForGridId(gridIdPrefix).map((model) => gridClearSelectionAndInvalidate(model, remove));
+}
+
+function gridClearSelectionAndInvalidate(model: QueryGridModel, remove: boolean) {
+    if (model.allowSelection) {
+        clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath)
+            .then(() => {
+                gridRemoveOrInvalidate(model, remove);
+            });
+    }
+    else {
+        gridRemoveOrInvalidate(model, remove);
+    }
+
 }
 
 function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
-    clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath)
-        .then(() => {
-            if (remove) {
-                removeQueryGridModel(model);
-            } else {
-                gridInvalidate(model);
-            }
-        });
+    if (remove) {
+        removeQueryGridModel(model);
+    } else {
+        gridInvalidate(model);
+    }
 }
 
 export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {
@@ -1444,7 +1454,7 @@ export function initLookup(column: QueryColumn, maxRows: number, values?: List<s
 }
 
 function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
-    if (!col.isLookup() || !col.lookup.isPublic) {
+    if (!col.isPublicLookup()) {
         return false;
     }
 
@@ -2115,7 +2125,7 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                         let cv: List<ValueDescriptor>;
                         let msg: CellMessage;
 
-                        if (col && col.isLookup()) {
+                        if (col && col.isPublicLookup()) {
                             const { message, values } = parsePasteCellLookup(col, getLookup(col), value);
                             cv = values;
 
@@ -2158,7 +2168,7 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                     let cv: List<ValueDescriptor>;
                     let msg: CellMessage;
 
-                    if (col && col.isLookup()) {
+                    if (col && col.isPublicLookup()) {
                         const {message, values} = parsePasteCellLookup(col, getLookup(col), value);
                         cv = values;
 

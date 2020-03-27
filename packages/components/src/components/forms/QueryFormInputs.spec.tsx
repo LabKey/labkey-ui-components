@@ -47,10 +47,10 @@ describe("QueryFormInputs", () => {
             );
 
             expect(formWrapper.find('input').findWhere((input) => input.prop('disabled'))).toHaveLength(0);
-            expect(formWrapper.find(TextInput)).toHaveLength(3);
+            expect(formWrapper.find(TextInput)).toHaveLength(4);
             expect(formWrapper.find(DatePickerInput)).toHaveLength(1);
             expect(formWrapper.find(CheckboxInput)).toHaveLength(1);
-            expect(formWrapper.find(SelectInput)).toHaveLength(1);
+            expect(formWrapper.find(SelectInput)).toHaveLength(0);
             // default properties don't render file inputs
             expect(formWrapper.find(FileInput)).toHaveLength(0);
 
@@ -97,7 +97,7 @@ describe("QueryFormInputs", () => {
                 </Formsy>
             );
 
-            expect(formWrapper.find('input').findWhere((input) => !input.prop('disabled'))).toHaveLength(4);
+            expect(formWrapper.find('input').findWhere((input) => !input.prop('disabled'))).toHaveLength(5);
             expect(formWrapper.find('input').findWhere((input) => input.prop('disabled'))).toHaveLength(1);
 
             formWrapper.unmount();

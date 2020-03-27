@@ -43475,7 +43475,7 @@ exports[`ListDesignerPanel existing list 1`] = `
     </LookupProvider>
   </DomainForm>
   <div
-    className="domain-form-panel domain-assay-buttons"
+    className="domain-form-panel"
   >
     <Button
       active={false}
@@ -44004,7 +44004,7 @@ Array [
     </div>
   </div>,
   <div
-    className="domain-form-panel domain-assay-buttons"
+    className="domain-form-panel"
   >
     <button
       className="btn btn-default"

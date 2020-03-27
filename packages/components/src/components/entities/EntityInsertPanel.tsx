@@ -221,14 +221,14 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             entityDataType: entityDataType,
         });
 
-        let schemaQueries = Map<string, SchemaQuery>();
-        schemaQueries = schemaQueries.set(entityDataType.instanceSchemaName, entityDataType.typeListingSchemaQuery);
+        let schemaQueries = Map<string, EntityDataType>();
+        schemaQueries = schemaQueries.set(entityDataType.instanceSchemaName, entityDataType);
         if (this.props.parentDataTypes) {
             this.props.parentDataTypes.forEach((dataType) => {
-                schemaQueries = schemaQueries.set(dataType.instanceSchemaName, dataType.typeListingSchemaQuery);
+                schemaQueries = schemaQueries.set(dataType.instanceSchemaName, dataType);
             });
         }
-        getEntityTypeData(insertModel, schemaQueries, entityDataType.typeListingSchemaQuery.queryName, allowParents, entityDataType.filterArray)
+        getEntityTypeData(insertModel, schemaQueries, entityDataType.typeListingSchemaQuery.queryName, allowParents)
             .then((partialModel) => {
                 const updatedModel = insertModel.merge(partialModel) as EntityIdCreationModel;
                 this.gridInit(updatedModel);
@@ -712,7 +712,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             })
         } else {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
-                toolTip: "A " + this.props.nounSingular + " ID is required for each " + this.props.nounSingular + " since this " + this.typeTextSingular + " has no naming pattern. You can provide a naming pattern by editing the " + this.typeTextSingular + " details."
+                toolTip: "A " + this.props.nounSingular + " ID is required for each " + this.props.nounSingular + " since this " + this.typeTextSingular + " has no naming pattern. You can provide a naming pattern by editing the " + this.typeTextSingular + " design."
             })
         }
 
@@ -782,7 +782,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                     onChange={this.toggleInsertOptionChange}
                 />
                 <span
-                    className={'sm-mergeoption-checkbox'}
+                    className={'entity-mergeoption-checkbox'}
                     onClick={this.toggleInsertOptionChange}
                 >
                     Update data for existing {this.props.nounPlural} during this file import
@@ -936,7 +936,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                                 <FormTabs tabs={this.getTabs()} onTabChange={this.onTabChange}/>
                             </div>
                             {editEntityTypeDetailsLink && canEditEntityTypeDetails ?
-                                <div className={'col-sm-5'}><Link className={'pull-right entity-insert--link'} to={editEntityTypeDetailsLink.toString()}>Edit {this.capTypeTextSingular} Details</Link></div>
+                                <div className={'col-sm-5'}><Link className={'pull-right entity-insert--link'} to={editEntityTypeDetailsLink.toString()}>Edit {this.capTypeTextSingular} Design</Link></div>
                                 : undefined}
                         </div>
                         <div className="row">

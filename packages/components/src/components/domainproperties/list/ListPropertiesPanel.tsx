@@ -1,65 +1,33 @@
 import React from 'react';
-import { Panel, Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
-import { Alert } from '../../base/Alert';
-import { DomainDesign, DomainPanelStatus } from "../models";
+import { DomainDesign } from "../models";
 import { AllowableActions, BasicPropertiesFields } from "./ListPropertiesPanelFormElements";
 import { AdvancedSettings } from "./ListPropertiesAdvancedSettings";
-import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
-import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
-import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
 import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
 import { HelpTopicURL } from "../HelpTopicURL";
 import {AdvancedSettingsForm, ListModel} from "./models";
+import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
+import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
-const ERROR_MSG = 'Contains errors or is missing required values.';
-const DEFAULT_CONTEXT = {collapsed: false};
 
-interface Props {
+interface OwnProps {
     model: ListModel;
-    panelStatus: DomainPanelStatus;
     onChange: (model: ListModel) => void;
-    controlledCollapse?: boolean;
-    initCollapsed?: boolean;
-    collapsible?: boolean;
-    onToggle?: (collapsed: boolean, callback: () => any) => any;
-    validate?: boolean;
-    useTheme?: boolean;
     successBsStyle?: string;
 }
+
+type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
     isValid: boolean;
 }
 
-export class ListPropertiesPanel extends React.PureComponent<Props> {
-    render() {
-        const { collapsible, controlledCollapse, initCollapsed, onToggle } = this.props;
-
-        return (
-            <DomainPropertiesPanelProvider
-                controlledCollapse={controlledCollapse}
-                collapsible={collapsible}
-                initCollapsed={initCollapsed}
-                onToggle={onToggle}>
-                <ListPropertiesPanelImpl {...this.props} />
-            </DomainPropertiesPanelProvider>
-        );
-    }
-}
-
 //Note: exporting this class for jest test case
-export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
-    static contextType = DomainPropertiesPanelContext;
-    context!: React.ContextType<typeof DomainPropertiesPanelContext>;
+export class ListPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
 
-    static defaultProps = {
-        initCollapsed: false,
-        validate: false,
-    };
-
-    constructor(props) {
+    constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
 
         this.state = {
@@ -67,22 +35,7 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        const { validate } = this.props;
-        if (nextProps.validate && validate !== nextProps.validate) {
-            this.setIsValid();
-        }
-    }
-
-    componentDidMount(): void {
-        updateDomainPanelClassList(this.props.useTheme, undefined, PROPERTIES_HEADER_ID);
-    }
-
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-        updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
-    }
-
-    setIsValid(newModel?: ListModel): void {
+    updateValidStatus = (newModel?: ListModel) => {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
         const isValid = updatedModel && updatedModel.hasValidProperties();
@@ -93,12 +46,6 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
                     onChange(updatedModel)
                 }
             });
-    }
-
-    toggleLocalPanel = (evt: any): void => {
-        const { togglePanel, collapsed } = this.context;
-        this.setIsValid();
-        togglePanel(evt, !collapsed);
     };
 
     onChange = (identifier, value): void => {
@@ -115,7 +62,7 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
             domain: newDomain,
         }) as ListModel;
 
-        this.setIsValid(newModel);
+        this.updateValidStatus(newModel);
     };
 
     onCheckBoxChange = (name, checked): void => {
@@ -137,69 +84,46 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props, State> {
     applyAdvancedProperties = (advancedSettingsForm: AdvancedSettingsForm) => {
         const { model } = this.props;
         const newModel = model.merge(advancedSettingsForm) as ListModel;
-        this.setIsValid(newModel);
+        this.updateValidStatus(newModel);
     };
 
     render() {
-        const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle } = this.props;
+        const { model, successBsStyle} = this.props;
         const { isValid } = this.state;
-        const { collapsed } = this.context || DEFAULT_CONTEXT;
 
         return(
-            <>
-                <Panel
-                    className={getDomainPanelClass(collapsed, true, useTheme)}
-                    expanded={!collapsed}
-                    onToggle={function(){}}
-                >
-                    <CollapsiblePanelHeader
-                        id={PROPERTIES_HEADER_ID}
-                        title={'List Properties'}
-                        titlePrefix={model.name}
-                        togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
-                        collapsed={collapsed}
-                        collapsible={collapsible}
-                        controlledCollapse={controlledCollapse}
-                        panelStatus={panelStatus}
-                        isValid={isValid}
-                        iconHelpMsg={ERROR_MSG}
-                        useTheme={useTheme}
+            <BasePropertiesPanel
+                {...this.props}
+                headerId={PROPERTIES_HEADER_ID}
+                title={'List Properties'}
+                titlePrefix={model.name}
+                updateValidStatus={this.updateValidStatus}
+                isValid={isValid}
+            >
+                <Row className={'margin-bottom'}>
+                    <Col xs={12}>
+                        <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural={'lists'}/>
+                    </Col>
+                </Row>
+                <Form>
+                    <BasicPropertiesFields
+                        model={model}
+                        onInputChange={this.onInputChange}
                     />
-
-                    <Panel.Body collapsible={collapsible || controlledCollapse}>
-                        <Row className={'margin-bottom'}>
-                            <Col xs={12}>
-                                <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural={'lists'}/>
-                            </Col>
-                        </Row>
-                        <Form>
-                            <BasicPropertiesFields
-                                model={model}
-                                onInputChange={this.onInputChange}
-                            />
-                            <AllowableActions
-                                model={model}
-                                onCheckBoxChange={this.onCheckBoxChange}
-                            />
-                            <AdvancedSettings
-                                title={"Advanced Settings"}
-                                model={model}
-                                applyAdvancedProperties={this.applyAdvancedProperties}
-                                successBsStyle={successBsStyle}
-                            />
-                        </Form>
-                    </Panel.Body>
-                </Panel>
-
-                {!isValid &&
-                    <div
-                        onClick={(evt: any) => this.toggleLocalPanel(evt)}
-                        className={getDomainAlertClasses(collapsed, true, useTheme)}
-                    >
-                        <Alert bsStyle="danger">{ERROR_MSG}</Alert>
-                    </div>
-                }
-            </>
+                    <AllowableActions
+                        model={model}
+                        onCheckBoxChange={this.onCheckBoxChange}
+                    />
+                    <AdvancedSettings
+                        title={"Advanced Settings"}
+                        model={model}
+                        applyAdvancedProperties={this.applyAdvancedProperties}
+                        successBsStyle={successBsStyle}
+                    />
+                </Form>
+            </BasePropertiesPanel>
         )
     }
 }
+
+export const ListPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(ListPropertiesPanelImpl);

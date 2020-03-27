@@ -19,6 +19,7 @@ export const CONFIGURE_SCRIPTING_TOPIC =  "configureScripting";
 export const PROGRAMMATIC_QC_TOPIC = "programmaticQC";
 export const DEFINE_ASSAY_SCHEMA_TOPIC = "defineAssaySchema";
 export const DEFINE_DATA_CLASS_TOPIC = "dataClass";
+export const DEFINE_SAMPLE_TYPE_TOPIC = "createSampleSet";
 export const DEFINE_LIST_TOPIC = "createListOptions";
 
 export const DELETE_SAMPLES_TOPIC = "viewSampleSets#delete";

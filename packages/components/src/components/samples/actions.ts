@@ -75,13 +75,13 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     });
 }
 
-export function getSampleTypeDetails(query: SchemaQuery, domainId?: number): Promise<any> {
+export function getSampleTypeDetails(query?: SchemaQuery, domainId?: number): Promise<any> {
     return new Promise<DomainDetails>((resolve, reject) => {
         const sampleSetConfig = {
             domainId,
             containerPath: ActionURL.getContainer(),
-            queryName: query.getQuery(),
-            schemaName: query.getSchema(),
+            queryName: query ? query.getQuery() : undefined,
+            schemaName: query ? query.getSchema() : undefined,
             success: (response) => {
                 resolve(DomainDetails.create(Map(response)));
             },

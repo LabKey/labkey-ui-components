@@ -13,6 +13,7 @@ import {
     DOCUMENT_TITLE_TIP,
     SEARCH_INDEXING_TIP
 } from "./constants";
+import { DomainFieldLabel } from "../DomainFieldLabel";
 
 interface DisplayTitleProps {
     model: ListModel
@@ -89,8 +90,10 @@ class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
         const title = titleTemplate == null ? '' : titleTemplate;
         return (
             <div>
-                Document title
-                <LabelHelpTip title="Document title" body={() => {return <> {DOCUMENT_TITLE_TIP} </>;}}/>
+                <DomainFieldLabel
+                    label={'Document title'}
+                    helpTipBody={() => DOCUMENT_TITLE_TIP}
+                />
                 <span>
                     <FormControl
                         className="list__advanced-settings-modal__text-field"
@@ -124,11 +127,11 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
                 <FormGroup>
                     <Radio name={name} value={2} checked={indexSetting == 2} onChange={onRadioChange}>
                         Include both metadata and data
-                        <LabelHelpTip title="Warning" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
+                        <LabelHelpTip title="Warning" body={() => DATA_INDEXING_TIP}/>
                     </Radio>
                     <Radio name={name} value={1} checked={indexSetting == 1} onChange={onRadioChange}>
                         Include data only
-                        <LabelHelpTip title="Warning" body={() => {return <> {DATA_INDEXING_TIP} </>;}}/>
+                        <LabelHelpTip title="Warning" body={() => DATA_INDEXING_TIP}/>
                     </Radio>
                     <Radio name={name} value={0} checked={indexSetting == 0} onChange={onRadioChange}>
                         Include metadata only (name and description of list and fields)
@@ -163,7 +166,7 @@ export class IndexField extends React.PureComponent<IndexFieldProps> {
                     </Radio>
                     <Radio name={name} value={2} checked={bodySetting == 2} onChange={onRadioChange}>
                         Index using custom template
-                        <LabelHelpTip title="" body={() => {return <> {CUSTOM_TEMPLATE_TIP} </>;}}/>
+                        <LabelHelpTip title="" body={() => CUSTOM_TEMPLATE_TIP}/>
                     </Radio>
                 </FormGroup>
 
@@ -435,9 +438,7 @@ class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
                     <span className="list__bold-text"> {title} </span>
                     <LabelHelpTip
                         title={tipTitle || title}
-                        body={() => {
-                            return <> {tipBody} </>;
-                        }}
+                        body={() => tipBody}
                     />
                 </div>
 

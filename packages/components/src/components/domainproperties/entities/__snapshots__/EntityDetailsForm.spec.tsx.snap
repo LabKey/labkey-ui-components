@@ -8,16 +8,12 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <label
-        className="entity-form--overlaylabel text__truncate-and-wrap"
-        title="Name"
+      <span
+        className="domain-no-wrap"
       >
-        <span>
-          Name
-        </span>
-         
+        Name
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -41,15 +37,11 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
             />
           </svg>
         </span>
-        <span
-          className="required-symbol"
-        >
-           *
-        </span>
-      </label>
+         *
+      </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <input
         className="form-control"
@@ -65,11 +57,12 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <span>
+      <span
+        className="domain-no-wrap"
+      >
         Description
-         
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -93,10 +86,11 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
             />
           </svg>
         </span>
+        
       </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <textarea
         className="form-control textarea-noresize"
@@ -110,11 +104,13 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <span>
-        Naming Pattern
-         
+      Naming 
+      <span
+        className="domain-no-wrap"
+      >
+        Pattern
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -138,10 +134,11 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
             />
           </svg>
         </span>
+        
       </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <input
         className="form-control"
@@ -163,16 +160,12 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <label
-        className="entity-form--overlaylabel text__truncate-and-wrap"
-        title="Name"
+      <span
+        className="domain-no-wrap"
       >
-        <span>
-          Name
-        </span>
-         
+        Name
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -196,15 +189,11 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
             />
           </svg>
         </span>
-        <span
-          className="required-symbol"
-        >
-           *
-        </span>
-      </label>
+         *
+      </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <input
         className="form-control"
@@ -221,11 +210,12 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <span>
+      <span
+        className="domain-no-wrap"
+      >
         Description
-         
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -249,10 +239,11 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
             />
           </svg>
         </span>
+        
       </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <textarea
         className="form-control textarea-noresize"
@@ -266,11 +257,13 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <span>
-        Naming Pattern
-         
+      Naming 
+      <span
+        className="domain-no-wrap"
+      >
+        Pattern
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -294,10 +287,11 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
             />
           </svg>
         </span>
+        
       </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <input
         className="form-control"
@@ -319,16 +313,12 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <label
-        className="entity-form--overlaylabel text__truncate-and-wrap"
-        title="Name"
+      <span
+        className="domain-no-wrap"
       >
-        <span>
-          Name
-        </span>
-         
+        Name
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -352,15 +342,11 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
             />
           </svg>
         </span>
-        <span
-          className="required-symbol"
-        >
-           *
-        </span>
-      </label>
+         *
+      </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <input
         className="form-control"
@@ -376,11 +362,12 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <span>
+      <span
+        className="domain-no-wrap"
+      >
         Description
-         
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -404,10 +391,11 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
             />
           </svg>
         </span>
+        
       </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <textarea
         className="form-control textarea-noresize"
@@ -421,11 +409,13 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <span>
-        Naming Pattern
-         
+      Naming 
+      <span
+        className="domain-no-wrap"
+      >
+        Pattern
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -449,10 +439,11 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
             />
           </svg>
         </span>
+        
       </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <input
         className="form-control"
@@ -475,16 +466,12 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <label
-        className="entity-form--overlaylabel text__truncate-and-wrap"
-        title="Name"
+      <span
+        className="domain-no-wrap"
       >
-        <span>
-          Name
-        </span>
-         
+        Name
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -508,15 +495,11 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
             />
           </svg>
         </span>
-        <span
-          className="required-symbol"
-        >
-           *
-        </span>
-      </label>
+         *
+      </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <input
         className="form-control"
@@ -532,11 +515,12 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <span>
+      <span
+        className="domain-no-wrap"
+      >
         Description
-         
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -560,10 +544,11 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
             />
           </svg>
         </span>
+        
       </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <textarea
         className="form-control textarea-noresize"
@@ -577,11 +562,13 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
     className="margin-bottom row"
   >
     <div
-      className="col-xs-3"
+      className="col-xs-2"
     >
-      <span>
-        Naming Pattern
-         
+      Naming 
+      <span
+        className="domain-no-wrap"
+      >
+        Pattern
         <span
           className="label-help-target"
           onMouseOut={[Function]}
@@ -605,10 +592,11 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
             />
           </svg>
         </span>
+        
       </span>
     </div>
     <div
-      className="col-xs-9"
+      className="col-xs-10"
     >
       <input
         className="form-control"

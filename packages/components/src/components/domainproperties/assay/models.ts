@@ -184,9 +184,7 @@ export class AssayProtocolModel extends Record({
     }
 
     static isValid(model: AssayProtocolModel): boolean {
-        const errDomain = model.domains.find((dom) => (!!dom.domainException && dom.domainException.severity === SEVERITY_LEVEL_ERROR));
-
-        return !errDomain && model.hasValidProperties();
+        return model.hasValidProperties();
     }
 
     hasValidProperties(): boolean {

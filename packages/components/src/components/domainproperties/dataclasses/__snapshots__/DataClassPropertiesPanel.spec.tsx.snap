@@ -78,16 +78,12 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <label
-            className="entity-form--overlaylabel text__truncate-and-wrap"
-            title="Name"
+          <span
+            className="domain-no-wrap"
           >
-            <span>
-              Name
-            </span>
-             
+            Name
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -111,15 +107,11 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
                 />
               </svg>
             </span>
-            <span
-              className="required-symbol"
-            >
-               *
-            </span>
-          </label>
+             *
+          </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <input
             className="form-control"
@@ -135,11 +127,12 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <span>
+          <span
+            className="domain-no-wrap"
+          >
             Description
-             
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -163,10 +156,11 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
                 />
               </svg>
             </span>
+            
           </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <textarea
             className="form-control textarea-noresize"
@@ -180,11 +174,13 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <span>
-            Naming Pattern
-             
+          Naming 
+          <span
+            className="domain-no-wrap"
+          >
+            Pattern
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -208,10 +204,11 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
                 />
               </svg>
             </span>
+            
           </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <input
             className="form-control"
@@ -276,16 +273,12 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <label
-            className="entity-form--overlaylabel text__truncate-and-wrap"
-            title="Name"
+          <span
+            className="domain-no-wrap"
           >
-            <span>
-              Name
-            </span>
-             
+            Name
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -309,15 +302,11 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
                 />
               </svg>
             </span>
-            <span
-              className="required-symbol"
-            >
-               *
-            </span>
-          </label>
+             *
+          </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <input
             className="form-control"
@@ -333,11 +322,12 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <span>
+          <span
+            className="domain-no-wrap"
+          >
             Description
-             
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -361,10 +351,11 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
                 />
               </svg>
             </span>
+            
           </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <textarea
             className="form-control textarea-noresize"
@@ -378,11 +369,13 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
         className="margin-bottom row"
       >
         <div
-          className="col-xs-3"
+          className="col-xs-2"
         >
-          <span>
-            Naming Pattern
-             
+          Naming 
+          <span
+            className="domain-no-wrap"
+          >
+            Pattern
             <span
               className="label-help-target"
               onMouseOut={[Function]}
@@ -406,10 +399,11 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
                 />
               </svg>
             </span>
+            
           </span>
         </div>
         <div
-          className="col-xs-9"
+          className="col-xs-10"
         >
           <input
             className="form-control"
@@ -425,12 +419,17 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
       className="row"
     >
       <div
-        className="col-xs-3"
+        className="col-xs-2"
       >
-        Category
+        <span
+          className="domain-no-wrap"
+        >
+          Category
+          
+        </span>
       </div>
       <div
-        className="col-xs-9"
+        className="col-xs-10"
       >
         <div
           className="form-group row"
@@ -464,7 +463,7 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
                     aria-owns=""
                     aria-readonly="true"
                     className="Select-input"
-                    id="selectinput-3"
+                    id="selectinput-0"
                     onBlur={[Function]}
                     onFocus={[Function]}
                     role="combobox"
@@ -497,11 +496,13 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
       className="row"
     >
       <div
-        className="col-xs-3"
+        className="col-xs-2"
       >
-        <span>
-          Sample Set
-           
+        Sample 
+        <span
+          className="domain-no-wrap"
+        >
+          Set
           <span
             className="label-help-target"
             onMouseOut={[Function]}
@@ -525,10 +526,11 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
               />
             </svg>
           </span>
+          
         </span>
       </div>
       <div
-        className="col-xs-9"
+        className="col-xs-10"
       >
         <div
           className="form-group row"
@@ -562,7 +564,7 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
                     aria-owns=""
                     aria-readonly="true"
                     className="Select-input"
-                    id="selectinput-5"
+                    id="selectinput-1"
                     onBlur={[Function]}
                     onFocus={[Function]}
                     role="combobox"

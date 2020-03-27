@@ -1,4 +1,6 @@
 import React from 'react';
+import {fromJS, List, Map, OrderedMap} from "immutable";
+import {Domain} from "@labkey/api";
 import { SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from "./SampleTypePropertiesPanel";
 import {
@@ -17,19 +19,10 @@ import {
 import DomainForm from "../DomainForm";
 import {IParentOption} from "../../entities/models";
 import {IParentAlias} from "./models";
-import {
-    addDomainField,
-    getDomainBottomErrorMessage,
-    getDomainHeaderName,
-    getDomainPanelStatus,
-    getUpdatedVisitedPanelsList
-} from "../actions";
+import { addDomainField, getDomainPanelStatus } from "../actions";
 import {initSampleSetSelects,} from "../../samples/actions";
 import {SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from "../../../constants";
-import {fromJS, List, Map, OrderedMap} from "immutable";
-import {Domain} from "@labkey/api";
-import { Button } from "react-bootstrap";
-import { SEVERITY_LEVEL_ERROR } from "../constants";
+import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from "../BaseDomainDesigner";
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -53,18 +46,21 @@ const DOMAIN_PANEL_INDEX: number = 1;
 export const SAMPLE_SET_IMPORT_PREFIX :string = 'materialInputs/';
 export const DATA_CLASS_IMPORT_PREFIX :string = 'dataInputs/';
 const DATA_CLASS_SCHEMA_KEY:string = 'exp/dataclasses';
-const SAMPLE_ID_RESERVED_ERROR = 'The ' + DEFAULT_SAMPLE_FIELD_CONFIG.name + ' field name is reserved for imported or generated sample ids.';
 
 interface Props {
+    onChange?: (model: SampleTypeModel) => void
     onCancel: () => void
-    onComplete: (response: any) => void
-    beforeFinish?: (formValues: {}) => void
+    onComplete: (response: DomainDesign) => void
+    beforeFinish?: (model: SampleTypeModel) => void
     initModel: DomainDetails
     defaultSampleFieldConfig?: Partial<IDomainField>
     includeDataClasses?: boolean
+    headerText?: string
+    helpTopic?: string
 
     //EntityDetailsForm props
-    noun?: string
+    nounSingular?: string
+    nounPlural?: string
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
 
@@ -73,34 +69,20 @@ interface Props {
     useTheme?: boolean,
     appPropertiesOnly?: boolean,
     successBsStyle?: string
+    saveBtnText?: string
 }
 
-interface OwnState {
+interface State {
     model: SampleTypeModel
     parentOptions: Array<IParentOption>
-    invalidDomainField: string
-    submitting: boolean
     error: React.ReactNode
 }
 
-//TODO Move this somewhere it can be shared
-interface PanelledPageState {
-    visitedPanels?: List<number>,
-    validatePanel?: number,
-    firstState?: boolean,
-    currentPanelIndex?: number
-    activePanelIndex?: number
-}
-
-type State = OwnState & PanelledPageState
-
-export class SampleTypeDesigner extends React.PureComponent<Props, State> {
-    private _dirty = false;
+class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
 
     static defaultProps = {
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
-        noun: SAMPLE_SET_DISPLAY_TEXT,
         includeDataClasses: false,
 
         containerTop: STICKY_HEADER_HEIGHT,
@@ -108,7 +90,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         appPropertiesOnly: true,
     };
 
-    constructor(props: Props) {
+    constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
         initQueryGridState();
@@ -116,22 +98,14 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         const model = SampleTypeModel.create(domainDetails, domainDetails.domainDesign ? domainDetails.domainDesign.name : undefined);
 
         this.state = {
-            submitting: false,
             model,
-            invalidDomainField: undefined,
             parentOptions: undefined,
-            error: undefined,
-
-            visitedPanels: List<number>(),
-            validatePanel: undefined,
-            firstState: true,
-            currentPanelIndex: PROPERTIES_PANEL_INDEX,
-            activePanelIndex: PROPERTIES_PANEL_INDEX,
+            error: undefined
         };
     }
 
     componentDidMount = (): void => {
-        const {includeDataClasses} = this.props;
+        const { includeDataClasses, setSubmitting } = this.props;
         const {model} = this.state;
 
         initSampleSetSelects(!model.isNew(), model.name, includeDataClasses)
@@ -139,7 +113,9 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
                 this.initParentOptions(model, results);
             })
             .catch((error) => {
-                this.onFinishFailure(resolveErrorMessage(error));
+                setSubmitting(false, () => {
+                    this.setState(() => ({error: resolveErrorMessage(error)}));
+                });
             });
     };
 
@@ -187,7 +163,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         {
             let initialAlias = Map<string,string>(model.importAliases);
             initialAlias.forEach((val, key) => {
-                const newId = SampleTypeDesigner.generateAliasId();
+                const newId = generateId("sampleset-parent-import-alias-");
                 parentAliases = parentAliases.set(newId, {
                     id: newId,
                     alias: key,
@@ -204,14 +180,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         }));
     };
 
-
-
-    //Generates a temporary id for add/delete of the import aliases
-    static generateAliasId() {
-        return generateId("sampleset-parent-import-alias-");
-    }
-
-    static getImportAliasesAsMap(model: SampleTypeModel): Map<string,string> {
+    getImportAliasesAsMap(model: SampleTypeModel): Map<string,string> {
         const {name, parentAliases } = model;
         let aliases = {};
 
@@ -231,8 +200,14 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         return Map<string,string>(aliases);
     };
 
-    onFieldChange = (newModel: SampleTypeModel) => {
-        this.setState(()=>({model:newModel}));
+    onFieldChange = (model: SampleTypeModel) => {
+        const { onChange } = this.props;
+
+        this.setState(() => ({model}), () => {
+            if (onChange) {
+                onChange(model);
+            }
+        });
     };
 
     updateAliasValue = (id:string, field: string, newValue: any): IParentAlias => {
@@ -240,7 +215,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         const {parentAliases} = model;
         return {
             ...parentAliases.get(id),
-            isDupe: false,             //Clear error because of change
+            isDupe: false, //Clear error because of change
             [field]: newValue,
         } as IParentAlias;
     };
@@ -300,137 +275,48 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         this.setState(() => ({model: newModel}));
     };
 
-    //TODO REVIEW recommendations on where to put this that is shareable?
-    onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
-        const { visitedPanels, currentPanelIndex } = this.state;
-        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
-
-        if (!collapsed) {
-            this.setState(
-                () => ({
-                    visitedPanels: updatedVisitedPanels,
-                    currentPanelIndex: index,
-                    firstState: false,
-                    validatePanel: currentPanelIndex,
-                }), callback());
-        } else {
-            if (currentPanelIndex === index) {
-                this.setState(
-                    () => ({
-                        visitedPanels: updatedVisitedPanels,
-                        currentPanelIndex: undefined,
-                        firstState: false,
-                        validatePanel: currentPanelIndex,
-                    }), callback());
-            } else {
-                callback();
-            }
-        }
-    };
-
-    renderDetailsPanel = () => {
-        const {noun, nameExpressionInfoUrl, nameExpressionPlaceholder, useTheme } = this.props;
-        const {model, parentOptions, validatePanel, currentPanelIndex, visitedPanels, firstState} = this.state;
-
-        return (
-            <>
-                <SampleTypePropertiesPanel
-                    model={model}
-                    parentOptions={parentOptions}
-                    onParentAliasChange={this.parentAliasChange}
-                    onAddParentAlias={this.addParentAlias}
-                    onRemoveParentAlias={this.removeParentAlias}
-                    noun={noun}
-                    nameExpressionInfoUrl={nameExpressionInfoUrl}
-                    nameExpressionPlaceholder={nameExpressionPlaceholder}
-                    updateModel={this.onFieldChange}
-                    updateDupeParentAliases={this.updateDupes}
-                    useTheme={useTheme}
-
-                    collapsible={true}
-                    onToggle={(collapsed, callback) => this.onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
-                    panelStatus={model.isNew() ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
-                    controlledCollapse={true}
-                    initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
-                    validate={validatePanel === PROPERTIES_PANEL_INDEX}
-                />
-            </>
-        )
-    };
-
-    domainChangeHandler = (newDomain: DomainDesign): void => {
-        const {defaultSampleFieldConfig} = this.props;
+    domainChangeHandler = (domain: DomainDesign, dirty: boolean) => {
+        const { onChange } = this.props;
         const {model} = this.state;
-        let invalidDomainField;
-        let error;
-
-        if (newDomain && newDomain.fields) {
-            newDomain.fields.forEach(field => {
-                if (field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase()) {
-                    invalidDomainField = field.name;
-                    error = SAMPLE_ID_RESERVED_ERROR;
-                }
-            });
-        }
-
-        //If error field cleared and error message matches then clear it.
-        if (!invalidDomainField && this.state.error === SAMPLE_ID_RESERVED_ERROR) //Splice || regex better?
-            error = undefined;
-
-        this._dirty = true;
 
         this.setState(() => ({
-            model: model.merge({domain:newDomain}) as SampleTypeModel,
-            invalidDomainField,
-            error,
-        }));
-    };
-
-    renderDomainPanel = () => {
-        const {noun, containerTop, useTheme, appPropertiesOnly, successBsStyle} = this.props;
-        const {model, currentPanelIndex, visitedPanels, firstState, validatePanel} = this.state;
-        const {domain} = model;
-
-        return (
-            <>
-                {domain &&
-                <DomainForm
-                    domain={domain}
-                    onChange={this.domainChangeHandler}
-                    showHeader={true}
-                    helpNoun={noun.toLowerCase()}
-                    useTheme={useTheme}
-                    appPropertiesOnly={appPropertiesOnly}
-                    containerTop={containerTop}
-                    successBsStyle={successBsStyle}
-
-                    collapsible={true}
-                    onToggle={(collapsed, callback) => this.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback)}
-                    panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
-                    controlledCollapse={true}
-                    initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
-                    validate={validatePanel === DOMAIN_PANEL_INDEX}
-                />
-                }
-            </>
-        );
+            model: model.merge({domain}) as SampleTypeModel
+        }), () => {
+            // Issue 39918: use the dirty property that DomainForm onChange passes
+            if (onChange && dirty) {
+                onChange(model);
+            }
+        });
     };
 
     onFinish = (): void => {
-        const { beforeFinish } = this.props;
-        const { model, invalidDomainField } = this.state;
+        const { defaultSampleFieldConfig, setSubmitting } = this.props;
+        const { model } = this.state;
+        const isValid = SampleTypeModel.isValid(model, defaultSampleFieldConfig);
+
+        this.props.onFinish(isValid, this.saveDomain);
+
+        if (!isValid) {
+            let exception;
+
+            if (model.hasInvalidSampleField(defaultSampleFieldConfig)) {
+                exception = 'The ' + defaultSampleFieldConfig.name + ' field name is reserved for imported or generated sample ids.'
+            }
+            else if (model.getDuplicateAlias(true).size > 0) {
+                exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
+            }
+
+            const updatedModel = model.set('exception', exception) as SampleTypeModel;
+            setSubmitting(false, () => {
+                this.setState(() => ({model: updatedModel}));
+            });
+        }
+    };
+
+    saveDomain = () => {
+        const { beforeFinish, setSubmitting } = this.props;
+        const { model } = this.state;
         const {name, domain, description, nameExpression } = model;
-
-        if (invalidDomainField) {
-            return;
-        }
-
-        if (model.getDuplicateAlias(true).size > 0) {
-            this.setState(() => ({error: 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ')}));
-            return;
-        }
-
-        this.setSubmitting(true);
 
         if (beforeFinish) {
             beforeFinish(model);
@@ -444,7 +330,7 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         const details = {
             name,
             nameExpression,
-            importAliases: SampleTypeDesigner.getImportAliasesAsMap(model).toJS(),
+            importAliases: this.getImportAliasesAsMap(model).toJS(),
         };
 
         if (model.isNew())
@@ -458,77 +344,94 @@ export class SampleTypeDesigner extends React.PureComponent<Props, State> {
         }
 
         saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name)
-            .then((savedDomain) => {
-                this.onFinishSuccess(savedDomain);
+            .then((response: DomainDesign) => {
+                setSubmitting(false, () => {
+                    this.props.onComplete(response);
+                });
             })
             .catch((response) => {
-                const updatedModel = response.exception
-                    ? model.set('exception', response.exception) as SampleTypeModel
+                const exception = resolveErrorMessage(response);
+                const updatedModel = exception
+                    ? model.set('exception', exception) as SampleTypeModel
                     : model.merge({
                         // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
                         domain: domain.merge({domainException: response.domainException}) as DomainDesign,
                         exception: undefined
                     }) as SampleTypeModel;
-                this.setState(() => ({model: updatedModel, submitting: false}));
-            });
 
+                setSubmitting(false, () => {
+                    this.setState(() => ({model: updatedModel}));
+                });
+            });
     };
 
-    onFinishSuccess(response: any) {
-        this.setSubmitting(false);
-        this.props.onComplete(response);
-    }
-
-    onFinishFailure(error: React.ReactNode): void {
-        this.setState(() => ({
-            error,
-            submitting: false
-        }));
-    }
-
-    setSubmitting(submitting: boolean) {
-        this.setState(() => ({
-            error: undefined,
-            submitting
-        }));
-    }
-
     render() {
-        const { onCancel, successBsStyle } = this.props;
-        const { submitting, error, model } = this.state;
-
-        let errorDomains = List<string>();
-        if (model.domain.hasException() && model.domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
-            errorDomains = errorDomains.push(getDomainHeaderName(model.domain.name, undefined, model.name));
-        }
-
-        // TODO refactor this designer component to use the visitedPanels, like ListDesignerPanels
-        const bottomErrorMsg = getDomainBottomErrorMessage(model.exception, errorDomains, model.hasValidProperties(), List<number>());
+        const {
+            containerTop, useTheme, appPropertiesOnly, successBsStyle, currentPanelIndex, visitedPanels, firstState,
+            validatePanel, onTogglePanel, submitting, onCancel, nameExpressionPlaceholder, nameExpressionInfoUrl,
+            nounSingular, nounPlural, headerText, saveBtnText, helpTopic
+        } = this.props;
+        const { error, model, parentOptions } = this.state;
 
         return (
-            <>
-                {this.renderDetailsPanel()}
-                {this.renderDomainPanel()}
-                {(error || bottomErrorMsg) && (
+            <BaseDomainDesigner
+                name={model.name}
+                exception={model.exception}
+                domains={List.of(model.domain)}
+                hasValidProperties={model.hasValidProperties()}
+                visitedPanels={visitedPanels}
+                submitting={submitting}
+                onCancel={onCancel}
+                onFinish={this.onFinish}
+                saveBtnText={saveBtnText}
+                successBsStyle={successBsStyle}
+            >
+                <SampleTypePropertiesPanel
+                    nounSingular={nounSingular}
+                    nounPlural={nounPlural}
+                    nameExpressionInfoUrl={nameExpressionInfoUrl}
+                    nameExpressionPlaceholder={nameExpressionPlaceholder}
+                    headerText={headerText}
+                    helpTopic={helpTopic}
+                    model={model}
+                    parentOptions={parentOptions}
+                    onParentAliasChange={this.parentAliasChange}
+                    onAddParentAlias={this.addParentAlias}
+                    onRemoveParentAlias={this.removeParentAlias}
+                    updateDupeParentAliases={this.updateDupes}
+                    updateModel={this.onFieldChange}
+                    controlledCollapse={true}
+                    initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
+                    panelStatus={model.isNew() ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
+                    validate={validatePanel === PROPERTIES_PANEL_INDEX}
+                    onToggle={(collapsed, callback) => onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
+                    useTheme={useTheme}
+                />
+                <DomainForm
+                    key={model.domain.domainId || 0}
+                    domainIndex={0}
+                    domain={model.domain}
+                    headerTitle={'Fields'}
+                    helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
+                    controlledCollapse={true}
+                    initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
+                    validate={validatePanel === DOMAIN_PANEL_INDEX}
+                    panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
+                    containerTop={containerTop}
+                    onChange={this.domainChangeHandler}
+                    onToggle={(collapsed, callback) => onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback)}
+                    appPropertiesOnly={appPropertiesOnly}
+                    useTheme={useTheme}
+                    successBsStyle={successBsStyle}
+                />
+                {error &&
                     <div className="domain-form-panel">
                         {error && <Alert bsStyle="danger">{error}</Alert>}
-                        {bottomErrorMsg && <Alert bsStyle="danger">{bottomErrorMsg}</Alert>}
                     </div>
-                )}
-                <div className='domain-form-panel'>
-                    <Button onClick={onCancel}>
-                        Cancel
-                    </Button>
-                    <Button
-                        className="pull-right"
-                        bsStyle={successBsStyle || 'success'}
-                        disabled={submitting}
-                        onClick={this.onFinish}
-                    >
-                        Save
-                    </Button>
-                </div>
-            </>
+                }
+            </BaseDomainDesigner>
         );
     }
 }
+
+export const SampleTypeDesigner = withBaseDomainDesigner<Props>(SampleTypeDesignerImpl);

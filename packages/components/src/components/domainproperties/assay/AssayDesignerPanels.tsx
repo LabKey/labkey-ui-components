@@ -1,19 +1,12 @@
 import React from 'react';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 import { DomainDesign, HeaderRenderer } from '../models';
 import { AssayProtocolModel } from '../assay/models';
 import { saveAssayDesign } from '../assay/actions';
-import {
-    getDomainBottomErrorMessage,
-    getDomainHeaderName,
-    getDomainPanelStatus,
-    getUpdatedVisitedPanelsList
-} from '../actions';
+import { getDomainPanelStatus } from '../actions';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
 import DomainForm from '../DomainForm';
-import { Button } from 'react-bootstrap';
-import { SEVERITY_LEVEL_ERROR } from '../constants';
-import { Alert } from '../../base/Alert';
+import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from "../BaseDomainDesigner";
 
 interface Props {
     onChange?: (model: AssayProtocolModel) => void
@@ -28,32 +21,23 @@ interface Props {
     appIsValidMsg?: (model: AssayProtocolModel) => string
     useTheme?: boolean
     successBsStyle?: string
+    saveBtnText?: string
 }
 
 interface State {
-    submitting: boolean
-    currentPanelIndex: number
     protocolModel: AssayProtocolModel
-    visitedPanels: List<number>
-    validatePanel: number
-    firstState: boolean
 }
 
-export class AssayDesignerPanels extends React.PureComponent<Props, State> {
+class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     panelCount = 1;// start at 1 for the AssayPropertiesPanel, will updated count after domains are defined in constructor
 
-    constructor(props: Props) {
+    constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
         this.panelCount = this.panelCount + props.initModel.domains.size;
 
         this.state = {
-            submitting: false,
-            currentPanelIndex: 0,
-            protocolModel: props.initModel,
-            visitedPanels: List<number>(),
-            validatePanel: undefined,
-            firstState: true
+            protocolModel: props.initModel
         }
     }
 
@@ -81,67 +65,44 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         return this.props.hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch') && domain.fields.size === 0;
     }
 
-    onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
-        const { visitedPanels, currentPanelIndex } = this.state;
-        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
-
-        if (!collapsed) {
-            this.setState(() => ({
-                visitedPanels: updatedVisitedPanels,
-                currentPanelIndex: index,
-                firstState: false,
-                validatePanel: currentPanelIndex
-            }), callback());
-        }
-        else {
-            if (currentPanelIndex === index) {
-                this.setState(() => ({
-                    visitedPanels: updatedVisitedPanels,
-                    currentPanelIndex: undefined,
-                    firstState: false,
-                    validatePanel: currentPanelIndex
-                }), callback());
-            }
-            else {
-                callback();
-            }
-        }
-    };
-
     onFinish = () => {
-        const { protocolModel, visitedPanels, currentPanelIndex } = this.state;
-        const { beforeFinish } = this.props;
-        const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, currentPanelIndex);
+        const { setSubmitting } = this.props;
+        const { protocolModel } = this.state;
+        const appIsValidMsg = this.getAppIsValidMsg();
+        const isValid = AssayProtocolModel.isValid(protocolModel) && appIsValidMsg === undefined;
 
-        // This first setState forces the current expanded panel to validate its fields and display and errors
-        // the callback setState then sets that to undefined so it doesn't keep validating every render
-        this.setState((state) => ({validatePanel: state.currentPanelIndex, visitedPanels: updatedVisitedPanels}), () => {
-            this.setState((state) => ({validatePanel: undefined}), () => {
-                if (this.isValid()) {
-                    this.setState(() => ({submitting: true}));
-                    if (beforeFinish) {
-                        beforeFinish(protocolModel);
-                    }
+        this.props.onFinish(isValid, this.saveDomain);
 
-                    saveAssayDesign(protocolModel)
-                        .then((response) => {
-                            this.setState(() => ({protocolModel, submitting: false}));
-                            this.props.onComplete(response);
-                        })
-                        .catch((protocolModel) => {
-                            this.setState(() => ({protocolModel, submitting: false}));
-                        });
-                }
-                else if (this.getAppIsValidMsg() !== undefined) {
-                    this.setState(() => ({protocolModel: protocolModel.set('exception', this.getAppIsValidMsg()) as AssayProtocolModel}));
-                }
+        if (!isValid) {
+            const exception = appIsValidMsg !== undefined ? appIsValidMsg : undefined;
+            const updatedModel = protocolModel.set('exception', exception) as AssayProtocolModel;
+            setSubmitting(false, () => {
+                this.setState(() => ({protocolModel: updatedModel}));
             });
-        });
+        }
     };
 
-    isValid(): boolean {
-        return AssayProtocolModel.isValid(this.state.protocolModel) && this.getAppIsValidMsg() === undefined;
-    }
+    saveDomain = () => {
+        const { beforeFinish, setSubmitting } = this.props;
+        const { protocolModel } = this.state;
+
+        if (beforeFinish) {
+            beforeFinish(protocolModel);
+        }
+
+        saveAssayDesign(protocolModel)
+            .then((response) => {
+                this.setState(() => ({protocolModel}));
+                setSubmitting(false, () => {
+                    this.props.onComplete(response);
+                });
+            })
+            .catch((protocolModel) => {
+                setSubmitting(false, () => {
+                    this.setState(() => ({protocolModel}));
+                });
+            });
+    };
 
     getAppIsValidMsg(): string {
         const { appIsValidMsg } = this.props;
@@ -172,22 +133,25 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { onCancel, appPropertiesOnly, containerTop, useTheme, successBsStyle } = this.props;
-        const { protocolModel, currentPanelIndex, validatePanel, visitedPanels, firstState } = this.state;
-
-        // get a list of the domain names that have errors
-        const errorDomains = protocolModel.domains.filter((domain) => {
-                return domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR
-            })
-            .map((domain) => {
-                return getDomainHeaderName(domain.name, undefined, protocolModel.name)
-            })
-            .toList();
-
-        const bottomErrorMsg = getDomainBottomErrorMessage(protocolModel.exception, errorDomains, protocolModel.hasValidProperties(), visitedPanels);
+        const {
+            appPropertiesOnly, containerTop, useTheme, successBsStyle, currentPanelIndex, validatePanel,
+            visitedPanels, firstState, onTogglePanel, submitting, onCancel, saveBtnText
+        } = this.props;
+        const { protocolModel } = this.state;
 
         return (
-            <>
+            <BaseDomainDesigner
+                name={protocolModel.name}
+                exception={protocolModel.exception}
+                domains={protocolModel.domains}
+                hasValidProperties={protocolModel.hasValidProperties()}
+                visitedPanels={visitedPanels}
+                submitting={submitting}
+                onCancel={onCancel}
+                onFinish={this.onFinish}
+                saveBtnText={saveBtnText}
+                successBsStyle={successBsStyle}
+            >
                 <AssayPropertiesPanel
                     model={protocolModel}
                     onChange={this.onAssayPropertiesChange}
@@ -196,9 +160,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     panelStatus={protocolModel.isNew() ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState) : "COMPLETE"}
                     validate={validatePanel === 0}
                     appPropertiesOnly={appPropertiesOnly}
-                    onToggle={(collapsed, callback) => {
-                        this.onTogglePanel(0, collapsed, callback);
-                    }}
+                    onToggle={(collapsed, callback) => {onTogglePanel(0, collapsed, callback);}}
                     useTheme={useTheme}
                 />
                 {protocolModel.domains.map((domain, i) => {
@@ -229,7 +191,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                                 this.onDomainChange(i, updatedDomain, dirty);
                             }}
                             onToggle={(collapsed, callback) => {
-                                this.onTogglePanel((i + 1), collapsed, callback);
+                                onTogglePanel((i + 1), collapsed, callback);
                             }}
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
@@ -242,16 +204,9 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                         </DomainForm>
                     )
                 })}
-                {bottomErrorMsg &&
-                    <div className={'domain-form-panel'}>
-                        <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
-                    </div>
-                }
-                <div className={'domain-form-panel domain-designer-buttons'}>
-                    <Button onClick={onCancel}>Cancel</Button>
-                    <Button className='pull-right' bsStyle={successBsStyle || 'success'} disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
-                </div>
-            </>
+            </BaseDomainDesigner>
         )
     }
 }
+
+export const AssayDesignerPanels = withBaseDomainDesigner<Props>(AssayDesignerPanelsImpl);

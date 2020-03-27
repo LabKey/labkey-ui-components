@@ -135,6 +135,7 @@ export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
 export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 
+export const UNLIMITED_TEXT_LENGTH = 2147483647; //Integer.MAX_VALUE
 export const MAX_TEXT_LENGTH = 4000;
 
 export const PHILEVEL_NOT_PHI = "NotPHI";
@@ -195,4 +196,4 @@ export const FIELD_NAME_CHAR_WARNING_INFO = 'SQL queries, R scripts, and other c
     + 'Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, '
     + 'SPSS, and MATLAB.';
 
-export const DEFAULT_NAMING_PATTERN = 'S-${genId}';
+export const PROPERTIES_PANEL_ERROR_MSG = 'Contains errors or is missing required values.';

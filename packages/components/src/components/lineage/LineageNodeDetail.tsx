@@ -18,7 +18,7 @@ import { createLineageNodeCollections, LineageNodeCollectionByType } from './vis
 import { LineageNodeList } from './LineageNodeList';
 import { LineageSummary } from './LineageSummary';
 import { LineageNode } from './models';
-import { LineageFilter, LineageOptions } from './types';
+import { LineageOptions } from './types';
 
 export interface SummaryOptions {
     showSummary?: boolean
@@ -35,11 +35,7 @@ interface SelectedNodeProps {
 export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & SummaryOptions> {
 
     static defaultProps = {
-        showSummary: true,
-        // TODO: Unfortunately, jest is unable to compile this at the moment. Need to investigate.
-        // summaryOptions: {
-        //     filters: [new LineageFilter('type', ['Sample', 'Data'])]
-        // }
+        showSummary: true
     };
 
     componentDidMount() {

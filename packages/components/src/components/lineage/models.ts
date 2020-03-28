@@ -99,15 +99,28 @@ export class LineageLink extends Record ({
     }
 }
 
+export interface LineagePKFilter {
+    fieldKey: string
+    value: any
+}
+
 export class LineageNode extends Record ({
+    // absolutePath: undefined,
     children: undefined,
     cpasType: undefined,
+    // created: undefined,
+    // createdBy: undefined,
+    // dataFileURL: undefined,
     distance: undefined,
     id: undefined,
     listURL: undefined,
     lsid: undefined,
+    // modified?: undefined,
+    // modifiedBy?: undefined,
     name: undefined,
     parents: undefined,
+    // pipelinePath: undefined,
+    pkFilters: undefined,
     queryName: undefined,
     schemaName: undefined,
     type: undefined,
@@ -117,14 +130,22 @@ export class LineageNode extends Record ({
     links: {},
     meta: undefined,
 } ) {
+    // absolutePath?: string;
     children?: List<LineageLink>;
     cpasType?: string;
+    // created?: string;
+    // createdBy?: string;
+    // dataFileURL?: string;
     distance?: number;
     id?: number;
     listURL?: string;
     lsid?: string;
+    // modified?: string;
+    // modifiedBy?: string;
     name?: string;
     parents?: List<LineageLink>;
+    // pipelinePath?: string;
+    pkFilters?: List<LineagePKFilter>;
     queryName?: string;
     schemaName?: string;
     type?: string;
@@ -146,6 +167,7 @@ export class LineageNode extends Record ({
             lsid,
             name:  values.name,
             parents: LineageLink.createList(values.parents),
+            pkFilters: List(values.pkFilters),
             queryName: values.queryName,
             schemaName: values.schemaName,
             type: values.type,

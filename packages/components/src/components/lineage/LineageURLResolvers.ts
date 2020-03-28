@@ -37,9 +37,8 @@ export class AppLineageURLResolver implements LineageURLResolver {
         if (nodes && nodes.length) {
             // arbitrarily choose the first node as the baseURL
             const baseURL = nodes[0].listURL;
-            const ids = nodes.map(n => n.rowId);
 
-            const filter = Filter.create('RowId', ids, Filter.Types.IN);
+            const filter = Filter.create('RowId', nodes.map(n => n.id), Filter.Types.IN);
             const suffix = '?' + filter.getURLParameterName() + '=' + filter.getURLParameterValue();
 
             listURL = baseURL + suffix;

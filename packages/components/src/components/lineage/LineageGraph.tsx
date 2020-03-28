@@ -207,12 +207,12 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
     }
 
     getNodeGridDataModel(node: LineageNode): QueryGridModel|undefined {
-        if (node.schemaName && node.queryName && node.rowId) {
+        if (node.schemaName && node.queryName && node.id) {
             return getStateQueryGridModel('lineage-selected', SchemaQuery.create(node.schemaName, node.queryName), {
                 allowSelection: false,
                 omittedColumns,
                 requiredColumns
-            }, node.rowId);
+            }, node.id);
         }
     }
 
@@ -222,10 +222,10 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         const lsid = row.getIn(['LSID', 'value']);
 
         return LineageNode.create(lsid, {
+            id: row.getIn(['RowId', 'value']),
             name: row.getIn(['Name', 'value']),
             schemaName: initialModel.schema,
             queryName: initialModel.query,
-            rowId: row.getIn(['RowId', 'value']),
             url: row.getIn(['RowId', 'url']),
             meta: new LineageNodeMetadata({
                 displayType: initialModel.queryInfo.title,

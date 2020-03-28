@@ -103,12 +103,12 @@ export class LineageNode extends Record ({
     children: undefined,
     cpasType: undefined,
     distance: undefined,
+    id: undefined,
     listURL: undefined,
     lsid: undefined,
     name: undefined,
     parents: undefined,
     queryName: undefined,
-    rowId: undefined,
     schemaName: undefined,
     type: undefined,
     url: undefined,
@@ -120,12 +120,12 @@ export class LineageNode extends Record ({
     children?: List<LineageLink>;
     cpasType?: string;
     distance?: number;
+    id?: number;
     listURL?: string;
     lsid?: string;
     name?: string;
     parents?: List<LineageLink>;
     queryName?: string;
-    rowId?: number;
     schemaName?: string;
     type?: string;
     url?: string;
@@ -142,12 +142,11 @@ export class LineageNode extends Record ({
         return values ? new LineageNode({
             children:  LineageLink.createList(values.children),
             cpasType: values.cpasType,
+            id: values.id,
             lsid,
             name:  values.name,
             parents: LineageLink.createList(values.parents),
             queryName: values.queryName,
-            // "rowId" -> "id". See https://github.com/LabKey/platform/pull/1000
-            rowId:values.id,
             schemaName: values.schemaName,
             type: values.type,
             url: values.url,

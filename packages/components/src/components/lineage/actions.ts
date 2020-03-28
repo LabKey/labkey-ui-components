@@ -83,7 +83,7 @@ function fetchNodeMetadata(lineage: LineageResult): Promise<ISelectRowsResult>[]
                 // See LineageNodeMetadata.create for why this is currently done
                 columns: LINEAGE_METADATA_COLUMNS.join(','),
                 filterArray: [
-                    Filter.create('rowId', nodes.map(n => n.rowId).toArray(), Filter.Types.IN)
+                    Filter.create('RowId', nodes.map(n => n.id).toArray(), Filter.Types.IN)
                 ]
             });
         })
@@ -175,24 +175,21 @@ export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promis
 function computeSampleCounts(lineage: Lineage, sampleSets: any) {
 
     const { key, models } = sampleSets;
-    const nodes = lineage.result.nodes.toJS();
 
     let rows = [];
-    let sampleRowIds = {};
+    let nodeIds = {};
 
-    for (let lsid in nodes) {
-        if (nodes.hasOwnProperty(lsid) && nodes[lsid].cpasType) {
-            const cpas = nodes[lsid].cpasType,
-                rowId = nodes[lsid].rowId;
-            // Add the rowId to an array to use as a URL filter
-            if (sampleRowIds[cpas]) {
-                sampleRowIds[cpas].push(rowId);
+    lineage.result.nodes.forEach(node => {
+        if (node.lsid && node.cpasType) {
+            const key = node.cpasType;
+
+            if (!nodeIds[key]) {
+                nodeIds[key] = [];
             }
-            else {
-                sampleRowIds[cpas] = [rowId];
-            }
+
+            nodeIds[key].push(node.id);
         }
-    }
+    });
 
     for (let row in models[key]) {
         if (models[key].hasOwnProperty(row)) {
@@ -201,7 +198,7 @@ function computeSampleCounts(lineage: Lineage, sampleSets: any) {
             let count = 0,
                 filteredURL;
             let name = _row['Name'].value,
-                ids = sampleRowIds[_row['LSID'].value];
+                ids = nodeIds[_row['LSID'].value];
 
             // if there were related samples, use the array of RowIds as a count and to build an AppURL and filter
             if (ids) {

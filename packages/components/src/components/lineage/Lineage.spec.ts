@@ -395,12 +395,12 @@ describe('Lineage Graph', () => {
                 const resultArr = ESLineageResult.filterIn('type', ['Data']);
 
                 expect(result.nodes.size).toBe(1);
-                expect(result.nodes.first().get('type')).toBe('Data');
+                expect(result.nodes.first().type).toBe('Data');
                 expect(resultArr.nodes.size).toBe(1);
-                expect(resultArr.nodes.first().get('type')).toBe('Data');
+                expect(resultArr.nodes.first().type).toBe('Data');
 
                 // should be the same node
-                expect(resultArr.nodes.first().get('rowId')).toBe(result.nodes.first().get('rowId'));
+                expect(resultArr.nodes.first().id).toBe(result.nodes.first().id);
             });
 
             test('Should maintain heritage', () => {
@@ -413,14 +413,14 @@ describe('Lineage Graph', () => {
                 expect(result.nodes.has(ESLineageResult.seed)).toBe(true);
 
                 // seed should continue to not have parents
-                expect(result.nodes.get(ESLineageResult.seed).get('parents').size).toBe(0);
+                expect(result.nodes.get(ESLineageResult.seed).parents.size).toBe(0);
 
                 // seed should maintain "Run" children
-                expect(result.nodes.get(ESLineageResult.seed).get('children').size).toBe(2);
+                expect(result.nodes.get(ESLineageResult.seed).children.size).toBe(2);
 
                 let filtered: boolean = true;
                 result.nodes.forEach((node) => {
-                    if (value.indexOf(node.get('type')) > -1) {
+                    if (value.indexOf(node.type) > -1) {
                         return;
                     }
                     filtered = false;

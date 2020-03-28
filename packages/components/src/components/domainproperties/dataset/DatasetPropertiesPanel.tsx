@@ -42,6 +42,7 @@ interface Props {
     validate?: boolean;
     useTheme?: boolean;
     successBsStyle?: string;
+    newDataset: boolean;
 }
 
 interface State {
@@ -50,7 +51,7 @@ interface State {
 
 export class DatasetPropertiesPanel extends React.PureComponent<Props> {
     render() {
-        const { collapsible, controlledCollapse, initCollapsed, onToggle } = this.props;
+        const { collapsible, controlledCollapse, initCollapsed, onToggle, newDataset } = this.props;
 
         return (
             <DomainPropertiesPanelProvider
@@ -149,7 +150,7 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle } = this.props;
+        const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle, newDataset } = this.props;
         const { isValid } = this.state;
         const { collapsed } = this.context;
 
@@ -181,6 +182,7 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
                                 <AdvancedSettings
                                     title={"Advanced Settings"}
                                     model={model}
+                                    newDataset={newDataset}
                                 />
                             </Col>
                         </Row>

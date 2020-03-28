@@ -33,3 +33,13 @@ export const fetchCohorts = async () => {
             {label: 'Cohort3', value: 3}]
     };
 };
+
+
+export const fetchVisitDateColumns = async () => {
+    // TODO: Keeping this action until next story in which visitDateColumns will be pulled from state change (for date fields) in the Domain Form.
+    return {
+        'visitDateColumns': [
+            {label: 'Date', value: 'date'},
+            {label: 'Arrival Date', value: 'arrivalDate'}]
+    };
+};

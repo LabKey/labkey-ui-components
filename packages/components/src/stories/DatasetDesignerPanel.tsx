@@ -32,6 +32,7 @@ class NewDatasetDesigner extends React.PureComponent<any,any> {
           <DatasetDesignerPanel
               initModel={DatasetModel.create(this.props.model, undefined)}
               useTheme={this.props.useTheme}
+              newDataset={true}
           />
         );
     }
@@ -47,6 +48,7 @@ class EditDatasetDesigner extends React.PureComponent<any,any> {
             <DatasetDesignerPanel
                 initModel={DatasetModel.create(null, this.props.model)}
                 useTheme={this.props.useTheme}
+                newDataset={false}
             />
         );
     }

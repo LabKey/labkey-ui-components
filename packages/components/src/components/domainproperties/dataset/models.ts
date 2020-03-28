@@ -58,7 +58,7 @@ export class DatasetModel extends Record({
     dataSharing: undefined
 }) {
     domain: DomainDesign;
-    datasetId: number;
+    datasetId?: number;
     name: string;
     typeURI?: string;
     category?: string;

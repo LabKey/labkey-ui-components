@@ -1,22 +1,98 @@
 import React from 'react';
-import classNames from "classnames";
-import {Button, Col, FormControl, FormGroup, Modal, Radio, Row} from 'react-bootstrap';
-import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../..';
-import {CheckBox, SelectPropertyInput} from './DatasetPropertiesPanelFormElements';
-import {AdvancedSettingsForm, DatasetModel} from "./models";
-import {
-    CUSTOM_TEMPLATE_TIP,
-    DATA_INDEXING_TIP,
-    DISCUSSION_LINKS_TIP,
-    DOCUMENT_TITLE_TIP,
-    SEARCH_INDEXING_TIP
-} from "./constants";
-import {BasicPropertiesTitle, TextInputWithLabel} from "../PropertiesPanelFormElements";
-import {CheckBoxRow} from "../list/ListPropertiesPanelFormElements";
-import {fetchCohorts} from "./actions";
+import { DatasetModel } from "./models";
+import { BasicPropertiesTitle } from "../PropertiesPanelFormElements";
+import { CheckBoxRow } from "../list/ListPropertiesPanelFormElements";
+import { fetchCohorts, fetchVisitDateColumns } from "./actions";
 import "../../../theme/dataset.scss";
+
+interface DatasetSettingsSelectProps {
+    name?: string;
+    label: string;
+    helpTip: JSX.Element;
+    selectedValue?: any;
+    selectOptions: any;
+    onSelectChange: any;
+}
+
+class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSelectProps> {
+    render() {
+        const { name, label, helpTip, selectedValue, selectOptions, onSelectChange } = this.props;
+
+        return(
+            <Row className={'margin-top'}>
+
+                <Col xs={5} >
+                    {label}
+                    <LabelHelpTip
+                        title={label}
+                        body={() => {
+                            return <> {helpTip} </>;
+                        }}
+                    />
+                </Col>
+
+                <Col xs={7} >
+                    <SelectInput
+                        onChange={onSelectChange}
+                        value={selectedValue}
+                        options={selectOptions}
+                        inputClass=""
+                        containerClass=""
+                        labelClass=""
+                        formsy={false}
+                        multiple={false}
+                        required={false}
+                        name={name}
+                    />
+                </Col>
+            </Row>
+        );
+    }
+}
+
+interface DatasetSettingsInputProps {
+    name?: string;
+    label: string;
+    helpTip: JSX.Element;
+    value?: any;
+    placeholder?: string;
+    onValueChange: any;
+    disabled: boolean;
+}
+
+class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInputProps> {
+    render() {
+        const { name, label, helpTip, value, placeholder, onValueChange, disabled } = this.props;
+
+        return (
+            <Row className={'margin-top'}>
+                <Col xs={4} >
+                    {label}
+                    <LabelHelpTip
+                        title={label}
+                        body={() => {
+                            return <> {helpTip} </>;
+                        }}
+                    />
+                </Col>
+                <Col xs={1}/>
+
+                <Col xs={7} >
+                    <FormControl
+                        id={name}
+                        type="text"
+                        placeholder={placeholder}
+                        value={value}
+                        onChange={onValueChange}
+                        disabled={disabled}
+                    />
+                </Col>
+            </Row>
+        );
+    }
+}
 
 interface AdvancedSettingsModalBottomProps {
     toggleModal: (isModalOpen: boolean) => void;
@@ -47,14 +123,20 @@ class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsMo
 interface AdvancedSettingsProps {
     model: DatasetModel;
     title: string;
+    newDataset: boolean;
 }
 
 interface AdvancedSettingsState {
     modalOpen?: boolean;
-    cohortValue?: number;
+    datasetId?: number;
+    cohort?: number;
+    tag?: string;
     availableCohorts?: any;
     showInOverview?: boolean;
-    visitDateColumn?: number;
+    visitDateColumn?: string;
+    visitDateColumns?: any;
+    dataspace?: string;
+    dataspaceOptions?: any
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -64,7 +146,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         this.state = {
             modalOpen: false,
-            cohortValue: this.props.model.cohortId,
+            // cohort: this.props.model.cohortId,
             ...initialState,
         } as AdvancedSettingsState;
     }
@@ -76,8 +158,16 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         fetchCohorts()
             .then((data) => {
                 this.setState(() => ({
-                    cohortValue: model.cohortId,
+                    cohort: model.cohortId,
                     availableCohorts: data.cohorts
+                }));
+            });
+
+        fetchVisitDateColumns()
+            .then((data) => {
+                this.setState(() => ({
+                    visitDateColumn: model.visitDatePropertyName,
+                    visitDateColumns: data.visitDateColumns
                 }));
             })
 
@@ -87,6 +177,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const model = this.props.model;
 
         return {
+            datasetId: model.datasetId,
+            tag: model.tag,
             showInOverview: model.showInOverview
         };
     };
@@ -98,12 +190,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         if (isModalOpen) {
             //this.setState(this.setInitialState());
         }
-    };
-
-    onRadioChange = e => {
-        const name = e.currentTarget.name;
-        const value = e.target.value;
-        this.setState({ [name]: parseInt(value) });
     };
 
     onCheckboxChange = (name, checked) => {
@@ -129,26 +215,43 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     render() {
         const {
             modalOpen,
+            datasetId,
             availableCohorts,
-            cohortValue,
-            showInOverview
+            cohort,
+            tag,
+            showInOverview,
+            visitDateColumn,
+            visitDateColumns,
+            dataspace,
+            dataspaceOptions
         } = this.state;
 
-        const { title, model } = this.props;
+        const { title, model, newDataset } = this.props;
+
+        const datasetIdTip =
+            <>
+                Required. The unique, numerical identifier for your dataset. It is defined during dataset creation and cannot be modified.
+            </> as JSX.Element;
+
+        const visitDateTip =
+            <>
+                If the official 'Visit Date' for a visit can come from this dataset, choose the date column to represent it.
+                Note that since datasets can include data from many visits, each visit must also indicate the official 'VisitDate' dataset.
+            </> as JSX.Element;
+
+        const cohortTip =
+            <>
+                Datasets may be cohort specific, or associated with all cohorts.
+            </> as JSX.Element;
 
         const tagTip =
             <>
                 Adding a tag provides an additional, flexible way to categorize this dataset.
             </> as JSX.Element;
 
-        let displayTitleTip =
+        const dataspaceTip =
             <>
-                Choose a field to identify this list when other lists or datasets have lookups into this list.
-                When “Auto” is enabled, LabKey will select the title field for you by using:
-                <ul>
-                    <li>The first non-lookup string column</li>
-                    <li>The primary key, if there are no string fields</li>
-                </ul>
+                Coming soon...
             </> as JSX.Element;
 
         return (
@@ -166,7 +269,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                         <BasicPropertiesTitle title="Miscellaneous Options" />
 
-                        <div className={'margin-top'}>
+                        <div className='margin-top'>
                             <CheckBoxRow
                                 text="Show dataset in overview"
                                 name="showInOverview"
@@ -175,141 +278,55 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             />
                         </div>
 
-                        <Row className={'margin-top'}>
-                            <Col xs={4} >
-                                Dataset ID
-                                <LabelHelpTip
-                                    title={title}
-                                    body={() => {
-                                        return <> {displayTitleTip} </>;
-                                    }}
-                                />
-                            </Col>
-                            <Col xs={1}/>
+                        <DatasetSettingsInput
+                            name="datasetId"
+                            label="Dataset ID"
+                            helpTip={datasetIdTip}
+                            value={datasetId}
+                            placeholder="Auto Assign"
+                            disabled={!newDataset}
+                            onValueChange={this.onInputChange}
+                        />
 
-                            <Col xs={7} >
-                                <FormControl
-                                    id={name}
-                                    type="text"
-                                    placeholder="Auto Assign"
-                                    value={model.datasetId}
-                                    onChange={() => {}}
-                                />
-                            </Col>
-                        </Row>
+                        <DatasetSettingsSelect
+                            name="visitDateColumn"
+                            label="Visit Date Column"
+                            helpTip={visitDateTip}
+                            selectOptions={visitDateColumns}
+                            selectedValue={visitDateColumn}
+                            onSelectChange={this.onSelectChange}
+                        />
 
-                        <Row className={'margin-top'}>
+                        <DatasetSettingsSelect
+                            name="cohort"
+                            label="Cohort Association"
+                            helpTip={cohortTip}
+                            selectOptions={availableCohorts}
+                            selectedValue={cohort}
+                            onSelectChange={this.onSelectChange}
+                        />
 
-                            <Col xs={5} >
-                                Visit Date Column
-                                <LabelHelpTip
-                                    title={title}
-                                    body={() => {
-                                        return <> {displayTitleTip} </>;
-                                    }}
-                                />
-                            </Col>
+                        <DatasetSettingsInput
+                            name="tag"
+                            label="Tag"
+                            helpTip={tagTip}
+                            value={tag}
+                            disabled={false}
+                            onValueChange={this.onInputChange}
+                        />
 
-                            <Col xs={7} >
-                                <div className='dataset_advanced_settings_select'>
-                                    <SelectInput
-                                        onChange={(value) => {this.setState(()=> ({cohortValue: value}))}}
-                                        value={cohortValue}
-                                        options={availableCohorts}
-                                        inputClass="dataset_advanced_settings_select"
-                                        labelClass=""
-                                        valueKey="name"
-                                        labelKey="label"
-                                        formsy={false}
-                                        multiple={false}
-                                        required={false}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
+                        <div className='margin-top'>
+                            <BasicPropertiesTitle title="Dataspace Project Options" />
+                        </div>
 
-                        <Row className={'margin-top'}>
-
-                            <Col xs={5} >
-                                Cohort Association
-                                <LabelHelpTip
-                                    title={title}
-                                    body={() => {
-                                        return <> {displayTitleTip} </>;
-                                    }}
-                                />
-                            </Col>
-
-                            <Col xs={7} >
-                                <div className='dataset_advanced_settings_select'>
-                                    <SelectInput
-                                        onChange={(value) => {this.setState(()=> ({cohortValue: value}))}}
-                                        value={cohortValue}
-                                        options={availableCohorts}
-                                        inputClass="dataset_advanced_settings_select"
-                                        labelClass=""
-                                        formsy={false}
-                                        multiple={false}
-                                        required={false}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-
-                        <Row className={'margin-top'}>
-                            <Col xs={4} >
-                                Tag
-                                <LabelHelpTip
-                                    title="Tag"
-                                    body={() => {
-                                        return <> {tagTip} </>;
-                                    }}
-                                />
-                            </Col>
-
-                            <Col xs={1}/>
-
-                            <Col xs={7} >
-                                <FormControl
-                                    id="tag"
-                                    type="text"
-                                    value={model.tag}
-                                    onChange={() => {}}
-                                />
-                            </Col>
-                        </Row>
-
-                        <BasicPropertiesTitle title="Dataspace Project Options" />
-
-                        <Row className={'margin-top'}>
-
-                            <Col xs={5} >
-                                Share demographic data
-                                <LabelHelpTip
-                                    title={title}
-                                    body={() => {
-                                        return <> {displayTitleTip} </>;
-                                    }}
-                                />
-                            </Col>
-
-                            <Col xs={7} >
-                                <div className='dataset_advanced_settings_select'>
-                                    <SelectInput
-                                        onChange={(value) => {this.setState(()=> ({cohortValue: value}))}}
-                                        value={cohortValue}
-                                        options={availableCohorts}
-                                        inputClass="dataset_advanced_settings_select"
-                                        labelClass=""
-                                        valueKey="name"
-                                        labelKey="label"
-                                        formsy={false}
-                                        multiple={false}
-                                        required={false}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
+                        <DatasetSettingsSelect
+                            name="dataspace"
+                            label="Share demographic data"
+                            helpTip={dataspaceTip}
+                            selectOptions={dataspaceOptions}
+                            selectedValue={dataspace}
+                            onSelectChange={this.onSelectChange}
+                        />
 
                     </Modal.Body>
 

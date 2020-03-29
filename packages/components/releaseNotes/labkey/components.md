@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.41.1
+*Released*: 29 March 2020
+* Item 6862: Switch LineageNode to bind "id" instead of "rowId"
+
 ### version 0.41.0
 *Released*: 27 March 2020
 * Item 7002: Refactor domain designer components to share more with base components

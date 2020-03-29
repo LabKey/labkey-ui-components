@@ -33,6 +33,7 @@ class NewDatasetDesigner extends React.PureComponent<any,any> {
               initModel={DatasetModel.create(this.props.model, undefined)}
               useTheme={this.props.useTheme}
               newDataset={true}
+              showDataspace={this.props.showDataspace}
           />
         );
     }
@@ -49,6 +50,7 @@ class EditDatasetDesigner extends React.PureComponent<any,any> {
                 initModel={DatasetModel.create(null, this.props.model)}
                 useTheme={this.props.useTheme}
                 newDataset={false}
+                showDataspace={this.props.showDataspace}
             />
         );
     }
@@ -56,19 +58,39 @@ class EditDatasetDesigner extends React.PureComponent<any,any> {
 
 storiesOf("DatasetDesigner", module)
     .addDecorator(withKnobs)
-    .add("create new dataset", () => {
+    .add("create new dataset without dataspace", () => {
         return (
             <NewDatasetDesigner
                 model={NEW_DATASET_MODEL}
                 useTheme={false}
+                showDataspace={false}
             />
         )
     })
-    .add("edit dataset" ,() => {
+    .add("create new dataset with dataspace", () => {
+        return (
+            <NewDatasetDesigner
+                model={NEW_DATASET_MODEL}
+                useTheme={false}
+                showDataspace={true}
+            />
+        )
+    })
+    .add("edit dataset without dataspace" ,() => {
         return (
             <EditDatasetDesigner
                 model={getDatasetDesign}
                 useTheme={false}
+                showDataspace={false}
+            />
+        )
+    })
+    .add("edit dataset with dataspace" ,() => {
+        return (
+            <EditDatasetDesigner
+                model={getDatasetDesign}
+                useTheme={false}
+                showDataspace={true}
             />
         )
     });

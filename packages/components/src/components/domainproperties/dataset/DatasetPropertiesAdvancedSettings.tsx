@@ -124,6 +124,7 @@ interface AdvancedSettingsProps {
     model: DatasetModel;
     title: string;
     newDataset: boolean;
+    showDataspace: boolean;
 }
 
 interface AdvancedSettingsState {
@@ -226,7 +227,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             dataspaceOptions
         } = this.state;
 
-        const { title, model, newDataset } = this.props;
+        const { title, model, newDataset, showDataspace } = this.props;
 
         const datasetIdTip =
             <>
@@ -315,18 +316,23 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             onValueChange={this.onInputChange}
                         />
 
-                        <div className='margin-top'>
-                            <BasicPropertiesTitle title="Dataspace Project Options" />
-                        </div>
+                        {
+                            showDataspace &&
+                            <>
+                                <div className='margin-top'>
+                                    <BasicPropertiesTitle title="Dataspace Project Options"/>
+                                </div>
 
-                        <DatasetSettingsSelect
-                            name="dataspace"
-                            label="Share demographic data"
-                            helpTip={dataspaceTip}
-                            selectOptions={dataspaceOptions}
-                            selectedValue={dataspace}
-                            onSelectChange={this.onSelectChange}
-                        />
+                                < DatasetSettingsSelect
+                                    name="dataspace"
+                                    label="Share demographic data"
+                                    helpTip={dataspaceTip}
+                                    selectOptions={dataspaceOptions}
+                                    selectedValue={dataspace}
+                                    onSelectChange={this.onSelectChange}
+                                 />
+                            </>
+                        }
 
                     </Modal.Body>
 

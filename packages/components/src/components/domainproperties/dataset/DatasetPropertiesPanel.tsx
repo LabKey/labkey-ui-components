@@ -43,6 +43,7 @@ interface Props {
     useTheme?: boolean;
     successBsStyle?: string;
     newDataset: boolean;
+    showDataspace: boolean;
 }
 
 interface State {
@@ -150,7 +151,7 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle, newDataset } = this.props;
+        const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle, newDataset, showDataspace } = this.props;
         const { isValid } = this.state;
         const { collapsed } = this.context;
 
@@ -183,6 +184,7 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
                                     title={"Advanced Settings"}
                                     model={model}
                                     newDataset={newDataset}
+                                    showDataspace={showDataspace}
                                 />
                             </Col>
                         </Row>

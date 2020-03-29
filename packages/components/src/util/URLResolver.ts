@@ -358,7 +358,7 @@ export class URLResolver {
             .first();
 
         if (_url instanceof AppURL) {
-            return '#' + _url.toString();
+            return _url.toHref();
         }
 
         if (_url !== false && LABKEY.devMode) {
@@ -374,14 +374,15 @@ export class URLResolver {
                 let parts = node.cpasType.split(':');
                 let name = parts[parts.length - 1];
 
-                // Lsid strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
+                // LSID strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
                 name = name.replace(/\+/g, ' ');
+
+                // Create a URL that will be resolved/redirected in the application resolvers
                 const listURLParts = node.type === 'Sample' ? ['samples', name] : ['rd', 'dataclass', name];
 
                 return node.merge({
-                    // listURL is the url to the grid for the data type.  It will be filtered to the rowIds of the lineage members
-                    // create a URL that will be resolved/redirected in the application resolvers
-                    listURL: AppURL.create(...listURLParts).toString(),
+                    // listURL is the url to the grid for the data type. It will be filtered to the lineage members.
+                    listURL: AppURL.create(...listURLParts).toHref(),
                     url: this.mapURL({
                         url: node.url,
                         row: node,

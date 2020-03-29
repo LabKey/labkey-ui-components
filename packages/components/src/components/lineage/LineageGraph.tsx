@@ -171,13 +171,16 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         const { showSummary, summaryOptions } = this.props;
         const { lineageNode } = node;
 
+        // Apply "LineageOptions" when summaryOptions not explicitly given
+        const options = summaryOptions ? summaryOptions : {...this.props};
+
         return <SelectedNodeDetail
             seed={seed}
             node={lineageNode}
             entityModel={this.getNodeGridDataModel(lineageNode)}
             highlightNode={hoverNodeLsid}
             showSummary={showSummaryOverride ?? showSummary}
-            summaryOptions={summaryOptions}
+            summaryOptions={options}
         />;
     }
 

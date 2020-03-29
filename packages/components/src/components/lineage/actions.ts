@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { createContext } from 'react';
-import { fromJS, List, Map } from 'immutable';
+import { fromJS, List, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter } from '@labkey/api';
 import {
     AppURL,
@@ -27,7 +27,7 @@ import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
 import { getLineageDepthFirstNodeList } from './utils';
 import { getURLResolver } from './LineageURLResolvers';
 
-const LINEAGE_METADATA_COLUMNS = List(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
+const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
 export interface WithNodeInteraction {
     isNodeInGraph?: (node: LineageNode) => boolean
@@ -43,6 +43,7 @@ export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 export function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
         let options: any /* ILineageOptions */ = {
+            includeRunSteps: true,
             lsid: seed,
         };
 
@@ -71,18 +72,23 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
 }
 
 function fetchNodeMetadata(lineage: LineageResult): Promise<ISelectRowsResult>[] {
+    // Node metadata does not support nodes with multiple primary keys. These could be supported, however,
+    // each node would require it's own request for the unique keys combination. Also, nodes without any primary
+    // keys cannot be filtered upon and thus are also not supported.
     return lineage.nodes
-        .filter(n => n.schemaName !== undefined && n.queryName !== undefined)
+        .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.size !== 1)
         .groupBy(n => SchemaQuery.create(n.schemaName, n.queryName))
         .map((nodes, schemaQuery) => {
+            const { fieldKey } = nodes.first().pkFilters.get(0);
+
             return selectRows({
                 schemaName: schemaQuery.schemaName,
                 queryName: schemaQuery.queryName,
                 // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?
-                // See LineageNodeMetadata.create for why this is currently done
-                columns: LINEAGE_METADATA_COLUMNS.join(','),
+                // See LineageNodeMetadata (and it's usages) for why this is currently necessary
+                columns: LINEAGE_METADATA_COLUMNS.add(fieldKey).join(','),
                 filterArray: [
-                    Filter.create('RowId', nodes.map(n => n.id).toArray(), Filter.Types.IN)
+                    Filter.create(fieldKey, nodes.map(n => n.pkFilters.get(0).value).toArray(), Filter.Types.IN)
                 ]
             });
         })

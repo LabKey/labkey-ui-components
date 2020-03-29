@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update canSubmit check for ParentEntityEditPanel to check for actual differences and allow submission when all parents have been removed
 
+### version 0.41.1
+*Released*: 29 March 2020
+* Item 6862: Switch LineageNode to bind "id" instead of "rowId"
+
 ### version 0.41.0
 *Released*: 27 March 2020
 * Item 7002: Refactor domain designer components to share more with base components

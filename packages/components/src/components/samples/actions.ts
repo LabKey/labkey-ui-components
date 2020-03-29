@@ -44,7 +44,7 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
             selectRows({
                 schemaName: SCHEMAS.EXP_TABLES.DATA_CLASSES.schemaName,
                 queryName: SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName,
-                columns: 'LSID, Name, RowId, Folder',
+                columns: 'LSID, Name, RowId, Folder, Category',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
             })
         );

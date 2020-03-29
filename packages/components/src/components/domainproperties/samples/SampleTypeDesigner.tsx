@@ -57,6 +57,13 @@ interface Props {
     includeDataClasses?: boolean
     headerText?: string
     helpTopic?: string
+    useSeparateDataClasses?: boolean
+    sampleAliasCaption?: string
+    sampleTypeCaption?: string
+    dataClassAliasCaption?: string
+    dataClassTypeCaption?: string
+    dataClassParentageLabel?: string
+    isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean
 
     //EntityDetailsForm props
     nounSingular?: string
@@ -84,6 +91,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         includeDataClasses: false,
+        useSeparateDataClasses: false,
 
         containerTop: STICKY_HEADER_HEIGHT,
         useTheme: false,
@@ -120,28 +128,35 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     formatLabel = (name:string, prefix: string, containerPath?: string): string => {
-        const {includeDataClasses} = this.props;
-        return includeDataClasses ?
+        const {includeDataClasses, useSeparateDataClasses} = this.props;
+        return includeDataClasses && !useSeparateDataClasses ?
             `${prefix}: ${name} (${containerPath})`:
             name;
     };
 
     initParentOptions = (model: SampleTypeModel, responses: any[]) => {
+        const { isValidParentOptionFn } = this.props;
         let sets = List<IParentOption>();
         responses.forEach((results) => {
             const domain = fromJS(results.models[results.key]);
 
-            const prefix = results.key === DATA_CLASS_SCHEMA_KEY ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
-            const labelPrefix = results.key === DATA_CLASS_SCHEMA_KEY ? "Data Class" : "Sample Set";
+            const isDataClass = results.key === DATA_CLASS_SCHEMA_KEY;
+
+            const prefix =  isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
+            const labelPrefix = isDataClass ? "Data Class" : "Sample Set";
 
             domain.forEach(row => {
+                if (isValidParentOptionFn) {
+                    if (!isValidParentOptionFn(row, isDataClass))
+                        return;
+                }
                 const name = row.getIn(['Name', 'value']);
                 const containerPath = row.getIn(['Folder', 'displayValue']);
-                let label = NEW_SAMPLE_SET_OPTION && name === model.name ? NEW_SAMPLE_SET_OPTION.label : this.formatLabel(name, labelPrefix, containerPath);
+                let label = (name === model.name && !isDataClass) ? NEW_SAMPLE_SET_OPTION.label : this.formatLabel(name, labelPrefix, containerPath);
                 sets = sets.push({
                     value: prefix + name,
                     label: label,
-                    schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    schema: isDataClass ? SCHEMAS.DATA_CLASSES.SCHEMA : SCHEMAS.SAMPLE_SETS.SCHEMA,
                     query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
                 });
             });
@@ -369,7 +384,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const {
             containerTop, useTheme, appPropertiesOnly, successBsStyle, currentPanelIndex, visitedPanels, firstState,
             validatePanel, onTogglePanel, submitting, onCancel, nameExpressionPlaceholder, nameExpressionInfoUrl,
-            nounSingular, nounPlural, headerText, saveBtnText, helpTopic
+            nounSingular, nounPlural, headerText, saveBtnText, helpTopic, includeDataClasses, useSeparateDataClasses,
+            sampleAliasCaption, sampleTypeCaption, dataClassAliasCaption, dataClassTypeCaption, dataClassParentageLabel
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -395,6 +411,13 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     helpTopic={helpTopic}
                     model={model}
                     parentOptions={parentOptions}
+                    includeDataClasses={includeDataClasses}
+                    useSeparateDataClasses={useSeparateDataClasses}
+                    sampleAliasCaption={sampleAliasCaption}
+                    sampleTypeCaption={sampleTypeCaption}
+                    dataClassAliasCaption={dataClassAliasCaption}
+                    dataClassTypeCaption={dataClassTypeCaption}
+                    dataClassParentageLabel={dataClassParentageLabel}
                     onParentAliasChange={this.parentAliasChange}
                     onAddParentAlias={this.addParentAlias}
                     onRemoveParentAlias={this.removeParentAlias}

@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 0.41.1
-*Released*: ## March 2020
+*Released*: 29 March 2020
 * Item 6862: Switch LineageNode to bind "id" instead of "rowId"
 
 ### version 0.41.0

@@ -4,10 +4,9 @@
  */
 import { createContext } from 'react';
 import { fromJS, List, Map } from 'immutable';
-import { Ajax, Filter, Utils } from '@labkey/api';
+import { Experiment, Filter } from '@labkey/api';
 import {
     AppURL,
-    buildURL,
     GridColumn,
     ISelectRowsResult,
     Location,
@@ -43,25 +42,25 @@ export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 
 export function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
-        // query for both parents and children to facilitate showing counts within the grid links
-        let params: any = {
-            children: true,
+        let options: any /* ILineageOptions */ = {
             lsid: seed,
-            parents: true
         };
 
         if (!isNaN(distance)) {
             // The lineage includes a "run" object for each parent as well, so we
             // query for twice the depth requested in the URL.
-            params.depth = distance * 2;
+            options.depth = distance * 2;
         }
 
-        Ajax.request({
-            url: buildURL('experiment', 'lineage.api', params),
-            success: Utils.getCallbackWrapper((lineage) => {
-                resolve(LineageResult.create(lineage));
-            }),
-            failure: function() { // TODO: Handle how we hand back error
+        Experiment.lineage({
+            ...options,
+
+            success: lineage => {
+                resolve(LineageResult.create(lineage))
+            },
+
+            failure: () => {
+                // TODO: Handle how we hand back error
                 reject({
                     seed,
                     message: `Something went wrong retrieving lineage for seed "${seed}".`

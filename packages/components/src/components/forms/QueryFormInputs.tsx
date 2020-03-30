@@ -260,7 +260,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'date':
                             return useDatePicker ?
                                 <DatePickerInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>
-                                : <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;;
+                                : <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
                         case 'boolean':
                             return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
                         default:

@@ -45,3 +45,9 @@ export class SearchIdData {
     id: string;
     type: string;
 }
+
+export interface SearchResultTypeDisplay {
+    iconSrc?: string
+    altText?: string
+    getTitle?: (data: any) => string
+}

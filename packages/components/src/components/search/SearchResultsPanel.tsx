@@ -16,15 +16,17 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
-import { SearchResultsModel } from './models';
+import { SearchResultsModel, SearchResultTypeDisplay } from './models';
 import { SearchResultCard } from './SearchResultCard';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
+import { Map } from 'immutable';
 
 interface Props {
     model: SearchResultsModel
     iconUrl?: string
+    resultsTransformer?: Map<string, SearchResultTypeDisplay> // allows for customization of mappings from search results to icons, altText and titles.
     useSampleType?: boolean   // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
 }
 
@@ -56,7 +58,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     renderResults() {
-        const { model, iconUrl, useSampleType } = this.props;
+        const { model, iconUrl, resultsTransformer } = this.props;
 
         if (this.isLoading())
             return;
@@ -66,7 +68,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
         const data = results ? results.filter((result) => {
             const category = result.get('category');
-            return category=='data' || category=='material' || category=='workflowJob' || category=='file workflowJob';
+            return category=='data' || category=='material' || category=='workflowJob' || category=='file workflowJob' || result.has('data');
         }) : undefined;
 
         if (data && data.size > 0) {
@@ -82,7 +84,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                                 category={item.get('category')}
                                 data={item.get('data')}
                                 iconUrl={iconUrl}
-                                useSampleType={useSampleType}
+                                resultsTransformer={resultsTransformer}
                             />
                         </div>
                     ))}

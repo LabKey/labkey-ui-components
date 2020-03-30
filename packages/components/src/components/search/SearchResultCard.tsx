@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 import React from 'react';
+import { Map } from 'immutable';
 import { SCHEMAS } from '../base/models/schemas';
 import { SVGIcon } from '../base/SVGIcon';
+import { SearchResultTypeDisplay } from './models';
+
 
 interface SearchResultProps {
     category?: string
@@ -24,10 +27,20 @@ interface SearchResultProps {
     url: string
     data?: any
     iconUrl?: string
-    useSampleType?: boolean  // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
+    resultsTransformer?: Map<string, SearchResultTypeDisplay> // allows for customization of mappings from search results to icons, altText and titles.
 }
 
+const DEFAULT_TRANSFORMER = Map<string, SearchResultTypeDisplay>({
+    "sampleSet": {
+        iconSrc: 'sample_set'
+    }
+});
+
 export class SearchResultCard extends React.Component<SearchResultProps, any> {
+
+    static defaultProps = {
+        resultsTransformer: DEFAULT_TRANSFORMER
+    };
 
     resolveType() {
         const { data } = this.props;
@@ -53,7 +66,7 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
     }
 
     resolveImage() {
-        const { category, data, iconUrl, useSampleType } = this.props;
+        const { category, data, iconUrl, resultsTransformer } = this.props;
 
         if (iconUrl) {
             return <img className="search-result__card-icon" src={iconUrl}/>
@@ -83,12 +96,11 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
                         break;
                 }
             }
-            else if (data.get('type') === 'sampleSet') {
-                iconSrc = 'sample_set';
-                altText = useSampleType ? 'sample_type-icon' : undefined;
-            }
-            else if (data.get('type')) {
-                iconSrc=data.get('type').toLowerCase();
+            else if (data.has('type')) {
+                const type = data.get('type');
+                const customMapping = resultsTransformer.get(type);
+                iconSrc= customMapping && customMapping.iconSrc ? customMapping.iconSrc : type.toLowerCase();
+                altText = customMapping && customMapping.altText ? customMapping.altText : undefined;
             }
         }
         if (!iconSrc && category) {
@@ -103,28 +115,38 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
             }
         }
 
-        return <SVGIcon
-            iconDir={'_images'}
-            iconSrc={iconSrc}
-            alt={altText}
-            className="search-result__card-icon"/>
+        return (
+            <SVGIcon
+                iconDir={'_images'}
+                iconSrc={iconSrc}
+                alt={altText}
+                className="search-result__card-icon"
+            />
+        )
     }
 
     /**
      * Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
      */
     resolveTitle = () => {
-        const {data, title, useSampleType} = this.props;
+        const { data, title, resultsTransformer } = this.props;
         if (!data)
             return title;
 
         let titleText = title;
         const type = data.get("type");
-        if (type && type === "sampleSet" && useSampleType)
-        {
-            const name = data.get("name");
-            titleText = "Sample Type - " + name;
+        if (type) {
+            const typeTransformer = resultsTransformer.get(type);
+            if (typeTransformer.getTitle) {
+                titleText = typeTransformer.getTitle(data)
+            }
         }
+        //
+        // if (type && type === "sampleSet" && useSampleType)
+        // {
+        //     const name = data.get("name");
+        //     titleText = "Sample Type - " + name;
+        // }
         return titleText;
     };
 

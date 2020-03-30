@@ -1,7 +1,7 @@
 import React, { ComponentType, PureComponent } from 'react';
 import produce from 'immer';
 
-import { SchemaQuery } from '..';
+import { resolveErrorMessage, SchemaQuery } from '..';
 import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 
@@ -105,26 +105,12 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     model.orderedRows = orderedRows;
                     model.rowCount = rowCount;
                     model.rowsLoadingState = LoadingState.LOADED;
+                    model.error = undefined;
                 }));
             } catch(error) {
-                console.error(`Error loading rows for model ${id}`, error);
-                this.setError(id, error);
-            }
-        };
-
-        /**
-         * Helper for various actions that may or may want to trigger loadRows, useful for reducing boilerplate.
-         * @param id: The id of the QueryModel you want to load
-         * @param shouldLoad: boolean, if true will load the model's rows, if false does nothing.
-         * @param loadQueryInfo: boolean, if true will load the QueryInfo before loading the model's rows.
-         */
-        maybeLoad = (id: string, shouldLoad: boolean, loadQueryInfo = false) => {
-            if (shouldLoad) {
-                if (loadQueryInfo) {
-                    this.loadQueryInfo(id, true);
-                } else {
-                    this.loadRows(id);
-                }
+                const errorMessage = resolveErrorMessage(error);
+                console.error(`Error loading rows for model ${id}: `, errorMessage);
+                this.setError(id, errorMessage);
             }
         };
 
@@ -141,10 +127,28 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     const model = draft.queryModels[id];
                     model.queryInfo = queryInfo;
                     model.queryInfoLoadingState = LoadingState.LOADED;
+                    model.error = undefined;
                 }), () => this.maybeLoad(id, loadRows));
             } catch(error) {
-                console.error(`Error loading QueryInfo for model ${id}`, error);
-                this.setError(id, error);
+                const errorMessage = resolveErrorMessage(error);
+                console.error(`Error loading QueryInfo for model ${id}:`, errorMessage);
+                this.setError(id, errorMessage);
+            }
+        };
+
+        /**
+         * Helper for various actions that may or may want to trigger loadRows, useful for reducing boilerplate.
+         * @param id: The id of the QueryModel you want to load
+         * @param shouldLoad: boolean, if true will load the model's rows, if false does nothing.
+         * @param loadQueryInfo: boolean, if true will load the QueryInfo before loading the model's rows.
+         */
+        maybeLoad = (id: string, shouldLoad: boolean, loadQueryInfo = false) => {
+            if (shouldLoad) {
+                if (loadQueryInfo) {
+                    this.loadQueryInfo(id, true);
+                } else {
+                    this.loadRows(id);
+                }
             }
         };
 
@@ -250,6 +254,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     model.schemaQuery = SchemaQuery.create(model.schemaName, model.queryName, viewName);
                     // We need to reset all data for the model because changing the view will change things such as
                     // columns and rowCount. If we don't do this we'll render a grid with empty rows/columns.
+                    model.error = undefined;
                     model.messages = undefined;
                     model.offset = 0;
                     model.orderedRows = undefined;
@@ -272,6 +277,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     model.schemaQuery = schemaQuery;
                     model.queryInfo = undefined;
                     model.queryInfoLoadingState = LoadingState.INITIALIZED;
+                    model.error = undefined;
                     model.messages = undefined;
                     model.offset = 0;
                     model.orderedRows = undefined;

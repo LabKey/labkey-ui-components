@@ -1,12 +1,14 @@
 import React, { ComponentType, PureComponent } from 'react';
-import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
-import { Alert, Grid, LoadingSpinner } from '..';
+import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
+import { Alert, Grid, LoadingSpinner } from '..';
+import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { PaginationButtons, PaginationInfo } from './Pagination';
 import { PageSizeSelector } from './PageSizeSelector';
 import { ViewSelector } from './ViewSelector';
 
 interface GridPanelProps {
+    asPanel?: boolean;
     isPaged?: boolean;
     showViewSelector?: boolean;
     hideEmptyViewSelector?: boolean;
@@ -18,6 +20,7 @@ type Props = GridPanelProps & RequiresModelAndActions;
 
 export class GridPanel extends PureComponent<Props> {
     static defaultProps = {
+        asPanel: true,
         isPaged: true,
         showViewSelector: true,
         hideEmptyViewSelector: false,
@@ -29,23 +32,32 @@ export class GridPanel extends PureComponent<Props> {
     }
 
     render() {
-        const { model, actions, isPaged, showViewSelector, hideEmptyViewSelector, pageSizes, ButtonsComponent } = this.props;
+        const {
+            model,
+            actions,
+            asPanel,
+            isPaged,
+            showViewSelector,
+            hideEmptyViewSelector,
+            pageSizes,
+            ButtonsComponent
+        } = this.props;
         const { id, error, messages, queryInfo } = model;
         const hasData = model.hasData;
         const paginate = isPaged && hasData;
-        let buttons;
+        let body;
 
         if (model.error !== undefined) {
-            return <Alert>{error}</Alert>
-        }
+            body = <Alert>{error}</Alert>;
+        } else {
+            let buttons;
 
-        if (ButtonsComponent !== undefined) {
-            buttons = <ButtonsComponent model={model} actions={actions} />;
-        }
+            if (ButtonsComponent !== undefined) {
+                buttons = <ButtonsComponent model={model} actions={actions} />;
+            }
 
-        return (
-            <div className="grid-panel panel panel-default">
-                <div className="panel-body">
+            body = (
+                <>
                     <div className="grid-panel__bar">
                         <div className="grid-panel__bar-left">
                             <div className="grid-bar__section">
@@ -88,6 +100,14 @@ export class GridPanel extends PureComponent<Props> {
                             />
                         }
                     </div>
+                </>
+            );
+        }
+
+        return (
+            <div className={classNames('grid-panel', {'panel': asPanel, 'panel-default': asPanel})}>
+                <div className={classNames('grid-panel__body', {'panel-body': asPanel})}>
+                    {body}
                 </div>
             </div>
         );

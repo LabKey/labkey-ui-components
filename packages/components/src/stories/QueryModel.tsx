@@ -78,7 +78,7 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
         );
 
         if (model !== undefined) {
-            body = <GridPanel actions={actions} model={model} />
+            body = <GridPanel actions={actions} model={model} asPanel={false} />
         }
 
         return (

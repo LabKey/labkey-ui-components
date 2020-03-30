@@ -5,7 +5,8 @@
     "nameExpression": "S-${now:date}-${dailySampleCount}",
     "description": "tacocat",
     "importAliases": {
-      "a": "materialInputs/Fruits"
+      "a": "materialInputs/Fruits",
+      "b": "dataInputs/Source 1"
     },
     "rowId": 3,
     "domainId": 29

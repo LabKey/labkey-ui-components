@@ -117,4 +117,30 @@ describe("<SampleTypePropertiesPanel/>", () => {
         wrapper.unmount();
     });
 
+    test("include dataclass and use custom labels", (done) => {
+        const tree = renderer.create(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                model={SampleTypeModel.create()}
+                updateModel={jest.fn}
+                onAddParentAlias={jest.fn}
+                onRemoveParentAlias={jest.fn}
+                onParentAliasChange={jest.fn}
+                parentOptions={[{schema: 'exp.data'}]}
+                includeDataClasses={true}
+                useSeparateDataClasses={true}
+                sampleAliasCaption={'Parent Alias'}
+                sampleTypeCaption={'sample type'}
+                dataClassAliasCaption={'Source Alias'}
+                dataClassTypeCaption={'source type'}
+                dataClassParentageLabel={"source"}
+            />
+        );
+
+        setTimeout(() => {
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        });
+    });
+
 });

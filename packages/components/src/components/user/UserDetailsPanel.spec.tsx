@@ -41,7 +41,6 @@ describe("<UserDetailsPanel/>", () => {
                 userId={JEST_SITE_ADMIN_USER_ID} // see components/package.json "jest" config for the setting of self's userId
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
-                allowDelete={true}
                 onUsersStateChangeComplete={jest.fn()}
             />
         );
@@ -59,7 +58,6 @@ describe("<UserDetailsPanel/>", () => {
                 userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
-                allowDelete={true}
                 onUsersStateChangeComplete={jest.fn()}
             />
         );
@@ -71,13 +69,14 @@ describe("<UserDetailsPanel/>", () => {
         });
     });
 
-    test("with principal and buttons not allowDelete", (done) => {
+    test("with principal and buttons not allowDelete or allowResetPassword", (done) => {
         const component = (
             <UserDetailsPanel
                 userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
                 allowDelete={false}
+                allowResetPassword={false}
                 onUsersStateChangeComplete={jest.fn()}
             />
         );

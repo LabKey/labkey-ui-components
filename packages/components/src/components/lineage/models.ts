@@ -396,7 +396,6 @@ export class Lineage extends Record({
     filterResult(options?: LineageOptions): LineageResult {
         const { seed } = this.result;
 
-        // TODO: Not really concerned with grouping here...
         const _options = Object.assign({}, DEFAULT_LINEAGE_OPTIONS, options);
 
         let nodes;

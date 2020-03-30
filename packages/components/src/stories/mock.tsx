@@ -85,6 +85,11 @@ import assayAminoAcidsDataQuery from '../test/data/assayAminoAcidsData-getQuery.
 import sampleWithParentsQuery from '../test/data/sampleWithParents-getQuery.json';
 import sampleWithParentsQueryDetails from '../test/data/sampleWithParents-getQueryDetails.json';
 import sampleWithTwoSourcesQuery from '../test/data/sampleWithTwoSources-getQuery.json';
+import runsQuery from '../test/data/exp-runs-getQuery.json';
+import runsQueryInfo from '../test/data/exp-runs-getQueryDetails.json';
+import hemoglobinLineageQueryEq from '../test/data/samples-hemoglobin-getQuery-eq.json';
+import hemoglobinLineageQueryIn from '../test/data/samples-hemoglobin-getQuery-in.json';
+import hemoglobinLineageQueryInfo from '../test/data/samples-hemoglobin-getQueryDetails.json';
 import secondSourceQuery from '../test/data/secondSource-getQuery.json';
 import secondSourceQueryDetails from '../test/data/secondSource-getQueryDetails.json';
 import source1Query from '../test/data/source1-getQuery.json';
@@ -115,6 +120,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         'samplesets': sampleSetsQueryInfo,
         'dataclasses': dataClassesQueryInfo,
         'dataclasscategorytype': dataClassCategoryTypeQueryInfo,
+        'runs': runsQueryInfo,
     },
     'exp.data': {
         'mixtures': mixturesQueryInfo,
@@ -131,6 +137,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         'lookuplist': lookuplistQueryInfo,
     },
     'samples': {
+        'hemoglobin': hemoglobinLineageQueryInfo,
         'samples': sampleSetQueryInfo,
         'sample set 2': sampleSet2QueryInfo,
         'expressionsystemsamples': expressionsystemsamplesQueryInfo,
@@ -170,6 +177,7 @@ const QUERY_RESPONSES = fromJS({
         'samplesets': sampleSetsQuery,
         'dataclasses': dataClassesQuery,
         'dataclasscategorytype': dataClassCategoryTypeQuery,
+        'runs': runsQuery,
     },
     'exp.data': {
         'mixtures': mixturesQuery,
@@ -186,6 +194,7 @@ const QUERY_RESPONSES = fromJS({
         'lookuplist': lookuplistQuery,
     },
     'samples': {
+        'hemoglobin': hemoglobinLineageQueryIn,
         'samples': sampleDetailsQuery,
         'expressionsystemsamples': expSystemSamplesLineageQuery,
         'samplesetwithallfieldtypes': samplesLineageQuery,
@@ -385,15 +394,22 @@ export function initQueryGridMocks() {
         }, {}) as any;
         const queryName = params['query.queryName'].toLowerCase();
         const schemaName = params.schemaName.toLowerCase();
-        let responseBody = QUERY_RESPONSES.getIn([schemaName, queryName]);
+        let responseBody;
 
-        if (!responseBody) {
-            console.log(`getQuery response not found! schemaName: "${schemaName}" queryName: "${queryName}"`);
+        if (schemaName === 'samples' && queryName === 'hemoglobin') {
+            if (params.hasOwnProperty('query.rowId~in')) {
+                responseBody = hemoglobinLineageQueryIn;
+            } else if (params.hasOwnProperty('query.RowId~eq')) {
+                responseBody = hemoglobinLineageQueryEq;
+            }
         }
 
-        if (schemaName === 'samples' && queryName === 'samples' && params.hasOwnProperty('query.rowId~in')) {
-            // Used in lineage stories.
-            responseBody = samplesLineageQuery;
+        if (!responseBody) {
+            responseBody = QUERY_RESPONSES.getIn([schemaName, queryName]);
+
+            if (!responseBody) {
+                console.log(`getQuery response not found! schemaName: "${schemaName}" queryName: "${queryName}"`);
+            }
         }
 
         let maxRows = params['query.maxRows'], offset = params['query.offset'] || 0;
@@ -442,17 +458,10 @@ export function initQueryGridMocks() {
 }
 
 export function initLineageMocks() {
-    mock.get(/.*lineage.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-        if (queryParams.lsid.indexOf('ES-1.2') > -1) {
-            responseBody = lineageData;
-        }
-
-        return res
-            .status(200)
-            .headers({'Content-Type': 'application/json'})
-            .body(JSON.stringify(responseBody));
+    mock.get(/.*\/experiment\/?.*\/lineage.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(lineageData)
     });
 }
 

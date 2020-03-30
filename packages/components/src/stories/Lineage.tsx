@@ -17,12 +17,10 @@ import React from 'react';
 import { Panel } from 'react-bootstrap';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
-import {
-    LineageGraph,
-    LineageGrid,
-    LINEAGE_GROUPING_GENERATIONS,
-    LineageFilter,
-} from '../..';
+
+import { LineageGraph } from '../components/lineage/LineageGraph';
+import { LineageGrid } from '../components/lineage/LineageGrid';
+import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from '../components/lineage/types';
 
 import './stories.scss';
 
@@ -31,10 +29,9 @@ storiesOf('Lineage', module)
     .add("LineageGraph", () => {
         return (
             <LineageGraph
-                lsid={'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2'}
+                lsid={'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3'}
                 grouping={{generations: LINEAGE_GROUPING_GENERATIONS.Specific}}
                 filters={[new LineageFilter('type', ['Sample', 'Data'])]}
-                navigate={(node) => console.log(node)}
             />
         )
     })
@@ -43,7 +40,7 @@ storiesOf('Lineage', module)
             <Panel>
                 <Panel.Body>
                     <LineageGrid
-                        lsid={'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2'}
+                        lsid={'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3'}
                     />
                 </Panel.Body>
             </Panel>

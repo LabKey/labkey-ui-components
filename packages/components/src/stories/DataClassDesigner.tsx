@@ -20,6 +20,11 @@ import { DataClassDesigner } from "../components/domainproperties/dataclasses/Da
 import { DataClassModel } from "../components/domainproperties/dataclasses/models";
 import getDomainDetailsJSON from '../test/data/dataclass-getDomainDetails.json';
 import './stories.scss';
+import { IDomainField } from "..";
+
+const DEFAULT_NAME_FIELD_CONFIG = {
+    name: 'SourceId',
+} as Partial<IDomainField>;
 
 storiesOf('DataClassDesigner', module)
     .addDecorator(withKnobs)
@@ -42,6 +47,7 @@ storiesOf('DataClassDesigner', module)
             onCancel={() => console.log('cancel')}
             onComplete={(model) => console.log('complete', model.toJS())}
             initModel={DataClassModel.create(getDomainDetailsJSON)}
+            defaultNameFieldConfig={DEFAULT_NAME_FIELD_CONFIG}
             nounSingular={text('nounSingular', 'Source')}
             nounPlural={text('nounPlural', 'Sources')}
             appPropertiesOnly={boolean('appPropertiesOnly', true)}

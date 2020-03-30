@@ -12,6 +12,7 @@ import { QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
 interface Props {
     singularNoun?: string
     pluralNoun?: string
+    uniqueFieldKey?: string
     itemLabel?: string
     model: QueryGridModel,
     canSubmitForEdit: boolean,
@@ -82,8 +83,9 @@ export class BulkUpdateForm extends React.Component<Props, State> {
     }
 
     getUpdateQueryInfo(): QueryInfo {
-        const { model } = this.props;
-        const updateColumns = model.queryInfo.columns.filter((column) => (column.shownInUpdateView));
+        const { model, uniqueFieldKey } = this.props;
+        const lcUniqueFieldKey = uniqueFieldKey ? uniqueFieldKey.toLowerCase() : undefined;
+        const updateColumns = model.queryInfo.columns.filter((column) => (column.shownInUpdateView && (!lcUniqueFieldKey || column.name.toLowerCase() !== lcUniqueFieldKey)));
         return model.queryInfo.set('columns', updateColumns) as QueryInfo;
     }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { List } from "immutable";
 import { DataClassModel } from "./models";
-import { DomainDesign } from "../models";
+import { DomainDesign, IDomainField } from "../models";
 import DomainForm from "../DomainForm";
 import { DataClassPropertiesPanel } from "./DataClassPropertiesPanel";
 import { getDomainPanelStatus, saveDomain } from "../actions";
@@ -14,7 +14,7 @@ interface Props {
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
     headerText?: string
-
+    defaultNameFieldConfig?: Partial<IDomainField>
     initModel?: DataClassModel
     onChange?: (model: DataClassModel) => void
     onCancel: () => void
@@ -33,6 +33,11 @@ interface State {
 
 export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
 
+    static defaultProps = {
+        nounSingular: 'Data Class',
+        nounPlural: 'Data Classes'
+    };
+
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
@@ -42,8 +47,24 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
     }
 
     onFinish = () => {
-        const isValid = DataClassModel.isValid(this.state.model);
+        const { defaultNameFieldConfig, setSubmitting, nounSingular } = this.props;
+        const { model } = this.state;
+        const isValid = DataClassModel.isValid(model, defaultNameFieldConfig);
+
         this.props.onFinish(isValid, this.saveDomain);
+
+        if (!isValid) {
+            let exception;
+
+            if (model.hasInvalidNameField(defaultNameFieldConfig)) {
+                exception = 'The ' + defaultNameFieldConfig.name + ' field name is reserved for imported or generated ' + nounSingular + ' ids.'
+            }
+
+            const updatedModel = model.set('exception', exception) as DataClassModel;
+            setSubmitting(false, () => {
+                this.setState(() => ({model: updatedModel}));
+            });
+        }
     };
 
     saveDomain = () => {

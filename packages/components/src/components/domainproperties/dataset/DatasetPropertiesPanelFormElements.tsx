@@ -144,7 +144,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     label="Name *"
                     helpTip={nameTip}
                     value={name}
-                    placeholder="Auto Assign"
+                    placeholder="Enter a name for this dataset"
                     disabled={false}
                     onValueChange={onInputChange}
                     showInAdvancedSettings={false}

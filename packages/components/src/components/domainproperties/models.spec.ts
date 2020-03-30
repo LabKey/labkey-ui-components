@@ -137,6 +137,19 @@ describe('DomainDesign', () => {
         expect(domain.fields.get(0).lockType).toBe(DOMAIN_FIELD_PARTIALLY_LOCKED);
         expect(domain.fields.get(1).lockType).toBe(DOMAIN_FIELD_PARTIALLY_LOCKED);
     });
+
+    test("hasInvalidNameField", () => {
+        const domain = DomainDesign.create({name: 'Test Fields', fields: [{name: 'abc'},{name: 'def'}]});
+
+        expect(domain.hasInvalidNameField()).toBeFalsy();
+        expect(domain.hasInvalidNameField({})).toBeFalsy();
+        expect(domain.hasInvalidNameField({name: undefined})).toBeFalsy();
+        expect(domain.hasInvalidNameField({name: null})).toBeFalsy();
+        expect(domain.hasInvalidNameField({name: ''})).toBeFalsy();
+        expect(domain.hasInvalidNameField({name: 'abc test'})).toBeFalsy();
+        expect(domain.hasInvalidNameField({name: 'abc'})).toBeTruthy();
+        expect(domain.hasInvalidNameField({name: 'ABC'})).toBeTruthy();
+    });
 });
 
 describe('DomainField', () => {

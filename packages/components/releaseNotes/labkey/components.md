@@ -3,8 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Issue 40084:  Add property to exclude unique field key from bulk update modal
+* Issue 40084: Add property to exclude unique field key from bulk update modal
 * Update QueryInfoForm so the submit button is disabled while submitting
+* Issue 40088: DataClassDesigner - add optional validation check for a reserved name field (i.e. "SourceId" in SM app)
 
 ### version 0.41.1
 *Released*: 29 March 2020

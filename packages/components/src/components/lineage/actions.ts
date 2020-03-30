@@ -126,7 +126,7 @@ export function loadLineageIfNeeded(seed: string, distance?: number, options?: L
     }
 
     return fetchLineage(seed, distance)
-        .then(result => getLineageNodeMetadata(result))
+        .then(getLineageNodeMetadata)
         .then(result => {
             const updatedResult = getURLResolver(options).resolveNodes(result);
 

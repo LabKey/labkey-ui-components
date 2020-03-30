@@ -8,7 +8,7 @@ import { DataSet, Edge, Network, Node } from 'vis-network';
 
 import { LineageLink, LineageNode, LineageResult } from '../models';
 import { getBackupImageFromLineageNode, getImageFromLineageNode } from '../utils';
-import { DEFAULT_LINEAGE_OPTIONS } from '../constants';
+import { DEFAULT_GROUPING_OPTIONS, DEFAULT_LINEAGE_OPTIONS } from '../constants';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -176,7 +176,9 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
     if (result === undefined)
         throw new Error("raw lineage result needed to create graph");
 
-    const _options = Object.assign({}, DEFAULT_LINEAGE_OPTIONS, options);
+    const _options = Object.assign({}, DEFAULT_LINEAGE_OPTIONS, options, {
+        grouping: Object.assign({}, DEFAULT_GROUPING_OPTIONS, options?.grouping)
+    });
 
     const nodes = result.nodes;
 

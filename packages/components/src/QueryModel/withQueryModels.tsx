@@ -13,9 +13,10 @@ export interface Actions {
     loadPreviousPage: (id: string) => void;
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
-    setOffset: (id: string, offset: number, load?: boolean) => void;
-    setMaxRows: (id: string, maxRows: number, load?: boolean) => void;
-    setView: (id: string, viewName: string, load?: boolean) => void;
+    setOffset: (id: string, offset: number) => void;
+    setMaxRows: (id: string, maxRows: number) => void;
+    setView: (id: string, viewName: string) => void;
+    setSchemaQuery: (id: string, schemaQuery: SchemaQuery) => void;
 }
 
 export interface RequiresModelAndActions {
@@ -34,7 +35,7 @@ export type QueryModelMap = { [id: string]: QueryModel };
 export interface MakeQueryModels {
     autoLoad?: boolean;
     modelLoader?: QueryModelLoader;
-    queryConfigs: QueryConfigMap;
+    queryConfigs?: QueryConfigMap;
 }
 
 interface State {
@@ -74,6 +75,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                 setOffset: this.setOffset,
                 setMaxRows: this.setMaxRows,
                 setView: this.setView,
+                setSchemaQuery: this.setSchemaQuery,
             };
         }
 
@@ -112,11 +114,16 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         /**
          * Helper for various actions that may or may want to trigger loadRows, useful for reducing boilerplate.
          * @param id: The id of the QueryModel you want to load
-         * @param shouldLoad: boolean, if true will load the model, if false does nothing.
+         * @param shouldLoad: boolean, if true will load the model's rows, if false does nothing.
+         * @param loadQueryInfo: boolean, if true will load the QueryInfo before loading the model's rows.
          */
-        maybeLoad = (id: string, shouldLoad: boolean) => {
+        maybeLoad = (id: string, shouldLoad: boolean, loadQueryInfo = false) => {
             if (shouldLoad) {
-                this.loadRows(id);
+                if (loadQueryInfo) {
+                    this.loadQueryInfo(id, true);
+                } else {
+                    this.loadRows(id);
+                }
             }
         };
 
@@ -203,7 +210,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                 const queryModel = new QueryModel(queryConfig);
                 id = queryModel.id;
                 draft.queryModels[queryModel.id] = queryModel;
-            }), () => this.maybeLoad(id, load));
+            }), () => this.maybeLoad(id, load, true));
         };
 
         setOffset = (id: string, offset: number) => {
@@ -251,6 +258,28 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             }), () => this.maybeLoad(id, shouldLoad));
         };
 
+        setSchemaQuery = (id: string, schemaQuery: SchemaQuery) => {
+            let shouldLoad = false;
+            this.setState(produce((draft: State) => {
+                const model = draft.queryModels[id];
+
+                if (!model.schemaQuery.isEqual(schemaQuery)) {
+                    shouldLoad = true;
+                    // We assume that we'll need a new QueryInfo if we're changing the SchemaQuery, so we reset the
+                    // QueryInfo and all rows related data.
+                    model.schemaQuery = schemaQuery;
+                    model.queryInfo = undefined;
+                    model.queryInfoLoadingState = LoadingState.INITIALIZED;
+                    model.messages = undefined;
+                    model.offset = 0;
+                    model.orderedRows = undefined;
+                    model.rows = undefined;
+                    model.rowCount = undefined;
+                    model.rowsLoadingState = LoadingState.INITIALIZED;
+                }
+            }), () => this.maybeLoad(id, shouldLoad, true));
+        };
+
         componentDidMount(): void {
             if (this.props.autoLoad) {
                 this.loadAllModels();
@@ -267,6 +296,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
     ComponentWithQueryModels.defaultProps = {
         autoLoad: false,
         modelLoader: DefaultQueryModelLoader,
+        queryConfigs: {},
     };
 
     return ComponentWithQueryModels;

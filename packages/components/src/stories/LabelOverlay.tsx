@@ -11,6 +11,7 @@ storiesOf('LabelOverlay', module)
         return (
             <LabelOverlay
                 label={text('label', 'My label')}
+                labelClass={text("label css class", 'col-2')}
                 placement={text('placement', 'bottom')}
                 isFormsy={boolean('isFormsy', true)}
                 type={text('type', 'Text (String)')}

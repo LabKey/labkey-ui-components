@@ -373,7 +373,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         }
     };
 
-    render(): React.ReactNode {
+    render(): any {
         const { data, error } = this.state;
 
         return (

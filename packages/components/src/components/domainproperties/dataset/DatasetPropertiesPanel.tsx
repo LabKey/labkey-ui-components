@@ -19,13 +19,11 @@ import { Panel, Form, Row, Col } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 import { Alert } from '../../..';
 import { DomainDesign, DomainPanelStatus } from "../models";
-import { AllowableActions, BasicPropertiesFields } from "./DatasetPropertiesPanelFormElements";
+import { DataRowUniquenessContainer, BasicPropertiesFields } from "./DatasetPropertiesPanelFormElements";
 import { AdvancedSettings } from "./DatasetPropertiesAdvancedSettings";
 import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
 import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
-import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
-import { HelpTopicURL } from "../HelpTopicURL";
 import { DatasetModel} from "./models";
 
 const PROPERTIES_HEADER_ID = 'dataset-properties-hdr';
@@ -47,7 +45,12 @@ interface Props {
 }
 
 interface State {
-    isValid: boolean;
+    isValid?: boolean;
+    name?: string;
+    description?: string;
+    categoryId?: number;
+    label?: string;
+    dataRowSetting?: number;
 }
 
 export class DatasetPropertiesPanel extends React.PureComponent<Props> {
@@ -80,14 +83,30 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
 
         this.state = {
             isValid: true,
+            name: this.props.model.name,
+            description: this.props.model.description,
+            categoryId: this.props.model.categoryId,
+            label: this.props.model.label,
+            dataRowSetting: this.getDataRowSetting(this.props.model)
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        const { validate } = this.props;
-        if (nextProps.validate && validate !== nextProps.validate) {
-            this.setIsValid();
+    getDataRowSetting(model: DatasetModel) : number {
+        let dataRowSetting = -1;
+
+        if (model.keyProperty === undefined || model.keyProperty === null) {
+            dataRowSetting = 0;
         }
+
+        if (model.keyProperty !== null && (model.keyManagementType === undefined || model.keyManagementType === null)) {
+            dataRowSetting = 1;
+        }
+
+        if (model.keyProperty !== null && model.keyManagementType !== null) {
+            dataRowSetting = 2;
+        }
+
+        return dataRowSetting;
     }
 
     componentDidMount(): void {
@@ -98,38 +117,15 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
         updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
-    setIsValid(newModel?: DatasetModel): void {
-        // const { model, onChange } = this.props;
-        // const updatedModel = newModel || model;
-        // const isValid = updatedModel && updatedModel.hasValidProperties();
-        // this.setState(() => ({isValid}), () => onChange(updatedModel));
-    }
 
     toggleLocalPanel = (evt: any): void => {
         const { togglePanel, collapsed } = this.context;
-        this.setIsValid();
         togglePanel(evt, !collapsed);
     };
 
-    onChange = (identifier, value): void => {
-        // const { model, onChange } = this.props;
-        //
-        // // Name must be set on Domain as well
-        // let newDomain = model.domain;
-        // if (identifier == 'name') {
-        //     newDomain = model.domain.merge({ name: value }) as DomainDesign;
-        // }
-        //
-        // const newModel = model.merge({
-        //     [identifier]: value,
-        //     domain: newDomain,
-        // }) as DatasetModel;
-        //
-        // this.setIsValid(newModel);
-    };
 
     onCheckBoxChange = (name, checked): void => {
-        this.onChange(name, !checked);
+        // this.onChange(name, !checked);
     };
 
     onInputChange = e => {
@@ -141,18 +137,40 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
             value = null;
         }
 
-        this.onChange(id, value);
+        this.setState(() => ({ [id]: value }));
     };
 
-    applyAdvancedProperties = (advancedSettingsForm: DatasetModel) : void => {
-        const { model, onChange } = this.props;
-        const newModel = model.merge(advancedSettingsForm) as DatasetModel;
-        this.setIsValid(newModel);
+    onCategoryChange = (category) => {
+        let categoryID = category ? category : undefined
+        this.setState(() => ({categoryId: categoryID}))
+    };
+
+    onRadioChange = e => {
+        const name = e.currentTarget.name;
+        const value = e.target.value;
+        console.log("name", name, value);
+        this.setState({ [name]: value });
     };
 
     render() {
-        const { panelStatus, collapsible, controlledCollapse, model, useTheme, successBsStyle, newDataset, showDataspace } = this.props;
-        const { isValid } = this.state;
+        const {
+            panelStatus,
+            collapsible,
+            controlledCollapse,
+            model,
+            useTheme,
+            newDataset,
+            showDataspace,
+        } = this.props;
+
+        const {
+            isValid,
+            name,
+            description,
+            categoryId,
+            label,
+            dataRowSetting
+        } = this.state;
         const { collapsed } = this.context;
 
         return(
@@ -178,8 +196,8 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
 
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         <Row className={'margin-bottom'}>
-                            <Col xs={10}/>
-                            <Col xs={2}>
+                            <Col md={11}/>
+                            <Col md={1}>
                                 <AdvancedSettings
                                     title={"Advanced Settings"}
                                     model={model}
@@ -191,12 +209,19 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
                         <Form>
                             <BasicPropertiesFields
                                 model={model}
+                                name={name}
+                                description={description}
+                                categoryId={categoryId}
+                                label={label}
                                 onInputChange={this.onInputChange}
+                                onCategoryChange={this.onCategoryChange}
                             />
 
-                            <AllowableActions
+                            <DataRowUniquenessContainer
                                 model={model}
-                                onCheckBoxChange={this.onCheckBoxChange}
+                                onRadioChange={this.onRadioChange}
+                                dataRowSetting={dataRowSetting}
+                                showAdditionalKeyField={dataRowSetting == 2}
                             />
                         </Form>
                     </Panel.Body>

@@ -16,41 +16,44 @@
 
 import React from 'react';
 import {Col, Radio, Row} from 'react-bootstrap';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faCheckSquare} from '@fortawesome/free-solid-svg-icons/faCheckSquare';
-import {faSquare} from '@fortawesome/free-regular-svg-icons/faSquare';
 import {DatasetModel} from './models';
-import {BasicPropertiesTitle, TextInputWithLabel} from "../PropertiesPanelFormElements";
-import {SelectInput} from "../../../index";
+import {BasicPropertiesTitle} from "../PropertiesPanelFormElements";
+import {LabelHelpTip, SelectInput} from "../../../index";
 import {Creatable} from 'react-select'
 import {fetchCategories} from "./actions";
+import {DatasetSettingsInput} from "./DatasetPropertiesAdvancedSettings";
+import {CheckBox} from "../list/ListPropertiesPanelFormElements";
+import "../../../theme/dataset.scss";
 
 interface BasicPropertiesInputsProps {
-    model: DatasetModel;
+    model?: DatasetModel;
     onInputChange: (any) => void;
+    name?: string;
+    description?: string;
+    categoryId?: number;
+    onCategoryChange?: any;
+    label?: string;
 }
 
 export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsProps> {
     render() {
-        const { model, onInputChange } = this.props;
-        const value = model.description === null ? '' : model.description;
+        const { description, onInputChange } = this.props;
+        const value = description === null ? '' : description;
 
         return(
             <Row className={'margin-top'}>
-                <Col xs={3} lg={2}>
+                <Col xs={4}>
                     Description
                 </Col>
 
-                <Col xs={9} lg={8}>
+                <Col xs={7}>
                     <textarea
                         className="form-control textarea-noresize"
-                        id={'description'}
+                        id="description"
                         value={value}
                         onChange={onInputChange}
                     />
                 </Col>
-
-                <Col lg={2}/>
             </Row>
         );
     }
@@ -58,27 +61,26 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
 
 export class SelectPropertyInput extends React.PureComponent<any> {
     render() {
-        const { label, model, onInputChange, options } = this.props;
+        const { label, labelKey, valueKey, onInputChange, options, disabled } = this.props;
 
         return(
             <Row className={'margin-top'}>
-                <Col xs={4} lg={2}>
+                <Col xs={4} >
                     {label}
                 </Col>
 
-                <Col xs={8} lg={7}>
+                <Col xs={7} >
                     <SelectInput
                         onChange={onInputChange}
-                        value={model.category}
                         options={options}
                         inputClass="" // This attr is necessary for proper styling
                         labelClass=""
-                        valueKey="name"
-                        labelKey="label"
+                        valueKey={valueKey}
+                        labelKey={labelKey}
                         formsy={false}
                         multiple={false}
                         required={false}
-                        placeholder="Select dataset category"
+                        disabled={disabled}
                     />
                 </Col>
 
@@ -106,133 +108,122 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
         fetchCategories()
             .then((data) => {
                 this.setState(() => ({
-                    category: model.categoryId,
                     availableCategories: data.categories
                 }))
             })
 
     }
 
-    handleChange = (value) => {
-        this.setState(() => ({value}));
-    };
+
 
     render() {
-        const { model, onInputChange } = this.props;
-        const { availableCategories, category } = this.state;
+        const { name, description, categoryId, label, onInputChange, onCategoryChange } = this.props;
+        const { availableCategories } = this.state;
+
+        const nameTip =
+            <>
+                Required. This name must be unique. It is used when identifying datasets during data upload.
+            </> as JSX.Element;
+
+        const categoryTip =
+            <>
+                Assigning a category to a dataset will group it with similar datasets in the navigator and data browser.
+            </> as JSX.Element;
+
+        const labelTip =
+            <>
+                The name of the dataset shown to users. If no Label is provided, the Name is used.
+            </> as JSX.Element;
 
         return (
-            <Col xs={12} md={7}>
+            <Col md={6}>
                 <BasicPropertiesTitle title="Basic Properties" />
 
-                <TextInputWithLabel
-                    name="Name *"
-                    value={model.name}
-                    placeholder="Enter a name for this dataset"
-                    onInputChange={onInputChange}
+                <DatasetSettingsInput
+                    name="name"
+                    label="Name *"
+                    helpTip={nameTip}
+                    value={name}
+                    placeholder="Auto Assign"
+                    disabled={false}
+                    onValueChange={onInputChange}
+                    showInAdvancedSettings={false}
                 />
 
-                <DescriptionInput model={model} onInputChange={onInputChange} />
+                <DescriptionInput
+                    description={description}
+                    onInputChange={onInputChange} />
 
                 <Row className={'margin-top'}>
-                    <Col xs={3} lg={2}>
+                    <Col xs={4}>
                         Category
-                    </Col>
-
-                    <Col xs={9} lg={8}>
-                        <Creatable
-                            placeholder="Select dataset category"
-                            onChange={this.handleChange}
-                            value={category}
-                            options={availableCategories}
+                        <LabelHelpTip
+                            title="Category"
+                            body={() => {
+                                return <> {categoryTip} </>;
+                            }}
                         />
                     </Col>
 
-                    <Col lg={2}/>
+                    <Col xs={7}>
+                        <Creatable
+                            name="categoryId"
+                            placeholder="Select dataset category"
+                            onChange={onCategoryChange}
+                            value={categoryId}
+                            options={availableCategories}
+                        />
+                    </Col>
                 </Row>
 
-                <TextInputWithLabel
-                    name="Label"
-                    value={model.label}
-                    onInputChange={onInputChange}
+                <DatasetSettingsInput
+                    name="label"
+                    label="Label"
+                    helpTip={labelTip}
+                    value={label}
+                    disabled={false}
+                    onValueChange={onInputChange}
+                    showInAdvancedSettings={false}
                 />
             </Col>
         );
     }
 }
 
-interface CheckBoxProps {
-    checked: boolean;
-    onClick: any;
+interface DataRowUniquenessElementsrProps {
+    onRadioChange: (evt: any) => any;
+    dataRowSetting: number;
 }
-export class CheckBox extends React.PureComponent<CheckBoxProps> {
+
+class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessElementsrProps> {
     render() {
-        const { onClick, checked } = this.props;
-
-        const checkedOrNot = checked ? (
-            <FontAwesomeIcon size="lg" icon={faCheckSquare} color="#0073BB" />
-        ) : (
-            <FontAwesomeIcon size="lg" icon={faSquare} color="#adadad" />
-        );
-
-        return (
-            <span className='list__properties__no-highlight' onClick={onClick}>
-                {checkedOrNot}
-            </span>
-        );
-    }
-}
-
-interface CheckBoxRowProps {
-    checked: boolean;
-    onCheckBoxChange: (name, checked) => void;
-    name: string;
-    text: string;
-}
-
-export class CheckBoxRow extends React.PureComponent<CheckBoxRowProps> {
-    render() {
-        const { checked, onCheckBoxChange, name, text } = this.props;
-
-        return (
-            <div className='list__properties__checkbox-row'>
-                <CheckBox
-                    checked={checked}
-                    onClick={() => {
-                        onCheckBoxChange(name, checked);
-                    }}
-                />
-                <span className='list__properties__checkbox-text'>{text}</span>
-            </div>
-        );
-    }
-}
-
-interface DataRowUniquenessContainerProps {
-    model: DatasetModel;
-    onCheckBoxChange: (name, checked) => void;
-}
-
-class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {
-    render() {
-        const { onCheckBoxChange } = this.props;
-        // const { allowDelete, allowUpload, allowExport } = this.props.model;
+        const { onRadioChange, dataRowSetting } = this.props;
+        const radioName = "dataRowSetting";
 
         return (
             <div className='dataset_data_row_uniqueness_container'>
                 <Radio
-                    name="participantId"
-                    checked={false}>
+                    name={radioName}
+                    value={0}
+                    checked={dataRowSetting == 0}
+                    onChange={onRadioChange}
+                >
                     Participant ID only (demographic data)
                 </Radio>
                 <Radio
-                    name="timepoint"
-                    checked={true}>
+                    name={radioName}
+                    value={1}
+                    checked={dataRowSetting == 1}
+                    onChange={onRadioChange}
+                >
                     Participant ID and timepoint
                 </Radio>
                 <Radio
-                    name="additionalKeyField"
-                    checked={false}>
+                    name={radioName}
+                    value={2}
+                    checked={dataRowSetting == 2}
+                    onChange={onRadioChange}
+                >
                     Participant ID, timepoint, and additional key field
                 </Radio>
             </div>
@@ -240,32 +231,52 @@ class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessCo
     }
 }
 
-interface AllowableActionsProps {
+interface DataRowUniquenessContainerProps {
     model: DatasetModel;
-    onCheckBoxChange: (name: string, checked: boolean) => void;
+    onRadioChange: (e: any) => any;
+    dataRowSetting: number;
+    showAdditionalKeyField: boolean;
 }
-export class AllowableActions extends React.PureComponent<AllowableActionsProps> {
+
+export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {
     render() {
+        const { model, dataRowSetting, showAdditionalKeyField } = this.props;
+        const domain = model.domain;
+
+        const showAdditionalKeyFieldCls = showAdditionalKeyField ? "dataset_data_row_uniqueness_keyField_show" : "dataset_data_row_uniqueness_keyField_hide";
+
         return (
             <>
-                <Col xs={12} md={4}>
+                <Col md={6}>
                     <BasicPropertiesTitle
                         title="Data Row Uniqueness"
                     />
 
                     <div>
-                        Choose criteria for how particpants and visits are paired with or without an additional data column
+                        Choose criteria for how participants and visits are paired with or without an additional data column
                     </div>
 
-                    <DataRowUniquenessContainer
-                        model={this.props.model}
-                        onCheckBoxChange={this.props.onCheckBoxChange}
+                    <DataRowUniquenessElements
+                        onRadioChange={this.props.onRadioChange}
+                        dataRowSetting={dataRowSetting}
                     />
 
-                    <SelectPropertyInput
-                        label="Additional Key Field"
-                        model={this.props.model}
-                    />
+                    <div className={showAdditionalKeyFieldCls}>
+                        <SelectPropertyInput
+                            label="Additional Key Field"
+                            options={domain.fields.toArray()}
+                            labelKey="name"
+                            valueKey="propertyId"
+                            disabled={!showAdditionalKeyField}
+                        />
+
+                        <CheckBox
+                            checked={false}
+                            onClick={() => {}}
+                        />
+                        &nbsp; Let server manage fields to make entries unique
+                    </div>
+
                 </Col>
             </>
         );

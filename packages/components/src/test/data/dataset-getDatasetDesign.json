@@ -6,7 +6,7 @@
     "category": "A",
     "categoryId": 20,
     "visitDatePropertyName": "date",
-    "keyProperty": null,
+    "keyProperty": "BirthDate",
     "isDemographicData": true,
     "label": "Dataset One",
     "cohortId": 1,
@@ -14,7 +14,8 @@
     "showInOverview": true,
     "description": "This is the first dataset",
     "containerId": "1162245F-4B98-1038-BD0A-6FDD083AE070",
-    "entityId": "11622CD2-4B98-1038-BD0A-6FDD083AE070"
+    "entityId": "11622CD2-4B98-1038-BD0A-6FDD083AE070",
+    "keyManagementType": "GUID"
   },
   "domainDesign" : {
     "domainId" : 2280,

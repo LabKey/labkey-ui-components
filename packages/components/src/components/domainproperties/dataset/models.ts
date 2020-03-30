@@ -17,20 +17,6 @@
 import {Record} from "immutable";
 import {DomainDesign} from "../models";
 
-export interface AdvancedSettingsForm {
-    titleColumn?: string;
-    discussionSetting?: number;
-    fileAttachmentIndex?: boolean;
-    entireListIndex?: boolean;
-    entireListTitleTemplate?: string;
-    entireListIndexSetting?: number;
-    entireListBodySetting?: number;
-    eachItemIndex?: boolean;
-    eachItemTitleTemplate?: string;
-    eachItemBodySetting?: number;
-    entireListBodyTemplate?: string;
-    eachItemBodyTemplate?: string;
-}
 
 export class DatasetModel extends Record({
     domain: undefined,
@@ -55,7 +41,8 @@ export class DatasetModel extends Record({
     description: undefined,
     sourceAssayName: undefined,
     sourceAssayURL: undefined,
-    dataSharing: undefined
+    dataSharing: undefined,
+    keyManagementType: undefined
 }) {
     domain: DomainDesign;
     datasetId?: number;
@@ -74,6 +61,7 @@ export class DatasetModel extends Record({
     sourceAssayName?: string;
     sourceAssayURL?: string;
     dataSharing?: string;
+    keyManagementType?: any;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -84,7 +72,7 @@ export class DatasetModel extends Record({
             let domain = DomainDesign.create(undefined);
             return new DatasetModel({...newDataset, domain});
         } else {
-            let domain = DomainDesign.create(undefined);
+            let domain = DomainDesign.create(raw.domainDesign);
             return new DatasetModel({...raw.datasetDesign, domain});
         }
     }

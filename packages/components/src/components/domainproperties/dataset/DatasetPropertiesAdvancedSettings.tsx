@@ -60,11 +60,21 @@ interface DatasetSettingsInputProps {
     placeholder?: string;
     onValueChange: any;
     disabled: boolean;
+    showInAdvancedSettings: boolean;
 }
 
-class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInputProps> {
+export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInputProps> {
     render() {
-        const { name, label, helpTip, value, placeholder, onValueChange, disabled } = this.props;
+        const {
+            name,
+            label,
+            helpTip,
+            value,
+            placeholder,
+            onValueChange,
+            disabled,
+            showInAdvancedSettings
+        } = this.props;
 
         return (
             <Row className={'margin-top'}>
@@ -77,7 +87,8 @@ class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInputProps
                         }}
                     />
                 </Col>
-                <Col xs={1}/>
+
+                {showInAdvancedSettings && < Col xs={1}/>}
 
                 <Col xs={7} >
                     <FormControl
@@ -287,6 +298,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             placeholder="Auto Assign"
                             disabled={!newDataset}
                             onValueChange={this.onInputChange}
+                            showInAdvancedSettings={true}
                         />
 
                         <DatasetSettingsSelect
@@ -314,6 +326,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             value={tag}
                             disabled={false}
                             onValueChange={this.onInputChange}
+                            showInAdvancedSettings={true}
                         />
 
                         {
@@ -323,7 +336,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                     <BasicPropertiesTitle title="Dataspace Project Options"/>
                                 </div>
 
-                                < DatasetSettingsSelect
+                                <DatasetSettingsSelect
                                     name="dataspace"
                                     label="Share demographic data"
                                     helpTip={dataspaceTip}

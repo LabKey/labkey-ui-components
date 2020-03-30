@@ -107,6 +107,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     model.rowsLoadingState = LoadingState.LOADED;
                 }));
             } catch(error) {
+                console.error(`Error loading rows for model ${id}`, error);
                 this.setError(id, error);
             }
         };
@@ -142,6 +143,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     model.queryInfoLoadingState = LoadingState.LOADED;
                 }), () => this.maybeLoad(id, loadRows));
             } catch(error) {
+                console.error(`Error loading QueryInfo for model ${id}`, error);
                 this.setError(id, error);
             }
         };

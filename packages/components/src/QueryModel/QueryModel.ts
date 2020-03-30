@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 import { immerable } from 'immer';
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
 import { QuerySort } from '../components/base/models/model';
@@ -31,7 +31,7 @@ const sortStringMapper = (s: QuerySort): string => s.toRequestString();
 
 export interface QueryConfig {
     baseFilters?: Filter.IFilter[];
-    containerFilter?: string; // TODO use api-js ContainerFilter enum when it is merged.
+    containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     id?: string;
     includeDetailsColumn?: boolean;
@@ -50,7 +50,6 @@ export interface IQueryModel extends QueryConfig {
     error?: string;
     // Separate from baseFilters because these are set by the user when interacting with grids (e.g. via omnibox)
     filterArray: Filter.IFilter[];
-    rowsLoadingState: LoadingState;
     // Set by client
     message?: string;
     // Set by server (Assay QC, etc)
@@ -60,6 +59,7 @@ export interface IQueryModel extends QueryConfig {
     orderedRows?: string[];
     rows?: { [key: string]: any};
     rowCount?: number;
+    rowsLoadingState: LoadingState;
 }
 
 const DEFAULT_OFFSET = 0;
@@ -70,7 +70,7 @@ export class QueryModel implements IQueryModel {
 
     // Fields from QueryConfig
     baseFilters: Filter.IFilter[];
-    containerFilter?: string; // TODO use api-js ContainerFilter enum when it is merged.
+    containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     id: string;
     includeDetailsColumn: boolean;

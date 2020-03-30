@@ -28,7 +28,7 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
     if (errorMsg) {
         const lcMessage = errorMsg.toLowerCase();
         if (lcMessage.indexOf('violates unique constraint') >= 0 || lcMessage.indexOf('violation of unique key constraint') >= 0)
-            return "There was a problem creating your " + noun + ".  Check the existing " + (nounPlural || noun) + " for possible duplicates and make sure any referenced " + (nounPlural || noun) + " are still valid.";
+            return "There was a problem " + (verb || "creating") + " your " + noun + ".  Check the existing " + (nounPlural || noun) + " for possible duplicates and make sure any referenced " + (nounPlural || noun) + " are still valid.";
         else if (lcMessage.indexOf('existing row was not found') >= 0) {
             return 'We could not find the ' + noun + (verb ? ' to ' + verb : '') + '.  Try refreshing your page to see if it has been deleted.';
         }

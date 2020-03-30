@@ -184,7 +184,8 @@ export class LineageNode extends Record ({
             name:  values.name,
             parents: LineageLink.createList(values.parents),
             queryName: values.queryName,
-            rowId:values.rowId,
+            // "rowId" -> "id". See https://github.com/LabKey/platform/pull/1000
+            rowId:values.id,
             schemaName: values.schemaName,
             type: values.type,
             url: values.url,

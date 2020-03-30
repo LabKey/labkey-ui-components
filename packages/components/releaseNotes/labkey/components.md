@@ -7,6 +7,14 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Allow Source (Data Class) Alias to be defined separate from a SampleSet type Parent Alias
     - Allow filtering of parent options (for example, only 'sources' type data classes will be included)
     
+### version 0.41.2
+*Released*: 30 March 2020
+* Update canSubmit check for ParentEntityEditPanel to check for actual differences and allow submission when all parents have been removed
+
+### version 0.41.1
+*Released*: 29 March 2020
+* Item 6862: Switch LineageNode to bind "id" instead of "rowId"
+
 ### version 0.41.0
 *Released*: 27 March 2020
 * Item 7002: Refactor domain designer components to share more with base components

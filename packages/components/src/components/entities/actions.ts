@@ -1,4 +1,13 @@
-import { buildURL, getQueryGridModel, getSelected, naturalSort, QueryGridModel, SchemaQuery, selectRows } from '../..';
+import {
+    buildURL,
+    getQueryGridModel,
+    getSelected,
+    naturalSort,
+    queryGridInvalidate,
+    QueryGridModel,
+    SchemaQuery,
+    selectRows
+} from '../..';
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 import {
@@ -12,6 +21,7 @@ import {
     IParentOption
 } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
+import { DELIMITER } from '../forms/input/SelectInput';
 
 export interface DeleteConfirmationData {
     canDelete: Array<any>
@@ -32,8 +42,9 @@ export function getDeleteConfirmationData(selectionKey: string, dataType: Entity
             }
         }
         return Ajax.request({
-            url: buildURL('experiment', dataType.deleteConfirmationActionName, params),
+            url: buildURL('experiment', dataType.deleteConfirmationActionName),
             method: "POST",
+            jsonData: params,
             success: Utils.getCallbackWrapper((response) => {
                 if (response.success) {
                     resolve(response.data);
@@ -318,18 +329,24 @@ export function getInitialParentChoices(parentTypeOptions: List<IEntityTypeOptio
     return parentValuesByType.sortBy(choice => choice.type.label, naturalSort).toList();
 }
 
-export function getUpdatedRowForParentChanges(parentDataType: EntityDataType, currentParents: List<EntityChoice>, childModel: QueryGridModel) {
+export function getUpdatedRowForParentChanges(parentDataType: EntityDataType, originalParents: List<EntityChoice>, currentParents: List<EntityChoice>, childModel: QueryGridModel) {
     const queryData = childModel.getRow();
     const queryInfo = childModel.queryInfo;
 
+    const definedCurrentParents = currentParents.filter((parent) => (parent.type !== null && parent.type !== undefined)).toList();
     let updatedValues = {};
-    currentParents.forEach((parentChoice) => {
-        // Label may seem wrong here, but it is the same as query when extracted from the original query to get
-        // the entity types.
-        if (parentChoice.value && parentChoice.value.length > 0) {
-            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value;
-        }
-    });
+    if (definedCurrentParents.isEmpty()) { // have no current parents but have original parents, send in empty strings so original parents are removed.
+        originalParents.forEach((parentChoice) => {
+            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = null;
+        })
+    }
+    else {
+        definedCurrentParents.forEach((parentChoice) => {
+            // Label may seem wrong here, but it is the same as query when extracted from the original query to get
+            // the entity types.
+            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || null;
+        });
+    }
 
     queryInfo.getPkCols().forEach((pkCol) => {
         const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
@@ -361,5 +378,45 @@ export function deleteEntityType(deleteActionName: string, rowId: number): Promi
                 reject(response);
             }),
         });
+    });
+}
+
+export function parentValuesDiffer(sortedOriginalParents: List<EntityChoice>, currentParents: List<EntityChoice>) : boolean {
+    const sortedCurrentParents = currentParents.sortBy(choice => choice.type ? choice.type.label : "~~NO_TYPE~~", naturalSort).toList();
+    const difference = sortedOriginalParents.find((original, index) => {
+        const current = sortedCurrentParents.get(index);
+        if (!current)
+            return true;
+        if (current.type && original.type.rowId !== current.type.rowId) {
+            return true;
+        }
+        const originalValues = original.value ? original.value.split(DELIMITER).sort(naturalSort).join(DELIMITER) : "";
+        const currentValues = current.value ? current.value.split(DELIMITER).sort(naturalSort).join(DELIMITER) : "";
+        if (originalValues !== currentValues) {
+            return true;
+        }
+    });
+    if (difference) {
+        return true;
+    }
+    // we have more current parents than the original and we have selected a value for at least one of these parents.
+    if (sortedCurrentParents.size > sortedOriginalParents.size) {
+        return sortedCurrentParents.slice(sortedOriginalParents.size).find((parent) => parent.value !== undefined) !== undefined;
+    }
+    return false;
+}
+
+export function invalidateParentModels(originalParents: List<EntityChoice>, currentParents: List<EntityChoice>, parentDataType: EntityDataType) {
+    // clear out the original parents' grid data (which may no longer be represented in the current parents)
+    let cleared = [];
+    originalParents.forEach((parentChoice) => {
+        cleared.push(parentChoice.type.label);
+        queryGridInvalidate(SchemaQuery.create(parentDataType.instanceSchemaName, parentChoice.type.label), true);
+    });
+    // also clear out the current parents' grid data if it hasn't already been cleared
+    currentParents.forEach((parentChoice) => {
+        if (parentChoice.type && cleared.indexOf(parentChoice.type.label) < 0) {
+            queryGridInvalidate(SchemaQuery.create(parentDataType.instanceSchemaName, parentChoice.type.label), true);
+        }
     });
 }

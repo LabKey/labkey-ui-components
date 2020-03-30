@@ -79,6 +79,7 @@ describe("<ParentEntityEditPanel>", () => {
         panel.setState({
             loading: false,
             editing: true,
+            originalParents: List<EntityChoice>(),
             currentParents: List<EntityChoice>()
         });
         const header = panel.find(DetailPanelHeader);

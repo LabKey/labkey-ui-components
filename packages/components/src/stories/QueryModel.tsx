@@ -30,7 +30,6 @@ class GridPanelButtonsExample extends PureComponent<RequiresModelAndActions> {
 interface State {
     schemaName?: string;
     queryName?: string;
-    viewName?: string;
 }
 
 class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, State> {
@@ -40,7 +39,6 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
         this.state = {
             schemaName: '',
             queryName: '',
-            viewName: '',
         };
     }
 
@@ -52,17 +50,16 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
     applySchemaQuery = () => {
         const { queryModels, actions } = this.props;
         const { model } = queryModels;
-        let { schemaName, queryName, viewName } = this.state;
+        let { schemaName, queryName } = this.state;
         schemaName = schemaName.trim() || undefined;
         queryName = queryName.trim() || undefined;
-        viewName = viewName.trim() || undefined;
 
         if (schemaName === undefined || queryName === undefined) {
             console.warn('Cannot have empty schemaName or queryName');
             return;
         }
 
-        const schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
+        const schemaQuery = SchemaQuery.create(schemaName, queryName);
 
         if (model !== undefined) {
             actions.setSchemaQuery(model.id, schemaQuery);
@@ -74,7 +71,7 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
     render() {
         const { queryModels, actions } = this.props;
         const { model } = queryModels;
-        const { schemaName, queryName, viewName } = this.state;
+        const { schemaName, queryName } = this.state;
         let body = (
             <div>
                 Enter a Schema, Query, View
@@ -96,11 +93,6 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
                     <div className="form-row__input">
                         <label htmlFor="queryName">Query</label>
                         <input id="queryName" name="queryName" type="text" value={queryName} onChange={this.onFormChange}/>
-                    </div>
-
-                    <div className="form-row__input">
-                        <label htmlFor="viewName">View</label>
-                        <input id="viewName" name="viewName" type="text" value={viewName} onChange={this.onFormChange}/>
                     </div>
 
                     <div className="form-row__input">

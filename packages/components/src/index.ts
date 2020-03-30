@@ -303,6 +303,7 @@ import {
     Actions,
     QueryConfigMap,
     QueryModelMap,
+    RequiresModelAndActions,
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 
@@ -694,6 +695,7 @@ export {
     withQueryModels,
     MakeQueryModels,
     Actions,
+    RequiresModelAndActions,
     InjectedQueryModels,
     GridPanel,
     GridPanelWithModel,

@@ -57,42 +57,44 @@ export class SearchResultsPanel extends React.Component<Props, any> {
 
     renderResults() {
         const { model, iconUrl, useSampleType } = this.props;
+
+        if (this.isLoading())
+            return;
+
         const results = model ? model.getIn(['entities', 'hits']) : undefined;
 
-        if (!this.isLoading() && results !== undefined) {
-            // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
-            const data = results.filter((result) => {
-                const category = result.get('category');
-                return category=='data' || category=='material' || category=='workflowJob' || category=='file workflowJob' || result.has('data');
-            });
+        // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
+        const data = results ? results.filter((result) => {
+            const category = result.get('category');
+            return category=='data' || category=='material' || category=='workflowJob' || category=='file workflowJob';
+        }) : undefined;
 
-            if (data.size > 0) {
-                return (
-                    <div>
-                        <h3 className="no-margin-top search-results__amount">{data.size} Results</h3>
-                        {data.size > 0 && data.map((item, i) => (
-                            <div key={i} className="col-md-6 col-sm-12 search-results__margin-top">
-                                <SearchResultCard
-                                    title={item.get('title')}
-                                    summary={item.get('summary')}
-                                    url={item.get('url')}
-                                    category={item.get('category')}
-                                    data={item.get('data')}
-                                    iconUrl={iconUrl}
-                                    useSampleType={useSampleType}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                )
-            }
-            else {
-                return (
-                    <div className="search-results__margin-top">
-                        No Results Found
-                    </div>
-                )
-            }
+        if (data && data.size > 0) {
+            return (
+                <div>
+                    <h3 className="no-margin-top search-results__amount">{data.size} Results</h3>
+                    {data.size > 0 && data.map((item, i) => (
+                        <div key={i} className="col-md-6 col-sm-12 search-results__margin-top">
+                            <SearchResultCard
+                                title={item.get('title')}
+                                summary={item.get('summary')}
+                                url={item.get('url')}
+                                category={item.get('category')}
+                                data={item.get('data')}
+                                iconUrl={iconUrl}
+                                useSampleType={useSampleType}
+                            />
+                        </div>
+                    ))}
+                </div>
+            )
+        }
+        else {
+            return (
+                <div className="search-results__margin-top">
+                    No Results Found
+                </div>
+            )
         }
     }
 

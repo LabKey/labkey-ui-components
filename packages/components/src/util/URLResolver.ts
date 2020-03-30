@@ -476,6 +476,11 @@ export class URLResolver {
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
                             return row.set('url', this.mapURL({url, row, column, query}));
                         }
+                        else if (id.indexOf('dataClass') >= 0) {
+                            query = row.getIn(['data', 'name']);
+                            url = url.substring(0, url.indexOf("&")); // URL includes documentID value, this will split off at the start of the docID
+                            return row.set('url', this.mapURL({url, row, column, query}));
+                        }
                         else if (id.indexOf('materialSource') >= 0 ) {
                             query = row.getIn(['data', 'name']);
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID

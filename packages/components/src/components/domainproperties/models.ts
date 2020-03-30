@@ -33,6 +33,7 @@ import {
     FLOAT_RANGE_URI,
     INT_RANGE_URI,
     LONG_RANGE_URI,
+    MAX_TEXT_LENGTH,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -40,6 +41,7 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
     TIME_RANGE_URI,
+    UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
 import { SCHEMAS } from '../base/models/schemas';
@@ -624,7 +626,7 @@ export class DomainField extends Record({
     regexValidators: List<PropertyValidator>(),
     recommendedVariable: false,
     required: false,
-    scale: undefined,
+    scale: MAX_TEXT_LENGTH,
     URL: undefined,
     shownInDetailsView: true,
     shownInInsertView: true,
@@ -813,6 +815,11 @@ export class DomainField extends Record({
         // Special case for users, needs different URI for uniqueness in UI but actually uses int URI
         if (json.rangeURI === USER_RANGE_URI) {
             json.rangeURI = INT_RANGE_URI;
+        }
+
+        // Issue 39938: revert back to max Integer length if user input is larger then 4000
+        if (df.scale && (isNaN(df.scale) || df.scale > MAX_TEXT_LENGTH)) {
+            json.scale = UNLIMITED_TEXT_LENGTH;
         }
 
         // remove non-serializable fields

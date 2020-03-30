@@ -1,6 +1,28 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.41.2
+*Released*: 30 March 2020
+* Update canSubmit check for ParentEntityEditPanel to check for actual differences and allow submission when all parents have been removed
+
+### version 0.41.1
+*Released*: 29 March 2020
+* Item 6862: Switch LineageNode to bind "id" instead of "rowId"
+
+### version 0.41.0
+*Released*: 27 March 2020
+* Item 7002: Refactor domain designer components to share more with base components
+    - BasePropertiesPanel, SectionHeading, withDomainPropertiesPanelCollapse (instead of DomainPropertiesPanelContext)
+    - BaseDomainDesigner component and withBaseDomainDesigner HOC
+    - DomainFieldLabel component for domain designer field input consistency
+    - Domain designers updates for consistent handling of isValid state and error display
+    - Issue 39938: Domain field fix to revert back to max Integer length if user input is larger then 4000
+
+## version 0.40.0
+*Released*: 27 March 2020
+* Remove SampleSetResolver for app URLs
+    - URL mappers updated use /samples/<sampleSetName> or /rd/samples/<rowId>
+
 ## version 0.39.4
 *Released*: 24 March 2020
 * Issue 39968: Cannot update assay result field to "All Samples"

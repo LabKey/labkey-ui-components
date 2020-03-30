@@ -39,6 +39,7 @@ interface Props {
 
 interface State {
     chosenType: string
+    chosenValue: string | Array<string>
 }
 
 export class SingleParentEntityPanel extends React.Component<Props, State> {
@@ -46,7 +47,8 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            chosenType: props.parentTypeQueryName
+            chosenType: props.parentTypeQueryName,
+            chosenValue: props.chosenValue
         }
     }
 
@@ -85,7 +87,8 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
 
     onChangeParentType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption) => {
         this.setState(() => ({
-            chosenType: formValue
+            chosenType: formValue,
+            chosenValue: undefined
         }),() => {
             if (this.props.onChangeParentType) {
                 this.props.onChangeParentType(fieldName, formValue, selectedOption, this.props.index)
@@ -100,15 +103,19 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
     };
 
     onChangeParentValue = (name: string, value: string | Array<any>, items: any) => {
-        if (this.props.onChangeParentValue) {
-            this.props.onChangeParentValue(name, value, this.props.index);
-        }
+        this.setState((state) => ({chosenValue: value}), () => {
+            if (this.props.onChangeParentValue) {
+                this.props.onChangeParentValue(name, value, this.props.index);
+            }
+        })
     };
 
     onInitValue = (value: any, selectedValues: List<any>) => {
-        if (this.props.onInitialParentValue) {
-            this.props.onInitialParentValue(value, selectedValues, this.props.index)
-        }
+        this.setState((state) => ({chosenValue: value}), () => {
+            if (this.props.onInitialParentValue) {
+                this.props.onInitialParentValue(value, selectedValues, this.props.index)
+            }
+        });
     };
 
     renderParentSelection() {
@@ -172,7 +179,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                         showLabel={true}
                         valueColumn="Name"
                         showLoading={true}
-                        value={this.props.chosenValue ? this.props.chosenValue : (parentValues ? parentValues.join(DELIMITER) : undefined)}
+                        value={this.state.chosenValue ? this.state.chosenValue : (parentValues ? parentValues.join(DELIMITER) : undefined)}
                     />
                 )}
             </div>

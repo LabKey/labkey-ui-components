@@ -30,6 +30,7 @@ import {
     helpLinkNode,
     MISSING_VALUES_TOPIC
 } from '../../util/helpLinks';
+import { DomainFieldLabel } from "./DomainFieldLabel";
 
 interface AdvancedSettingsProps {
     domainId?: number
@@ -308,8 +309,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div className='domain-adv-misc-options'>Default Value Options</div>
                 <Row className='domain-adv-thick-row'>
                     <Col xs={3}>
-                                <span>Default Type<LabelHelpTip title='Default Type'
-                                                                body={this.getDefaultTypeHelpText}/></span>
+                        <DomainFieldLabel
+                            label={'Default Type'}
+                            helpTipBody={this.getDefaultTypeHelpText}
+                        />
                     </Col>
                     <Col xs={6}>
                         <FormControl
@@ -351,7 +354,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div className='domain-adv-misc-options'>Miscellaneous Options</div>
                 <Row>
                     <Col xs={3}>
-                        <span>PHI Level<LabelHelpTip title='PHI Level' body={this.getPhiHelpText}/></span>
+                        <DomainFieldLabel
+                            label={'PHI Level'}
+                            helpTipBody={this.getPhiHelpText}
+                        />
                     </Col>
                     <Col xs={6}>
                         <FormControl

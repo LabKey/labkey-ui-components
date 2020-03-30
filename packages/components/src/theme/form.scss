@@ -38,6 +38,11 @@
   text-overflow: ellipsis;
 }
 
+.text__truncate-and-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 // Display tooltips on disabled buttons
 // this is borrowed from here https://github.com/pastaclub/react-bootstrap-tooltip-button
 .disabled-button-with-tooltip {
@@ -191,11 +196,6 @@ div.react-datepicker__current-month {
     color: grey;
     padding-bottom: 15px;
     font-size: 13px;
-}
-
-.entity-form--overlaylabel {
-    padding: 0;
-    font-weight: normal;
 }
 
 .textarea-noresize {

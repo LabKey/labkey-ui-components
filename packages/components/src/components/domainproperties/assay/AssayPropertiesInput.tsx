@@ -5,9 +5,7 @@ import { ActionURL } from '@labkey/api';
 
 import { AssayProtocolModel } from '../assay/models';
 import { FORM_IDS } from './AssayPropertiesPanel';
-import { getSplitSentence } from '../actions';
 import { getValidPublishTargets } from '../assay/actions';
-import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Container } from '../../base/models/model';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { RemoveEntityButton } from '../../buttons/RemoveEntityButton';
@@ -18,6 +16,7 @@ import {
     helpLinkNode,
     PROGRAMMATIC_QC_TOPIC
 } from '../../../util/helpLinks';
+import { DomainFieldLabel } from "../DomainFieldLabel";
 
 interface AssayPropertiesInputProps {
     label: string
@@ -35,18 +34,11 @@ export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInp
         return (
             <Row className={'margin-top'}>
                 <Col xs={3} lg={appPropertiesOnly ? 2 : 4}>
-                    {getSplitSentence(label, false)}
-                    <span className='domain-no-wrap'>
-                        {getSplitSentence(label, true)}
-                        {required ? ' *' : ''}
-                        {helpTipBody &&
-                        <LabelHelpTip
-                                title={label}
-                                body={helpTipBody}
-                                required={required}
-                        />
-                        }
-                    </span>
+                    <DomainFieldLabel
+                        label={label}
+                        required={required}
+                        helpTipBody={helpTipBody}
+                    />
                 </Col>
                 <Col xs={colSize || 9} lg={appPropertiesOnly ? 10 : 8}>
                     {children}
@@ -434,10 +426,9 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 
         return (
             <Col xs={3} lg={4}>
-                {label}
-                <LabelHelpTip
-                    title={label}
-                    body={() => {
+                <DomainFieldLabel
+                    label={label}
+                    helpTipBody={() => {
                         return (
                             <>
                                 <p>

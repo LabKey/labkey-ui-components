@@ -105,7 +105,7 @@ describe("resolveLineage", () => {
         const lineageResult = LineageResult.create(lineageJSON);
         const updatedResults = resolver.resolveLineageNodes(lineageResult);
         // test a sample type
-        expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201', 'listURL'])).toBe("/rd/samples/expressionsystemsamples");
+        expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201', 'listURL'])).toBe("/samples/expressionsystemsamples");
         expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201', 'url'])).toBe("#/rd/samples/176708");
 
         // test a data class type without an original url
@@ -115,7 +115,5 @@ describe("resolveLineage", () => {
         // TODO test that the run node doesn't show up
         expect(updatedResults.getIn(['nodes', "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e", 'listURL'])).toBe(undefined);
         expect(updatedResults.getIn(['nodes', "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e", 'url'])).toBe("/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18576");
-
     });
-
 });

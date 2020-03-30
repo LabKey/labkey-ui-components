@@ -1,26 +1,11 @@
-/*
- * Copyright (c) 2020 LabKey Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
 import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
 import { ListModel } from './models';
-import { BasicPropertiesTitle } from "../PropertiesPanelFormElements";
+import { SectionHeading } from "../SectionHeading";
+import { DomainFieldLabel } from "../DomainFieldLabel";
 
 interface BasicPropertiesInputsProps {
     model: ListModel;
@@ -34,7 +19,11 @@ export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
         return(
             <Row className={'margin-top'}>
                 <Col xs={3} lg={2}>
-                    Name *
+                    <DomainFieldLabel
+                        label={'Name'}
+                        required={true}
+                        helpTipBody={() => 'The name for this list. Note that this can be changed after list creation.'}
+                    />
                 </Col>
 
                 <Col xs={9} lg={8}>
@@ -61,7 +50,9 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
         return(
             <Row className={'margin-top'}>
                 <Col xs={3} lg={2}>
-                    Description
+                    <DomainFieldLabel
+                        label={'Description'}
+                    />
                 </Col>
 
                 <Col xs={9} lg={8}>
@@ -84,7 +75,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
         const { model, onInputChange } = this.props;
         return (
             <Col xs={12} md={7}>
-                <BasicPropertiesTitle title="Basic Properties" />
+                <SectionHeading title="Basic Properties" />
 
                 <NameInput model={model} onInputChange={onInputChange} />
 
@@ -184,7 +175,7 @@ export class AllowableActions extends React.PureComponent<AllowableActionsProps>
         return (
             <>
                 <Col xs={12} md={3}>
-                    <BasicPropertiesTitle title="Allow these Actions" />
+                    <SectionHeading title="Allow these Actions" />
 
                     <AllowableActionContainer model={this.props.model} onCheckBoxChange={this.props.onCheckBoxChange} />
                 </Col>

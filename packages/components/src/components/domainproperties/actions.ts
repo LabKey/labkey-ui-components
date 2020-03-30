@@ -201,6 +201,8 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
         }
 
         function failureHandler(response) {
+            console.error(response);
+
             if (!response.exception) {
                 response = {exception: response};
             }

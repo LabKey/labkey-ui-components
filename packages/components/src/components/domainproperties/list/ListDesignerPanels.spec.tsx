@@ -1,24 +1,29 @@
 import React from "react";
-import {ListDesignerPanels} from "./ListDesignerPanels";
+import {Alert} from "react-bootstrap";
+import renderer from 'react-test-renderer';
 import {mount} from "enzyme";
+import toJson from "enzyme-to-json";
+import {ListDesignerPanels} from "./ListDesignerPanels";
 import {ListModel} from "./models";
 import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
 import getDomainDetailsJSON from "../../../test/data/list-getDomainDetails.json";
 import DomainForm from "../DomainForm";
 import {ListPropertiesPanel} from "./ListPropertiesPanel";
-import {Alert} from "react-bootstrap";
-import renderer from 'react-test-renderer';
-import toJson from "enzyme-to-json";
+import { PROPERTIES_PANEL_ERROR_MSG } from "../constants";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
+
+const BASE_PROPS = {
+    onComplete: jest.fn(),
+    onCancel: jest.fn()
+};
 
 describe('ListDesignerPanel', () => {
     test('new list', () => {
         const listDesignerPanels =
             <ListDesignerPanels
-                onComplete={jest.fn()}
-                onCancel={jest.fn()}
+                {...BASE_PROPS}
                 initModel={emptyNewModel}
             />;
 
@@ -29,8 +34,7 @@ describe('ListDesignerPanel', () => {
     test('existing list', () => {
         const listDesignerPanels = mount(
             <ListDesignerPanels
-                onComplete={jest.fn()}
-                onCancel={jest.fn()}
+                {...BASE_PROPS}
                 initModel={populatedExistingModel}
             />
         );
@@ -42,8 +46,7 @@ describe('ListDesignerPanel', () => {
     test('visible properties', () => {
         const listDesignerPanels = mount(
             <ListDesignerPanels
-                onComplete={jest.fn()}
-                onCancel={jest.fn()}
+                {...BASE_PROPS}
                 initModel={emptyNewModel}
             />
         );
@@ -56,8 +59,7 @@ describe('ListDesignerPanel', () => {
     test('open fields panel', () => {
         const listDesignerPanels = mount(
             <ListDesignerPanels
-                onComplete={jest.fn()}
-                onCancel={jest.fn()}
+                {...BASE_PROPS}
                 initModel={emptyNewModel}
             />
         );
@@ -82,7 +84,7 @@ describe('ListDesignerPanel', () => {
 
 
         expect(listDesignerPanels.find(Alert)).toHaveLength(2);
-        expect(listDesignerPanels.find(Alert).at(0).text()).toEqual('Contains errors or is missing required values.');
+        expect(listDesignerPanels.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
         expect(listDesignerPanels.find(Alert).at(1).text()).toEqual('Please correct errors in the properties panel before saving.');
         listDesignerPanels.unmount();
     });

@@ -5,11 +5,13 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
   className="row"
 >
   <div
-    className="col-xs-3"
+    className="col-xs-2"
   >
-    <span>
-      Parent Alias *
-       
+    Parent 
+    <span
+      className="domain-no-wrap"
+    >
+      Alias
       <span
         className="label-help-target"
         onMouseOut={[Function]}
@@ -33,6 +35,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
           />
         </svg>
       </span>
+       *
     </span>
   </div>
   <div
@@ -90,7 +93,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
                   aria-expanded="false"
                   aria-haspopup="false"
                   aria-owns=""
-                  id="selectinput-9"
+                  id="selectinput-4"
                   onBlur={[Function]}
                   onChange={[Function]}
                   onFocus={[Function]}
@@ -178,11 +181,13 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
   className="row"
 >
   <div
-    className="col-xs-3"
+    className="col-xs-2"
   >
-    <span>
-      Parent Alias *
-       
+    Parent 
+    <span
+      className="domain-no-wrap"
+    >
+      Alias
       <span
         className="label-help-target"
         onMouseOut={[Function]}
@@ -206,6 +211,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
           />
         </svg>
       </span>
+       *
     </span>
   </div>
   <div
@@ -276,7 +282,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
                   aria-expanded="false"
                   aria-haspopup="false"
                   aria-owns=""
-                  id="selectinput-5"
+                  id="selectinput-2"
                   onBlur={[Function]}
                   onChange={[Function]}
                   onFocus={[Function]}

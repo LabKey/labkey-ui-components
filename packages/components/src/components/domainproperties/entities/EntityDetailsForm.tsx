@@ -2,7 +2,6 @@ import React from 'react';
 import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { IEntityDetails } from './models';
-import { LabelOverlay } from '../../../components/forms/LabelOverlay';
 import {
     getEntityDescriptionValue,
     getEntityNameExpressionValue,
@@ -10,6 +9,7 @@ import {
     isExistingEntity
 } from "./actions";
 import { ENTITY_FORM_IDS } from "./constants";
+import { DomainFieldLabel } from "../DomainFieldLabel";
 
 export interface EntityDetailsProps {
     noun: string
@@ -30,18 +30,14 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
         return (
             <Form>
                 <Row className={'margin-bottom'}>
-                    <Col xs={3}>
-                        <LabelOverlay
-                            isFormsy={false}
-                            labelClass={'entity-form--overlaylabel'}
+                    <Col xs={2}>
+                        <DomainFieldLabel
                             label={'Name'}
-                            type={'Text (String)'}
-                            description={`The name for this ${noun.toLowerCase()}. Note that this can\'t be changed after ${noun.toLowerCase()} creation.`}
                             required={true}
-                            canMouseOverTooltip={true}
+                            helpTipBody={() => `The name for this ${noun.toLowerCase()}. Note that this can\'t be changed after ${noun.toLowerCase()} creation.`}
                         />
                     </Col>
-                    <Col xs={9}>
+                    <Col xs={10}>
                         <FormControl
                             id={ENTITY_FORM_IDS.NAME}
                             type="text"
@@ -53,15 +49,13 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                     </Col>
                 </Row>
                 <Row className='margin-bottom'>
-                    <Col xs={3}>
-                        <LabelOverlay
+                    <Col xs={2}>
+                        <DomainFieldLabel
                             label={'Description'}
-                            type={'Text (String)'}
-                            description={`A short description for this ${noun.toLowerCase()}.`}
-                            canMouseOverTooltip={true}
+                            helpTipBody={() => `A short description for this ${noun.toLowerCase()}.`}
                         />
                     </Col>
-                    <Col xs={9}>
+                    <Col xs={10}>
                         <textarea
                             className="form-control textarea-noresize"
                             id={ENTITY_FORM_IDS.DESCRIPTION}
@@ -71,16 +65,18 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                     </Col>
                 </Row>
                 <Row className={'margin-bottom'}>
-                    <Col xs={3}>
-                        <LabelOverlay
+                    <Col xs={2}>
+                        <DomainFieldLabel
                             label={'Naming Pattern'}
-                            type={'Text (String)'}
-                            description={`Pattern used for generating unique IDs for this ${noun.toLowerCase()}.`}
-                            content={moreInfoLink}
-                            canMouseOverTooltip={true}
+                            helpTipBody={() => (
+                                <>
+                                    <p>Pattern used for generating unique IDs for this {noun.toLowerCase()}.</p>
+                                    {moreInfoLink}
+                                </>
+                            )}
                         />
                     </Col>
-                    <Col xs={9}>
+                    <Col xs={10}>
                         <FormControl
                             id={ENTITY_FORM_IDS.NAME_EXPRESSION}
                             type="text"

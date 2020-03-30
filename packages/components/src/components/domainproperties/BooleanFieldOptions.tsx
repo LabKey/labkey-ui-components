@@ -4,7 +4,8 @@ import { createFormInputId, createFormInputName } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_SCALE } from './constants';
 import { ITypeDependentProps } from './models';
-import { LabelHelpTip } from '../base/LabelHelpTip';
+import { SectionHeading } from "./SectionHeading";
+import { DomainFieldLabel } from "./DomainFieldLabel";
 
 interface BooleanFieldProps extends ITypeDependentProps {
     format: string
@@ -40,14 +41,16 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading'}>{label}</div>
+                        <SectionHeading title={label}/>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
                         <div className={'domain-field-label'}>
-                            Format for Boolean Values
-                            <LabelHelpTip title='Format Strings' body={this.getFormatHelpText} />
+                            <DomainFieldLabel
+                                label={'Format for Boolean Values'}
+                                helpTipBody={this.getFormatHelpText}
+                            />
                         </div>
                     </Col>
                 </Row>

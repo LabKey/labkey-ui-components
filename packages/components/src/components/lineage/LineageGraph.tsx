@@ -209,7 +209,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         />;
     }
 
-    getNodeGridDataModel(node: LineageNode): QueryGridModel|undefined {
+    getNodeGridDataModel(node: LineageNode): QueryGridModel {
         if (node.schemaName && node.queryName && node.id) {
             return getStateQueryGridModel('lineage-selected', SchemaQuery.create(node.schemaName, node.queryName), {
                 allowSelection: false,

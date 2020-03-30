@@ -76,7 +76,7 @@ function fetchNodeMetadata(lineage: LineageResult): Promise<ISelectRowsResult>[]
     // each node would require it's own request for the unique keys combination. Also, nodes without any primary
     // keys cannot be filtered upon and thus are also not supported.
     return lineage.nodes
-        .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.size !== 1)
+        .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.size === 1)
         .groupBy(n => SchemaQuery.create(n.schemaName, n.queryName))
         .map((nodes, schemaQuery) => {
             const { fieldKey } = nodes.first().pkFilters.get(0);

@@ -104,6 +104,20 @@ export interface LineagePKFilter {
     value: any
 }
 
+export interface LineageRunStep {
+    applicationType: string
+    activityDate: string
+    activitySequence: number
+    created: string
+    createdBy: string
+    id: number
+    lsid: string
+    modified: string
+    modifiedBy: string
+    name: string
+    protocol: any
+}
+
 export class LineageNode extends Record ({
     // absolutePath: undefined,
     children: undefined,
@@ -123,6 +137,7 @@ export class LineageNode extends Record ({
     pkFilters: undefined,
     queryName: undefined,
     schemaName: undefined,
+    steps: undefined,
     type: undefined,
     url: undefined,
 
@@ -148,6 +163,7 @@ export class LineageNode extends Record ({
     pkFilters?: List<LineagePKFilter>;
     queryName?: string;
     schemaName?: string;
+    steps?: List<LineageRunStep>;
     type?: string;
     url?: string;
 
@@ -170,6 +186,7 @@ export class LineageNode extends Record ({
             pkFilters: List(values.pkFilters),
             queryName: values.queryName,
             schemaName: values.schemaName,
+            steps: values.steps ? List(values.steps): List(),
             type: values.type,
             url: values.url,
             meta: values.meta

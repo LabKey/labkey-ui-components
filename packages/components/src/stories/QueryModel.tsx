@@ -13,7 +13,6 @@ import {
     withQueryModels,
 } from '..';
 import './QueryModel.scss';
-import { verify } from 'crypto';
 
 class GridPanelButtonsExample extends PureComponent<RequiresModelAndActions> {
     render() {

@@ -34,17 +34,21 @@ export class URLResolver {
         this.mappers = List<URLMapper>([
 
             new ActionMapper('experiment', 'showDataClass', (row, column) => {
-                let url = ['rd', 'dataclass'];
+                let identifier: string;
 
                 // TODO: Deal with junction lookup
-                if (column.has('lookup')) {
-                    url.push(row.get('displayValue').toString());
+                if (row.has('data')) {
+                    // search link doesn't use the same url
+                    identifier = row.getIn(['data', 'name']);
+                } else if (column.has('lookup')) {
+                    identifier = row.get('displayValue').toString();
                 }
                 else {
-                    url.push(row.get('value').toString());
+                    identifier = row.get('value').toString();
                 }
-
-                return AppURL.create(...url);
+                if (identifier !== undefined) {
+                    return AppURL.create(['rd', 'dataclass', identifier]);
+                }
             }),
 
 

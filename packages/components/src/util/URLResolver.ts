@@ -47,7 +47,7 @@ export class URLResolver {
                     identifier = row.get('value').toString();
                 }
                 if (identifier !== undefined) {
-                    return AppURL.create(['rd', 'dataclass', identifier]);
+                    return AppURL.create('rd', 'dataclass', identifier);
                 }
             }),
 

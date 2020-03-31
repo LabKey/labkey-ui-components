@@ -15,21 +15,19 @@
  */
 
 import React from 'react';
-import { Panel, Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
-import { Alert } from '../../..';
-import { DomainDesign, DomainPanelStatus } from "../models";
+import { DomainPanelStatus } from "../models";
 import { DataRowUniquenessContainer, BasicPropertiesFields } from "./DatasetPropertiesPanelFormElements";
 import { AdvancedSettings } from "./DatasetPropertiesAdvancedSettings";
-import { CollapsiblePanelHeader } from "../CollapsiblePanelHeader";
-import { DomainPropertiesPanelContext, DomainPropertiesPanelProvider } from "../DomainPropertiesPanelContext";
-import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "../actions";
+import { updateDomainPanelClassList } from "../actions";
 import { DatasetModel} from "./models";
+import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
+import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
 
 const PROPERTIES_HEADER_ID = 'dataset-properties-hdr';
-const ERROR_MSG = 'Contains errors or is missing required values.';
 
-interface Props {
+interface OwnProps {
     model: DatasetModel;
     panelStatus?: DomainPanelStatus;
     onChange?: (model: DatasetModel) => void;
@@ -44,6 +42,8 @@ interface Props {
     showDataspace: boolean;
 }
 
+type Props = OwnProps & BasePropertiesPanelProps;
+
 interface State {
     isValid?: boolean;
     name?: string;
@@ -53,32 +53,9 @@ interface State {
     dataRowSetting?: number;
 }
 
-export class DatasetPropertiesPanel extends React.PureComponent<Props> {
-    render() {
-        const { collapsible, controlledCollapse, initCollapsed, onToggle, newDataset } = this.props;
+class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
 
-        return (
-            <DomainPropertiesPanelProvider
-                controlledCollapse={controlledCollapse}
-                collapsible={collapsible}
-                initCollapsed={initCollapsed}
-                onToggle={onToggle}>
-                <DatasetPropertiesPanelImpl {...this.props} />
-            </DomainPropertiesPanelProvider>
-        );
-    }
-}
-
-class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
-    static contextType = DomainPropertiesPanelContext;
-    context!: React.ContextType<typeof DomainPropertiesPanelContext>;
-
-    static defaultProps = {
-        initCollapsed: false,
-        validate: false,
-    };
-
-    constructor(props) {
+    constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
 
         this.state = {
@@ -117,13 +94,6 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
         updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
     }
 
-
-    toggleLocalPanel = (evt: any): void => {
-        const { togglePanel, collapsed } = this.context;
-        togglePanel(evt, !collapsed);
-    };
-
-
     onCheckBoxChange = (name, checked): void => {
         // this.onChange(name, !checked);
     };
@@ -154,11 +124,7 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
 
     render() {
         const {
-            panelStatus,
-            collapsible,
-            controlledCollapse,
             model,
-            useTheme,
             newDataset,
             showDataspace,
         } = this.props;
@@ -171,71 +137,47 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props, State> {
             label,
             dataRowSetting
         } = this.state;
-        const { collapsed } = this.context;
 
-        return(
-            <>
-                <Panel
-                    className={getDomainPanelClass(collapsed, true, useTheme)}
-                    expanded={!collapsed}
-                    onToggle={function(){}}
-                >
-                    <CollapsiblePanelHeader
-                        id={PROPERTIES_HEADER_ID}
-                        title={'Dataset Properties'}
-                        titlePrefix={model.name}
-                        togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
-                        collapsed={collapsed}
-                        collapsible={collapsible}
-                        controlledCollapse={controlledCollapse}
-                        panelStatus={panelStatus}
-                        isValid={isValid}
-                        iconHelpMsg={ERROR_MSG}
-                        useTheme={useTheme}
+        return (
+            <BasePropertiesPanel
+                {...this.props}
+                headerId={'dataset-header-id'}
+                title={'Dataset Properties'}
+                titlePrefix={model.name}
+                isValid={isValid}
+                updateValidStatus={() => {}}
+            >
+                <Row className={'margin-bottom'}>
+                    <Col md={11}/>
+                    <Col md={1}>
+                        <AdvancedSettings
+                            title={"Advanced Settings"}
+                            model={model}
+                            newDataset={newDataset}
+                            showDataspace={showDataspace}
+                        />
+                    </Col>
+                </Row>
+                <Form>
+                    <BasicPropertiesFields
+                        model={model}
+                        name={name}
+                        description={description}
+                        categoryId={categoryId}
+                        label={label}
+                        onInputChange={this.onInputChange}
+                        onCategoryChange={this.onCategoryChange}
                     />
-
-                    <Panel.Body collapsible={collapsible || controlledCollapse}>
-                        <Row className={'margin-bottom'}>
-                            <Col md={11}/>
-                            <Col md={1}>
-                                <AdvancedSettings
-                                    title={"Advanced Settings"}
-                                    model={model}
-                                    newDataset={newDataset}
-                                    showDataspace={showDataspace}
-                                />
-                            </Col>
-                        </Row>
-                        <Form>
-                            <BasicPropertiesFields
-                                model={model}
-                                name={name}
-                                description={description}
-                                categoryId={categoryId}
-                                label={label}
-                                onInputChange={this.onInputChange}
-                                onCategoryChange={this.onCategoryChange}
-                            />
-
-                            <DataRowUniquenessContainer
-                                model={model}
-                                onRadioChange={this.onRadioChange}
-                                dataRowSetting={dataRowSetting}
-                                showAdditionalKeyField={dataRowSetting == 2}
-                            />
-                        </Form>
-                    </Panel.Body>
-                </Panel>
-
-                {!isValid &&
-                <div
-                    onClick={(evt: any) => this.toggleLocalPanel(evt)}
-                    className={getDomainAlertClasses(collapsed, true, useTheme)}
-                >
-                    <Alert bsStyle="danger">{ERROR_MSG}</Alert>
-                </div>
-                }
-            </>
+                    <DataRowUniquenessContainer
+                        model={model}
+                        onRadioChange={this.onRadioChange}
+                        dataRowSetting={dataRowSetting}
+                        showAdditionalKeyField={dataRowSetting == 2}
+                    />
+                </Form>
+            </BasePropertiesPanel>
         )
     }
 }
+
+export const DatasetPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(DatasetPropertiesPanelImpl);

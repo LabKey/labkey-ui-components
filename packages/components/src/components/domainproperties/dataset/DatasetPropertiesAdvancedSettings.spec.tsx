@@ -16,11 +16,15 @@
 
 import { NEW_DATASET_MODEL } from "../../../test/data/constants";
 import {DatasetModel} from "./models";
-import {AdvancedSettings} from "./DatasetPropertiesAdvancedSettings";
+import {AdvancedSettings, DatasetSettingsInput, DatasetSettingsSelect} from "./DatasetPropertiesAdvancedSettings";
 import React from "react";
 import renderer from "react-test-renderer";
+import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
+import {mount} from "enzyme";
+import {SelectInput} from "../../..";
 
 const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
+const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
 describe("Dataset Advanced Settings", () => {
 
@@ -52,8 +56,65 @@ describe("Dataset Advanced Settings", () => {
 
     });
 
-    test("Edit Dataset", () => {
+    test("Edit Dataset, without dataspace options", () => {
+        const datasetAdvancedSetting =
+            <AdvancedSettings
+                title={"Advanced Settings"}
+                model={populatedDatasetModel}
+                newDataset={false}
+                showDataspace={false}
+            />;
 
+        const dom = renderer.create(datasetAdvancedSetting).toJSON();
+        expect(dom).toMatchSnapshot();
     });
+
+    test("Edit Dataset, with dataspace options", () => {
+        const datasetAdvancedSetting =
+            <AdvancedSettings
+                title={"Advanced Settings"}
+                model={populatedDatasetModel}
+                newDataset={false}
+                showDataspace={true}
+            />;
+
+        const dom = renderer.create(datasetAdvancedSetting).toJSON();
+        expect(dom).toMatchSnapshot();
+    });
+
+    test("DatasetSettingsInput", () => {
+        const datasetSettingsInput = mount(
+            <DatasetSettingsInput
+                name="name"
+                label="Name"
+                value={name}
+                helpTip={<>Help tip</>}
+                placeholder="Enter a name for this dataset"
+                disabled={false}
+                onValueChange={jest.fn()}
+                showInAdvancedSettings={false}
+            />
+        );
+
+        expect(datasetSettingsInput.props().label).toEqual('Name');
+        expect(datasetSettingsInput.props().placeholder).toEqual('Enter a name for this dataset');
+        datasetSettingsInput.unmount();
+    });
+
+    test("DatasetSettingsSelect", () => {
+        const datasetSettingsSelect = mount(
+            <DatasetSettingsSelect
+                name="visitDateColumn"
+                label="Visit Date Column"
+                helpTip={<>Help tip</>}
+                selectOptions={[{label: 'A', value: 1}]}
+                selectedValue={1}
+                onSelectChange={jest.fn()}
+            />
+        );
+
+        expect(datasetSettingsSelect.find(SelectInput)).toHaveProperty('name');
+        datasetSettingsSelect.unmount();
+    })
 
 });

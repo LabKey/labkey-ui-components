@@ -16,7 +16,7 @@ interface DatasetSettingsSelectProps {
     onSelectChange: any;
 }
 
-class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSelectProps> {
+export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSelectProps> {
     render() {
         const { name, label, helpTip, selectedValue, selectOptions, onSelectChange } = this.props;
 

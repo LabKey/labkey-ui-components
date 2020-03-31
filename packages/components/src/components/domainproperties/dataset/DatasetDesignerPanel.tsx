@@ -15,10 +15,8 @@
  */
 
 import React from 'react';
-import {getDomainPanelStatus} from "../actions";
-import {ListPropertiesPanel} from "../list/ListPropertiesPanel";
-import {DatasetPropertiesPanel} from "./DatasetPropertiesPanel";
 import {DatasetModel} from "./models";
+import {DatasetPropertiesPanel} from "./DatasetPropertiesPanel";
 
 interface DatasetDesignerPanelProps {
     initModel?: DatasetModel;
@@ -27,11 +25,7 @@ interface DatasetDesignerPanelProps {
     showDataspace: boolean;
 }
 
-interface DatasetDesignerPanelState {
-
-}
-
-export class DatasetDesignerPanel extends React.PureComponent<DatasetDesignerPanelProps, DatasetDesignerPanelState> {
+export class DatasetDesignerPanel extends React.PureComponent<DatasetDesignerPanelProps> {
     constructor(props) {
         super(props);
     }
@@ -42,11 +36,15 @@ export class DatasetDesignerPanel extends React.PureComponent<DatasetDesignerPan
         return (
             <>
                 <DatasetPropertiesPanel
+                    initCollapsed={false}
                     model={initModel}
                     controlledCollapse={true}
                     useTheme={useTheme}
                     newDataset={newDataset}
                     showDataspace={showDataspace}
+                    panelStatus={'COMPLETE'}
+                    validate={false}
+                    onToggle={(collapsed, callback) => {}}
                 />
             </>
         );

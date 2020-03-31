@@ -71,13 +71,13 @@ function resolveTypeName(data: any) {
 function resolveIconSrc(data: any, category: string) : string {
     let iconSrc = '';
     if (data) {
-        if (data.getIn(['dataClass', 'name'])) {
+        if (data.hasIn(['dataClass', 'name'])) {
             if ('sources' === data.getIn(['dataClass', 'category'])) //TODO make this more general
                 iconSrc = 'sources';
             else
                 iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
         }
-        else if (data.getIn(['sampleSet', 'name'])) {
+        else if (data.hasIn(['sampleSet', 'name'])) {
             const sampleSetName = data.getIn(['sampleSet', 'name']).toLowerCase();
 
             switch (sampleSetName) {

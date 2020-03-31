@@ -17,7 +17,6 @@
 import React from 'react';
 import {Col, Radio, Row} from 'react-bootstrap';
 import {DatasetModel} from './models';
-import {BasicPropertiesTitle} from "../PropertiesPanelFormElements";
 import {LabelHelpTip, SelectInput} from "../../..";
 import {Creatable} from 'react-select'
 import {fetchCategories} from "./actions";
@@ -33,6 +32,16 @@ interface BasicPropertiesInputsProps {
     categoryId?: number;
     onCategoryChange?: any;
     label?: string;
+}
+
+interface BasicPropertiesTitleProps {
+    title: string
+}
+
+export class BasicPropertiesTitle extends React.PureComponent<BasicPropertiesTitleProps> {
+    render() {
+        return <div className="domain-field-section-heading">{this.props.title}</div>;
+    }
 }
 
 export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsProps> {

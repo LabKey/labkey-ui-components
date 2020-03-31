@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../..';
 import { DatasetModel } from "./models";
-import { BasicPropertiesTitle } from "../PropertiesPanelFormElements";
 import { CheckBoxRow } from "../list/ListPropertiesPanelFormElements";
 import { fetchCohorts, fetchVisitDateColumns } from "./actions";
 import "../../../theme/dataset.scss";
+import {BasicPropertiesTitle} from "./DatasetPropertiesPanelFormElements";
 
 interface DatasetSettingsSelectProps {
     name?: string;

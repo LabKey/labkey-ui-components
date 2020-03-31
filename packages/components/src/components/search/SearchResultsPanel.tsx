@@ -16,7 +16,7 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
-import { SearchResultsModel, SearchResultTypeDisplay } from './models';
+import { SearchResultsModel, SearchResultCardData } from './models';
 import { SearchResultCard } from './SearchResultCard';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
@@ -26,7 +26,7 @@ import { Map } from 'immutable';
 interface Props {
     model: SearchResultsModel
     iconUrl?: string
-    resultsTransformer?: Map<string, SearchResultTypeDisplay> // allows for customization of mappings from search results to icons, altText and titles.
+    resultsTransformer?: Map<string, SearchResultCardData> // allows for customization of mappings from search results to icons, altText and titles.
     useSampleType?: boolean   // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
 }
 

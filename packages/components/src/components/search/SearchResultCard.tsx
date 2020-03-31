@@ -17,7 +17,7 @@ import React from 'react';
 import { Map } from 'immutable';
 import { SCHEMAS } from '../base/models/schemas';
 import { SVGIcon } from '../base/SVGIcon';
-import { SearchResultTypeDisplay } from './models';
+import { SearchResultCardData } from './models';
 
 
 interface SearchResultProps {
@@ -27,10 +27,10 @@ interface SearchResultProps {
     url: string
     data?: any
     iconUrl?: string
-    resultsTransformer?: Map<string, SearchResultTypeDisplay> // allows for customization of mappings from search results to icons, altText and titles.
+    resultsTransformer?: Map<string, SearchResultCardData> // allows for customization of mappings from search results to icons, altText and titles.
 }
 
-const DEFAULT_TRANSFORMER = Map<string, SearchResultTypeDisplay>({
+const DEFAULT_TRANSFORMER = Map<string, SearchResultCardData>({
     "sampleSet": {
         iconSrc: 'sample_set'
     }

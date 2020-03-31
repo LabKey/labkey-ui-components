@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.42.0
+*Released*: 31 March 2020
+* SiteUsersGridPanel and UserDetails panel prop to hide/show 'Reset Password' button (i.e. allowResetPassword)
+
 ### version 0.41.3
 *Released*: 30 March 2020
 * Issue 40084: Add property to exclude unique field key from bulk update modal

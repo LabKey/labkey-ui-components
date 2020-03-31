@@ -23,6 +23,7 @@ const ROLE_OPTIONS = [
 
 interface Props {
     allowDelete: boolean
+    allowResetPassword: boolean
     showRoleOptions: boolean
 }
 
@@ -62,6 +63,7 @@ class SiteUsersGridPanelWrapper extends React.PureComponent<Props, State> {
                 onUsersStateChangeComplete={(response) => console.log(response)}
                 newUserRoleOptions={this.props.showRoleOptions ? ROLE_OPTIONS : undefined}
                 allowDelete={this.props.allowDelete}
+                allowResetPassword={this.props.allowResetPassword}
             />
         )
     }
@@ -73,14 +75,16 @@ storiesOf("SiteUsersGridPanel", module)
         return (
             <SiteUsersGridPanelWrapper
                 allowDelete={true}
+                allowResetPassword={true}
                 showRoleOptions={false}
             />
         )
     })
-    .add("without delete", () => {
+    .add("without delete or reset password", () => {
         return (
             <SiteUsersGridPanelWrapper
                 allowDelete={false}
+                allowResetPassword={false}
                 showRoleOptions={false}
             />
         )
@@ -89,6 +93,7 @@ storiesOf("SiteUsersGridPanel", module)
         return (
             <SiteUsersGridPanelWrapper
                 allowDelete={true}
+                allowResetPassword={true}
                 showRoleOptions={true}
             />
         )

@@ -173,7 +173,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
 </div>
 `;
 
-exports[`<UserDetailsPanel/> with principal and buttons not allowDelete 1`] = `
+exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allowResetPassword 1`] = `
 <div
   className="panel panel-default"
 >
@@ -289,14 +289,6 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete 1`] = `
     <hr
       className="principal-hr"
     />
-    <button
-      className="btn btn-default"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      Reset Password
-    </button>
     <button
       className="pull-right btn btn-default"
       disabled={false}

@@ -36,7 +36,7 @@ storiesOf('SampleTypeDesigner', module)
     .add('for create', () => {
         return <SampleTypeDesigner
             includeDataClasses={boolean('includeDataClasses', true)}
-            useSeparateDataClasses={boolean('useSeparateDataClasses', true)}
+            useSeparateDataClassesAliasMenu={boolean('useSeparateDataClasses', true)}
             isValidParentOptionFn={isValidParentOption}
             sampleAliasCaption={text('sampleAliasCaption', undefined)}
             sampleTypeCaption={text('sampleTypeCaption', undefined)}
@@ -85,7 +85,7 @@ storiesOf('SampleTypeDesigner', module)
         return <SampleTypeDesigner
             initModel={ design }
             includeDataClasses={true}
-            useSeparateDataClasses={boolean('useSeparateDataClasses', true)}
+            useSeparateDataClassesAliasMenu={boolean('useSeparateDataClassesAliasMenu', true)}
             isValidParentOptionFn={isValidParentOption}
             sampleAliasCaption={'Parent Alias'}
             sampleTypeCaption={'sample type'}

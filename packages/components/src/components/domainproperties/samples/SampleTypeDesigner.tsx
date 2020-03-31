@@ -57,7 +57,7 @@ interface Props {
     includeDataClasses?: boolean
     headerText?: string
     helpTopic?: string
-    useSeparateDataClasses?: boolean
+    useSeparateDataClassesAliasMenu?: boolean
     sampleAliasCaption?: string
     sampleTypeCaption?: string
     dataClassAliasCaption?: string
@@ -91,7 +91,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         includeDataClasses: false,
-        useSeparateDataClasses: false,
+        useSeparateDataClassesAliasMenu: false,
 
         containerTop: STICKY_HEADER_HEIGHT,
         useTheme: false,
@@ -128,8 +128,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     formatLabel = (name:string, prefix: string, containerPath?: string): string => {
-        const {includeDataClasses, useSeparateDataClasses} = this.props;
-        return includeDataClasses && !useSeparateDataClasses ?
+        const {includeDataClasses, useSeparateDataClassesAliasMenu} = this.props;
+        return includeDataClasses && !useSeparateDataClassesAliasMenu ?
             `${prefix}: ${name} (${containerPath})`:
             name;
     };
@@ -384,7 +384,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const {
             containerTop, useTheme, appPropertiesOnly, successBsStyle, currentPanelIndex, visitedPanels, firstState,
             validatePanel, onTogglePanel, submitting, onCancel, nameExpressionPlaceholder, nameExpressionInfoUrl,
-            nounSingular, nounPlural, headerText, saveBtnText, helpTopic, includeDataClasses, useSeparateDataClasses,
+            nounSingular, nounPlural, headerText, saveBtnText, helpTopic, includeDataClasses, useSeparateDataClassesAliasMenu,
             sampleAliasCaption, sampleTypeCaption, dataClassAliasCaption, dataClassTypeCaption, dataClassParentageLabel
         } = this.props;
         const { error, model, parentOptions } = this.state;
@@ -412,7 +412,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     model={model}
                     parentOptions={parentOptions}
                     includeDataClasses={includeDataClasses}
-                    useSeparateDataClasses={useSeparateDataClasses}
+                    useSeparateDataClassesAliasMenu={useSeparateDataClassesAliasMenu}
                     sampleAliasCaption={sampleAliasCaption}
                     sampleTypeCaption={sampleTypeCaption}
                     dataClassAliasCaption={dataClassAliasCaption}

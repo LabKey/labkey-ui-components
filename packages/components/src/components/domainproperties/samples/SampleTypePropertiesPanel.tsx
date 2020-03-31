@@ -29,7 +29,7 @@ interface OwnProps {
     headerText?: string
     helpTopic?: string
     includeDataClasses?: boolean
-    useSeparateDataClasses?: boolean
+    useSeparateDataClassesAliasMenu?: boolean
     sampleAliasCaption?: string
     sampleTypeCaption?: string
     dataClassAliasCaption?: string
@@ -51,7 +51,7 @@ interface State {
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
 
-const sampleSeAliasFilterFn = (alias: IParentAlias) => {
+const sampleSetAliasFilterFn = (alias: IParentAlias) => {
     return alias.parentValue && alias.parentValue.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
 };
 
@@ -78,9 +78,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
         helpTopic: DEFINE_SAMPLE_TYPE_TOPIC,
         sampleAliasCaption: 'Sample Alias',
         sampleTypeCaption: 'Sample Type',
-        dataClassAliasCaption: 'DataClass Alias',
-        dataClassTypeCaption: 'Dataclass',
-        dataClassParentageLabel: 'dataclass'
+        dataClassAliasCaption: 'Data Class Alias',
+        dataClassTypeCaption: 'Data Class',
+        dataClassParentageLabel: 'data class'
     };
 
     constructor(props) {
@@ -165,23 +165,18 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
             filteredParentOptions = parentOptions;
         }
         else if (includeSampleSet) {
-            filteredParentAliases = parentAliases.filter(sampleSeAliasFilterFn) as OrderedMap<string, IParentAlias>;
+            filteredParentAliases = parentAliases.filter(sampleSetAliasFilterFn) as OrderedMap<string, IParentAlias>;
             filteredParentOptions = parentOptions.filter(sampleSetOptionFilterFn);
-            if (sampleAliasCaption)
-                aliasCaption = sampleAliasCaption;
-            if (sampleTypeCaption)
-                parentTypeCaption = sampleTypeCaption;
+            aliasCaption = sampleAliasCaption;
+            parentTypeCaption = sampleTypeCaption;
         }
         else if (includeDataClass) {
             filteredParentAliases = parentAliases.filter(dataClassAliasFilterFn) as OrderedMap<string, IParentAlias>;
             filteredParentOptions = parentOptions.filter(dataClassOptionFilterFn);
-            if (dataClassAliasCaption)
-                aliasCaption = dataClassAliasCaption;
-            if (dataClassTypeCaption)
-                parentTypeCaption = dataClassTypeCaption;
+            aliasCaption = dataClassAliasCaption;
+            parentTypeCaption = dataClassTypeCaption;
 
-            if (dataClassParentageLabel)
-                helpMsg = PARENT_ALIAS_HELPER_TEXT.replace("parentage", dataClassParentageLabel)
+            helpMsg = PARENT_ALIAS_HELPER_TEXT.replace("parentage", dataClassParentageLabel);
         }
 
         return filteredParentAliases.valueSeq().map((alias:IParentAlias) => {
@@ -218,10 +213,10 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
 
     render = () => {
         const { model, parentOptions, nameExpressionInfoUrl, nameExpressionPlaceholder, nounSingular, nounPlural, headerText, helpTopic, includeDataClasses,
-            useSeparateDataClasses, dataClassAliasCaption, sampleAliasCaption, dataClassParentageLabel } = this.props;
+            useSeparateDataClassesAliasMenu, dataClassAliasCaption, sampleAliasCaption, dataClassParentageLabel } = this.props;
         const { isValid } = this.state;
 
-        const showDataClass = includeDataClasses && useSeparateDataClasses && this.containsDataClassOptions();
+        const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
         return (
             <BasePropertiesPanel
                 {...this.props}
@@ -249,14 +244,14 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                 />
-                {this.renderParentAliases(true, includeDataClasses && !useSeparateDataClasses)}
+                {this.renderParentAliases(true, includeDataClasses && !useSeparateDataClassesAliasMenu)}
                 {parentOptions &&
                 <Row>
                     <Col xs={2}>
                     </Col>
                     <Col xs={10}>
                         <span>
-                            <AddEntityButton entity={includeDataClasses && useSeparateDataClasses ? sampleAliasCaption : 'Parent Alias'}
+                            <AddEntityButton entity={includeDataClasses && useSeparateDataClassesAliasMenu ? sampleAliasCaption : 'Parent Alias'}
                                              onClick={() => this.addParentAlias(SCHEMAS.SAMPLE_SETS.SCHEMA)}
                                              helperBody={this.renderAddEntityHelper}/>
                         </span>

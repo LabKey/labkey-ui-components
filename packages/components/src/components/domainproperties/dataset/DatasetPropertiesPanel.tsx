@@ -20,12 +20,9 @@ import { Utils } from '@labkey/api';
 import { DomainPanelStatus } from "../models";
 import { DataRowUniquenessContainer, BasicPropertiesFields } from "./DatasetPropertiesPanelFormElements";
 import { AdvancedSettings } from "./DatasetPropertiesAdvancedSettings";
-import { updateDomainPanelClassList } from "../actions";
 import { DatasetModel} from "./models";
 import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
 import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
-
-const PROPERTIES_HEADER_ID = 'dataset-properties-hdr';
 
 interface OwnProps {
     model: DatasetModel;
@@ -71,14 +68,17 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDom
     getDataRowSetting(model: DatasetModel) : number {
         let dataRowSetting = -1;
 
+        // participant id
         if (model.keyProperty === undefined || model.keyProperty === null) {
             dataRowSetting = 0;
         }
 
+        // participant id and timepoint
         if (model.keyProperty !== null && (model.keyManagementType === undefined || model.keyManagementType === null)) {
             dataRowSetting = 1;
         }
 
+        // participant id, timepoint and additional key field
         if (model.keyProperty !== null && model.keyManagementType !== null) {
             dataRowSetting = 2;
         }
@@ -86,16 +86,8 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDom
         return dataRowSetting;
     }
 
-    componentDidMount(): void {
-        updateDomainPanelClassList(this.props.useTheme, undefined, PROPERTIES_HEADER_ID);
-    }
-
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-        updateDomainPanelClassList(prevProps.useTheme, undefined, PROPERTIES_HEADER_ID);
-    }
-
     onCheckBoxChange = (name, checked): void => {
-        // this.onChange(name, !checked);
+        // TODO: manage state change of server manage field checkbox in next story
     };
 
     onInputChange = e => {
@@ -118,8 +110,8 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDom
     onRadioChange = e => {
         const name = e.currentTarget.name;
         const value = e.target.value;
-        console.log("name", name, value);
-        this.setState({ [name]: value });
+
+        this.setState(() => ({ [name]: value }));
     };
 
     render() {
@@ -145,7 +137,7 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDom
                 title={'Dataset Properties'}
                 titlePrefix={model.name}
                 isValid={isValid}
-                updateValidStatus={() => {}}
+                updateValidStatus={() => {}} // TODO: in next story
             >
                 <Row className={'margin-bottom'}>
                     <Col md={11}/>

@@ -18,7 +18,7 @@ import React from 'react';
 import {Col, Radio, Row} from 'react-bootstrap';
 import {DatasetModel} from './models';
 import {BasicPropertiesTitle} from "../PropertiesPanelFormElements";
-import {LabelHelpTip, SelectInput} from "../../../index";
+import {LabelHelpTip, SelectInput} from "../../..";
 import {Creatable} from 'react-select'
 import {fetchCategories} from "./actions";
 import {DatasetSettingsInput} from "./DatasetPropertiesAdvancedSettings";
@@ -99,11 +99,11 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
              category: this.props.model.categoryId,
              availableCategories: []
         };
-
     }
 
     componentDidMount() {
         const { model } = this.props;
+
         // Ajax call handling to get available categories
         fetchCategories()
             .then((data) => {
@@ -111,10 +111,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     availableCategories: data.categories
                 }))
             })
-
     }
-
-
 
     render() {
         const { name, description, categoryId, label, onInputChange, onCategoryChange } = this.props;
@@ -152,9 +149,11 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
 
                 <DescriptionInput
                     description={description}
-                    onInputChange={onInputChange} />
+                    onInputChange={onInputChange}
+                />
 
                 <Row className={'margin-top'}>
+
                     <Col xs={4}>
                         Category
                         <LabelHelpTip
@@ -166,6 +165,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     </Col>
 
                     <Col xs={7}>
+                        {/*TODO: could be replaced by QuerySelect along with server side story*/}
                         <Creatable
                             name="categoryId"
                             placeholder="Select dataset category"
@@ -174,6 +174,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                             options={availableCategories}
                         />
                     </Col>
+
                 </Row>
 
                 <DatasetSettingsInput
@@ -185,17 +186,18 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     onValueChange={onInputChange}
                     showInAdvancedSettings={false}
                 />
+
             </Col>
         );
     }
 }
 
-interface DataRowUniquenessElementsrProps {
+interface DataRowUniquenessElementsProps {
     onRadioChange: (evt: any) => any;
     dataRowSetting: number;
 }
 
-class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessElementsrProps> {
+class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessElementsProps> {
     render() {
         const { onRadioChange, dataRowSetting } = this.props;
         const radioName = "dataRowSetting";
@@ -210,6 +212,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                 >
                     Participant ID only (demographic data)
                 </Radio>
+
                 <Radio
                     name={radioName}
                     value={1}
@@ -218,6 +221,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                 >
                     Participant ID and timepoint
                 </Radio>
+
                 <Radio
                     name={radioName}
                     value={2}

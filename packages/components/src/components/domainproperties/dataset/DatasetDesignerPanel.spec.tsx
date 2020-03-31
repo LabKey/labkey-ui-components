@@ -34,6 +34,7 @@ describe("Dataset Designer", () => {
                 newDataset={true}
                 showDataspace={true}
             />;
+
         const dom = renderer.create(designerPanel).toJSON();
         expect(dom).toMatchSnapshot();
     });
@@ -46,6 +47,7 @@ describe("Dataset Designer", () => {
                 newDataset={true}
                 showDataspace={true}
             />;
+
         const dom = renderer.create(designerPanel).toJSON();
         expect(dom).toMatchSnapshot();
     })

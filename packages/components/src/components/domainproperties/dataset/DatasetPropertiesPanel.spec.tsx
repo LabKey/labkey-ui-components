@@ -39,6 +39,7 @@ describe("Dataset Properties Panel", () => {
                 validate={false}
                 onToggle={(collapsed, callback) => {}}
             />;
+
         const dom = renderer.create(propertiesPanel).toJSON();
         expect(dom).toMatchSnapshot();
     });
@@ -56,6 +57,7 @@ describe("Dataset Properties Panel", () => {
                 validate={false}
                 onToggle={(collapsed, callback) => {}}
             />;
+
         const dom = renderer.create(propertiesPanel).toJSON();
         expect(dom).toMatchSnapshot();
     });

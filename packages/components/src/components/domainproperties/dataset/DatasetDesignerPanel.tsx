@@ -44,7 +44,7 @@ export class DatasetDesignerPanel extends React.PureComponent<DatasetDesignerPan
                     showDataspace={showDataspace}
                     panelStatus={'COMPLETE'}
                     validate={false}
-                    onToggle={(collapsed, callback) => {}}
+                    onToggle={(collapsed, callback) => {}} //TODO: handle in next story
                 />
             </>
         );

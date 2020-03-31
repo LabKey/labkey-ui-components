@@ -24,7 +24,7 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
             <Row className={'margin-top'}>
 
                 <Col xs={5} >
-                    {label}
+                    { label }
                     <LabelHelpTip
                         title={label}
                         body={() => {
@@ -79,7 +79,7 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
         return (
             <Row className={'margin-top'}>
                 <Col xs={4} >
-                    {label}
+                    { label }
                     <LabelHelpTip
                         title={label}
                         body={() => {
@@ -88,7 +88,7 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
                     />
                 </Col>
 
-                {showInAdvancedSettings && < Col xs={1}/>}
+                { showInAdvancedSettings && < Col xs={1}/> }
 
                 <Col xs={7} >
                     <FormControl
@@ -122,7 +122,9 @@ class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsMo
                 <Button onClick={() => toggleModal(false)} className='domain-adv-footer domain-adv-cancel-btn'>
                     Cancel
                 </Button>
-                {helpLinkNode(helpTopic, helpText, 'domain-adv-footer domain-adv-link')}
+
+                { helpLinkNode(helpTopic, helpText, 'domain-adv-footer domain-adv-link') }
+
                 <Button onClick={applyChanges} bsStyle={successBsStyle || 'success'} className='domain-adv-footer domain-adv-apply-btn'>
                     Apply
                 </Button>
@@ -158,7 +160,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         this.state = {
             modalOpen: false,
-            // cohort: this.props.model.cohortId,
             ...initialState,
         } as AdvancedSettingsState;
     }
@@ -182,7 +183,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     visitDateColumns: data.visitDateColumns
                 }));
             })
-
     }
 
     setInitialState = () => {
@@ -200,7 +200,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         // If modal is re-opened, reset unsaved values
         if (isModalOpen) {
-            //this.setState(this.setInitialState());
+            this.setState(this.setInitialState());
         }
     };
 
@@ -220,10 +220,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         this.setState({ [name]: value });
     };
 
-    applyChanges = (): void => {
-        const { modalOpen, ...advancedSettingsForm } = this.state;
-    };
-
     render() {
         const {
             modalOpen,
@@ -238,7 +234,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             dataspaceOptions
         } = this.state;
 
-        const { title, model, newDataset, showDataspace } = this.props;
+        const { title, newDataset, showDataspace } = this.props;
 
         const datasetIdTip =
             <>
@@ -261,6 +257,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 Adding a tag provides an additional, flexible way to categorize this dataset.
             </> as JSX.Element;
 
+        // TODO: add tip
         const dataspaceTip =
             <>
                 Coming soon...
@@ -352,7 +349,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <Modal.Footer>
                         <AdvancedSettingsModalBottom
                             toggleModal={this.toggleModal}
-                            applyChanges={this.applyChanges}
+                            applyChanges={() => {}} // TODO: handle in next story
                             helpTopic="createDataset"
                             helpText="Learn more about datasets"
                         />

@@ -1580,6 +1580,8 @@ exports[`DataClassDesigner initModel 1`] = `
         },
       }
     }
+    nounPlural="Data Classes"
+    nounSingular="Data Class"
     onCancel={[MockFunction]}
     onComplete={[MockFunction]}
     onFinish={[Function]}
@@ -2147,6 +2149,8 @@ exports[`DataClassDesigner initModel 1`] = `
             },
           }
         }
+        nounPlural="Data Classes"
+        nounSingular="Data Class"
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="COMPLETE"

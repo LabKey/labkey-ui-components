@@ -6,7 +6,8 @@
     "description": "tacocat",
     "importAliases": {
       "a": "materialInputs/Fruits",
-      "b": "dataInputs/Source 1"
+      "b": "dataInputs/Source 1",
+      "c": "dataInputs/NonSource"
     },
     "rowId": 3,
     "domainId": 29

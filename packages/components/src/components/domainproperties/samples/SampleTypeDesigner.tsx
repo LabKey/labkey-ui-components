@@ -179,12 +179,16 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             let initialAlias = Map<string,string>(model.importAliases);
             initialAlias.forEach((val, key) => {
                 const newId = generateId("sampleset-parent-import-alias-");
+                const parentValue = options.find(opt => opt.value === val);
+                if (!parentValue) // parent option might have been filtered out by isValidParentOptionFn
+                    return;
+
                 parentAliases = parentAliases.set(newId, {
                     id: newId,
                     alias: key,
-                    parentValue: options.find(opt => opt.value === val),
+                    parentValue: parentValue,
                     ignoreAliasError: false,
-                    ignoreSelectError: false,
+                    ignoreSelectError: false
                 } as IParentAlias);
             });
         }
@@ -203,7 +207,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             parentAliases.map((alias: IParentAlias) => {
                 const {parentValue} = alias;
 
-                let value = parentValue ? parentValue.value as string : '';
+                let value = parentValue && parentValue.value ? parentValue.value as string : '';
                 if (parentValue === NEW_SAMPLE_SET_OPTION) {
                     value = SAMPLE_SET_IMPORT_PREFIX + name;
                 }

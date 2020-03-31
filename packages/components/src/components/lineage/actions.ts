@@ -60,11 +60,23 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
                 resolve(LineageResult.create(lineage))
             },
 
-            failure: () => {
-                // TODO: Handle how we hand back error
+            failure: (error) => {
+                let message = `Failed to fetch lineage for seed "${seed}".`;
+
+                if (error) {
+                    if (error.exception) {
+                        message = error.exception;
+
+                        // When a server exception occurs
+                        if (error.exceptionClass) {
+                            message = `${error.exceptionClass}: ` + error.exception;
+                        }
+                    }
+                }
+
                 reject({
                     seed,
-                    message: `Something went wrong retrieving lineage for seed "${seed}".`
+                    message,
                 });
             }
         });

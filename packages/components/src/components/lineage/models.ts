@@ -389,11 +389,20 @@ export class Lineage extends Record({
         super(values);
     }
 
+    // Defensive check against calls made when an error is present and provides a more useful error message.
+    private checkError(): void {
+        if (this.error) {
+            throw new Error('Invalid call on Lineage object. Check errors prior to attempting to interact with Lineage object.');
+        }
+    }
+
     getSeed(): string {
+        this.checkError();
         return this.result.seed;
     }
 
     filterResult(options?: LineageOptions): LineageResult {
+        this.checkError();
         const { seed } = this.result;
 
         const _options = Object.assign({}, DEFAULT_LINEAGE_OPTIONS, options);
@@ -430,6 +439,7 @@ export class Lineage extends Record({
      * will be stopped when {@link LineageGroupingOptions.generations} condition is met.
      */
     generateGraph(options?: LineageOptions): VisGraphOptions {
+        this.checkError();
         const result = this.filterResult(options);
         return generate(result, options);
     }

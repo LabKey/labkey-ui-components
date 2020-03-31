@@ -50,19 +50,15 @@ export class AppLineageURLResolver implements LineageURLResolver {
 
 export class ServerLineageURLResolver implements LineageURLResolver {
 
-    public resolveNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
-        return result.set('nodes', result.nodes.map(node => {
-            if (node && acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
-                return node.set('links', {
-                    overview: node.url,
-                    // does not currently have a corollary view in LKS
-                    lineage: undefined,
-                    list: undefined,
-                });
-            }
-
-            return node;
-        })) as LineageResult;
+    public resolveNodes = (result: LineageResult): LineageResult => {
+        return result.set('nodes', result.nodes.map(node => (
+            node.set('links', {
+                overview: node.url,
+                // does not currently have a corollary view in LKS
+                lineage: undefined,
+                list: undefined,
+            })
+        ))) as LineageResult;
     };
 
     public resolveGroupedNodes = (nodes: LineageNode[]): string => {

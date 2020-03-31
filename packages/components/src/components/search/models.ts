@@ -49,5 +49,6 @@ export class SearchIdData {
 export interface SearchResultCardData {
     iconSrc?: string
     altText?: string
-    getTitle?: (data: any) => string
+    title?: string
+    typeName?: string
 }

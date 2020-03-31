@@ -19,7 +19,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { SearchResultCard } from '../components/search/SearchResultCard';
 import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
-import { SearchResultsModel } from '../components/search/models';
+import { SearchResultCardData, SearchResultsModel } from '../components/search/models';
 import entitiesJSON from '../test/data/searchResults.json';
 import { ICON_URL } from "./mock";
 import './stories.scss';
@@ -30,6 +30,24 @@ storiesOf('SearchResults', module)
         return (
             <SearchResultCard
                 iconUrl={ICON_URL}
+                title={text('title', 'Sample - 20190101.123')}
+                summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
+                url={text('url', '#samples')}
+                data={Map(fromJS({sampleSet: {name: 'Sample Type 1'}}))}
+            />
+        )
+    })
+    .add("search result card with custom card data", () => {
+        return (
+            <SearchResultCard
+                getCardData={(data, category) : SearchResultCardData => {
+                    return {
+                        iconSrc: "test",
+                        altText: "test-alt-text",
+                        title: "Test title",
+                        typeName: "other"
+                    }
+                }}
                 title={text('title', 'Sample - 20190101.123')}
                 summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
                 url={text('url', '#samples')}
@@ -48,7 +66,6 @@ storiesOf('SearchResults', module)
             <SearchResultsPanel
                 iconUrl={ICON_URL}
                 model={model}
-                useSampleType={boolean('useSampleType', false) /*Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps*/ }
             />
         )
-    });
+    })

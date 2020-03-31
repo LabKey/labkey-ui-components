@@ -16,18 +16,16 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
-import { SearchResultsModel, SearchResultCardData } from './models';
+import { SearchResultCardData, SearchResultsModel } from './models';
 import { SearchResultCard } from './SearchResultCard';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
-import { Map } from 'immutable';
 
 interface Props {
     model: SearchResultsModel
     iconUrl?: string
-    resultsTransformer?: Map<string, SearchResultCardData> // allows for customization of mappings from search results to icons, altText and titles.
-    useSampleType?: boolean   // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
+    getCardData?: (data: any, category?: string) => SearchResultCardData, // allows for customization of mappings from search results to icons, altText and titles.
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
@@ -58,7 +56,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     renderResults() {
-        const { model, iconUrl, resultsTransformer } = this.props;
+        const { model, iconUrl, getCardData } = this.props;
 
         if (this.isLoading())
             return;
@@ -84,7 +82,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                                 category={item.get('category')}
                                 data={item.get('data')}
                                 iconUrl={iconUrl}
-                                resultsTransformer={resultsTransformer}
+                                getCardData={getCardData}
                             />
                         </div>
                     ))}

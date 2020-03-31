@@ -1,11 +1,15 @@
 import React, { PureComponent } from 'react';
 import { ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 
-import { Tip } from '..';
+import { QueryModel, Tip } from '..';
 import { PagingButton } from '../components/gridbar/QueryGridPaging';
 import { RequiresModelAndActions } from './withQueryModels';
 
-export class PaginationInfo extends PureComponent<RequiresModelAndActions> {
+interface PaginationInfoProps {
+    model: QueryModel;
+}
+
+export class PaginationInfo extends PureComponent<PaginationInfoProps> {
     render() {
         const { model } = this.props;
         const { hasData, offset, maxRows, rowCount } = model;
@@ -36,7 +40,7 @@ export class PaginationInfo extends PureComponent<RequiresModelAndActions> {
     }
 }
 
-class PageSelector extends PureComponent<RequiresModelAndActions> {
+export class PageSelector extends PureComponent<RequiresModelAndActions> {
     render() {
         const { model, actions } = this.props;
         const { loadFirstPage, loadLastPage } = actions;
@@ -71,7 +75,6 @@ export class PaginationButtons extends PureComponent<RequiresModelAndActions> {
     render() {
         const { model, actions } = this.props;
         const { id, isFirstPage, isLastPage, isLoading, isPaged } = model;
-
         return (
             isPaged &&
             <ButtonGroup className="pagination-button-group">

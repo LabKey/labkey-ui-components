@@ -67,7 +67,7 @@ export class GridPanel extends PureComponent<Props> {
 
                         <div className="grid-panel__bar-right">
                             <div className="grid-bar__section">
-                                {paginate && <PaginationInfo model={model} actions={actions} />}
+                                {paginate && <PaginationInfo model={model} />}
                                 {paginate && <PaginationButtons model={model} actions={actions} />}
                                 {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
                                 {

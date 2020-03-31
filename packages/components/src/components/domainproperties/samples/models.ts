@@ -62,8 +62,8 @@ export class SampleTypeModel extends Record({
         return !this.rowId;
     };
 
-    static isValid(model: SampleTypeModel, defaultSampleFieldConfig?: Partial<IDomainField>) {
-        return model.hasValidProperties() && !model.hasInvalidSampleField(defaultSampleFieldConfig) && model.getDuplicateAlias(true).size === 0;
+    static isValid(model: SampleTypeModel, defaultNameFieldConfig?: Partial<IDomainField>) {
+        return model.hasValidProperties() && !model.hasInvalidNameField(defaultNameFieldConfig) && model.getDuplicateAlias(true).size === 0;
     }
 
     /**
@@ -89,16 +89,8 @@ export class SampleTypeModel extends Record({
         );
     }
 
-    hasInvalidSampleField(defaultSampleFieldConfig: Partial<IDomainField>): boolean {
-        if (this.domain && this.domain.fields && defaultSampleFieldConfig) {
-            const sampleField = this.domain.fields.find(field => {
-                return field && field.name && field.name.toLowerCase() === defaultSampleFieldConfig.name.toLowerCase();
-            });
-
-            return sampleField !== undefined;
-        }
-
-        return false;
+    hasInvalidNameField(defaultNameFieldConfig: Partial<IDomainField>): boolean {
+        return (this.domain && defaultNameFieldConfig) ? this.domain.hasInvalidNameField(defaultNameFieldConfig) : false;
     }
 
     /**

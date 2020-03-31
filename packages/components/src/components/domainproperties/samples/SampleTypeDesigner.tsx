@@ -314,7 +314,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         if (!isValid) {
             let exception;
 
-            if (model.hasInvalidSampleField(defaultSampleFieldConfig)) {
+            if (model.hasInvalidNameField(defaultSampleFieldConfig)) {
                 exception = 'The ' + defaultSampleFieldConfig.name + ' field name is reserved for imported or generated sample ids.'
             }
             else if (model.getDuplicateAlias(true).size > 0) {

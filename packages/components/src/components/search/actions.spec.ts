@@ -14,7 +14,7 @@ describe("getSearchResultCardData", () => {
         const resultCardData = getSearchResultCardData(data, "dataClass", "my title");
         expect(resultCardData).toStrictEqual({
             title: "my title",
-            iconSrc: "sources",
+            iconSrc: "test source",
             typeName: "Test Source"
         });
     });
@@ -74,7 +74,7 @@ describe("getSearchResultCardData", () => {
         const resultCardData = getSearchResultCardData(data, "material", undefined);
         expect(resultCardData).toStrictEqual({
             title: undefined,
-            iconSrc: "ingredients",
+            iconSrc: "samples",
             typeName: "RawMaterials"
         });
     });
@@ -90,23 +90,11 @@ describe("getSearchResultCardData", () => {
         const resultCardData = getSearchResultCardData(data, "material", undefined);
         expect(resultCardData).toStrictEqual({
             title: undefined,
-            iconSrc: "batch",
+            iconSrc: "samples",
             typeName: "MixtureBatches"
         });
     });
 
-    test("workflow icon", () => {
-        const data = fromJS({
-
-        });
-
-        const resultCardData = getSearchResultCardData(data, "workflowJob", undefined);
-        expect(resultCardData).toStrictEqual({
-            title: undefined,
-            iconSrc: "workflow",
-            typeName: undefined
-        });
-    });
 
     test("sample icon", () => {
         const data = fromJS({

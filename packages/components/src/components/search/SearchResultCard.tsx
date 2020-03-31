@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
+import { Map } from 'immutable';
 import { SVGIcon } from '../base/SVGIcon';
 import { SearchResultCardData } from './models';
 import { getSearchResultCardData } from './actions';
@@ -24,9 +25,9 @@ interface SearchResultProps {
     title: string
     summary: string
     url: string
-    data?: any
+    data?: Map<any, any>
     iconUrl?: string
-    getCardData?: (data: any, category?: string) => SearchResultCardData, // allows for customization of mappings from search results to icons, altText and titles.
+    getCardData?: (data: Map<any, any>, category?: string) => SearchResultCardData, // allows for customization of mappings from search results to icons, altText and titles.
 }
 
 export class SearchResultCard extends React.Component<SearchResultProps, any> {

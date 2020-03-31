@@ -54,7 +54,7 @@ function parseSearchIdToData(idString): SearchIdData {
     return idData;
 }
 
-function resolveTypeName(data: any) {
+function resolveTypeName(data: Map<string, any>) {
 
     let typeName;
     if (data) {
@@ -68,29 +68,14 @@ function resolveTypeName(data: any) {
     return typeName;
 }
 
-function resolveIconSrc(data: any, category: string) : string {
+function resolveIconSrc(data: Map<string, any>, category: string) : string {
     let iconSrc = '';
     if (data) {
         if (data.hasIn(['dataClass', 'name'])) {
-            if ('sources' === data.getIn(['dataClass', 'category'])) //TODO make this more general
-                iconSrc = 'sources';
-            else
-                iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
+            iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
         }
         else if (data.hasIn(['sampleSet', 'name'])) {
-            const sampleSetName = data.getIn(['sampleSet', 'name']).toLowerCase();
-
-            switch (sampleSetName) {
-                case SCHEMAS.SAMPLE_SETS.RAW_MATERIALS.queryName.toLowerCase():
-                    iconSrc = 'ingredients';
-                    break;
-                case SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase():
-                    iconSrc = 'batch';
-                    break;
-                default:
-                    iconSrc = 'samples';
-                    break;
-            }
+            iconSrc = 'samples';
         }
         else if (data.has('type')) {
             const lcType = data.get('type').toLowerCase();
@@ -106,20 +91,14 @@ function resolveIconSrc(data: any, category: string) : string {
         }
     }
     if (!iconSrc && category) {
-        switch (category)
-        {
-            case 'workflowJob':
-                iconSrc = 'workflow';
-                break;
-            case 'material':
-                iconSrc = 'samples';
-                break;
+        if (category === 'material') {
+            iconSrc = 'samples';
         }
     }
     return iconSrc
 }
 
-export function getSearchResultCardData(data: any, category: string, title: string) : SearchResultCardData {
+export function getSearchResultCardData(data: Map<any, any>, category: string, title: string) : SearchResultCardData {
     return {
         title: title,
         iconSrc: resolveIconSrc(data, category),

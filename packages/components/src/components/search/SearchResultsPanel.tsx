@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
+import { Map } from 'immutable';
 import { Panel } from 'react-bootstrap';
 
 import { SearchResultCardData, SearchResultsModel } from './models';
@@ -25,7 +26,7 @@ import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 interface Props {
     model: SearchResultsModel
     iconUrl?: string
-    getCardData?: (data: any, category?: string) => SearchResultCardData, // allows for customization of mappings from search results to icons, altText and titles.
+    getCardData?: (data: Map<any, any>, category?: string) => SearchResultCardData, // allows for customization of mappings from search results to icons, altText and titles.
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {

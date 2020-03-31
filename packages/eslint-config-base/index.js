@@ -157,7 +157,7 @@ module.exports = {
 
     // Prettier plugin (https://github.com/prettier/eslint-plugin-prettier)
     // https://github.com/prettier/eslint-config-prettier
-    'prettier/prettier': ['error', require('.prettierrc.json'), {usePrettierrc: false}],
+    'prettier/prettier': ['warn', require('./.prettierrc.json'), {usePrettierrc: false}],
 
 
     // Typescript
@@ -181,13 +181,8 @@ module.exports = {
         }
       }
     }],
-    '@typescript-eslint/explicit-member-accessibility': ['error', {
-      'accessibility': 'no-public',
-      'overrides': {
-        'properties': 'explicit',
-        'parameterProperties': 'explicit'
-      }
-    }],
+    '@typescript-eslint/explicit-member-accessibility': ['error', {'accessibility': 'no-public'}],
+    // '@typescript-eslint/no-explicit-any': 'off',
     //'@typescript/interface-name-prefix': 'off',
 
 

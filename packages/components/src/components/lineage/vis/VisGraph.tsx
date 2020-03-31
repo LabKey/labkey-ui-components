@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { Component } from 'react';
 import { DataSet, Edge, IdType, Network, Node } from 'vis-network';
 
 import {
@@ -101,7 +101,7 @@ interface VisGraphState {
     selected?: Array<string>
 }
 
-export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
+export class VisGraph extends Component<VisGraphProps, VisGraphState> {
 
     static defaultProps = {
         fitOnResize: true
@@ -153,7 +153,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
                     let internalNode = this.getInternalNode(topNodeId);
                     internalNode.hover = hover;
 
-                    this.moveNodeToTop(topNodeId as string);
+                    this.moveNodeToTop(topNodeId);
 
                     // force a redraw to see the hover state applied to the node
                     this.network.redraw();

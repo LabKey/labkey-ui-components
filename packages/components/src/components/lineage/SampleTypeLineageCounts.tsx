@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { List } from 'immutable';
 import { Alert, Grid, GridColumn, LoadingSpinner } from '../..';
 
@@ -17,7 +17,7 @@ interface State {
     lineage: Lineage
 }
 
-export class SampleTypeLineageCounts extends React.PureComponent<Props, State> {
+export class SampleTypeLineageCounts extends PureComponent<Props, State> {
 
     private columns = List([
         new GridColumn({

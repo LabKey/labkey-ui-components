@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { Component, PureComponent } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 import { Alert, AppURL, getLocation, Grid, GridProps } from '../..';
@@ -16,7 +16,7 @@ interface LineagePagingProps {
     model: LineageGridModel
 }
 
-export class LineagePaging extends React.Component<LineagePagingProps> {
+export class LineagePaging extends Component<LineagePagingProps> {
 
     shouldComponentUpdate(nextProps: LineagePagingProps) {
         const { model } = this.props;
@@ -73,7 +73,7 @@ interface LineageGridProps {
     model: LineageGridModel
 }
 
-class LineageButtons extends React.PureComponent<LineageGridProps> {
+class LineageButtons extends PureComponent<LineageGridProps> {
 
     render() {
         const { model } = this.props;
@@ -119,7 +119,7 @@ class LineageButtons extends React.PureComponent<LineageGridProps> {
     }
 }
 
-class LineageGridBar extends React.PureComponent<LineageGridProps> {
+class LineageGridBar extends PureComponent<LineageGridProps> {
 
     render() {
         const { model } = this.props;
@@ -145,7 +145,7 @@ class LineageGridBar extends React.PureComponent<LineageGridProps> {
     }
 }
 
-export class LineageGridDisplay extends React.PureComponent<LineageGridProps> {
+export class LineageGridDisplay extends PureComponent<LineageGridProps> {
 
     getDataForPage(): List<Map<string, any>> {
         const { model } = this.props;

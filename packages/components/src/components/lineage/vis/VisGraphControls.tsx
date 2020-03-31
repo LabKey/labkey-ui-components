@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { Network } from 'vis-network';
 
@@ -7,7 +7,7 @@ interface GraphControlsProps {
     onReset: (selectSeed) => any
 }
 
-export class VisGraphControls extends React.PureComponent<GraphControlsProps> {
+export class VisGraphControls extends PureComponent<GraphControlsProps> {
 
     graphReset = (selectSeed: boolean): void => {
         if (this.props.onReset) {

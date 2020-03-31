@@ -26,7 +26,6 @@ export function createQueryModelId(schemaQuery: SchemaQuery): string {
     return `${schemaName}-${queryName}${viewName !== undefined ? '-' + viewName : ''}`;
 }
 
-const fieldKeyMapper = (c: QueryColumn): string => c.fieldKey;
 const sortStringMapper = (s: QuerySort): string => s.toRequestString();
 
 export interface QueryConfig {
@@ -208,13 +207,15 @@ export class QueryModel implements IQueryModel {
             throw new Error('Cannot construct column string, no QueryInfo available');
         }
 
-        const keyColumnFieldKeys = this.keyColumns.map(fieldKeyMapper);
-        const displayColumnFieldKeys = this.displayColumns.map(fieldKeyMapper);
-        let fieldKeys = [...requiredColumns, ...keyColumnFieldKeys, ...displayColumnFieldKeys];
+        // Note: ES6 Set is being used here, not Immutable Set
+        const uniqueFieldKeys = new Set(requiredColumns);
+        this.keyColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
+        this.displayColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
+        let fieldKeys = Array.from(uniqueFieldKeys);
 
         if (omittedColumns.length) {
-            const lowerOmit = omittedColumns.map(c => c.toLowerCase());
-            fieldKeys = fieldKeys.filter(fieldKey => lowerOmit.indexOf(fieldKey.toLowerCase()) > -1);
+            const lowerOmit = new Set(omittedColumns.map(c => c.toLowerCase()));
+            fieldKeys = fieldKeys.filter(fieldKey => lowerOmit.has(fieldKey.toLowerCase()));
         }
 
         return fieldKeys.join(',');

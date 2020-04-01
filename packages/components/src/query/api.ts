@@ -405,7 +405,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
     });
 }
 
-function handle132Response(json): Promise<any> {
+export function handle132Response(json): Promise<any> {
     // TODO: Don't make this a promise. The only async thing this method does is call urlResolver.resolveSelectRows,
     //  which is a promise, but also does not need to be, nor should be.
     return new Promise((resolve) => {

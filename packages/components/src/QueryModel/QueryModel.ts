@@ -294,4 +294,13 @@ export class QueryModel implements IQueryModel {
     get isPaged(): boolean {
         return this.hasData && this.pageCount > 1;
     }
+
+    /**
+     * Returns a shallow copy of this model.
+     */
+    copy(): QueryModel {
+        const newModel = new QueryModel({ id: this.id, schemaQuery: this.schemaQuery });
+        Object.assign(newModel, { ...this });
+        return newModel;
+    }
 }

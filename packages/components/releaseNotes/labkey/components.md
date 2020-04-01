@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.42.1
+*Released*: 31 March 2020
+* Item 7031: Source aliasing
+    - Allow Source (Data Class) Alias to be defined separate from a SampleSet type Parent Alias
+    - Allow filtering of parent options (for example, only 'sources' type data classes will be included)
+    
 ### version 0.42.0
 *Released*: 31 March 2020
 * SiteUsersGridPanel and UserDetails panel prop to hide/show 'Reset Password' button (i.e. allowResetPassword)

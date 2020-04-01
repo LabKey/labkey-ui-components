@@ -262,7 +262,7 @@ export class QueryModel implements IQueryModel {
     }
 
     get views(): ViewInfo[] {
-        return this.queryInfo?.views.sortBy(v => v.label, naturalSort).toArray();
+        return this.queryInfo?.views.sortBy(v => v.label, naturalSort).toArray() || [];
     }
 
     get hasData(): boolean {

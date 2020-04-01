@@ -16,7 +16,7 @@
 import React from 'react';
 import {Map} from 'immutable';
 import { storiesOf } from '@storybook/react';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { text, boolean, withKnobs } from '@storybook/addon-knobs';
 import {Domain} from "@labkey/api";
 import {DomainDetails} from "../components/domainproperties/models";
 import {SampleTypeDesigner} from "../components/domainproperties/samples/SampleTypeDesigner";
@@ -24,10 +24,25 @@ import domainData from '../test/data/property-getDomain-sampleType.json';
 import './stories.scss';
 
 
+function isValidParentOption(row: any, isDataClass: boolean): boolean {
+    if (!isDataClass)
+        return true;
+
+    return 'sources' === row.getIn(['Category', 'value']);
+}
+
 storiesOf('SampleTypeDesigner', module)
     .addDecorator(withKnobs)
     .add('for create', () => {
         return <SampleTypeDesigner
+            includeDataClasses={boolean('includeDataClasses', true)}
+            useSeparateDataClassesAliasMenu={boolean('useSeparateDataClasses', true)}
+            isValidParentOptionFn={isValidParentOption}
+            sampleAliasCaption={text('sampleAliasCaption', undefined)}
+            sampleTypeCaption={text('sampleTypeCaption', undefined)}
+            dataClassAliasCaption={text('dataClassAliasCaption', undefined)}
+            dataClassTypeCaption={text('dataClassTypeCaption', undefined)}
+            dataClassParentageLabel={text('dataClassParentageLabel', undefined)}
             initModel={DomainDetails.create()}
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
@@ -56,6 +71,27 @@ storiesOf('SampleTypeDesigner', module)
 
         return <SampleTypeDesigner
             initModel={ design }
+            onCancel={() => console.log('Cancel clicked')}
+            onComplete={() => console.log('Create clicked')}
+            nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
+            nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
+            headerText={'Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.'}
+            helpTopic={text('helpTopic', undefined)}
+        />
+    })
+    .add('for update with sources', () => {
+        let design = DomainDetails.create(Map(domainData), Domain.KINDS.SAMPLE_TYPE);
+
+        return <SampleTypeDesigner
+            initModel={ design }
+            includeDataClasses={true}
+            useSeparateDataClassesAliasMenu={boolean('useSeparateDataClassesAliasMenu', true)}
+            isValidParentOptionFn={isValidParentOption}
+            sampleAliasCaption={'Parent Alias'}
+            sampleTypeCaption={'sample type'}
+            dataClassAliasCaption={'Source Alias'}
+            dataClassTypeCaption={'source type'}
+            dataClassParentageLabel={"source"}
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}

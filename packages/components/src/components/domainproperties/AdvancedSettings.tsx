@@ -379,7 +379,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 </Row>
                 {field.dataType === DATETIME_TYPE &&
                     <Checkbox
-                            checked={excludeFromShifting === false}
+                            checked={excludeFromShifting}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
                             id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, domainIndex, index)}
@@ -390,7 +390,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 }
                 {PropDescType.isMeasure(field.dataType.rangeURI) &&
                     <Checkbox
-                            checked={measure === true}
+                            checked={measure}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_MEASURE)}
                             id={createFormInputId(DOMAIN_FIELD_MEASURE, domainIndex, index)}
@@ -401,7 +401,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 }
                 {PropDescType.isDimension(field.dataType.rangeURI) &&
                     <Checkbox
-                            checked={dimension === true}
+                            checked={dimension}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
                             id={createFormInputId(DOMAIN_FIELD_DIMENSION, domainIndex, index)}
@@ -411,7 +411,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </Checkbox>
                 }
                 <Checkbox
-                    checked={recommendedVariable === true}
+                    checked={recommendedVariable}
                     onChange={this.handleCheckbox}
                     name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
                     id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, domainIndex, index)}
@@ -422,7 +422,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                 {PropDescType.isMvEnableable(field.dataType.rangeURI) &&
                     <Checkbox
-                            checked={mvEnabled === true}
+                            checked={mvEnabled}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
                             id={createFormInputId(DOMAIN_FIELD_MVENABLED, domainIndex, index)}

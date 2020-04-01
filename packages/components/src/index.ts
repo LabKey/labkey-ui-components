@@ -179,6 +179,7 @@ import { MultiValueRenderer } from './renderers/MultiValueRenderer';
 import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
+import { resolveDetailFieldValue } from './components/forms/renderers';
 import { QueryFormInputs, getQueryFormLabelFieldName, isQueryFormLabelField } from './components/forms/QueryFormInputs';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput, SelectInputProps } from './components/forms/input/SelectInput';
@@ -186,6 +187,7 @@ import { DatePickerInput } from './components/forms/input/DatePickerInput';
 import { DateInput } from './components/forms/input/DateInput';
 import { FileInput } from './components/forms/input/FileInput';
 import { TextAreaInput } from './components/forms/input/TextAreaInput';
+import { TextInput } from './components/forms/input/TextInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
@@ -200,6 +202,14 @@ import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
 import { ParentEntityEditPanel } from './components/entities/ParentEntityEditPanel';
+import {
+    IParentOption,
+    EntityInputProps,
+    IDerivePayload,
+    IEntityTypeOption,
+    MaterialOutput,
+    GenerateEntityResponse,
+} from './components/entities/models';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
@@ -293,7 +303,7 @@ import { PermissionAssignments } from './components/permissions/PermissionAssign
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './components/permissions/models';
 import { fetchContainerSecurityPolicy } from './components/permissions/actions';
-import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
+import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData, extractEntityTypeOptionFromRow } from './components/entities/actions';
 import { EntityDataType } from './components/entities/models';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
 import { SampleTypeModel } from "./components/domainproperties/samples/models";
@@ -382,6 +392,7 @@ export {
     DateInput,
     FileInput,
     TextAreaInput,
+    TextInput,
     QuerySelect,
     QuerySelectOwnProps,
     UserSelectInput,
@@ -462,6 +473,7 @@ export {
     withFormSteps,
     getQueryFormLabelFieldName,
     isQueryFormLabelField,
+    resolveDetailFieldValue,
     WithFormStepsProps,
     FormStep,
     FormTabs,
@@ -503,6 +515,13 @@ export {
     SampleTypeDataType,
     DataClassDataType,
     ParentEntityEditPanel,
+    extractEntityTypeOptionFromRow,
+    IParentOption,
+    EntityInputProps,
+    IDerivePayload,
+    IEntityTypeOption,
+    MaterialOutput,
+    GenerateEntityResponse,
 
     // Navigation
     MenuSectionConfig,

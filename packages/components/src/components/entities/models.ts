@@ -162,7 +162,7 @@ export interface EntityChoice {
     value: string // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
 }
 
-interface MaterialOutput {
+export interface MaterialOutput {
     created: any
     createdBy: string
     id: number

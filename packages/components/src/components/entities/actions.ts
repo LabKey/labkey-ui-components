@@ -152,7 +152,7 @@ function resolveEntityParentTypeFromIds(schemaQuery: SchemaQuery, response: any)
     ]);
 }
 
-function extractEntityTypeOptionFromRow(row: Map<string, any>): IEntityTypeOption {
+export function extractEntityTypeOptionFromRow(row: Map<string, any>): IEntityTypeOption {
     const name = row.getIn(['Name', 'value']);
     return {
         label: name,

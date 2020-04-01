@@ -179,9 +179,13 @@ import { MultiValueRenderer } from './renderers/MultiValueRenderer';
 import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
+import { QueryFormInputs, getQueryFormLabelFieldName, isQueryFormLabelField } from './components/forms/QueryFormInputs';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput, SelectInputProps } from './components/forms/input/SelectInput';
 import { DatePickerInput } from './components/forms/input/DatePickerInput';
+import { DateInput } from './components/forms/input/DateInput';
+import { FileInput } from './components/forms/input/FileInput';
+import { TextAreaInput } from './components/forms/input/TextAreaInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
@@ -370,10 +374,14 @@ export {
     CollapsiblePanel,
     BulkAddUpdateForm,
     BulkUpdateForm,
+    QueryFormInputs,
     LookupSelectInput,
     SelectInput,
     SelectInputProps, // TODO this probably doesn't need to be exported, long-term.  Used by the <Select> element in Biologics, which may wnat to be moved here instead.
     DatePickerInput,
+    DateInput,
+    FileInput,
+    TextAreaInput,
     QuerySelect,
     QuerySelectOwnProps,
     UserSelectInput,
@@ -452,6 +460,8 @@ export {
     handleInputTab,
     handleTabKeyOnTextArea,
     withFormSteps,
+    getQueryFormLabelFieldName,
+    isQueryFormLabelField,
     WithFormStepsProps,
     FormStep,
     FormTabs,

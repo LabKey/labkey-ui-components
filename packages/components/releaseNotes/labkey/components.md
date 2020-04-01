@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.42.1
-*Released*: 1 April 2020
+### version TBD
+*Released*: TBD
 * NavigationBar optional property for an alternate url to go to after sign out
 
 ### version 0.42.0

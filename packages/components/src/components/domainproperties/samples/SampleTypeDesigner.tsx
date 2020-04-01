@@ -37,7 +37,8 @@ const DEFAULT_SAMPLE_FIELD_CONFIG = {
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
-    value: "{{this_sample_set}}"
+    value: "{{this_sample_set}}",
+    schema: SCHEMAS.SAMPLE_SETS.SCHEMA
 } as IParentOption;
 
 const PROPERTIES_PANEL_INDEX: number = 0;

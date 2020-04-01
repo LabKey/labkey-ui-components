@@ -37,8 +37,9 @@ interface Props {
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
     newUserRoleOptions?: Array<any>
 
-    // option to disable the delete UI pieces for this component
+    // option to disable the delete and reset password UI pieces for this component
     allowDelete?: boolean
+    allowResetPassword?: boolean
 }
 
 interface State {
@@ -51,7 +52,8 @@ interface State {
 export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
 
     static defaultProps = {
-        allowDelete: true
+        allowDelete: true,
+        allowResetPassword: true
     };
 
     constructor(props: Props) {

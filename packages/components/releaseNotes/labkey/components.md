@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Allow Source (Data Class) Alias to be defined separate from a SampleSet type Parent Alias
     - Allow filtering of parent options (for example, only 'sources' type data classes will be included)
     
+### version 0.42.0
+*Released*: 31 March 2020
+* SiteUsersGridPanel and UserDetails panel prop to hide/show 'Reset Password' button (i.e. allowResetPassword)
+
 ### version 0.41.3
 *Released*: 30 March 2020
 * Issue 40084: Add property to exclude unique field key from bulk update modal

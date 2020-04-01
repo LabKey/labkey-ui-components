@@ -1,12 +1,12 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { Actions, initQueryGridState, QueryModel, SchemaQuery } from '..';
+import { initQueryGridState, SchemaQuery } from '..';
 import { initMockServerContext } from '../testHelpers';
-import { applyQueryMetadata } from '../query/api';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import { LoadingState } from './QueryModel';
 import { PageSelector, PaginationButtons, PaginationInfo } from './Pagination';
 import { mount } from 'enzyme';
+import { copyTestModel, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO;
@@ -25,38 +25,18 @@ beforeAll(() => {
     });
     initQueryGridState();
     // Have to instantiate QUERY_INFO here because it relies on initQueryGridState being called first.
-    QUERY_INFO = applyQueryMetadata(mixturesQueryInfo);
+    QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
 });
 
 describe('Pagination', () => {
     let model;
     let actions;
 
-    const createTestModel = (withData = false) => {
-        const _model = new QueryModel({ id: 'model', schemaQuery: SCHEMA_QUERY });
-        _model.rowCount = 661;
-        _model.queryInfo = QUERY_INFO;
-        _model.rowsLoadingState = LoadingState.LOADED;
-        _model.queryInfoLoadingState = LoadingState.LOADED;
-
-        if (withData) {
-            _model.rows = {};
-        }
-
-        return _model;
-    };
-
     beforeEach(() => {
-        model = createTestModel();
-        actions = {
-            loadFirstPage: jest.fn(),
-            loadLastPage: jest.fn(),
-            loadPreviousPage: jest.fn(),
-            loadNextPage: jest.fn(),
-        };
-        // Coerce to Actions.
-        actions = actions as unknown;
-        actions = actions as Actions;
+        model = makeTestModel(SCHEMA_QUERY, QUERY_INFO);
+        model.rowCount = 661;
+        model.rowsLoadingState = LoadingState.LOADED;
+        actions = makeTestActions();
     });
 
     test('PaginationInfo', () => {
@@ -136,14 +116,14 @@ describe('Pagination', () => {
         tree = renderer.create(<PaginationButtons model={model} actions={actions} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
-        model = createTestModel(true);
+        model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, {}, []);
+        model.rowCount = 661;
         const wrapper = mount(<PaginationButtons model={model} actions={actions} />);
         wrapper.find('PagingButton').first().simulate('click');
         // Button is disabled (because we're on the first page) so the click handler is never called.
         expect(actions.loadPreviousPage).toHaveBeenCalledTimes(0);
 
-        model = createTestModel(true);
-        model.offset = model.lastPageOffset;
+        model = copyTestModel(model, { offset: model.lastPageOffset });
         wrapper.setProps({ model, actions });
         wrapper.find('PagingButton').first().simulate('click');
         expect(actions.loadPreviousPage).toHaveBeenCalledWith('model');
@@ -151,8 +131,7 @@ describe('Pagination', () => {
         // Button is disabled (because we're on the last page) so the click handler is never called.
         expect(actions.loadNextPage).toHaveBeenCalledTimes(0);
 
-        model = createTestModel(true);
-        model.offset = 0;
+        model = copyTestModel(model, { offset: 0 });
         wrapper.setProps({ model, actions });
         wrapper.find('PagingButton').last().simulate('click');
         expect(actions.loadNextPage).toHaveBeenCalledWith('model');

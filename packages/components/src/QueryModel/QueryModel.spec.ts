@@ -1,9 +1,9 @@
 import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
 import { initQueryGridState, SchemaQuery } from '..';
 import { QuerySort } from '../components/base/models/model';
-import { applyQueryMetadata } from '../query/api';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import { initMockServerContext } from '../testHelpers';
+import { makeQueryInfo } from './testUtils';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO;
@@ -33,7 +33,7 @@ beforeAll(() => {
     });
     initQueryGridState();
     // Have to instantiate QUERY_INFO here because it relies on initQueryGridState being called first.
-    QUERY_INFO = applyQueryMetadata(mixturesQueryInfo);
+    QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
 });
 
 describe('QueryModel', () => {

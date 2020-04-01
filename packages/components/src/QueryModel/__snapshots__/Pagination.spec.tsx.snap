@@ -371,3 +371,43 @@ exports[`Pagination PaginationButtons 4`] = `
   </button>
 </div>
 `;
+
+exports[`Pagination PaginationInfo 1`] = `
+<div
+  className="pagination-info"
+>
+  
+</div>
+`;
+
+exports[`Pagination PaginationInfo 2`] = `
+<div
+  className="pagination-info"
+>
+  1 - 20 of 661
+</div>
+`;
+
+exports[`Pagination PaginationInfo 3`] = `
+<div
+  className="pagination-info"
+>
+  1 - 40 of 661
+</div>
+`;
+
+exports[`Pagination PaginationInfo 4`] = `
+<div
+  className="pagination-info"
+>
+  41 - 80 of 661
+</div>
+`;
+
+exports[`Pagination PaginationInfo 5`] = `
+<div
+  className="pagination-info"
+>
+  1 - 4
+</div>
+`;

@@ -28,6 +28,12 @@ export function createQueryModelId(schemaQuery: SchemaQuery): string {
 
 const sortStringMapper = (s: QuerySort): string => s.toRequestString();
 
+export interface GridMessage {
+    area: string;
+    type: string;
+    content: string;
+}
+
 export interface QueryConfig {
     baseFilters?: Filter.IFilter[];
     containerFilter?: Query.ContainerFilter;
@@ -52,7 +58,7 @@ export interface IQueryModel extends QueryConfig {
     // Set by client
     message?: string;
     // Set by server (Assay QC, etc)
-    messages: string[];
+    messages: GridMessage[];
     queryInfo?: QueryInfo;
     queryInfoLoadingState: LoadingState;
     orderedRows?: string[];
@@ -88,7 +94,7 @@ export class QueryModel implements IQueryModel {
     filterArray: Filter.IFilter[];
     rowsLoadingState: LoadingState;
     message?: string;
-    messages: string[];
+    messages: GridMessage[];
     orderedRows?: string[];
     queryInfo?: QueryInfo;
     queryInfoLoadingState: LoadingState;
@@ -118,7 +124,6 @@ export class QueryModel implements IQueryModel {
         this.queryParameters = getOrDefault(queryConfig.queryParameters);
         this.requiredColumns = getOrDefault(queryConfig.requiredColumns, []);
         this.sorts = getOrDefault(queryConfig.sorts);
-
         this.error = undefined;
         this.filterArray = [];
         this.message = undefined;

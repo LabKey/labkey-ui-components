@@ -170,13 +170,13 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             this.setState(() => ({
                 submitting: false,
                 editing: false
-            }));
+            }), () => {
+                invalidateParentModels(this.state.originalParents, this.state.currentParents, this.props.parentDataType);
 
-            invalidateParentModels(this.state.originalParents, this.state.currentParents, this.props.parentDataType);
-
-            if (onUpdate) {
-                onUpdate();
-            }
+                if (onUpdate) {
+                    onUpdate();
+                }
+            });
         }).catch((error) => {
             console.error(error);
             this.setState(() => ({

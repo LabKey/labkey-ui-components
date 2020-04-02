@@ -4,8 +4,23 @@ import { bindColumnRenderers } from '../renderers';
 
 export interface QueryModelLoader {
     // TODO: properly type the Promises.
+
+    /**
+     * Loads the QueryInfo for the specified model.
+     * @param model: QueryModel
+     */
     loadQueryInfo: (model: QueryModel) => Promise<any>;
+
+    /**
+     * Loads the current page of rows for the specified model.
+     * @param model: QueryModel
+     */
     loadRows: (model: QueryModel) => Promise<any>;
+
+    /**
+     * Loads the selected RowIds (or PK values) for the specified model.
+     * @param model: QueryModel
+     */
     loadSelections: (model: QueryModel) => Promise<any>;
 }
 
@@ -41,7 +56,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             rowCount: totalRows, // rename to match what the server returns
         };
     },
-    async loadSelections() {
+    async loadSelections(model) {
         throw new Error('loadSelections not yet implemented');
     },
 };

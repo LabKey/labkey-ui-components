@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+import {
+    COHORT_TIP,
+    DATASET_CATEGORY_TIP,
+    DATASET_ID_TIP,
+    DATASET_LABEL_TIP,
+    DATASET_NAME_TIP, DATASPACE_TIP, TAG_TIP,
+    VISIT_DATE_TIP
+} from "./constants";
+import React from "react";
+
 export const fetchCategories = async () => {
     // TODO: Replace this with server side call
     return {
@@ -43,3 +53,35 @@ export const fetchVisitDateColumns = async () => {
             {label: 'Arrival Date', value: 'arrivalDate'}]
     };
 };
+
+export function getHelpTip (fieldName: string) : string {
+    let helpTip = '';
+
+    switch (fieldName) {
+        case "name" :
+            helpTip = DATASET_NAME_TIP;
+            break;
+        case "label" :
+            helpTip = DATASET_LABEL_TIP;
+            break;
+        case "category" :
+            helpTip = DATASET_CATEGORY_TIP;
+            break;
+        case "datasetId" :
+            helpTip = DATASET_ID_TIP;
+            break;
+        case "visitDateColumn" :
+            helpTip = VISIT_DATE_TIP;
+            break;
+        case "cohort" :
+            helpTip = COHORT_TIP;
+            break;
+        case "tag" :
+            helpTip = TAG_TIP;
+            break;
+        case "dataspace" :
+            helpTip = DATASPACE_TIP;
+            break;
+    }
+    return helpTip;
+}

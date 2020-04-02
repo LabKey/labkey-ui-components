@@ -448,30 +448,6 @@ class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
     }
 }
 
-interface AdvancedSettingsModalBottomProps {
-    toggleModal: (isModalOpen: boolean) => void;
-    applyChanges: () => void;
-    successBsStyle?: string;
-}
-
-class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsModalBottomProps> {
-    render() {
-        const { toggleModal, applyChanges, successBsStyle } = this.props;
-
-        return (
-            <>
-                <Button onClick={() => toggleModal(false)} className='domain-adv-footer domain-adv-cancel-btn'>
-                    Cancel
-                </Button>
-                {helpLinkNode('lists', "Learn more about using lists", 'domain-adv-footer domain-adv-link')}
-                <Button onClick={applyChanges} bsStyle={successBsStyle || 'success'} className='domain-adv-footer domain-adv-apply-btn'>
-                    Apply
-                </Button>
-            </>
-        );
-    }
-}
-
 interface AdvancedSettingsProps {
     model: ListModel;
     title: string;
@@ -656,7 +632,24 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <AdvancedSettingsModalBottom toggleModal={this.toggleModal} applyChanges={this.applyChanges} successBsStyle={successBsStyle} />
+                        <>
+                            <Button
+                                onClick={() => this.toggleModal(false)}
+                                className='domain-adv-footer domain-adv-cancel-btn'
+                            >
+                                Cancel
+                            </Button>
+
+                            {helpLinkNode('lists', "Learn more about using lists", 'domain-adv-footer domain-adv-link')}
+
+                            <Button
+                                onClick={this.applyChanges}
+                                bsStyle={successBsStyle || 'success'}
+                                className='domain-adv-footer domain-adv-apply-btn'
+                            >
+                                Apply
+                            </Button>
+                        </>
                     </Modal.Footer>
                 </Modal>
             </Col>

@@ -17,25 +17,21 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
-import { DomainPanelStatus } from "../models";
+import {DomainDesign, DomainPanelStatus} from "../models";
 import { DataRowUniquenessContainer, BasicPropertiesFields } from "./DatasetPropertiesPanelFormElements";
 import { AdvancedSettings } from "./DatasetPropertiesAdvancedSettings";
-import { DatasetModel} from "./models";
+import {DatasetAdvancedSettingsForm, DatasetModel} from "./models";
 import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
 import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
+import {COHORT_TIP, DATASET_ID_TIP, DATASPACE_TIP, TAG_TIP, VISIT_DATE_TIP} from "./constants";
+import {ListModel} from "../../..";
+import {AdvancedSettingsForm} from "../list/models";
 
 interface OwnProps {
     model: DatasetModel;
-    panelStatus?: DomainPanelStatus;
-    onChange?: (model: DatasetModel) => void;
-    controlledCollapse?: boolean;
-    initCollapsed?: boolean;
-    collapsible?: boolean;
+    onChange: (model: DatasetModel) => void;
     onToggle?: (collapsed: boolean, callback: () => any) => any;
-    validate?: boolean;
-    useTheme?: boolean;
     successBsStyle?: string;
-    newDataset: boolean;
     showDataspace: boolean;
 }
 
@@ -43,68 +39,54 @@ type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
     isValid?: boolean;
-    name?: string;
-    description?: string;
-    categoryId?: number;
-    label?: string;
-    dataRowSetting?: number;
 }
 
-class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
+export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
 
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
 
         this.state = {
-            isValid: true,
-            name: this.props.model.name,
-            description: this.props.model.description,
-            categoryId: this.props.model.categoryId,
-            label: this.props.model.label,
-            dataRowSetting: this.getDataRowSetting(this.props.model)
+            isValid: true
         };
     }
 
-    getDataRowSetting(model: DatasetModel) : number {
-        let dataRowSetting = -1;
+    updateValidStatus = (newModel?: DatasetModel) => {
+        const { model, onChange } = this.props;
+        const updatedModel = newModel || model;
 
-        // participant id
-        if (model.keyProperty === undefined || model.keyProperty === null) {
-            dataRowSetting = 0;
-        }
-
-        // participant id and timepoint
-        if (model.keyProperty !== null && (model.keyManagementType === undefined || model.keyManagementType === null)) {
-            dataRowSetting = 1;
-        }
-
-        // participant id, timepoint and additional key field
-        if (model.keyProperty !== null && model.keyManagementType !== null) {
-            dataRowSetting = 2;
-        }
-
-        return dataRowSetting;
-    }
-
-    onCheckBoxChange = (name, checked): void => {
-        // TODO: manage state change of server manage field checkbox in next story
+        const isValid = updatedModel && updatedModel.hasValidProperties();
+        this.setState(() => ({isValid}),
+            () => {
+                // Issue 39918: only consider the model changed if there is a newModel param
+                if (newModel) {
+                    onChange(updatedModel)
+                }
+            });
     };
 
-    onInputChange = e => {
-        const id = e.target.id;
-        let value = e.target.value;
+    onChange = (identifier, value): void => {
+        const { model } = this.props;
 
-        // special case for empty string, set as null instead
-        if (Utils.isString(value) && value.length === 0) {
-            value = null;
-        }
+        const newModel = model.merge({
+            [identifier]: value
+        }) as DatasetModel;
 
-        this.setState(() => ({ [id]: value }));
+        this.updateValidStatus(newModel);
+    };
+
+    onCheckBoxChange = (name, checked): void => {
+        this.onChange(name, !checked);
+    };
+
+    onInputChange = (evt: any) => {
+        const id = evt.target.id;
+        const value = evt.target.value;
+        this.onChange(id, value);
     };
 
     onCategoryChange = (category) => {
-        let categoryID = category ? category : undefined
-        this.setState(() => ({categoryId: categoryID}))
+        this.onChange('category', category.label);
     };
 
     onRadioChange = e => {
@@ -114,20 +96,20 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDom
         this.setState(() => ({ [name]: value }));
     };
 
+    applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm) => {
+        const { model } = this.props;
+        const newModel = model.merge(advancedSettingsForm) as ListModel;
+        this.updateValidStatus(newModel);
+    };
+
     render() {
         const {
             model,
-            newDataset,
             showDataspace,
         } = this.props;
 
         const {
-            isValid,
-            name,
-            description,
-            categoryId,
-            label,
-            dataRowSetting
+            isValid
         } = this.state;
 
         return (
@@ -137,7 +119,7 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDom
                 title={'Dataset Properties'}
                 titlePrefix={model.name}
                 isValid={isValid}
-                updateValidStatus={() => {}} // TODO: in next story
+                updateValidStatus={this.updateValidStatus}
             >
                 <Row className={'margin-bottom'}>
                     <Col md={11}/>
@@ -145,27 +127,26 @@ class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDom
                         <AdvancedSettings
                             title={"Advanced Settings"}
                             model={model}
-                            newDataset={newDataset}
                             showDataspace={showDataspace}
+                            applyAdvancedProperties={this.applyAdvancedProperties}
                         />
                     </Col>
                 </Row>
                 <Form>
-                    <BasicPropertiesFields
-                        model={model}
-                        name={name}
-                        description={description}
-                        categoryId={categoryId}
-                        label={label}
-                        onInputChange={this.onInputChange}
-                        onCategoryChange={this.onCategoryChange}
-                    />
-                    <DataRowUniquenessContainer
-                        model={model}
-                        onRadioChange={this.onRadioChange}
-                        dataRowSetting={dataRowSetting}
-                        showAdditionalKeyField={dataRowSetting == 2}
-                    />
+                    <Col md={6}>
+                        <BasicPropertiesFields
+                            model={model}
+                            onInputChange={this.onInputChange}
+                            onCategoryChange={this.onCategoryChange}
+                        />
+                    </Col>
+
+                    <Col md={6}>
+                        <DataRowUniquenessContainer
+                            model={model}
+                            onRadioChange={this.onRadioChange}
+                        />
+                    </Col>
                 </Form>
             </BasePropertiesPanel>
         )

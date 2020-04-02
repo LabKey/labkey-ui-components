@@ -16,6 +16,20 @@
 
 import {Record} from "immutable";
 import {DomainDesign} from "../models";
+import match from "react-router/lib/match";
+import {Option} from "react-select";
+
+export interface DatasetAdvancedSettingsForm {
+    datasetId?: number;
+    cohort?: number;
+    tag?: string;
+    availableCohorts?: Option | Array<Option>;
+    showInOverview?: boolean;
+    visitDateColumn?: string;
+    visitDateColumns?: Option | Array<Option>;
+    dataspace?: string;
+    dataspaceOptions?: Option | Array<Option>;
+}
 
 
 export class DatasetModel extends Record({
@@ -42,6 +56,7 @@ export class DatasetModel extends Record({
     sourceAssayName: undefined,
     sourceAssayURL: undefined,
     dataSharing: undefined,
+    dataRowSetting: undefined,
     keyManagementType: undefined
 }) {
     domain: DomainDesign;
@@ -62,6 +77,7 @@ export class DatasetModel extends Record({
     sourceAssayURL?: string;
     dataSharing?: string;
     keyManagementType?: any;
+    dataRowSetting?: number
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -75,5 +91,9 @@ export class DatasetModel extends Record({
             let domain = DomainDesign.create(raw.domainDesign);
             return new DatasetModel({...raw.datasetDesign, domain});
         }
+    }
+
+    hasValidProperties(): boolean {
+        return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
     }
 }

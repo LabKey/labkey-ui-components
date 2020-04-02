@@ -18,7 +18,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 import { NEW_DATASET_MODEL } from "../test/data/constants";
-import { DatasetDesignerPanel } from "../components/domainproperties/dataset/DatasetDesignerPanel";
+import { DatasetDesignerPanels } from "../components/domainproperties/dataset/DatasetDesignerPanels";
 import { DatasetModel } from "../components/domainproperties/dataset/models";
 import getDatasetDesign from '../test/data/dataset-getDatasetDesign.json';
 
@@ -29,11 +29,10 @@ class NewDatasetDesigner extends React.PureComponent<any,any> {
 
     render() {
         return (
-          <DatasetDesignerPanel
+          <DatasetDesignerPanels
               initModel={DatasetModel.create(this.props.model, undefined)}
               useTheme={this.props.useTheme}
-              newDataset={true}
-              showDataspace={this.props.showDataspace}
+              showDataSpace={this.props.showDataspace}
           />
         );
     }
@@ -46,11 +45,10 @@ class EditDatasetDesigner extends React.PureComponent<any,any> {
 
     render() {
         return (
-            <DatasetDesignerPanel
+            <DatasetDesignerPanels
                 initModel={DatasetModel.create(null, this.props.model)}
                 useTheme={this.props.useTheme}
-                newDataset={false}
-                showDataspace={this.props.showDataspace}
+                showDataSpace={this.props.showDataspace}
             />
         );
     }

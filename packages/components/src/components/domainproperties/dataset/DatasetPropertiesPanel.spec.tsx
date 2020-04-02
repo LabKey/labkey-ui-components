@@ -18,10 +18,25 @@ import {DatasetModel} from "./models";
 import {NEW_DATASET_MODEL} from "../../../test/data/constants";
 import getDatasetDesign from "../../../test/data/dataset-getDatasetDesign.json";
 import React from "react";
-import {DatasetPropertiesPanel} from "./DatasetPropertiesPanel";
+import {DatasetPropertiesPanel, DatasetPropertiesPanelImpl} from "./DatasetPropertiesPanel";
 import renderer from "react-test-renderer";
+import {mount} from "enzyme";
+import {DatasetDesignerPanelImpl} from "./DatasetDesignerPanels";
+import {DomainPanelStatus} from "../models";
+import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
+import {BasicPropertiesFields} from "./DatasetPropertiesPanelFormElements";
+import {Radio} from "react-bootstrap";
 
 describe("Dataset Properties Panel", () => {
+
+    const BASE_PROPS = {
+        panelStatus: 'NONE' as DomainPanelStatus,
+        validate: false,
+        useTheme: false,
+        controlledCollapse: false,
+        initCollapsed: false,
+        collapsed: false
+    };
 
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
@@ -33,11 +48,11 @@ describe("Dataset Properties Panel", () => {
                 model={newDatasetModel}
                 controlledCollapse={true}
                 useTheme={true}
-                newDataset={true}
-                showDataspace={true}
                 panelStatus={'COMPLETE'}
                 validate={false}
                 onToggle={(collapsed, callback) => {}}
+                onChange={jest.fn()}
+                showDataspace={true}
             />;
 
         const dom = renderer.create(propertiesPanel).toJSON();
@@ -51,15 +66,41 @@ describe("Dataset Properties Panel", () => {
                 model={populatedDatasetModel}
                 controlledCollapse={true}
                 useTheme={true}
-                newDataset={true}
-                showDataspace={true}
                 panelStatus={'COMPLETE'}
                 validate={false}
                 onToggle={(collapsed, callback) => {}}
+                showDataspace={true}
+                onChange={jest.fn()}
             />;
 
         const dom = renderer.create(propertiesPanel).toJSON();
         expect(dom).toMatchSnapshot();
+    });
+
+    test("set state for isValid", () => {
+        const propertiesPanel = mount(
+            <DatasetPropertiesPanelImpl
+                {...BASE_PROPS}
+                model={populatedDatasetModel}
+                togglePanel={jest.fn()}
+                showDataspace={true}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(propertiesPanel.find(CollapsiblePanelHeader)).toHaveLength(1);
+        expect(propertiesPanel.find(BasicPropertiesFields)).toHaveLength(1);
+        expect(propertiesPanel.find(Radio)).toHaveLength(3);
+
+        expect(propertiesPanel.state()).toHaveProperty('isValid', true);
+        propertiesPanel.setState({isValid: false});
+        expect(propertiesPanel.state()).toHaveProperty('isValid', false);
+
+        expect(propertiesPanel.find(CollapsiblePanelHeader)).toHaveLength(1);
+        expect(propertiesPanel.find(BasicPropertiesFields)).toHaveLength(1);
+        expect(propertiesPanel.find(Radio)).toHaveLength(3);
+
+        propertiesPanel.unmount();
     });
 
 });

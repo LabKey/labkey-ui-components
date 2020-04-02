@@ -17,7 +17,7 @@
 import {DatasetModel} from "./models";
 import {NEW_DATASET_MODEL} from "../../../test/data/constants";
 import getDatasetDesign from "../../../test/data/dataset-getDatasetDesign.json";
-import {DatasetDesignerPanel} from "./DatasetDesignerPanel";
+import {DatasetDesignerPanels} from "./DatasetDesignerPanels";
 import renderer from "react-test-renderer";
 import React from "react";
 
@@ -28,11 +28,10 @@ describe("Dataset Designer", () => {
 
     test("New dataset", () => {
         const designerPanel =
-            <DatasetDesignerPanel
+            <DatasetDesignerPanels
                 initModel={newDatasetModel}
                 useTheme={true}
-                newDataset={true}
-                showDataspace={true}
+                showDataSpace={true}
             />;
 
         const dom = renderer.create(designerPanel).toJSON();
@@ -41,14 +40,15 @@ describe("Dataset Designer", () => {
 
     test("Edit existing dataset", () => {
         const designerPanel =
-            <DatasetDesignerPanel
+            <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
                 useTheme={true}
-                newDataset={true}
-                showDataspace={true}
+                showDataSpace={true}
             />;
 
         const dom = renderer.create(designerPanel).toJSON();
         expect(dom).toMatchSnapshot();
     })
+
+    // TODO: testCase for testing the alert / error message similar to DataClassDesigner.spec.tsx
 });

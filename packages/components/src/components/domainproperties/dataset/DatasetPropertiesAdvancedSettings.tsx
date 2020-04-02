@@ -1,19 +1,22 @@
 import React from 'react';
 import { Button, Col, FormControl, Modal, Row } from 'react-bootstrap';
-import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../..';
-import { DatasetModel } from "./models";
+import { helpLinkNode, LabelHelpTip, SelectInput } from '../../..';
+import {DatasetAdvancedSettingsForm, DatasetModel} from "./models";
 import { CheckBoxRow } from "../list/ListPropertiesPanelFormElements";
-import { fetchCohorts, fetchVisitDateColumns } from "./actions";
+import {fetchCohorts, fetchVisitDateColumns, getHelpTip} from "./actions";
 import "../../../theme/dataset.scss";
-import {BasicPropertiesTitle} from "./DatasetPropertiesPanelFormElements";
+import {DomainFieldLabel} from "../DomainFieldLabel";
+import {COHORT_TIP, DATASET_ID_TIP, DATASPACE_TIP, TAG_TIP, VISIT_DATE_TIP} from "./constants";
+import {SectionHeading} from "../SectionHeading";
+import {AdvancedSettingsForm} from "../list/models";
 
 interface DatasetSettingsSelectProps {
-    name?: string;
+    name: string;
     label: string;
     helpTip: JSX.Element;
     selectedValue?: any;
     selectOptions: any;
-    onSelectChange: any;
+    onSelectChange: Function;
 }
 
 export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSelectProps> {
@@ -53,13 +56,14 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
 }
 
 interface DatasetSettingsInputProps {
-    name?: string;
+    name: string;
     label: string;
     helpTip: JSX.Element;
     value?: any;
     placeholder?: string;
-    onValueChange: any;
+    onValueChange: (evt: any) => any;
     disabled: boolean;
+    required: boolean;
     showInAdvancedSettings: boolean;
 }
 
@@ -73,18 +77,17 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
             placeholder,
             onValueChange,
             disabled,
-            showInAdvancedSettings
+            showInAdvancedSettings,
+            required
         } = this.props;
 
         return (
             <Row className={'margin-top'}>
                 <Col xs={4} >
-                    { label }
-                    <LabelHelpTip
-                        title={label}
-                        body={() => {
-                            return <> {helpTip} </>;
-                        }}
+                    <DomainFieldLabel
+                        label={label}
+                        required={required}
+                        helpTipBody={() => helpTip}
                     />
                 </Col>
 
@@ -100,35 +103,9 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
                         disabled={disabled}
                     />
                 </Col>
+
+                { !showInAdvancedSettings && < Col xs={1}/> }
             </Row>
-        );
-    }
-}
-
-interface AdvancedSettingsModalBottomProps {
-    toggleModal: (isModalOpen: boolean) => void;
-    applyChanges: () => void;
-    successBsStyle?: string;
-    helpText?: string;
-    helpTopic?: string;
-}
-
-class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsModalBottomProps> {
-    render() {
-        const { toggleModal, applyChanges, successBsStyle, helpTopic, helpText } = this.props;
-
-        return (
-            <>
-                <Button onClick={() => toggleModal(false)} className='domain-adv-footer domain-adv-cancel-btn'>
-                    Cancel
-                </Button>
-
-                { helpLinkNode(helpTopic, helpText, 'domain-adv-footer domain-adv-link') }
-
-                <Button onClick={applyChanges} bsStyle={successBsStyle || 'success'} className='domain-adv-footer domain-adv-apply-btn'>
-                    Apply
-                </Button>
-            </>
         );
     }
 }
@@ -136,21 +113,12 @@ class AdvancedSettingsModalBottom extends React.PureComponent<AdvancedSettingsMo
 interface AdvancedSettingsProps {
     model: DatasetModel;
     title: string;
-    newDataset: boolean;
+    applyAdvancedProperties: (advancedSettingsForm: DatasetAdvancedSettingsForm) => void;
     showDataspace: boolean;
 }
 
-interface AdvancedSettingsState {
+interface AdvancedSettingsState extends DatasetAdvancedSettingsForm {
     modalOpen?: boolean;
-    datasetId?: number;
-    cohort?: number;
-    tag?: string;
-    availableCohorts?: any;
-    showInOverview?: boolean;
-    visitDateColumn?: string;
-    visitDateColumns?: any;
-    dataspace?: string;
-    dataspaceOptions?: any
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -167,11 +135,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     componentDidMount() {
         const { model } = this.props;
 
-        // Ajax call handling to get available categories
         fetchCohorts()
             .then((data) => {
                 this.setState(() => ({
-                    cohort: model.cohortId,
                     availableCohorts: data.cohorts
                 }));
             });
@@ -179,7 +145,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         fetchVisitDateColumns()
             .then((data) => {
                 this.setState(() => ({
-                    visitDateColumn: model.visitDatePropertyName,
                     visitDateColumns: data.visitDateColumns
                 }));
             })
@@ -191,7 +156,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return {
             datasetId: model.datasetId,
             tag: model.tag,
-            showInOverview: model.showInOverview
+            showInOverview: model.showInOverview,
+            cohort: model.cohortId,
+            visitDateColumn: model.visitDatePropertyName,
         };
     };
 
@@ -216,9 +183,18 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     onSelectChange = (name, formValue, selected): void => {
-        const value = (selected) ? selected.name : '<AUTO>';
+        const value = selected ? selected.name : undefined;
         this.setState({ [name]: value });
     };
+
+    isNewDataset () {
+        const { model } = this.props;
+        return !model.datasetId;
+    };
+
+    getHelpTipElement(field: string) : JSX.Element {
+        return <> {getHelpTip(field)} </> as JSX.Element;
+    }
 
     render() {
         const {
@@ -234,34 +210,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             dataspaceOptions
         } = this.state;
 
-        const { title, newDataset, showDataspace } = this.props;
-
-        const datasetIdTip =
-            <>
-                Required. The unique, numerical identifier for your dataset. It is defined during dataset creation and cannot be modified.
-            </> as JSX.Element;
-
-        const visitDateTip =
-            <>
-                If the official 'Visit Date' for a visit can come from this dataset, choose the date column to represent it.
-                Note that since datasets can include data from many visits, each visit must also indicate the official 'VisitDate' dataset.
-            </> as JSX.Element;
-
-        const cohortTip =
-            <>
-                Datasets may be cohort specific, or associated with all cohorts.
-            </> as JSX.Element;
-
-        const tagTip =
-            <>
-                Adding a tag provides an additional, flexible way to categorize this dataset.
-            </> as JSX.Element;
-
-        // TODO: add tip
-        const dataspaceTip =
-            <>
-                Coming soon...
-            </> as JSX.Element;
+        const {
+            title,
+            showDataspace
+        } = this.props;
 
         return (
             <Col xs={12} md={2}>
@@ -276,7 +228,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                     <Modal.Body>
 
-                        <BasicPropertiesTitle title="Miscellaneous Options" />
+                        <SectionHeading title="Miscellaneous Options" />
 
                         <div className='margin-top'>
                             <CheckBoxRow
@@ -290,18 +242,19 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <DatasetSettingsInput
                             name="datasetId"
                             label="Dataset ID"
-                            helpTip={datasetIdTip}
+                            helpTip={this.getHelpTipElement("datasetId")}
                             value={datasetId}
                             placeholder="Auto Assign"
-                            disabled={!newDataset}
+                            disabled={!this.isNewDataset()}
                             onValueChange={this.onInputChange}
                             showInAdvancedSettings={true}
+                            required={true}
                         />
 
                         <DatasetSettingsSelect
                             name="visitDateColumn"
                             label="Visit Date Column"
-                            helpTip={visitDateTip}
+                            helpTip={this.getHelpTipElement("visitDateColumn")}
                             selectOptions={visitDateColumns}
                             selectedValue={visitDateColumn}
                             onSelectChange={this.onSelectChange}
@@ -310,7 +263,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <DatasetSettingsSelect
                             name="cohort"
                             label="Cohort Association"
-                            helpTip={cohortTip}
+                            helpTip={this.getHelpTipElement("cohort")}
                             selectOptions={availableCohorts}
                             selectedValue={cohort}
                             onSelectChange={this.onSelectChange}
@@ -319,24 +272,25 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <DatasetSettingsInput
                             name="tag"
                             label="Tag"
-                            helpTip={tagTip}
+                            helpTip={this.getHelpTipElement("tag")}
                             value={tag}
                             disabled={false}
                             onValueChange={this.onInputChange}
                             showInAdvancedSettings={true}
+                            required={false}
                         />
 
                         {
                             showDataspace &&
                             <>
                                 <div className='margin-top'>
-                                    <BasicPropertiesTitle title="Dataspace Project Options"/>
+                                    <SectionHeading title="Dataspace Project Options" />
                                 </div>
 
                                 <DatasetSettingsSelect
                                     name="dataspace"
                                     label="Share demographic data"
-                                    helpTip={dataspaceTip}
+                                    helpTip={this.getHelpTipElement("dataspace")}
                                     selectOptions={dataspaceOptions}
                                     selectedValue={dataspace}
                                     onSelectChange={this.onSelectChange}
@@ -347,12 +301,24 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <AdvancedSettingsModalBottom
-                            toggleModal={this.toggleModal}
-                            applyChanges={() => {}} // TODO: handle in next story
-                            helpTopic="createDataset"
-                            helpText="Learn more about datasets"
-                        />
+                        <>
+                            <Button
+                                onClick={() => this.toggleModal(false)}
+                                className='domain-adv-footer domain-adv-cancel-btn'
+                            >
+                                Cancel
+                            </Button>
+
+                            { helpLinkNode("datasetProperties", "Learn more about using datasets", 'domain-adv-footer domain-adv-link') }
+
+                            <Button
+                                onClick={() => {}}
+                                bsStyle={'success'}
+                                className='domain-adv-footer domain-adv-apply-btn'
+                            >
+                                Apply
+                            </Button>
+                        </>
                     </Modal.Footer>
                 </Modal>
             </Col>

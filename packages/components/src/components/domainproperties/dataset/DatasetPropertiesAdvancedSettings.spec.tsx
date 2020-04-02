@@ -33,8 +33,8 @@ describe("Dataset Advanced Settings", () => {
            <AdvancedSettings
                title={"Advanced Settings"}
                model={newDatasetModel}
-               newDataset={true}
                showDataspace={false}
+               applyAdvancedProperties={jest.fn()}
            />;
 
        const dom = renderer.create(datasetAdvancedSetting).toJSON();
@@ -47,8 +47,8 @@ describe("Dataset Advanced Settings", () => {
             <AdvancedSettings
                 title={"Advanced Settings"}
                 model={newDatasetModel}
-                newDataset={true}
                 showDataspace={true}
+                applyAdvancedProperties={jest.fn()}
             />;
 
         const dom = renderer.create(datasetAdvancedSetting).toJSON();
@@ -61,8 +61,8 @@ describe("Dataset Advanced Settings", () => {
             <AdvancedSettings
                 title={"Advanced Settings"}
                 model={populatedDatasetModel}
-                newDataset={false}
                 showDataspace={false}
+                applyAdvancedProperties={jest.fn()}
             />;
 
         const dom = renderer.create(datasetAdvancedSetting).toJSON();
@@ -74,8 +74,8 @@ describe("Dataset Advanced Settings", () => {
             <AdvancedSettings
                 title={"Advanced Settings"}
                 model={populatedDatasetModel}
-                newDataset={false}
                 showDataspace={true}
+                applyAdvancedProperties={jest.fn()}
             />;
 
         const dom = renderer.create(datasetAdvancedSetting).toJSON();
@@ -85,6 +85,7 @@ describe("Dataset Advanced Settings", () => {
     test("DatasetSettingsInput", () => {
         const datasetSettingsInput = mount(
             <DatasetSettingsInput
+                required={true}
                 name="name"
                 label="Name"
                 value={name}

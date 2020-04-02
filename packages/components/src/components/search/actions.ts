@@ -82,7 +82,7 @@ function resolveIconSrc(data: Map<string, any>, category: string) : string {
             if (lcType === 'sampleset') {
                 iconSrc='sample_set';
             }
-            else if (lcType === 'dataclass') {
+            else if (lcType.indexOf('dataclass') === 0) {
                 iconSrc='default'; // we don't have a generic "data class" icon; default works just fine.
             }
             else {

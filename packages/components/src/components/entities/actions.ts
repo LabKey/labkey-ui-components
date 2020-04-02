@@ -2,8 +2,8 @@ import {
     buildURL,
     getQueryGridModel,
     getSelected,
+    gridIdInvalidate,
     naturalSort,
-    queryGridInvalidate,
     QueryGridModel,
     SchemaQuery,
     selectRows
@@ -20,7 +20,7 @@ import {
     IEntityTypeOption,
     IParentOption
 } from './models';
-import { DataClassDataType, SampleTypeDataType } from './constants';
+import { DataClassDataType, PARENT_DATA_GRID_PREFIX, SampleTypeDataType } from './constants';
 import { DELIMITER } from '../forms/input/SelectInput';
 
 export interface DeleteConfirmationData {
@@ -406,17 +406,21 @@ export function parentValuesDiffer(sortedOriginalParents: List<EntityChoice>, cu
     return false;
 }
 
+export function getParentGridPrefix(parentDataType: EntityDataType, queryName: string) {
+    return parentDataType.instanceSchemaName + '-' + PARENT_DATA_GRID_PREFIX + queryName;
+}
+
 export function invalidateParentModels(originalParents: List<EntityChoice>, currentParents: List<EntityChoice>, parentDataType: EntityDataType) {
     // clear out the original parents' grid data (which may no longer be represented in the current parents)
     let cleared = [];
     originalParents.forEach((parentChoice) => {
         cleared.push(parentChoice.type.label);
-        queryGridInvalidate(SchemaQuery.create(parentDataType.instanceSchemaName, parentChoice.type.label), true);
+        gridIdInvalidate(getParentGridPrefix(parentDataType, parentChoice.type.label), true);
     });
     // also clear out the current parents' grid data if it hasn't already been cleared
     currentParents.forEach((parentChoice) => {
         if (parentChoice.type && cleared.indexOf(parentChoice.type.label) < 0) {
-            queryGridInvalidate(SchemaQuery.create(parentDataType.instanceSchemaName, parentChoice.type.label), true);
+            gridIdInvalidate(getParentGridPrefix(parentDataType, parentChoice.type.label), true);
         }
     });
 }

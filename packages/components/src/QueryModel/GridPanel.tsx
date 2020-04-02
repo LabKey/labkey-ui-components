@@ -42,8 +42,7 @@ export class GridPanel extends PureComponent<Props> {
             pageSizes,
             ButtonsComponent
         } = this.props;
-        const { id, error, messages, queryInfo } = model;
-        const hasData = model.hasData;
+        const { id, error, messages, queryInfo, hasData } = model;
         const paginate = isPaged && hasData;
         let body;
 

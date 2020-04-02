@@ -93,7 +93,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
 
     // if the node is in the graph, it is clickable in the summary panel
     isNodeInGraph = (node: LineageNode): boolean => {
-        return this.visGraphRef.current?.getNetwork().findNode(node.lsid) > 0;
+        return this.visGraphRef.current?.getNetwork().findNode(node.lsid).length > 0;
     };
 
     onSummaryNodeClick = (node: LineageNode): void => {

@@ -6,16 +6,24 @@
   display: none;
 }
 
-.lineage-name:hover .show-on-hover {
-  display: initial;
-}
+.lineage-name {
+    h6 {
+        display: inline-block;
+    }
 
-.lineage-name:hover .hide-on-hover {
-  display: none;
-}
+    .pointer {
+        cursor: pointer;
+    }
 
-.lineage-name h6 {
-  display: inline-block;
+    &:hover {
+        .hide-on-hover {
+            display: none;
+        }
+
+        .show-on-hover {
+            display: initial;
+        }
+    }
 }
 
 .lineage-name-data {

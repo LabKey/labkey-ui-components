@@ -19,6 +19,7 @@ import { Filter } from '@labkey/api';
 import { DETAIL_TABLE_CLASSES } from '../forms/constants';
 import { IEntityTypeOption } from './models';
 import { DELIMITER } from '../forms/input/SelectInput';
+import { getParentGridPrefix } from './actions';
 
 interface Props {
     childNounSingular?: string
@@ -75,7 +76,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         if (parentLSIDs && parentLSIDs.length > 0) {
             baseFilters = baseFilters.push(Filter.create("LSID", parentLSIDs, Filter.Types.IN));
         }
-        const model = getStateQueryGridModel('parent-data-' + chosenType, SchemaQuery.create(parentDataType.instanceSchemaName, chosenType), {
+        const model = getStateQueryGridModel(getParentGridPrefix(parentDataType, chosenType), SchemaQuery.create(parentDataType.instanceSchemaName, chosenType), {
             bindURL: false,
             allowSelection: false,
             baseFilters,

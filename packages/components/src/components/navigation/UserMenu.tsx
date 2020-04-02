@@ -29,12 +29,13 @@ interface UserMenuProps {
     showSwitchToLabKey: boolean
     extraDevItems?: any
     extraUserItems?: any
+    signOutUrl?: string
 }
 
 export class UserMenu extends React.Component<UserMenuProps, any> {
 
     render() {
-        const { extraDevItems, extraUserItems, model, user, showSwitchToLabKey } = this.props;
+        const { extraDevItems, extraUserItems, model, user, showSwitchToLabKey, signOutUrl } = this.props;
         const menuSection = model.getSection("user");
 
         if (menuSection) {
@@ -83,7 +84,7 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
                         ) : null}
                         <MenuItem divider/>
                         {user.isSignedIn
-                            ? <MenuItem onClick={signOut}>Sign Out</MenuItem>
+                            ? <MenuItem onClick={() => signOut(signOutUrl)}>Sign Out</MenuItem>
                             : <MenuItem onClick={signIn}>Sign In</MenuItem>
                         }
                     </Dropdown.Menu>

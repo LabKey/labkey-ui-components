@@ -37,7 +37,8 @@ const DEFAULT_SAMPLE_FIELD_CONFIG = {
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
-    value: "{{this_sample_set}}"
+    value: "{{this_sample_set}}",
+    schema: SCHEMAS.SAMPLE_SETS.SCHEMA
 } as IParentOption;
 
 const PROPERTIES_PANEL_INDEX: number = 0;
@@ -57,6 +58,13 @@ interface Props {
     includeDataClasses?: boolean
     headerText?: string
     helpTopic?: string
+    useSeparateDataClassesAliasMenu?: boolean
+    sampleAliasCaption?: string
+    sampleTypeCaption?: string
+    dataClassAliasCaption?: string
+    dataClassTypeCaption?: string
+    dataClassParentageLabel?: string
+    isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean
 
     //EntityDetailsForm props
     nounSingular?: string
@@ -84,6 +92,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         includeDataClasses: false,
+        useSeparateDataClassesAliasMenu: false,
 
         containerTop: STICKY_HEADER_HEIGHT,
         useTheme: false,
@@ -120,28 +129,35 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     formatLabel = (name:string, prefix: string, containerPath?: string): string => {
-        const {includeDataClasses} = this.props;
-        return includeDataClasses ?
+        const {includeDataClasses, useSeparateDataClassesAliasMenu} = this.props;
+        return includeDataClasses && !useSeparateDataClassesAliasMenu ?
             `${prefix}: ${name} (${containerPath})`:
             name;
     };
 
     initParentOptions = (model: SampleTypeModel, responses: any[]) => {
+        const { isValidParentOptionFn } = this.props;
         let sets = List<IParentOption>();
         responses.forEach((results) => {
             const domain = fromJS(results.models[results.key]);
 
-            const prefix = results.key === DATA_CLASS_SCHEMA_KEY ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
-            const labelPrefix = results.key === DATA_CLASS_SCHEMA_KEY ? "Data Class" : "Sample Set";
+            const isDataClass = results.key === DATA_CLASS_SCHEMA_KEY;
+
+            const prefix =  isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
+            const labelPrefix = isDataClass ? "Data Class" : "Sample Set";
 
             domain.forEach(row => {
+                if (isValidParentOptionFn) {
+                    if (!isValidParentOptionFn(row, isDataClass))
+                        return;
+                }
                 const name = row.getIn(['Name', 'value']);
                 const containerPath = row.getIn(['Folder', 'displayValue']);
-                let label = NEW_SAMPLE_SET_OPTION && name === model.name ? NEW_SAMPLE_SET_OPTION.label : this.formatLabel(name, labelPrefix, containerPath);
+                let label = (name === model.name && !isDataClass) ? NEW_SAMPLE_SET_OPTION.label : this.formatLabel(name, labelPrefix, containerPath);
                 sets = sets.push({
                     value: prefix + name,
                     label: label,
-                    schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    schema: isDataClass ? SCHEMAS.DATA_CLASSES.SCHEMA : SCHEMAS.SAMPLE_SETS.SCHEMA,
                     query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
                 });
             });
@@ -164,12 +180,16 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             let initialAlias = Map<string,string>(model.importAliases);
             initialAlias.forEach((val, key) => {
                 const newId = generateId("sampleset-parent-import-alias-");
+                const parentValue = options.find(opt => opt.value === val);
+                if (!parentValue) // parent option might have been filtered out by isValidParentOptionFn
+                    return;
+
                 parentAliases = parentAliases.set(newId, {
                     id: newId,
                     alias: key,
-                    parentValue: options.find(opt => opt.value === val),
+                    parentValue: parentValue,
                     ignoreAliasError: false,
-                    ignoreSelectError: false,
+                    ignoreSelectError: false
                 } as IParentAlias);
             });
         }
@@ -188,7 +208,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             parentAliases.map((alias: IParentAlias) => {
                 const {parentValue} = alias;
 
-                let value = parentValue ? parentValue.value as string : '';
+                let value = parentValue && parentValue.value ? parentValue.value as string : '';
                 if (parentValue === NEW_SAMPLE_SET_OPTION) {
                     value = SAMPLE_SET_IMPORT_PREFIX + name;
                 }
@@ -369,7 +389,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const {
             containerTop, useTheme, appPropertiesOnly, successBsStyle, currentPanelIndex, visitedPanels, firstState,
             validatePanel, onTogglePanel, submitting, onCancel, nameExpressionPlaceholder, nameExpressionInfoUrl,
-            nounSingular, nounPlural, headerText, saveBtnText, helpTopic
+            nounSingular, nounPlural, headerText, saveBtnText, helpTopic, includeDataClasses, useSeparateDataClassesAliasMenu,
+            sampleAliasCaption, sampleTypeCaption, dataClassAliasCaption, dataClassTypeCaption, dataClassParentageLabel
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -395,6 +416,13 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     helpTopic={helpTopic}
                     model={model}
                     parentOptions={parentOptions}
+                    includeDataClasses={includeDataClasses}
+                    useSeparateDataClassesAliasMenu={useSeparateDataClassesAliasMenu}
+                    sampleAliasCaption={sampleAliasCaption}
+                    sampleTypeCaption={sampleTypeCaption}
+                    dataClassAliasCaption={dataClassAliasCaption}
+                    dataClassTypeCaption={dataClassTypeCaption}
+                    dataClassParentageLabel={dataClassParentageLabel}
                     onParentAliasChange={this.parentAliasChange}
                     onAddParentAlias={this.addParentAlias}
                     onRemoveParentAlias={this.removeParentAlias}

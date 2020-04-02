@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version TBD
+*Released*: TBD
+* Bug fixes for ParentEntityEditPanel to better support editing of parent samples
+
 ## version 0.42.1
 *Released*: 31 March 2020
 * Item 7031: Source aliasing

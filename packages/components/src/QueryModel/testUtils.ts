@@ -61,7 +61,7 @@ export const makeTestData = (getQueryResponse): Promise<RowsResponse> => {
  * @param rows
  * @param orderedRows
  */
-export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, orderedRows?: any) => {
+export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, orderedRows?: any, rowCount?: number) => {
     const model = new QueryModel({
         id: 'model',
         schemaQuery: schemaQuery,
@@ -76,6 +76,7 @@ export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, or
         model.rows = rows;
         model.orderedRows = orderedRows;
         model.rowsLoadingState = LoadingState.LOADED;
+        model.rowCount = rowCount;
     }
 
     return model;

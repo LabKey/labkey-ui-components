@@ -117,3 +117,16 @@ export const copyTestModel = (currentModel: QueryModel, changes?: any) => {
 
     return model;
 };
+
+/**
+ * Use this to sleep in the tests. If you make your test methods async you can use "await sleep();" to put your thread
+ * to sleep temporarily which will allow async actions in your component to continue.
+ * @param ms
+ */
+export const sleep = (ms = 0) => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, ms);
+    });
+};

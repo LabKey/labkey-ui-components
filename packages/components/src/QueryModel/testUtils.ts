@@ -1,10 +1,30 @@
-import { Actions, QueryInfo, QueryModel } from '..';
+import { Actions, initQueryGridState, QueryInfo, QueryModel } from '..';
 import { LoadingState } from './QueryModel';
 import { applyQueryMetadata } from '../query/api';
 import { bindColumnRenderers } from '../renderers';
+import { initMockServerContext } from '../testHelpers';
 
 /**
- * Instantiates a QueryInfo from a captured query details response payload.
+ * Initializes the server context and QueryGrid state which is needed in order to run most tests.
+ */
+export const initUnitTests = () => {
+    initMockServerContext({
+        container: {
+            formats: {
+                dateFormat: 'yyyy-MM-dd',
+                dateTimeFormat: 'yyyy-MM-dd HH:mm',
+                numberFormat: null,
+            },
+            path: 'testContainer',
+        },
+        contextPath: 'labkey',
+    });
+    initQueryGridState();
+};
+
+/**
+ * Instantiates a QueryInfo from a captured query details response payload. Cannot be used until you've called
+ * initQueryGridState or initUnitTests.
  * @param queryDetailsResponse: Query details response object (e.g. imported from
  * test/data/mixtures-getQueryDetails.json)
  */

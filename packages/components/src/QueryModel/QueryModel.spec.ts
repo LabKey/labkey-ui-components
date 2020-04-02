@@ -1,9 +1,8 @@
 import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
-import { initQueryGridState, SchemaQuery } from '..';
+import { SchemaQuery } from '..';
 import { QuerySort } from '../components/base/models/model';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
-import { initMockServerContext } from '../testHelpers';
-import { makeQueryInfo } from './testUtils';
+import { initUnitTests, makeQueryInfo } from './testUtils';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO;
@@ -20,18 +19,7 @@ const ROWS = {
 const ORDERED_ROWS = ['0', '1'];
 
 beforeAll(() => {
-    initMockServerContext({
-        container: {
-            formats: {
-                dateFormat: 'yyyy-MM-dd',
-                dateTimeFormat: 'yyyy-MM-dd HH:mm',
-                numberFormat: null,
-            },
-            path: 'testContainer',
-        },
-        contextPath: 'labkey',
-    });
-    initQueryGridState();
+    initUnitTests();
     // Have to instantiate QUERY_INFO here because it relies on initQueryGridState being called first.
     QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
 });

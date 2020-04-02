@@ -1,9 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { initQueryGridState, SchemaQuery } from '..';
-import { initMockServerContext } from '../testHelpers';
+import { SchemaQuery } from '..';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
-import { makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
+import { initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
 import { ViewSelector } from './ViewSelector';
 import { mount } from 'enzyme';
 
@@ -13,18 +12,7 @@ let QUERY_INFO_PUBLIC_VIEWS;
 let QUERY_INFO_PRIVATE_VIEWS;
 
 beforeAll(() => {
-    initMockServerContext({
-        container: {
-            formats: {
-                dateFormat: 'yyyy-MM-dd',
-                dateTimeFormat: 'yyyy-MM-dd HH:mm',
-                numberFormat: null,
-            },
-            path: 'testContainer',
-        },
-        contextPath: 'labkey',
-    });
-    initQueryGridState();
+    initUnitTests();
     // Have to instantiate QueryInfos here because applyQueryMetadata relies on initQueryGridState being called first.
     QUERY_INFO_NO_VIEWS = makeQueryInfo({
         ...mixturesQueryInfo,

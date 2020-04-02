@@ -1,29 +1,17 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { initQueryGridState, SchemaQuery } from '..';
-import { initMockServerContext } from '../testHelpers';
+import { SchemaQuery } from '..';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import { LoadingState } from './QueryModel';
 import { PageSelector, PaginationButtons, PaginationInfo } from './Pagination';
 import { mount } from 'enzyme';
-import { copyTestModel, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
+import { copyTestModel, initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO;
 
 beforeAll(() => {
-    initMockServerContext({
-        container: {
-            formats: {
-                dateFormat: 'yyyy-MM-dd',
-                dateTimeFormat: 'yyyy-MM-dd HH:mm',
-                numberFormat: null,
-            },
-            path: 'testContainer',
-        },
-        contextPath: 'labkey',
-    });
-    initQueryGridState();
+    initUnitTests();
     // Have to instantiate QUERY_INFO here because it relies on initQueryGridState being called first.
     QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
 });

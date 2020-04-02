@@ -188,10 +188,11 @@ import { DateInput } from './components/forms/input/DateInput';
 import { FileInput } from './components/forms/input/FileInput';
 import { TextAreaInput } from './components/forms/input/TextAreaInput';
 import { TextInput } from './components/forms/input/TextInput';
+import { FieldEditForm, FieldEditProps } from './components/forms/input/FieldEditInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
-import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer';
+import { resolveDetailRenderer, titleRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
 import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
 import { ISelectInitData, IUser } from './components/forms/model';
@@ -373,6 +374,7 @@ export {
     FileColumnRenderer,
     MultiValueRenderer,
     resolveDetailRenderer,
+    titleRenderer,
 
     // components
     LabelOverlay,
@@ -393,6 +395,8 @@ export {
     FileInput,
     TextAreaInput,
     TextInput,
+    FieldEditForm,
+    FieldEditProps,
     QuerySelect,
     QuerySelectOwnProps,
     UserSelectInput,

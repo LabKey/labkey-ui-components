@@ -152,13 +152,13 @@ function resolveEntityParentTypeFromIds(schemaQuery: SchemaQuery, response: any)
     ]);
 }
 
-export function extractEntityTypeOptionFromRow(row: Map<string, any>): IEntityTypeOption {
+export function extractEntityTypeOptionFromRow(row: Map<string, any>, lowerCaseValue = true): IEntityTypeOption {
     const name = row.getIn(['Name', 'value']);
     return {
         label: name,
         lsid: row.getIn(['LSID', 'value']),
         rowId: row.getIn(['RowId', 'value']),
-        value: name.toLowerCase(), // we match values on lower case because (at least) when parsed from an id they are lower case
+        value: (lowerCaseValue ? name.toLowerCase() : name), // we match values on lower case because (at least) when parsed from an id they are lower case
         query: name
     }
 }

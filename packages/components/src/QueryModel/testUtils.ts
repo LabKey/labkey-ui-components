@@ -1,8 +1,10 @@
+import { Query } from '@labkey/api';
 import { Actions, initQueryGridState, QueryInfo, QueryModel } from '..';
 import { LoadingState } from './QueryModel';
-import { applyQueryMetadata } from '../query/api';
+import { applyQueryMetadata, handle132Response } from '../query/api';
 import { bindColumnRenderers } from '../renderers';
 import { initMockServerContext } from '../testHelpers';
+import { RowsResponse } from './QueryModelLoader';
 
 /**
  * Initializes the server context and QueryGrid state which is needed in order to run most tests.
@@ -25,12 +27,31 @@ export const initUnitTests = () => {
 /**
  * Instantiates a QueryInfo from a captured query details response payload. Cannot be used until you've called
  * initQueryGridState or initUnitTests.
- * @param queryDetailsResponse: Query details response object (e.g. imported from
+ * @param getQueryDetailsResponse: getQueryDetails response object (e.g. imported from
  * test/data/mixtures-getQueryDetails.json)
  */
-export const makeQueryInfo = (queryDetailsResponse) => {
-    const queryInfo = applyQueryMetadata(queryDetailsResponse);
-    return queryInfo.merge({ columns: bindColumnRenderers(queryInfo.columns) });
+export const makeQueryInfo = (getQueryDetailsResponse): QueryInfo => {
+    const queryInfo = applyQueryMetadata(getQueryDetailsResponse);
+    return queryInfo.merge({ columns: bindColumnRenderers(queryInfo.columns) }) as QueryInfo;
+};
+
+/**
+ * Creates rows and orderedRows objects needed by the QueryModel. Returns a Promise that resolves to an object that
+ * looks like: { messages: any, rows: any, orderedRows: string[], rowCount: number }
+ * @param getQueryResponse: getQuery Response object (e.g. imported from test/data/mixtures-getQuery.json)
+ */
+export const makeTestData = (getQueryResponse): Promise<RowsResponse> => {
+    const response = new Query.Response(getQueryResponse);
+    return handle132Response(response).then((resp) => {
+        const { messages, models, orderedModels, rowCount } = resp;
+        const key = Object.keys(models)[0];
+        return {
+            messages: messages.toJS(),
+            rows: models[key],
+            orderedRows: orderedModels[key].toArray(),
+            rowCount,
+        };
+    });
 };
 
 /**

@@ -16,6 +16,7 @@ import {
     VisGraphCombinedNode,
     VisGraphNode,
     VisGraphNodeType,
+    VisGraphOptions,
 } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
 import { ClusterNodeDetail, SelectedNodeDetail, SummaryOptions } from './LineageNodeDetail';
@@ -50,12 +51,19 @@ export class LineageGraph extends ReactN.PureComponent<LinageGraphOwnProps & Lin
     }
 
     render() {
-        return <LineageGraphDisplay {...this.props} lineage={this.getLineage()}/>
+        const lineage = this.getLineage();
+
+        return <LineageGraphDisplay
+            {...this.props}
+            lineage={lineage}
+            visGraphOptions={lineage?.generateGraph(this.props)}
+        />
     }
 }
 
 interface LineageGraphDisplayProps {
     lineage: Lineage
+    visGraphOptions: VisGraphOptions
 }
 
 interface LineageGraphDisplayState {
@@ -238,7 +246,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
     }
 
     render() {
-        const { initialModel, lineage, lsid } = this.props;
+        const { initialModel, lineage, lsid, visGraphOptions } = this.props;
 
         if (lineage) {
             if (lineage.error) {
@@ -256,7 +264,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
                                 onNodeDeselect={this.onVisGraphNodeDeselect}
                                 onNodeHover={this.updateHover}
                                 onNodeBlur={this.onVisGraphNodeBlur}
-                                options={lineage.generateGraph(this.props)}
+                                options={visGraphOptions}
                                 seed={lineage.getSeed()}
                             />
                         </div>

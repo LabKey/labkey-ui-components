@@ -199,7 +199,7 @@ import { ParentEntityEditPanel } from './components/entities/ParentEntityEditPan
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
-import { SearchResultsModel } from './components/search/models';
+import { SearchResultsModel,  SearchResultCardData } from './components/search/models';
 import { deleteSampleSet, fetchSamples, getSampleSet, getSampleTypeDetails, loadSelectedSamples } from './components/samples/actions';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './components/domainproperties/dataclasses/models';
@@ -417,6 +417,7 @@ export {
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
+    SearchResultCardData,
 
     // assay
     AssayUploadResultModel,

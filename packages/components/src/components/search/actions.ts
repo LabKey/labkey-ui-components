@@ -2,8 +2,9 @@ import { List, Map } from 'immutable';
 import { Ajax, Utils } from '@labkey/api';
 import { buildURL } from '../../url/ActionURL';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
-import { SearchIdData } from './models';
+import { SearchIdData, SearchResultCardData } from './models';
 import { URLResolver } from '../../util/URLResolver';
+import { SCHEMAS } from '../..';
 
 export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
     return new Promise((resolve, reject) => {
@@ -51,4 +52,56 @@ function parseSearchIdToData(idString): SearchIdData {
             idData.group = idParts[idParts.length - 3];
     }
     return idData;
+}
+
+function resolveTypeName(data: Map<string, any>) {
+
+    let typeName;
+    if (data) {
+        if (data.getIn(['dataClass', 'name'])) {
+            typeName = data.getIn(['dataClass', 'name']);
+        }
+        else if (data.getIn(['sampleSet', 'name'])) {
+            typeName = data.getIn(['sampleSet', 'name']);
+        }
+    }
+    return typeName;
+}
+
+function resolveIconSrc(data: Map<string, any>, category: string) : string {
+    let iconSrc = '';
+    if (data) {
+        if (data.hasIn(['dataClass', 'name'])) {
+            iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
+        }
+        else if (data.hasIn(['sampleSet', 'name'])) {
+            iconSrc = 'samples';
+        }
+        else if (data.has('type')) {
+            const lcType = data.get('type').toLowerCase();
+            if (lcType === 'sampleset') {
+                iconSrc='sample_set';
+            }
+            else if (lcType.indexOf('dataclass') === 0) {
+                iconSrc='default'; // we don't have a generic "data class" icon; default works just fine.
+            }
+            else {
+                iconSrc = lcType;
+            }
+        }
+    }
+    if (!iconSrc && category) {
+        if (category === 'material') {
+            iconSrc = 'samples';
+        }
+    }
+    return iconSrc
+}
+
+export function getSearchResultCardData(data: Map<any, any>, category: string, title: string) : SearchResultCardData {
+    return {
+        title: title,
+        iconSrc: resolveIconSrc(data, category),
+        typeName: resolveTypeName(data)
+    }
 }

@@ -34,17 +34,21 @@ export class URLResolver {
         this.mappers = List<URLMapper>([
 
             new ActionMapper('experiment', 'showDataClass', (row, column) => {
-                let url = ['rd', 'dataclass'];
+                let identifier: string;
 
                 // TODO: Deal with junction lookup
-                if (column.has('lookup')) {
-                    url.push(row.get('displayValue').toString());
+                if (row.has('data')) {
+                    // search link doesn't use the same url
+                    identifier = row.getIn(['data', 'name']);
+                } else if (column.has('lookup')) {
+                    identifier = row.get('displayValue').toString();
                 }
                 else {
-                    url.push(row.get('value').toString());
+                    identifier = row.get('value').toString();
                 }
-
-                return AppURL.create(...url);
+                if (identifier !== undefined) {
+                    return AppURL.create('rd', 'dataclass', identifier);
+                }
             }),
 
 
@@ -474,6 +478,11 @@ export class URLResolver {
                         if (row.has('data') && row.hasIn(['data', 'dataClass'])) {
                             query = row.getIn(['data', 'dataClass', 'name']); // dataClass is nested Map/Object inside of 'data' return
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                            return row.set('url', this.mapURL({url, row, column, query}));
+                        }
+                        else if (id.indexOf('dataClass') >= 0) {
+                            query = row.getIn(['data', 'name']);
+                            url = url.substring(0, url.indexOf("&")); // URL includes documentID value, this will split off at the start of the docID
                             return row.set('url', this.mapURL({url, row, column, query}));
                         }
                         else if (id.indexOf('materialSource') >= 0 ) {

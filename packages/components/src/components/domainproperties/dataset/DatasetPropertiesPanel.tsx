@@ -110,7 +110,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         }
         else {
             newModel = model.merge({
-                keyPropertyId: 0,
+                keyPropertyId: 0, // resetting key property id
                 isDemographicData: false
             }) as DatasetModel;
         }

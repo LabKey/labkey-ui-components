@@ -6,7 +6,7 @@ import {
     capitalizeFirstChar,
     EntityDataType,
     getActionErrorMessage,
-    getQueryGridModel,
+    getQueryGridModel, gridIdInvalidate,
     LoadingSpinner,
     Progress,
     QueryGridModel,
@@ -15,16 +15,18 @@ import {
 } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import {
-    getEntityTypeOptions,
-    getInitialParentChoices,
-    getUpdatedRowForParentChanges,
-    invalidateParentModels,
-    parentValuesDiffer
+    getEntityTypeOptions
 } from './actions';
 import { List } from 'immutable';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { DELIMITER } from '../forms/input/SelectInput';
+import {
+    getInitialParentChoices,
+    getParentGridPrefix,
+    getUpdatedRowForParentChanges,
+    parentValuesDiffer
+} from './utils';
 
 interface Props {
     canUpdate: boolean
@@ -74,7 +76,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     }
 
     componentWillUnmount() {
-        invalidateParentModels(this.state.originalParents, this.state.currentParents, this.props.parentDataType);
+        gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
     }
 
     init()  {
@@ -171,7 +173,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 submitting: false,
                 editing: false
             }), () => {
-                invalidateParentModels(this.state.originalParents, this.state.currentParents, this.props.parentDataType);
+                gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
 
                 if (onUpdate) {
                     onUpdate();

@@ -45,8 +45,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         super(props);
 
         this.state = {
-            isValid: true,
-            additionalKeyField: this.props.model.keyPropertyId // to store the keyField if present in edit case so that it can be retrieved if data row settings are changed
+            isValid: true
         };
     }
 
@@ -55,7 +54,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         const updatedModel = newModel || model;
 
         const isValid = updatedModel && updatedModel.hasValidProperties();
-        this.setState(() => ({isValid: isValid, additionalKeyField: model.keyPropertyId}),
+        this.setState(() => ({isValid}),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
@@ -92,26 +91,26 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
     onDataRowRadioChange = e => {
         const { model } = this.props;
 
-        const { additionalKeyField } = this.state;
-
         let value = e.target.value;
         let newModel;
 
         if (value == 0) {
             newModel = model.merge({
                 keyPropertyId: undefined,
-                isDemographicData: true
+                isDemographicData: true,
+                keyPropertyManaged: false
             }) as DatasetModel;
         }
         else if (value == 1) {
             newModel = model.merge({
                 keyPropertyId: undefined,
-                isDemographicData: false
+                isDemographicData: false,
+                keyPropertyManaged: false
             }) as DatasetModel;
         }
         else {
             newModel = model.merge({
-                keyPropertyId: additionalKeyField,
+                keyPropertyId: 0,
                 isDemographicData: false
             }) as DatasetModel;
         }

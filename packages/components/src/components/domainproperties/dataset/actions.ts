@@ -16,6 +16,7 @@
 
 import {
     COHORT_TIP,
+    DATA_ROW_UNIQUENESS,
     DATASET_CATEGORY_TIP,
     DATASET_ID_TIP,
     DATASET_LABEL_TIP,
@@ -82,6 +83,10 @@ export function getHelpTip (fieldName: string) : string {
         case "dataspace" :
             helpTip = DATASPACE_TIP;
             break;
+        case "dataRowUniqueness" :
+            helpTip = DATA_ROW_UNIQUENESS;
+            break;
+
     }
     return helpTip;
 }

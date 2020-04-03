@@ -462,7 +462,7 @@ interface AdvancedSettingsState extends AdvancedSettingsForm{
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
     constructor(props) {
         super(props);
-        const initialState = this.setInitialState();
+        const initialState = this.getInitialState();
 
         this.state = {
             modalOpen: false,
@@ -470,7 +470,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         } as AdvancedSettingsState;
     }
 
-    setInitialState = () => {
+    getInitialState = () => {
         const model = this.props.model;
 
         return {
@@ -503,7 +503,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         // If modal is re-opened, reset unsaved values
         if (isModalOpen) {
-            this.setState(this.setInitialState());
+            this.setState(this.getInitialState());
         }
     };
 
@@ -580,7 +580,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             </> as JSX.Element;
 
         return (
-            <Col xs={12} md={2}>
+            <>
                 <Button className="domain-field-float-right" onClick={() => this.toggleModal(true)}>
                     {title}
                 </Button>
@@ -652,7 +652,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </>
                     </Modal.Footer>
                 </Modal>
-            </Col>
+            </>
         );
     }
 }

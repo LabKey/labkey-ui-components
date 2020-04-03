@@ -15,17 +15,14 @@
  */
 
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
-import { Utils } from '@labkey/api';
-import {DomainDesign, DomainPanelStatus} from "../models";
-import { DataRowUniquenessContainer, BasicPropertiesFields } from "./DatasetPropertiesPanelFormElements";
-import { AdvancedSettings } from "./DatasetPropertiesAdvancedSettings";
+import {Form, Row, Col} from 'react-bootstrap';
+import {DataRowUniquenessContainer, BasicPropertiesFields} from "./DatasetPropertiesPanelFormElements";
+import {AdvancedSettings} from "./DatasetPropertiesAdvancedSettings";
 import {DatasetAdvancedSettingsForm, DatasetModel} from "./models";
-import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
-import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
-import {COHORT_TIP, DATASET_ID_TIP, DATASPACE_TIP, TAG_TIP, VISIT_DATE_TIP} from "./constants";
-import {ListModel} from "../../..";
-import {AdvancedSettingsForm} from "../list/models";
+import {InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse} from "../DomainPropertiesPanelCollapse";
+import {BasePropertiesPanel, BasePropertiesPanelProps} from "../BasePropertiesPanel";
+import {HelpTopicURL} from "../HelpTopicURL";
+import {DEFINE_DATASET_TOPIC} from "../../../util/helpLinks";
 
 interface OwnProps {
     model: DatasetModel;
@@ -39,6 +36,7 @@ type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
     isValid?: boolean;
+    additionalKeyField?: number;
 }
 
 export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
@@ -47,7 +45,8 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         super(props);
 
         this.state = {
-            isValid: true
+            isValid: true,
+            additionalKeyField: this.props.model.keyPropertyId // to store the keyField if present in edit case so that it can be retrieved if data row settings are changed
         };
     }
 
@@ -56,7 +55,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         const updatedModel = newModel || model;
 
         const isValid = updatedModel && updatedModel.hasValidProperties();
-        this.setState(() => ({isValid}),
+        this.setState(() => ({isValid: isValid, additionalKeyField: model.keyPropertyId}),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
@@ -75,32 +74,61 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         this.updateValidStatus(newModel);
     };
 
-    onCheckBoxChange = (name, checked): void => {
-        this.onChange(name, !checked);
-    };
-
     onInputChange = (evt: any) => {
         const id = evt.target.id;
-        const value = evt.target.value;
+        let value = evt.target.value;
+
+        if (evt.target.type === "checkbox") {
+            value = evt.target.checked;
+        }
+
         this.onChange(id, value);
     };
 
     onCategoryChange = (category) => {
-        this.onChange('category', category.label);
+        this.onChange('categoryId', category.value);
     };
 
-    onRadioChange = e => {
-        const name = e.currentTarget.name;
-        const value = e.target.value;
+    onDataRowRadioChange = e => {
+        const { model } = this.props;
 
-        this.setState(() => ({ [name]: value }));
+        const { additionalKeyField } = this.state;
+
+        let value = e.target.value;
+        let newModel;
+
+        if (value == 0) {
+            newModel = model.merge({
+                keyPropertyId: undefined,
+                isDemographicData: true
+            }) as DatasetModel;
+        }
+        else if (value == 1) {
+            newModel = model.merge({
+                keyPropertyId: undefined,
+                isDemographicData: false
+            }) as DatasetModel;
+        }
+        else {
+            newModel = model.merge({
+                keyPropertyId: additionalKeyField,
+                isDemographicData: false
+            }) as DatasetModel;
+        }
+        this.updateValidStatus(newModel);
     };
+
+    onAdditionalKeyFieldChange = (name, formValue, selected): void => {
+        this.onChange(name, selected.propertyId);
+    };
+
 
     applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm) => {
         const { model } = this.props;
-        const newModel = model.merge(advancedSettingsForm) as ListModel;
+        const newModel = model.merge(advancedSettingsForm) as DatasetModel;
         this.updateValidStatus(newModel);
     };
+
 
     render() {
         const {
@@ -122,18 +150,13 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
                 updateValidStatus={this.updateValidStatus}
             >
                 <Row className={'margin-bottom'}>
-                    <Col md={11}/>
-                    <Col md={1}>
-                        <AdvancedSettings
-                            title={"Advanced Settings"}
-                            model={model}
-                            showDataspace={showDataspace}
-                            applyAdvancedProperties={this.applyAdvancedProperties}
-                        />
+                    <Col xs={12}>
+                        <HelpTopicURL helpTopic={DEFINE_DATASET_TOPIC} nounPlural={'datasets'}/>
                     </Col>
                 </Row>
                 <Form>
-                    <Col md={6}>
+
+                    <Col xs={12} md={5}>
                         <BasicPropertiesFields
                             model={model}
                             onInputChange={this.onInputChange}
@@ -141,12 +164,22 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
                         />
                     </Col>
 
-                    <Col md={6}>
+                    <Col xs={12} md={5}>
                         <DataRowUniquenessContainer
                             model={model}
-                            onRadioChange={this.onRadioChange}
+                            onRadioChange={this.onDataRowRadioChange}
+                            onCheckBoxChange={this.onInputChange}
+                            onSelectChange={this.onAdditionalKeyFieldChange}
                         />
                     </Col>
+
+                    <AdvancedSettings
+                        title={"Advanced Settings"}
+                        model={model}
+                        showDataspace={showDataspace}
+                        applyAdvancedProperties={this.applyAdvancedProperties}
+                    />
+
                 </Form>
             </BasePropertiesPanel>
         )

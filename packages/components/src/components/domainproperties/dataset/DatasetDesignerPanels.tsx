@@ -18,7 +18,6 @@ import React from 'react';
 import {DatasetModel} from "./models";
 import {DatasetPropertiesPanel} from "./DatasetPropertiesPanel";
 import {InjectedBaseDomainDesignerProps, withBaseDomainDesigner} from "../BaseDomainDesigner";
-import {ListModel} from "../../..";
 
 interface Props {
     initModel?: DatasetModel;
@@ -51,13 +50,15 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     };
 
     render() {
-        const { initModel, useTheme, onTogglePanel, showDataSpace } = this.props;
+        const { useTheme, onTogglePanel, showDataSpace } = this.props;
+
+        const { model } = this.state;
 
         return (
             <>
                 <DatasetPropertiesPanel
                     initCollapsed={false}
-                    model={initModel}
+                    model={model}
                     controlledCollapse={true}
                     useTheme={useTheme}
                     panelStatus={'COMPLETE'}

@@ -15,3 +15,5 @@ export const TAG_TIP = "Adding a tag provides an additional, flexible way to cat
 
 // TODO: add tip
 export const DATASPACE_TIP = "Coming soon...";
+
+export const DATA_ROW_UNIQUENESS = "Choose criteria for how participants and visits are paired with or without an additional data column.";

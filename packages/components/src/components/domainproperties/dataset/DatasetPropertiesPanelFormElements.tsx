@@ -15,13 +15,11 @@
  */
 
 import React from 'react';
-import {Col, Radio, Row} from 'react-bootstrap';
+import {Col, Checkbox, Radio, Row} from 'react-bootstrap';
 import {DatasetModel} from './models';
-import {SelectInput} from "../../..";
 import {Creatable, Option} from 'react-select'
 import {fetchCategories, getHelpTip} from "./actions";
-import {DatasetSettingsInput} from "./DatasetPropertiesAdvancedSettings";
-import {CheckBox} from "../list/ListPropertiesPanelFormElements";
+import {DatasetSettingsInput, DatasetSettingsSelect} from "./DatasetPropertiesAdvancedSettings";
 import "../../../theme/dataset.scss";
 import {DomainFieldLabel} from "../DomainFieldLabel";
 import {SectionHeading} from "../SectionHeading";
@@ -57,37 +55,8 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
                         onChange={onInputChange}
                     />
                 </Col>
-            </Row>
-        );
-    }
-}
 
-export class SelectPropertyInput extends React.PureComponent<any> {
-    render() {
-        const { label, labelKey, valueKey, onInputChange, options, disabled } = this.props;
-
-        return(
-            <Row className={'margin-top'}>
-                <Col xs={4} >
-                    {label}
-                </Col>
-
-                <Col xs={7} >
-                    <SelectInput
-                        onChange={onInputChange}
-                        options={options}
-                        inputClass="" // This attr is necessary for proper styling
-                        labelClass=""
-                        valueKey={valueKey}
-                        labelKey={labelKey}
-                        formsy={false}
-                        multiple={false}
-                        required={false}
-                        disabled={disabled}
-                    />
-                </Col>
-
-                <Col lg={3}/>
+                <Col xs={1}/>
             </Row>
         );
     }
@@ -230,48 +199,50 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
 interface DataRowUniquenessContainerProps {
     model: DatasetModel;
     onRadioChange: (e: any) => any;
+    onCheckBoxChange: (any) => void;
+    onSelectChange: (name, formValue, selected) => void;
 }
 
 export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {
 
     getDataRowSetting(model: DatasetModel) : number {
-        let dataRowSetting = -1;
+        let dataRowSetting;
 
         // participant id
-        if (model.keyProperty === undefined || model.keyProperty === null) {
+        if ((model.keyPropertyId === undefined || model.keyPropertyId === null) && model.isDemographicData) {
             dataRowSetting = 0;
         }
-
         // participant id and timepoint
-        if (model.keyProperty !== null && (model.keyManagementType === undefined || model.keyManagementType === null)) {
+        else if (model.keyPropertyId === undefined || model.keyPropertyId === null) {
             dataRowSetting = 1;
         }
-
         // participant id, timepoint and additional key field
-        if (model.keyProperty !== null && model.keyManagementType !== null) {
+        else {
             dataRowSetting = 2;
         }
 
         return dataRowSetting;
     }
 
+    getHelpTipElement(field: string) : JSX.Element {
+        return <> {getHelpTip(field)} </> as JSX.Element;
+    }
+
     render() {
-        const { model, onRadioChange } = this.props;
+        const { model, onRadioChange, onCheckBoxChange, onSelectChange } = this.props;
         const domain = model.domain;
 
-        // const dataRowSetting = this.getDataRowSetting(model);
-        const dataRowSetting = model.dataRowSetting;
+        const dataRowSetting = this.getDataRowSetting(model);
         const showAdditionalKeyField = dataRowSetting === 2;
 
-        const showAdditionalKeyFieldCls = showAdditionalKeyField ? "dataset_data_row_uniqueness_keyField_show" : "dataset_data_row_uniqueness_keyField_hide";
+        const showAdditionalKeyFieldCls = showAdditionalKeyField ? "dataset_data_row_uniqueness_keyField_show margin-top" : "dataset_data_row_uniqueness_keyField_hide";
 
         return (
             <>
-                <SectionHeading title="Data Row Uniqueness" />
-
-                <div>
-                    Choose criteria for how participants and visits are paired with or without an additional data column
-                </div>
+                <SectionHeading
+                    title="Data Row Uniqueness"
+                    helpTipBody={() => this.getHelpTipElement("dataRowUniqueness")}
+                />
 
                 <DataRowUniquenessElements
                     onRadioChange={onRadioChange}
@@ -279,19 +250,29 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                 />
 
                 <div className={showAdditionalKeyFieldCls}>
-                    <SelectPropertyInput
-                        label="Additional Key Field"
-                        options={domain.fields.toArray()}
-                        labelKey="name"
-                        valueKey="propertyId"
+                    <DatasetSettingsSelect
+                        name={"keyPropertyId"}
+                        label={"Additional Key Field"}
+                        selectOptions={domain.fields.toArray()}
+                        onSelectChange={onSelectChange}
+                        labelKey={"label"}
+                        valueKey={"propertyId"}
+                        selectedValue={model.keyPropertyId}
                         disabled={!showAdditionalKeyField}
                     />
 
-                    <CheckBox
-                        checked={false}
-                        onClick={() => {}}
-                    />
-                    &nbsp; Let server manage fields to make entries unique
+                    <div className='margin-top'>
+
+                        <Checkbox
+                            checked={model.keyPropertyManaged}
+                            onChange={onCheckBoxChange}
+                            id={"keyPropertyManaged"}
+                            disabled={!showAdditionalKeyField}
+                        >
+                            Let server manage fields to make entries unique
+                        </Checkbox>
+
+                    </div>
                 </div>
             </>
         );

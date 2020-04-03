@@ -1,61 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Dataset Advanced Settings Edit Dataset, with dataspace options 1`] = `
-<div
-  className="col-md-2 col-xs-12"
+<button
+  className="domain-field-float-right btn btn-default"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
 >
-  <button
-    className="domain-field-float-right btn btn-default"
-    disabled={false}
-    onClick={[Function]}
-    type="button"
-  >
-    Advanced Settings
-  </button>
-</div>
+  Advanced Settings
+</button>
 `;
 
 exports[`Dataset Advanced Settings Edit Dataset, without dataspace options 1`] = `
-<div
-  className="col-md-2 col-xs-12"
+<button
+  className="domain-field-float-right btn btn-default"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
 >
-  <button
-    className="domain-field-float-right btn btn-default"
-    disabled={false}
-    onClick={[Function]}
-    type="button"
-  >
-    Advanced Settings
-  </button>
-</div>
+  Advanced Settings
+</button>
 `;
 
 exports[`Dataset Advanced Settings New Dataset, with dataspace options 1`] = `
-<div
-  className="col-md-2 col-xs-12"
+<button
+  className="domain-field-float-right btn btn-default"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
 >
-  <button
-    className="domain-field-float-right btn btn-default"
-    disabled={false}
-    onClick={[Function]}
-    type="button"
-  >
-    Advanced Settings
-  </button>
-</div>
+  Advanced Settings
+</button>
 `;
 
 exports[`Dataset Advanced Settings New Dataset, without dataspace options 1`] = `
-<div
-  className="col-md-2 col-xs-12"
+<button
+  className="domain-field-float-right btn btn-default"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
 >
-  <button
-    className="domain-field-float-right btn btn-default"
-    disabled={false}
-    onClick={[Function]}
-    type="button"
-  >
-    Advanced Settings
-  </button>
-</div>
+  Advanced Settings
+</button>
 `;

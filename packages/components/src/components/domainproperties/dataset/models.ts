@@ -21,16 +21,11 @@ import {Option} from "react-select";
 
 export interface DatasetAdvancedSettingsForm {
     datasetId?: number;
-    cohort?: number;
+    cohortId?: number;
     tag?: string;
-    availableCohorts?: Option | Array<Option>;
     showInOverview?: boolean;
-    visitDateColumn?: string;
-    visitDateColumns?: Option | Array<Option>;
-    dataspace?: string;
-    dataspaceOptions?: Option | Array<Option>;
+    visitDatePropertyName?: string;
 }
-
 
 export class DatasetModel extends Record({
     domain: undefined,
@@ -42,42 +37,32 @@ export class DatasetModel extends Record({
     containerId : undefined,
     datasetId: undefined,
     name: undefined,
-    typeURI: undefined,
     category: undefined,
     categoryId: undefined,
     visitDatePropertyName: undefined,
-    keyProperty: undefined,
+    keyPropertyId: undefined,
+    keyPropertyManaged: undefined,
     isDemographicData: undefined,
     label: undefined,
     cohortId: undefined,
     tag: undefined,
     showInOverview: undefined,
     description: undefined,
-    sourceAssayName: undefined,
-    sourceAssayURL: undefined,
-    dataSharing: undefined,
-    dataRowSetting: undefined,
-    keyManagementType: undefined
 }) {
     domain: DomainDesign;
     datasetId?: number;
     name: string;
-    typeURI?: string;
     category?: string;
     categoryId?: number;
     visitDatePropertyName?: string;
-    keyProperty?: string;
-    isDemographicData?: boolean;
+    keyPropertyId?: number;
+    keyPropertyManaged: boolean;
+    isDemographicData: boolean;
     label?: string;
     cohortId?: number;
     tag?: string;
-    showInOverview?: boolean;
+    showInOverview: boolean;
     description?: string;
-    sourceAssayName?: string;
-    sourceAssayURL?: string;
-    dataSharing?: string;
-    keyManagementType?: any;
-    dataRowSetting?: number
 
     constructor(values?: {[key:string]: any}) {
         super(values);

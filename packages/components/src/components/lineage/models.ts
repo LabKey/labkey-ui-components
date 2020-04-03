@@ -3,9 +3,10 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable';
-import { GridColumn, QueryInfo } from '../..';
+import { GridColumn, LineageFilter, QueryInfo } from '../..';
 
 import {
+    DEFAULT_GROUPING_OPTIONS,
     DEFAULT_LINEAGE_DIRECTION,
     DEFAULT_LINEAGE_DISTANCE,
     DEFAULT_LINEAGE_OPTIONS,
@@ -18,6 +19,24 @@ import {
 } from './types'
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
+
+export function applyLineageOptions(options?: LineageOptions): LineageOptions {
+    let _options = {
+        ...DEFAULT_LINEAGE_OPTIONS,
+        ...options,
+        ...{
+            grouping: {
+                ...DEFAULT_GROUPING_OPTIONS,
+                ...options?.grouping
+            }
+        }
+    };
+
+    // deep copy "filters"
+    _options.filters = _options.filters.map(filter => new LineageFilter(filter.field, filter.value));
+
+    return _options;
+}
 
 // TODO add jest test coverage for this function
 function mergeNodes(aNodes: List<any>, bNodes: List<any>): List<any> {
@@ -118,6 +137,7 @@ export interface LineageRunStep {
     protocol: any
 }
 
+// commented out attributes are not yet used
 export class LineageNode extends Record ({
     // absolutePath: undefined,
     children: undefined,
@@ -405,7 +425,7 @@ export class Lineage extends Record({
         this.checkError();
         const { seed } = this.result;
 
-        const _options = Object.assign({}, DEFAULT_LINEAGE_OPTIONS, options);
+        const _options = applyLineageOptions(options);
 
         let nodes;
         if (_options.filters) {

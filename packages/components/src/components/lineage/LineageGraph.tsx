@@ -287,7 +287,6 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
                         <div className="col-md-4 lineage-node-detail-container">
                             {initialModel ? this.renderSelectedGraphNode(lsid, undefined, {
                                 id: lsid,
-                                cid: 0,
                                 kind: 'node',
                                 lineageNode: this.createInitialLineageNode()
                             }, false) : <LoadingSpinner msg="Loading details..."/>}

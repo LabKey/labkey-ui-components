@@ -19,6 +19,7 @@ import { LineageNodeList } from './LineageNodeList';
 import { LineageSummary } from './LineageSummary';
 import { LineageNode } from './models';
 import { LineageOptions } from './types';
+import { getIconAndShapeForNode } from './utils';
 
 export interface SummaryOptions {
     showSummary?: boolean
@@ -100,13 +101,16 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
         return <>
             <NodeDetailHeader
                 header={header}
-                iconSrc={model.queryInfo.getIconURL()}>
+                iconSrc={getIconAndShapeForNode(node).iconURL}
+            >
                 {displayType && <small>{displayType}</small>}
-                {aliases && <div>
-                    <small>
-                        {aliases.join(', ')}
-                    </small>
-                </div>}
+                {aliases && (
+                    <div>
+                        <small>
+                            {aliases.join(', ')}
+                        </small>
+                    </div>
+                )}
                 {description && <small title={description}>{description}</small>}
             </NodeDetailHeader>
 

@@ -8,17 +8,46 @@ import { imageURL, Theme } from '../..';
 import { LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS } from './types';
 
-export function getImageFromLineageNode(lineageNode: LineageNode, isSeed: boolean, isSelected: boolean): string {
-    const iconURL = lineageNode.meta ? lineageNode.meta.iconURL : 'default';
+const DEFAULT_ICON_URL = 'default';
 
-    return imageFromIdentifier(iconURL, isSeed, isSelected);
+export function getImagesForNode(node?: LineageNode, isSeed?: boolean) {
+    const { iconURL, shape } = getIconAndShapeForNode(node);
+
+    return {
+        image: imageFromIdentifier(iconURL, isSeed, false),
+        imageBackup: getBackupImageFromLineageNode(node, isSeed, false),
+        imageSelected: imageFromIdentifier(iconURL, isSeed, true),
+        shape,
+    }
 }
 
-export function getBackupImageFromLineageNode(lineageNode: LineageNode, isSeed: boolean, isSelected: boolean): string {
-    let iconURL = 'default';
+export function getIconAndShapeForNode(node?: LineageNode): { iconURL: string, shape: string } {
+    let iconURL = DEFAULT_ICON_URL;
+    let shape = 'circularImage';
+
+    if (node) {
+        if (node.meta) {
+            iconURL = node.meta.iconURL;
+        }
+
+        // run icon is not circular so the vis shape is adjusted accordingly
+        if (iconURL === DEFAULT_ICON_URL && node.type && node.type.toLowerCase() === 'run') {
+            iconURL = 'run';
+            shape = 'image';
+        }
+    }
+
+    return {
+        iconURL,
+        shape
+    };
+}
+
+export function getBackupImageFromLineageNode(node: LineageNode, isSeed: boolean, isSelected: boolean): string {
+    let iconURL = DEFAULT_ICON_URL;
 
     // Use default image specific for cpasType categories
-    if (lineageNode.cpasType && lineageNode.cpasType.includes('SampleSet')) {
+    if (node && node.cpasType && node.cpasType.includes('SampleSet')) {
         iconURL = 'samples';
     }
 

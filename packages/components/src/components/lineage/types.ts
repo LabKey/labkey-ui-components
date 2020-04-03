@@ -41,7 +41,7 @@ export class LineageFilter {
     field: string;
     value: string[];
 
-    constructor(field: string, value: any) {
+    constructor(field: string, value: string[]) {
         this.field = field;
         this.value = value;
     }

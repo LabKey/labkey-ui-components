@@ -6,9 +6,8 @@ import { List, Map, Record } from 'immutable';
 import { Utils } from '@labkey/api';
 import { DataSet, Edge, Network, Node } from 'vis-network';
 
-import { LineageLink, LineageNode, LineageResult } from '../models';
-import { getBackupImageFromLineageNode, getImageFromLineageNode } from '../utils';
-import { DEFAULT_GROUPING_OPTIONS, DEFAULT_LINEAGE_OPTIONS } from '../constants';
+import { applyLineageOptions, LineageLink, LineageNode, LineageResult } from '../models';
+import { getImagesForNode } from '../utils';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -121,7 +120,6 @@ export interface VisGraphNode extends Node {
     id: string
     kind: 'node'
     lineageNode: LineageNode
-    cid: number
 }
 
 export interface VisGraphCombinedNode extends Node {
@@ -176,9 +174,7 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
     if (result === undefined)
         throw new Error("raw lineage result needed to create graph");
 
-    const _options = Object.assign({}, DEFAULT_LINEAGE_OPTIONS, options, {
-        grouping: Object.assign({}, DEFAULT_GROUPING_OPTIONS, options?.grouping)
-    });
+    const _options = applyLineageOptions(options);
 
     const nodes = result.nodes;
 
@@ -554,12 +550,10 @@ export function findConnectedNodes(visEdges: Array<Edge>, id: string, dir?: 'fro
 }
 
 
-function createVisNode(node: LineageNode, id: string , isSeed: boolean): VisGraphNode {
+function createVisNode(node: LineageNode, id: string, isSeed: boolean): VisGraphNode {
 
     // show the alternate icon image color if this node is the seed or has been selected
-    let image = getImageFromLineageNode(node, isSeed, false);
-    let selectedImage = getImageFromLineageNode(node, isSeed, true);
-    let imageBackup = getBackupImageFromLineageNode(node, isSeed, false);
+    const { image, imageBackup, imageSelected, shape } = getImagesForNode(node, isSeed);
 
     return {
         kind: 'node',
@@ -569,11 +563,11 @@ function createVisNode(node: LineageNode, id: string , isSeed: boolean): VisGrap
         title: getLineageNodeTitle(node, true),
         image: {
             unselected: image,
-            selected: selectedImage
+            selected: imageSelected,
         },
         brokenImage: imageBackup,
-        shape: image ? 'circularImage' : 'text',
-        shadow: isSeed ? true : false,
+        shape,
+        shadow: isSeed === true,
         font: isSeed ? {
                 multi: 'html',
                 color: '#116596',  // this is the color of the fill from the _v1.svg images used as seed node images
@@ -589,7 +583,6 @@ function createVisNode(node: LineageNode, id: string , isSeed: boolean): VisGrap
             : {
                 align: 'left',
                 background: 'white'},
-        cid: undefined
     };
 }
 
@@ -642,15 +635,12 @@ function createCombinedVisNode(
     };
 
     if (commonNode) {
-        // show the alternate icon image color if this node is the seed or has been selected
-        let image = getImageFromLineageNode(commonNode, false, false);
-        let selectedImage = getImageFromLineageNode(commonNode, false, true);
-        let imageBackup = getBackupImageFromLineageNode(commonNode, false, false);
+        const { image, imageBackup, imageSelected, shape } = getImagesForNode(commonNode, false);
 
-        clusterOptions.shape = 'circularImage';
+        clusterOptions.shape = shape;
         clusterOptions.image = {
             unselected: image,
-            selected: selectedImage
+            selected: imageSelected
         };
         clusterOptions.brokenImage = imageBackup;
     }

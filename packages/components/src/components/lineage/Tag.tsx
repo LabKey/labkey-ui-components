@@ -5,10 +5,10 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
+import { AppURL, GridColumn } from '../..';
 
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
-import { AppURL } from '../../url/AppURL';
-import { GridColumn } from '../base/Grid';
+import { DEFAULT_LINEAGE_DISTANCE } from './constants';
+import { LINEAGE_DIRECTIONS } from './types';
 
 interface TagProps {
     bsStyle?: string

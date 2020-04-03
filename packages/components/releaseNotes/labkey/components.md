@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.44.0
+*Released*: 3 April 2020
+* Item 6937: Lineage components updates
+    - See https://github.com/LabKey/labkey-ui-components/pull/205
+
 ### version 0.43.0
 *Released*: 3 April 2020
 * Modify SearchPages for display of data classes and to allow more customization of how search result cards are displayed

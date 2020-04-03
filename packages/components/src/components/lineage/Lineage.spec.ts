@@ -2,11 +2,11 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List } from 'immutable';
-import { Edge } from 'vis';
-import { Lineage, LineageFilter, LineageGroupingOptions, LineageOptions, LineageResult } from './models';
+import { Edge } from 'vis-network';
+
+import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from './types';
+import { Lineage, LineageResult } from './models';
 import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
-import { LINEAGE_GROUPING_GENERATIONS } from './constants';
 
 import {
     collapsedNodesTest1,
@@ -50,11 +50,9 @@ describe('Lineage Graph', () => {
 
         describe('#generateGraph()', () => {
             test('Test generations=All', () => {
-                let lineageOptions = new LineageOptions({
-                    grouping: new LineageGroupingOptions({generations: LINEAGE_GROUPING_GENERATIONS.All})
+                const visGraphOptions = ESLineage.generateGraph({
+                    grouping: {generations: LINEAGE_GROUPING_GENERATIONS.All},
                 });
-
-                const visGraphOptions = ESLineage.generateGraph(lineageOptions);
                 expect(visGraphOptions.nodes.length).toBe(4);
 
                 const ids = visGraphOptions.nodes.getIds();
@@ -62,12 +60,10 @@ describe('Lineage Graph', () => {
             });
 
             test('Test generations=Multi', () => {
-                let lineageOptions = new LineageOptions({
-                    grouping: new LineageGroupingOptions({generations: LINEAGE_GROUPING_GENERATIONS.Multi})
-                });
-
                 // generations=Multi will stop iterating at the first branch
-                const visGraphOptions = ESLineage.generateGraph(lineageOptions);
+                const visGraphOptions = ESLineage.generateGraph({
+                    grouping: {generations: LINEAGE_GROUPING_GENERATIONS.Multi},
+                });
                 expect(visGraphOptions.nodes.length).toBe(3);
 
                 const ids = visGraphOptions.nodes.getIds();
@@ -75,12 +71,10 @@ describe('Lineage Graph', () => {
             });
 
             test('Test filtering in only type Data and generations=All', () => {
-                let lineageOptions = new LineageOptions({
-                    filters: List([new LineageFilter('type', 'Data')]),
-                    filterIn: true
+                const visGraphOptions = ESLineage.generateGraph({
+                    filters: [new LineageFilter('type', ['Data'])],
+                    filterIn: true,
                 });
-
-                const visGraphOptions = ESLineage.generateGraph(lineageOptions);
                 expect(visGraphOptions.nodes.length).toBe(1);
 
                 const ids = visGraphOptions.nodes.getIds();
@@ -89,69 +83,59 @@ describe('Lineage Graph', () => {
             });
 
             test('Test filtering out only type Data (including the seed)', () => {
-                let lineageOptions = new LineageOptions({
-                    filters: List([new LineageFilter('type', 'Data')]),
-                    filterIn: false
-                });
-
                 // For now, filtering out the seed means the rest of the nodes
                 // aren't reachable.  If the seed is filtered, we could promote
                 // the seed's relative to the 'top' nodes of the graph so the
                 // they become reachable again.
-                const visGraphOptions = ESLineage.generateGraph(lineageOptions);
+                const visGraphOptions = ESLineage.generateGraph({
+                    filters: [new LineageFilter('type', ['Data'])],
+                    filterIn: false,
+                });
                 expect(visGraphOptions.nodes.length).toBe(0);
             });
 
             test('Test Expression System lineage filtering in only type Sample with generations=Multi', () => {
-                let lineageOptions = new LineageOptions({
-                    filters: List([new LineageFilter('type', 'Sample')]),
+                const visGraphOptions = ESLineage.generateGraph({
+                    filters: [new LineageFilter('type', ['Sample'])],
                     filterIn: true,
-                    grouping: new LineageGroupingOptions({generations: LINEAGE_GROUPING_GENERATIONS.Multi})
+                    grouping: {generations: LINEAGE_GROUPING_GENERATIONS.Multi},
                 });
-
-                const visGraphOptions = ESLineage.generateGraph(lineageOptions);
                 // there is only 1 node of type Sample in the ESLineage,
                 // but it will not show because the seed is of type Data and is being filtered out
                 expect(visGraphOptions.nodes.length).toBe(0);
             });
 
             test('Test Sample Lineage filtering in only type Sample with generations=Multi', () => {
-                let lineageOptions = new LineageOptions({
-                    filters: List([new LineageFilter('type', 'Sample')]),
+                const visGraphOptions = sampleLineage.generateGraph({
+                    filters: [new LineageFilter('type', ['Sample'])],
                     filterIn: true,
-                    grouping: new LineageGroupingOptions({generations: LINEAGE_GROUPING_GENERATIONS.Multi})
+                    grouping: {generations: LINEAGE_GROUPING_GENERATIONS.Multi},
                 });
-
-                const visGraphOptions = sampleLineage.generateGraph(lineageOptions);
                 expect(visGraphOptions.nodes.length).toBe(1);
                 expect(visGraphOptions.nodes.getIds()).toContain('child1');
             });
 
             test('Test Expression System lineage filtering in only types Data or Sample with generations=Multi and combineSize=2', () => {
-                let lineageOptions = new LineageOptions({
-                    filters: List([new LineageFilter('type', ['Sample', 'Data'])]),
+                const visGraphOptions = ESLineage.generateGraph({
+                    filters: [new LineageFilter('type', ['Sample', 'Data'])],
                     filterIn: true,
-                    grouping: new LineageGroupingOptions({
+                    grouping: {
+                        combineSize: 2,
                         generations: LINEAGE_GROUPING_GENERATIONS.Multi,
-                        combineSize: 2
-                    })
+                    }
                 });
-
-                const visGraphOptions = ESLineage.generateGraph(lineageOptions);
                 expect(visGraphOptions.nodes.length).toBe(2);
             });
 
             test('Test Sample lineage filtering in only types Data or Sample with multi generations and children clustering', () => {
-                let lineageOptions = new LineageOptions({
-                    filters: List([new LineageFilter('type', ['Sample', 'Data'])]),
+                const visGraphOptions = sampleLineage.generateGraph({
+                    filters: [new LineageFilter('type', ['Sample', 'Data'])],
                     filterIn: true,
-                    grouping: new LineageGroupingOptions({
+                    grouping: {
+                        combineSize: 2,
                         generations: LINEAGE_GROUPING_GENERATIONS.Multi,
-                        combineSize: 2
-                    })
+                    },
                 });
-
-                const visGraphOptions = sampleLineage.generateGraph(lineageOptions);
                 expect(visGraphOptions.nodes.length).toBe(2);
 
                 const ids = visGraphOptions.nodes.getIds();
@@ -160,16 +144,14 @@ describe('Lineage Graph', () => {
             });
 
             test('Test fullScreenSampleLineage lineage with all generations and clustering', () => {
-                let lineageOptions = new LineageOptions({
-                    filters: List([new LineageFilter('type', ['Sample'])]),
+                const graph = fullScreenSampleLineage.generateGraph({
+                    filters: [new LineageFilter('type', ['Sample'])],
                     filterIn: true,
-                    grouping: new LineageGroupingOptions({
+                    grouping: {
+                        combineSize: 2,
                         generations: LINEAGE_GROUPING_GENERATIONS.All,
-                        combineSize: 2
-                    })
+                    },
                 });
-
-                const graph = fullScreenSampleLineage.generateGraph(lineageOptions);
                 expect(graph.nodes.length).toBe(7);
                 expect(graph.edges.length).toBe(6);
 
@@ -177,7 +159,6 @@ describe('Lineage Graph', () => {
                 expect(ids).toEqual(expect.arrayContaining(["sample0", "sample1", "sample2", "sample4", "sample5"]));
                 expect(ids).toEqual(expect.not.arrayContaining(["sample3", "sample6", "sample7", "sample8", "run1","run2", "run3", "run4", "run42", "run5", "run7", "run8"]));
 
-                const S4 = graph.nodes.get("sample4");
                 const fromS4 = graph.edges.get({ filter: e => e.from === "sample4" });
                 expect(fromS4.length).toBe(1);
                 expect(fromS4[0].to).toBe("sample5");
@@ -187,7 +168,7 @@ describe('Lineage Graph', () => {
                 expect(toS4[0].from).toContain("combined:");
                 const combinedNode1Id = toS4[0].from;
                 const combinedNode1 = graph.nodes.get(combinedNode1Id) as VisGraphCombinedNode;
-                expect(combinedNode1.containedNodes.map(n => n.name)).toEqual(expect.arrayContaining(["sample 3", "sample 6"]))
+                expect(combinedNode1.containedNodes.map(n => n.name)).toEqual(expect.arrayContaining(["sample 3", "sample 6"]));
 
                 const combinedNodes = graph.getCombinedNodes();
                 expect(combinedNodes.length).toBe(2);
@@ -197,18 +178,16 @@ describe('Lineage Graph', () => {
             });
 
             test('Test fullScreenSampleLineage lineage with specific generations and children clustering', () => {
-                let lineageOptions = new LineageOptions({
-                    filters: List([new LineageFilter('type', ['Sample'])]),
+                const graph = fullScreenSampleLineage.generateGraph({
+                    filters: [new LineageFilter('type', ['Sample'])],
                     filterIn: true,
-                    grouping: new LineageGroupingOptions({
+                    grouping: {
+                        childDepth: 1,
+                        combineSize: 2,
                         generations: LINEAGE_GROUPING_GENERATIONS.Specific,
                         parentDepth: 2,
-                        childDepth: 1,
-                        combineSize: 2
-                    })
+                    },
                 });
-
-                const graph = fullScreenSampleLineage.generateGraph(lineageOptions);
                 expect(graph.nodes.length).toBe(4);
 
                 const ids = graph.nodes.getIds();
@@ -286,9 +265,9 @@ describe('Lineage Graph', () => {
             //
             const lineageResult = LineageResult.create({nodes: collapsedNodesTest1, seed: 'S1'});
             const lineage = new Lineage({result: lineageResult});
-            const graph = lineage.generateGraph(new LineageOptions({
-                grouping: new LineageGroupingOptions({combineSize: 3})
-            }));
+            const graph = lineage.generateGraph({
+                grouping: {combineSize: 3},
+            });
 
             verifyCollapsedNodesTest(graph);
         });
@@ -311,16 +290,16 @@ describe('Lineage Graph', () => {
             //
             const lineageResult = LineageResult.create({nodes: collapsedNodesTest2, seed: 'S1'});
             const lineage = new Lineage({result: lineageResult});
-            const graph = lineage.generateGraph(new LineageOptions({
-                grouping: new LineageGroupingOptions({combineSize: 3})
-            }));
+            const graph = lineage.generateGraph({
+                grouping: {combineSize: 3},
+            });
 
             verifyCollapsedNodesTest(graph);
         });
 
         // covers two scenarios that are not easily separated
         test('S4 in existing collapsed node (S2+S3+S4) is added to second collapsed node (S4+S5+S6);' +
-            'edge to R3 is linked to the collpased nodes', () => {
+            'edge to R3 is linked to the collapsed nodes', () => {
             // source lineage:
             //                  S1
             //                /    \
@@ -344,9 +323,9 @@ describe('Lineage Graph', () => {
 
             const lineageResult = LineageResult.create({nodes: collapsedNodesTest3, seed: 'S1'});
             const lineage = new Lineage({result: lineageResult});
-            const graph = lineage.generateGraph(new LineageOptions({
-                grouping: new LineageGroupingOptions({combineSize: 3})
-            }));
+            const graph = lineage.generateGraph({
+                grouping: {combineSize: 3},
+            });
 
             expect(graph.nodes.length).toBe(6);
             expect(graph.edges.length).toBe(8);
@@ -360,7 +339,6 @@ describe('Lineage Graph', () => {
             const combinedNodeIds = combinedNodes.map(n => n.id);
 
             // R1 should connect to both combined nodes
-            const R1 = graph.nodes.get("R1");
             const edgesFromR1 = graph.edges.get({
                 filter: (edge: Edge) => edge.from === "R1"
             });
@@ -368,7 +346,6 @@ describe('Lineage Graph', () => {
             expect(edgesFromR1.map(e => e.to)).toEqual(expect.arrayContaining(combinedNodeIds));
 
             // R2 should connect to both combined nodes
-            const R2 = graph.nodes.get("R2");
             const edgesFromR2 = graph.edges.get({
                 filter: (edge: Edge) => edge.from === "R2"
             });
@@ -418,12 +395,12 @@ describe('Lineage Graph', () => {
                 const resultArr = ESLineageResult.filterIn('type', ['Data']);
 
                 expect(result.nodes.size).toBe(1);
-                expect(result.nodes.first().get('type')).toBe('Data');
+                expect(result.nodes.first().type).toBe('Data');
                 expect(resultArr.nodes.size).toBe(1);
-                expect(resultArr.nodes.first().get('type')).toBe('Data');
+                expect(resultArr.nodes.first().type).toBe('Data');
 
                 // should be the same node
-                expect(resultArr.nodes.first().get('rowId')).toBe(result.nodes.first().get('rowId'));
+                expect(resultArr.nodes.first().id).toBe(result.nodes.first().id);
             });
 
             test('Should maintain heritage', () => {
@@ -436,14 +413,14 @@ describe('Lineage Graph', () => {
                 expect(result.nodes.has(ESLineageResult.seed)).toBe(true);
 
                 // seed should continue to not have parents
-                expect(result.nodes.get(ESLineageResult.seed).get('parents').size).toBe(0);
+                expect(result.nodes.get(ESLineageResult.seed).parents.size).toBe(0);
 
                 // seed should maintain "Run" children
-                expect(result.nodes.get(ESLineageResult.seed).get('children').size).toBe(2);
+                expect(result.nodes.get(ESLineageResult.seed).children.size).toBe(2);
 
                 let filtered: boolean = true;
                 result.nodes.forEach((node) => {
-                    if (value.indexOf(node.get('type')) > -1) {
+                    if (value.indexOf(node.type) > -1) {
                         return;
                     }
                     filtered = false;
@@ -505,51 +482,6 @@ describe('Lineage Graph', () => {
         });
     });
 
-    describe('LineageOptions', () => {
-
-        describe('#constructor()', () => {
-            // test the default LineageOptions
-            test('Should generate graph with default LineageGroupingOptions', () => {
-                const options = new LineageOptions();
-                expect(options.filters.size).toBe(0);
-                expect(options.filterIn).toBe(true);
-                expect(options.grouping).toBeUndefined();
-                expect(options.urlResolver).toBeUndefined();
-            });
-
-            test('When not provided, default for filterIn is true', () => {
-                const options = new LineageOptions({
-                    filters: List<LineageFilter>([new LineageFilter('type', 'Sample')]),
-                    filterIn: undefined
-                });
-                expect(options.filters.size).toBe(1);
-                expect(options.filterIn).toBe(true);
-            });
-
-        });
-    });
-
-    describe('LineageGroupingOptions', () => {
-
-        describe('#constructor()', () => {
-            // test the default Grouping Options
-            test('Should generate graph with default LineageGroupingOptions', () => {
-                const options = new LineageGroupingOptions();
-                expect(options.childDepth).toBe(3);
-                expect(options.parentDepth).toBe(4);
-                expect(options.generations).toBe(LINEAGE_GROUPING_GENERATIONS.All);
-                expect(options.combineSize).toBe(6);
-            });
-
-            // test the default Grouping Options
-            test('combineSize must be 0 or >1', () => {
-                expect(() => {
-                    const options = new LineageGroupingOptions({combineSize: 1});
-                }).toThrow('combineSize must be >1 or disabled (0 or undefined)');
-            });
-        });
-    });
-
     describe('VisGraphGenerator', () => {
 
         describe('#generate()', () => {
@@ -563,17 +495,18 @@ describe('Lineage Graph', () => {
             // test given the unfiltered LineageResult and default Grouping Options:
             // generations = 'all'
             test('Should generate graph with default LineageGroupingOptions', () => {
-                const visGraphOptions = generate(ESLineageResult, new LineageGroupingOptions());
+                const visGraphOptions = generate(ESLineageResult);
                 expect(visGraphOptions.nodes.length).toBe(ESLineageResult.nodes.size);
             });
 
             // test generate using ESLineageResult and Grouping Options of:
             // generations = 'nearest'
             test('Should generate graph with seeds nearest generations', () => {
-                const options = new LineageGroupingOptions({
-                    generations: LINEAGE_GROUPING_GENERATIONS.Nearest
+                const visGraphOptions = generate(ESLineageResult, {
+                    grouping: {
+                        generations: LINEAGE_GROUPING_GENERATIONS.Nearest,
+                    },
                 });
-                const visGraphOptions = generate(ESLineageResult, options);
                 expect(visGraphOptions.nodes.length).toBe(3);
                 expect(visGraphOptions.edges.length).toBe(2);
 
@@ -585,10 +518,11 @@ describe('Lineage Graph', () => {
             // test generate using sampleLineageResult and Grouping Options of:
             // generations = 'nearest'
             test('Should generate graph with seeds nearest generations', () => {
-                const options = new LineageGroupingOptions({
-                    generations: LINEAGE_GROUPING_GENERATIONS.Nearest
+                const visGraphOptions = generate(sampleLineageResult, {
+                    grouping: {
+                        generations: LINEAGE_GROUPING_GENERATIONS.Nearest,
+                    },
                 });
-                const visGraphOptions = generate(sampleLineageResult, options);
                 expect(visGraphOptions.nodes.length).toBe(2);
                 expect(visGraphOptions.edges.length).toBe(1);
 
@@ -600,8 +534,8 @@ describe('Lineage Graph', () => {
             // test generate using empty LineageResult and default Grouping Options
             test('Should generate empty graph', () => {
                 const visGraphOptions = generate(LineageResult.create({
-                    "nodes": {}
-                }), new LineageGroupingOptions());
+                    nodes: {}
+                }));
                 expect(visGraphOptions.nodes.length).toBe(0);
             });
         });

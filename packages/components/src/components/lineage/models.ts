@@ -3,63 +3,39 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable';
+import { GridColumn, LineageFilter, QueryInfo } from '../..';
 
 import {
+    DEFAULT_GROUPING_OPTIONS,
     DEFAULT_LINEAGE_DIRECTION,
     DEFAULT_LINEAGE_DISTANCE,
-    LINEAGE_DIRECTIONS,
-    LINEAGE_GROUPING_GENERATIONS,
+    DEFAULT_LINEAGE_OPTIONS,
 } from './constants';
+import {
+    LineageGroupingOptions,
+    LINEAGE_DIRECTIONS,
+    LineageNodeLinks,
+    LineageOptions,
+} from './types'
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
-import { GridColumn } from '../base/Grid';
-import { QueryInfo } from '../base/models/model';
 
-/**
- * After the raw lineage result has been filtered, ILineageGroupingOptions determines
- * how many generations of nodes to include in the VisGraph and the threshold at which
- * to combine multiple nodes together.
- */
-export interface ILineageGroupingOptions {
-    /** Determines when to stop traversing generations of nodes. */
-    generations?: LINEAGE_GROUPING_GENERATIONS
-    /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the parent axis. */
-    parentDepth?: number
-    /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the child axis. */
-    childDepth?: number
-    /** When the number of parent or children edges is greater than or equal to this threshold, create a combined node. */
-    combineSize?: number
-}
+export function applyLineageOptions(options?: LineageOptions): LineageOptions {
+    let _options = {
+        ...DEFAULT_LINEAGE_OPTIONS,
+        ...options,
+        ...{
+            grouping: {
+                ...DEFAULT_GROUPING_OPTIONS,
+                ...options?.grouping
+            }
+        }
+    };
 
-export class LineageGroupingOptions extends Record({
-    generations: LINEAGE_GROUPING_GENERATIONS.All,
-    parentDepth: DEFAULT_LINEAGE_DISTANCE+1,
-    childDepth: DEFAULT_LINEAGE_DISTANCE,
-    combineSize: 6
-}) {
-    generations?: LINEAGE_GROUPING_GENERATIONS;
-    parentDepth?: number;
-    childDepth?: number;
-    combineSize?: number;
+    // deep copy "filters"
+    _options.filters = _options.filters.map(filter => new LineageFilter(filter.field, filter.value));
 
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-        if (values && values.clustering !== undefined)
-            throw new Error('clustering option is deprecated');
-
-        if (this.combineSize == 1)
-            throw new Error('combineSize must be >1 or disabled (0 or undefined)');
-    }
-}
-
-export class LineageFilter {
-    field: string;
-    value: string | Array<string>;
-
-    constructor(field: string, value: string | Array<string>) {
-        this.field = field;
-        this.value = value;
-    }
+    return _options;
 }
 
 // TODO add jest test coverage for this function
@@ -142,35 +118,78 @@ export class LineageLink extends Record ({
     }
 }
 
+export interface LineagePKFilter {
+    fieldKey: string
+    value: any
+}
+
+export interface LineageRunStep {
+    applicationType: string
+    activityDate: string
+    activitySequence: number
+    created: string
+    createdBy: string
+    id: number
+    lsid: string
+    modified: string
+    modifiedBy: string
+    name: string
+    protocol: any
+}
+
+// commented out attributes are not yet used
 export class LineageNode extends Record ({
+    // absolutePath: undefined,
     children: undefined,
     cpasType: undefined,
+    // created: undefined,
+    // createdBy: undefined,
+    // dataFileURL: undefined,
     distance: undefined,
+    id: undefined,
     listURL: undefined,
     lsid: undefined,
-    meta: undefined,
+    // modified?: undefined,
+    // modifiedBy?: undefined,
     name: undefined,
     parents: undefined,
+    // pipelinePath: undefined,
+    pkFilters: undefined,
     queryName: undefined,
-    rowId: undefined,
     schemaName: undefined,
+    steps: undefined,
     type: undefined,
     url: undefined,
 
+    // computed properties
+    links: {},
+    meta: undefined,
 } ) {
+    // absolutePath?: string;
     children?: List<LineageLink>;
     cpasType?: string;
+    // created?: string;
+    // createdBy?: string;
+    // dataFileURL?: string;
     distance?: number;
+    id?: number;
     listURL?: string;
     lsid?: string;
-    meta?: LineageNodeMetadata;
+    // modified?: string;
+    // modifiedBy?: string;
     name?: string;
     parents?: List<LineageLink>;
+    // pipelinePath?: string;
+    pkFilters?: List<LineagePKFilter>;
     queryName?: string;
-    rowId?: number;
     schemaName?: string;
+    steps?: List<LineageRunStep>;
     type?: string;
     url?: string;
+
+    // computed properties
+    links?: LineageNodeLinks;
+    meta?: LineageNodeMetadata;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -180,13 +199,14 @@ export class LineageNode extends Record ({
         return values ? new LineageNode({
             children:  LineageLink.createList(values.children),
             cpasType: values.cpasType,
+            id: values.id,
             lsid,
             name:  values.name,
             parents: LineageLink.createList(values.parents),
+            pkFilters: List(values.pkFilters),
             queryName: values.queryName,
-            // "rowId" -> "id". See https://github.com/LabKey/platform/pull/1000
-            rowId:values.id,
             schemaName: values.schemaName,
+            steps: values.steps ? List(values.steps): List(),
             type: values.type,
             url: values.url,
             meta: values.meta
@@ -376,34 +396,6 @@ export class LineageResult extends Record({
     }
 }
 
-const LineageOptionDefaults = {
-    filters: List<LineageFilter>(),
-    filterIn: true,
-    grouping: undefined,
-    urlResolver: undefined
-};
-
-interface LineageOptionParams {
-    filters: List<LineageFilter>;
-    filterIn: boolean;
-    grouping: ILineageGroupingOptions;
-    urlResolver: Function;
-}
-
-export class LineageOptions extends Record(LineageOptionDefaults) implements LineageOptionParams {
-    filters: List<LineageFilter>;
-    filterIn: boolean;
-    grouping: ILineageGroupingOptions;
-    urlResolver: Function;
-
-    constructor(values: Partial<LineageOptionParams> = {}) {
-        if (values.filterIn === undefined)
-            values.filterIn = true;
-
-        super(values);
-    }
-}
-
 export class Lineage extends Record({
     result: undefined,
     sampleStats: undefined,
@@ -417,22 +409,29 @@ export class Lineage extends Record({
         super(values);
     }
 
+    // Defensive check against calls made when an error is present and provides a more useful error message.
+    private checkError(): void {
+        if (this.error) {
+            throw new Error('Invalid call on Lineage object. Check errors prior to attempting to interact with Lineage object.');
+        }
+    }
+
     getSeed(): string {
+        this.checkError();
         return this.result.seed;
     }
 
     filterResult(options?: LineageOptions): LineageResult {
+        this.checkError();
         const { seed } = this.result;
 
-        if (!options) {
-            options = new LineageOptions({});
-        }
+        const _options = applyLineageOptions(options);
 
         let nodes;
-        if (options.filters) {
+        if (_options.filters) {
             let result = this.result;
-            options.filters.forEach(filter => {
-                if (options.filterIn === true) {
+            _options.filters.forEach(filter => {
+                if (_options.filterIn === true) {
                     result = result.filterIn(filter.field, filter.value);
                 }
                 else {
@@ -453,20 +452,16 @@ export class Lineage extends Record({
     /**
      * Generate a graph of the lineage for use with vis.js.
      *
-     * @remaks
+     * @remarks
      * First, the LabKey lineage is filtered according to the {@link LineageOptions.filters}
      * then the graph is translated into vis.js nodes and edges.  During translation, nodes
-     * will be combined together according to {@link ILineageGroupingOptions.combineSize} and recursion
-     * will be stopped when {@link ILineageGroupingOptions.generations} condition is met.
+     * will be combined together according to {@link LineageGroupingOptions.combineSize} and recursion
+     * will be stopped when {@link LineageGroupingOptions.generations} condition is met.
      */
     generateGraph(options?: LineageOptions): VisGraphOptions {
-        // console.log('Lineage.generateGraph');
-        if (!options) {
-            options = new LineageOptions();
-        }
-
+        this.checkError();
         const result = this.filterResult(options);
-        return generate(result, options.grouping);
+        return generate(result, options);
     }
 }
 

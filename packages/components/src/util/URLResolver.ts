@@ -349,7 +349,7 @@ export class URLResolver {
         ]);
     }
 
-    private mapURL(mapper: MapURLOptions): string {
+    private mapURL = (mapper: MapURLOptions): string => {
 
         let _url = this.mappers.toSeq()
             .map(m =>
@@ -358,7 +358,7 @@ export class URLResolver {
             .first();
 
         if (_url instanceof AppURL) {
-            return '#' + _url.toString();
+            return _url.toHref();
         }
 
         if (_url !== false && LABKEY.devMode) {
@@ -366,22 +366,23 @@ export class URLResolver {
         }
 
         return mapper.url;
-    }
+    };
 
-    public resolveLineageNodes(result: LineageResult, acceptedTypes: Array<string> = ['Sample', 'Data']) : LineageResult {
+    public resolveLineageNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
         let updatedNodes = result.nodes.map((node) => {
             if (acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
                 let parts = node.cpasType.split(':');
                 let name = parts[parts.length - 1];
 
-                // Lsid strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
+                // LSID strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
                 name = name.replace(/\+/g, ' ');
+
+                // Create a URL that will be resolved/redirected in the application resolvers
                 const listURLParts = node.type === 'Sample' ? ['samples', name] : ['rd', 'dataclass', name];
 
                 return node.merge({
-                    // listURL is the url to the grid for the data type.  It will be filtered to the rowIds of the lineage members
-                    // create a URL that will be resolved/redirected in the application resolvers
-                    listURL: AppURL.create(...listURLParts).toString(),
+                    // listURL is the url to the grid for the data type. It will be filtered to the lineage members.
+                    listURL: AppURL.create(...listURLParts).toHref(),
                     url: this.mapURL({
                         url: node.url,
                         row: node,
@@ -394,7 +395,7 @@ export class URLResolver {
             return node;
         });
         return result.set('nodes', updatedNodes) as LineageResult;
-    }
+    };
 
     /**
      * Returns a Promise resolving a valid selectRowsResult with URLs replaced with those mapped by this

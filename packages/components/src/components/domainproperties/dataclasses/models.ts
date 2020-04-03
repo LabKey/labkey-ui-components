@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Record } from "immutable";
-import { DomainDesign } from "../models";
+import { DomainDesign, IDomainField } from "../models";
 
 export class DataClassModel extends Record({
     rowId: undefined,
@@ -63,12 +63,16 @@ export class DataClassModel extends Record({
         return !this.rowId;
     }
 
-    static isValid(model: DataClassModel): boolean {
-        return model.hasValidProperties();
+    static isValid(model: DataClassModel, defaultNameFieldConfig?: Partial<IDomainField>): boolean {
+        return model.hasValidProperties() && !model.hasInvalidNameField(defaultNameFieldConfig);
     }
 
     hasValidProperties(): boolean {
         return (this.name !== undefined && this.name !==null && this.name.trim().length > 0);
+    }
+
+    hasInvalidNameField(defaultNameFieldConfig: Partial<IDomainField>): boolean {
+        return (this.domain && defaultNameFieldConfig) ? this.domain.hasInvalidNameField(defaultNameFieldConfig) : false;
     }
 
     getOptions(): Object {

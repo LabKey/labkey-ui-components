@@ -46,7 +46,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
       name="alias"
       onBlur={[Function]}
       onChange={[Function]}
-      placeholder="Enter an alias for import"
+      placeholder="Enter a parent alias for import"
       type="text"
       value="testAlias"
     />
@@ -78,7 +78,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
               <div
                 className="Select-placeholder"
               >
-                Select a sample type...
+                Select a parent type...
               </div>
               <div
                 className="Select-input"
@@ -222,7 +222,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
       name="alias"
       onBlur={[Function]}
       onChange={[Function]}
-      placeholder="Enter an alias for import"
+      placeholder="Enter a parent alias for import"
       type="text"
       value="testAlias"
     />

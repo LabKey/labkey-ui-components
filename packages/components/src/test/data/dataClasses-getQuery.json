@@ -83,6 +83,52 @@
       "facetingBehaviorType" : "AUTOMATIC",
       "caption" : "Name"
     }, {
+      "fieldKey" : [ "Category" ],
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "varchar",
+      "defaultValue" : null,
+      "scale" : 500,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : true,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "displayField" : [ "Category", "Value" ],
+      "displayFieldJsonType" : "string",
+      "inputType" : "textarea",
+      "cols" : 60,
+      "rows" : 15,
+      "shortCaption" : "Category",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Category",
+      "lookup" : {
+        "keyColumn" : "RowId",
+        "public" : true,
+        "displayColumn" : "Value",
+        "queryName" : "DataClassCategoryType",
+        "schemaName" : [ "exp" ]
+      }
+    }, {
       "fieldKey" : [ "RowId" ],
       "description" : "Contains a unique id for this DataClass",
       "friendlyType" : "Integer",
@@ -131,6 +177,9 @@
       "RowId" : {
         "value" : 321
       },
+      "Category" : {
+        "value" : "sources"
+      },
       "Name" : {
         "value" : "Source 1",
         "url" : "/labkey/Sam%20Man/experiment-showDataClass.view?name=Source%201"
@@ -143,6 +192,9 @@
       },
       "RowId" : {
         "value" : 322
+      },
+      "Category" : {
+        "value" : "sources"
       },
       "Name" : {
         "value" : "Second Source",
@@ -157,11 +209,27 @@
       "RowId" : {
         "value" : 323
       },
+      "Category" : {
+        "value" : "sources"
+      },
       "Name" : {
         "value" : "Vendor 3",
         "url" : "/labkey/Sam%20Man/experiment-showDataClass.view?name=Vendor%203"
       }
     }
+  }, {
+    "data" : {
+      "LSID" : {
+        "value" : "urn:lsid:labkey.com:DataClass.Folder-252:NonSource"
+      },
+      "RowId" : {
+        "value" : 324
+      },
+      "Name" : {
+        "value" : "NonSource",
+        "url" : "/labkey/Sam%20Man/experiment-showDataClass.view?name=NonSource"
+      }
+    }
   } ],
-  "rowCount" : 3
+  "rowCount" : 4
 }

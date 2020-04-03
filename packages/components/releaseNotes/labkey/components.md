@@ -1,6 +1,23 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.42.1
+*Released*: 31 March 2020
+* Item 7031: Source aliasing
+    - Allow Source (Data Class) Alias to be defined separate from a SampleSet type Parent Alias
+    - Allow filtering of parent options (for example, only 'sources' type data classes will be included)
+
+### version 0.41.5
+*Released*: 1 April 2020
+* SiteUsersGridPanel and UserDetails panel prop to hide/show 'Reset Password' button (i.e. allowResetPassword)
+* NavigationBar optional property for an alternate url to go to after sign out
+
+### version 0.41.3
+*Released*: 30 March 2020
+* Issue 40084: Add property to exclude unique field key from bulk update modal
+* Update QueryInfoForm so the submit button is disabled while submitting
+* Issue 40088: DataClassDesigner - add optional validation check for a reserved name field (i.e. "SourceId" in SM app)
+
 ### version 0.41.2
 *Released*: 30 March 2020
 * Update canSubmit check for ParentEntityEditPanel to check for actual differences and allow submission when all parents have been removed

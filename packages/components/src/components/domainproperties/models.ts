@@ -368,6 +368,18 @@ export class DomainDesign extends Record({
 
         return invalid;
     }
+
+    hasInvalidNameField(defaultNameFieldConfig?: Partial<IDomainField>): boolean {
+        if (this.fields && this.fields.size > 0 && defaultNameFieldConfig && defaultNameFieldConfig.name) {
+            const nameField = this.fields.find(field => {
+                return field && field.name && field.name.toLowerCase() === defaultNameFieldConfig.name.toLowerCase();
+            });
+
+            return nameField !== undefined;
+        }
+
+        return false;
+    }
 }
 
 interface IDomainIndex {

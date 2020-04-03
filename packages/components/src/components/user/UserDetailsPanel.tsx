@@ -22,6 +22,7 @@ interface Props {
     policy?: SecurityPolicy
     rolesByUniqueName?: Map<string, SecurityRole>
     allowDelete?: boolean
+    allowResetPassword?: boolean
     onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => any
 }
 
@@ -34,6 +35,7 @@ interface State {
 export class UserDetailsPanel extends React.PureComponent<Props, State> {
     static defaultProps = {
         allowDelete: true,
+        allowResetPassword: true,
         onUsersStateChangeComplete: undefined
     };
 
@@ -107,13 +109,13 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     renderButtons() {
-        const { allowDelete } = this.props;
+        const { allowDelete, allowResetPassword } = this.props;
         const isActive = caseInsensitive(this.state.userProperties, 'active');
 
         return (
             <>
                 <hr className={'principal-hr'}/>
-                {isActive &&
+                {allowResetPassword && isActive &&
                     <Button onClick={() => this.toggleDialog('reset')}>
                         Reset Password
                     </Button>
@@ -181,7 +183,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     render() {
-        const { userId, allowDelete } = this.props;
+        const { userId, allowDelete, allowResetPassword } = this.props;
         const { showDialog, userProperties } = this.state;
 
         return (
@@ -191,7 +193,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                 </Panel.Heading>
                 <Panel.Body>
                     {this.renderBody()}
-                    {showDialog === 'reset' &&
+                    {allowResetPassword && showDialog === 'reset' &&
                         <UserResetPasswordConfirmModal
                             email={caseInsensitive(userProperties, 'email')}
                             hasLogin={Utils.isString(caseInsensitive(userProperties, 'lastLogin'))}

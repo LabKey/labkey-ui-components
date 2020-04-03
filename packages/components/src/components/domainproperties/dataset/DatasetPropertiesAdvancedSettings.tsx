@@ -19,6 +19,7 @@ interface DatasetSettingsSelectProps {
     labelKey?: string;
     valueKey?: string;
     disabled?: boolean;
+    clearable?: boolean;
 }
 
 export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSelectProps> {
@@ -32,7 +33,8 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
             onSelectChange,
             labelKey,
             valueKey,
-            disabled
+            disabled,
+            clearable
         } = this.props;
 
         return(
@@ -60,6 +62,7 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
                         labelKey={labelKey}
                         valueKey={valueKey}
                         disabled={disabled}
+                        clearable={clearable}
                     />
                 </Col>
             </Row>
@@ -127,14 +130,14 @@ interface AdvancedSettingsProps {
     title: string;
     applyAdvancedProperties: (datasetAdvancedSettingsForm: DatasetAdvancedSettingsForm) => void;
     showDataspace: boolean;
+    showVisitDate: boolean;
 }
 
 interface AdvancedSettingsState extends DatasetAdvancedSettingsForm {
     modalOpen?: boolean;
     availableCohorts?: Option | Array<Option>;
     visitDateColumns?: Option | Array<Option>;
-    dataspace?: string;
-    dataspaceOptions?: Option | Array<Option>;
+    dataSharing?: string;
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -175,6 +178,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             showInOverview: model.showInOverview,
             cohortId: model.cohortId,
             visitDatePropertyName: model.visitDatePropertyName,
+            dataSharing: model.dataSharing
         };
     };
 
@@ -206,11 +210,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         this.setState({ [name]: formValue });
     };
 
-    isNewDataset () {
-        const { model } = this.props;
-        return !model.datasetId;
-    };
-
     getHelpTipElement(field: string) : JSX.Element {
         return <> {getHelpTip(field)} </> as JSX.Element;
     }
@@ -221,10 +220,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
           cohortId,
           visitDatePropertyName,
           showInOverview,
-          tag
+          tag,
+          dataSharing
       } = this.state;
 
-      const datasetAdvancedSettingsForm = {showInOverview, datasetId, cohortId, visitDatePropertyName, tag};
+      const datasetAdvancedSettingsForm = {showInOverview, datasetId, cohortId, visitDatePropertyName, tag, dataSharing};
 
       const { applyAdvancedProperties } = this.props;
 
@@ -242,13 +242,14 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             showInOverview,
             visitDatePropertyName,
             visitDateColumns,
-            dataspace,
-            dataspaceOptions
+            dataSharing
         } = this.state;
 
         const {
+            model,
             title,
-            showDataspace
+            showDataspace,
+            showVisitDate
         } = this.props;
 
         return (
@@ -282,20 +283,22 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             helpTip={this.getHelpTipElement("datasetId")}
                             value={datasetId}
                             placeholder="Auto Assign"
-                            disabled={!this.isNewDataset()}
+                            disabled={!model.isNew()}
                             onValueChange={this.onInputChange}
                             showInAdvancedSettings={true}
                             required={true}
                         />
-
-                        <DatasetSettingsSelect
-                            name="visitDatePropertyName"
-                            label="Visit Date Column"
-                            helpTip={this.getHelpTipElement("visitDateColumn")}
-                            selectOptions={visitDateColumns}
-                            selectedValue={visitDatePropertyName}
-                            onSelectChange={this.onSelectChange}
-                        />
+                        {
+                            showVisitDate &&
+                            <DatasetSettingsSelect
+                                name="visitDatePropertyName"
+                                label="Visit Date Column"
+                                helpTip={this.getHelpTipElement("visitDateColumn")}
+                                selectOptions={visitDateColumns}
+                                selectedValue={visitDatePropertyName}
+                                onSelectChange={this.onSelectChange}
+                            />
+                        }
 
                         <DatasetSettingsSelect
                             name="cohortId"
@@ -325,11 +328,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </div>
 
                                 <DatasetSettingsSelect
-                                    name="dataspace"
+                                    name="dataSharing"
                                     label="Share demographic data"
                                     helpTip={this.getHelpTipElement("dataspace")}
-                                    selectOptions={dataspaceOptions}
-                                    selectedValue={dataspace}
+                                    selectOptions={[{label: 'No', value: 'NONE'}, {label: 'Share by Participants', value: 'PTID'}]}
+                                    selectedValue={dataSharing}
                                     onSelectChange={this.onSelectChange}
                                  />
                             </>

@@ -33,6 +33,7 @@ class NewDatasetDesigner extends React.PureComponent<any,any> {
               initModel={DatasetModel.create(this.props.model, undefined)}
               useTheme={this.props.useTheme}
               showDataSpace={this.props.showDataspace}
+              showVisitDate={this.props.showVisitDate}
           />
         );
     }
@@ -49,6 +50,7 @@ class EditDatasetDesigner extends React.PureComponent<any,any> {
                 initModel={DatasetModel.create(null, this.props.model)}
                 useTheme={this.props.useTheme}
                 showDataSpace={this.props.showDataspace}
+                showVisitDate={this.props.showVisitDate}
             />
         );
     }
@@ -62,6 +64,7 @@ storiesOf("DatasetDesigner", module)
                 model={NEW_DATASET_MODEL}
                 useTheme={false}
                 showDataspace={false}
+                showVisitDate={true}
             />
         )
     })
@@ -71,6 +74,7 @@ storiesOf("DatasetDesigner", module)
                 model={NEW_DATASET_MODEL}
                 useTheme={false}
                 showDataspace={true}
+                showVisitDate={true}
             />
         )
     })
@@ -80,6 +84,7 @@ storiesOf("DatasetDesigner", module)
                 model={getDatasetDesign}
                 useTheme={false}
                 showDataspace={false}
+                showVisitDate={true}
             />
         )
     })
@@ -89,6 +94,7 @@ storiesOf("DatasetDesigner", module)
                 model={getDatasetDesign}
                 useTheme={false}
                 showDataspace={true}
+                showVisitDate={true}
             />
         )
     });

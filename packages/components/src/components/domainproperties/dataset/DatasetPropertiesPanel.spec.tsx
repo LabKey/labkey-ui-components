@@ -52,6 +52,7 @@ describe("Dataset Properties Panel", () => {
                 validate={false}
                 onToggle={(collapsed, callback) => {}}
                 onChange={jest.fn()}
+                showVisitDate={true}
                 showDataspace={true}
             />;
 
@@ -70,6 +71,7 @@ describe("Dataset Properties Panel", () => {
                 validate={false}
                 onToggle={(collapsed, callback) => {}}
                 showDataspace={true}
+                showVisitDate={true}
                 onChange={jest.fn()}
             />;
 
@@ -84,6 +86,7 @@ describe("Dataset Properties Panel", () => {
                 model={populatedDatasetModel}
                 togglePanel={jest.fn()}
                 showDataspace={true}
+                showVisitDate={true}
                 onChange={jest.fn()}
             />
         );

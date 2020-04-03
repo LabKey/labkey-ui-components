@@ -48,9 +48,11 @@ export class DatasetModel extends Record({
     tag: undefined,
     showInOverview: undefined,
     description: undefined,
+    dataSharing: undefined
 }) {
     domain: DomainDesign;
     datasetId?: number;
+    entityId: string;
     name: string;
     category?: string;
     categoryId?: number;
@@ -63,6 +65,7 @@ export class DatasetModel extends Record({
     tag?: string;
     showInOverview: boolean;
     description?: string;
+    dataSharing?: string;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -79,6 +82,56 @@ export class DatasetModel extends Record({
     }
 
     hasValidProperties(): boolean {
-        return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
+        let isValidKeySetting = true;
+
+        if (this.getDataRowSetting() === 2) {
+            isValidKeySetting = this.keyPropertyId !== undefined && this.keyPropertyId !== 0
+        }
+
+        return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && isValidKeySetting;
+    }
+
+    isNew(): boolean {
+        return !this.entityId;
+    }
+
+    getDataRowSetting() : number {
+        let dataRowSetting;
+
+        // participant id
+        if ((this.keyPropertyId === undefined || this.keyPropertyId === null) && this.isDemographicData) {
+            dataRowSetting = 0;
+        }
+        // participant id and timepoint
+        else if (this.keyPropertyId === undefined || this.keyPropertyId === null) {
+            dataRowSetting = 1;
+        }
+        // participant id, timepoint and additional key field
+        else {
+            dataRowSetting = 2;
+        }
+
+        return dataRowSetting;
+    }
+
+    validManagedKeyField(): boolean {
+
+        if (this.keyPropertyId) {
+            const domainFields = this.domain.fields;
+
+            const allowedFieldTypes = domainFields.filter((field) => {
+                return field.dataType.isString() || field.dataType.isInteger()
+            })
+                .map((field) => {
+                    return field.propertyId
+                })
+                .toList();
+
+            return allowedFieldTypes.contains(this.keyPropertyId);
+        }
+        else {
+            return false;
+        }
+
     }
 }

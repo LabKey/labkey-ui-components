@@ -118,7 +118,7 @@ export const DEFAULT_LIST_SETTINGS = {
 };
 
 export const NEW_DATASET_MODEL = {
-    "datasetId" : 0,
+    "datasetId" : null,
     "name" : null,
     "typeURI" : null,
     "category" : null,

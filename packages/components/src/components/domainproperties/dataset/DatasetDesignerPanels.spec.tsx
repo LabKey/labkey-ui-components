@@ -32,6 +32,7 @@ describe("Dataset Designer", () => {
                 initModel={newDatasetModel}
                 useTheme={true}
                 showDataSpace={true}
+                showVisitDate={true}
             />;
 
         const dom = renderer.create(designerPanel).toJSON();
@@ -44,6 +45,7 @@ describe("Dataset Designer", () => {
                 initModel={populatedDatasetModel}
                 useTheme={true}
                 showDataSpace={true}
+                showVisitDate={true}
             />;
 
         const dom = renderer.create(designerPanel).toJSON();

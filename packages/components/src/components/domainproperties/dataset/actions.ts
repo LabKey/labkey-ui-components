@@ -23,7 +23,6 @@ import {
     DATASET_NAME_TIP, DATASPACE_TIP, TAG_TIP,
     VISIT_DATE_TIP
 } from "./constants";
-import React from "react";
 
 export const fetchCategories = async () => {
     // TODO: Replace this with server side call

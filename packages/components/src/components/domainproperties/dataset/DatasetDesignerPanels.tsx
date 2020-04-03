@@ -24,6 +24,7 @@ interface Props {
     onChange?: (model: DatasetModel) => void
     useTheme?: boolean;
     showDataSpace: boolean;
+    showVisitDate: boolean;
 }
 
 interface State {
@@ -50,7 +51,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     };
 
     render() {
-        const { useTheme, onTogglePanel, showDataSpace } = this.props;
+        const { useTheme, onTogglePanel, showDataSpace, showVisitDate } = this.props;
 
         const { model } = this.state;
 
@@ -66,6 +67,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     onToggle={(collapsed, callback) => {onTogglePanel(0, collapsed, callback);}}
                     onChange={this.onPropertiesChange}
                     showDataspace={showDataSpace}
+                    showVisitDate={showVisitDate}
                 />
             </>
         );

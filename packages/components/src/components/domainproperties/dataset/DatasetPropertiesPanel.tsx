@@ -27,16 +27,15 @@ import {DEFINE_DATASET_TOPIC} from "../../../util/helpLinks";
 interface OwnProps {
     model: DatasetModel;
     onChange: (model: DatasetModel) => void;
-    onToggle?: (collapsed: boolean, callback: () => any) => any;
     successBsStyle?: string;
     showDataspace: boolean;
+    showVisitDate: boolean;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
     isValid?: boolean;
-    additionalKeyField?: number;
 }
 
 export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
@@ -111,14 +110,20 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         else {
             newModel = model.merge({
                 keyPropertyId: 0, // resetting key property id
-                isDemographicData: false
+                isDemographicData: false,
+                keyPropertyManaged: false
             }) as DatasetModel;
         }
         this.updateValidStatus(newModel);
     };
 
     onAdditionalKeyFieldChange = (name, formValue, selected): void => {
-        this.onChange(name, selected.propertyId);
+        let propertyId = undefined;
+
+        if (selected) {
+            propertyId = selected.propertyId;
+        }
+        this.onChange(name, propertyId);
     };
 
 
@@ -133,6 +138,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         const {
             model,
             showDataspace,
+            showVisitDate
         } = this.props;
 
         const {
@@ -153,8 +159,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
                         <HelpTopicURL helpTopic={DEFINE_DATASET_TOPIC} nounPlural={'datasets'}/>
                     </Col>
                 </Row>
-                <Form>
-
+                <Row>
                     <Col xs={12} md={5}>
                         <BasicPropertiesFields
                             model={model}
@@ -172,14 +177,16 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
                         />
                     </Col>
 
-                    <AdvancedSettings
-                        title={"Advanced Settings"}
-                        model={model}
-                        showDataspace={showDataspace}
-                        applyAdvancedProperties={this.applyAdvancedProperties}
-                    />
-
-                </Form>
+                    <Col xs={12} md={2}>
+                        <AdvancedSettings
+                            title={"Advanced Settings"}
+                            model={model}
+                            showDataspace={showDataspace}
+                            applyAdvancedProperties={this.applyAdvancedProperties}
+                            showVisitDate={showVisitDate}
+                        />
+                    </Col>
+                </Row>
             </BasePropertiesPanel>
         )
     }

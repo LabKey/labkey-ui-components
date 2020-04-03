@@ -34,6 +34,7 @@ describe("Dataset Advanced Settings", () => {
                title={"Advanced Settings"}
                model={newDatasetModel}
                showDataspace={false}
+               showVisitDate={true}
                applyAdvancedProperties={jest.fn()}
            />;
 
@@ -48,6 +49,7 @@ describe("Dataset Advanced Settings", () => {
                 title={"Advanced Settings"}
                 model={newDatasetModel}
                 showDataspace={true}
+                showVisitDate={true}
                 applyAdvancedProperties={jest.fn()}
             />;
 
@@ -62,6 +64,7 @@ describe("Dataset Advanced Settings", () => {
                 title={"Advanced Settings"}
                 model={populatedDatasetModel}
                 showDataspace={false}
+                showVisitDate={true}
                 applyAdvancedProperties={jest.fn()}
             />;
 
@@ -75,6 +78,7 @@ describe("Dataset Advanced Settings", () => {
                 title={"Advanced Settings"}
                 model={populatedDatasetModel}
                 showDataspace={true}
+                showVisitDate={true}
                 applyAdvancedProperties={jest.fn()}
             />;
 

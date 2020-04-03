@@ -205,23 +205,21 @@ interface DataRowUniquenessContainerProps {
 
 export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {
 
-    getDataRowSetting(model: DatasetModel) : number {
-        let dataRowSetting;
-
-        // participant id
-        if ((model.keyPropertyId === undefined || model.keyPropertyId === null) && model.isDemographicData) {
-            dataRowSetting = 0;
-        }
-        // participant id and timepoint
-        else if (model.keyPropertyId === undefined || model.keyPropertyId === null) {
-            dataRowSetting = 1;
-        }
-        // participant id, timepoint and additional key field
-        else {
-            dataRowSetting = 2;
-        }
-
-        return dataRowSetting;
+    getHelpTipForAdditionalField(): JSX.Element {
+        return (
+            <>
+                <p>
+                    If dataset has more than one row per participant/visit, an additional key field must be provided.
+                    There can be at most one row in the dataset for each combination of participant, visit and key.
+                </p>
+                <ul>
+                    <li>None: No additional key</li>
+                    <li>Data Field: A user-managed key field</li>
+                    <li>Managed Field: A numeric or string field defined below will be managed by the server to make each new entry unique.
+                        Numbers will be assigned auto-incrementing integer values, strings will be assigned globally unique identifiers (GUIDs).</li>
+                </ul>
+            </> as JSX.Element
+        );
     }
 
     getHelpTipElement(field: string) : JSX.Element {
@@ -232,10 +230,13 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
         const { model, onRadioChange, onCheckBoxChange, onSelectChange } = this.props;
         const domain = model.domain;
 
-        const dataRowSetting = this.getDataRowSetting(model);
+        const dataRowSetting = model.getDataRowSetting();
         const showAdditionalKeyField = dataRowSetting === 2;
 
+        const validKeyField = model.validManagedKeyField();
+
         const showAdditionalKeyFieldCls = showAdditionalKeyField ? "dataset_data_row_uniqueness_keyField_show margin-top" : "dataset_data_row_uniqueness_keyField_hide";
+        const keyPropertyManagedCls = showAdditionalKeyField && validKeyField ? "dataset_data_row_uniqueness_keyField_show margin-top" : "dataset_data_row_uniqueness_keyField_hide margin-top";
 
         return (
             <>
@@ -259,21 +260,22 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                         valueKey={"propertyId"}
                         selectedValue={model.keyPropertyId}
                         disabled={!showAdditionalKeyField}
+                        helpTip={this.getHelpTipForAdditionalField()}
+                        clearable={false}
                     />
-
-                    <div className='margin-top'>
-
-                        <Checkbox
-                            checked={model.keyPropertyManaged}
-                            onChange={onCheckBoxChange}
-                            id={"keyPropertyManaged"}
-                            disabled={!showAdditionalKeyField}
-                        >
-                            Let server manage fields to make entries unique
-                        </Checkbox>
-
-                    </div>
                 </div>
+
+                <div className={keyPropertyManagedCls}>
+                    <Checkbox
+                        checked={model.keyPropertyManaged}
+                        onChange={onCheckBoxChange}
+                        id={"keyPropertyManaged"}
+                        disabled={!showAdditionalKeyField || !validKeyField}
+                    >
+                        Let server manage fields to make entries unique
+                    </Checkbox>
+                </div>
+
             </>
         );
     }

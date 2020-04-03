@@ -72,7 +72,7 @@ describe('Lineage Graph', () => {
 
             test('Test filtering in only type Data and generations=All', () => {
                 const visGraphOptions = ESLineage.generateGraph({
-                    filters: [new LineageFilter('type', 'Data')],
+                    filters: [new LineageFilter('type', ['Data'])],
                     filterIn: true,
                 });
                 expect(visGraphOptions.nodes.length).toBe(1);
@@ -88,7 +88,7 @@ describe('Lineage Graph', () => {
                 // the seed's relative to the 'top' nodes of the graph so the
                 // they become reachable again.
                 const visGraphOptions = ESLineage.generateGraph({
-                    filters: [new LineageFilter('type', 'Data')],
+                    filters: [new LineageFilter('type', ['Data'])],
                     filterIn: false,
                 });
                 expect(visGraphOptions.nodes.length).toBe(0);
@@ -96,7 +96,7 @@ describe('Lineage Graph', () => {
 
             test('Test Expression System lineage filtering in only type Sample with generations=Multi', () => {
                 const visGraphOptions = ESLineage.generateGraph({
-                    filters: [new LineageFilter('type', 'Sample')],
+                    filters: [new LineageFilter('type', ['Sample'])],
                     filterIn: true,
                     grouping: {generations: LINEAGE_GROUPING_GENERATIONS.Multi},
                 });
@@ -107,7 +107,7 @@ describe('Lineage Graph', () => {
 
             test('Test Sample Lineage filtering in only type Sample with generations=Multi', () => {
                 const visGraphOptions = sampleLineage.generateGraph({
-                    filters: [new LineageFilter('type', 'Sample')],
+                    filters: [new LineageFilter('type', ['Sample'])],
                     filterIn: true,
                     grouping: {generations: LINEAGE_GROUPING_GENERATIONS.Multi},
                 });

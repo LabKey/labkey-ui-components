@@ -2,23 +2,21 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { Component, PureComponent } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
+import { Alert, AppURL, getLocation, Grid, GridProps } from '../..';
 
 import { LineageGridModel } from './models';
-import { getLocation } from '../../util/URL';
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
+import { DEFAULT_LINEAGE_DISTANCE } from './constants';
+import { LINEAGE_DIRECTIONS } from './types';
 import { getPageNumberChangeURL } from './actions';
-import { AppURL } from '../../url/AppURL';
-import { Grid, GridProps } from '../base/Grid';
-import { Alert } from '../base/Alert';
 
 interface LineagePagingProps {
     model: LineageGridModel
 }
 
-export class LineagePaging extends React.Component<LineagePagingProps, any> {
+export class LineagePaging extends Component<LineagePagingProps> {
 
     shouldComponentUpdate(nextProps: LineagePagingProps) {
         const { model } = this.props;
@@ -75,7 +73,7 @@ interface LineageGridProps {
     model: LineageGridModel
 }
 
-class LineageButtons extends React.Component<LineageGridProps, any> {
+class LineageButtons extends PureComponent<LineageGridProps> {
 
     render() {
         const { model } = this.props;
@@ -121,7 +119,7 @@ class LineageButtons extends React.Component<LineageGridProps, any> {
     }
 }
 
-class LineageGridBar extends React.Component<LineageGridProps, any> {
+class LineageGridBar extends PureComponent<LineageGridProps> {
 
     render() {
         const { model } = this.props;
@@ -147,7 +145,7 @@ class LineageGridBar extends React.Component<LineageGridProps, any> {
     }
 }
 
-export class LineageGridDisplay extends React.Component<LineageGridProps, any> {
+export class LineageGridDisplay extends PureComponent<LineageGridProps> {
 
     getDataForPage(): List<Map<string, any>> {
         const { model } = this.props;

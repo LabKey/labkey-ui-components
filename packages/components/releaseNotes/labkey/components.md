@@ -1,9 +1,25 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.42.0
+### version 0.44.0
+*Released*: 3 April 2020
+* Item 6937: Lineage components updates
+    - See https://github.com/LabKey/labkey-ui-components/pull/205
+
+### version 0.43.0
+*Released*: 3 April 2020
+* Modify SearchPages for display of data classes and to allow more customization of how search result cards are displayed
+
+## version 0.42.1
 *Released*: 31 March 2020
+* Item 7031: Source aliasing
+    - Allow Source (Data Class) Alias to be defined separate from a SampleSet type Parent Alias
+    - Allow filtering of parent options (for example, only 'sources' type data classes will be included)
+
+### version 0.41.5
+*Released*: 1 April 2020
 * SiteUsersGridPanel and UserDetails panel prop to hide/show 'Reset Password' button (i.e. allowResetPassword)
+* NavigationBar optional property for an alternate url to go to after sign out
 
 ### version 0.41.3
 *Released*: 30 March 2020
@@ -19,7 +35,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 29 March 2020
 * Item 6862: Switch LineageNode to bind "id" instead of "rowId"
 
-### version 0.41.0
+## version 0.41.0
 *Released*: 27 March 2020
 * Item 7002: Refactor domain designer components to share more with base components
     - BasePropertiesPanel, SectionHeading, withDomainPropertiesPanelCollapse (instead of DomainPropertiesPanelContext)

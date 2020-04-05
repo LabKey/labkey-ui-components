@@ -188,6 +188,10 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         value = '';
                     }
 
+                    if (!value && col.jsonType === 'boolean') {
+                        value = false;
+                    }
+
                     if (col.inputRenderer) {
                         const renderer = resolveRenderer(col);
                         if (renderer) {

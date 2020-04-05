@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
-import { SCHEMAS } from './components/base/models/schemas';
+import {
+    SCHEMAS,
+    CBMB,
+    ASSAY_TABLES,
+    EXP_TABLES,
+    DATA_CLASSES,
+    SAMPLE_SETS,
+} from './components/base/models/schemas';
 import {
     fetchAllAssays,
     getUserProperties,
@@ -191,6 +198,7 @@ import { FieldEditForm, FieldEditProps } from './components/forms/input/FieldEdi
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
+import { resolveRenderer } from './components/forms/renderers';
 import { resolveDetailRenderer, titleRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
 import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
@@ -373,6 +381,7 @@ export {
     MultiValueRenderer,
     resolveDetailRenderer,
     titleRenderer,
+    resolveRenderer,
 
     // components
     LabelOverlay,
@@ -569,6 +578,11 @@ export {
     PermissionTypes,
     Persistence,
     SCHEMAS,
+    CBMB,
+    ASSAY_TABLES,
+    EXP_TABLES,
+    DATA_CLASSES,
+    SAMPLE_SETS,
     IGridLoader,
     IGridResponse,
     GridProps,

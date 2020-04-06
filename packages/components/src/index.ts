@@ -199,7 +199,7 @@ import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
 import { resolveRenderer } from './components/forms/renderers';
-import { resolveDetailRenderer, titleRenderer } from './components/forms/detail/DetailEditRenderer';
+import { resolveDetailRenderer, titleRenderer, resolveDetailEditRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
 import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
 import { ISelectInitData, IUser } from './components/forms/model';
@@ -379,6 +379,7 @@ export {
     DefaultRenderer,
     FileColumnRenderer,
     MultiValueRenderer,
+    resolveDetailEditRenderer,
     resolveDetailRenderer,
     titleRenderer,
     resolveRenderer,

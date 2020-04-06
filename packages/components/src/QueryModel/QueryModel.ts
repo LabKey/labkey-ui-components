@@ -55,8 +55,6 @@ export interface IQueryModel extends QueryConfig {
     error?: string;
     // Separate from baseFilters because these are set by the user when interacting with grids (e.g. via omnibox)
     filterArray: Filter.IFilter[];
-    // Set by client
-    message?: string;
     // Set by server (Assay QC, etc)
     messages: GridMessage[];
     queryInfo?: QueryInfo;
@@ -90,10 +88,9 @@ export class QueryModel implements IQueryModel {
     sorts?: QuerySort[];
 
     // QueryModel only fields
-    error: undefined;
+    error: string;
     filterArray: Filter.IFilter[];
     rowsLoadingState: LoadingState;
-    message?: string;
     messages: GridMessage[];
     orderedRows?: string[];
     queryInfo?: QueryInfo;
@@ -126,7 +123,6 @@ export class QueryModel implements IQueryModel {
         this.sorts = getOrDefault(queryConfig.sorts);
         this.error = undefined;
         this.filterArray = [];
-        this.message = undefined;
         this.messages = [];
         this.queryInfo = undefined;
         this.orderedRows = undefined;

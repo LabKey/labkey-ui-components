@@ -14,6 +14,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Remove Column class, replaced with GridColumn
     - GridColumn originally just extended Column but added no functionality.
     - Has no affect on exports since we only ever exported GridColumn.
+* Added a delay to mocks when running in Storybook
+* Emulate LabKey Server error messages for invalid schema/query names in getQueryDetails
 
 ### version 0.45.0
 *Released*: 6 April 2020

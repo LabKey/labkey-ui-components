@@ -187,6 +187,7 @@ import { DatePickerInput } from './components/forms/input/DatePickerInput';
 import { DateInput } from './components/forms/input/DateInput';
 import { FileInput } from './components/forms/input/FileInput';
 import { TextInput } from './components/forms/input/TextInput';
+import { TextAreaInput } from './components/forms/input/TextAreaInput';
 import { FieldEditForm, FieldEditProps } from './components/forms/input/FieldEditInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
@@ -394,6 +395,7 @@ export {
     DatePickerInput,
     DateInput,
     FileInput,
+    TextAreaInput,
     TextInput,
     FieldEditForm,
     FieldEditProps,

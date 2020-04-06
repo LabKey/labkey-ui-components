@@ -34,17 +34,21 @@ export class URLResolver {
         this.mappers = List<URLMapper>([
 
             new ActionMapper('experiment', 'showDataClass', (row, column) => {
-                let url = ['rd', 'dataclass'];
+                let identifier: string;
 
                 // TODO: Deal with junction lookup
-                if (column.has('lookup')) {
-                    url.push(row.get('displayValue').toString());
+                if (row.has('data')) {
+                    // search link doesn't use the same url
+                    identifier = row.getIn(['data', 'name']);
+                } else if (column.has('lookup')) {
+                    identifier = row.get('displayValue').toString();
                 }
                 else {
-                    url.push(row.get('value').toString());
+                    identifier = row.get('value').toString();
                 }
-
-                return AppURL.create(...url);
+                if (identifier !== undefined) {
+                    return AppURL.create('rd', 'dataclass', identifier);
+                }
             }),
 
 
@@ -345,7 +349,7 @@ export class URLResolver {
         ]);
     }
 
-    private mapURL(mapper: MapURLOptions): string {
+    private mapURL = (mapper: MapURLOptions): string => {
 
         let _url = this.mappers.toSeq()
             .map(m =>
@@ -354,7 +358,7 @@ export class URLResolver {
             .first();
 
         if (_url instanceof AppURL) {
-            return '#' + _url.toString();
+            return _url.toHref();
         }
 
         if (_url !== false && LABKEY.devMode) {
@@ -362,22 +366,23 @@ export class URLResolver {
         }
 
         return mapper.url;
-    }
+    };
 
-    public resolveLineageNodes(result: LineageResult, acceptedTypes: Array<string> = ['Sample', 'Data']) : LineageResult {
+    public resolveLineageNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
         let updatedNodes = result.nodes.map((node) => {
             if (acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
                 let parts = node.cpasType.split(':');
                 let name = parts[parts.length - 1];
 
-                // Lsid strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
+                // LSID strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
                 name = name.replace(/\+/g, ' ');
+
+                // Create a URL that will be resolved/redirected in the application resolvers
                 const listURLParts = node.type === 'Sample' ? ['samples', name] : ['rd', 'dataclass', name];
 
                 return node.merge({
-                    // listURL is the url to the grid for the data type.  It will be filtered to the rowIds of the lineage members
-                    // create a URL that will be resolved/redirected in the application resolvers
-                    listURL: AppURL.create(...listURLParts).toString(),
+                    // listURL is the url to the grid for the data type. It will be filtered to the lineage members.
+                    listURL: AppURL.create(...listURLParts).toHref(),
                     url: this.mapURL({
                         url: node.url,
                         row: node,
@@ -390,7 +395,7 @@ export class URLResolver {
             return node;
         });
         return result.set('nodes', updatedNodes) as LineageResult;
-    }
+    };
 
     /**
      * Returns a Promise resolving a valid selectRowsResult with URLs replaced with those mapped by this
@@ -474,6 +479,11 @@ export class URLResolver {
                         if (row.has('data') && row.hasIn(['data', 'dataClass'])) {
                             query = row.getIn(['data', 'dataClass', 'name']); // dataClass is nested Map/Object inside of 'data' return
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                            return row.set('url', this.mapURL({url, row, column, query}));
+                        }
+                        else if (id.indexOf('dataClass') >= 0) {
+                            query = row.getIn(['data', 'name']);
+                            url = url.substring(0, url.indexOf("&")); // URL includes documentID value, this will split off at the start of the docID
                             return row.set('url', this.mapURL({url, row, column, query}));
                         }
                         else if (id.indexOf('materialSource') >= 0 ) {

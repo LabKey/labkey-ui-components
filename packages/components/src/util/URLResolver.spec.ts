@@ -97,7 +97,7 @@ describe("resolveLineage", () => {
             }
         });
         const updatedResults = resolver.resolveLineageNodes(lineageResult);
-        expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4','listURL'])).toEqual("/rd/dataclass/source%201");
+        expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4','listURL'])).toEqual("#/rd/dataclass/source%201");
         expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4','url'])).toEqual("#/rd/expdata/6648");
     });
 
@@ -105,15 +105,11 @@ describe("resolveLineage", () => {
         const lineageResult = LineageResult.create(lineageJSON);
         const updatedResults = resolver.resolveLineageNodes(lineageResult);
         // test a sample type
-        expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201', 'listURL'])).toBe("/samples/expressionsystemsamples");
-        expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201', 'url'])).toBe("#/rd/samples/176708");
-
-        // test a data class type without an original url
-        expect(updatedResults.getIn(['nodes', "urn:lsid:labkey.com:Data.Folder-9273:a50adac7-a194-1037-a047-595602e5f80e", 'listURL'])).toBe("/rd/dataclass/expressionsystem");
-        expect(updatedResults.getIn(['nodes', "urn:lsid:labkey.com:Data.Folder-9273:a50adac7-a194-1037-a047-595602e5f80e", 'url'])).toBe(null); // original URL does not exist
+        expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3', 'listURL'])).toBe("#/samples/hemoglobin");
+        expect(updatedResults.getIn(['nodes', 'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3', 'url'])).toBe("#/rd/samples/6814");
 
         // TODO test that the run node doesn't show up
-        expect(updatedResults.getIn(['nodes', "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e", 'listURL'])).toBe(undefined);
-        expect(updatedResults.getIn(['nodes', "urn:lsid:labkey.com:Run.Folder-9273:a50adb68-a194-1037-a047-595602e5f80e", 'url'])).toBe("/labkey/BiologicsAssayTest%20Project/experiment-showRunGraph.view?rowId=18576");
+        expect(updatedResults.getIn(['nodes', "urn:lsid:labkey.com:Run.Folder-61:dbcee598-54f9-1038-9426-08c060dcd006", 'listURL'])).toBe(undefined);
+        expect(updatedResults.getIn(['nodes', "urn:lsid:labkey.com:Run.Folder-61:dbcee598-54f9-1038-9426-08c060dcd006", 'url'])).toBe("/labkey/ExampleLineage/experiment-showRunGraph.view?rowId=794");
     });
 });

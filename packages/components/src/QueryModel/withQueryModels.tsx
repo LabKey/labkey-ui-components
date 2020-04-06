@@ -9,6 +9,7 @@ export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean) => void;
     loadModel: (id: string) => void;
     loadAllModels: () => void;
+    loadRows: (id: string) => void;
     loadNextPage: (id: string) => void;
     loadPreviousPage: (id: string) => void;
     loadFirstPage: (id: string) => void;
@@ -68,6 +69,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                 addModel: this.addModel,
                 loadModel: this.loadModel,
                 loadAllModels: this.loadAllModels,
+                loadRows: this.loadRows,
                 loadNextPage: this.loadNextPage,
                 loadPreviousPage: this.loadPreviousPage,
                 loadFirstPage: this.loadFirstPage,

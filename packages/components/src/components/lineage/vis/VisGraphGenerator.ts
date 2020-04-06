@@ -3,12 +3,20 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable';
-import { Filter, Utils } from '@labkey/api';
-import { DataSet, Edge, Network, Node } from 'vis';
+import { Utils } from '@labkey/api';
+import { DataSet, Edge, Network, Node } from 'vis-network';
 
-import { ILineageGroupingOptions, LineageGroupingOptions, LineageLink, LineageNode, LineageResult } from '../models';
-import { getBackupImageFromLineageNode, getImageFromLineageNode } from '../utils';
-import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from '../constants';
+import { applyLineageOptions, LineageLink, LineageNode, LineageResult } from '../models';
+import { getImagesForNode } from '../utils';
+import {
+    LINEAGE_DIRECTIONS,
+    LINEAGE_GROUPING_GENERATIONS,
+    LineageGroupingOptions,
+    LineageOptions,
+} from '../types';
+import { getURLResolver } from '../LineageURLResolvers';
+
+export type VisGraphNodeType = VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode;
 
 export const DEFAULT_EDGE_PROPS = {
     arrows: {
@@ -53,7 +61,7 @@ export const DEFAULT_NODE_PROPS = {
     chosen: {
         node: function (values, id, selected, hovering) {
             if (selected || hovering) {
-                values.borderColor = '#FFA500'
+                values.borderColor = '#FFA500';
                 values.shadow = true;
             }
 
@@ -71,85 +79,72 @@ export const DEFAULT_NODE_PROPS = {
 
 // collection of lineage node, all of the same type
 export interface LineageNodeCollection {
-    displayType: string,
-    cpasType: string,
-    baseListURL: string,
-    listURL: string,
-    nodes: Array<LineageNode>
+    cpasType: string
+    displayType: string
+    listURL: string
+    nodes: LineageNode[]
 }
 
+export type LineageNodeCollectionByType = {[nodeType:string]: LineageNodeCollection};
+
 // group the array of nodes into collections by type
-export function createLineageNodeCollections(nodes: Array<LineageNode>): {[key:string]: LineageNodeCollection}  {
-    const nodesByType: {[key:string]: LineageNodeCollection} = {};
-    for (let i = 0; i < nodes.length; i++) {
-        let n = nodes[i];
-        let meta = n.meta;
-        if (!meta)
-            continue;
-        let displayType = meta.displayType;
-        let byTypeList = nodesByType[displayType];
-        if (!byTypeList) {
-            byTypeList = {
-                displayType,
-                cpasType: n.cpasType,
-                baseListURL: n.listURL,
-                listURL: undefined,
-                nodes: []
-            };
-            nodesByType[displayType] = byTypeList;
-        }
-        byTypeList.nodes.push(n);
-    }
+export function createLineageNodeCollections(nodes: LineageNode[], options?: LineageOptions): LineageNodeCollectionByType {
+    let nodesByType: LineageNodeCollectionByType = {};
+
+    nodes.filter(n => n.meta)
+        .forEach(n => {
+            const { displayType } = n.meta;
+            let byTypeList = nodesByType[displayType];
+            if (!byTypeList) {
+                byTypeList = {
+                    displayType,
+                    cpasType: n.cpasType,
+                    listURL: undefined,
+                    nodes: []
+                };
+                nodesByType[displayType] = byTypeList;
+            }
+            byTypeList.nodes.push(n);
+        });
 
     for (const groupName of Object.keys(nodesByType)) {
-        const group = nodesByType[groupName];
-        group.listURL = createNodeListURL(group.baseListURL, group.nodes);
+        let group = nodesByType[groupName];
+        group.listURL = getURLResolver(options).resolveGroupedNodes(group.nodes);
     }
 
     return nodesByType;
 }
-
-function createNodeListURL(listURL: string, nodes: Array<LineageNode>) {
-    const ids = nodes.map(n => n.rowId);
-
-    const filter = Filter.create('RowId', ids, Filter.Types.IN);
-    const suffix = '?' + filter.getURLParameterName() + '=' + filter.getURLParameterValue();
-
-    return listURL + suffix;
-}
-
 
 // extend Node to include the LabKey lineage node and the cluster id
 export interface VisGraphNode extends Node {
     id: string
     kind: 'node'
     lineageNode: LineageNode
-    cid: number
 }
 
 export interface VisGraphCombinedNode extends Node {
     id: string
     kind: 'combined'
     containedNodes: Array<LineageNode>
-    containedNodesByType: {[key:string]: LineageNodeCollection}
+    containedNodesByType: LineageNodeCollectionByType
 }
 
 // vis.js doesn't expose cluster nodes directly, so this is our shim
 export interface VisGraphClusterNode {
     kind: 'cluster'
     id: string | number
-    nodesInCluster: Array<VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode>
+    nodesInCluster: Array<VisGraphNodeType>
 }
 
-export function isBasicNode(item: VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode): item is VisGraphNode {
+export function isBasicNode(item: VisGraphNodeType): item is VisGraphNode {
     return item.kind === 'node';
 }
 
-export function isCombinedNode(item: VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode): item is VisGraphCombinedNode {
+export function isCombinedNode(item: VisGraphNodeType): item is VisGraphCombinedNode {
     return item.kind === 'combined';
 }
 
-export function isClusterNode(item: VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode): item is VisGraphClusterNode {
+export function isClusterNode(item: VisGraphNodeType): item is VisGraphClusterNode {
     return item.kind === 'cluster';
 }
 
@@ -173,18 +168,15 @@ export class VisGraphOptions extends Record({
     public getCombinedNodes(): Array<VisGraphCombinedNode> {
         return this.nodes.get({filter: isCombinedNode}) as Array<VisGraphCombinedNode>;
     }
-
 }
 
-export function generate(result: LineageResult, grouping?: ILineageGroupingOptions): VisGraphOptions {
+export function generate(result: LineageResult, options?: LineageOptions): VisGraphOptions {
     if (result === undefined)
         throw new Error("raw lineage result needed to create graph");
 
-    if (grouping === undefined)
-        grouping = new LineageGroupingOptions();
+    const _options = applyLineageOptions(options);
 
     const nodes = result.nodes;
-    const seedNode = nodes.get(result.seed);
 
     // The primary output of this function: the node objects to be consumed by vis.js
     // lsid -> VisGraphNode or VisGraphCombinedNode
@@ -204,10 +196,10 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
 
     result.mergedIn.forEach(startLsid => {
         // parents
-        processNodes(result.seed, startLsid, nodes, grouping, LINEAGE_DIRECTIONS.Parent, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
+        processNodes(result.seed, startLsid, nodes, _options, LINEAGE_DIRECTIONS.Parent, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
 
         // children
-        processNodes(result.seed, startLsid, nodes, grouping, LINEAGE_DIRECTIONS.Children, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
+        processNodes(result.seed, startLsid, nodes, _options, LINEAGE_DIRECTIONS.Children, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
     });
 
     return new VisGraphOptions({
@@ -238,7 +230,7 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
                 enabled: false
             },
 
-            nodes: DEFAULT_NODE_PROPS ,
+            nodes: DEFAULT_NODE_PROPS,
 
             edges: DEFAULT_EDGE_PROPS
         },
@@ -254,13 +246,13 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
  * either {@link VisGraphNode} or {@link VisGraphCombinedNode} objects.
  * These collections will be fed into the vis.js {@link Network} to perform the graph layout.
  *
- * If a node has an edge count greater than {@link ILineageGroupingOptions.combineSize},
+ * If a node has an edge count greater than {@link LineageGroupingOptions.combineSize},
  * a {@link VisGraphCombinedNode} node will be created to hold the collection of {@link LineageNode}
  * objects. We opted to create our own combined nodes rather than use vis.js's cluster node due
  * to vis.js performance issues when laying out large graph sizes with clustered nodes.
  *
- * The algoritm will stop traversing the graph when the conditions specified
- * by {@link ILineageGroupingOptions.generations} have been met.
+ * The algorithm will stop traversing the graph when the conditions specified
+ * by {@link LineageGroupingOptions.generations} have been met.
  *
  * The general approach is:
  *  starting from 'mergedIn' nodes (including the original seed)
@@ -279,7 +271,7 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
  *     - create edges from the node to all of edge targets
  */
 function processNodes(seed: string, startLisd: string, nodes: Map<string, LineageNode>,
-                      options: ILineageGroupingOptions, dir: LINEAGE_DIRECTIONS,
+                      options: LineageOptions, dir: LINEAGE_DIRECTIONS,
                       visEdges: { [p: string]: Edge },
                       visNodes: { [p: string]: VisGraphNode|VisGraphCombinedNode },
                       combinedNodes: {[key:string]: VisGraphCombinedNode},
@@ -293,7 +285,7 @@ function processNodes(seed: string, startLisd: string, nodes: Map<string, Lineag
 }
 
 function _processNodes(seed: string, lsid: string, nodes: Map<string, LineageNode>,
-                       options: ILineageGroupingOptions, dir: LINEAGE_DIRECTIONS,
+                       options: LineageOptions, dir: LINEAGE_DIRECTIONS,
                        visEdges: {[key:string]: Edge},
                        visNodes: {[key:string]: VisGraphNode|VisGraphCombinedNode},
                        combinedNodes: {[key:string]: VisGraphCombinedNode},
@@ -319,25 +311,27 @@ function _processNodes(seed: string, lsid: string, nodes: Map<string, LineageNod
     const currentNodeIsNotInCombinedNode = nodesInCombinedNode[lsid] === undefined;
     if (currentNodeIsNotInCombinedNode && visNodes[lsid] === undefined) {
         // console.log("  ".repeat(depth) + "created basic node");
-        visNodes[lsid] = createVisNode(node, lsid, lsid === seed, false);
+        visNodes[lsid] = createVisNode(node, lsid, lsid === seed);
     }
 
-    if (options) {
+    const { grouping } = options;
+
+    if (grouping) {
         // Nearest only examines the first parent and child generations (depth = 1) from seed
-        if (options.generations === LINEAGE_GROUPING_GENERATIONS.Nearest && depth + 1 > 1) {
+        if (grouping.generations === LINEAGE_GROUPING_GENERATIONS.Nearest && depth + 1 > 1) {
             // console.log("  ".repeat(depth) + "nearest. stop");
             return;
         }
 
         // Specific will examine parent and child generations to the depths specified from seed
-        if (options.generations === LINEAGE_GROUPING_GENERATIONS.Specific && depth + 1 > (dir === LINEAGE_DIRECTIONS.Parent ? options.parentDepth: options.childDepth) ) {
+        if (grouping.generations === LINEAGE_GROUPING_GENERATIONS.Specific && depth + 1 > (dir === LINEAGE_DIRECTIONS.Parent ? grouping.parentDepth: grouping.childDepth) ) {
             // console.log("  ".repeat(depth) + "specific depth. stop");
             return;
         }
 
         // Multi will stop when we hit a depth with multiple nodes.
         // NOTE: this checks the previous depth so any basic nodes at this depth will be created but it's edges won' be traversed.
-        if (options.generations === LINEAGE_GROUPING_GENERATIONS.Multi) {
+        if (grouping.generations === LINEAGE_GROUPING_GENERATIONS.Multi) {
             let currentDepthSize = 0;
             if (depth > 0 && depthSets.length >= depth)
                 currentDepthSize = Object.keys(depthSets[depth-1]).length;
@@ -370,10 +364,14 @@ function _processNodes(seed: string, lsid: string, nodes: Map<string, LineageNod
             }
         });
 
-        if (options.combineSize && edges.size >= options.combineSize) {
+        if (grouping.combineSize === 1) {
+            throw new Error('combineSize must be >1 or disabled (0 or undefined)');
+        }
+
+        if (grouping.combineSize && edges.size >= grouping.combineSize) {
             const containedNodes = edges.map(e => e.lsid).toArray();
             //console.log("  ".repeat(depth) + "creating combined node for: " + containedNodes);
-            const combinedNode = createCombinedVisNode(nodes, containedNodes, options.combineSize);
+            const combinedNode = createCombinedVisNode(nodes, containedNodes, options);
             visNodes[combinedNode.id] = combinedNode;
             combinedNodes[combinedNode.id] = combinedNode;
 
@@ -552,12 +550,10 @@ export function findConnectedNodes(visEdges: Array<Edge>, id: string, dir?: 'fro
 }
 
 
-function createVisNode(node, id, isSeed: boolean, isCombined): VisGraphNode {
+function createVisNode(node: LineageNode, id: string, isSeed: boolean): VisGraphNode {
 
     // show the alternate icon image color if this node is the seed or has been selected
-    let image = getImageFromLineageNode(node, isSeed, false);
-    let selectedImage = getImageFromLineageNode(node, isSeed, true);
-    let imageBackup = getBackupImageFromLineageNode(node, isSeed, false);
+    const { image, imageBackup, imageSelected, shape } = getImagesForNode(node, isSeed);
 
     return {
         kind: 'node',
@@ -567,11 +563,11 @@ function createVisNode(node, id, isSeed: boolean, isCombined): VisGraphNode {
         title: getLineageNodeTitle(node, true),
         image: {
             unselected: image,
-            selected: selectedImage
+            selected: imageSelected,
         },
         brokenImage: imageBackup,
-        shape: image ? 'circularImage' : 'text',
-        shadow: isSeed ? true : false,
+        shape,
+        shadow: isSeed === true,
         font: isSeed ? {
                 multi: 'html',
                 color: '#116596',  // this is the color of the fill from the _v1.svg images used as seed node images
@@ -587,24 +583,21 @@ function createVisNode(node, id, isSeed: boolean, isCombined): VisGraphNode {
             : {
                 align: 'left',
                 background: 'white'},
-        cid: undefined
     };
 }
 
-function createCombinedVisNode(nodes: Map<string, LineageNode>, containedNodeIds: Array<string>, combineSize: number): VisGraphCombinedNode {
-    const id = "combined:" + randId();
+function createCombinedVisNode(
+    nodes: Map<string, LineageNode>,
+    containedNodeIds: string[],
+    options: LineageOptions,
+): VisGraphCombinedNode {
+    const { combineSize } = options.grouping;
+    let typeLabel: string;
+    let commonNode: LineageNode;
 
-    let typeLabel = undefined;
-    let commonNode: LineageNode = undefined;
-    let containedNodes: Array<LineageNode> = [];
-
-    for (let i = 0; i < containedNodeIds.length; i++) {
-        let containedNode = nodes.get(containedNodeIds[i]);
-        containedNodes.push(containedNode);
-    }
-
-    const containedNodesByType = createLineageNodeCollections(containedNodes);
-    let types = Object.keys(containedNodesByType).sort();
+    const containedNodes = containedNodeIds.map(n => nodes.get(n));
+    const containedNodesByType = createLineageNodeCollections(containedNodes, options);
+    const types = Object.keys(containedNodesByType).sort();
     if (types.length === 1) {
         typeLabel = containedNodesByType[types[0]].displayType;
         commonNode = containedNodesByType[types[0]].nodes[0];
@@ -633,24 +626,21 @@ function createCombinedVisNode(nodes: Map<string, LineageNode>, containedNodeIds
 
     let clusterOptions: VisGraphCombinedNode = {
         kind: 'combined',
-        id,
+        id: 'combined:' + randId(),
         shape: 'dot',
         containedNodes,
         containedNodesByType,
         title,
         label: containedNodes.length + ' ' + typeLabel,
-    }
+    };
 
     if (commonNode) {
-        // show the alternate icon image color if this node is the seed or has been selected
-        let image = getImageFromLineageNode(commonNode, false, false);
-        let selectedImage = getImageFromLineageNode(commonNode, false, true);
-        let imageBackup = getBackupImageFromLineageNode(commonNode, false, false);
+        const { image, imageBackup, imageSelected, shape } = getImagesForNode(commonNode, false);
 
-        clusterOptions.shape = 'circularImage';
+        clusterOptions.shape = shape;
         clusterOptions.image = {
             unselected: image,
-            selected: selectedImage
+            selected: imageSelected
         };
         clusterOptions.brokenImage = imageBackup;
     }
@@ -660,11 +650,10 @@ function createCombinedVisNode(nodes: Map<string, LineageNode>, containedNodeIds
 
 // https://stackoverflow.com/a/13403498/351483
 // generate a random id like "ahl3dhtcxchvqbwyga2nhg"
-function randId() {
+function randId(): string {
     return Math.random().toString(36).substring(2, 15) +
            Math.random().toString(36).substring(2, 15);
 }
-
 
 export function getLineageNodeTitle(node: LineageNode, html: boolean): string {
     // encodeHtml if we are generating html for vis.js to use as the node's tooltip title

@@ -5,6 +5,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Bug fixes for ParentEntityEditPanel to better support editing of parent samples
 
+### version 0.44.0
+*Released*: 3 April 2020
+* Item 6937: Lineage components updates
+    - See https://github.com/LabKey/labkey-ui-components/pull/205
+
+### version 0.43.0
+*Released*: 3 April 2020
+* Modify SearchPages for display of data classes and to allow more customization of how search result cards are displayed
+
 ## version 0.42.1
 *Released*: 31 March 2020
 * Item 7031: Source aliasing
@@ -30,7 +39,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 29 March 2020
 * Item 6862: Switch LineageNode to bind "id" instead of "rowId"
 
-### version 0.41.0
+## version 0.41.0
 *Released*: 27 March 2020
 * Item 7002: Refactor domain designer components to share more with base components
     - BasePropertiesPanel, SectionHeading, withDomainPropertiesPanelCollapse (instead of DomainPropertiesPanelContext)

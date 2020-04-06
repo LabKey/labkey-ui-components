@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.42.2-fb-parentSampleEditing.1",
+  "version": "0.44.1-fb-parentSampleEditing.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -44,7 +44,7 @@
     "@fortawesome/free-regular-svg-icons": "5.11.2",
     "@fortawesome/free-solid-svg-icons": "5.9.0",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "@labkey/api": "0.0.41",
+    "@labkey/api": "0.0.45",
     "bootstrap": "3.4.1",
     "classnames": "2.2.6",
     "font-awesome": "4.7.0",
@@ -71,7 +71,7 @@
     "react-sticky": "6.0.3",
     "react-treebeard": "3.2.4",
     "reactn": "2.2.6",
-    "vis": "4.21.0"
+    "vis-network": "6.5.2"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -95,7 +95,6 @@
     "@types/react-router": "3.0.13",
     "@types/react-select": "1.0.57",
     "@types/react-test-renderer": "16.9.1",
-    "@types/vis": "4.21.16",
     "@typescript-eslint/eslint-plugin": "2.19.0",
     "@typescript-eslint/parser": "2.19.0",
     "babel-loader": "8.1.0",

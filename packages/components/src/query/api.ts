@@ -324,6 +324,10 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
 
         function doResolve() {
             if (hasDetails && hasResults) {
+                if (key !== result.key) {
+                    console.warn(`Mismatched keys between query and model results. query: "${key}", model: "${result.key}".`);
+                    key = result.key; // default to model key
+                }
                 resolve(Object.assign({}, {
                     key,
                     models: result.models,
@@ -468,6 +472,7 @@ function handle132Response(json): Promise<any> {
                 const messages = resolved.messages ? fromJS(resolved.messages) : List<Map<string, string>>();
 
                 resolve({
+                    key: modelKey,
                     messages,
                     models,
                     orderedModels,

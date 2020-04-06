@@ -81,14 +81,6 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             };
         }
 
-        setError = (id: string, error) => {
-            this.setState(produce((draft: State) => {
-                const model = draft.queryModels[id];
-                model.error = error.toString();
-                model.rowsLoadingState = LoadingState.LOADED;
-            }));
-        };
-
         loadRows = async (id: string) => {
             const { loadRows } = this.props.modelLoader;
 
@@ -110,9 +102,19 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     model.error = undefined;
                 }));
             } catch(error) {
-                const errorMessage = resolveErrorMessage(error);
-                console.error(`Error loading rows for model ${id}: `, errorMessage);
-                this.setError(id, errorMessage);
+                this.setState(produce((draft: State) => {
+                    const model = draft.queryModels[id];
+                    let err = resolveErrorMessage(error);
+
+                    if (err === undefined) {
+                        err = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;
+                    }
+
+                    console.error(`Error loading rows for model ${id}: `, err);
+
+                    model.rowsLoadingState = LoadingState.LOADED;
+                    model.error = err;
+                }));
             }
         };
 
@@ -132,9 +134,19 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     model.error = undefined;
                 }), () => this.maybeLoad(id, loadRows));
             } catch(error) {
-                const errorMessage = resolveErrorMessage(error);
-                console.error(`Error loading QueryInfo for model ${id}:`, errorMessage);
-                this.setError(id, errorMessage);
+                this.setState(produce((draft: State) => {
+                    const model = draft.queryModels[id];
+                    let err = resolveErrorMessage(error);
+
+                    if (err === undefined) {
+                        err = `Error while loading QueryInfo for SchemaQuery: ${model.schemaQuery.toString()}`;
+                    }
+
+                    console.error(`Error loading QueryInfo for model ${id}:`, err);
+
+                    model.queryInfoLoadingState = LoadingState.LOADED;
+                    model.error = err ;
+                }));
             }
         };
 

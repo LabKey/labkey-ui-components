@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.45.0
+*Released*: 6 April 2020
+* Item 6642: Initial dataset designer properties panel
+    - Top level dataset properties without the domain
+
 ### version 0.44.0
 *Released*: 3 April 2020
 * Item 6937: Lineage components updates

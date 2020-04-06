@@ -60,6 +60,7 @@ export const makeTestData = (getQueryResponse): Promise<RowsResponse> => {
  * @param queryInfo: The queryInfo you want to apply to a model. See makeQueryInfo above.
  * @param rows
  * @param orderedRows
+ * @param rowCount
  */
 export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, orderedRows?: any, rowCount?: number) => {
     const model = new QueryModel({
@@ -91,6 +92,7 @@ export const makeTestActions = (): Actions => {
         addModel: jest.fn(),
         loadModel: jest.fn(),
         loadAllModels: jest.fn(),
+        loadRows: jest.fn(),
         loadNextPage: jest.fn(),
         loadPreviousPage: jest.fn(),
         loadFirstPage: jest.fn(),

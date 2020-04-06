@@ -14,14 +14,7 @@
  * limitations under the License.
  */
 import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
-import {
-    SCHEMAS,
-    CBMB,
-    ASSAY_TABLES,
-    EXP_TABLES,
-    DATA_CLASSES,
-    SAMPLE_SETS,
-} from './components/base/models/schemas';
+import { SCHEMAS } from './components/base/models/schemas';
 import {
     fetchAllAssays,
     getUserProperties,
@@ -579,11 +572,6 @@ export {
     PermissionTypes,
     Persistence,
     SCHEMAS,
-    CBMB,
-    ASSAY_TABLES,
-    EXP_TABLES,
-    DATA_CLASSES,
-    SAMPLE_SETS,
     IGridLoader,
     IGridResponse,
     GridProps,

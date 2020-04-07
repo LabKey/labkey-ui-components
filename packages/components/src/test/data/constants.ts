@@ -117,6 +117,24 @@ export const DEFAULT_LIST_SETTINGS = {
     "fileAttachmentIndex" : false
 };
 
+export const NEW_DATASET_MODEL = {
+    "datasetId" : null,
+    "name" : null,
+    "typeURI" : null,
+    "category" : null,
+    "visitDatePropertyName" : null,
+    "keyProperty" : null,
+    "isDemographicData" : null,
+    "label" : null,
+    "cohortId" : null,
+    "tag" : null,
+    "showByDefault" : null,
+    "description" : null,
+    "sourceAssayName" : null,
+    "sourceAssayURL" : null,
+    "dataSharing" : null,
+};
+
 export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';
 export const SECURITY_ROLE_FOLDERADMIN = 'org.labkey.api.security.roles.FolderAdminRole';
 export const SECURITY_ROLE_EDITOR = 'org.labkey.api.security.roles.EditorRole';

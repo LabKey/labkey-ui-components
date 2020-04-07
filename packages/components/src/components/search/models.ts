@@ -45,3 +45,10 @@ export class SearchIdData {
     id: string;
     type: string;
 }
+
+export interface SearchResultCardData {
+    iconSrc?: string
+    altText?: string
+    title?: string
+    typeName?: string
+}

@@ -1,18 +1,29 @@
+.vis-network {
+  outline: none;
+}
 
 .show-on-hover {
   display: none;
 }
 
-.lineage-name:hover .show-on-hover {
-  display: initial;
-}
+.lineage-name {
+    h6 {
+        display: inline-block;
+    }
 
-.lineage-name:hover .hide-on-hover {
-  display: none;
-}
+    .pointer {
+        cursor: pointer;
+    }
 
-.lineage-name h6 {
-  display: inline-block;
+    &:hover {
+        .hide-on-hover {
+            display: none;
+        }
+
+        .show-on-hover {
+            display: initial;
+        }
+    }
 }
 
 .lineage-name-data {
@@ -20,8 +31,7 @@
 }
 
 .lineage-data-link-left {
-    padding-left: 1px;
-    padding-right: 1px;
+  padding: 0 1px;
 }
 
 .lineage-data-link--text {
@@ -32,8 +42,7 @@
 }
 
 .lineage-data-link-right {
-    padding-left: 5px;
-    padding-right: 5px;
+  padding: 0 5px;
 }
 
 .lineage-seed-info {
@@ -101,4 +110,10 @@
 .lineage-node-detail {
     display: inline-block;
     width: 100%;
+}
+
+.lineage-sm-icon {
+    height: 1.2em;
+    margin: 0.1em;
+    width: 1.2em;
 }

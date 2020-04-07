@@ -15,6 +15,9 @@ import { DomainFieldLabel } from "../domainproperties/DomainFieldLabel";
 interface IParentAliasRow {
     id: string
     parentAlias: IParentAlias
+    aliasCaption: string,
+    parentTypeCaption: string,
+    helpMsg: string
     parentOptions?: Array<IParentOption>
     onAliasChange: (id:string, alias:string, newValue: any) => void
     onRemove: (index: string) => void
@@ -24,6 +27,12 @@ interface IParentAliasRow {
 export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
 
     private nameInput: React.RefObject<FormControl>;
+
+    static defaultProps = {
+        aliasCaption: 'Parent Alias',
+        parentTypeCaption: 'parent type',
+        helpMsg: PARENT_ALIAS_HELPER_TEXT
+    };
 
     constructor(props) {
         super(props);
@@ -66,7 +75,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
     };
 
     render() {
-        const {id, parentAlias, parentOptions,} = this.props;
+        const { id, parentAlias, parentOptions, aliasCaption, parentTypeCaption, helpMsg } = this.props;
         if (!parentOptions)
             return null;
 
@@ -78,9 +87,9 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
             <Row key={id} >
                 <Col xs={2}>
                     <DomainFieldLabel
-                        label={'Parent Alias'}
+                        label={aliasCaption}
                         required={true}
-                        helpTipBody={() => PARENT_ALIAS_HELPER_TEXT}
+                        helpTipBody={() => helpMsg}
                     />
                 </Col>
                 <Col xs={3} className={classNames({'has-error': !ignoreAliasError && (aliasBlank || isDupe)})}>
@@ -88,7 +97,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         ref = {this.nameInput}
                         name={"alias"}
                         type="text"
-                        placeholder={'Enter an alias for import'}
+                        placeholder={`Enter a ${aliasCaption.toLowerCase()} for import`}
                         value={alias}
                         onChange={this.onChange}
                         onBlur={this.onAliasBlur}
@@ -101,7 +110,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         name={"parentValue"}
                         onChange={this.onSelectChange}
                         options={parentOptions}
-                        placeholder={'Select a sample type...'}
+                        placeholder={`Select a ${parentTypeCaption.toLowerCase()}...`}
                         value={parentValue ? parentValue.value : undefined }
                         onBlur={this.onSelectBlur}
                     />

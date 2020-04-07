@@ -14,136 +14,83 @@
  * limitations under the License.
  */
 import React from 'react';
-import { SCHEMAS } from '../base/models/schemas';
+import { Map } from 'immutable';
 import { SVGIcon } from '../base/SVGIcon';
+import { SearchResultCardData } from './models';
+import { getSearchResultCardData } from './actions';
+
 
 interface SearchResultProps {
     category?: string
     title: string
     summary: string
     url: string
-    data?: any
+    data?: Map<any, any>
     iconUrl?: string
-    useSampleType?: boolean  // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
+    getCardData?: (data: Map<any, any>, category?: string) => SearchResultCardData, // allows for customization of mappings from search results to icons, altText and titles.
 }
 
 export class SearchResultCard extends React.Component<SearchResultProps, any> {
 
-    resolveType() {
-        const { data } = this.props;
+    getCardData() : SearchResultCardData {
+        const { category, data, getCardData, title } = this.props;
 
-        let typeName;
-        if (data) {
-            if (data.getIn(['dataClass', 'name'])) {
-                typeName = data.getIn(['dataClass', 'name']);
-            }
-            else if (data.getIn(['sampleSet', 'name'])) {
-                typeName = data.getIn(['sampleSet', 'name']);
-            }
+        let cardData = getSearchResultCardData(data, category, title);
+        if (getCardData) {
+            cardData = {...cardData, ...getCardData(data, category)}
+        }
+        return cardData;
+    }
 
-            if (typeName) {
-                return (
-                    <div>
-                        <strong>Type: </strong>
-                        {typeName}
-                    </div>
-                )
-            }
+    renderType(cardData: SearchResultCardData) {
+
+        if (cardData.typeName) {
+            return (
+                <div>
+                    <strong>Type: </strong>
+                    {cardData.typeName}
+                </div>
+            )
         }
     }
 
-    resolveImage() {
-        const { category, data, iconUrl, useSampleType } = this.props;
+    renderImage(cardData: SearchResultCardData) {
+        const { iconUrl } = this.props;
 
         if (iconUrl) {
             return <img className="search-result__card-icon" src={iconUrl}/>
         }
 
-        let iconSrc = '';
-        let altText;
-        if (data) {
-            if (data.getIn(['dataClass', 'name'])) {
-                if ('sources' === data.getIn(['dataClass', 'category'])) //TODO make this more general
-                    iconSrc = 'sources';
-                else
-                    iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
-            }
-            else if (data.getIn(['sampleSet', 'name'])) {
-                const sampleSetName = data.getIn(['sampleSet', 'name']).toLowerCase();
+        const { iconSrc, altText }  = cardData;
 
-                switch (sampleSetName) {
-                    case SCHEMAS.SAMPLE_SETS.RAW_MATERIALS.queryName.toLowerCase():
-                        iconSrc = 'ingredients';
-                        break;
-                    case SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase():
-                        iconSrc = 'batch';
-                        break;
-                    default:
-                        iconSrc = 'samples';
-                        break;
-                }
-            }
-            else if (data.get('type') === 'sampleSet') {
-                iconSrc = 'sample_set';
-                altText = useSampleType ? 'sample_type-icon' : undefined;
-            }
-            else if (data.get('type')) {
-                iconSrc=data.get('type').toLowerCase();
-            }
-        }
-        if (!iconSrc && category) {
-            switch (category)
-            {
-                case 'workflowJob':
-                    iconSrc = 'workflow';
-                    break;
-                case 'material':
-                    iconSrc = 'samples';
-                    break;
-            }
-        }
-
-        return <SVGIcon
-            iconDir={'_images'}
-            iconSrc={iconSrc}
-            alt={altText}
-            className="search-result__card-icon"/>
+        return (
+            <SVGIcon
+                iconDir={'_images'}
+                iconSrc={iconSrc}
+                alt={altText}
+                className="search-result__card-icon"
+            />
+        )
     }
 
-    /**
-     * Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
-     */
-    resolveTitle = () => {
-        const {data, title, useSampleType} = this.props;
-        if (!data)
-            return title;
-
-        let titleText = title;
-        const type = data.get("type");
-        if (type && type === "sampleSet" && useSampleType)
-        {
-            const name = data.get("name");
-            titleText = "Sample Type - " + name;
-        }
-        return titleText;
-    };
-
     render () {
-        const { summary, url, } = this.props;
+        const { summary, url } = this.props;
+
+        const cardData = this.getCardData();
 
         return (
             <a href={url}>
                 <div className="row search-result__card-container">
                     <div className="col-md-2 hidden-sm hidden-xs search-result__card-icon__container">
-                        {this.resolveImage()}
+                        {this.renderImage(cardData)}
                     </div>
                     <div className="col-md-10 col-sm-12">
                         <div>
                             <h4 className="text-capitalize">
-                                {this.resolveTitle()}
+                                {cardData.title}
                             </h4>
                         </div>
-                        {this.resolveType()}
+                        {this.renderType(cardData)}
                         <div title={summary}>
                             <strong>Summary: </strong> {summary.length ? ( summary.length <= 35 ? summary : summary.substr(0, 35) + "..." ): 'No summary provided'}
                         </div>

@@ -2,13 +2,13 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'reactn';
+import React, { PureComponent } from 'react';
 import { List } from 'immutable';
+import { getLocation } from '../..';
 
 import { createGridModel, getLocationString, loadLineageIfNeeded } from './actions';
 import { LineageGridDisplay } from './LineageGridDisplay';
 import { Lineage, LineagePageModel } from './models';
-import { getLocation } from '../../util/URL';
 import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
 
@@ -20,10 +20,9 @@ interface State {
     model: LineagePageModel
 }
 
-export class LineageGrid extends React.Component<Props, State> {
+export class LineageGrid extends PureComponent<Props, State> {
 
     constructor(props: Props) {
-        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.state = {
@@ -31,7 +30,7 @@ export class LineageGrid extends React.Component<Props, State> {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.init();
     }
 
@@ -106,11 +105,6 @@ export class LineageGrid extends React.Component<Props, State> {
                 distance
             }) as LineagePageModel
         }));
-    }
-
-    getLineage(): Lineage {
-        // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid_lineageResults.get(this.getSeed());
     }
 
     render() {

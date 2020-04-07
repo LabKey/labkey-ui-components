@@ -199,7 +199,7 @@ import { ParentEntityEditPanel } from './components/entities/ParentEntityEditPan
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
-import { SearchResultsModel } from './components/search/models';
+import { SearchResultsModel,  SearchResultCardData } from './components/search/models';
 import { deleteSampleSet, fetchSamples, getSampleSet, getSampleTypeDetails, loadSelectedSamples } from './components/samples/actions';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './components/domainproperties/dataclasses/models';
@@ -231,8 +231,7 @@ import {
     uploadAssayRunFiles,
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
-import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants';
-import { LineageFilter } from './components/lineage/models';
+import { LineageFilter, LINEAGE_GROUPING_GENERATIONS, LineageURLResolvers } from './components/lineage/types';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
@@ -417,6 +416,7 @@ export {
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
+    SearchResultCardData,
 
     // assay
     AssayUploadResultModel,
@@ -479,6 +479,7 @@ export {
     LineageFilter,
     LineageGraph,
     LineageGrid,
+    LineageURLResolvers,
     SampleTypeLineageCounts,
     VisGraphNode,
     invalidateLineageResults,

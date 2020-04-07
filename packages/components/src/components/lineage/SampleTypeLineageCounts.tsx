@@ -2,29 +2,12 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { List } from 'immutable';
+import { Alert, Grid, GridColumn, LoadingSpinner } from '../..';
 
 import { loadSampleStatsIfNeeded } from './actions';
 import { Lineage } from './models';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Grid, GridColumn } from '../base/Grid';
-import { Alert } from '../base/Alert';
-
-const columns = List([
-    new GridColumn({
-        index: 'name',
-        title: 'Sample Type'
-    }),
-    new GridColumn({
-        index: 'sampleCount',
-        title: 'Number of Samples'
-    }),
-    new GridColumn({
-        index: 'modified',
-        title: 'Most Recent (Date)'
-    })
-]);
 
 interface Props {
     seed: string
@@ -34,7 +17,22 @@ interface State {
     lineage: Lineage
 }
 
-export class SampleTypeLineageCounts extends React.Component<Props, State> {
+export class SampleTypeLineageCounts extends PureComponent<Props, State> {
+
+    private columns = List([
+        new GridColumn({
+            index: 'name',
+            title: 'Sample Type'
+        }),
+        new GridColumn({
+            index: 'sampleCount',
+            title: 'Number of Samples'
+        }),
+        new GridColumn({
+            index: 'modified',
+            title: 'Most Recent (Date)'
+        })
+    ]);
 
     constructor(props: Props) {
         super(props);
@@ -73,7 +71,7 @@ export class SampleTypeLineageCounts extends React.Component<Props, State> {
         }
 
         return (
-            <Grid data={lineage.sampleStats} columns={columns}/>
+            <Grid data={lineage.sampleStats} columns={this.columns}/>
         )
     }
 }

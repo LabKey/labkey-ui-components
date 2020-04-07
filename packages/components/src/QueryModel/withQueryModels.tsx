@@ -166,7 +166,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
             }
         };
 
-        loadModel = async (id: string) => {
+        loadModel = (id: string) => {
             this.loadQueryInfo(id, true);
         };
 
@@ -205,7 +205,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
                 if (!model.isFirstPage) {
                     shouldLoad = true;
-                    model.offset = 0
+                    model.offset = 0;
                 }
             }), () => this.maybeLoad(id, shouldLoad));
         };
@@ -315,6 +315,10 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         }
     }
 
+    // If we override default props here then it compiles. If we define it above it does not compile. TypeScript cannot
+    // handle Partial<T & U> where T is a generic and U is known, even if you're only setting attributes from U. In this
+    // case defaultProps is Partial<Props & MakeQueryModels>.
+    // https://stackoverflow.com/questions/59279796/typescript-partial-of-a-generic-type
     ComponentWithQueryModels.defaultProps = {
         autoLoad: false,
         modelLoader: DefaultQueryModelLoader,

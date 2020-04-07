@@ -1,14 +1,14 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { SchemaQuery } from '..';
-import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
+import { mount } from 'enzyme';
+import { QueryInfo, SchemaQuery } from '..';
 import { LoadingState } from './QueryModel';
 import { PageSelector, PaginationButtons, PaginationInfo } from './Pagination';
-import { mount } from 'enzyme';
 import { copyTestModel, initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
+import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
-let QUERY_INFO;
+let QUERY_INFO: QueryInfo;
 
 beforeAll(() => {
     initUnitTests();

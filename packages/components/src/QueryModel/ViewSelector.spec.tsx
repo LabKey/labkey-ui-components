@@ -1,15 +1,15 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { SchemaQuery } from '..';
-import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
-import { initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
-import { ViewSelector } from './ViewSelector';
 import { mount } from 'enzyme';
+import { QueryInfo, SchemaQuery } from '..';
+import { ViewSelector } from './ViewSelector';
+import { initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
+import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
-let QUERY_INFO_NO_VIEWS;
-let QUERY_INFO_PUBLIC_VIEWS;
-let QUERY_INFO_PRIVATE_VIEWS;
+let QUERY_INFO_NO_VIEWS: QueryInfo;
+let QUERY_INFO_PUBLIC_VIEWS: QueryInfo;
+let QUERY_INFO_PRIVATE_VIEWS: QueryInfo;
 
 beforeAll(() => {
     initUnitTests();

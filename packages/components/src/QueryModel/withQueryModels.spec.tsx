@@ -1,8 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Actions, QueryModel, QueryModelMap, SchemaQuery, withQueryModels } from '..';
-import { initUnitTests, makeQueryInfo, makeTestData, sleep } from './testUtils';
+import { Actions, QueryInfo, QueryModel, QueryModelMap, SchemaQuery, withQueryModels } from '..';
 import { LoadingState } from './QueryModel';
+import { RowsResponse } from './QueryModelLoader';
+import { initUnitTests, makeQueryInfo, makeTestData, sleep } from './testUtils';
 import { MockQueryModelLoader } from '../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
@@ -10,11 +11,11 @@ import aminoAcidsQueryInfo from '../test/data/assayAminoAcidsData-getQueryDetail
 import aminoAcidsQuery from '../test/data/assayAminoAcidsData-getQuery.json';
 
 const MIXTURES_SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
-let MIXTURES_QUERY_INFO;
-let MIXTURES_DATA;
+let MIXTURES_QUERY_INFO: QueryInfo;
+let MIXTURES_DATA: RowsResponse;
 const AMINO_ACIDS_SCHEMA_QUERY = SchemaQuery.create('assay.General.Amino Acids', 'Runs');
-let AMINO_ACIDS_QUERY_INFO;
-let AMINO_ACIDS_DATA;
+let AMINO_ACIDS_QUERY_INFO: QueryInfo;
+let AMINO_ACIDS_DATA: RowsResponse;
 
 beforeAll(async () => {
     initUnitTests();

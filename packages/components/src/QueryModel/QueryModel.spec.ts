@@ -1,11 +1,11 @@
 import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
-import { SchemaQuery } from '..';
+import { QueryInfo, SchemaQuery } from '..';
 import { QuerySort } from '../components/base/models/model';
-import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import { initUnitTests, makeQueryInfo } from './testUtils';
+import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
-let QUERY_INFO;
+let QUERY_INFO: QueryInfo;
 const ROWS = {
     '0': {
         RowId: { value: 0 },

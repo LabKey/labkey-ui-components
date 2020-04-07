@@ -297,15 +297,6 @@ export class QueryModel implements IQueryModel {
     }
 
     /**
-     * Returns a shallow copy of this model.
-     */
-    copy(): QueryModel {
-        const newModel = new QueryModel({ id: this.id, schemaQuery: this.schemaQuery });
-        Object.assign(newModel, { ...this });
-        return newModel;
-    }
-
-    /**
      * Returns a deep copy of this model with props applied iff props is not empty/null/undefined else
      * returns this.
      * @param props

@@ -109,22 +109,6 @@ export const makeTestActions = (): Actions => {
 };
 
 /**
- * Copies a test model and applies any mutations you want to the copy, useful for when using mount() and simulating
- * changes to a model.
- * @param currentModel: QueryModel
- * @param changes: object containing the changes you want to make to a model.
- */
-export const copyTestModel = (currentModel: QueryModel, changes?: any) => {
-    const model = currentModel.copy();
-
-    if (changes) {
-        Object.assign(model, changes);
-    }
-
-    return model;
-};
-
-/**
  * Use this to sleep in the tests. If you make your test methods async you can use "await sleep();" to put your thread
  * to sleep temporarily which will allow async actions in your component to continue.
  * @param ms

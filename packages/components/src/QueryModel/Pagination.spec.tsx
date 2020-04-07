@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { Actions, QueryInfo, SchemaQuery } from '..';
 import { LoadingState, QueryModel } from './QueryModel';
 import { PageSelector, PaginationButtons, PaginationInfo } from './Pagination';
-import { copyTestModel, initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
+import { initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
@@ -118,7 +118,7 @@ describe('Pagination', () => {
         // Button is disabled (because we're on the first page) so the click handler is never called.
         expect(actions.loadPreviousPage).toHaveBeenCalledTimes(0);
 
-        model = copyTestModel(model, { offset: model.lastPageOffset });
+        model = model.mutate({ offset: model.lastPageOffset });
         wrapper.setProps({ model, actions });
         wrapper.find('PagingButton').first().simulate('click');
         expect(actions.loadPreviousPage).toHaveBeenCalledWith('model');
@@ -126,7 +126,7 @@ describe('Pagination', () => {
         // Button is disabled (because we're on the last page) so the click handler is never called.
         expect(actions.loadNextPage).toHaveBeenCalledTimes(0);
 
-        model = copyTestModel(model, { offset: 0 });
+        model = model.mutate({ offset: 0 });
         wrapper.setProps({ model, actions });
         wrapper.find('PagingButton').last().simulate('click');
         expect(actions.loadNextPage).toHaveBeenCalledWith('model');

@@ -57,12 +57,12 @@ import {
     updateSelections,
 } from './global';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
+import { QueryInfo } from './components/base/models/QueryInfo';
 import {
     AssayDefinitionModel,
     IGridResponse,
     QueryColumn,
     QueryGridModel,
-    QueryInfo,
     SchemaQuery,
     ViewInfo,
 } from './components/base/models/model';

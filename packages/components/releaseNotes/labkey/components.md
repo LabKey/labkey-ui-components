@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.4#.#
+*Released*: 7 April 2020
+* `@labkey/api` dependency update.
+
 ### version 0.46.0
 *Released*: 7 April 2020
 * Add QueryModel model to replace QueryGridModel

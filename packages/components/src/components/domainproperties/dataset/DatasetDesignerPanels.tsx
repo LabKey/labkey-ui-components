@@ -17,14 +17,22 @@
 import React from 'react';
 import {DatasetModel} from "./models";
 import {DatasetPropertiesPanel} from "./DatasetPropertiesPanel";
-import {InjectedBaseDomainDesignerProps, withBaseDomainDesigner} from "../BaseDomainDesigner";
+import {BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner} from "../BaseDomainDesigner";
+import {DomainDesign, IAppDomainHeader} from "../models";
+import {List} from "immutable";
+import {getDomainPanelStatus} from "../actions";
+import DomainForm from "../DomainForm";
+import {SetKeyFieldNamePanel} from "../list/SetKeyFieldNamePanel";
 
 interface Props {
     initModel?: DatasetModel;
     onChange?: (model: DatasetModel) => void
+    onCancel: () => void
     useTheme?: boolean;
     showDataSpace: boolean;
     showVisitDate: boolean;
+    saveBtnText?: string;
+    containerTop?: number // This sets the top of the sticky header, default is 0
 }
 
 interface State {
@@ -50,13 +58,53 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         });
     };
 
+    onFinish = () => {
+
+    };
+
+    onDomainChange = (domain: DomainDesign, dirty: boolean) => {
+        const { onChange } = this.props;
+
+        this.setState((state) => ({
+           model: state.model.merge({domain}) as DatasetModel
+        }), () => {
+            // Issue 39918: use the dirty property that DomainForm onChange passes
+            if (onChange && dirty) {
+                onChange(this.state.model);
+            }
+        });
+    };
+
     render() {
-        const { useTheme, onTogglePanel, showDataSpace, showVisitDate } = this.props;
+        const {
+            useTheme,
+            onTogglePanel,
+            showDataSpace,
+            showVisitDate,
+            visitedPanels,
+            submitting,
+            onCancel,
+            currentPanelIndex,
+            firstState,
+            validatePanel,
+            containerTop
+        } = this.props;
 
         const { model } = this.state;
 
         return (
-            <>
+            <BaseDomainDesigner
+                name={model.name}
+                exception={model.exception}
+                domains={List.of(model.domain)}
+                hasValidProperties={model.hasValidProperties()}
+                visitedPanels={visitedPanels}
+                submitting={submitting}
+                onCancel={onCancel}
+                onFinish={this.onFinish}
+                saveBtnText={""}
+                // successBsStyle={successBsStyle}
+            >
                 <DatasetPropertiesPanel
                     initCollapsed={false}
                     model={model}
@@ -69,7 +117,26 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     showDataspace={showDataSpace}
                     showVisitDate={showVisitDate}
                 />
-            </>
+                <DomainForm
+                    key={model.domain.domainId || 0}
+                    domainIndex={0}
+                    domain={model.domain}
+                    headerTitle={'Fields'}
+                    helpNoun={'list'}
+                    helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
+                    onChange={this.onDomainChange}
+                    // setFileImportData={this.setFileImportData}
+                    controlledCollapse={true}
+                    initCollapsed={currentPanelIndex !== 1}
+                    validate={validatePanel === 1}
+                    panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
+                    showInferFromFile={true}
+                    containerTop={containerTop}
+                    onToggle={(collapsed, callback) => {onTogglePanel(1, collapsed, callback);}}
+                    useTheme={useTheme}
+                    // successBsStyle={successBsStyle}
+                />
+            </BaseDomainDesigner>
         );
     };
 }

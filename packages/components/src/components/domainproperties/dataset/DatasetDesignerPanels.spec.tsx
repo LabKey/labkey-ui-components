@@ -33,6 +33,7 @@ describe("Dataset Designer", () => {
                 useTheme={true}
                 showDataSpace={true}
                 showVisitDate={true}
+                onCancel={jest.fn()}
             />;
 
         const dom = renderer.create(designerPanel).toJSON();
@@ -46,6 +47,7 @@ describe("Dataset Designer", () => {
                 useTheme={true}
                 showDataSpace={true}
                 showVisitDate={true}
+                onCancel={jest.fn()}
             />;
 
         const dom = renderer.create(designerPanel).toJSON();

@@ -29,6 +29,7 @@ export interface DatasetAdvancedSettingsForm {
 
 export class DatasetModel extends Record({
     domain: undefined,
+    exception: undefined,
     entityId : undefined,
     createdBy : undefined,
     created : undefined,
@@ -51,6 +52,7 @@ export class DatasetModel extends Record({
     dataSharing: undefined
 }) {
     domain: DomainDesign;
+    exception: string;
     datasetId?: number;
     entityId: string;
     name: string;

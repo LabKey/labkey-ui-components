@@ -5,5 +5,5 @@
  * @param defaultValue
  */
 export function getOrDefault(value, defaultValue?) {
-    return value !== undefined ? value : defaultValue;
+    return value ?? defaultValue;
 }

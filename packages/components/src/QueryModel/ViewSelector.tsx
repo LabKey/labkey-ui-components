@@ -12,7 +12,7 @@ export class ViewSelector extends PureComponent<ViewSelectorProps> {
     render() {
         const { model, actions, hideEmptyViewSelector } = this.props;
         const { isLoading, views, viewName } = model;
-        const activeViewName = viewName !== undefined ? viewName : ViewInfo.DEFAULT_NAME;
+        const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
         const validViews = views.filter((viewInfo) => viewInfo.name.indexOf('~~') !== 0);
         const publicViews = validViews.filter(view => !view.isDefault && view.shared);

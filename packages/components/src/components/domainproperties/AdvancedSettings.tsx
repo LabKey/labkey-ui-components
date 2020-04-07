@@ -141,7 +141,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         let fieldName = getNameFromId(evt.target.id);
 
         // Show in default view
-        if (fieldName === DOMAIN_FIELD_HIDDEN || fieldName === DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING) {
+        if (fieldName === DOMAIN_FIELD_HIDDEN) {
             value = !value;
         }
 

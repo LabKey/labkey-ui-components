@@ -52,18 +52,15 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         constructor(props: Props & MakeQueryModels) {
             super(props);
             const { queryConfigs } = props;
-
             const queryModels = Object.keys(props.queryConfigs).reduce((models, id) => {
-                const queryConfig = {id, ...queryConfigs[id]};
-                models[id] = new QueryModel(queryConfig);
+                // We expect the key value for each QueryConfig to be the id. If a user were to mistakenly set the id
+                // to something different on the QueryConfig then actions would break
+                // e.g. actions.loadNextPage(model.id) would not work.
+                models[id] = new QueryModel({ id, ...queryConfigs[id] });
                 return models;
             }, {});
 
-            const initialState: State = {
-                queryModels,
-            };
-
-            this.state = produce(initialState, () => {});
+            this.state = produce({ queryModels }, () => {});
 
             this.actions = {
                 addModel: this.addModel,

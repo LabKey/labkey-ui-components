@@ -58,12 +58,12 @@ describe('GridPanel', () => {
         expect(tree.toJSON()).toMatchSnapshot();
 
         // Has rows and QueryInfo, but new rows are loading, should render disabled pagination and loading spinner.
-        model.rowsLoadingState = LoadingState.LOADING;
+        model = model.mutate({ rowsLoadingState: LoadingState.LOADING });
         tree = renderer.create(<GridPanel actions={actions} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
         // Should render TestButtons component in the left part of the grid bar.
-        model.rowsLoadingState = LoadingState.LOADED;
+        model = model.mutate({ rowsLoadingState: LoadingState.LOADED });
         tree = renderer.create(<GridPanel actions={actions} model={model} ButtonsComponent={TestButtons} />);
         expect(tree.toJSON()).toMatchSnapshot();
 

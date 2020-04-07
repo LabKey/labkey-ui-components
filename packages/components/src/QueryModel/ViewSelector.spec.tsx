@@ -59,7 +59,9 @@ describe('ViewSelector', () => {
         expect(tree.toJSON()).toMatchSnapshot();
 
         // Same as previous, but the No Extra Column view is set to active.
-        model.schemaQuery = SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn');
+        model = model.mutate({
+            schemaQuery: SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn')
+        });
         tree = renderer.create(<ViewSelector hideEmptyViewSelector={true} model={model} actions={actions} />);
         expect(tree.toJSON()).toMatchSnapshot();
     });

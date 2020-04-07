@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import { immerable } from 'immer';
+import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
 import { naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
@@ -72,31 +72,31 @@ export class QueryModel implements IQueryModel {
     [immerable] = true;
 
     // Fields from QueryConfig
-    baseFilters: Filter.IFilter[];
-    containerFilter?: Query.ContainerFilter;
-    containerPath?: string;
-    id: string;
-    includeDetailsColumn: boolean;
-    includeUpdateColumn: boolean;
-    keyValue?: any; // TODO: better name
-    maxRows?: number;
-    offset: number;
-    omittedColumns: string[];
-    queryParameters?: { [key: string]: any};
-    requiredColumns: string[];
-    schemaQuery: SchemaQuery;
-    sorts?: QuerySort[];
+    readonly baseFilters: Filter.IFilter[];
+    readonly containerFilter?: Query.ContainerFilter;
+    readonly containerPath?: string;
+    readonly id: string;
+    readonly includeDetailsColumn: boolean;
+    readonly includeUpdateColumn: boolean;
+    readonly keyValue?: any; // TODO: better name
+    readonly maxRows?: number;
+    readonly offset: number;
+    readonly omittedColumns: string[];
+    readonly queryParameters?: { [key: string]: any};
+    readonly requiredColumns: string[];
+    readonly schemaQuery: SchemaQuery;
+    readonly sorts?: QuerySort[];
 
     // QueryModel only fields
-    error: string;
-    filterArray: Filter.IFilter[];
-    rowsLoadingState: LoadingState;
-    messages: GridMessage[];
-    orderedRows?: string[];
-    queryInfo?: QueryInfo;
-    queryInfoLoadingState: LoadingState;
-    rows?: { [key: string]: any};
-    rowCount?: number;
+    readonly error: string;
+    readonly filterArray: Filter.IFilter[];
+    readonly rowsLoadingState: LoadingState;
+    readonly messages: GridMessage[];
+    readonly orderedRows?: string[];
+    readonly queryInfo?: QueryInfo;
+    readonly queryInfoLoadingState: LoadingState;
+    readonly rows?: { [key: string]: any};
+    readonly rowCount?: number;
 
     constructor(queryConfig: QueryConfig) {
         this.baseFilters = getOrDefault(queryConfig.baseFilters, []);
@@ -303,5 +303,16 @@ export class QueryModel implements IQueryModel {
         const newModel = new QueryModel({ id: this.id, schemaQuery: this.schemaQuery });
         Object.assign(newModel, { ...this });
         return newModel;
+    }
+
+    /**
+     * Returns a deep copy of this model with props applied iff props is not empty/null/undefined else
+     * returns this.
+     * @param props
+     */
+    mutate(props: Partial<IQueryModel>): QueryModel {
+        return produce(this, (draft: Draft<QueryModel>) => {
+            Object.assign(draft, props);
+        });
     }
 }

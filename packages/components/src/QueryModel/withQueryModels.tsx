@@ -1,5 +1,5 @@
 import React, { ComponentType, PureComponent } from 'react';
-import produce from 'immer';
+import { Draft, produce } from 'immer';
 
 import { resolveErrorMessage, SchemaQuery } from '..';
 import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
@@ -84,7 +84,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         loadRows = async (id: string) => {
             const { loadRows } = this.props.modelLoader;
 
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 draft.queryModels[id].rowsLoadingState = LoadingState.LOADING;
             }));
 
@@ -92,7 +92,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                 const result = await loadRows(this.state.queryModels[id]);
                 const { messages, rows, orderedRows, rowCount } = result;
 
-                this.setState(produce((draft: State) => {
+                this.setState(produce((draft: Draft<State>) => {
                     const model = draft.queryModels[id];
                     model.messages = messages;
                     model.rows = rows;
@@ -102,7 +102,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
                     model.error = undefined;
                 }));
             } catch(error) {
-                this.setState(produce((draft: State) => {
+                this.setState(produce((draft: Draft<State>) => {
                     const model = draft.queryModels[id];
                     let err = resolveErrorMessage(error);
 
@@ -121,20 +121,20 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         loadQueryInfo = async (id: string, loadRows: boolean = false) => {
             const { loadQueryInfo } = this.props.modelLoader;
 
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 draft.queryModels[id].queryInfoLoadingState = LoadingState.LOADING;
             }));
 
             try {
                 const queryInfo = await loadQueryInfo(this.state.queryModels[id]);
-                this.setState(produce((draft: State) => {
+                this.setState(produce((draft: Draft<State>) => {
                     const model = draft.queryModels[id];
                     model.queryInfo = queryInfo;
                     model.queryInfoLoadingState = LoadingState.LOADED;
                     model.error = undefined;
                 }), () => this.maybeLoad(id, loadRows));
             } catch(error) {
-                this.setState(produce((draft: State) => {
+                this.setState(produce((draft: Draft<State>) => {
                     const model = draft.queryModels[id];
                     let err = resolveErrorMessage(error);
 
@@ -176,7 +176,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         loadNextPage = (id: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 const model = draft.queryModels[id];
 
                 if (!model.isLastPage) {
@@ -188,7 +188,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         loadPreviousPage = (id: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 const model = draft.queryModels[id];
 
                 if (!model.isFirstPage) {
@@ -200,7 +200,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         loadFirstPage = (id: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 const model = draft.queryModels[id];
 
                 if (!model.isFirstPage) {
@@ -212,7 +212,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         loadLastPage = (id: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 const model = draft.queryModels[id];
 
                 if (!model.isLastPage) {
@@ -224,7 +224,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         addModel = (queryConfig: QueryConfig, load: boolean = true) => {
             let id;
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 // Instantiate the model first because queryConfig.id is optional and is auto-generated in the
                 // QueryModel constructor if not set.
                 const queryModel = new QueryModel(queryConfig);
@@ -235,7 +235,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         setOffset = (id: string, offset: number) => {
             let shouldLoad = false;
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 const model = draft.queryModels[id];
 
                 if (model.offset !== offset) {
@@ -247,7 +247,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         setMaxRows = (id: string, maxRows: number) => {
             let shouldLoad = false;
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 const model = draft.queryModels[id];
 
                 if (model.maxRows !== maxRows) {
@@ -260,7 +260,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         setView = (id: string, viewName: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 const model = draft.queryModels[id];
 
                 if (model.viewName !== viewName) {
@@ -281,7 +281,7 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         setSchemaQuery = (id: string, schemaQuery: SchemaQuery) => {
             let shouldLoad = false;
-            this.setState(produce((draft: State) => {
+            this.setState(produce((draft: Draft<State>) => {
                 const model = draft.queryModels[id];
 
                 if (!model.schemaQuery.isEqual(schemaQuery)) {

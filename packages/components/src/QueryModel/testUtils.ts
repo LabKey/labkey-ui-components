@@ -63,21 +63,25 @@ export const makeTestData = (getQueryResponse): Promise<RowsResponse> => {
  * @param rowCount
  */
 export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, orderedRows?: any, rowCount?: number) => {
-    const model = new QueryModel({
+    let model = new QueryModel({
         id: 'model',
         schemaQuery: schemaQuery,
     });
 
     if (queryInfo) {
-        model.queryInfo = queryInfo;
-        model.queryInfoLoadingState = LoadingState.LOADED;
+        model = model.mutate({
+            queryInfo,
+            queryInfoLoadingState: LoadingState.LOADED,
+        });
     }
 
     if (rows) {
-        model.rows = rows;
-        model.orderedRows = orderedRows;
-        model.rowsLoadingState = LoadingState.LOADED;
-        model.rowCount = rowCount;
+        model = model.mutate({
+            orderedRows,
+            rowCount,
+            rows,
+            rowsLoadingState: LoadingState.LOADED,
+        });
     }
 
     return model;

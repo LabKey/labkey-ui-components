@@ -45,44 +45,49 @@ describe('QueryModel', () => {
     });
 
     test('isLoading', () => {
-        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
         expect(model.isLoading).toEqual(true);
-        model.queryInfoLoadingState = LoadingState.LOADING;
+        model = model.mutate({ queryInfoLoadingState: LoadingState.LOADING });
         expect(model.isLoading).toEqual(true);
-        model.queryInfoLoadingState = LoadingState.LOADED;
+        model = model.mutate({ queryInfoLoadingState: LoadingState.LOADED });
         expect(model.isLoading).toEqual(true);
-        model.rowsLoadingState = LoadingState.LOADING;
+        model = model.mutate({ rowsLoadingState: LoadingState.LOADING });
         expect(model.isLoading).toEqual(true);
-        model.rowsLoadingState = LoadingState.LOADED;
+        model = model.mutate({ rowsLoadingState: LoadingState.LOADED });
         expect(model.isLoading).toEqual(false);
     });
 
     test('Pagination', () => {
-        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
-        model.offset = 0;
-        model.rowCount = 661;
-        model.maxRows = 20;
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY }).mutate({
+            maxRows: 20,
+            offset: 0,
+            rowCount: 661,
+        });
         expect(model.isPaged).toEqual(false);
-        model.rows = {};
+
+        model = model.mutate({ rows: {} });
         expect(model.isPaged).toEqual(true);
         expect(model.pageCount).toEqual(34);
         expect(model.lastPageOffset).toEqual(660);
         expect(model.currentPage).toEqual(1);
         expect(model.isFirstPage).toEqual(true);
         expect(model.isLastPage).toEqual(false);
-        model.offset = 40;
+
+        model = model.mutate({ offset: 40 });
         expect(model.currentPage).toEqual(3);
         expect(model.isFirstPage).toEqual(false);
         expect(model.isLastPage).toEqual(false);
-        model.offset = 660;
+
+        model = model.mutate({ offset: 660 });
         expect(model.isFirstPage).toEqual(false);
         expect(model.isLastPage).toEqual(true);
     });
 
     test('Data', () => {
-        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
-        model.rows = ROWS;
-        model.orderedRows = ORDERED_ROWS;
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY }).mutate({
+            orderedRows: ORDERED_ROWS,
+            rows: ROWS,
+        });
         const gridData = model.gridData;
         expect(gridData.length).toEqual(2);
         expect(gridData[0]).toBe(ROWS['0']);
@@ -95,19 +100,19 @@ describe('QueryModel', () => {
             new QuerySort({fieldKey: 'RowId', dir: '-'}),
             new QuerySort({fieldKey: 'Data', dir: '+'}),
         ];
-        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, sorts: sorts});
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY, sorts: sorts});
         expect(() => model.sortString).toThrow('Cannot construct sort string, no QueryInfo available');
-        model.queryInfo = QUERY_INFO;
+        model = model.mutate({ queryInfo: QUERY_INFO });
         expect(model.sortString).toEqual('-RowId,Data');
     });
 
     test('Columns', () => {
         const cols = QUERY_INFO.columns;
-        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
         expect(() => model.columnString).toThrow('Cannot construct column string, no QueryInfo available');
-        model.queryInfo = QUERY_INFO;
+        model = model.mutate({ queryInfo: QUERY_INFO });
         expect(model.columnString).toEqual('RowId,Name,Flag,mixtureTypeId,expirationTime,extraTestColumn');
-        model.requiredColumns = ['Name'];
+        model = model.mutate({ requiredColumns: ['Name'] });
         expect(model.columnString).toEqual('Name,RowId,Flag,mixtureTypeId,expirationTime,extraTestColumn');
         expect(model.keyColumns).toEqual([cols.get('rowid')]);
         let expectedDisplayCols = [
@@ -120,7 +125,9 @@ describe('QueryModel', () => {
         expect(model.displayColumns).toEqual(expectedDisplayCols);
 
         // Change view to noExtraColumn which should change our expected columns.
-        model.schemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
+        model = model.mutate({
+            schemaQuery: SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn')
+        });
         expectedDisplayCols = [
             cols.get('name'),
             cols.get('flag'),

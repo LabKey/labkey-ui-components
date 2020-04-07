@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.45.1-fb-Issue40106
+*Released*: TBD April 2020
+* Issue 40106: Correcting booleans for properties' states in Advanced Settings dialog of Domain designer
+
 ### version 0.45.0
 *Released*: 6 April 2020
 * Item 6642: Initial dataset designer properties panel

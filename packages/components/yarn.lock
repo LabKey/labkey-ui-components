@@ -1545,10 +1545,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@labkey/api@0.1.1":
-  version "0.1.1"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.1.1.tgz#38a0451dbccf31e902a8d5bbada12af85b41cce0"
-  integrity sha1-OKBFHbzPMekCqNW7raEq+FtBzOA=
+"@labkey/api@0.1.2-fb-sampleTimelineAuditEvents.2":
+  version "0.1.2-fb-sampleTimelineAuditEvents.2"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.1.2-fb-sampleTimelineAuditEvents.2.tgz#ff8bbb56488dbbee6a963025b039e715f6700016"
+  integrity sha1-/4u7VkiNu+5qljAlsDnnFfZwABY=
 
 "@labkey/eslint-config-base@0.0.5":
   version "0.0.5"
@@ -11592,8 +11592,6 @@ supports-color@^5.3.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
   integrity sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==
-  dependencies:
-    has-flag "^3.0.0"
 
 supports-color@^7.1.0:
   version "7.1.0"

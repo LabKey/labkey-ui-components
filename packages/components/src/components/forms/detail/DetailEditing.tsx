@@ -17,7 +17,7 @@ import React from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import Formsy from 'formsy-react';
-import { Utils } from '@labkey/api';
+import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
 import { updateRows } from '../../../query/api';
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
@@ -39,6 +39,7 @@ interface DetailEditingProps {
     cancelText?: string,
     submitText?: string,
     onEditToggle?: (editing: boolean) => any
+    auditBehavior?: AuditBehaviorTypes
 }
 
 interface DetailEditingState {
@@ -165,7 +166,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     };
 
     handleSubmit = (values) => {
-        const { queryModel, onUpdate } = this.props;
+        const { auditBehavior, queryModel, onUpdate } = this.props;
         const queryData = queryModel.getRow();
         const queryInfo = queryModel.queryInfo;
         const schemaQuery = queryInfo.schemaQuery;
@@ -189,7 +190,8 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
 
             return updateRows({
                 schemaQuery,
-                rows: [updatedValues]
+                rows: [updatedValues],
+                auditBehavior
             }).then(() => {
                 this.setState(() => ({editing: false}));
                 if (Utils.isFunction(this.props.onEditToggle))

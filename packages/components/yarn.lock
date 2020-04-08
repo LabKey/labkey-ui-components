@@ -1299,29 +1299,6 @@
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.41.tgz#1ab0d7882504aaf243e522f97d08e5b7e5bfd088"
   integrity sha1-GrDXiCUEqvJD5SL5fQjlt+W/0Ig=
 
-"@labkey/eslint-config-base@0.0.6":
-  version "0.0.6"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-base/-/@labkey/eslint-config-base-0.0.6.tgz#ae9393a370819ba08fd92df493715ea49c45b872"
-  integrity sha1-rpOTo3CBm6CP2S30k3FepJxFuHI=
-  dependencies:
-    "@typescript-eslint/eslint-plugin" "2.24.0"
-    "@typescript-eslint/parser" "2.24.0"
-    eslint "6.8.0"
-    eslint-config-prettier "6.10.1"
-    eslint-plugin-import "2.20.1"
-    eslint-plugin-jest "23.8.2"
-    eslint-plugin-prettier "3.1.2"
-    prettier "2.0.1"
-    typescript "3.8.3"
-
-"@labkey/eslint-config-react@0.0.6":
-  version "0.0.6"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.6.tgz#677053126081a0bad284e39d2ba53a4b5dba0557"
-  integrity sha1-Z3BTEmCBoLrShOOdK6U6S126BVc=
-  dependencies:
-    "@labkey/eslint-config-base" "0.0.6"
-    eslint-plugin-react "7.19.0"
-
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"

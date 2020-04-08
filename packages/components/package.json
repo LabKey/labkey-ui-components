@@ -24,18 +24,12 @@
     "deploy:docs": "npm run build:docs && gh-pages -t -d ../../docs",
     "lint": "eslint --ext '*.ts,*.tsx'",
     "lint-fix": "eslint --fix --ext '*.ts,*.tsx'",
-    "lint-diff": "git add . && yarn lint-staged",
-    "lint-diff2": "yarn run lint git diff head --name-only"
+    "lint-diff": "git add . && yarn lint-staged"
   },
   "lint-staged": {
     "*.ts*": [
       "yarn run lint"
       ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "lint-staged"
-    }
   },
   "repository": {
     "type": "git",

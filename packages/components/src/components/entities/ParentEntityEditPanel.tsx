@@ -25,6 +25,7 @@ import { List } from 'immutable';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { DELIMITER } from '../forms/input/SelectInput';
+import { AuditBehaviorTypes } from '@labkey/api';
 
 interface Props {
     canUpdate: boolean
@@ -36,6 +37,7 @@ interface Props {
     title: string
     cancelText?: string
     submitText?: string
+    auditBehavior?: AuditBehaviorTypes
 }
 
 interface State {
@@ -156,7 +158,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
         this.setState(() => ({submitting: true}));
 
-        const { parentDataType, onUpdate } = this.props;
+        const { auditBehavior, parentDataType, onUpdate } = this.props;
         const { currentParents, originalParents } = this.state;
         const childModel = this.getChildModel();
 
@@ -165,7 +167,8 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
         return updateRows({
             schemaQuery,
-            rows: [getUpdatedRowForParentChanges(parentDataType, originalParents, currentParents, childModel)]
+            rows: [getUpdatedRowForParentChanges(parentDataType, originalParents, currentParents, childModel)],
+            auditBehavior
         }).then(() => {
             this.setState(() => ({
                 submitting: false,

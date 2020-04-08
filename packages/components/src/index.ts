@@ -21,6 +21,7 @@ import {
     importGeneralAssayRun,
     inferDomainFromFile,
 } from './components/base/actions';
+import { QueryInfo } from './components/base/models/QueryInfo';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -35,7 +36,6 @@ import {
     MessageLevel,
     QueryColumn,
     QueryGridModel,
-    QueryInfo,
     QueryInfoStatus,
     QueryLookup,
     SchemaDetails,
@@ -309,6 +309,19 @@ import { EntityDataType } from './components/entities/models';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
 import { SampleTypeModel } from "./components/domainproperties/samples/models";
 import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
+
+import { QueryModel } from './QueryModel/QueryModel';
+import { QueryModelLoader } from './QueryModel/QueryModelLoader';
+import {
+    withQueryModels,
+    MakeQueryModels,
+    InjectedQueryModels,
+    Actions,
+    QueryConfigMap,
+    QueryModelMap,
+    RequiresModelAndActions,
+} from './QueryModel/withQueryModels';
+import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 
 export {
     // global state functions
@@ -708,5 +721,18 @@ export {
     PermissionsProviderProps,
     SecurityPolicy,
     SecurityRole,
-    Principal
+    Principal,
+
+    // QueryModel
+    QueryModel,
+    QueryConfigMap,
+    QueryModelMap,
+    QueryModelLoader,
+    withQueryModels,
+    MakeQueryModels,
+    Actions,
+    RequiresModelAndActions,
+    InjectedQueryModels,
+    GridPanel,
+    GridPanelWithModel,
 }

@@ -17,7 +17,8 @@ import { List, Map } from 'immutable';
 
 import { AssayWizardModel } from '../../components/assay/models';
 import assayWizardJSON from './assayWizardModel.json';
-import { AssayDefinitionModel, AssayDomainTypes, QueryInfo } from '../../components/base/models/model';
+import { QueryInfo } from '../../components/base/models/QueryInfo';
+import { AssayDefinitionModel, AssayDomainTypes } from '../../components/base/models/model';
 import { IFile } from '../../components/files/models';
 
 export const GRID_DATA = Map<any, Map<string, any>>({
@@ -115,6 +116,24 @@ export const DEFAULT_LIST_SETTINGS = {
     "eachItemIndex" : false,
     "eachItemBodyTemplate" : null,
     "fileAttachmentIndex" : false
+};
+
+export const NEW_DATASET_MODEL = {
+    "datasetId" : null,
+    "name" : null,
+    "typeURI" : null,
+    "category" : null,
+    "visitDatePropertyName" : null,
+    "keyProperty" : null,
+    "isDemographicData" : null,
+    "label" : null,
+    "cohortId" : null,
+    "tag" : null,
+    "showByDefault" : null,
+    "description" : null,
+    "sourceAssayName" : null,
+    "sourceAssayURL" : null,
+    "dataSharing" : null,
 };
 
 export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';

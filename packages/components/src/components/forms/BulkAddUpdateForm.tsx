@@ -3,10 +3,10 @@ import { List } from 'immutable';
 
 import { QueryInfoForm } from './QueryInfoForm';
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
-import { QueryColumn, QueryGridModel, QueryInfo } from '../base/models/model';
+import { QueryInfo } from '../base/models/QueryInfo';
+import { QueryColumn, QueryGridModel } from '../base/models/model';
 import { getEditorModel } from "../../global";
 import { EditorModel } from "../../models";
-
 
 interface Props {
     selectedRowIndexes: List<number>

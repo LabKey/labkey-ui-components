@@ -6,8 +6,8 @@ import { getSelectedData } from '../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { QueryInfoForm } from './QueryInfoForm';
 import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
-import { QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
-
+import { QueryInfo } from '../base/models/QueryInfo';
+import { QueryGridModel, SchemaQuery } from '../base/models/model';
 
 interface Props {
     singularNoun?: string

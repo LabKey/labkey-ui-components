@@ -5,13 +5,13 @@ export function signOut(navigateUrl?: string) {
     const startUrl = buildURL('project', 'start', undefined, {returnURL: false});
 
     // for the redirectUrl to work in the case of CAS logout provider redirect, this URL needs to include the host (Issue 39803)
-    const returnUrl = ActionURL.getBaseURL(true) + navigateUrl || startUrl;
+    const returnUrl = ActionURL.getBaseURL(true) + (navigateUrl || startUrl);
 
     Ajax.request({
         url: buildURL('login', 'logoutAPI.api', undefined, {returnURL: returnUrl}),
         method: 'POST',
         success: Utils.getCallbackWrapper((response) => {
-            window.location.href = response.redirectUrl ? response.redirectUrl : returnUrl;
+            window.location.href = response.redirectUrl || returnUrl;
         }),
         failure: Utils.getCallbackWrapper((response) => {
             console.error(response);

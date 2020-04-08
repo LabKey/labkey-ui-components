@@ -24,7 +24,8 @@ import { selectRows } from '../../query/api';
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { QueryColumn, QueryInfo, SchemaQuery } from '../base/models/model';
+import { QueryInfo } from '../base/models/QueryInfo';
+import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { Tip } from '../base/Tip';
 
 addValidationRule('isPositiveLt', (vs, v, smax) => {

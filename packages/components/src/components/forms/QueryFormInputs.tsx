@@ -26,7 +26,8 @@ import { CheckboxInput } from './input/CheckboxInput';
 import { TextAreaInput } from './input/TextAreaInput';
 import { FileInput } from './input/FileInput';
 import { initLookup } from '../../actions';
-import { insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '../base/models/model';
+import { QueryInfo } from '../base/models/QueryInfo';
+import { insertColumnFilter, QueryColumn, SchemaQuery } from '../base/models/model';
 import { caseInsensitive } from '../../util/utils';
 import { DatePickerInput } from "./input/DatePickerInput";
 

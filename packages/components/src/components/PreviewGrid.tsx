@@ -1,7 +1,8 @@
 import React from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
-import { QueryInfo, SchemaQuery } from './base/models/model';
+import { SchemaQuery } from './base/models/model';
+import { QueryInfo } from './base/models/QueryInfo';
 import { LoadingSpinner } from './base/LoadingSpinner';
 import { Grid } from './base/Grid';
 import { getQueryDetails, selectRows } from '../query/api';

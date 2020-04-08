@@ -343,25 +343,20 @@ exports[`<QueryGridBar/> isPaged 1`] = `
         <div
           className="btn-group"
         >
-          <div
-            className="disabled-button-with-tooltip"
+          <button
+            className="disabled-button-with-tooltip btn btn-default"
+            disabled={true}
             onBlur={[Function]}
-            onClick={null}
+            onClick={[Function]}
             onFocus={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
+            type="button"
           >
-            <button
-              className="btn btn-default"
-              disabled={true}
-              onClick={[Function]}
-              type="button"
-            >
-              <i
-                className="fa fa-chevron-left"
-              />
-            </button>
-          </div>
+            <i
+              className="fa fa-chevron-left"
+            />
+          </button>
           <div
             className="dropdown btn-group"
           >

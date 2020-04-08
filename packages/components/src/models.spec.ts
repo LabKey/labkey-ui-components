@@ -18,7 +18,8 @@ import { resetQueryGridState } from './global';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 
 import sampleSet2QueryInfo from './test/data/sampleSet2-getQueryDetails.json';
-import { QueryGridModel, QueryInfo, SchemaQuery } from './components/base/models/model';
+import { QueryInfo } from './components/base/models/QueryInfo';
+import { QueryGridModel, SchemaQuery } from './components/base/models/model';
 
 const schemaQ = new SchemaQuery({
     schemaName: "samples",

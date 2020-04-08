@@ -6,7 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * SiteUsersGridPanel and UserDetails panel prop to hide/show 'Reset Password' button (i.e. allowResetPassword)
 
 ### version 0.41.6
-*Released*: TBD
+*Released*: 8 April 2020
 * Issue 39803: signOut action support for a redirectUrl in the response, for the CAS identity provider logout case
 
 ### version 0.41.3

@@ -33,14 +33,18 @@ import { DatePickerInput } from "./input/DatePickerInput";
 
 const LABEL_FIELD_SUFFIX = '::label';
 
-export function getLabelFieldName(name: string): string {
+export const getQueryFormLabelFieldName = function(name: string): string {
     return name + LABEL_FIELD_SUFFIX;
-}
+};
 
-export function getFieldEnabledFieldName(column: QueryColumn, fieldName?: string): string {
+export const isQueryFormLabelField = function(name: string): boolean {
+    return name.endsWith(LABEL_FIELD_SUFFIX);
+};
+
+export const getFieldEnabledFieldName = function(column: QueryColumn, fieldName?: string): string {
     const name = fieldName ? fieldName : (column ? column.fieldKey : 'unknownField');
     return name + "::enabled";
-}
+};
 
 interface QueryFormInputsProps {
     columnFilter?: (col?: QueryColumn) => boolean
@@ -99,7 +103,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         const cleanValues = {...fieldValues, ...customValues};
 
         return Object.keys(cleanValues)
-            .filter(fieldKey => !fieldKey.endsWith(LABEL_FIELD_SUFFIX))
+            .filter(fieldKey => !isQueryFormLabelField(fieldKey))
             .reduce((newFieldValues, fieldKey) => {
                 newFieldValues[fieldKey] = cleanValues[fieldKey];
                 return newFieldValues;
@@ -118,7 +122,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             this.setState({
                 labels: {
                     ...this.state.labels, ...{
-                        [getLabelFieldName(name)]: allItems.map(item => item ? item.label : '(label not found)').join(', ')
+                        [getQueryFormLabelFieldName(name)]: allItems.map(item => item ? item.label : '(label not found)').join(', ')
                     }
                 }
             });
@@ -133,7 +137,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         const { includeLabelField } = this.props;
 
         if (includeLabelField) {
-            const fieldName = getLabelFieldName(col.name);
+            const fieldName = getQueryFormLabelFieldName(col.name);
             return <Input name={fieldName} type="hidden" value={this.state.labels[fieldName]}/>
         }
 
@@ -183,6 +187,10 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
                     if (!value && col.jsonType === 'string') {
                         value = '';
+                    }
+
+                    if (!value && col.jsonType === 'boolean') {
+                        value = false;
                     }
 
                     if (col.inputRenderer) {

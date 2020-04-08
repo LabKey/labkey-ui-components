@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.48.0
+*Released*: 8 April 2020
+* Export DateInput, FileInput, TextInput and TextAreaInput
+* Export QueryFormInputs and associated helper functions
+* Export detail renderer helper functions
+* Export FieldEditInput form and props
+
 ### version 0.47.0
 *Released*: 7 April 2020
 * `@labkey/api` dependency update.

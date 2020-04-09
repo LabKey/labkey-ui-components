@@ -25,89 +25,77 @@ export class ViewAction implements Action {
     keyword = ViewAction.NAME;
     oneWordLabel = ViewAction.NAME;
     optionalLabel = 'name';
-    resolveColumns: () => Promise<List<QueryColumn>>;
-    resolveModel: () => Promise<QueryGridModel>;
+    model: QueryGridModel;
     singleton = true;
     urlPrefix: string;
 
-    constructor(resolveColumns: () => Promise<List<QueryColumn>>, urlPrefix: string, resolveModel: () => Promise<QueryGridModel>) {
-        this.resolveColumns = resolveColumns;
-        this.resolveModel = resolveModel;
+    constructor(urlPrefix: string, model: QueryGridModel) {
+        this.model = model;
         this.urlPrefix = urlPrefix;
     }
 
     completeAction(tokens: Array<string>): Promise<Value> {
-
         return new Promise((resolve) => {
+            const { queryInfo } = this.model;
+            let found = false;
+            const name = tokens.join(' ').toLowerCase();
 
-            return this.resolveModel().then((model) => {
-
-                const { queryInfo } = model;
-                let found = false;
-                const name = tokens.join(' ').toLowerCase();
-
-                queryInfo.views
-                    .filter((view) => (
-                        !view.isDefault &&
-                        view.name.indexOf('~~') !== 0 &&
-                        view.name.toLowerCase() === name
-                    ))
-                    .forEach((view) => {
-                        found = true;
-                        resolve({
-                            param: this.getParamPrefix() + '=' + view.name,
-                            value: view.name
-                        });
-                    });
-
-                if (!found) {
+            queryInfo.views
+                .filter((view) => (
+                    !view.isDefault &&
+                    view.name.indexOf('~~') !== 0 &&
+                    view.name.toLowerCase() === name
+                ))
+                .forEach((view) => {
+                    found = true;
                     resolve({
-                        isValid: false,
-                        value: name
+                        param: this.getParamPrefix() + '=' + view.name,
+                        value: view.name
                     });
-                }
-            });
+                });
+
+            if (!found) {
+                resolve({
+                    isValid: false,
+                    value: name
+                });
+            }
         });
     }
 
     fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
-
         return new Promise((resolve) => {
+            const { queryInfo } = this.model;
+            const name = tokens.join(' ').toLowerCase();
 
-            return this.resolveModel().then((model) => {
+            let views = queryInfo.views
+                .filter((view) => !view.isDefault && view.name.indexOf('~~') !== 0);
 
-                const { queryInfo } = model;
-                const name = tokens.join(' ').toLowerCase();
+            if (name) {
+                views = views.filter((view) => view.label.toLowerCase().indexOf(name) >= 0);
+            }
 
-                let views = queryInfo.views
-                    .filter((view) => !view.isDefault && view.name.indexOf('~~') !== 0);
+            const results: Array<ActionOption> = views.reduce((arr, view) => {
+                arr.push({
+                    appendValue: false,
+                    isComplete: true,
+                    label: view.label,
+                    selectable: true,
+                    value: view.name
+                });
+                return arr;
+            }, []);
 
-                if (name) {
-                    views = views.filter((view) => view.label.toLowerCase().indexOf(name) >= 0);
-                }
+            if (results.length === 0) {
+                results.push({
+                    label: '',
+                    nextLabel: 'no views available',
+                    selectable: false,
+                    value: undefined
+                });
+            }
 
-                const results: Array<ActionOption> = views.reduce((arr, view) => {
-                    arr.push({
-                        appendValue: false,
-                        isComplete: true,
-                        label: view.label,
-                        selectable: true,
-                        value: view.name
-                    });
-                    return arr;
-                }, []);
-
-                if (results.length === 0) {
-                    results.push({
-                        label: '',
-                        nextLabel: 'no views available',
-                        selectable: false,
-                        value: undefined
-                    });
-                }
-
-                resolve(results);
-            });
+            resolve(results);
         });
     }
 

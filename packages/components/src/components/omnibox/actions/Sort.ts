@@ -17,7 +17,7 @@ import { List } from 'immutable';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
 import { parseColumns } from './Filter';
-import { QueryColumn } from '../../base/models/model';
+import { QueryColumn, QueryGridModel } from '../../base/models/model';
 
 export class SortAction implements Action {
     iconCls = 'sort';
@@ -25,17 +25,17 @@ export class SortAction implements Action {
     keyword = 'sort';
     optionalLabel = 'columns';
     separator = ',';
-    resolveColumns: () => Promise<List<QueryColumn>> = undefined;
+    model: QueryGridModel;
 
-    constructor(resolveColumns, urlPrefix: string) {
-        this.resolveColumns = resolveColumns;
+    constructor(urlPrefix: string, model: QueryGridModel) {
+        this.model = model;
+
         if (urlPrefix) {
             this.param = [urlPrefix, this.param].join('.');
         }
     }
 
     static parseTokens(tokens: Array<string>, columns: List<QueryColumn>): {columnName: string, dir: string, column?: QueryColumn} {
-
         let options = {
             column: undefined,
             columnName: undefined,
@@ -62,84 +62,74 @@ export class SortAction implements Action {
     // e.g. inputValue - "Name ASC" or "Some/Column DESC"
     completeAction(tokens: Array<string>): Promise<Value> {
         return new Promise((resolve) => {
-
-            this.resolveColumns().then((columns: List<QueryColumn>) => {
-
-                const { column, columnName, dir } = SortAction.parseTokens(tokens, columns);
-
-                // here sort differs from filtering in that it does not resolve through lookups. So it may look like
-                // you want to sort on a columns display value but you're always sorting directly on that column.
-                const name = column ? column.name : columnName;
-
-                resolve({
-                    displayValue: column ? column.shortCaption : name,
-                    isValid: name ? true : false,
-                    param: dir ? (dir === 'DESC' ? '-' + name : name) : name,
-                    value: name + ' ' + (dir ? (dir === 'DESC' ? 'DESC' : 'ASC') : 'ASC')
-                });
+            const { column, columnName, dir } = SortAction.parseTokens(tokens, this.model.getDisplayColumns());
+            // here sort differs from filtering in that it does not resolve through lookups. So it may look like
+            // you want to sort on a columns display value but you're always sorting directly on that column.
+            const name = column ? column.name : columnName;
+            resolve({
+                displayValue: column ? column.shortCaption : name,
+                isValid: name ? true : false,
+                param: dir ? (dir === 'DESC' ? '-' + name : name) : name,
+                value: name + ' ' + (dir ? (dir === 'DESC' ? 'DESC' : 'ASC') : 'ASC')
             });
         });
     }
 
     fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
         return new Promise((resolve) => {
+            const columns = this.model.getDisplayColumns();
+            const options = SortAction.parseTokens(tokens, columns);
+            let results: Array<ActionOption> = [];
 
-            this.resolveColumns().then((columns: List<QueryColumn>) => {
+            // user has a chosen column
+            if (options.column) {
+                const ASC = {
+                    label: `"${options.column.shortCaption}" asc`,
+                    value: 'asc',
+                    isComplete: true
+                };
+                const DESC = {
+                    label: `"${options.column.shortCaption}" desc`,
+                    value: 'desc',
+                    isComplete: true
+                };
 
-                const options = SortAction.parseTokens(tokens, columns);
-
-                let results: Array<ActionOption> = [];
-
-                // user has a chosen column
-                if (options.column) {
-                    const ASC = {
-                        label: `"${options.column.shortCaption}" asc`,
-                        value: 'asc',
-                        isComplete: true
-                    };
-                    const DESC = {
-                        label: `"${options.column.shortCaption}" desc`,
-                        value: 'desc',
-                        isComplete: true
-                    };
-
-                    if (options.dir) {
-                        if (ASC.value.toLowerCase().indexOf(options.dir.toLowerCase()) == 0) {
-                            results.push(ASC);
-                        }
-                        else if (DESC.value.toLowerCase().indexOf(options.dir.toLowerCase()) == 0) {
-                            results.push(DESC);
-                        }
-                        else {
-                            // leave results empty
-                        }
-                    }
-                    else {
+                if (options.dir) {
+                    if (ASC.value.toLowerCase().indexOf(options.dir.toLowerCase()) == 0) {
                         results.push(ASC);
+                    }
+                    else if (DESC.value.toLowerCase().indexOf(options.dir.toLowerCase()) == 0) {
                         results.push(DESC);
                     }
-                }
-                else if (columns.size > 0) {
-                    let columnSet: List<QueryColumn>;
-
-                    if (options.columnName) {
-                        columnSet = columns.filter(c => c.name.toLowerCase().indexOf(options.columnName.toLowerCase()) === 0).toList();
-                    }
                     else {
-                        columnSet = columns.filter(c => c.sortable === true).toList();
+                        // leave results empty
                     }
+                }
+                else {
+                    results.push(ASC);
+                    results.push(DESC);
+                }
+            }
+            else if (columns.size > 0) {
+                let columnSet: List<QueryColumn>;
 
-                    columnSet.forEach((c) => {
-                        results.push({
-                            label: `"${c.shortCaption}" ...`,
-                            value: `"${c.shortCaption}"`,
-                            isComplete: false
-                        });
-                    });
+                if (options.columnName) {
+                    columnSet = columns.filter(c => c.name.toLowerCase().indexOf(options.columnName.toLowerCase()) === 0).toList();
+                }
+                else {
+                    columnSet = columns.filter(c => c.sortable === true).toList();
                 }
 
-                resolve(results);
-            });
+                columnSet.forEach((c) => {
+                    results.push({
+                        label: `"${c.shortCaption}" ...`,
+                        value: `"${c.shortCaption}"`,
+                        isComplete: false
+                    });
+                });
+            }
+
+            resolve(results);
         });
     }
 

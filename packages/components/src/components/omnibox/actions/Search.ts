@@ -26,7 +26,7 @@ export class SearchAction implements Action {
     oneWordLabel = 'search';
     optionalLabel = 'keywords';
 
-    constructor(resolveColumns, urlPrefix: string) {
+    constructor(urlPrefix: string) {
         if (urlPrefix !== undefined) {
             this.param = [urlPrefix, this.param].join('.');
         }

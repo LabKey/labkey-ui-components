@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { Actions, QueryInfo, QueryModel, QueryModelMap, SchemaQuery, withQueryModels } from '..';
 import { LoadingState } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
-import { initUnitTests, makeQueryInfo, makeTestData, sleep } from './testUtils';
+import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../testHelpers';
 import { MockQueryModelLoader } from '../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';

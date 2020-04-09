@@ -4,7 +4,8 @@ import { mount, render } from 'enzyme';
 import { Actions, QueryInfo, SchemaQuery } from '..';
 import { LoadingState, QueryModel } from './QueryModel';
 import { PageSizeSelector } from './PageSizeSelector';
-import { initUnitTests, makeQueryInfo, makeTestActions } from './testUtils';
+import { initUnitTests, makeQueryInfo } from '../testHelpers';
+import { makeTestActions } from './testUtils';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');

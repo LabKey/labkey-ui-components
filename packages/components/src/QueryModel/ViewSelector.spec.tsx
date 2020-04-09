@@ -3,7 +3,8 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { QueryInfo, SchemaQuery } from '..';
 import { ViewSelector } from './ViewSelector';
-import { initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
+import { initUnitTests, makeQueryInfo } from '../testHelpers';
+import { makeTestActions, makeTestModel } from './testUtils';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');

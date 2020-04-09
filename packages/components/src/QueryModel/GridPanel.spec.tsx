@@ -4,7 +4,8 @@ import { GridPanel, QueryInfo, SchemaQuery } from '..';
 import { RequiresModelAndActions } from './withQueryModels';
 import { LoadingState } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
-import { initUnitTests, makeQueryInfo, makeTestActions, makeTestData, makeTestModel } from './testUtils';
+import { initUnitTests, makeQueryInfo, makeTestData } from '../testHelpers';
+import { makeTestActions, makeTestModel } from './testUtils';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
 

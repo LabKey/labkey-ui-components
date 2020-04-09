@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 7124: Add helpTopic property with default value to DataClassDesigner
+
 ### version 0.48.0
 *Released*: 8 April 2020
 * Export DateInput, FileInput, TextInput and TextAreaInput

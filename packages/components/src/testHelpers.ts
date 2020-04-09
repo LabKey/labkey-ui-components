@@ -62,7 +62,9 @@ export const makeQueryInfo = (getQueryDetailsResponse): QueryInfo => {
  * @param getQueryResponse: getQuery Response object (e.g. imported from test/data/mixtures-getQuery.json)
  */
 export const makeTestData = (getQueryResponse): Promise<RowsResponse> => {
-    const response = new Query.Response(getQueryResponse);
+    // Hack: need to stringify and parse the query response object because Query.Response modifies the object in place,
+    // which causes errors if you try to use the same response object twice.
+    const response = new Query.Response(JSON.parse(JSON.stringify(getQueryResponse)));
     return handle132Response(response).then((resp) => {
         const { messages, models, orderedModels, rowCount } = resp;
         const key = Object.keys(models)[0];

@@ -467,6 +467,7 @@ export interface IQueryGridModel {
     loader?: IGridLoader
     maxRows?: number
     message?: string
+    messages?: List<Map<string, string>>
     offset?: number
     omittedColumns?: List<string>
     pageNumber?: number

@@ -22,7 +22,7 @@ import {DomainDesign, IAppDomainHeader} from "../models";
 import {List} from "immutable";
 import {getDomainPanelStatus} from "../actions";
 import DomainForm from "../DomainForm";
-import {SetKeyFieldNamePanel} from "../list/SetKeyFieldNamePanel";
+import {DatasetColumnMappingPanel} from "./DatasetColumnMappingPanel";
 
 interface Props {
     initModel?: DatasetModel;
@@ -37,6 +37,7 @@ interface Props {
 
 interface State {
     model: DatasetModel;
+    fileImportData: File;
 }
 
 export class DatasetDesignerPanelImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -44,7 +45,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         super(props);
 
         this.state = {
-            model: props.initModel || DatasetModel.create(null,{})
+            model: props.initModel || DatasetModel.create(null,{}),
+            fileImportData: undefined
         };
     }
 
@@ -75,6 +77,22 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         });
     };
 
+    setFileImportData = fileImportData => {
+        this.setState({ fileImportData });
+    };
+
+    datasetColumnMapping = () => {
+        const {model} = this.state;
+
+        return (
+            <DatasetColumnMappingPanel
+                model={model}
+                onModelChange={() => {}}
+            />
+        );
+
+    };
+
     render() {
         const {
             useTheme,
@@ -102,7 +120,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 submitting={submitting}
                 onCancel={onCancel}
                 onFinish={this.onFinish}
-                saveBtnText={""}
+                saveBtnText={"Save"}
                 // successBsStyle={successBsStyle}
             >
                 <DatasetPropertiesPanel
@@ -125,7 +143,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     helpNoun={'list'}
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
-                    // setFileImportData={this.setFileImportData}
+                    setFileImportData={this.setFileImportData}
                     controlledCollapse={true}
                     initCollapsed={currentPanelIndex !== 1}
                     validate={validatePanel === 1}
@@ -134,6 +152,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     containerTop={containerTop}
                     onToggle={(collapsed, callback) => {onTogglePanel(1, collapsed, callback);}}
                     useTheme={useTheme}
+                    renderDatasetColumnMapping={this.datasetColumnMapping}
                     // successBsStyle={successBsStyle}
                 />
             </BaseDomainDesigner>

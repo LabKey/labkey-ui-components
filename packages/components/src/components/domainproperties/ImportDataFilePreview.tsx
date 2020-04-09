@@ -75,6 +75,8 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
 
                 </div>
 
+                {this.props.children}
+
                 {importData && (
                     <div>
                         <FilePreviewGrid previewCount={4} data={data} header={null} />

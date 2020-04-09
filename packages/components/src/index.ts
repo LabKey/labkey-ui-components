@@ -276,6 +276,8 @@ import { AssayPropertiesPanel } from './components/domainproperties/assay/AssayP
 import { AssayDesignerPanels } from './components/domainproperties/assay/AssayDesignerPanels';
 import { ListDesignerPanels } from "./components/domainproperties/list/ListDesignerPanels";
 import { ListModel } from "./components/domainproperties/list/models";
+import { DatasetDesignerPanels} from "./components/domainproperties/dataset/DatasetDesignerPanels";
+import { DatasetModel} from "./components/domainproperties/dataset/models";
 import { fetchListDesign, getListProperties } from "./components/domainproperties/list/actions";
 import {
     DOMAIN_FIELD_REQUIRED,
@@ -447,6 +449,10 @@ export {
     ListModel,
     fetchListDesign,
     getListProperties,
+
+    //dataset
+    DatasetDesignerPanels,
+    DatasetModel,
 
     // forms
     handleInputTab,

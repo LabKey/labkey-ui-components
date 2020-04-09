@@ -61,6 +61,8 @@ import { Alert } from '../base/Alert';
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { CollapsiblePanelHeader } from "./CollapsiblePanelHeader";
 import { ImportDataFilePreview } from "./ImportDataFilePreview";
+import {SectionHeading} from "./SectionHeading";
+import {DomainFieldLabel} from "./DomainFieldLabel";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -89,6 +91,7 @@ interface IDomainFormInput {
     successBsStyle?: string
     setFileImportData?: (file: File) => any // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     domainFormDisplayOptions?: IDomainFormDisplayOptions
+    renderDatasetColumnMapping?: () => any
 }
 
 interface IDomainFormState {
@@ -738,6 +741,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return appDomainHeaderRenderer(config);
     };
 
+    renderDatasetColumMapping = () => {
+        const {renderDatasetColumnMapping} = this.props;
+
+        return renderDatasetColumnMapping();
+    };
+
     renderForm() {
         const { domain, helpNoun, containerTop, appDomainHeaderRenderer, appPropertiesOnly, showFilePropertyType, domainIndex, successBsStyle, domainFormDisplayOptions } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
@@ -805,7 +814,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     render() {
-        const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme, helpNoun, setFileImportData } = this.props;
+        const { children, domain, showHeader, collapsible, controlledCollapse, headerTitle, headerPrefix, panelStatus, useTheme, helpNoun, setFileImportData, renderDatasetColumnMapping } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails = domain.fields.size > 0 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined' : undefined;
@@ -843,7 +852,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 filePreviewData={filePreviewData}
                                 setFileImportData={setFileImportData}
                                 file={file}
-                            />
+                            >
+                                {
+                                    renderDatasetColumnMapping && this.renderDatasetColumMapping()
+                                }
+
+                            </ImportDataFilePreview>
+
                         }
                     </Panel.Body>
 

@@ -339,7 +339,7 @@ export function initMocks() {
         body: JSON.stringify(visualizationConfig),
     });
 
-    mock.post(/.*\/property\/inferDomain.*/, {
+    mock.post(/.*\/property\/?.*\/inferDomain.*/, {
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(inferDomainJson)

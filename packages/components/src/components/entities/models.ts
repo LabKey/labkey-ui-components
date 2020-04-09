@@ -21,7 +21,8 @@ import { getEditorModel } from '../../global';
 import { insertRows } from '../../query/api';
 import { gridShowError } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
-import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
+import { QueryInfo } from '../base/models/QueryInfo';
+import { QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
 import { capitalizeFirstChar, decodePart, encodePart, generateId } from '../../util/utils';
 import { IEntityDetails } from '../domainproperties/entities/models';
 
@@ -162,7 +163,7 @@ export interface EntityChoice {
     value: string // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
 }
 
-interface MaterialOutput {
+export interface MaterialOutput {
     created: any
     createdBy: string
     id: number

@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 import React from 'react';
-import { List, Map } from 'immutable';
 import { Checkbox, Input, Textarea } from 'formsy-react-components';
 
 import { LabelOverlay } from '../LabelOverlay';
 import { DateInput } from '../input/DateInput';
 import { DatePickerInput } from '../input/DatePickerInput';
 import { _defaultRenderer } from './Detail';
-import { resolveRenderer } from '../renderers';
+import {resolveDetailFieldValue, resolveRenderer} from '../renderers';
 import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
 import { AliasRenderer } from '../../../renderers/AliasRenderer';
 import { AppendUnits } from '../../../renderers/AppendUnits';
@@ -29,37 +28,6 @@ import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceR
 import { LookupSelectInput } from '../input/LookupSelectInput';
 import { QueryColumn } from '../../base/models/model';
 import { getUnFormattedNumber } from '../../../util/Date';
-
-function findValue(data: Map<string, any>, lookup?: boolean) {
-    return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')
-}
-
-function resolveDetailFieldValue(data: any, lookup?: boolean): string | Array<string> {
-    let value;
-
-    if (data) {
-        if (List.isList(data) && data.size) {
-            value = data.map(d => {
-                if (d.has('formattedValue')) {
-                    return d.get('formattedValue');
-                }
-
-                let o = findValue(d, lookup);
-                return o !== null && o !== undefined ? o : undefined;
-            }).toArray();
-        }
-        else if (data.has('formattedValue')) {
-            value = data.get('formattedValue');
-        }
-        else {
-            let o = findValue(data, lookup);
-            value = o !== null && o !== undefined ? o : undefined;
-        }
-    }
-
-    // avoid setting value to 'null' use 'undefined' instead
-    return value === null ? undefined : value;
-}
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     //If the column cannot be edited, return the label as is

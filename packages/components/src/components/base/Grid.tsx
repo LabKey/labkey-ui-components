@@ -19,7 +19,7 @@ import { fromJS, List, Map } from 'immutable';
 
 interface ColumnProps {
     align?: string
-    cell?: (data?: any, row?: any, col?: Column, rowNumber?: number, colNumber?: number) => any
+    cell?: (data?: any, row?: any, col?: GridColumn, rowNumber?: number, colNumber?: number) => any
     format?: string
     index: string
     showHeader?: boolean
@@ -29,9 +29,9 @@ interface ColumnProps {
     width?: any
 }
 
-class Column implements ColumnProps {
+export class GridColumn implements ColumnProps {
     align: string;
-    cell: (data?: any, row?: any, col?: Column, rowNumber?: number, colNumber?: number) => any;
+    cell: (data?: any, row?: any, col?: GridColumn, rowNumber?: number, colNumber?: number) => any;
     format: string;
     index: string;
     raw: any;
@@ -67,14 +67,7 @@ class Column implements ColumnProps {
     }
 }
 
-export class GridColumn extends Column {
-
-    constructor(config: ColumnProps) {
-        super(config);
-    }
-}
-
-const defaultCell = (d, row, col: Column) => {
+const defaultCell = (d, row, col: GridColumn) => {
     let display = null;
     if (d) {
         if (typeof(d) === 'string' || typeof(d) === 'number') {
@@ -101,7 +94,7 @@ const defaultCell = (d, row, col: Column) => {
     return display;
 };
 
-function processColumns(columns: List<any>): List<Column> {
+function processColumns(columns: List<any>): List<GridColumn> {
     return columns
         .map(c => {
             if (c instanceof GridColumn) {
@@ -140,11 +133,11 @@ function processData(data: GridData): List<Map<string, any>> {
     return List();
 }
 
-function resolveColumns(data: List<Map<string, any>>): List<Column> {
-    let columns = List<Column>().asMutable();
+function resolveColumns(data: List<Map<string, any>>): List<GridColumn> {
+    let columns = List<GridColumn>().asMutable();
     if (data.count() > 0) {
         data.get(0).map((value, title: string) => {
-            columns.push(new Column({index: title, title: title}));
+            columns.push(new GridColumn({index: title, title: title}));
         });
     }
 
@@ -154,15 +147,15 @@ function resolveColumns(data: List<Map<string, any>>): List<Column> {
 interface GridHeaderProps {
     calcWidths?: boolean
     headerCell?: any
-    onCellClick?: (column: Column) => any
-    columns: List<Column>
+    onCellClick?: (column: GridColumn) => any
+    columns: List<GridColumn>
     showHeader?: boolean
     transpose?: boolean
 }
 
 class GridHeader extends React.PureComponent<GridHeaderProps, any> {
 
-    _handleClick(column: Column, evt) {
+    _handleClick(column: GridColumn, evt) {
         evt.stopPropagation();
         if (this.props.onCellClick) {
             this.props.onCellClick(column);
@@ -180,7 +173,7 @@ class GridHeader extends React.PureComponent<GridHeaderProps, any> {
         return (
             <thead>
             <tr>
-                {columns.map((column: Column, i: number) => {
+                {columns.map((column: GridColumn, i: number) => {
                     let minWidth = column.width;
                     if (minWidth === undefined) {
                         minWidth = calcWidths && column.title ? 30 + (column.title.length * 8) : undefined;
@@ -232,7 +225,7 @@ class GridMessages extends React.PureComponent<GridMessagesProps, any> {
 interface GridBodyProps {
     data: List<Map<string, any>>
     highlightRowIndexes?: List<number>
-    columns: List<Column>
+    columns: List<GridColumn>
     emptyText: string
     isLoading: boolean
     loadingText: React.ReactNode
@@ -267,7 +260,7 @@ class GridBody extends React.PureComponent<GridBodyProps, any> {
         // "textAlign" property correctly for <td> elements.
         return (
             <tr key={key} className={classNames({'grid-row-highlight': highlight})}>
-                {columns.map((column: Column, c: number) => (
+                {columns.map((column: GridColumn, c: number) => (
                     column.tableCell ? column.cell(row.get(column.index), row, column, r, c) : (
                         <td key={column.index} style={{textAlign: column.align || 'left'} as any}>
                             {column.cell(row.get(column.index), row, column, r, c)}
@@ -283,7 +276,7 @@ class GridBody extends React.PureComponent<GridBodyProps, any> {
         let counter = 0;
         const key = rowKey ? row.get(rowKey) : r;
 
-        return columns.map((column: Column, c: number) => (
+        return columns.map((column: GridColumn, c: number) => (
             <tr key={[key, counter++].join('_')} style={c === 0 ? {backgroundColor: '#eee'} : undefined}>
                 <td>{column.title}</td>
                 <td>{column.cell(row.get(column.index), row, column, r, c)}</td>

@@ -17,7 +17,8 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 import { AssayDOM } from '@labkey/api';
 
 import { getEditorModel } from '../../global';
-import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, QueryInfo } from '../base/models/model';
+import { QueryInfo } from '../base/models/QueryInfo';
+import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel } from '../base/models/model';
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { generateNameWithTimestamp } from '../../util/Date';

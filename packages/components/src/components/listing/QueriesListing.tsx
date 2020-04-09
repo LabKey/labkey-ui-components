@@ -22,7 +22,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AppURL } from '../../url/AppURL';
 import { Grid, GridColumn } from '../base/Grid';
 import { fetchGetQueries } from '../base/models/schemas';
-import { QueryInfo } from '../base/models/model';
+import { QueryInfo } from '../base/models/QueryInfo';
 import { Alert } from "../base/Alert";
 
 const columns = List([

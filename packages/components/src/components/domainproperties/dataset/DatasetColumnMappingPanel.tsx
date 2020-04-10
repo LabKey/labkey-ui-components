@@ -30,6 +30,12 @@ interface Props {
 
 export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
 
+    compareNames(name1: string, name2: string) : boolean {
+        return name1 === name2 ||
+            name1.indexOf(name2) >= 0 ||
+            name2.indexOf(name1) >= 0
+    }
+
     areColumnNamesAndTypesEquivalent(targetColumnName: string, inferredField: DomainField): boolean {
         const { subjectColumnName, timepointType } = this.props;
 
@@ -37,30 +43,19 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
         const  inferredFieldName = inferredField.name.toLowerCase().replace(" ", "");
 
         if (targetColumnName === subjectColumnName) {
-            return (targetColumn === inferredFieldName ||
-                targetColumn.indexOf(inferredFieldName) >= 0 ||
-                inferredFieldName.indexOf(targetColumn) >= 0) &&
+            return this.compareNames(targetColumn, inferredFieldName) &&
                 inferredField.rangeURI === "xsd:string";
         }
         else if (targetColumnName == timepointType && timepointType === "DATE") {
-            const nameToFind = "visitdate";
-            return (nameToFind === inferredFieldName ||
-                nameToFind.indexOf(inferredFieldName) >= 0 ||
-                inferredFieldName.indexOf(nameToFind) >= 0) &&
+            return this.compareNames("visitdate", inferredFieldName) &&
                 inferredField.rangeURI === "xsd:datetime";
         }
         else if (targetColumnName == timepointType && timepointType === "VISIT") {
-            const nameToFind = "sequencenum";
-            return (nameToFind === inferredFieldName ||
-                nameToFind.indexOf(inferredFieldName) >= 0 ||
-                inferredFieldName.indexOf(nameToFind) >= 0) &&
+            return this.compareNames("sequencenum", inferredFieldName) &&
                 inferredField.rangeURI === "xsd:double";
         }
         else if (targetColumnName == timepointType) {
-            const nameToFind = "date";
-            return (nameToFind === inferredFieldName ||
-                nameToFind.indexOf(inferredFieldName) >= 0 ||
-                inferredFieldName.indexOf(nameToFind) >= 0) &&
+            return this.compareNames("date", inferredFieldName) &&
                 inferredField.rangeURI === "xsd:datetime";
         }
     }

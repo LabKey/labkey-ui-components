@@ -19,7 +19,15 @@ import { resetNotificationsState } from '../components/notifications/global';
 export function notificationInit()  {
     resetNotificationsState();
     LABKEY.moduleContext = {
-
+        study: {
+            subject: {
+                nounPlural: "Participants",
+                tableName: "Participant",
+                nounSingular: "Participant",
+                columnName: "ParticipantId"
+            },
+            timepointType: "VISIT"
+        }
     };
     LABKEY.container = {
         'formats': {dateTimeFormat: "yyyy-MM-dd HH:mm", numberFormat: null, dateFormat: "yyyy-MM-dd"}

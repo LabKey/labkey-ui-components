@@ -88,6 +88,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             <DatasetColumnMappingPanel
                 model={model}
                 onModelChange={() => {}}
+                subjectColumnName={LABKEY.moduleContext.study.subject.columnName}
+                timepointType={LABKEY.moduleContext.study.timepointType}
             />
         );
 

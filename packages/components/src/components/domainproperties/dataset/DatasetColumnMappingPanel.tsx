@@ -19,17 +19,74 @@ import React from "react";
 import {SectionHeading} from "../SectionHeading";
 import {Col, Row} from "react-bootstrap";
 import {DomainFieldLabel} from "../DomainFieldLabel";
-import {SelectInput} from "../../..";
+import {DomainField, SelectInput} from "../../..";
 
 interface Props {
     model: DatasetModel;
     onModelChange: (model: DatasetModel) => void;
+    subjectColumnName?: string;
+    timepointType?: string;
 }
 
 export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
+
+    areColumnNamesAndTypesEquivalent(targetColumnName: string, inferredField: DomainField): boolean {
+        const { subjectColumnName, timepointType } = this.props;
+
+        const targetColumn = targetColumnName.toLowerCase().replace(" ", "");
+        const  inferredFieldName = inferredField.name.toLowerCase().replace(" ", "");
+
+        if (targetColumnName === subjectColumnName) {
+            return (targetColumn === inferredFieldName ||
+                targetColumn.indexOf(inferredFieldName) >= 0 ||
+                inferredFieldName.indexOf(targetColumn) >= 0) &&
+                inferredField.rangeURI === "xsd:string";
+        }
+        else if (targetColumnName == timepointType && timepointType === "DATE") {
+            const nameToFind = "visitdate";
+            return (nameToFind === inferredFieldName ||
+                nameToFind.indexOf(inferredFieldName) >= 0 ||
+                inferredFieldName.indexOf(nameToFind) >= 0) &&
+                inferredField.rangeURI === "xsd:datetime";
+        }
+        else if (targetColumnName == timepointType && timepointType === "VISIT") {
+            const nameToFind = "sequencenum";
+            return (nameToFind === inferredFieldName ||
+                nameToFind.indexOf(inferredFieldName) >= 0 ||
+                inferredFieldName.indexOf(nameToFind) >= 0) &&
+                inferredField.rangeURI === "xsd:double";
+        }
+        else if (targetColumnName == timepointType) {
+            const nameToFind = "date";
+            return (nameToFind === inferredFieldName ||
+                nameToFind.indexOf(inferredFieldName) >= 0 ||
+                inferredFieldName.indexOf(nameToFind) >= 0) &&
+                inferredField.rangeURI === "xsd:datetime";
+        }
+    }
+
+    findClosestColumn(targetColumn: string): string {
+        const inferredColumns = this.props.model.domain.fields;
+
+        const matchedParticipantField = inferredColumns.find((field) => {
+            let matchingNames = false;
+
+            if (field.name && field.rangeURI) {
+                matchingNames = this.areColumnNamesAndTypesEquivalent(targetColumn, field);
+            }
+            return matchingNames;
+        });
+
+
+        return matchedParticipantField ? matchedParticipantField.name : undefined;
+    }
+
     render() {
-        const { model } = this.props;
+        const { model, subjectColumnName, timepointType } = this.props;
         const domain = model.domain;
+
+        const closestParticipantIdField = this.findClosestColumn(subjectColumnName);
+        const closestTimepointField = this.findClosestColumn(timepointType);
 
         return (
             <>
@@ -47,7 +104,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
                     <Col xs={5}>
                         <SelectInput
                             onChange={() => {}}
-                            // value={selectedValue}
+                            value={closestParticipantIdField}
                             options={domain.fields.toArray()}
                             inputClass=""
                             containerClass=""
@@ -56,8 +113,8 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
                             multiple={false}
                             required={false}
                             name={"participantIdField"}
-                            labelKey={"label"}
-                            valueKey={"propertyId"}
+                            labelKey={"name"}
+                            valueKey={"name"}
                             clearable={false}
                         />
                     </Col>
@@ -72,7 +129,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
                     <Col xs={5}>
                         <SelectInput
                             onChange={() => {}}
-                            // value={selectedValue}
+                            value={closestTimepointField}
                             options={domain.fields.toArray()}
                             inputClass=""
                             containerClass=""
@@ -81,8 +138,8 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
                             multiple={false}
                             required={false}
                             name={"timepointField"}
-                            labelKey={"label"}
-                            valueKey={"propertyId"}
+                            labelKey={"name"}
+                            valueKey={"name"}
                             clearable={false}
                         />
                     </Col>

@@ -6,7 +6,7 @@ import {IParentOption} from "../../entities/models";
 import {IParentAlias} from "./models";
 import {getFormNameFromId,} from "../entities/actions";
 import {Col, Row} from "react-bootstrap";
-import {AddEntityButton, generateId, helpLinkNode, SCHEMAS} from "../../..";
+import { AddEntityButton, generateId, getHelpLink, helpLinkNode, SCHEMAS } from "../../..";
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from "../../../constants";
 import { DERIVE_SAMPLES_ALIAS_TOPIC, DEFINE_SAMPLE_TYPE_TOPIC } from "../../../util/helpLinks";
 import {SampleSetParentAliasRow} from "../../samples/SampleSetParentAliasRow";
@@ -72,8 +72,8 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<Props & Injected
     static defaultProps = {
         nounSingular: SAMPLE_SET_DISPLAY_TEXT,
         nounPlural: SAMPLE_SET_DISPLAY_TEXT + 's',
-        nameExpressionInfoUrl: '',
-        nameExpressionPlaceholder: 'S-\${now:date}-\${dailySampleCount}',
+        nameExpressionInfoUrl: getHelpLink("sampleIDs"),
+        nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         appPropertiesOnly: false,
         helpTopic: DEFINE_SAMPLE_TYPE_TOPIC,
         sampleAliasCaption: 'Sample Alias',

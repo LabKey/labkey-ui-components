@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 6961: DataClassDesigner updates for LKS
+    - update fetchDataClass function to work for either a data class name or rowId
+    - add support for PermissionTypes.DesignDataClass
+    - DataClassPropertiesPanel and SampleTypePropertiesPanel default nameExpressionInfoUrl and nameExpressionPlaceholder properties
+    - SampleTypeDesigner change to default to "Infer from File" in empty fields state
+
 ### version 0.48.0
 *Released*: 8 April 2020
 * Export DateInput, FileInput, TextInput and TextAreaInput

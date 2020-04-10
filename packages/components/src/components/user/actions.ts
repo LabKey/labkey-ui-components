@@ -14,6 +14,9 @@ export function getUserPermissionsDisplay(user: User): Array<string> {
         permissions.push('Administrator');
     }
     else {
+        if (hasAllPermissions(user, [PermissionTypes.DesignDataClass])) {
+            permissions.push('Data Class Designer');
+        }
         if (hasAllPermissions(user, [PermissionTypes.DesignSampleSet])) {
             permissions.push('Sample Set Designer');
         }

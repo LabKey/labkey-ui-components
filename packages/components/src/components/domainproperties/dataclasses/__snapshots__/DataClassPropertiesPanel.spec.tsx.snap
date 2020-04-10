@@ -409,6 +409,7 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
             className="form-control"
             id="entity-nameExpression"
             onChange={[Function]}
+            placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
             type="text"
             value=""
           />

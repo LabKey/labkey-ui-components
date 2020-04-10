@@ -28,7 +28,7 @@ const DEFAULT_NAME_FIELD_CONFIG = {
 
 storiesOf('DataClassDesigner', module)
     .addDecorator(withKnobs)
-    .add('DataClassDesignerPanels - create', () => {
+    .add('for create', () => {
         return <DataClassDesigner
             onCancel={() => console.log('cancel')}
             onComplete={(model) => console.log('complete', model.toJS())}
@@ -42,7 +42,7 @@ storiesOf('DataClassDesigner', module)
             successBsStyle={text('successBsStyle', 'success')}
         />
     })
-    .add('DataClassDesignerPanels - update', () => {
+    .add('for update', () => {
         return <DataClassDesigner
             onCancel={() => console.log('cancel')}
             onComplete={(model) => console.log('complete', model.toJS())}

@@ -123,6 +123,7 @@ export const FOLDER_ADMIN = new User({
     permissionsList: List<String>([
         "org.labkey.api.security.permissions.DeletePermission",
         "org.labkey.api.security.permissions.ReadPermission",
+        "org.labkey.api.security.permissions.DesignDataClassPermission",
         "org.labkey.api.security.permissions.DesignSampleSetPermission",
         "org.labkey.api.assay.security.DesignAssayPermission",
         "org.labkey.api.security.permissions.InsertPermission",
@@ -149,6 +150,7 @@ export const APP_ADMIN = new User({
     permissionsList: List<String>([
         "org.labkey.api.security.permissions.DeletePermission",
         "org.labkey.api.security.permissions.ReadPermission",
+        "org.labkey.api.security.permissions.DesignDataClassPermission",
         "org.labkey.api.security.permissions.DesignSampleSetPermission",
         "org.labkey.api.assay.security.DesignAssayPermission",
         "org.labkey.api.security.permissions.InsertPermission",

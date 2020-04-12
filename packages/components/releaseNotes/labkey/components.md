@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.48.1
+*Released*: 12 April 2020
+* Issue 40106: Correcting booleans for properties' states in Advanced Settings dialog of Domain designer
+
 ### version 0.48.0
 *Released*: 8 April 2020
 * Export DateInput, FileInput, TextInput and TextAreaInput

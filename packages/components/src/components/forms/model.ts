@@ -20,7 +20,8 @@ import { Filter } from '@labkey/api';
 import { ISelectRowsResult } from '../../query/api';
 import { DELIMITER } from './input/SelectInput';
 import * as actions from './actions';
-import { QueryInfo, SchemaQuery } from '../base/models/model';
+import { QueryInfo } from '../base/models/QueryInfo';
+import { SchemaQuery } from '../base/models/model';
 
 export interface QuerySelectModelProps {
     allResults: Map<string, Map<string, any>>

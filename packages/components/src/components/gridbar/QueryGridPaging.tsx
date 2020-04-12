@@ -87,9 +87,13 @@ export class QueryGridPaging extends React.Component<Props, any> {
                     </span> : null}
                 {showButtons ? (
                     <div className="btn-group">
-                        <PagingButton disabled={currentPage <= 1} tooltip={'Previous Page'} onClick={this.prevPage}>
-                            <i className={'fa fa-chevron-left'}/>
-                        </PagingButton>
+                        <PagingButton
+                            disabled={currentPage <= 1}
+                            tooltip="Previous Page"
+                            onClick={this.prevPage}
+                            iconClass="fa-chevron-left"
+                        />
+
                         <Tip caption="Current Page" trigger={['hover']}>
                             <DropdownButton
                                 id={`current-page-drop-${model.getId()}`}
@@ -114,9 +118,13 @@ export class QueryGridPaging extends React.Component<Props, any> {
                                 <MenuItem header>{lastPageNumber} Total Pages</MenuItem>
                             </DropdownButton>
                         </Tip>
-                        <PagingButton disabled={max === total} tooltip={'Next Page'} onClick={this.nextPage}>
-                            <i className={'fa fa-chevron-right'}/>
-                        </PagingButton>
+
+                        <PagingButton
+                            disabled={max === total}
+                            tooltip="Next Page"
+                            onClick={this.nextPage}
+                            iconClass="fa-chevron-right"
+                        />
                     </div>
                 ) : null}
             </>
@@ -125,44 +133,23 @@ export class QueryGridPaging extends React.Component<Props, any> {
 }
 
 interface PagingButtonProps {
-    disabled?: boolean
-    btnCls?: string
-    tooltip?: string
-    onClick?: () => any
+    disabled: boolean;
+    iconClass: string;
+    tooltip: string;
+    onClick: () => any;
 }
 
-export class PagingButton extends React.PureComponent<PagingButtonProps, any> {
-
-    static defaultProps = {
-        disabled: false,
-        btnCls: ''
-    };
-
+export class PagingButton extends React.PureComponent<PagingButtonProps> {
     render() {
-        const { children, disabled, btnCls, tooltip, onClick } = this.props;
+        const { disabled, iconClass, tooltip, onClick } = this.props;
+        const className = disabled ? 'disabled-button-with-tooltip' : '';
 
-        let btn = (
-            <Button onClick={onClick} disabled={disabled} className={btnCls}>
-                {children}
-            </Button>
+        return (
+            <Tip caption={tooltip}>
+                <Button onClick={onClick} disabled={disabled} className={className}>
+                    <i className={`fa ${iconClass}`}/>
+                </Button>
+            </Tip>
         );
-
-        if (disabled && tooltip) {
-            btn = (
-                <div className={'disabled-button-with-tooltip'}>
-                    {btn}
-                </div>
-            );
-        }
-
-        if (tooltip) {
-            return (
-                <Tip caption={tooltip}>
-                    {btn}
-                </Tip>
-            )
-        }
-
-        return btn;
     }
 }

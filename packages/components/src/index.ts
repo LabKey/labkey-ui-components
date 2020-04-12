@@ -21,6 +21,7 @@ import {
     importGeneralAssayRun,
     inferDomainFromFile,
 } from './components/base/actions';
+import { QueryInfo } from './components/base/models/QueryInfo';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -35,7 +36,6 @@ import {
     MessageLevel,
     QueryColumn,
     QueryGridModel,
-    QueryInfo,
     QueryInfoStatus,
     QueryLookup,
     SchemaDetails,
@@ -179,13 +179,21 @@ import { MultiValueRenderer } from './renderers/MultiValueRenderer';
 import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
+import { resolveDetailFieldValue } from './components/forms/renderers';
+import { QueryFormInputs, getQueryFormLabelFieldName, isQueryFormLabelField } from './components/forms/QueryFormInputs';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput, SelectInputProps } from './components/forms/input/SelectInput';
 import { DatePickerInput } from './components/forms/input/DatePickerInput';
+import { DateInput } from './components/forms/input/DateInput';
+import { FileInput } from './components/forms/input/FileInput';
+import { TextInput } from './components/forms/input/TextInput';
+import { TextAreaInput } from './components/forms/input/TextAreaInput';
+import { FieldEditForm, FieldEditProps } from './components/forms/input/FieldEditInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
-import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer';
+import { resolveRenderer } from './components/forms/renderers';
+import { resolveDetailRenderer, titleRenderer, resolveDetailEditRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
 import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
 import { ISelectInitData, IUser } from './components/forms/model';
@@ -196,6 +204,14 @@ import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
 import { ParentEntityEditPanel } from './components/entities/ParentEntityEditPanel';
+import {
+    IParentOption,
+    EntityInputProps,
+    IDerivePayload,
+    IEntityTypeOption,
+    MaterialOutput,
+    GenerateEntityResponse,
+} from './components/entities/models';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
@@ -288,11 +304,24 @@ import { PermissionAssignments } from './components/permissions/PermissionAssign
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './components/permissions/models';
 import { fetchContainerSecurityPolicy } from './components/permissions/actions';
-import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData } from './components/entities/actions';
+import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData, extractEntityTypeOptionFromRow } from './components/entities/actions';
 import { EntityDataType } from './components/entities/models';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
 import { SampleTypeModel } from "./components/domainproperties/samples/models";
 import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
+
+import { QueryModel } from './QueryModel/QueryModel';
+import { QueryModelLoader } from './QueryModel/QueryModelLoader';
+import {
+    withQueryModels,
+    MakeQueryModels,
+    InjectedQueryModels,
+    Actions,
+    QueryConfigMap,
+    QueryModelMap,
+    RequiresModelAndActions,
+} from './QueryModel/withQueryModels';
+import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 
 export {
     // global state functions
@@ -357,7 +386,10 @@ export {
     DefaultRenderer,
     FileColumnRenderer,
     MultiValueRenderer,
+    resolveDetailEditRenderer,
     resolveDetailRenderer,
+    titleRenderer,
+    resolveRenderer,
 
     // components
     LabelOverlay,
@@ -369,10 +401,17 @@ export {
     CollapsiblePanel,
     BulkAddUpdateForm,
     BulkUpdateForm,
+    QueryFormInputs,
     LookupSelectInput,
     SelectInput,
     SelectInputProps, // TODO this probably doesn't need to be exported, long-term.  Used by the <Select> element in Biologics, which may wnat to be moved here instead.
     DatePickerInput,
+    DateInput,
+    FileInput,
+    TextAreaInput,
+    TextInput,
+    FieldEditForm,
+    FieldEditProps,
     QuerySelect,
     QuerySelectOwnProps,
     UserSelectInput,
@@ -452,6 +491,9 @@ export {
     handleInputTab,
     handleTabKeyOnTextArea,
     withFormSteps,
+    getQueryFormLabelFieldName,
+    isQueryFormLabelField,
+    resolveDetailFieldValue,
     WithFormStepsProps,
     FormStep,
     FormTabs,
@@ -494,6 +536,13 @@ export {
     SampleTypeDataType,
     DataClassDataType,
     ParentEntityEditPanel,
+    extractEntityTypeOptionFromRow,
+    IParentOption,
+    EntityInputProps,
+    IDerivePayload,
+    IEntityTypeOption,
+    MaterialOutput,
+    GenerateEntityResponse,
 
     // Navigation
     MenuSectionConfig,
@@ -672,5 +721,18 @@ export {
     PermissionsProviderProps,
     SecurityPolicy,
     SecurityRole,
-    Principal
+    Principal,
+
+    // QueryModel
+    QueryModel,
+    QueryConfigMap,
+    QueryModelMap,
+    QueryModelLoader,
+    withQueryModels,
+    MakeQueryModels,
+    Actions,
+    RequiresModelAndActions,
+    InjectedQueryModels,
+    GridPanel,
+    GridPanelWithModel,
 }

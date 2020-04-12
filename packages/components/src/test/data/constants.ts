@@ -17,7 +17,8 @@ import { List, Map } from 'immutable';
 
 import { AssayWizardModel } from '../../components/assay/models';
 import assayWizardJSON from './assayWizardModel.json';
-import { AssayDefinitionModel, AssayDomainTypes, QueryInfo } from '../../components/base/models/model';
+import { QueryInfo } from '../../components/base/models/QueryInfo';
+import { AssayDefinitionModel, AssayDomainTypes } from '../../components/base/models/model';
 import { IFile } from '../../components/files/models';
 
 export const GRID_DATA = Map<any, Map<string, any>>({

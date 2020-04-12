@@ -25,7 +25,7 @@ import { getUsers, setUsers } from '../../global';
 import { similaritySortFactory } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
 import { PermissionTypes } from '../base/models/constants';
-import { QueryInfo } from '../base/models/model';
+import { QueryInfo } from '../base/models/QueryInfo';
 
 const emptyMap = Map<string, any>();
 

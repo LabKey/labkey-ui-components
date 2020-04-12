@@ -23,12 +23,28 @@ import {DomainField, SelectInput} from "../../..";
 
 interface Props {
     model: DatasetModel;
-    onModelChange: (model: DatasetModel) => void;
-    subjectColumnName?: string;
-    timepointType?: string;
+    onColumnMappingChange: (participantIdField?: string, timePointField?: string) => void;
+    subjectColumnName: string;
+    timepointType: string;
 }
 
-export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
+interface State {
+    closestParticipantIdField?: string;
+    closestTimepointField?: string;
+}
+
+export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>{
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            closestParticipantIdField: this.findClosestColumn(this.props.subjectColumnName),
+            closestTimepointField: this.findClosestColumn(this.props.timepointType)
+        };
+
+        this.props.onColumnMappingChange(this.state.closestParticipantIdField, this.state.closestTimepointField);
+    }
 
     compareNames(name1: string, name2: string) : boolean {
         return name1 === name2 ||
@@ -63,7 +79,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
     findClosestColumn(targetColumn: string): string {
         const inferredColumns = this.props.model.domain.fields;
 
-        const matchedParticipantField = inferredColumns.find((field) => {
+        const matchedField = inferredColumns.find((field) => {
             let matchingNames = false;
 
             if (field.name && field.rangeURI) {
@@ -73,15 +89,22 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
         });
 
 
-        return matchedParticipantField ? matchedParticipantField.name : undefined;
+        return matchedField ? matchedField.name : undefined;
     }
 
-    render() {
-        const { model, subjectColumnName, timepointType } = this.props;
-        const domain = model.domain;
+    onSelectChange = (name, formValue, selected): void => {
+        const value = selected ? selected.name : undefined;
 
-        const closestParticipantIdField = this.findClosestColumn(subjectColumnName);
-        const closestTimepointField = this.findClosestColumn(timepointType);
+        this.setState(() => ({ [name]: value }), () => {
+            this.props.onColumnMappingChange(this.state.closestParticipantIdField, this.state.closestTimepointField);
+        });
+    };
+
+    render() {
+        const { model } = this.props;
+        const { closestParticipantIdField, closestTimepointField } = this.state;
+
+        const domain = model.domain;
 
         return (
             <>
@@ -98,7 +121,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
                     </Col>
                     <Col xs={5}>
                         <SelectInput
-                            onChange={() => {}}
+                            onChange={this.onSelectChange}
                             value={closestParticipantIdField}
                             options={domain.fields.toArray()}
                             inputClass=""
@@ -107,10 +130,10 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
                             formsy={false}
                             multiple={false}
                             required={false}
-                            name={"participantIdField"}
+                            name={"closestParticipantIdField"}
                             labelKey={"name"}
                             valueKey={"name"}
-                            clearable={false}
+                            clearable={true}
                         />
                     </Col>
                     <Col xs={3}/>
@@ -123,7 +146,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
                     </Col>
                     <Col xs={5}>
                         <SelectInput
-                            onChange={() => {}}
+                            onChange={this.onSelectChange}
                             value={closestTimepointField}
                             options={domain.fields.toArray()}
                             inputClass=""
@@ -132,10 +155,10 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props>{
                             formsy={false}
                             multiple={false}
                             required={false}
-                            name={"timepointField"}
+                            name={"closestTimepointField"}
                             labelKey={"name"}
                             valueKey={"name"}
-                            clearable={false}
+                            clearable={true}
                         />
                     </Col>
                     <Col xs={3}/>

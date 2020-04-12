@@ -11,7 +11,6 @@ import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { Progress } from "../../base/Progress";
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from "../BaseDomainDesigner";
 import { resolveErrorMessage } from "../../../util/messaging";
-import {DatasetColumnMappingPanel} from "../dataset/DatasetColumnMappingPanel";
 
 interface Props {
     initModel?: ListModel

@@ -81,16 +81,26 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         this.setState({ fileImportData });
     };
 
+    onColumnMappingChange = (participantIdField?: string, timePointField?: string) => {
+      console.log("ParticipantID = ", participantIdField);
+      console.log("Timepoint = ", timePointField);
+    };
+
     datasetColumnMapping = () => {
         const {model} = this.state;
 
         return (
-            <DatasetColumnMappingPanel
-                model={model}
-                onModelChange={() => {}}
-                subjectColumnName={LABKEY.moduleContext.study.subject.columnName}
-                timepointType={LABKEY.moduleContext.study.timepointType}
-            />
+            <>
+                {model && model.domain.fields && model.domain.fields.size > 0 &&
+                <DatasetColumnMappingPanel
+                    model={model}
+                    onColumnMappingChange={this.onColumnMappingChange}
+                    subjectColumnName={LABKEY.moduleContext.study.subject.columnName}
+                    timepointType={LABKEY.moduleContext.study.timepointType}
+                />
+                }
+            </>
+
         );
 
     };

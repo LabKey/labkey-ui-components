@@ -31,7 +31,7 @@ export function getIconAndShapeForNode(node?: LineageNode): { iconURL: string, s
         }
 
         // run icon is not circular so the vis shape is adjusted accordingly
-        if (iconURL === DEFAULT_ICON_URL && node.type && node.type.toLowerCase() === 'run') {
+        if (iconURL === DEFAULT_ICON_URL && node.type && node.type.toLowerCase().indexOf('run') > -1) {
             iconURL = 'run';
             shape = 'image';
         }

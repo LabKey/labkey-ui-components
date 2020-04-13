@@ -16,7 +16,7 @@
 import { List } from 'immutable';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
-import { parseColumns } from './Filter';
+import { parseColumns, resolveFieldKey } from '../utils';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 
 export class SortAction implements Action {
@@ -25,10 +25,10 @@ export class SortAction implements Action {
     keyword = 'sort';
     optionalLabel = 'columns';
     separator = ',';
-    model: QueryGridModel;
+    getModel: () => QueryGridModel;
 
-    constructor(urlPrefix: string, model: QueryGridModel) {
-        this.model = model;
+    constructor(urlPrefix: string, getModel: () => QueryGridModel) {
+        this.getModel = getModel;
 
         if (urlPrefix) {
             this.param = [urlPrefix, this.param].join('.');
@@ -62,10 +62,9 @@ export class SortAction implements Action {
     // e.g. inputValue - "Name ASC" or "Some/Column DESC"
     completeAction(tokens: Array<string>): Promise<Value> {
         return new Promise((resolve) => {
-            const { column, columnName, dir } = SortAction.parseTokens(tokens, this.model.getDisplayColumns());
-            // here sort differs from filtering in that it does not resolve through lookups. So it may look like
-            // you want to sort on a columns display value but you're always sorting directly on that column.
-            const name = column ? column.name : columnName;
+            const { column, columnName, dir } = SortAction.parseTokens(tokens, this.getModel().getDisplayColumns());
+            // resolveFieldKey because of Issue 34627
+            const name = column ? resolveFieldKey(columnName, column) : columnName;
             resolve({
                 displayValue: column ? column.shortCaption : name,
                 isValid: name ? true : false,
@@ -77,7 +76,7 @@ export class SortAction implements Action {
 
     fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
         return new Promise((resolve) => {
-            const columns = this.model.getDisplayColumns();
+            const columns = this.getModel().getDisplayColumns();
             const options = SortAction.parseTokens(tokens, columns);
             let results: Array<ActionOption> = [];
 

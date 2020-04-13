@@ -70,7 +70,7 @@ export interface Action {
      * Called to provide the set of ActionOption's for the current input.
      * @param tokens - The current tokenized input value.
      */
-    fetchOptions: (tokens: Array<string>) => Promise<Array<ActionOption>>
+    fetchOptions: (tokens: Array<string>, uniqueValues?: List<any>) => Promise<Array<ActionOption>>
 
     /**
      * Called to determine if the incoming Action is equivalent to this Action. This allows for more subtle

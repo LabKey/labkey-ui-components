@@ -51,16 +51,17 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
                 dataIds: fromJS(mockData.orderedRows),
                 totalRows: mockData.rowCount,
             });
+            const getModel = () => model;
             const actions = this.props.actions.map((action) => {
                 switch (action) {
                     case 'search':
                         return new SearchAction('q');
                     case 'sort':
-                        return new SortAction('s', model);
+                        return new SortAction('s', getModel);
                     case 'filter':
-                        return new FilterAction('f', model);
+                        return new FilterAction('f', getModel);
                     case 'view':
-                        return new ViewAction('v', model);
+                        return new ViewAction('v', getModel);
                 }
             });
 
@@ -80,7 +81,7 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
 
         return (
             <div className="omnibox-renderer">
-                <OmniBox actions={actions} placeholder={this.props.placeholder} />
+                <OmniBox getModel={() => model} actions={actions} placeholder={this.props.placeholder} />
                 <Grid data={model.getData()} />
             </div>
         );

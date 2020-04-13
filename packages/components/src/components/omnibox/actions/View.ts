@@ -25,18 +25,18 @@ export class ViewAction implements Action {
     keyword = ViewAction.NAME;
     oneWordLabel = ViewAction.NAME;
     optionalLabel = 'name';
-    model: QueryGridModel;
+    getModel: () => QueryGridModel;
     singleton = true;
     urlPrefix: string;
 
-    constructor(urlPrefix: string, model: QueryGridModel) {
-        this.model = model;
+    constructor(urlPrefix: string, getModel: () => QueryGridModel) {
+        this.getModel = getModel;
         this.urlPrefix = urlPrefix;
     }
 
     completeAction(tokens: Array<string>): Promise<Value> {
         return new Promise((resolve) => {
-            const { queryInfo } = this.model;
+            const { queryInfo } = this.getModel();
             let found = false;
             const name = tokens.join(' ').toLowerCase();
 
@@ -65,7 +65,7 @@ export class ViewAction implements Action {
 
     fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
         return new Promise((resolve) => {
-            const { queryInfo } = this.model;
+            const { queryInfo } = this.getModel();
             const name = tokens.join(' ').toLowerCase();
 
             let views = queryInfo.views

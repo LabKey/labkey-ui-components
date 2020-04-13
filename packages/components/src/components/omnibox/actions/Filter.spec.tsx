@@ -27,19 +27,20 @@ import { QueryInfo } from '../../..';
 import { JsonType } from '@labkey/api/dist/labkey/filter/Types';
 
 let queryInfo: QueryInfo;
-let model: QueryGridModel;
+let getModel: () => QueryGridModel;
 
 beforeAll(() => {
     initUnitTests();
     queryInfo = makeQueryInfo(mixturesQueryInfo);
     return makeTestData(mixturesQuery).then((mockData) => {
-        model = new QueryGridModel({
+        const model = new QueryGridModel({
             queryInfo,
             messages: fromJS(mockData.messages),
             data: fromJS(mockData.rows),
             dataIds: fromJS(mockData.orderedRows),
             totalRows: mockData.rowCount,
         });
+        getModel = () => model;
     });
 });
 
@@ -99,7 +100,7 @@ describe('FilterAction::completeAction', () => {
 
     beforeEach(() => {
         // needs to be in beforeEach so it gets instantiated after beforeAll
-        action = new FilterAction(urlPrefix, model);
+        action = new FilterAction(urlPrefix, getModel);
     });
 
     test('invalid tokens', () => {
@@ -174,17 +175,17 @@ describe('FilterAction::fetchOptions', () => {
 
     beforeEach(() => {
         // needs to be in beforeEach so it gets instantiated after beforeAll
-        action = new FilterAction(urlPrefix, model);
+        action = new FilterAction(urlPrefix, getModel);
     });
 
     test('column options', () => {
         return Promise.all([
             // nothing entered -- should display all available columns
             fetchOptions([], (options) => {
-                expect(options.length).toEqual(model.getDisplayColumns().size);
+                expect(options.length).toEqual(getModel().getDisplayColumns().size);
 
                 // none should complete the action
-                expect(options.map(o => o.isComplete)).toEqual(model.getDisplayColumns().map(c => false).toArray());
+                expect(options.map(o => o.isComplete)).toEqual(getModel().getDisplayColumns().map(c => false).toArray());
             }),
 
             // no matches -- should display nothing

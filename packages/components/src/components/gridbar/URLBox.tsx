@@ -143,7 +143,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
                 }
 
                 let urlAction = urlActions[actionName];
-                actions.push(new urlAction(urlPrefix, queryModel));
+                actions.push(new urlAction(urlPrefix, this.getQueryModel));
             }
         }
 
@@ -203,6 +203,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
         return (
             <OmniBox
+                getModel={this.getQueryModel}
                 actions={actions}
                 onChange={this.onOmniBoxChange}
                 values={values}

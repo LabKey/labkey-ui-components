@@ -10,7 +10,7 @@ const repoPath = 'packages/components/';
 // Default path to the directory to be checked for changes
 let lintPath = 'src/';
 
-//
+// Default lint target (--fix changes to lint-fix)
 let yarnTarget = 'lint';
 
 // Parameters all optional.

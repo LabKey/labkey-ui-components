@@ -1,6 +1,41 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.48.2
+*Released*: 13 April 2020
+* Item 7124: Add helpTopic property with default value to DataClassDesigner
+
+### version 0.48.1
+*Released*: 12 April 2020
+* Issue 40106: Correcting booleans for properties' states in Advanced Settings dialog of Domain designer
+
+### version 0.48.0
+*Released*: 8 April 2020
+* Export DateInput, FileInput, TextInput and TextAreaInput
+* Export QueryFormInputs and associated helper functions
+* Export detail renderer helper functions
+* Export FieldEditInput form and props
+
+### version 0.47.0
+*Released*: 7 April 2020
+* `@labkey/api` dependency update.
+
+### version 0.46.0
+*Released*: 7 April 2020
+* Add QueryModel model to replace QueryGridModel
+    - Also added IQueryModel interface
+* Add QueryModelLoader interface and DefaultQueryModelLoader
+* Add withQueryModels HOC for managing model state
+* Add GridPanel to replace QueryGridPanel
+    - GridPanel takes a QueryModel as a prop
+    - Also provided GridPanelWithModel which takes a QueryConfig and manages a model like QueryGridPanel does
+* Move QueryInfo to its own file
+* Remove Column class, replaced with GridColumn
+    - GridColumn originally just extended Column but added no functionality
+    - Has no affect on exports since we only ever exported GridColumn
+* Added a delay to mocks when running in Storybook
+* Emulate LabKey Server error messages for invalid schema/query names in getQueryDetails
+
 ### version 0.45.0
 *Released*: 6 April 2020
 * Item 6642: Initial dataset designer properties panel

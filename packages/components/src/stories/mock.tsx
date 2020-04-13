@@ -96,6 +96,7 @@ import source1Query from '../test/data/source1-getQuery.json';
 import source1QueryDetails from '../test/data/source1-getQueryDetails.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
+const JSON_HEADERS = {'Content-Type': 'application/json'};
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {
@@ -210,7 +211,7 @@ const QUERY_RESPONSES = fromJS({
 export function initMocks() {
     mock.setup();
 
-    initQueryGridMocks();
+    initQueryGridMocks(250);
     initLineageMocks();
     initUserPropsMocks();
 
@@ -228,7 +229,7 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody));
     });
 
@@ -244,7 +245,7 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody));
     });
 
@@ -258,7 +259,7 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody));
     });
 
@@ -272,14 +273,14 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody));
     });
 
     //TODO conditionalize based on queryName
     mock.post(/.*\/query\/?.*\/insertRows.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(samplesInsert)
     });
 
@@ -299,7 +300,7 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody));
     });
 
@@ -315,7 +316,7 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody))
     });
 
@@ -329,64 +330,83 @@ export function initMocks() {
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody));
     });
 
     mock.post(/.*\/visualization\/?.*\/getVisualization.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(visualizationConfig),
     });
 
     mock.post(/.*\/property\/?.*\/inferDomain.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(inferDomainJson)
     });
 
     mock.get(/.*\/security\/GetMaxPhiLevel.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(getMaxPhiLevelJson)
     });
 
     mock.get(/.*\/security\/?.*\/getRoles.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(getRolesJson)
     });
 
     mock.get(/.*\/assay\/getValidPublishTargets.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(getValidPublishTargetsJson)
     });
 
 
     mock.get(/.*browseData.*/, delay({
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(browseData),
     }, 1000));
 
     mock.use(proxy);
 }
 
-export function initQueryGridMocks() {
-    mock.get(/.*\/query\/?.*\/getQueryDetails.*/, (req, res) => {
+export function initQueryGridMocks(delayMs = undefined) {
+    let getQueryDetails = (req, res) => {
         const queryParams = req.url().query;
         const schemaName = queryParams.schemaName.toLowerCase();
         const queryName = queryParams.queryName.toLowerCase();
-        const responseBody = QUERY_DETAILS_RESPONSES.getIn([schemaName, queryName]);
+        const schema = QUERY_DETAILS_RESPONSES.get(schemaName);
+        let responseBody;
+
+        if (!schema) {
+            responseBody = {
+                exception: `Could not find the schema '${schemaName}' in the folder '/Biologics'!`,
+                exceptionClass: 'org.labkey.api.view.NotFoundException',
+            };
+            return res.status(404).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        }
+
+        responseBody = schema.get(queryName);
+
+        if (!responseBody) {
+            responseBody = {
+                exception: `Could not find the query '${queryName}' in the schema '${schemaName}'!`,
+                exceptionClass: 'org.labkey.api.view.NotFoundException',
+            };
+            return res.status(404).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        }
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody));
-    });
+    };
 
-    mock.post(/.*\/query\/?.*\/getQuery.*/,  (req, res) => {
+    let getQuery = (req, res) => {
         const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
             const [name, value] = param.split('=');
             result[name] = value;
@@ -421,11 +441,11 @@ export function initQueryGridMocks() {
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody));
-    });
+    };
 
-    mock.post(/.*\/query\/?.*\/getSelected.*/, (req, res) => {
+    let getSelected = (req, res) => {
         const queryParams = req.url().query;
         const key = queryParams.key;
         let responseBody;
@@ -438,21 +458,32 @@ export function initQueryGridMocks() {
 
         return res
             .status(200)
-            .headers({'Content-Type': 'application/json'})
+            .headers(JSON_HEADERS)
             .body(JSON.stringify(responseBody));
-    });
+    };
+
+    if (delayMs !== undefined) {
+        // We have to wrap like this instead of defaulting to 0 otherwise it breaks a lot of our tests :-(
+        getQueryDetails = delay(getQueryDetails, delayMs);
+        getQuery = delay(getQuery, delayMs);
+        getSelected = delay(getSelected, delayMs);
+    }
+
+    mock.get(/.*\/query\/?.*\/getQueryDetails.*/, getQueryDetails);
+    mock.post(/.*\/query\/?.*\/getQuery.*/,  getQuery);
+    mock.post(/.*\/query\/?.*\/getSelected.*/, getSelected);
 
     //TODO response JSON?
     mock.post(/.*\/query\/?.*\/setSelected.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify({})
     });
 
     //TODO conditionalize based on queryName
     mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(mixturesReportInfos)
     });
 }
@@ -460,7 +491,7 @@ export function initQueryGridMocks() {
 export function initLineageMocks() {
     mock.get(/.*\/experiment\/?.*\/lineage.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(lineageData)
     });
 }
@@ -469,7 +500,7 @@ export function initUserPropsMocks() {
     //TODO conditionalize based on userId
     mock.get(/.*\/user\/getUserProps.*/, {
         status: 200,
-        headers: {'Content-Type': 'application/json'},
+        headers: JSON_HEADERS,
         body: JSON.stringify(userPropsInfo)
     });
 }

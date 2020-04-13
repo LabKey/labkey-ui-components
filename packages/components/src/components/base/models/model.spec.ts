@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 import { fromJS, List, OrderedMap } from 'immutable';
+import { QueryInfo } from './QueryInfo';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
     QueryColumn,
     QueryGridModel,
-    QueryInfo,
     SchemaQuery,
 } from './model';
-
 import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../../../test/data/assayDefinitionModelNoSampleId.json';
 import sampleSetQueryInfo from '../../../test/data/sampleSet-getQueryDetails.json';

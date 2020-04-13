@@ -67,7 +67,7 @@ Array [
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass"
                   target="_blank"
                 >
                   Learn more about designing sources
@@ -483,7 +483,7 @@ Array [
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass"
                   target="_blank"
                 >
                   Learn more about designing data classes
@@ -2161,6 +2161,7 @@ exports[`DataClassDesigner initModel 1`] = `
           appPropertiesOnly={false}
           collapsed={false}
           controlledCollapse={true}
+          helpTopic="createDataClass"
           model={
             Immutable.Record {
               "rowId": 802,
@@ -2452,6 +2453,7 @@ exports[`DataClassDesigner initModel 1`] = `
             collapsed={false}
             controlledCollapse={true}
             headerId="dataclass-properties-hdr"
+            helpTopic="createDataClass"
             isValid={true}
             model={
               Immutable.Record {
@@ -2950,7 +2952,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                       className="col-xs-12"
                                     >
                                       <HelpTopicURL
-                                        helpTopic="dataClass"
+                                        helpTopic="createDataClass"
                                         nounPlural="Data Classes"
                                       >
                                         <Row
@@ -2970,7 +2972,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               >
                                                 <a
                                                   className="domain-field-float-right"
-                                                  href="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass"
+                                                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass"
                                                   target="_blank"
                                                 >
                                                   Learn more about designing data classes

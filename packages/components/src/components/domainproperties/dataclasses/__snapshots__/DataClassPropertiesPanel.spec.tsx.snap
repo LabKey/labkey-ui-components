@@ -62,7 +62,7 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
           >
             <a
               className="domain-field-float-right"
-              href="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass"
               target="_blank"
             >
               Learn more about designing sources
@@ -257,7 +257,7 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
           >
             <a
               className="domain-field-float-right"
-              href="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass"
               target="_blank"
             >
               Learn more about designing data classes

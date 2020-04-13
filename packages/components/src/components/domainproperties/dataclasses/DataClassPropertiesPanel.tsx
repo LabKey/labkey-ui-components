@@ -24,6 +24,7 @@ interface OwnProps {
     onChange: (model: DataClassModel) => any
     appPropertiesOnly?: boolean
     headerText?: string
+    helpTopic?: string
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
     nounSingular?: string
@@ -42,6 +43,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
     static defaultProps = {
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
+        helpTopic: DEFINE_DATA_CLASS_TOPIC,
         nameExpressionInfoUrl: getHelpLink(DATA_CLASS_NAME_EXPRESSION_TOPIC),
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., DC-${now:date}-${genId})',
         appPropertiesOnly: false
@@ -139,7 +141,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
     }
 
     render() {
-        const { model, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder } = this.props;
+        const { model, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder, helpTopic } = this.props;
         const { isValid } = this.state;
 
         return (
@@ -158,7 +160,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
                         </Col>
                     }
                     <Col xs={headerText ? 3 : 12}>
-                        <HelpTopicURL helpTopic={DEFINE_DATA_CLASS_TOPIC} nounPlural={nounPlural}/>
+                        <HelpTopicURL helpTopic={helpTopic} nounPlural={nounPlural}/>
                     </Col>
                 </Row>
                 <EntityDetailsForm

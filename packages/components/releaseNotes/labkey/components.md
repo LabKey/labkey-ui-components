@@ -9,6 +9,14 @@ Components, models, actions, and utility functions for LabKey applications and p
     - DataClassPropertiesPanel and SampleTypePropertiesPanel default nameExpressionInfoUrl and nameExpressionPlaceholder properties
     - SampleTypeDesigner change to default to "Infer from File" in empty fields state
 
+### version 0.48.2
+*Released*: 13 April 2020
+* Item 7124: Add helpTopic property with default value to DataClassDesigner
+
+### version 0.48.1
+*Released*: 12 April 2020
+* Issue 40106: Correcting booleans for properties' states in Advanced Settings dialog of Domain designer
+
 ### version 0.48.0
 *Released*: 8 April 2020
 * Export DateInput, FileInput, TextInput and TextAreaInput

@@ -7,7 +7,8 @@ import { SVGIcon } from '../..';
 
 import { NodeInteractionConsumer, WithNodeInteraction } from './actions';
 import { LineageNode } from './models';
-import { getLineageNodeTitle, LineageNodeCollection } from './vis/VisGraphGenerator';
+import { getLineageNodeTitle } from './utils';
+import { LineageNodeCollection } from './vis/VisGraphGenerator';
 
 interface LineageNodeListProps {
     title: string
@@ -25,13 +26,7 @@ const COLLAPSED_LIST_SHOW_COUNT = 4;
 // TODO move the inline styles to lineage.scss
 export class LineageNodeList extends PureComponent<LineageNodeListProps, LineageNodeListState> {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            expanded: false
-        }
-    }
+    readonly state: LineageNodeListState = { expanded: false };
 
     toggle = (): void => {
         this.setState((state) => ({
@@ -42,7 +37,7 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
     renderNode = (node: LineageNode): ReactNode => {
         const { highlightNode } = this.props;
 
-        const title = getLineageNodeTitle(node, false);
+        const title = getLineageNodeTitle(node);
 
         const { links, name, meta } = node;
         const iconURL = meta.iconURL;
@@ -88,33 +83,26 @@ export class LineageNodeList extends PureComponent<LineageNodeListProps, Lineage
         );
     };
 
-    renderCollapseExpandNode(skipCount) {
-        const { expanded } = this.state;
-
-        return (
-            <li key={'__skip'}>
-                <SVGIcon className="lineage-sm-icon" />
-                &nbsp;
-                <a style={{cursor:'pointer'}} onClick={this.toggle}>Show {skipCount} {expanded ? "less" : "more"}...</a>
-                &nbsp;
-            </li>
-        );
-    }
-
     render() {
         const { title, nodes } = this.props;
         const { expanded } = this.state;
 
-        let includeCollapseExpand = false;
-        if (nodes.nodes.length > 10)
-            includeCollapseExpand = true;
-
         let rendered;
-        if (includeCollapseExpand) {
+        if (nodes.nodes.length > 10) {
             const skipCount = nodes.nodes.length - COLLAPSED_LIST_SHOW_COUNT;
 
             rendered = nodes.nodes.slice(0, COLLAPSED_LIST_SHOW_COUNT).map(this.renderNode);
-            rendered.push(this.renderCollapseExpandNode(skipCount));
+            rendered.push(
+                <li key={'__skip'}>
+                    <SVGIcon className="lineage-sm-icon" />
+                    &nbsp;
+                    <a onClick={this.toggle} style={{cursor:'pointer'}}>
+                        Show {skipCount} {expanded ? 'less' : 'more'}...
+                    </a>
+                    &nbsp;
+                </li>
+            );
+
             if (expanded) {
                 rendered = rendered.concat(nodes.nodes.slice(COLLAPSED_LIST_SHOW_COUNT).map(this.renderNode));
             }

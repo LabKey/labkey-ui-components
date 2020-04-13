@@ -129,8 +129,8 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
 
 interface ClusterNodeDetailProps {
     highlightNode?: string
-    nodes: Array<LineageNode>
-    nodesByType: LineageNodeCollectionByType
+    nodes: LineageNode[]
+    nodesByType?: LineageNodeCollectionByType
     options?: LineageOptions
 }
 

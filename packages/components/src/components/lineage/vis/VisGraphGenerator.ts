@@ -3,11 +3,10 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable';
-import { Utils } from '@labkey/api';
 import { DataSet, Edge, Network, Node } from 'vis-network';
 
 import { applyLineageOptions, LineageLink, LineageNode, LineageResult } from '../models';
-import { getImagesForNode } from '../utils';
+import { getImagesForNode, getLineageNodeTitle } from '../utils';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -653,28 +652,4 @@ function createCombinedVisNode(
 function randId(): string {
     return Math.random().toString(36).substring(2, 15) +
            Math.random().toString(36).substring(2, 15);
-}
-
-export function getLineageNodeTitle(node: LineageNode, html: boolean): string {
-    // encodeHtml if we are generating html for vis.js to use as the node's tooltip title
-    const h = s => html ? Utils.encodeHtml(s) : s;
-
-    let title = '';
-
-    let meta = node.meta;
-    if (meta && meta.displayType) {
-        title += h(meta.displayType) + ': ';
-    }
-
-    title += node.name;
-
-    if (meta && meta.aliases && meta.aliases.size) {
-        title += ' (' + meta.aliases.map(h).join(', ') + ')';
-    }
-
-    if (meta && meta.description) {
-        title += (html ? '<br>' : '\n') + h(meta.description);
-    }
-
-    return title;
 }

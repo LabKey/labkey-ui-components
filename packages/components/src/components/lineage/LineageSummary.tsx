@@ -48,11 +48,11 @@ export class LineageSummary extends ReactN.Component<Props> {
         direction: LINEAGE_DIRECTIONS,
         lineage: LineageResult,
         edges: List<LineageLink>,
-        highlightNode: string
     ): ReactNode => {
         if (this.empty(edges)) {
             return;
         }
+        const { highlightNode } = this.props;
 
         const nodes = edges.map(edge => lineage.nodes.get(edge.lsid)).toArray();
 
@@ -76,7 +76,7 @@ export class LineageSummary extends ReactN.Component<Props> {
     }
 
     render() {
-        const { highlightNode, options } = this.props;
+        const { options } = this.props;
         const lineage = this.getLineage();
 
         if (!lineage) {
@@ -102,9 +102,9 @@ export class LineageSummary extends ReactN.Component<Props> {
 
         return (
             <>
-                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents, highlightNode)}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents)}
                 {hasChildren && hasParents && <hr/>}
-                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children, highlightNode)}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children)}
             </>
         );
     }

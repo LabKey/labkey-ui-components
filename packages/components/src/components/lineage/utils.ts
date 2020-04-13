@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map } from 'immutable';
+import { Utils } from '@labkey/api';
 import { imageURL, Theme } from '../..';
 
 import { LineageLink, LineageNode } from './models';
@@ -73,6 +74,31 @@ export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelect
     const suffix = theme === Theme.DEFAULT ? '' : '_' + Theme[theme];
 
     return [iconURL, suffix, '.svg'].join('').toLowerCase();
+}
+
+export function getLineageNodeTitle(node: LineageNode, html?: boolean): string {
+    // encodeHtml if we are generating html for vis.js to use as the node's tooltip title
+    const asHTML = html === true;
+    const h = s => asHTML ? Utils.encodeHtml(s) : s;
+
+    let title = '';
+
+    let meta = node.meta;
+    if (meta && meta.displayType) {
+        title += h(meta.displayType) + ': ';
+    }
+
+    title += node.name;
+
+    if (meta && meta.aliases && meta.aliases.size) {
+        title += ' (' + meta.aliases.map(h).join(', ') + ')';
+    }
+
+    if (meta && meta.description) {
+        title += (asHTML ? '<br>' : '\n') + h(meta.description);
+    }
+
+    return title;
 }
 
 export function getLineageDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LINEAGE_DIRECTIONS, maxDistance: number) : List<LineageNode> {

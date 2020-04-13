@@ -69,7 +69,7 @@ interface LineageGraphDisplayProps {
 interface LineageGraphDisplayState {
     hoverNode: VisGraphNodeType
     nodeInteractions: WithNodeInteraction
-    selectedNodes: Array<VisGraphNodeType>
+    selectedNodes: VisGraphNodeType[]
 }
 
 class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & LinageGraphOwnProps & LineageOptions & SummaryOptions, Partial<LineageGraphDisplayState>> {
@@ -131,13 +131,13 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         }
     };
 
-    onVisGraphNodeSelect = (selectedNodes: Array<VisGraphNodeType>): void => {
+    onVisGraphNodeSelect = (selectedNodes: VisGraphNodeType[]): void => {
         this.setState({
             selectedNodes,
         });
     };
 
-    onVisGraphNodeDeselect = (selectedNodes: Array<VisGraphNodeType>): void => {
+    onVisGraphNodeDeselect = (selectedNodes: VisGraphNodeType[]): void => {
         this.setState({
             selectedNodes,
         });
@@ -199,7 +199,6 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         return <ClusterNodeDetail
             highlightNode={hoverNodeLsid}
             nodes={nodes}
-            nodesByType={undefined}
             options={this.props}
         />;
     }

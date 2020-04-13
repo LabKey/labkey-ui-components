@@ -14,33 +14,29 @@ interface Props {
 }
 
 interface State {
+    columns: List<GridColumn>
     lineage: Lineage
 }
 
 export class SampleTypeLineageCounts extends PureComponent<Props, State> {
 
-    private columns = List([
-        new GridColumn({
-            index: 'name',
-            title: 'Sample Type'
-        }),
-        new GridColumn({
-            index: 'sampleCount',
-            title: 'Number of Samples'
-        }),
-        new GridColumn({
-            index: 'modified',
-            title: 'Most Recent (Date)'
-        })
-    ]);
-
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            lineage: undefined
-        }
-    }
+    readonly state: State = {
+        columns: List([
+            new GridColumn({
+                index: 'name',
+                title: 'Sample Type'
+            }),
+            new GridColumn({
+                index: 'sampleCount',
+                title: 'Number of Samples'
+            }),
+            new GridColumn({
+                index: 'modified',
+                title: 'Most Recent (Date)'
+            })
+        ]),
+        lineage: undefined,
+    };
 
     componentDidMount() {
         this.init(this.props.seed);
@@ -60,7 +56,7 @@ export class SampleTypeLineageCounts extends PureComponent<Props, State> {
     }
 
     render() {
-        const { lineage } = this.state;
+        const { columns, lineage } = this.state;
 
         if (!lineage) {
             return <LoadingSpinner/>
@@ -71,7 +67,7 @@ export class SampleTypeLineageCounts extends PureComponent<Props, State> {
         }
 
         return (
-            <Grid data={lineage.sampleStats} columns={this.columns}/>
+            <Grid data={lineage.sampleStats} columns={columns}/>
         )
     }
 }

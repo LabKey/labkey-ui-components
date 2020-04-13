@@ -48,6 +48,7 @@ interface State {
     submitting: boolean
     originalParents: List<EntityChoice>
     currentParents: List<EntityChoice>
+    originalValueLoaded: List<boolean>
 }
 
 export class ParentEntityEditPanel extends React.Component<Props, State> {
@@ -67,7 +68,8 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             parentTypeOptions: undefined,
             submitting: false,
             originalParents: undefined,
-            currentParents: undefined
+            currentParents: undefined,
+            originalValueLoaded: List<boolean>()
         };
     }
 
@@ -140,7 +142,8 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             newChoice.value = Array.isArray(value) ? value.join(DELIMITER) : value;
             return {
                 currentParents: state.currentParents.set(index, newChoice),
-                originalParents: updateOriginal ? state.originalParents.set(index, {...newChoice}) : state.originalParents,
+                originalParents: updateOriginal && state.originalParents.has(index) && !state.originalValueLoaded.get(index) ? state.originalParents.set(index, {...newChoice}) : state.originalParents,
+                originalValueLoaded: state.originalParents.has(index) ? state.originalValueLoaded.set(index, true) : state.originalValueLoaded
             }
         });
     }
@@ -148,6 +151,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     onCancel = () => {
         this.setState((state) => ({
             currentParents: state.originalParents,
+            originalValueLoaded: List<boolean>(),
             editing: false
         }))
     };

@@ -1,6 +1,6 @@
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 import { PARENT_DATA_GRID_PREFIX } from './constants';
-import { List, Map } from 'immutable';
+import { List, Map, Set } from 'immutable';
 import { naturalSort, QueryGridModel } from '../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
@@ -84,10 +84,18 @@ export function getUpdatedRowForParentChanges(parentDataType: EntityDataType, or
         })
     }
     else {
+        let definedParents = Set<string>();
         definedCurrentParents.forEach((parentChoice) => {
             // Label may seem wrong here, but it is the same as query when extracted from the original query to get
             // the entity types.
             updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || null;
+            definedParents = definedParents.add(parentChoice.type.label);
+        });
+        // Issue 40194: for any original parents that have been removed, send null values so they will actually be removed
+        originalParents.forEach((parent) => {
+            if (!definedParents.contains(parent.type.label)) {
+                updatedValues[parentDataType.insertColumnNamePrefix + parent.type.label] = null;
+            }
         });
     }
 

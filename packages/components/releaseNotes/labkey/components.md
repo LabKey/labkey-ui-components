@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.48.2
+*Released*: 13 April 2020
+* Item 7124: Add helpTopic property with default value to DataClassDesigner
+
 ### version 0.48.1
 *Released*: 12 April 2020
 * Issue 40106: Correcting booleans for properties' states in Advanced Settings dialog of Domain designer

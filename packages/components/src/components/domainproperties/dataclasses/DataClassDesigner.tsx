@@ -14,6 +14,7 @@ interface Props {
     nameExpressionInfoUrl?: string
     nameExpressionPlaceholder?: string
     headerText?: string
+    helpTopic?: string
     defaultNameFieldConfig?: Partial<IDomainField>
     initModel?: DataClassModel
     onChange?: (model: DataClassModel) => void
@@ -124,7 +125,7 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
         const {
             onCancel, appPropertiesOnly, containerTop, useTheme, nounSingular, nounPlural, nameExpressionInfoUrl,
             nameExpressionPlaceholder, headerText, successBsStyle, onTogglePanel, submitting, saveBtnText,
-            currentPanelIndex, visitedPanels, validatePanel, firstState
+            currentPanelIndex, visitedPanels, validatePanel, firstState, helpTopic
         } = this.props;
         const { model } = this.state;
 
@@ -147,6 +148,7 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     headerText={headerText}
+                    helpTopic={helpTopic}
                     model={model}
                     onChange={this.onPropertiesChange}
                     controlledCollapse={true}

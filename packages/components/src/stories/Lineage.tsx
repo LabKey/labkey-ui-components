@@ -35,6 +35,14 @@ storiesOf('Lineage', module)
             />
         )
     })
+    .add("LineageGraph (Runs)", () => {
+        return (
+            <LineageGraph
+                lsid={'urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6'}
+                grouping={{generations: LINEAGE_GROUPING_GENERATIONS.Specific}}
+            />
+        )
+    })
     .add("LineageGrid", () => {
         return (
             <Panel>

@@ -18,7 +18,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'prettier/@typescript-eslint'
   ],
-  plugins: ['prettier', 'import', '@typescript-eslint'],
+  plugins: ['prettier', 'import', '@typescript-eslint', 'only-warn'],
   settings: {
     'import/resolver': {
       'node': {
@@ -47,7 +47,7 @@ module.exports = {
   rules: {
 
     // Possible Errors (http://eslint.org/docs/rules/#possible-errors)
-    'camelcase': 'error',
+    'camelcase': 'off',
     'no-array-constructor': 'error',
     'no-tabs': 'error',
     'quotes': ['error', 'single', {'avoidEscape': true}],
@@ -70,7 +70,7 @@ module.exports = {
     'complexity': ['error', 20], // TODO: disable?
     'consistent-return': 'error',
     'default-case': 'error',
-    'dot-notation': 'error',
+    'dot-notation': 'off',
     'eqeqeq': 'error', // CONSIDER: allow == for nulls: ['error', 'always', {'null': 'ignore'}]
     'guard-for-in': 'off', // TODO: enable?
     'no-alert': 'error',
@@ -157,7 +157,7 @@ module.exports = {
 
     // Prettier plugin (https://github.com/prettier/eslint-plugin-prettier)
     // https://github.com/prettier/eslint-config-prettier
-    'prettier/prettier': ['error', require('.prettierrc.json'), {usePrettierrc: false}],
+    'prettier/prettier': ['error', require('./.prettierrc.json'), {usePrettierrc: false}],
 
 
     // Typescript
@@ -170,6 +170,7 @@ module.exports = {
       'functions': false,
       'classes': false
     }],
+    "@typescript-eslint/camelcase": "off",
     '@typescript-eslint/array-type': ['error', {
         'default': 'array-simple'
     }],
@@ -181,13 +182,7 @@ module.exports = {
         }
       }
     }],
-    '@typescript-eslint/explicit-member-accessibility': ['error', {
-      'accessibility': 'no-public',
-      'overrides': {
-        'properties': 'explicit',
-        'parameterProperties': 'explicit'
-      }
-    }],
+    '@typescript-eslint/explicit-member-accessibility': ['error', {'accessibility': 'no-public'}],
     //'@typescript/interface-name-prefix': 'off',
 
 

@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { Component, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 import { Alert, AppURL, getLocation, Grid, GridProps } from '../..';
@@ -16,18 +16,7 @@ interface LineagePagingProps {
     model: LineageGridModel
 }
 
-export class LineagePaging extends Component<LineagePagingProps> {
-
-    shouldComponentUpdate(nextProps: LineagePagingProps) {
-        const { model } = this.props;
-        const nextModel = nextProps.model;
-
-        return !(
-            model.totalRows === nextModel.totalRows &&
-            model.getMinRowIndex() === nextModel.getMinRowIndex() &&
-            model.getMaxRowIndex() === nextModel.getMaxRowIndex()
-        );
-    }
+export class LineagePaging extends PureComponent<LineagePagingProps> {
 
     render() {
         const { model } = this.props;
@@ -43,7 +32,12 @@ export class LineagePaging extends Component<LineagePagingProps> {
             <div className="col-xs-12">
                 <div className="paging pull-right text-nowrap">
                     {total !== 0 && (
-                        <span className={showButtons ? 'paging-counts-with-buttons' : 'paging-counts-without-buttons'} data-min={min} data-max={max} data-total={total}>
+                        <span
+                            className={showButtons ? 'paging-counts-with-buttons' : 'paging-counts-without-buttons'}
+                            data-max={max}
+                            data-min={min}
+                            data-total={total}
+                        >
                             {min === max ? <span>{max}</span> : <span>{max === 0 ? 0 : min}&nbsp;-&nbsp;{max}</span>} of {total}
                         </span>
                     )}

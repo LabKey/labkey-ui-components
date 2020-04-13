@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent } from 'react';
-import { List } from 'immutable';
+import { Draft, produce } from 'immer';
 import { getLocation } from '../..';
 
 import { createGridModel, getLocationString, loadLineageIfNeeded } from './actions';
@@ -22,13 +22,7 @@ interface State {
 
 export class LineageGrid extends PureComponent<Props, State> {
 
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            model: new LineagePageModel()
-        }
-    }
+    readonly state: State = { model: new LineagePageModel() };
 
     componentDidMount() {
         this.init();
@@ -69,41 +63,38 @@ export class LineageGrid extends PureComponent<Props, State> {
         return seeds ? decodeURIComponent(seeds.split(",")[0]) : undefined;
     }
 
-    setGridLoading() {
-        const { model } = this.state;
-        const newModel = model.set('lastLocation', getLocationString(getLocation()));
+    setGridLoading(): void {
+        const newLastLocation = getLocationString(getLocation());
 
-        this.setState(() => ({
-            model: newModel.mergeIn(['grid'], {
-                isLoaded: false,
-                isLoading: true
-            }) as LineagePageModel
+        this.setState(produce((draft: Draft<State>) => {
+            draft.model.lastLocation = newLastLocation;
+            let { grid } = draft.model;
+            grid.isLoaded = false;
+            grid.isLoading = true;
         }));
     }
 
-    setGridError(lineage: Lineage) {
-        this.setState((state) => ({
-            model: state.model.mergeIn(['grid'], {
-                isError: true,
-                isLoaded: false,
-                isLoading: false,
-                message: lineage.error
-            }) as LineagePageModel
+    setGridError(lineage: Lineage): void {
+        this.setState(produce((draft: Draft<State>) => {
+            let { grid } = draft.model;
+            grid.isError = true;
+            grid.isLoaded = false;
+            grid.isLoading = false;
+            grid.message = lineage.error;
         }));
     }
 
     setGridSuccess(lineage: Lineage, distance: number) {
-        const location = getLocation();
-        const members = location.query.has('members') ? location.query.get('members') : DEFAULT_LINEAGE_DIRECTION;
-        const pageNumber = location.query.has('p') ? parseInt(location.query.get('p')) : 1;
+        const { query } = getLocation();
+        const members = query.has('members') ? query.get('members') : DEFAULT_LINEAGE_DIRECTION;
+        const pageNumber = query.has('p') ? parseInt(query.get('p')) : 1;
 
-        this.setState((state) => ({
-            model: state.model.merge({
-                grid: createGridModel(lineage, members, distance, LINEAGE_GRID_COLUMNS, pageNumber),
-                seeds: List(this.getSeed()),
-                members,
-                distance
-            }) as LineagePageModel
+        this.setState(produce((draft: Draft<State>) => {
+            let { model } = draft;
+            model.distance = distance;
+            model.grid = createGridModel(lineage, members, distance, LINEAGE_GRID_COLUMNS, pageNumber);
+            model.seeds = [this.getSeed()];
+            model.members = members;
         }));
     }
 

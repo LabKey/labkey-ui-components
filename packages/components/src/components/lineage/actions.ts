@@ -266,7 +266,13 @@ export function getLocationString(location: Location): string {
     return loc;
 }
 
-export function createGridModel(lineage: Lineage, members: LINEAGE_DIRECTIONS, distance: number, columns: List<string | GridColumn>, pageNumber: number): LineageGridModel {
+export function createGridModel(
+    lineage: Lineage,
+    members: LINEAGE_DIRECTIONS,
+    distance: number,
+    columns: List<string | GridColumn>,
+    pageNumber: number
+): LineageGridModel {
     const result = lineage.filterResult({
         filters: [new LineageFilter('type', ['Sample', 'Data'])]
     });

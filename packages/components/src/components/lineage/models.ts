@@ -2,6 +2,7 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { immerable } from 'immer';
 import { List, Map, Record } from 'immutable';
 import { GridColumn, LineageFilter, QueryInfo } from '../..';
 
@@ -465,21 +466,7 @@ export class Lineage extends Record({
     }
 }
 
-export class LineageGridModel extends Record({
-    columns: LINEAGE_GRID_COLUMNS,
-    data: List<LineageNode>(),
-    distance: DEFAULT_LINEAGE_DISTANCE,
-    isError: false,
-    isLoaded: false,
-    isLoading: false,
-    maxRows: 20,
-    members: DEFAULT_LINEAGE_DIRECTION,
-    message: undefined,
-    nodeCounts: Map<string, number>(),
-    pageNumber: 1,
-    seedNode: undefined,
-    totalRows: 0
-}) {
+interface ILineageGridModel {
     columns: List<string | GridColumn>;
     data: List<LineageNode>;
     distance: number;
@@ -487,15 +474,33 @@ export class LineageGridModel extends Record({
     isLoaded: boolean;
     isLoading: boolean;
     maxRows: number;
-    members?: LINEAGE_DIRECTIONS;
-    message?: string;
+    members: LINEAGE_DIRECTIONS;
+    message: string;
     nodeCounts: Map<string, number>;
     pageNumber: number;
-    seedNode?: LineageNode;
+    seedNode: LineageNode;
     totalRows: number;
+}
 
-    constructor(values?: {[key:string]: any}) {
-        super(values);
+export class LineageGridModel implements ILineageGridModel {
+    [immerable] = true;
+
+    readonly columns: List<string | GridColumn> = LINEAGE_GRID_COLUMNS;
+    readonly data: List<LineageNode> = List();
+    readonly distance: number = DEFAULT_LINEAGE_DISTANCE;
+    readonly isError: boolean = false;
+    readonly isLoaded: boolean = false;
+    readonly isLoading: boolean = false;
+    readonly maxRows: number = 20;
+    readonly members: LINEAGE_DIRECTIONS = DEFAULT_LINEAGE_DIRECTION;
+    readonly message: string;
+    readonly nodeCounts: Map<string, number> = Map();
+    readonly pageNumber: number = 1;
+    readonly seedNode: LineageNode;
+    readonly totalRows: number = 0;
+
+    constructor(config?: Partial<ILineageGridModel>) {
+        Object.assign(this, { ...config });
     }
 
     getOffset(): number {
@@ -517,21 +522,25 @@ export class LineageGridModel extends Record({
     }
 }
 
-export class LineagePageModel extends Record({
-    distance: DEFAULT_LINEAGE_DISTANCE,
-    grid: new LineageGridModel(),
-    lastLocation: '',
-    seeds: List<string>(),
-    members: DEFAULT_LINEAGE_DIRECTION,
-}) {
+export interface ILineagePageModel {
     distance: number;
     grid: LineageGridModel;
     lastLocation: string;
-    seeds: List<string>;
+    seeds: string[];
     members: LINEAGE_DIRECTIONS;
+}
 
-    constructor(values?: {[key:string]: any}) {
-        super(values);
+export class LineagePageModel implements ILineagePageModel {
+    [immerable] = true;
+
+    readonly distance: number = DEFAULT_LINEAGE_DISTANCE;
+    readonly grid: LineageGridModel = new LineageGridModel();
+    readonly lastLocation: string = '';
+    readonly seeds: string[] = [];
+    readonly members: LINEAGE_DIRECTIONS = DEFAULT_LINEAGE_DIRECTION;
+
+    constructor(config?: Partial<ILineagePageModel>) {
+        Object.assign(this, { ...config });
     }
 }
 

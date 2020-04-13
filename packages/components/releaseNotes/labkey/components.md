@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.48.2-fb-datasetDesigner.0
+*Released*: TBD April 2020
+* Item 7138: DatasetDesignerPanels and related components, models, actions
+    - new dataset related components DatasetDesignerPanels.tsx and DatasetPropertiesPanel.tsx
+    - DomainForm changes to support Column mapping option
+
 ### version 0.48.2
 *Released*: 13 April 2020
 * Item 7124: Add helpTopic property with default value to DataClassDesigner

@@ -23,6 +23,8 @@ import {
     DATASET_NAME_TIP, DATASPACE_TIP, TAG_TIP,
     VISIT_DATE_TIP
 } from "./constants";
+import {DatasetModel} from "./models";
+import {ActionURL, Ajax, Domain, Utils} from "@labkey/api";
 
 export const fetchCategories = async () => {
     // TODO: Replace this with server side call
@@ -88,4 +90,42 @@ export function getHelpTip (fieldName: string) : string {
 
     }
     return helpTip;
+}
+
+export function getDatasetProperties(datasetId?: number) {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('study', 'GetDataset'),
+            method: 'GET',
+            params: {datasetId},
+            scope: this,
+            success: Utils.getCallbackWrapper((data) => {
+                resolve(DatasetModel.create(data, undefined))
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error);
+            })
+        });
+    })
+}
+
+export function fetchDatasetDesign(datasetId: number) : Promise<DatasetModel> {
+    return new Promise((resolve, reject) => {
+        getDatasetProperties(datasetId)
+            .then((model: DatasetModel) => {
+                Domain.getDomainDetails({
+                    containerPath: LABKEY.container.path,
+                    domainId: model.domain.domainId,
+                    success: (data) => {
+                        resolve(DatasetModel.create(undefined, data));
+                    },
+                    failure: (error) => {
+                        reject(error);
+                    }
+                });
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
 }

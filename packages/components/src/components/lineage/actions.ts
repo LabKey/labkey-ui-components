@@ -3,21 +3,15 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { createContext } from 'react';
+import { Draft, produce } from 'immer';
 import { fromJS, List, Map, OrderedSet } from 'immutable';
-import { Experiment, Filter } from '@labkey/api';
-import {
-    AppURL,
-    GridColumn,
-    ISelectRowsResult,
-    Location,
-    SchemaQuery,
-    SCHEMAS,
-    selectRows,
-} from '../..';
+import { ActionURL, Ajax, Experiment, Filter, Utils } from '@labkey/api';
+import { AppURL, GridColumn, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../..';
 
 import {
     Lineage,
     LineageGridModel,
+    LineageLoadingState,
     LineageNode,
     LineageNodeMetadata,
     LineageResult,
@@ -83,6 +77,21 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
     });
 }
 
+function fetchLineageNodes(lsids: string[]): Promise<LineageNode[]> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: ActionURL.buildURL('experiment', 'resolve.api'),
+            params: { lsids },
+            success: Utils.getCallbackWrapper((json: any) => {
+                resolve(json.data.map(n => LineageNode.create(n.lsid, n)));
+            }),
+            failure: Utils.getCallbackWrapper((error: any) => {
+                reject(error);
+            }, undefined, true)
+        });
+    });
+}
+
 function fetchNodeMetadata(lineage: LineageResult): Promise<ISelectRowsResult>[] {
     // Node metadata does not support nodes with multiple primary keys. These could be supported, however,
     // each node would require it's own request for the unique keys combination. Also, nodes without any primary
@@ -137,31 +146,30 @@ export function loadLineageIfNeeded(seed: string, distance?: number, options?: L
         return Promise.resolve(existing);
     }
 
+    // create the initial lineage model for this seed
+    updateLineageResult(seed, new Lineage({ seed }));
+
+    if (options?.prefetchSeed) {
+        // fetch seed node asynchronously to allow for decoupled loading
+        loadSeed(seed, options);
+    }
+
+    persistLineage(seed, (draft: Draft<Lineage>) => {
+        draft.resultLoadingState = LineageLoadingState.LOADING;
+    });
+
     return fetchLineage(seed, distance)
-        .then(getLineageNodeMetadata)
-        .then(result => {
-            const updatedResult = getURLResolver(options).resolveNodes(result);
-
-            // either update the global state to include the result or set it
-            let lineage = getLineageResult(seed);
-            if (lineage) {
-                lineage = new Lineage({
-                    ...lineage,
-                    result: updatedResult
-                });
-            }
-            else {
-                lineage = new Lineage({result: updatedResult});
-            }
-
-            updateLineageResult(seed, lineage);
-            return lineage;
-        })
+        .then(result => processLineageResult(result, options))
+        .then(result => persistLineage(seed, (draft) => {
+            draft.result = result;
+            draft.resultLoadingState = LineageLoadingState.LOADED;
+        }))
         .catch(reason => {
             console.error(reason);
-            const lineage = new Lineage({error: reason.message});
-            updateLineageResult(seed, lineage);
-            return lineage;
+            return persistLineage(seed, (draft) => {
+                draft.error = reason.message;
+                draft.resultLoadingState = LineageLoadingState.LOADED;
+            });
         });
 }
 
@@ -177,14 +185,37 @@ export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promis
     ]).then(values => {
         const [ lineage, sampleSets ] = values;
 
-        let updatedLineage = new Lineage({
-            result: lineage.result,
-            error: lineage.error,
-            sampleStats: computeSampleCounts(lineage, sampleSets),
+        return persistLineage(seed, (draft) => {
+            draft.sampleStats = computeSampleCounts(lineage, sampleSets);
         });
+    });
+}
 
-        updateLineageResult(lineage.getSeed(), updatedLineage);
-        return updatedLineage;
+function persistLineage(seed: string, recipe: (draft: Draft<Lineage>) => void): Lineage {
+    updateLineageResult(seed, produce(getLineageResult(seed), recipe));
+    const lineage = getLineageResult(seed);
+    console.log('new lineage', lineage);
+    return lineage;
+}
+
+function loadSeed(seed: string, options?: LineageOptions): void {
+    persistLineage(seed, (draft: Draft<Lineage>) => {
+        draft.seedResultLoadingState = LineageLoadingState.LOADING;
+    });
+
+    fetchLineageNodes([seed]).then((nodes) => {
+        if (nodes.length === 1) {
+            // create a LineageResult from the seed alone
+            processLineageResult(LineageResult.create({
+                nodes: { [seed]: nodes[0] },
+                seed,
+            }), options).then((seedResult) => {
+                persistLineage(seed, (draft: Draft<Lineage>) => {
+                    draft.seedResult = seedResult;
+                    draft.seedResultLoadingState = LineageLoadingState.LOADED;
+                });
+            });
+        }
     });
 }
 
@@ -324,3 +355,6 @@ export function getPageNumberChangeURL(location: Location, seed: string, pageNum
     return url;
 }
 
+function processLineageResult(result: LineageResult, options?: LineageOptions): Promise<LineageResult> {
+    return getLineageNodeMetadata(result).then(r => getURLResolver(options).resolveNodes(r));
+}

@@ -5,7 +5,7 @@
 import { Edge } from 'vis-network';
 
 import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from './types';
-import { Lineage, LineageResult } from './models';
+import { Lineage, LineageLoadingState, LineageResult } from './models';
 import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
 
 import {
@@ -25,7 +25,8 @@ describe('Lineage Graph', () => {
     // seed = expression1
     const ESLineageResult = LineageResult.create(lineageExpressionSystem);
     const ESLineage = new Lineage({
-        result: ESLineageResult
+        result: ESLineageResult,
+        resultLoadingState: LineageLoadingState.LOADED,
     });
 
     // expression1 -> run1 -> child1
@@ -34,7 +35,8 @@ describe('Lineage Graph', () => {
     // seed = child1
     const sampleLineageResult = LineageResult.create(lineageSample);
     const sampleLineage = new Lineage({
-        result: sampleLineageResult
+        result: sampleLineageResult,
+        resultLoadingState: LineageLoadingState.LOADED,
     });
 
     // S0 -> R1 -> S1 -> R2 -> S2 -> R3 -> S3 -> R4  -> S4 -> R5 -> S5 -> R7 -> S7
@@ -43,7 +45,8 @@ describe('Lineage Graph', () => {
     // seed = S4
     const fullScreenSampleLineageResult = LineageResult.create(fullScreenLineageSample);
     const fullScreenSampleLineage = new Lineage({
-        result: fullScreenSampleLineageResult
+        result: fullScreenSampleLineageResult,
+        resultLoadingState: LineageLoadingState.LOADED,
     });
 
     describe('Lineage', () => {
@@ -199,19 +202,6 @@ describe('Lineage Graph', () => {
                 expect(combinedNodes[0].containedNodes.map(n => n.name)).toEqual(expect.arrayContaining(["sample 3", "sample 6"]))
             });
         });
-
-        describe('#getSeed()', () => {
-            test('Should display seed of expressionSystemLineageResult', () => {
-                let seed = ESLineage.getSeed();
-                expect(seed).toBe(ESLineageResult.seed);
-            });
-
-            test('Should display seed of sampleSystemLineageResult', () => {
-                let seed = sampleLineage.getSeed();
-                expect(seed).toBe(sampleLineageResult.seed);
-            });
-        });
-
     });
 
     describe('collapsed nodes', () => {
@@ -264,7 +254,10 @@ describe('Lineage Graph', () => {
             //    (S2+S3+S4)
             //
             const lineageResult = LineageResult.create({nodes: collapsedNodesTest1, seed: 'S1'});
-            const lineage = new Lineage({result: lineageResult});
+            const lineage = new Lineage({
+                result: lineageResult,
+                resultLoadingState: LineageLoadingState.LOADED,
+            });
             const graph = lineage.generateGraph({
                 grouping: {combineSize: 3},
             });
@@ -289,7 +282,10 @@ describe('Lineage Graph', () => {
             //    (S2+S3+S4)
             //
             const lineageResult = LineageResult.create({nodes: collapsedNodesTest2, seed: 'S1'});
-            const lineage = new Lineage({result: lineageResult});
+            const lineage = new Lineage({
+                result: lineageResult,
+                resultLoadingState: LineageLoadingState.LOADED,
+            });
             const graph = lineage.generateGraph({
                 grouping: {combineSize: 3},
             });
@@ -322,7 +318,10 @@ describe('Lineage Graph', () => {
             //                  R3
 
             const lineageResult = LineageResult.create({nodes: collapsedNodesTest3, seed: 'S1'});
-            const lineage = new Lineage({result: lineageResult});
+            const lineage = new Lineage({
+                result: lineageResult,
+                resultLoadingState: LineageLoadingState.LOADED,
+            });
             const graph = lineage.generateGraph({
                 grouping: {combineSize: 3},
             });

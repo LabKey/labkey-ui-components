@@ -196,7 +196,7 @@ export class LineageNode extends Record ({
         super(values);
     }
 
-    static create(lsid, values?: { [key:string]: any }): LineageNode {
+    static create(lsid: string, values?: { [key:string]: any }): LineageNode {
         return values ? new LineageNode({
             children:  LineageLink.createList(values.children),
             cpasType: values.cpasType,
@@ -397,17 +397,38 @@ export class LineageResult extends Record({
     }
 }
 
-export class Lineage extends Record({
-    result: undefined,
-    sampleStats: undefined,
-    error: undefined
-}) {
-    result: LineageResult;
-    sampleStats: any;
-    error?: string;
+export enum LineageLoadingState {
+    // The model has been initialized but not loaded
+    INITIALIZED = 'INITIALIZED',
+    // The model is currently loading
+    LOADING = 'LOADING',
+    // The model is loaded
+    LOADED = 'LOADED',
+}
 
-    constructor(values?: {[key:string]: any}) {
-        super(values);
+export interface ILineage {
+    error?: string
+    result: LineageResult
+    resultLoadingState?: LineageLoadingState
+    sampleStats: any
+    seed: string
+    seedResult: LineageResult
+    seedResultLoadingState?: LineageLoadingState
+}
+
+export class Lineage implements ILineage {
+    [immerable] = true;
+
+    readonly error?: string;
+    readonly result: LineageResult;
+    readonly resultLoadingState: LineageLoadingState = LineageLoadingState.INITIALIZED;
+    readonly sampleStats: any;
+    readonly seed: string;
+    readonly seedResult: LineageResult;
+    readonly seedResultLoadingState: LineageLoadingState = LineageLoadingState.INITIALIZED;
+
+    constructor(values?: Partial<ILineage>) {
+        Object.assign(this, values);
     }
 
     // Defensive check against calls made when an error is present and provides a more useful error message.
@@ -415,11 +436,6 @@ export class Lineage extends Record({
         if (this.error) {
             throw new Error('Invalid call on Lineage object. Check errors prior to attempting to interact with Lineage object.');
         }
-    }
-
-    getSeed(): string {
-        this.checkError();
-        return this.result.seed;
     }
 
     filterResult(options?: LineageOptions): LineageResult {
@@ -461,8 +477,20 @@ export class Lineage extends Record({
      */
     generateGraph(options?: LineageOptions): VisGraphOptions {
         this.checkError();
-        const result = this.filterResult(options);
-        return generate(result, options);
+
+        if (this.isLoaded()) {
+            return generate(this.filterResult(options), options);
+        }
+
+        return undefined;
+    }
+
+    isLoaded(): boolean {
+        return this.resultLoadingState === LineageLoadingState.LOADED;
+    }
+
+    isSeedLoaded(): boolean {
+        return this.seedResultLoadingState === LineageLoadingState.LOADED;
     }
 }
 

@@ -98,7 +98,7 @@ interface VisGraphProps {
 }
 
 interface VisGraphState {
-    selected?: Array<string>
+    selected?: string[]
 }
 
 export class VisGraph extends Component<VisGraphProps, VisGraphState> {
@@ -111,19 +111,14 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         edges: DataSet<Edge>;
         nodes: DataSet<VisGraphNodeType>;
     };
+
     network: InternalVisNetwork;
 
     refs: {
         visgraph: HTMLElement
     };
 
-    constructor(props: VisGraphProps) {
-        super(props);
-
-        this.state = {
-            selected: undefined
-        };
-    }
+    readonly state: VisGraphState = { selected: undefined };
 
     componentDidMount() {
         this.generateGraph(this.props);
@@ -184,19 +179,19 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         this.network.fit();
     };
 
-    private getInternalNode(id: IdType): InternalVisNode {
+    private getInternalNode = (id: IdType): InternalVisNode => {
         return this.network.body.nodes[id];
-    }
+    };
 
-    public getCombinedNodes(): VisGraphCombinedNode[] {
+    public getCombinedNodes = (): VisGraphCombinedNode[] => {
         return this.data.nodes.get({filter: isCombinedNode});
-    }
+    };
 
-    public getNodes(ids: Array<IdType>): VisGraphNodeType[] {
+    public getNodes = (ids: IdType[]): VisGraphNodeType[] => {
         return ids.map(id => this.getNode(id)).filter(n => n !== null && n !== undefined);
-    }
+    };
 
-    public getNode(id: IdType): VisGraphNodeType {
+    public getNode = (id: IdType): VisGraphNodeType => {
         const node = this.data.nodes.get(id);
         if (node && this.network.isCluster(id)) {
             const nodesInCluster = this.network.getNodesInCluster(id);
@@ -208,10 +203,10 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         }
 
         return node;
-    }
+    };
 
     // set a selection on the vis.js graph and fire the select handler as if the user clicked on a node in the graph
-    public selectNodes = (ids: Array<string>): void => {
+    public selectNodes = (ids: string[]): void => {
         const selectedNodes = this.getNodes(ids);
         this.doSelectNode(selectedNodes);
 
@@ -222,7 +217,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         });
     };
 
-    private doSelectNode(selectedNodes: VisGraphNodeType[]) {
+    private doSelectNode = (selectedNodes: VisGraphNodeType[]): void => {
         // change color of newly selected node
         let addToSelection = [];
         for (let i = 0; i < selectedNodes.length; i++) {
@@ -240,7 +235,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         if (this.props.onNodeSelect) {
             this.props.onNodeSelect(selectedNodes);
         }
-    }
+    };
 
     // create a new array from the two arrays with any duplicates removed
     private unique = (a: string[], b: string[]): string[] => {
@@ -253,7 +248,12 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         return ret;
     };
 
-    private doClick = (id: IdType): void => {
+    private onClick = (visEvent: VisClickEvent): void => {
+        if (visEvent.nodes.length !== 1) {
+            return;
+        }
+
+        const id = visEvent.nodes[0];
         const clickedNode = this.getNode(id);
         if (clickedNode) {
             if (this.props.onNodeClick) {
@@ -275,6 +275,67 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
                 return { selected: newSelected };
             })
         }
+    };
+
+    private onDoubleClick = (visEvent: VisClickEvent): void => {
+        if (visEvent.nodes.length === 1) {
+            const clickedNode = this.getNode(visEvent.nodes[0]);
+            if (this.props.onNodeDoubleClick) {
+                this.props.onNodeDoubleClick(clickedNode);
+            }
+        }
+    };
+
+    private onNodeBlur = (): void => {
+        this.network.body.container.style.cursor = 'default';
+        if (this.props.onNodeBlur) {
+            this.props.onNodeBlur();
+        }
+    };
+
+    private onNodeDeselect = (visEvent: VisDeselectEvent) => {
+        const selectedNodes = this.getNodes(visEvent.nodes);
+        const previousSelectedNodes = this.getNodes(visEvent.previousSelection.nodes);
+        if (this.props.onNodeDeselect) {
+            this.props.onNodeDeselect(selectedNodes, previousSelectedNodes);
+        }
+    };
+
+    private onNodeHover = (event: VisHoverEvent): void => {
+        this.network.body.container.style.cursor = 'pointer';
+
+        const id = event.node;
+        const node = this.getNode(id);
+        if (node) {
+            this.moveNodeToTop(id);
+
+            if (this.props.onNodeHover) {
+                const canvasBox = this.network.getBoundingBox(id);
+
+                // convert the node's canvas box to DOM coordinates
+                const topLeftDOM = this.network.canvasToDOM({
+                    x: canvasBox.left,
+                    y: canvasBox.top
+                });
+                const bottomRightDOM = this.network.canvasToDOM({
+                    x: canvasBox.right,
+                    y: canvasBox.bottom
+                });
+
+                const rect = this.refs.visgraph.getBoundingClientRect();
+                const coords = {
+                    top: rect.top + topLeftDOM.y,
+                    left: rect.left + topLeftDOM.x,
+                    bottom: rect.top + bottomRightDOM.y,
+                    right: rect.left + bottomRightDOM.x
+                };
+                this.props.onNodeHover(node, coords);
+            }
+        }
+    };
+
+    private onNodeSelect = (visEvent: VisClickEvent): void => {
+        this.doSelectNode(this.getNodes(visEvent.nodes));
     };
 
     private doAfterDrawing = (ctx: CanvasRenderingContext2D): void => {
@@ -331,86 +392,29 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         return this.network;
     };
 
-    private generateGraph(props: VisGraphProps) {
+    private generateGraph = (props: VisGraphProps): void => {
         const { fitOnResize, options } = props;
         const { selected } = this.state;
 
         this.destroyGraph();
 
-        const data = this.data = {
+        if (!options) {
+            throw new Error('VisGraph.generateGraph: options must be provided.');
+        }
+
+        this.data = {
             edges: options.edges,
             nodes: options.nodes
         };
-        this.network = new Network(this.refs.visgraph, data, options.options) as InternalVisNetwork;
 
-        this.network.on('click', (visEvent: VisClickEvent) => {
-            if (visEvent.nodes.length === 1) {
-                this.doClick(visEvent.nodes[0]);
-            }
-        });
-
-        this.network.on('doubleClick', (visEvent: VisClickEvent) => {
-            if (visEvent.nodes.length === 1) {
-                const clickedNode = this.getNode(visEvent.nodes[0]);
-                if (this.props.onNodeDoubleClick) {
-                    this.props.onNodeDoubleClick(clickedNode);
-                }
-            }
-        });
-
-        this.network.on('hoverNode', (event: VisHoverEvent) => {
-            this.network.body.container.style.cursor = 'pointer';
-
-            const id = event.node;
-            const node = this.getNode(id);
-            if (node) {
-                this.moveNodeToTop(id);
-
-                if (this.props.onNodeHover) {
-                    const canvasBox = this.network.getBoundingBox(id);
-
-                    // convert the node's canvas box to DOM coordinates
-                    const topLeftDOM = this.network.canvasToDOM({
-                        x: canvasBox.left,
-                        y: canvasBox.top
-                    });
-                    const bottomRightDOM = this.network.canvasToDOM({
-                        x: canvasBox.right,
-                        y: canvasBox.bottom
-                    });
-
-                    const rect = this.refs.visgraph.getBoundingClientRect();
-                    const coords = {
-                        top: rect.top + topLeftDOM.y,
-                        left: rect.left + topLeftDOM.x,
-                        bottom: rect.top + bottomRightDOM.y,
-                        right: rect.left + bottomRightDOM.x
-                    };
-                    this.props.onNodeHover(node, coords);
-                }
-            }
-        });
-
-        this.network.on('blurNode', () => {
-            this.network.body.container.style.cursor = 'default';
-            if (this.props.onNodeBlur) {
-                this.props.onNodeBlur();
-            }
-        });
-
-        this.network.on('selectNode', (visEvent: VisClickEvent) => {
-            this.doSelectNode(this.getNodes(visEvent.nodes));
-        });
-
-        this.network.on('deselectNode', (visEvent: VisDeselectEvent) => {
-            const selectedNodes = this.getNodes(visEvent.nodes);
-            const previousSelectedNodes = this.getNodes(visEvent.previousSelection.nodes);
-            if (this.props.onNodeDeselect) {
-                this.props.onNodeDeselect(selectedNodes, previousSelectedNodes);
-            }
-        });
-
+        this.network = new Network(this.refs.visgraph, this.data, options.options) as InternalVisNetwork;
         this.network.on('afterDrawing', this.doAfterDrawing);
+        this.network.on('blurNode', this.onNodeBlur);
+        this.network.on('click', this.onClick);
+        this.network.on('deselectNode', this.onNodeDeselect);
+        this.network.on('doubleClick', this.onDoubleClick);
+        this.network.on('hoverNode', this.onNodeHover);
+        this.network.on('selectNode', this.onNodeSelect);
 
         if (fitOnResize) {
             let resize: number;
@@ -431,7 +435,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         }
 
         this.fitGraph();
-    }
+    };
 
     render() {
         // leave just enough room so the footer doesn't get pushed down when the visjs graph shows

@@ -2,7 +2,8 @@
  * Copyright (c) 2017-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, Record } from 'immutable';
+import { immerable } from 'immer';
+import { List, Map } from 'immutable';
 import { DataSet, Edge, Network, Node } from 'vis-network';
 
 import { applyLineageOptions, LineageLink, LineageNode, LineageResult } from '../models';
@@ -124,7 +125,7 @@ export interface VisGraphNode extends Node {
 export interface VisGraphCombinedNode extends Node {
     id: string
     kind: 'combined'
-    containedNodes: Array<LineageNode>
+    containedNodes: LineageNode[]
     containedNodesByType: LineageNodeCollectionByType
 }
 
@@ -132,40 +133,42 @@ export interface VisGraphCombinedNode extends Node {
 export interface VisGraphClusterNode {
     kind: 'cluster'
     id: string | number
-    nodesInCluster: Array<VisGraphNodeType>
+    nodesInCluster: VisGraphNodeType[]
 }
 
 export function isBasicNode(item: VisGraphNodeType): item is VisGraphNode {
-    return item.kind === 'node';
+    return item && item.kind === 'node';
 }
 
 export function isCombinedNode(item: VisGraphNodeType): item is VisGraphCombinedNode {
-    return item.kind === 'combined';
+    return item && item.kind === 'combined';
 }
 
 export function isClusterNode(item: VisGraphNodeType): item is VisGraphClusterNode {
-    return item.kind === 'cluster';
+    return item && item.kind === 'cluster';
 }
 
-export class VisGraphOptions extends Record({
-    edges: undefined,
-    nodes: undefined,
-    options: {},
-    makeClusters: undefined,
-    initialSelection: undefined
-}) {
-    edges?: DataSet<Edge>;
-    nodes?: DataSet<VisGraphNode | VisGraphCombinedNode>;
-    options?: {[key:string]: any};
-    makeClusters?: (network: Network, options?: VisGraphOptions) => void;
-    initialSelection?: Array<string>;
+export interface IVisGraphOptions {
+    edges: DataSet<Edge>;
+    initialSelection: string[];
+    nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
+    options: {[key:string]: any};
+}
 
-    constructor(values?: {[key:string]: any}) {
-        super(values);
+export class VisGraphOptions implements IVisGraphOptions {
+    [immerable] = true;
+
+    readonly edges: DataSet<Edge>;
+    readonly initialSelection: string[];
+    readonly nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
+    readonly options: {[key:string]: any};
+
+    constructor(config?: Partial<IVisGraphOptions>) {
+        Object.assign(this, { ...config });
     }
 
-    public getCombinedNodes(): Array<VisGraphCombinedNode> {
-        return this.nodes.get({filter: isCombinedNode}) as Array<VisGraphCombinedNode>;
+    public getCombinedNodes(): VisGraphCombinedNode[] {
+        return this.nodes.get({filter: isCombinedNode}) as VisGraphCombinedNode[];
     }
 }
 

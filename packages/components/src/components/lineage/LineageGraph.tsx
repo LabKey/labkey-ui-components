@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import ReactN from 'reactn';
 import { List } from 'immutable';
 import { Alert, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '../..';
@@ -10,8 +10,11 @@ import { Alert, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQu
 import { loadLineageIfNeeded, NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { Lineage, LineageNode, LineageNodeMetadata, } from './models';
+import { Lineage, LineageNode } from './models';
 import {
+    isBasicNode,
+    isClusterNode,
+    isCombinedNode,
     VisGraphClusterNode,
     VisGraphCombinedNode,
     VisGraphNode,
@@ -27,13 +30,16 @@ const requiredColumns = List(['Run']);
 interface LinageGraphOwnProps {
     distance?: number
     hideLegacyLinks?: boolean
-    initialModel?: QueryGridModel
     lsid: string
     members?: LINEAGE_DIRECTIONS
     navigate?: (node: VisGraphNode) => any
 }
 
 export class LineageGraph extends ReactN.PureComponent<LinageGraphOwnProps & LineageOptions & SummaryOptions> {
+
+    static defaultProps = {
+        prefetchSeed: true
+    };
 
     componentDidMount() {
         loadLineageIfNeeded(this.props.lsid, this.props.distance, this.props);
@@ -153,46 +159,57 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         });
     };
 
-    renderSelectedNodes(seed: string) {
+    renderNodeDetails(): ReactNode {
+        const { lineage, lsid } = this.props;
+
+        if (!lineage || lineage.error) {
+            return null;
+        } else if (!lineage.isLoaded()) {
+            if (lineage.isSeedLoaded()) {
+                return this.renderSelectedNode(lineage.seedResult.nodes.get(lsid));
+            }
+            return <LoadingSpinner msg="Loading details..."/>;
+        }
+
         const { selectedNodes, hoverNode } = this.state;
 
         if (!selectedNodes || selectedNodes.length == 0) {
             return <em>Select a node from the graph to view the details.</em>;
-        }
-        else if (selectedNodes.length === 1) {
-            const hoverNodeLsid = hoverNode && hoverNode.kind === 'node' && hoverNode.lineageNode && hoverNode.lineageNode.lsid;
+        } else if (selectedNodes.length === 1) {
+            const hoverNodeLsid = isBasicNode(hoverNode) && hoverNode.lineageNode && hoverNode.lineageNode.lsid;
             const selectedNode = selectedNodes[0];
-            switch (selectedNode.kind) {
-                case 'node':     return this.renderSelectedGraphNode(seed, hoverNodeLsid, selectedNode);
-                case 'combined': return this.renderSelectedCombinedNode(seed, hoverNodeLsid, selectedNode);
-                case 'cluster':  return this.renderSelectedClusterNode(seed, hoverNodeLsid, selectedNode);
-                default:
-                    throw new Error('unknown node kind');
+
+            if (isBasicNode(selectedNode)) {
+                return this.renderSelectedNode(selectedNode.lineageNode, hoverNodeLsid);
+            } else if (isCombinedNode(selectedNode)) {
+                return this.renderSelectedCombinedNode(selectedNode, hoverNodeLsid)
+            } else if (isClusterNode(selectedNode)) {
+                return this.renderSelectedClusterNode(selectedNode, hoverNodeLsid);
             }
-        }
-        else {
+
+            throw new Error('unknown node kind');
+        } else {
             return <div>multiple selected nodes</div>;
         }
     }
 
-    renderSelectedGraphNode(seed: string, hoverNodeLsid: string, node: VisGraphNode, showSummaryOverride?: boolean) {
-        const { showSummary, summaryOptions } = this.props;
-        const { lineageNode } = node;
+    renderSelectedNode(node: LineageNode, hoverNodeLsid?: string, showSummaryOverride?: boolean): ReactNode {
+        const { lsid, showSummary, summaryOptions } = this.props;
 
         // Apply "LineageOptions" when summaryOptions not explicitly given
         const options = summaryOptions ? summaryOptions : {...this.props};
 
         return <SelectedNodeDetail
-            seed={seed}
-            node={lineageNode}
-            entityModel={this.getNodeGridDataModel(lineageNode)}
+            seed={lsid}
+            node={node}
+            entityModel={this.getNodeGridDataModel(node)}
             highlightNode={hoverNodeLsid}
             showSummary={showSummaryOverride ?? showSummary}
             summaryOptions={options}
         />;
     }
 
-    renderSelectedClusterNode(seed: string, hoverNodeLsid: string, node: VisGraphClusterNode) {
+    renderSelectedClusterNode(node: VisGraphClusterNode, hoverNodeLsid: string): ReactNode {
         // LineageNodes in the cluster
         const nodes = node.nodesInCluster.map(n => n.kind === 'node' && n.lineageNode);
 
@@ -203,7 +220,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         />;
     }
 
-    renderSelectedCombinedNode(seed: string, hoverNodeLsid: string, node: VisGraphCombinedNode) {
+    renderSelectedCombinedNode(node: VisGraphCombinedNode, hoverNodeLsid?: string): ReactNode {
         const { lineage } = this.props;
         if (!lineage && !lineage.result)
             return null;
@@ -226,36 +243,18 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         }
     }
 
-    createInitialLineageNode(): LineageNode {
-        const { initialModel } = this.props;
-        const row = initialModel.getRow();
-        const lsid = row.getIn(['LSID', 'value']);
-
-        return LineageNode.create(lsid, {
-            id: row.getIn(['RowId', 'value']),
-            name: row.getIn(['Name', 'value']),
-            schemaName: initialModel.schema,
-            queryName: initialModel.query,
-            url: row.getIn(['RowId', 'url']),
-            meta: new LineageNodeMetadata({
-                displayType: initialModel.queryInfo.title,
-                description: row.getIn(['Description', 'value'])
-            }),
-        })
-    }
-
     render() {
-        const { initialModel, lineage, lsid, visGraphOptions } = this.props;
+        const { lineage, lsid, visGraphOptions } = this.props;
 
-        if (lineage) {
-            if (lineage.error) {
-                return <Alert>{lineage.error}</Alert>
-            }
+        if (lineage?.error) {
+            return <Alert>{lineage.error}</Alert>
+        }
 
-            return (
-                <NodeInteractionProvider value={this.state.nodeInteractions}>
-                    <div className="row">
-                        <div className="col-md-8">
+        return (
+            <NodeInteractionProvider value={this.state.nodeInteractions}>
+                <div className="row">
+                    <div className="col-md-8">
+                        {lineage?.isLoaded() ? (
                             <VisGraph
                                 ref={this.visGraphRef}
                                 onNodeDoubleClick={this.onVisGraphNodeDoubleClick}
@@ -264,36 +263,16 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
                                 onNodeHover={this.updateHover}
                                 onNodeBlur={this.onVisGraphNodeBlur}
                                 options={visGraphOptions}
-                                seed={lineage.getSeed()}
+                                seed={lsid}
                             />
-                        </div>
-                        <div className="col-md-4 lineage-node-detail-container">
-                            {this.renderSelectedNodes(lineage.getSeed())}
-                        </div>
+                        ) : <LoadingSpinner msg="Loading lineage..."/>}
                     </div>
-                </NodeInteractionProvider>
-            )
-        }
-        else {
-            return (
-                <NodeInteractionProvider value={this.state.nodeInteractions}>
-                    <div className="row">
-                        <div className="col-md-8">
-                            <div className="top-spacing">
-                                <LoadingSpinner msg="Loading lineage..."/>
-                            </div>
-                        </div>
-                        <div className="col-md-4 lineage-node-detail-container">
-                            {initialModel ? this.renderSelectedGraphNode(lsid, undefined, {
-                                id: lsid,
-                                kind: 'node',
-                                lineageNode: this.createInitialLineageNode()
-                            }, false) : <LoadingSpinner msg="Loading details..."/>}
-                        </div>
+                    <div className="col-md-4 lineage-node-detail-container">
+                        {this.renderNodeDetails()}
                     </div>
-                </NodeInteractionProvider>
-            )
-        }
+                </div>
+            </NodeInteractionProvider>
+        );
     }
 }
 

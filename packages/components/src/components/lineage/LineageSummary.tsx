@@ -79,7 +79,7 @@ export class LineageSummary extends ReactN.Component<Props> {
         const { options } = this.props;
         const lineage = this.getLineage();
 
-        if (!lineage) {
+        if (!lineage || !lineage.isLoaded()) {
             return <LoadingSpinner msg="Loading lineage..."/>
         } else if (lineage.error) {
             return <div>{lineage.error}</div>

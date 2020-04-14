@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config-base",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "shareable eslint config for typescript",
   "main": "index.js",
   "files": [

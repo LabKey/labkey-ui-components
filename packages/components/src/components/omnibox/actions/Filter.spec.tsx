@@ -169,8 +169,8 @@ describe('FilterAction::completeAction', () => {
 describe('FilterAction::fetchOptions', () => {
     let action;
     const urlPrefix = undefined;
-    const fetchOptions = (tokens: Array<string>, testHandle: (options: Array<ActionOption>) => any) => {
-        return action.fetchOptions(tokens).then(testHandle);
+    const fetchOptions = (tokens: Array<string>, uniqueValues: List<any>, testHandle: (options: Array<ActionOption>) => any) => {
+        return action.fetchOptions(tokens, uniqueValues).then(testHandle);
     };
 
     beforeEach(() => {
@@ -181,7 +181,7 @@ describe('FilterAction::fetchOptions', () => {
     test('column options', () => {
         return Promise.all([
             // nothing entered -- should display all available columns
-            fetchOptions([], (options) => {
+            fetchOptions([], undefined, (options) => {
                 expect(options.length).toEqual(getModel().getDisplayColumns().size);
 
                 // none should complete the action
@@ -189,7 +189,7 @@ describe('FilterAction::fetchOptions', () => {
             }),
 
             // no matches -- should display nothing
-            fetchOptions(['qwerty'], (options) => {
+            fetchOptions(['qwerty'], undefined, (options) => {
                 expect(options.length).toEqual(0);
             })
         ]);
@@ -203,18 +203,18 @@ describe('FilterAction::fetchOptions', () => {
 
         return Promise.all([
             // should display all available non-multivalue filter types
-            fetchOptions(['Name', ''], (options) => {
+            fetchOptions(['Name', ''], undefined, (options) => {
                 const expectedFilters = getExpectedFilterTypes('string');
                 expect(options.length).toEqual(expectedFilters.length);
             }),
 
             // match against symbol
-            fetchOptions(['Name', '='], (options) => {
+            fetchOptions(['Name', '='], List(['1', '2', '3']), (options) => {
                 expect(options.length).toEqual(3);
             }),
 
             // match against displayText
-            fetchOptions(['Name', 'is '], (options) => {
+            fetchOptions(['Name', 'is '], undefined, (options) => {
                 expect(options.length).toEqual(2);
                 expect(options[0].value).toEqual(`"${Filter.Types.ISBLANK.getDisplayText().toLowerCase()}"`);
                 expect(options[1].value).toEqual(`"${Filter.Types.NONBLANK.getDisplayText().toLowerCase()}"`);

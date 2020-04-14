@@ -34,6 +34,7 @@ interface Props {
     childNounSingular: string
     childModel: QueryGridModel
     onUpdate?: () => void
+    onEditToggle?: (editing: boolean) => any
     parentDataType: EntityDataType
     title: string
     cancelText?: string
@@ -116,7 +117,10 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     }
 
     toggleEdit = () => {
-        this.setState((state) => ({editing: !state.editing}))
+        if (this.props.onEditToggle) {
+            this.props.onEditToggle(!this.state.editing);
+        }
+        this.setState((state) => ({editing: !state.editing}));
     };
 
     changeEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index): void  => {
@@ -153,7 +157,11 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             currentParents: state.originalParents,
             originalValueLoaded: List<boolean>(),
             editing: false
-        }))
+        }), () => {
+            if (this.props.onEditToggle) {
+                this.props.onEditToggle(false);
+            }
+        })
     };
 
     onSubmit = (values) => {
@@ -181,6 +189,9 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
                 if (onUpdate) {
                     onUpdate();
+                }
+                if (this.props.onEditToggle) {
+                    this.props.onEditToggle(false);
                 }
             });
         }).catch((error) => {

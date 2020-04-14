@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ## version TBD
 *Released*: TBD
 * Bug fixes for ParentEntityEditPanel to better support editing of parent samples
+* Issue 40148: Don't reinitialize EntityInsertPanel if location or entityModelType are not changing
 
 ### version 0.48.2
 *Released*: 13 April 2020

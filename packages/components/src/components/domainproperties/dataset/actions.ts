@@ -115,7 +115,7 @@ export function fetchDatasetDesign(datasetId: number) : Promise<DatasetModel> {
             .then((model: DatasetModel) => {
                 Domain.getDomainDetails({
                     containerPath: LABKEY.container.path,
-                    domainId: model.domain.domainId,
+                    domainId: model.domainId,
                     success: (data) => {
                         resolve(DatasetModel.create(undefined, data));
                     },

@@ -1,26 +1,27 @@
 import React from "react";
+import { List, Map } from "immutable";
 import { mount } from "enzyme";
 import renderer from 'react-test-renderer';
 import toJson from "enzyme-to-json";
-import { DataClassDesigner } from "./DataClassDesigner";
-import { DataClassModel } from "./models";
 import { Alert } from "../../base/Alert";
 import { PROPERTIES_PANEL_ERROR_MSG } from "../constants";
-import getDomainDetailsJSON from "../../../test/data/dataclass-getDomainDetails.json";
 import DomainForm from "../DomainForm";
-import { DataClassPropertiesPanel } from "./DataClassPropertiesPanel";
+import { SampleTypePropertiesPanel } from "./SampleTypePropertiesPanel";
 import { FileAttachmentForm } from "../../files/FileAttachmentForm";
+import { SampleTypeDesigner } from "./SampleTypeDesigner";
+import { DomainDetails, DomainField } from "../models";
 
 const BASE_PROPS = {
+    initModel: undefined,
     onComplete: jest.fn(),
     onCancel: jest.fn()
 };
 
-describe('DataClassDesigner', () => {
+describe('SampleTypeDesigner', () => {
 
     test('default properties', () => {
         const form =
-            <DataClassDesigner
+            <SampleTypeDesigner
                 {...BASE_PROPS}
             />;
 
@@ -30,16 +31,16 @@ describe('DataClassDesigner', () => {
 
     test('custom properties', () => {
         const form =
-            <DataClassDesigner
+            <SampleTypeDesigner
                 {...BASE_PROPS}
-                nounSingular={'Source'}
-                nounPlural={'Sources'}
+                nounSingular={'Some Sample'}
+                nounPlural={'Some Samples'}
                 nameExpressionInfoUrl={'https://www.labkey.org/Documentation'}
                 nameExpressionPlaceholder={'name expression placeholder test'}
                 headerText={'header text test'}
                 useTheme={true}
                 containerTop={10}
-                appPropertiesOnly={true}
+                appPropertiesOnly={false}
                 successBsStyle={'primary'}
                 saveBtnText={'Finish it up'}
             />;
@@ -48,15 +49,23 @@ describe('DataClassDesigner', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('initModel', () => {
+    test('initModel with name URL props', () => {
         const form =
-            <DataClassDesigner
+            <SampleTypeDesigner
                 {...BASE_PROPS}
-                initModel={DataClassModel.create(getDomainDetailsJSON)}
+                initModel={
+                    DomainDetails.create(Map<string, any> ({
+                        domainDesign: {
+                            name: 'Test Name',
+                            fields: [{name: 'testfield'}]
+                        },
+                        nameReadOnly: true
+                    }))
+                }
             />;
         const wrapped = mount(form);
 
-        expect(wrapped.find(DataClassPropertiesPanel)).toHaveLength(1);
+        expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
         expect(wrapped.find(DomainForm)).toHaveLength(1);
         expect(wrapped.find(FileAttachmentForm)).toHaveLength(0);
         expect(toJson(wrapped)).toMatchSnapshot();
@@ -65,7 +74,7 @@ describe('DataClassDesigner', () => {
 
     test('open fields panel', () => {
         const wrapped = mount(
-            <DataClassDesigner
+            <SampleTypeDesigner
                 {...BASE_PROPS}
             />
         );

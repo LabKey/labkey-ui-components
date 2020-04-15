@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Merge forward changes from release20.4-SNAPSHOT branch
+    - includes hotfix changes from version 0.41.6
+
 ## version 0.48.3
 *Released*: 14 April 2020
 * Bug fixes for ParentEntityEditPanel to better support editing of parent samples
@@ -61,14 +66,14 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Allow Source (Data Class) Alias to be defined separate from a SampleSet type Parent Alias
     - Allow filtering of parent options (for example, only 'sources' type data classes will be included)
 
+### version 0.41.6
+*Released*: 8 April 2020
+* Issue 39803: signOut action support for a redirectUrl in the response, for the CAS identity provider logout case
+
 ### version 0.41.5
 *Released*: 1 April 2020
 * SiteUsersGridPanel and UserDetails panel prop to hide/show 'Reset Password' button (i.e. allowResetPassword)
 * NavigationBar optional property for an alternate url to go to after sign out
-
-### version 0.41.6
-*Released*: 8 April 2020
-* Issue 39803: signOut action support for a redirectUrl in the response, for the CAS identity provider logout case
 
 ### version 0.41.3
 *Released*: 30 March 2020

@@ -58,8 +58,9 @@ export interface OmniBoxState {
     isOpen?: boolean;
     options?: Array<ActionOption>;
     previewInputValue?: string;
-    uniqueValues?: List<any>;
-    uniqueValuesLoading?: boolean;
+    distinctValues?: List<any>;
+    distinctValuesLoading?: boolean;
+    distinctValuesFieldKey?: string;
 }
 
 let instanceId = 1;
@@ -186,8 +187,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             isOpen: false,
             options: [],
             previewInputValue: '',
-            uniqueValues: undefined,
-            uniqueValuesLoading: false,
+            distinctValues: undefined,
+            distinctValuesFieldKey: undefined,
+            distinctValuesLoading: false,
         };
     }
 
@@ -287,8 +289,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 }
 
                 if (action.keyword === 'filter') {
-                    newState.uniqueValues = undefined;
-                    newState.uniqueValuesLoading = false;
+                    newState.distinctValues = undefined;
+                    newState.distinctValuesFieldKey = undefined;
+                    newState.distinctValuesLoading = false;
                 }
 
                 this.setState(newState);
@@ -313,21 +316,29 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     };
 
     fetchDistinctValues = (columnName: string) => {
-        if (this.state.uniqueValuesLoading || this.state.uniqueValues !== undefined) {
+        const model = this.props.getModel();
+        const column = parseColumns(model.getDisplayColumns(), columnName).first() as QueryColumn;
+
+        if (!column) {
+            // If we don't have a column there is nothing to fetch.
             return;
         }
 
-        const model = this.props.getModel();
-        const column = parseColumns(model.getDisplayColumns(), columnName).first() as QueryColumn;
         // resolveFieldKey handles lookups for us.
         const fieldKey = resolveFieldKey(columnName, column);
 
         if (column.multiValue) {
-            // We don't support multi value columns for the dropdown list.
-            this.setState({ uniqueValues: List<any>()});
+            // We don't support multi value columns for the dropdown list because SelectDistinct just returns LSIDs for
+            // every row even if the column has no values.
+            this.setState({ distinctValues: List<any>()});
         }
 
-        this.setState({ uniqueValuesLoading: true });
+        if (this.state.distinctValuesFieldKey === fieldKey) {
+            // The column has not changed, do not re-fetch.
+            return;
+        }
+
+        this.setState({ distinctValuesLoading: true, distinctValuesFieldKey: fieldKey });
 
         Query.selectDistinctRows({
             containerFilter: model.containerFilter,
@@ -339,22 +350,26 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             parameters: model.queryParameters,
             column: fieldKey,
             success: (result) => {
-                if (!this.state.activeAction || this.state.activeAction.keyword !== 'filter') {
-                    // If we don't have an activeAction, or it is no longer a filter action,  assume the user closed
-                    // the dropdown while we were loading unique values. Throw away the result.
+                const isFilterAction = this.state.activeAction.keyword === 'filter';
+                const sameColumn = this.state.distinctValuesFieldKey === fieldKey;
+
+                if (!this.state.activeAction || !isFilterAction || !sameColumn) {
+                    // If we don't have an activeAction, or it is no longer a filter action, or the column is different,
+                    // assume the user closed the dropdown while we were loading unique values, or they typed in a
+                    // different column. Throw away the result.
                     return;
                 }
 
                 this.setState({
-                    uniqueValuesLoading: false,
-                    uniqueValues: List(result.values.sort(naturalSort)),
+                    distinctValuesLoading: false,
+                    distinctValues: List(result.values.sort(naturalSort)),
                 });
             },
             failure: (error) => {
-                console.error('Error fetching distinct values:', error);
-                // TODO: how to handle? Doesn't seem like there is a good place for errors. Maybe just log and default
-                //  to the current page values?
-                this.setState({ uniqueValuesLoading: false, uniqueValues: List<any>() });
+                console.error('Error fetching distinct values while fetching options for Omnibox:', error);
+                // Note: Is there a better way to handle an error here? Doesn't seem like there is a good place to
+                // notify the user of any errors in this situation.
+                this.setState({ distinctValuesLoading: false, distinctValues: List<any>() });
             }
         })
     };
@@ -373,7 +388,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                     this.fetchDistinctValues(columnName);
                 }
 
-                activeAction.fetchOptions(tokens, this.state.uniqueValues)
+                activeAction.fetchOptions(tokens, this.state.distinctValues)
                     .then((options) => this.setOptions(activeAction, options));
             }
             else {

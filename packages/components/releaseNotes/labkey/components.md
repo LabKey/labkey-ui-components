@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.49.0
+*Released*: 15 April 2020
+* `@labkey/api` dependency update.
+* Incorporate changes needed due to stricter typings.
+
 ## version 0.48.3
 *Released*: 14 April 2020
 * Bug fixes for ParentEntityEditPanel to better support editing of parent samples

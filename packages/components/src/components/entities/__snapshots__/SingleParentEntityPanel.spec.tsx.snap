@@ -652,7 +652,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "isDataValueRequired": [Function],
                 "isMultiValued": [Function],
                 "isTableWise": [Function],
-                "splitValue": [Function],
+                "parseValue": [Function],
                 "validate": [Function],
               },
               "value": Array [
@@ -749,7 +749,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                           "isDataValueRequired": [Function],
                           "isMultiValued": [Function],
                           "isTableWise": [Function],
-                          "splitValue": [Function],
+                          "parseValue": [Function],
                           "validate": [Function],
                         },
                         "value": Array [

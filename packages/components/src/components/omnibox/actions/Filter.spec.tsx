@@ -18,7 +18,7 @@ import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { ActionOption, Value } from './Action';
-import { FilterAction } from './Filter';
+import { FilterAction, getURLSuffix } from './Filter';
 
 import { createMockActionContext } from '../../../test/OmniboxMock';
 import { QueryColumn } from '../../base/models/model';
@@ -173,7 +173,7 @@ describe('FilterAction::fetchOptions', () => {
     test('filter options', () => {
         const getExpectedFilterTypes = (columnType: string): Array<Filter.IFilterType> => {
             return Filter.getFilterTypesForType(columnType as any /* jsonType */)
-                .filter(ft => !ft.isMultiValued() && (ft.getDisplaySymbol() || ft.getURLSuffix()))
+                .filter(ft => !ft.isMultiValued() && (ft.getDisplaySymbol() || getURLSuffix(ft)))
         };
 
         return Promise.all([

@@ -6,7 +6,7 @@ import {
     capitalizeFirstChar,
     EntityDataType,
     getActionErrorMessage,
-    getQueryGridModel,
+    getQueryGridModel, gridIdInvalidate,
     LoadingSpinner,
     Progress,
     QueryGridModel,
@@ -15,16 +15,18 @@ import {
 } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import {
-    getEntityTypeOptions,
-    getInitialParentChoices,
-    getUpdatedRowForParentChanges,
-    invalidateParentModels,
-    parentValuesDiffer
+    getEntityTypeOptions
 } from './actions';
 import { List } from 'immutable';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { DELIMITER } from '../forms/input/SelectInput';
+import {
+    getInitialParentChoices,
+    getParentGridPrefix,
+    getUpdatedRowForParentChanges,
+    parentValuesDiffer
+} from './utils';
 import { AuditBehaviorTypes } from '@labkey/api';
 
 interface Props {
@@ -33,6 +35,7 @@ interface Props {
     childNounSingular: string
     childModel: QueryGridModel
     onUpdate?: () => void
+    onEditToggle?: (editing: boolean) => any
     parentDataType: EntityDataType
     title: string
     cancelText?: string
@@ -48,6 +51,7 @@ interface State {
     submitting: boolean
     originalParents: List<EntityChoice>
     currentParents: List<EntityChoice>
+    originalValueLoaded: List<boolean>
 }
 
 export class ParentEntityEditPanel extends React.Component<Props, State> {
@@ -67,7 +71,8 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             parentTypeOptions: undefined,
             submitting: false,
             originalParents: undefined,
-            currentParents: undefined
+            currentParents: undefined,
+            originalValueLoaded: List<boolean>()
         };
     }
 
@@ -76,7 +81,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     }
 
     componentWillUnmount() {
-        invalidateParentModels(this.state.originalParents, this.state.currentParents, this.props.parentDataType);
+        gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
     }
 
     init()  {
@@ -114,7 +119,10 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     }
 
     toggleEdit = () => {
-        this.setState((state) => ({editing: !state.editing}))
+        if (this.props.onEditToggle) {
+            this.props.onEditToggle(!this.state.editing);
+        }
+        this.setState((state) => ({editing: !state.editing}));
     };
 
     changeEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index): void  => {
@@ -140,7 +148,8 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             newChoice.value = Array.isArray(value) ? value.join(DELIMITER) : value;
             return {
                 currentParents: state.currentParents.set(index, newChoice),
-                originalParents: updateOriginal ? state.originalParents.set(index, {...newChoice}) : state.originalParents,
+                originalParents: updateOriginal && state.originalParents.has(index) && !state.originalValueLoaded.get(index) ? state.originalParents.set(index, {...newChoice}) : state.originalParents,
+                originalValueLoaded: state.originalParents.has(index) ? state.originalValueLoaded.set(index, true) : state.originalValueLoaded
             }
         });
     }
@@ -148,8 +157,13 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
     onCancel = () => {
         this.setState((state) => ({
             currentParents: state.originalParents,
+            originalValueLoaded: List<boolean>(),
             editing: false
-        }))
+        }), () => {
+            if (this.props.onEditToggle) {
+                this.props.onEditToggle(false);
+            }
+        })
     };
 
     onSubmit = (values) => {
@@ -173,13 +187,16 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             this.setState(() => ({
                 submitting: false,
                 editing: false
-            }));
+            }), () => {
+                gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
 
-            invalidateParentModels(this.state.originalParents, this.state.currentParents, this.props.parentDataType);
-
-            if (onUpdate) {
-                onUpdate();
-            }
+                if (onUpdate) {
+                    onUpdate();
+                }
+                if (this.props.onEditToggle) {
+                    this.props.onEditToggle(false);
+                }
+            });
         }).catch((error) => {
             console.error(error);
             this.setState(() => ({

@@ -155,7 +155,8 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     componentWillReceiveProps(nextProps: OwnProps) {
-        this.init(nextProps)
+        if (this.props.location != nextProps.location || this.props.entityDataType !== nextProps.entityDataType)
+            this.init(nextProps)
     }
 
     componentWillUnmount() {

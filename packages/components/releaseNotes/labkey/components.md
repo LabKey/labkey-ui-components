@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version TBD
-*Released*: TBD
+## version 0.48.3
+*Released*: 14 April 2020
 * Bug fixes for ParentEntityEditPanel to better support editing of parent samples
 * Issue 40148: Don't reinitialize EntityInsertPanel if location or entityModelType are not changing
 

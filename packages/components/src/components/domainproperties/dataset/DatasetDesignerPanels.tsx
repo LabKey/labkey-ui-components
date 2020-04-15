@@ -20,14 +20,17 @@ import {DatasetPropertiesPanel} from "./DatasetPropertiesPanel";
 import {BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner} from "../BaseDomainDesigner";
 import {DomainDesign, IAppDomainHeader} from "../models";
 import {List} from "immutable";
-import {getDomainPanelStatus} from "../actions";
+import {getDomainPanelStatus, saveDomain} from "../actions";
 import DomainForm from "../DomainForm";
 import {DatasetColumnMappingPanel} from "./DatasetColumnMappingPanel";
+import {importData, ListModel, resolveErrorMessage} from "../../..";
+import {ActionURL, getServerContext} from "@labkey/api";
 
 interface Props {
     initModel?: DatasetModel;
     onChange?: (model: DatasetModel) => void
     onCancel: () => void
+    onComplete: (model: DatasetModel, fileImportError?: string) => void
     useTheme?: boolean;
     showDataSpace: boolean;
     showVisitDate: boolean;
@@ -61,6 +64,12 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     };
 
     onFinish = () => {
+        const { setSubmitting } = this.props;
+        const { model } = this.state;
+        const isValid = true;
+
+        this.props.onFinish(isValid, this.saveDomain);
+
 
     };
 
@@ -103,6 +112,68 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
         );
 
+    };
+
+    handleFileImport() {
+        const { setSubmitting } = this.props;
+        const { fileImportData, model } = this.state;
+
+        importData({
+            schemaName: 'study',
+            queryName: model.name,
+            file: fileImportData,
+            importUrl: ActionURL.buildURL(
+                'study',
+                'UploadDatasetItems',
+                getServerContext().container.path,
+                {'name': model.name}
+            )
+        })
+            .then((response) => {
+                setSubmitting(false, () => {
+                    this.props.onComplete(model);
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+                setSubmitting(false, () => {
+                    this.props.onComplete(model, resolveErrorMessage(error));
+                });
+            });
+    }
+
+    saveDomain = () => {
+        const { setSubmitting } = this.props;
+        const { model, fileImportData } = this.state;
+
+        saveDomain(model.domain, null, model.getOptions(), model.name)
+            .then((response) => {
+                console.log("Save then response", response.toJS());
+                let updatedModel = model.set('exception', undefined) as DatasetModel;
+                updatedModel = updatedModel.merge({domain: response}) as DatasetModel;
+                this.setState(() => ({model: updatedModel}));
+
+                // If we're importing List file data, import file contents
+                if (fileImportData) {
+                    this.handleFileImport();
+                }
+                else {
+                    setSubmitting(false, () => {
+                        this.props.onComplete(updatedModel);
+                    });
+                }
+            })
+            .catch((response) => {
+                console.log("Save catch response", response);
+                const exception = resolveErrorMessage(response);
+                const updatedModel = exception
+                    ? model.set('exception', exception) as DatasetModel
+                    : model.merge({domain: response, exception: undefined}) as DatasetModel;
+
+                setSubmitting(false, () => {
+                    this.setState(() => ({model: updatedModel}));
+                });
+            });
     };
 
     render() {

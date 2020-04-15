@@ -152,7 +152,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     }
 
     componentDidMount() {
-        const { model } = this.props;
 
         fetchCohorts()
             .then((data) => {

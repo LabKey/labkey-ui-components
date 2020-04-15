@@ -138,4 +138,12 @@ export class DatasetModel extends Record({
         }
 
     }
+
+    getOptions(): Object {
+        let options = this.toJS();
+
+        delete options.exception;
+        delete options.domain;
+        return options;
+    }
 }

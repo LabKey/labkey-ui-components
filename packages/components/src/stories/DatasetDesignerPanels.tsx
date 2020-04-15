@@ -35,6 +35,7 @@ class NewDatasetDesigner extends React.PureComponent<any,any> {
               showDataSpace={this.props.showDataspace}
               showVisitDate={this.props.showVisitDate}
               onCancel={() => console.log('cancel')}
+              onComplete={() => console.log('onComplete')}
           />
         );
     }
@@ -53,6 +54,7 @@ class EditDatasetDesigner extends React.PureComponent<any,any> {
                 showDataSpace={this.props.showDataspace}
                 showVisitDate={this.props.showVisitDate}
                 onCancel={() => console.log('cancel')}
+                onComplete={() => console.log('onComplete')}
             />
         );
     }

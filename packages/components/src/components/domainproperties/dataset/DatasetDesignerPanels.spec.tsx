@@ -20,6 +20,8 @@ import getDatasetDesign from "../../../test/data/dataset-getDatasetDesign.json";
 import {DatasetDesignerPanels} from "./DatasetDesignerPanels";
 import renderer from "react-test-renderer";
 import React from "react";
+import {mount} from "enzyme";
+import toJson from "enzyme-to-json";
 
 describe("Dataset Designer", () => {
 
@@ -34,6 +36,7 @@ describe("Dataset Designer", () => {
                 showDataSpace={true}
                 showVisitDate={true}
                 onCancel={jest.fn()}
+                onComplete={jest.fn()}
             />;
 
         const dom = renderer.create(designerPanel).toJSON();
@@ -41,17 +44,19 @@ describe("Dataset Designer", () => {
     });
 
     test("Edit existing dataset", () => {
-        const designerPanel =
+        const designerPanels = mount(
             <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
                 useTheme={true}
                 showDataSpace={true}
                 showVisitDate={true}
                 onCancel={jest.fn()}
-            />;
+                onComplete={jest.fn()}
+            />
+        );
 
-        const dom = renderer.create(designerPanel).toJSON();
-        expect(dom).toMatchSnapshot();
+        expect(toJson(designerPanels)).toMatchSnapshot();
+        designerPanels.unmount();
     })
 
     // TODO: testCase for testing the alert / error message similar to DataClassDesigner.spec.tsx

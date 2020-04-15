@@ -25,6 +25,13 @@ import {
 } from "./constants";
 import {DatasetModel} from "./models";
 import {ActionURL, Ajax, Domain, Utils} from "@labkey/api";
+import {selectRows} from "../../..";
+import {fromJS, List} from "immutable";
+
+export type CohortMap = {
+  label: string;
+  value: number
+};
 
 export const fetchCategories = async () => {
     // TODO: Replace this with server side call
@@ -45,6 +52,25 @@ export const fetchCohorts = async () => {
             {label: 'Cohort3', value: 3}]
     };
 };
+
+// export function fetchCohorts(): Promise<List<CohortMap>> {
+//
+//     return new Promise((resolve, reject) => {
+//         selectRows({
+//             schemaName: 'study',
+//             queryName: 'Cohort',
+//             columns:'rowid,label'
+//         }).then((data) => {
+//             console.log("fetch cohorts");
+//             const models = fromJS(data.models[data.key]);
+//             let cohorts = List<CohortMap>();
+//             resolve(cohorts);
+//         }).catch((response) => {
+//             console.log("fetch cohorts error", response);
+//             reject(response.message);
+//         });
+//     });
+// }
 
 
 export const fetchVisitDateColumns = async () => {

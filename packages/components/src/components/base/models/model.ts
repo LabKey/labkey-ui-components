@@ -223,6 +223,7 @@ export class SchemaQuery extends Record({
     }
 }
 
+// Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
 export class QueryColumn extends Record({
     align: undefined,

@@ -18,7 +18,7 @@ import { fromJS, List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { ActionOption, Value } from './Action';
-import { FilterAction } from './Filter';
+import { FilterAction, getURLSuffix } from './Filter';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../../test/data/mixtures-getQuery.json';
@@ -198,7 +198,7 @@ describe('FilterAction::fetchOptions', () => {
     test('filter options', () => {
         const getExpectedFilterTypes = (columnType: string): Array<Filter.IFilterType> => {
             return Filter.getFilterTypesForType(columnType as JsonType)
-                .filter(ft => !ft.isMultiValued() && (ft.getDisplaySymbol() || ft.getURLSuffix()))
+                .filter(ft => !ft.isMultiValued() && (ft.getDisplaySymbol() || getURLSuffix(ft)))
         };
 
         return Promise.all([

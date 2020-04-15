@@ -1558,25 +1558,10 @@
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.1.1.tgz#38a0451dbccf31e902a8d5bbada12af85b41cce0"
   integrity sha1-OKBFHbzPMekCqNW7raEq+FtBzOA=
 
-"@labkey/eslint-config-base@0.0.6":
-  version "0.0.6"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-base/-/@labkey/eslint-config-base-0.0.6.tgz#ee67144858bba1e3686955472f2926e798055041"
-  integrity sha1-7mcUSFi7oeNoaVVHLykm55gFUEE=
-  dependencies:
-    "@typescript-eslint/eslint-plugin" "2.27.0"
-    "@typescript-eslint/parser" "2.27.0"
-    eslint "6.8.0"
-    eslint-config-prettier "6.10.1"
-    eslint-plugin-import "2.20.2"
-    eslint-plugin-jest "23.8.2"
-    eslint-plugin-only-warn "1.0.2"
-    eslint-plugin-prettier "3.1.2"
-    prettier "2.0.4"
-
 "@labkey/eslint-config-base@0.0.7":
   version "0.0.7"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-base/-/@labkey/eslint-config-base-0.0.7.tgz#1d476c344918eeb5b8bb5b7cf308b2e1eeaa9d67"
-  integrity sha1-HUdsNEkY7rW4u1t88wiy4e6qnWc=
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-base/-/@labkey/eslint-config-base-0.0.7.tgz#4f7eba4102d00a3f6df4f23e1a15e676fbd4be3d"
+  integrity sha1-T366QQLQCj9t9PI+GhXmdvvUvj0=
   dependencies:
     "@typescript-eslint/eslint-plugin" "2.27.0"
     "@typescript-eslint/parser" "2.27.0"
@@ -1590,10 +1575,10 @@
 
 "@labkey/eslint-config-react@0.0.7":
   version "0.0.7"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.7.tgz#9d85e14b440823ef7f9cb65894c758af839f0ccb"
-  integrity sha1-nYXhS0QII+9/nLZYlMdYr4OfDMs=
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.7.tgz#13b55b4fe2598932611d2c92094e839b01036e7a"
+  integrity sha1-E7VbT+JZiTJhHSySCU6DmwEDbno=
   dependencies:
-    "@labkey/eslint-config-base" "0.0.6"
+    "@labkey/eslint-config-base" "0.0.7"
     eslint-plugin-react "7.19.0"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":

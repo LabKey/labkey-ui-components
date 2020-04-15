@@ -613,11 +613,12 @@ export class InsertRowsResponse extends Record({
 export function insertRows(options: InsertRowsOptions): Promise<InsertRowsResponse> {
     return new Promise((resolve, reject) => {
         const { fillEmptyFields, rows, schemaQuery, auditBehavior } = options;
+        const _rows = fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows;
 
         Query.insertRows({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
-            rows: fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows,
+            rows: _rows.toArray(),
             auditBehavior,
             apiVersion: 13.2,
             success: (response) => {

@@ -350,13 +350,17 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             parameters: model.queryParameters,
             column: fieldKey,
             success: (result) => {
+                if (!this.state.activeAction) {
+                    // The user closed the action menu, do nothing.
+                    return;
+                }
+
                 const isFilterAction = this.state.activeAction.keyword === 'filter';
                 const sameColumn = this.state.distinctValuesFieldKey === fieldKey;
 
-                if (!this.state.activeAction || !isFilterAction || !sameColumn) {
-                    // If we don't have an activeAction, or it is no longer a filter action, or the column is different,
-                    // assume the user closed the dropdown while we were loading unique values, or they typed in a
-                    // different column. Throw away the result.
+                if (!isFilterAction || !sameColumn) {
+                    // If the action is no longer a filter action, or the column is different, assume the user typed in
+                    // a different column or action type. Throw away the result.
                     return;
                 }
 

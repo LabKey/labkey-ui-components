@@ -9,6 +9,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     - DataClassPropertiesPanel and SampleTypePropertiesPanel default nameExpressionInfoUrl and nameExpressionPlaceholder properties
     - SampleTypeDesigner change to default to "Infer from File" in empty fields state
 
+## version 0.48.3
+*Released*: 14 April 2020
+* Bug fixes for ParentEntityEditPanel to better support editing of parent samples
+* Issue 40148: Don't reinitialize EntityInsertPanel if location or entityModelType are not changing
+
 ### version 0.48.2
 *Released*: 13 April 2020
 * Item 7124: Add helpTopic property with default value to DataClassDesigner

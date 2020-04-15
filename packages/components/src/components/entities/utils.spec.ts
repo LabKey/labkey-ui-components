@@ -1,7 +1,7 @@
 import { DataClassDataType, QueryGridModel, SchemaQuery } from '../..';
 import { fromJS, List, Map } from 'immutable';
 import { EntityChoice, IEntityTypeOption } from './models';
-import { getInitialParentChoices, parentValuesDiffer } from './actions';
+import { getInitialParentChoices, parentValuesDiffer } from './utils';
 
 describe("getInitialParentChoices", () => {
     const modelId = 'id';

@@ -159,7 +159,6 @@ export class FilterAction implements Action {
     }
 
     static parseTokens(tokens: Array<string>, columns: List<QueryColumn>, isComplete?: boolean): IFilterContext {
-        console.log('parseTokens', tokens);
         let options: IFilterContext = {
             filterTypes: []
         };
@@ -207,7 +206,6 @@ export class FilterAction implements Action {
                 const operator = resolveSymbol(activeFilterType);
                 const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
                 const display = this.getDisplayValue(column.shortCaption, activeFilterType, rawValue);
-                console.log('complete action', [`"${column.shortCaption}"`, operator, rawValue]);
                 resolve({
                     displayValue: display.displayValue,
                     isReadOnly: display.isReadOnly,
@@ -216,7 +214,6 @@ export class FilterAction implements Action {
                 });
             }
             else {
-                console.log('complete action else:', tokens);
                 resolve({
                     value: tokens.join(' '),
                     isValid: false

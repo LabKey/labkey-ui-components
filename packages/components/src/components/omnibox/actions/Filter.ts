@@ -358,6 +358,10 @@ export class FilterAction implements Action {
         const operator = resolveSymbol(activeFilterType);
 
         uniqueValues.forEach((value) => {
+            if (value === null) {
+                return;
+            }
+
             const strValue = value.toString();
 
             if (strValue.toLowerCase().indexOf(safeValue) > -1) {

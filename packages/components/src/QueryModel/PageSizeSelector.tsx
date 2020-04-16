@@ -4,6 +4,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Tip } from '..';
 
 import { RequiresModelAndActions } from './withQueryModels';
+import { blurActiveElement } from '../util/utils';
 
 interface PageSizeSelectorProps extends RequiresModelAndActions {
     // pageSizes is expected to be sorted (ascending)
@@ -15,13 +16,19 @@ export class PageSizeSelector extends PureComponent<PageSizeSelectorProps> {
         pageSizes: [20, 40, 100, 250, 400],
     };
 
+    setMaxRows = (size) => {
+        const { model, actions } = this.props;
+        actions.setMaxRows(model.id, size);
+        blurActiveElement();
+    };
+
     render() {
         const { model, actions, pageSizes } = this.props;
         const { id, error, maxRows, isLoading, rowCount } = model;
         const disabled = error !== undefined || isLoading;
         const show = rowCount > pageSizes[0];
         const menuItems = pageSizes.map(size => (
-            <MenuItem key={size} active={size === maxRows} onClick={() => actions.setMaxRows(id, size)}>
+            <MenuItem key={size} active={size === maxRows} onClick={() => this.setMaxRows(size)}>
                 {size}
             </MenuItem>
         ));

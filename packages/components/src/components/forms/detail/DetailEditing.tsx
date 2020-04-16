@@ -191,14 +191,13 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                 schemaQuery,
                 rows: [updatedValues]
             }).then(() => {
-                this.setState(() => ({editing: false}));
-                if (Utils.isFunction(this.props.onEditToggle))
-                    this.props.onEditToggle(false);
-
-                if (onUpdate) {
-                    onUpdate();
-                }
-
+                this.setState(() => ({editing: false}), () => {
+                    if (onUpdate) {
+                        onUpdate();
+                    }
+                    if (Utils.isFunction(this.props.onEditToggle))
+                        this.props.onEditToggle(false);
+                });
             }).catch((error) => {
                 console.error(error);
                 this.setState(() => ({

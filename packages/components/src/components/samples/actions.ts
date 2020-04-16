@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {ActionURL, Ajax, Domain, Filter, Query, Utils} from '@labkey/api';
+import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
-import { IEntityTypeDetails, IParentOption, } from '../entities/models';
+import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType } from "../entities/actions";
 import { getSelection } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';
-import { naturalSort } from '../../util/utils';
 import { selectRows } from '../../query/api';
-import {DomainDetails} from "../domainproperties/models";
+import { DomainDetails } from "../domainproperties/models";
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     let promises = [];
@@ -75,9 +74,9 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     });
 }
 
-export function getSampleTypeDetails(query?: SchemaQuery, domainId?: number): Promise<any> {
-    return new Promise<DomainDetails>((resolve, reject) => {
-        const sampleSetConfig = {
+export function getSampleTypeDetails(query?: SchemaQuery, domainId?: number): Promise<DomainDetails> {
+    return new Promise((resolve, reject) => {
+        return Domain.getDomainDetails({
             domainId,
             containerPath: ActionURL.getContainer(),
             queryName: query ? query.getQuery() : undefined,
@@ -85,12 +84,10 @@ export function getSampleTypeDetails(query?: SchemaQuery, domainId?: number): Pr
             success: (response) => {
                 resolve(DomainDetails.create(Map(response)));
             },
-            failure:(response) => {
+            failure: (response) => {
                 reject(response);
             }
-        } as Domain.GetDomainOptions;
-
-        return Domain.getDomainDetails(sampleSetConfig);
+        });
     });
 }
 

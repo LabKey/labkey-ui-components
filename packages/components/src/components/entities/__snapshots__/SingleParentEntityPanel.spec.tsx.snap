@@ -629,7 +629,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       asPanel={false}
       model={
         Immutable.Record {
-          "id": "parent-data-second source|exp$pdata/second source",
+          "id": "dataclasses-parent-data|exp$pdata/second source",
           "schema": "exp.data",
           "query": "Second Source",
           "queryParameters": undefined,
@@ -652,7 +652,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "isDataValueRequired": [Function],
                 "isMultiValued": [Function],
                 "isTableWise": [Function],
-                "splitValue": [Function],
+                "parseValue": [Function],
                 "validate": [Function],
               },
               "value": Array [
@@ -726,7 +726,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               <QueryGrid
                 model={
                   Immutable.Record {
-                    "id": "parent-data-second source|exp$pdata/second source",
+                    "id": "dataclasses-parent-data|exp$pdata/second source",
                     "schema": "exp.data",
                     "query": "Second Source",
                     "queryParameters": undefined,
@@ -749,7 +749,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                           "isDataValueRequired": [Function],
                           "isMultiValued": [Function],
                           "isTableWise": [Function],
-                          "splitValue": [Function],
+                          "parseValue": [Function],
                           "validate": [Function],
                         },
                         "value": Array [
@@ -814,7 +814,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                   condensed={true}
                   data={Immutable.List []}
                   emptyText="No data available."
-                  gridId="parent-data-second source|exp$pdata/second source"
+                  gridId="dataclasses-parent-data|exp$pdata/second source"
                   headerCell={[Function]}
                   isLoading={true}
                   loadingText={
@@ -831,7 +831,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 >
                   <div
                     className="table-responsive"
-                    data-gridid="parent-data-second source|exp$pdata/second source"
+                    data-gridid="dataclasses-parent-data|exp$pdata/second source"
                   >
                     <GridMessages
                       messages={Immutable.List []}

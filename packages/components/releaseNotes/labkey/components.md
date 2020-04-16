@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.49.1
+*Released*: 16 April 2020
 * Merge forward changes from release20.4-SNAPSHOT branch
     - includes hotfix changes from version 0.41.6
 

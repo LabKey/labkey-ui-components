@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Checkbox, Col, FormControl, Modal, Row} from 'react-bootstrap';
-import {helpLinkNode, SelectInput} from '../../..';
+import {helpLinkNode, initQueryGridState, QuerySelect, SCHEMAS, SelectInput} from '../../..';
 import {DatasetAdvancedSettingsForm, DatasetModel} from "./models";
-import {fetchCohorts, fetchVisitDateColumns, getHelpTip} from "./actions";
+import {fetchVisitDateColumns, getHelpTip} from "./actions";
 import "../../../theme/dataset.scss";
 import {DomainFieldLabel} from "../DomainFieldLabel";
 import {SectionHeading} from "../SectionHeading";
@@ -145,6 +145,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         super(props);
         const initialState = this.getInitialState();
 
+        initQueryGridState(); //needed for selectRows usage
+
         this.state = {
             modalOpen: false,
             ...initialState,
@@ -152,20 +154,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     }
 
     componentDidMount() {
+        const model = this.props.model;
 
-        fetchCohorts()
-            .then((data) => {
-                this.setState(() => ({
-                    availableCohorts: data.cohorts
-                }));
-            });
-
-        fetchVisitDateColumns()
-            .then((data) => {
-                this.setState(() => ({
-                    visitDateColumns: data.visitDateColumns
-                }));
-            })
+        this.setState(() => ({
+            visitDateColumns: fetchVisitDateColumns(model.domain).toArray()
+        }));
     }
 
     getInitialState = () => {
@@ -174,7 +167,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return {
             datasetId: model.datasetId,
             tag: model.tag,
-            showInOverview: model.showInOverview,
+            showByDefault: model.showByDefault,
             cohortId: model.cohortId,
             visitDatePropertyName: model.visitDatePropertyName,
             dataSharing: model.dataSharing
@@ -191,7 +184,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     onCheckboxChange = (name, checked) => {
-        this.setState(() => ({ showInOverview: !checked }));
+        this.setState(() => ({ showByDefault: !checked }));
     };
 
     onInputChange = e => {
@@ -205,8 +198,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         this.setState({ [id]: value });
     };
 
-    onSelectChange = (name, formValue, selected): void => {
-        this.setState({ [name]: formValue });
+    onSelectChange = (id: string, value: any): void => {
+        this.setState({ [id]: value });
     };
 
     getHelpTipElement(field: string) : JSX.Element {
@@ -218,12 +211,12 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
           datasetId,
           cohortId,
           visitDatePropertyName,
-          showInOverview,
+          showByDefault,
           tag,
           dataSharing
       } = this.state;
 
-      const datasetAdvancedSettingsForm = {showInOverview, datasetId, cohortId, visitDatePropertyName, tag, dataSharing};
+      const datasetAdvancedSettingsForm = {showByDefault, datasetId, cohortId, visitDatePropertyName, tag, dataSharing};
 
       const { applyAdvancedProperties } = this.props;
 
@@ -235,10 +228,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const {
             modalOpen,
             datasetId,
-            availableCohorts,
             cohortId,
             tag,
-            showInOverview,
+            showByDefault,
             visitDatePropertyName,
             visitDateColumns,
             dataSharing
@@ -268,9 +260,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                         <div className='margin-top'>
                             <Checkbox
-                                checked={showInOverview}
+                                checked={showByDefault}
                                 onChange={this.onInputChange}
-                                id={"showInOverview"}
+                                id={"showByDefault"}
                             >
                                 Show dataset in overview
                             </Checkbox>
@@ -298,15 +290,34 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 onSelectChange={this.onSelectChange}
                             />
                         }
+                        {/*** Category ID - Query Select ***/}
+                        <Row className={'margin-top'}>
 
-                        <DatasetSettingsSelect
-                            name="cohortId"
-                            label="Cohort Association"
-                            helpTip={this.getHelpTipElement("cohort")}
-                            selectOptions={availableCohorts}
-                            selectedValue={cohortId}
-                            onSelectChange={this.onSelectChange}
-                        />
+                            <Col xs={5} >
+                                <DomainFieldLabel
+                                    label={"Cohort Association"}
+                                    helpTipBody={() => this.getHelpTipElement("tag")}
+                                />
+                            </Col>
+
+                            <Col xs={7} >
+                                <QuerySelect
+                                    componentId={"cohortId"}
+                                    name={"cohortId"}
+                                    schemaQuery={SCHEMAS.STUDY_TABLES.COHORT}
+                                    formsy={false}
+                                    showLabel={false}
+                                    preLoad={true}
+                                    loadOnChange={true}
+                                    onQSChange={this.onSelectChange}
+                                    value={cohortId}
+                                    displayColumn={'label'}
+                                    valueColumn={'rowId'}
+                                    inputClass={"col-xs-12"}
+
+                                />
+                            </Col>
+                        </Row>
 
                         <DatasetSettingsInput
                             name="tag"

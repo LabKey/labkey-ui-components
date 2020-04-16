@@ -148,7 +148,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
         saveDomain(model.domain, null, model.getOptions(), model.name)
             .then((response) => {
-                console.log("Save then response", response.toJS());
                 let updatedModel = model.set('exception', undefined) as DatasetModel;
                 updatedModel = updatedModel.merge({domain: response}) as DatasetModel;
                 this.setState(() => ({model: updatedModel}));
@@ -164,7 +163,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 }
             })
             .catch((response) => {
-                console.log("Save catch response", response);
                 const exception = resolveErrorMessage(response);
                 const updatedModel = exception
                     ? model.set('exception', exception) as DatasetModel

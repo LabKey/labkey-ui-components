@@ -84,7 +84,27 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
     };
 
     onCategoryChange = (category) => {
-        this.onChange('categoryId', category.value);
+        const { model } = this.props;
+        let newModel;
+
+        if (category && category.value) {
+            if (category.rowId) {
+                newModel = model.merge({
+                    category: category.value
+                }) as DatasetModel;
+            }
+            else {
+                newModel = model.merge({
+                    category: category.value
+                }) as DatasetModel;
+            }
+        }
+        else {
+            newModel = model.merge({
+                category: undefined
+            }) as DatasetModel;
+        }
+        this.updateValidStatus(newModel);
     };
 
     onDataRowRadioChange = e => {
@@ -95,22 +115,22 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
 
         if (value == 0) {
             newModel = model.merge({
-                keyPropertyId: undefined,
-                isDemographicData: true,
+                keyPropertyName: undefined,
+                demographicData: true,
                 keyPropertyManaged: false
             }) as DatasetModel;
         }
         else if (value == 1) {
             newModel = model.merge({
-                keyPropertyId: undefined,
-                isDemographicData: false,
+                keyPropertyName: undefined,
+                demographicData: false,
                 keyPropertyManaged: false
             }) as DatasetModel;
         }
         else {
             newModel = model.merge({
-                keyPropertyId: 0, // resetting key property id
-                isDemographicData: false,
+                keyPropertyName: '', // resetting key property id
+                demographicData: false,
                 keyPropertyManaged: false
             }) as DatasetModel;
         }
@@ -118,12 +138,12 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
     };
 
     onAdditionalKeyFieldChange = (name, formValue, selected): void => {
-        let propertyId = undefined;
+        let propertyName = undefined;
 
         if (selected) {
-            propertyId = selected.propertyId;
+            propertyName = selected.name;
         }
-        this.onChange(name, propertyId);
+        this.onChange(name, propertyName);
     };
 
 

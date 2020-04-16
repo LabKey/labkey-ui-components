@@ -82,7 +82,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
         fetchCategories()
             .then((data) => {
                 this.setState(() => ({
-                    availableCategories: data.categories
+                    availableCategories: data.toArray()
                 }))
             })
     }
@@ -123,12 +123,11 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     </Col>
 
                     <Col xs={7}>
-                        {/*TODO: could be replaced by QuerySelect along with server side story*/}
                         <Creatable
-                            name="categoryId"
+                            name="category"
                             placeholder="Select dataset category"
                             onChange={onCategoryChange}
-                            value={model.categoryId}
+                            value={model.category}
                             options={availableCategories}
                         />
                     </Col>
@@ -252,13 +251,13 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
 
                 <div className={showAdditionalKeyFieldCls}>
                     <DatasetSettingsSelect
-                        name={"keyPropertyId"}
+                        name={"keyPropertyName"}
                         label={"Additional Key Field"}
                         selectOptions={domain.fields.toArray()}
                         onSelectChange={onSelectChange}
-                        labelKey={"label"}
-                        valueKey={"propertyId"}
-                        selectedValue={model.keyPropertyId}
+                        labelKey={"name"}
+                        valueKey={"name"}
+                        selectedValue={model.keyPropertyName}
                         disabled={!showAdditionalKeyField}
                         helpTip={this.getHelpTipForAdditionalField()}
                         clearable={false}

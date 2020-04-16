@@ -23,7 +23,7 @@ export interface DatasetAdvancedSettingsForm {
     datasetId?: number;
     cohortId?: number;
     tag?: string;
-    showInOverview?: boolean;
+    showByDefault?: boolean;
     visitDatePropertyName?: string;
 }
 
@@ -40,15 +40,14 @@ export class DatasetModel extends Record({
     datasetId: undefined,
     name: undefined,
     category: undefined,
-    categoryId: undefined,
     visitDatePropertyName: undefined,
-    keyPropertyId: undefined,
+    keyPropertyName: undefined,
     keyPropertyManaged: undefined,
-    isDemographicData: undefined,
+    demographicData: undefined,
     label: undefined,
     cohortId: undefined,
     tag: undefined,
-    showInOverview: undefined,
+    showByDefault: undefined,
     description: undefined,
     dataSharing: undefined
 }) {
@@ -59,15 +58,14 @@ export class DatasetModel extends Record({
     entityId: string;
     name: string;
     category?: string;
-    categoryId?: number;
     visitDatePropertyName?: string;
-    keyPropertyId?: number;
+    keyPropertyName?: string;
     keyPropertyManaged: boolean;
-    isDemographicData: boolean;
+    demographicData: boolean;
     label?: string;
     cohortId?: number;
     tag?: string;
-    showInOverview: boolean;
+    showByDefault: boolean;
     description?: string;
     dataSharing?: string;
 
@@ -89,25 +87,25 @@ export class DatasetModel extends Record({
         let isValidKeySetting = true;
 
         if (this.getDataRowSetting() === 2) {
-            isValidKeySetting = this.keyPropertyId !== undefined && this.keyPropertyId !== 0
+            isValidKeySetting = this.keyPropertyName !== undefined && this.keyPropertyName !== ''
         }
 
         return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && isValidKeySetting;
     }
 
     isNew(): boolean {
-        return !this.entityId;
+        return !this.datasetId;
     }
 
     getDataRowSetting() : number {
         let dataRowSetting;
 
         // participant id
-        if ((this.keyPropertyId === undefined || this.keyPropertyId === null) && this.isDemographicData) {
+        if ((this.keyPropertyName === undefined || this.keyPropertyName === null) && this.demographicData) {
             dataRowSetting = 0;
         }
         // participant id and timepoint
-        else if (this.keyPropertyId === undefined || this.keyPropertyId === null) {
+        else if (this.keyPropertyName === undefined || this.keyPropertyName === null) {
             dataRowSetting = 1;
         }
         // participant id, timepoint and additional key field
@@ -119,24 +117,22 @@ export class DatasetModel extends Record({
     }
 
     validManagedKeyField(): boolean {
-
-        if (this.keyPropertyId) {
+        if (this.keyPropertyName) {
             const domainFields = this.domain.fields;
 
             const allowedFieldTypes = domainFields.filter((field) => {
                 return field.dataType.isString() || field.dataType.isInteger()
             })
                 .map((field) => {
-                    return field.propertyId
+                    return field.name
                 })
                 .toList();
 
-            return allowedFieldTypes.contains(this.keyPropertyId);
+            return allowedFieldTypes.contains(this.keyPropertyName);
         }
         else {
             return false;
         }
-
     }
 
     getOptions(): Object {

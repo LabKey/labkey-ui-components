@@ -125,7 +125,7 @@ export const NEW_DATASET_MODEL = {
     "category" : null,
     "visitDatePropertyName" : null,
     "keyProperty" : null,
-    "isDemographicData" : null,
+    "demographicData" : null,
     "label" : null,
     "cohortId" : null,
     "tag" : null,

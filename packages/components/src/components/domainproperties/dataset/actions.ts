@@ -25,62 +25,48 @@ import {
 } from "./constants";
 import {DatasetModel} from "./models";
 import {ActionURL, Ajax, Domain, Utils} from "@labkey/api";
-import {selectRows} from "../../..";
+import {DomainDesign, selectRows} from "../../..";
 import {fromJS, List} from "immutable";
+import {Option} from "react-select";
 
-export type CohortMap = {
-  label: string;
-  value: number
-};
+export function fetchCategories(): Promise<List<Option>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            saveInSession: true,
+            schemaName: 'study',
+            sql: "SELECT DISTINCT CategoryId.Label, CategoryId.RowId FROM DataSets"
+        }).then((data) => {
+            const models = fromJS(data.models[data.key]);
+            let categories = List<Option>();
 
-export const fetchCategories = async () => {
-    // TODO: Replace this with server side call
-    return {
-        'categories': [
-            {label: 'A', value: 20},
-            {label: 'B', value: 21},
-            {label: 'C', value: 22}]
-    };
-};
+            data.orderedModels[data.key].forEach((modelKey) => {
+                const row = models.get(modelKey);
+                const value = row.getIn(['Label', 'value']);
+                const label = row.getIn(['Label', 'value']);
 
-export const fetchCohorts = async () => {
-    // TODO: Replace this with server side call
-    return {
-        'cohorts': [
-            {label: 'Cohort1', value: 1},
-            {label: 'Cohort2', value: 2},
-            {label: 'Cohort3', value: 3}]
-    };
-};
+                categories = categories.push({value, label});
+            });
 
-// export function fetchCohorts(): Promise<List<CohortMap>> {
-//
-//     return new Promise((resolve, reject) => {
-//         selectRows({
-//             schemaName: 'study',
-//             queryName: 'Cohort',
-//             columns:'rowid,label'
-//         }).then((data) => {
-//             console.log("fetch cohorts");
-//             const models = fromJS(data.models[data.key]);
-//             let cohorts = List<CohortMap>();
-//             resolve(cohorts);
-//         }).catch((response) => {
-//             console.log("fetch cohorts error", response);
-//             reject(response.message);
-//         });
-//     });
-// }
+            resolve(categories);
+        }).catch((response) => {
+            reject(response.message);
+        });
+    });
+}
 
+export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
+    let visitDateColumns = List<Option>();
 
-export const fetchVisitDateColumns = async () => {
-    // TODO: Keeping this action until next story in which visitDateColumns will be pulled from state change (for date fields) in the Domain Form.
-    return {
-        'visitDateColumns': [
-            {label: 'Date', value: 'date'},
-            {label: 'Arrival Date', value: 'arrivalDate'}]
-    };
-};
+    visitDateColumns = visitDateColumns.push({value: 'date', label: 'date'});
+
+    domain.fields.map((field, index) => {
+        if (field.rangeURI.endsWith('dateTime')) {
+            visitDateColumns = visitDateColumns.push({value: field.name, label: field.name})
+        }
+    });
+
+    return visitDateColumns;
+}
 
 export function getHelpTip (fieldName: string) : string {
     let helpTip = '';

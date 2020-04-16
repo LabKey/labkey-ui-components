@@ -182,6 +182,8 @@ yarn run storybook
 When changes are made to the source code or .scss files for the components or the stories, the storybook instance will automatically reload.
 
 ### ESLint and Prettier
+**In an effort to maintain consistent formatting, it is highly recommended to run lint-fix or lint-diff-fix on any files you've changed.**
+
 ESLint / Prettier package scripts and configurations are included in this package. ESLint can be run on a file, directory or
 all directories with the following commands.
 
@@ -195,6 +197,16 @@ ESLint can be run with the --fix flag, to automatically fix as many issues as po
 
 ```shell script
 yarn run lint-fix ./src/components/files/FileTree.tsx
+```
+
+To lint only the files you have changed there are two target scripts, lint-diff and lint-diff-fix. These will perform
+a git diff and lint only the files that have local changes (precommit). By default these scripts will lint any changed
+files in the src/ directory, but a parameter can be passed to them with a different file or directory path relative to the
+labkey-ui-components/packages/components directory (eg. src/components/files).
+
+```shell script
+yarn run lint-diff-fix
+yarn run lint-diff src/components/files
 ```
 
 Prettier is an ESLint plugin with additional formatting rules. This is automatically run with ESLint in this package.

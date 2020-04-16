@@ -83,5 +83,9 @@ describe('GridPanel', () => {
         // pageSizes should be different
         tree = renderer.create(<GridPanel actions={actions} model={model} pageSizes={[5, 10, 15, 20]} />);
         expect(tree.toJSON()).toMatchSnapshot();
+
+        // export menu should not be rendered.
+        tree = renderer.create(<GridPanel actions={actions} model={model} showExport={false} />);
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 });

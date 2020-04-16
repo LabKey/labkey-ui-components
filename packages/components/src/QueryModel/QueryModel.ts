@@ -222,6 +222,10 @@ export class QueryModel implements IQueryModel {
         return fieldKeys.join(',');
     }
 
+    get exportColumnString(): string {
+        return this.displayColumns.map(column => column.fieldKey).join(',');
+    }
+
     get sortString(): string {
         const { sorts, viewName, queryInfo } = this;
 

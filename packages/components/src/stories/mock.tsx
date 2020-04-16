@@ -471,10 +471,11 @@ export function initQueryGridMocks(delayMs = undefined) {
         const queryResponse = QUERY_RESPONSES.getIn([ schemaName.toLowerCase(), queryName.toLowerCase() ]);
 
         if (queryResponse) {
-            responseBody.values = queryResponse.get('rows').map(row => {
+            const unique = new Set(queryResponse.get('rows').map(row => {
                 const data = row.getIn(['data', column]);
                 return data.get('displayValue') ?? data.get('value');
-            });
+            }));
+            responseBody.values = Array.from(unique);
         }
 
         return res

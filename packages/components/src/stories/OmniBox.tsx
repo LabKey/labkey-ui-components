@@ -46,6 +46,9 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
             const queryInfo = makeQueryInfo(mixturesQueryInfo);
             const model = new QueryGridModel({
                 queryInfo,
+                schema: queryInfo.schemaQuery.schemaName,
+                query: queryInfo.schemaQuery.queryName,
+                view: queryInfo.schemaQuery.viewName,
                 messages: fromJS(mockData.messages),
                 data: fromJS(mockData.rows),
                 dataIds: fromJS(mockData.orderedRows),

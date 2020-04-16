@@ -105,7 +105,7 @@ describe('OmniBox component', () => {
 
         expect(openControlElement.length).toEqual(1);
 
-        openControlElement.simulate('mousedown', {button: 0});
+        openControlElement.simulate('click', {button: 0});
 
         const openState : OmniBoxState = openComponent.state();
         expect(openState.isOpen).toBe(true);

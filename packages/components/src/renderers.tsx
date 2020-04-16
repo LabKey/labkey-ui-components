@@ -25,7 +25,13 @@ import { CustomToggle } from './components/base/CustomToggle';
 import { QueryColumn } from './components/base/models/model';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 
-export function headerCell(handleSort: any, column: GridColumn, i: number, selectable?: boolean, sortable: boolean = true, columnCount?: number) {
+export function headerCell(
+    handleSort: (column: QueryColumn, dir: string) => any,
+    column: GridColumn,
+    i: number,
+    selectable?: boolean,
+    sortable: boolean = true,
+    columnCount?: number) {
 
     const col: QueryColumn = column.raw;
 
@@ -47,11 +53,11 @@ export function headerCell(handleSort: any, column: GridColumn, i: number, selec
                         <span className="fa fa-chevron-circle-down" style={{color: 'lightgray', fontSize: '12px'}}/>
                     </CustomToggle>
                     <Dropdown.Menu>
-                        <MenuItem disabled={isSortAsc} onClick={!isSortAsc ? handleSort.bind(this, column, '+') : undefined}>
+                        <MenuItem disabled={isSortAsc} onClick={!isSortAsc ? () => { handleSort(col, '+'); } : undefined}>
                             <span className="fa fa-sort-amount-asc"/>&nbsp;
                             Sort ascending
                         </MenuItem>
-                        <MenuItem disabled={isSortDesc} onClick={!isSortDesc ? handleSort.bind(this, column, '-') : undefined}>
+                        <MenuItem disabled={isSortDesc} onClick={!isSortDesc ? () => { handleSort(col, '-'); } : undefined}>
                             <span className="fa fa-sort-amount-desc"/>&nbsp;
                             Sort descending
                         </MenuItem>

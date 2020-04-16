@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import $ from 'jquery';
 import classNames from 'classnames';
 import AutosizeInput from 'react-input-autosize';
@@ -165,17 +165,6 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     constructor(props: OmniBoxProps) {
         super(props);
 
-        this.handleClickValue = this.handleClickValue.bind(this);
-        this.handleInputBlur = this.handleInputBlur.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleInputFocus = this.handleInputFocus.bind(this);
-        this.handleKeyDown = this.handleKeyDown.bind(this);
-        this.handleMouseDown = this.handleMouseDown.bind(this);
-        this.handleOptionClick = this.handleOptionClick.bind(this);
-        this.handleOptionFocus = this.handleOptionFocus.bind(this);
-        this.removeActionValue = this.removeActionValue.bind(this);
-        this.renderMenuOption = this.renderMenuOption.bind(this);
-
         this._omniboxInput = React.createRef();
 
         this.state = {
@@ -203,10 +192,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         });
     }
 
-    activateValue(value: ActionValue) {
+    activateValue = (value: ActionValue): void => {
         let newInputValue;
         let newActionValues = [];
-        let actionValues = this.state.actionValues;
+        const { actionValues } = this.state;
 
         for (let i=actionValues.length-1; i >= 0; i--) {
             if (value && value.value === actionValues[i].value) {
@@ -233,21 +222,21 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
             this.fetchOptions(matches.matchingActions, newInputValue);
         }
-    }
+    };
 
-    cancelBlur() {
+    cancelBlur = (): void => {
         if (this._blurTimeout) {
             clearTimeout(this._blurTimeout);
             this._blurTimeout = undefined;
         }
-    }
+    };
 
     cancelEvent(event) {
         event.stopPropagation();
         event.preventDefault();
     }
 
-    completeAction(lastInputValue?: string, optionAction?: Action): boolean {
+    completeAction = (lastInputValue?: string, optionAction?: Action): boolean => {
         const action = optionAction ? optionAction : this.state.activeAction;
         const value = lastInputValue || this.state.inputValue;
         let completed = false;
@@ -305,7 +294,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         return completed;
-    }
+    };
 
     setOptions = (action, options) => {
         this.setState({
@@ -378,7 +367,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         })
     };
 
-    fetchOptions(activeActions: Array<Action>, inputValue: string) {
+    fetchOptions = (activeActions: Array<Action>, inputValue: string): void => {
         const { actions } = this.props;
         if (inputValue && activeActions && activeActions.length > 0) {
             if (activeActions.length === 1) {
@@ -453,15 +442,15 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 })
             })
         }
-    }
+    };
 
-    fireOnChange(actionValues: Array<ActionValue>) {
+    fireOnChange = (actionValues: Array<ActionValue>): void => {
         if (this.props.onChange) {
             this.props.onChange(this.mergeActionValues(actionValues), this.props.actions);
         }
-    }
+    };
 
-    focus() {
+    focus = (): void => {
         if (!this._omniboxInput.current) {
             return;
         }
@@ -474,9 +463,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
             this.fetchOptions(this.state.activeAction ? [this.state.activeAction] : undefined, this.state.inputValue);
         }
-    }
+    };
 
-    focusAdjacentOption(dir: 'next' | 'previous') {
+    focusAdjacentOption = (dir: 'next' | 'previous'): void => {
         const { focusedIndex, isOpen, options } = this.state;
 
         if (isOpen) {
@@ -497,17 +486,17 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 previewInputValue
             })
         }
-    }
+    };
 
-    focusNextOption() {
+    focusNextOption = (): void => {
         this.focusAdjacentOption('next');
-    }
+    };
 
-    focusPreviousOption() {
+    focusPreviousOption = (): void => {
         this.focusAdjacentOption('previous');
-    }
+    };
 
-    getMatchingActions(inputValue: string): {activeAction?: Action, matchingActions: Array<Action>} {
+    getMatchingActions = (inputValue: string): {activeAction?: Action, matchingActions: Array<Action>} => {
         const { actions } = this.props;
 
         if (inputValue) {
@@ -551,9 +540,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         return {
             matchingActions: actions
         };
-    }
+    };
 
-    handleBackspace(event) {
+    handleBackspace = (event): void => {
         if (this.state.inputValue.length > 0) {
             return;
         }
@@ -563,16 +552,16 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             this.cancelEvent(event);
             this.removeActionValue(this.state.actionValues.length - 1);
         }
-    }
+    };
 
-    handleClickValue(value: ActionValue, event) {
+    handleClickValue = (value: ActionValue, event): void => {
         this.cancelBlur();
         this.cancelEvent(event);
         this.activateValue(value);
         this.focus();
-    }
+    };
 
-    handleInputBlur() {
+    handleInputBlur = (): void => {
         // completeAction will handle resets, however, it may not be able to complete an invalid
         // action. Therefore, set the state according to blur.
         if (!this.completeAction()) {
@@ -584,9 +573,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 options: []
             });
         }
-    }
+    };
 
-    handleInputChange(event) {
+    handleInputChange = (event): void => {
         let newInputValue = event.target.value;
         if (this.state.inputValue !== event.target.value && this.props.onInputChange) {
             let nextState = this.props.onInputChange(newInputValue);
@@ -619,17 +608,17 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         this.fetchOptions(matches.matchingActions, newInputValue);
-    }
+    };
 
-    handleInputFocus() {
+    handleInputFocus = (): void => {
         if (this.props.disabled || this.state.isFocused) {
             return;
         }
 
         this.focus();
-    }
+    };
 
-    handleKeyDown(event) {
+    handleKeyDown = (event): void => {
         if (this.props.disabled) return;
 
         switch (event.keyCode) {
@@ -668,12 +657,15 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             default:
                 return;
         }
-    }
+    };
 
-    handleMouseDown(event) {
-        // if the event was triggered by a mousedown and not the primary
+    // Mouse click used instead of mousedown to allow other items in the document to handle
+    // mouse down/up events.
+    // See https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=39543
+    handleMouseClick = (event): void => {
+        // if the event was triggered by a click and not the primary
         // button, or if the component is disabled, ignore it.
-        if (this.props.disabled || (event.type === 'mousedown' && event.button !== 0)) {
+        if (this.props.disabled || (event.type === 'click' && event.button !== 0)) {
             return;
         }
 
@@ -686,9 +678,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         this.cancelEvent(event);
         this.handleInputFocus();
-    }
+    };
 
-    handleOptionClick(option: ActionOption) {
+    handleOptionClick = (option: ActionOption): void => {
         this.cancelBlur();
 
         if (option.selectable !== false) {
@@ -710,15 +702,15 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 this.fetchOptions([nextState.activeAction], nextState.inputValue);
             }
         }
-    }
+    };
 
-    handleOptionFocus(option: ActionOption, focusedIndex: number) {
+    handleOptionFocus = (option: ActionOption, focusedIndex: number): void => {
         this.setState({
             focusedIndex
         })
-    }
+    };
 
-    mergeActionValues(actionValues: Array<ActionValue>): Array<ActionValueCollection> {
+    mergeActionValues = (actionValues: Array<ActionValue>): Array<ActionValueCollection> => {
         let newActionValueCollection: Array<ActionValueCollection> = [];
 
         for (let a=0; a < actionValues.length; a++) {
@@ -757,9 +749,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         return newActionValueCollection;
-    }
+    };
 
-    removeActionValue(actionValueIndex: number) {
+    removeActionValue = (actionValueIndex: number): void => {
         const { actionValues } = this.state;
 
         if (actionValueIndex < actionValues.length) {
@@ -777,9 +769,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
             this.fireOnChange(newActionValues);
         }
-    }
+    };
 
-    resolveInputValue(option: ActionOption): string {
+    resolveInputValue = (option: ActionOption): string => {
         let newInputValue = this.state.inputValue;
 
         if (option.isAction) {
@@ -802,15 +794,15 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         return newInputValue;
-    }
+    };
 
-    resolveTokenizer(action?: Action): Function {
+    resolveTokenizer = (action?: Action): Function => {
         // In the future, could possibly ask actions for their tokenizer to allow them
         // to parse input differently.
         return OmniBox.defaultTokenizer;
-    }
+    };
 
-    selectFocusedOption(canComplete: boolean = true) {
+    selectFocusedOption = (canComplete: boolean = true): void => {
         const { focusedIndex, options } = this.state;
 
         if (focusedIndex > -1) {
@@ -819,9 +811,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         else if (canComplete !== false) {
             this.completeAction();
         }
-    }
+    };
 
-    renderInput() {
+    renderInput = (): ReactNode => {
         const inputProps = Object.assign({}, this.props.inputProps, {
             className: classNames('OmniBox-input', this.props.inputProps.className),
             ref: this._omniboxInput,
@@ -833,9 +825,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         });
 
         return <AutosizeInput {...inputProps}/>;
-    }
+    };
 
-    renderInputValue(): string {
+    renderInputValue = (): string => {
         const { inputValue, previewInputValue } = this.state;
         let value = inputValue;
 
@@ -851,10 +843,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         return value;
-    }
+    };
 
-    renderMenu() {
-
+    renderMenu = (): ReactNode => {
         return (
             <div>
                 <ul className="OmniBox-autocomplete">
@@ -862,9 +853,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 </ul>
             </div>
         );
-    }
+    };
 
-    renderMenuOption(option, i) {
+    renderMenuOption = (option, i): ReactNode => {
         const isFocused = this.state.focusedIndex === i;
 
         return (
@@ -881,9 +872,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 onOptionClick={this.handleOptionClick}
             />
         );
-    }
+    };
 
-    renderValue(): any {
+    renderValue = (): ReactNode => {
         const { actionValues, inputValue, isOpen, previewInputValue } = this.state;
 
         // empty
@@ -904,7 +895,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         return null;
-    }
+    };
 
     render() {
         let className = classNames('OmniBox', 'OmniBox--multi', this.props.className, {
@@ -915,7 +906,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         return (
             <div className={className}>
-                <div className="OmniBox-control" onKeyDown={this.handleKeyDown} onMouseDown={this.handleMouseDown}>
+                <div className="OmniBox-control" onKeyDown={this.handleKeyDown} onClick={this.handleMouseClick}>
                     <span className="OmniBox-multi-value-wrapper">
                         {this.renderValue()}
                         {this.renderInput()}

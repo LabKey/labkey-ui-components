@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 
 import { getLocation, Location, replaceParameters } from '../../util/URL';
 import { OmniBox } from '../omnibox/OmniBox';
@@ -36,10 +36,11 @@ const urlActions = {
     view: ViewAction
 };
 
-function isLocationEqual(locationA: Location, locationB: Location): boolean {
+export function isLocationEqual(locationA: Location, locationB: Location): boolean {
     return locationA && locationB &&
         locationA.pathname === locationB.pathname &&
-        locationA.search === locationB.search;
+        locationA.search === locationB.search &&
+        locationA.query.equals(locationB.query)
 }
 
 interface URLBoxProps {
@@ -71,7 +72,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     }
 
     shouldComponentUpdate(nextProps: URLBoxProps, nextState: URLBoxState): boolean {
-        return !nextState.changeLock && !isLocationEqual(this.state.location, nextState.location);
+        return !nextState.changeLock && !isLocationEqual(this.state.location, getLocation());
     }
 
     onOmniBoxChange = (actionValueCollection: Array<ActionValueCollection>, boxActions: Array<Action>) => {

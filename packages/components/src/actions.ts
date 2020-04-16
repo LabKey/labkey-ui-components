@@ -182,16 +182,18 @@ export function gridSelectAll(model: QueryGridModel, onSelectionChange?: (model:
         });
 }
 
-export function sort(model: QueryGridModel, columnIndex: string, dir: string) {
+export function sort(model: QueryGridModel, column: QueryColumn, dir: string): void {
+    const fieldKey = encodeURIComponent(column.resolveFieldKey());
+
     if (model.bindURL) {
-        const urlDir = dir == '+' ? '' : '-';
+        const urlDir = dir === '+' ? '' : '-';
         replaceParameters(getLocation(), Map<string, any>({
-            [model.createParam('sort')]: `${urlDir}${columnIndex}`
+            [model.createParam('sort')]: `${urlDir}${fieldKey}`
         }));
     }
     else {
         let newModel = updateQueryGridModel(model, {
-            sorts: dir + columnIndex // TODO: Support multiple sorts
+            sorts: dir + fieldKey // TODO: Support multiple sorts
         });
 
         gridLoad(newModel)

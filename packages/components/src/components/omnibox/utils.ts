@@ -43,19 +43,5 @@ export function parseColumns(columns: List<QueryColumn>, columnName: string): Li
  * @returns {any}
  */
 export function resolveFieldKey(columnName: string, column?: QueryColumn): string {
-    let fieldKey: string;
-
-    if (column) {
-        if (column.isLookup()) {
-            fieldKey = [column.name, column.lookup.displayColumn.replace(/\//g, '$S')].join('/');
-        }
-        else {
-            fieldKey = column.name;
-        }
-    }
-    else {
-        fieldKey = columnName;
-    }
-
-    return fieldKey;
+    return column?.resolveFieldKey() ?? columnName;
 }

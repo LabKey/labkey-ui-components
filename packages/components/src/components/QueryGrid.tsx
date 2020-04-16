@@ -21,7 +21,7 @@ import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGri
 import { getStateModelId, getStateQueryGridModel } from '../models';
 import { headerCell, headerSelectionCell } from '../renderers';
 import { getBrowserHistory } from '../util/global';
-import { QueryGridModel, SchemaQuery } from './base/models/model';
+import { QueryColumn, QueryGridModel, SchemaQuery } from './base/models/model';
 import { generateId } from '../util/utils';
 import { Grid, GridColumn, GridProps } from './base/Grid';
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './base/models/constants';
@@ -59,11 +59,6 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
     constructor(props: QueryGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
-
-        // bind event handlers
-        this.headerCell = this.headerCell.bind(this);
-        this.selectAll = this.selectAll.bind(this);
-        this.sort = this.sort.bind(this);
 
         const { model, schemaQuery } = this.props;
         let _modelId;
@@ -146,7 +141,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         }
     }
 
-    headerCell(column: GridColumn, i: number, columnCount?: number) {
+    headerCell = (column: GridColumn, i: number, columnCount?: number): any => {
         const model = this.getModel(this.props);
 
         if (model.allowSelection && column.index && column.index.toLowerCase() === GRID_SELECTION_INDEX && !model.editable) {
@@ -154,7 +149,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         }
 
         return headerCell(this.sort, column, i, model.allowSelection, model.sortable, columnCount);
-    }
+    };
 
     getColumns(): List<any> {
         const model = this.getModel(this.props);
@@ -193,14 +188,14 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         return this.global.QueryGrid_models.get(stateModelId);
     }
 
-    selectAll(evt) {
+    selectAll = (evt): void => {
         const model = this.getModel(this.props);
 
         if (model) {
             const selected = evt.currentTarget.checked === true && model.selectedState !== GRID_CHECKBOX_OPTIONS.SOME;
             toggleGridSelected(model, selected, this.props.onSelectionChange);
         }
-    }
+    };
 
     select(row: Map<string, any>, evt) {
         const model = this.getModel(this.props);
@@ -210,13 +205,13 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         }
     }
 
-    sort(gridColumn, dir) {
+    sort = (column: QueryColumn, dir: string): void => {
         const model = this.getModel(this.props);
 
         if (model) {
-            sort(model, gridColumn.index, dir);
+            sort(model, column, dir);
         }
-    }
+    };
 
     /**
      * @returns the row index for the selected row. If multiple rows are selected, get the last selected index

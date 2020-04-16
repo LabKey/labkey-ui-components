@@ -356,6 +356,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 this.setState({
                     distinctValuesLoading: false,
                     distinctValues: List(result.values.sort(naturalSort)),
+                }, () => {
+                    // Need to call fetchOptions again on Filter action so we clear the "Loading..." option and render
+                    // the possible options.
+                    this.fetchOptions([ this.state.activeAction ], this.state.inputValue);
                 });
             },
             failure: (error) => {

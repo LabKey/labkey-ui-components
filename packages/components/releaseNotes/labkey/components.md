@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Merge forward changes from release20.4-SNAPSHOT branch
     - includes hotfix changes from version 0.41.6
 
+## version 0.49.0
+*Released*: 15 April 2020
+* `@labkey/api` dependency update.
+* Incorporate changes needed due to stricter typings.
+
 ## version 0.48.3
 *Released*: 14 April 2020
 * Bug fixes for ParentEntityEditPanel to better support editing of parent samples

@@ -38,7 +38,7 @@ interface CreatedModifiedProps {
 }
 
 interface State {
-    serverDate: string
+    serverDate: Date
     loading: boolean
 }
 

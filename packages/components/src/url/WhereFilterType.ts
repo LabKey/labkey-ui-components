@@ -43,7 +43,7 @@ class WhereFilterType implements Filter.IFilterType {
     getSingleValueFilter(): Filter.IFilterType {
         return null;
     }
-    splitValue(value: any) {
+    parseValue(value: any) {
         return value;
     }
     getURLParameterValue(value: any) {

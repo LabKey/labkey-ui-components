@@ -34,7 +34,7 @@ let TYPE_SET = Set<string>().asMutable();
 let TYPE_MAP = Map<string, Filter.IFilterType>(Filter.Types);
 TYPE_MAP.valueSeq().forEach((type: Filter.IFilterType) => {
     // there are duplicates of the same filter in the type map (e.g. NEQ and NOT_EQUAL)
-    const suffix = type.getURLSuffix();
+    const suffix = getURLSuffix(type);
     const symbol = type.getDisplaySymbol();
 
     if (!TYPE_SET.has(suffix)) {
@@ -60,6 +60,16 @@ SYMBOL_MAP = SYMBOL_MAP.asImmutable();
 SUFFIX_MAP = SUFFIX_MAP.asImmutable();
 TEXT_MAP = TEXT_MAP.asImmutable();
 TYPE_SET = undefined;
+
+/**
+ * Remaps URL suffixes for types where the suffix cannot be distinguished.
+ * @private
+ */
+export function getURLSuffix(type: Filter.IFilterType): string {
+    const suffix = type.getURLSuffix();
+    if (suffix === '') return 'any';
+    return suffix;
+}
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list
@@ -150,7 +160,8 @@ function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterTy
         let match = false;
 
         for (let i=0; i < types.length; i++) {
-            if (symbolTypes.has(types[i].getURLSuffix())) {
+            let suffix = getURLSuffix(types[i]);
+            if (symbolTypes.has(suffix)) {
                 if (match) {
                     console.warn(`Column of type \"${column.get('jsonType')}\" has multiple filter for symbol \"${token}\".`);
                     match = false;
@@ -159,7 +170,7 @@ function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterTy
                 }
                 else {
                     match = true;
-                    value = symbolTypes.get(types[i].getURLSuffix());
+                    value = symbolTypes.get(suffix);
                 }
             }
         }
@@ -193,7 +204,7 @@ function resolveSymbol(filterType: Filter.IFilterType): string {
         return displayText;
     }
 
-    return filterType.getURLSuffix();
+    return getURLSuffix(filterType);
 }
 
 export interface IFilterContext {
@@ -312,7 +323,7 @@ export class FilterAction implements Action {
                             }
 
                             const symbol = type.getDisplaySymbol();
-                            const suffix = type.getURLSuffix();
+                            const suffix = getURLSuffix(type);
                             const isComplete = !type.isDataValueRequired();
                             const nextLabel = isComplete ? undefined : ' value';
 

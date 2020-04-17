@@ -18,12 +18,12 @@ import React from 'react';
 import {DatasetModel} from "./models";
 import {DatasetPropertiesPanel} from "./DatasetPropertiesPanel";
 import {BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner} from "../BaseDomainDesigner";
-import {DomainDesign, IAppDomainHeader} from "../models";
+import {DomainDesign} from "../models";
 import {List} from "immutable";
 import {getDomainPanelStatus, saveDomain} from "../actions";
 import DomainForm from "../DomainForm";
 import {DatasetColumnMappingPanel} from "./DatasetColumnMappingPanel";
-import {importData, ListModel, resolveErrorMessage} from "../../..";
+import {importData, resolveErrorMessage} from "../../..";
 import {ActionURL, getServerContext} from "@labkey/api";
 
 interface Props {
@@ -32,10 +32,10 @@ interface Props {
     onCancel: () => void
     onComplete: (model: DatasetModel, fileImportError?: string) => void
     useTheme?: boolean;
-    showDataSpace: boolean;
     showVisitDate: boolean;
     saveBtnText?: string;
     containerTop?: number // This sets the top of the sticky header, default is 0
+    successBsStyle?: string
 }
 
 interface State {
@@ -146,7 +146,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const { setSubmitting } = this.props;
         const { model, fileImportData } = this.state;
 
-        saveDomain(model.domain, null, model.getOptions(), model.name)
+        saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
             .then((response) => {
                 let updatedModel = model.set('exception', undefined) as DatasetModel;
                 updatedModel = updatedModel.merge({domain: response}) as DatasetModel;
@@ -178,7 +178,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const {
             useTheme,
             onTogglePanel,
-            showDataSpace,
             showVisitDate,
             visitedPanels,
             submitting,
@@ -186,7 +185,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             currentPanelIndex,
             firstState,
             validatePanel,
-            containerTop
+            containerTop,
+            successBsStyle
         } = this.props;
 
         const { model } = this.state;
@@ -202,7 +202,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={"Save"}
-                // successBsStyle={successBsStyle}
+                successBsStyle={successBsStyle}
             >
                 <DatasetPropertiesPanel
                     initCollapsed={false}
@@ -213,7 +213,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     validate={false}
                     onToggle={(collapsed, callback) => {onTogglePanel(0, collapsed, callback);}}
                     onChange={this.onPropertiesChange}
-                    showDataspace={showDataSpace}
                     showVisitDate={showVisitDate}
                 />
                 <DomainForm

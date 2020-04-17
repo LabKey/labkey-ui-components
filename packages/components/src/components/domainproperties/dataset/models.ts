@@ -18,6 +18,7 @@ import {Record} from "immutable";
 import {DomainDesign} from "../models";
 import match from "react-router/lib/match";
 import {Option} from "react-select";
+import {getServerContext} from "@labkey/api";
 
 export interface DatasetAdvancedSettingsForm {
     datasetId?: number;
@@ -49,7 +50,8 @@ export class DatasetModel extends Record({
     tag: undefined,
     showByDefault: undefined,
     description: undefined,
-    dataSharing: undefined
+    dataSharing: undefined,
+    definitionIsShared: undefined
 }) {
     domain: DomainDesign;
     domainId : number;
@@ -68,6 +70,7 @@ export class DatasetModel extends Record({
     showByDefault: boolean;
     description?: string;
     dataSharing?: string;
+    definitionIsShared?: boolean;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -133,6 +136,16 @@ export class DatasetModel extends Record({
         else {
             return false;
         }
+    }
+
+    getDomainKind(): string {
+        if (getServerContext().moduleContext.study.timepointType === "DATE") {
+            return "StudyDatasetDate";
+        }
+        else if (getServerContext().moduleContext.study.timepointType === "VISIT") {
+            return "StudyDatasetVisit";
+        }
+        return undefined;
     }
 
     getOptions(): Object {

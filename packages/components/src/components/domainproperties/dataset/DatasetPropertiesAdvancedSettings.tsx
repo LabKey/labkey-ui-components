@@ -129,7 +129,6 @@ interface AdvancedSettingsProps {
     model: DatasetModel;
     title: string;
     applyAdvancedProperties: (datasetAdvancedSettingsForm: DatasetAdvancedSettingsForm) => void;
-    showDataspace: boolean;
     showVisitDate: boolean;
 }
 
@@ -239,7 +238,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const {
             model,
             title,
-            showDataspace,
             showVisitDate
         } = this.props;
 
@@ -331,7 +329,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         />
 
                         {
-                            showDataspace &&
+                            model.definitionIsShared &&
                             <>
                                 <div className='margin-top'>
                                     <SectionHeading title="Dataspace Project Options" />

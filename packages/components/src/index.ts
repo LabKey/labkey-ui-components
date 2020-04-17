@@ -322,6 +322,7 @@ import {
     RequiresModelAndActions,
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
+import { DetailPanelWithModel } from './QueryModel/DetailPanel';
 
 export {
     // global state functions
@@ -735,4 +736,5 @@ export {
     InjectedQueryModels,
     GridPanel,
     GridPanelWithModel,
+    DetailPanelWithModel,
 }

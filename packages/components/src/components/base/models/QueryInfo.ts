@@ -9,7 +9,6 @@ import {
     QueryColumn,
     QueryInfoStatus, QuerySort,
     SchemaQuery,
-    updateColumnFilter,
     ViewInfo,
 } from './model';
 
@@ -230,7 +229,7 @@ export class QueryInfo extends Record({
 
         return this.columns
             .filter((column) => {
-                return updateColumnFilter(column) || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
+                return column?.isUpdateColumn || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
             })
             .map((column) => {
                 if (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1) {

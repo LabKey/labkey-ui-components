@@ -148,12 +148,24 @@ export class QueryModel implements IQueryModel {
         return this.queryInfo?.getColumn(fieldKey);
     }
 
+    get detailColumns(): QueryColumn[] {
+        return this.queryInfo?.getDisplayColumns(ViewInfo.DETAIL_NAME, List(this.omittedColumns))
+            .filter(col => col.isUpdateColumn)
+            .toArray();
+    }
+
     get displayColumns(): QueryColumn[] {
         return this.queryInfo?.getDisplayColumns(this.viewName, List(this.omittedColumns)).toArray();
     }
 
     get allColumns(): QueryColumn[] {
         return this.queryInfo?.getAllColumns(this.viewName, List(this.omittedColumns)).toArray();
+    }
+
+    get updateColumns(): QueryColumn[] {
+        return this.queryInfo?.getDisplayColumns(ViewInfo.UPDATE_NAME, List(this.omittedColumns))
+            .filter(col => col?.isUpdateColumn)
+            .toArray();
     }
 
     get keyColumns(): QueryColumn[] {

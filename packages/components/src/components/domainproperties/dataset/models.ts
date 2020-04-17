@@ -155,4 +155,8 @@ export class DatasetModel extends Record({
         delete options.domain;
         return options;
     }
+
+    isValid(): boolean {
+        return this.hasValidProperties();
+    }
 }

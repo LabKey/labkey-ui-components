@@ -32,7 +32,6 @@ class NewDatasetDesigner extends React.PureComponent<any,any> {
           <DatasetDesignerPanels
               initModel={DatasetModel.create(this.props.model, undefined)}
               useTheme={this.props.useTheme}
-              showVisitDate={this.props.showVisitDate}
               onCancel={() => console.log('cancel')}
               onComplete={() => console.log('onComplete')}
           />
@@ -50,7 +49,6 @@ class EditDatasetDesigner extends React.PureComponent<any,any> {
             <DatasetDesignerPanels
                 initModel={DatasetModel.create(null, this.props.model)}
                 useTheme={this.props.useTheme}
-                showVisitDate={this.props.showVisitDate}
                 onCancel={() => console.log('cancel')}
                 onComplete={() => console.log('onComplete')}
             />
@@ -74,7 +72,6 @@ storiesOf("DatasetDesigner", module)
             <NewDatasetDesigner
                 model={NEW_DATASET_MODEL}
                 useTheme={false}
-                showVisitDate={true}
             />
         )
     })
@@ -83,7 +80,6 @@ storiesOf("DatasetDesigner", module)
             <EditDatasetDesigner
                 model={getDatasetDesign}
                 useTheme={false}
-                showVisitDate={true}
             />
         )
     })
@@ -92,7 +88,6 @@ storiesOf("DatasetDesigner", module)
             <EditDatasetDesigner
                 model={getDatasetDesign}
                 useTheme={false}
-                showVisitDate={true}
             />
         )
     });

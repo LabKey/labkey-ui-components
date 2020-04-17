@@ -129,7 +129,6 @@ interface AdvancedSettingsProps {
     model: DatasetModel;
     title: string;
     applyAdvancedProperties: (datasetAdvancedSettingsForm: DatasetAdvancedSettingsForm) => void;
-    showVisitDate: boolean;
 }
 
 interface AdvancedSettingsState extends DatasetAdvancedSettingsForm {
@@ -237,8 +236,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         const {
             model,
-            title,
-            showVisitDate
+            title
         } = this.props;
 
         return (
@@ -278,7 +276,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             required={true}
                         />
                         {
-                            showVisitDate &&
+                            LABKEY.moduleContext.study.timepointType === 'VISIT' &&
                             <DatasetSettingsSelect
                                 name="visitDatePropertyName"
                                 label="Visit Date Column"

@@ -32,7 +32,6 @@ interface Props {
     onCancel: () => void
     onComplete: (model: DatasetModel, fileImportError?: string) => void
     useTheme?: boolean;
-    showVisitDate: boolean;
     saveBtnText?: string;
     containerTop?: number // This sets the top of the sticky header, default is 0
     successBsStyle?: string
@@ -64,13 +63,9 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     };
 
     onFinish = () => {
-        const { setSubmitting } = this.props;
         const { model } = this.state;
-        const isValid = true;
 
-        this.props.onFinish(isValid, this.saveDomain);
-
-
+        this.props.onFinish(model.isValid(), this.saveDomain);
     };
 
     onDomainChange = (domain: DomainDesign, dirty: boolean) => {
@@ -178,7 +173,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const {
             useTheme,
             onTogglePanel,
-            showVisitDate,
             visitedPanels,
             submitting,
             onCancel,
@@ -213,14 +207,13 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     validate={false}
                     onToggle={(collapsed, callback) => {onTogglePanel(0, collapsed, callback);}}
                     onChange={this.onPropertiesChange}
-                    showVisitDate={showVisitDate}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle={'Fields'}
-                    helpNoun={'list'}
+                    helpNoun={'dataset'}
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
                     setFileImportData={this.setFileImportData}
@@ -233,7 +226,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     onToggle={(collapsed, callback) => {onTogglePanel(1, collapsed, callback);}}
                     useTheme={useTheme}
                     renderDatasetColumnMapping={this.datasetColumnMapping}
-                    // successBsStyle={successBsStyle}
+                    successBsStyle={successBsStyle}
                 />
             </BaseDomainDesigner>
         );

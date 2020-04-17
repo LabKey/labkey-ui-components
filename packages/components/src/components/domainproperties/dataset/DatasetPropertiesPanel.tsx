@@ -28,7 +28,6 @@ interface OwnProps {
     model: DatasetModel;
     onChange: (model: DatasetModel) => void;
     successBsStyle?: string;
-    showVisitDate: boolean;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;
@@ -155,8 +154,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
 
     render() {
         const {
-            model,
-            showVisitDate
+            model
         } = this.props;
 
         const {
@@ -200,7 +198,6 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
                             title={"Advanced Settings"}
                             model={model}
                             applyAdvancedProperties={this.applyAdvancedProperties}
-                            showVisitDate={showVisitDate}
                         />
                     </Col>
                 </Row>

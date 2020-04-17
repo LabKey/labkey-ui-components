@@ -33,8 +33,6 @@ describe("Dataset Designer", () => {
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
                 useTheme={true}
-                showDataSpace={true}
-                showVisitDate={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
             />;
@@ -48,8 +46,6 @@ describe("Dataset Designer", () => {
             <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
                 useTheme={true}
-                showDataSpace={true}
-                showVisitDate={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
             />

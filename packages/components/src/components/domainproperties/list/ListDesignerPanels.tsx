@@ -151,14 +151,6 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         );
     };
 
-    datasetColumnMapping = () => {
-
-        return (
-            <div> Test </div>
-        );
-
-    };
-
     render() {
         const {
             onCancel, useTheme, containerTop, successBsStyle, visitedPanels, currentPanelIndex, firstState,
@@ -209,7 +201,6 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
-                    renderDatasetColumnMapping={this.datasetColumnMapping}
                 />
                 <Progress
                     modal={true}

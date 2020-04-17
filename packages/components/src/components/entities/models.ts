@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Filter, Utils } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
 import { Option } from 'react-select';
 
@@ -225,7 +225,8 @@ export class EntityIdCreationModel extends Record({
     selectionKey: undefined,
     targetEntityType: undefined,
     entityCount: 0,
-    entityDataType: undefined
+    entityDataType: undefined,
+    auditBehavior: undefined
 }) {
     errors: Array<any>;
     initialEntityType: any;
@@ -239,6 +240,7 @@ export class EntityIdCreationModel extends Record({
     targetEntityType: EntityTypeOption; // the target entity Type
     entityCount: number; // how many rows are in the grid
     entityDataType: EntityDataType; // target entity data type
+    auditBehavior: AuditBehaviorTypes;
 
     constructor(values?: any) {
         super(values);
@@ -466,7 +468,8 @@ export class EntityIdCreationModel extends Record({
         return insertRows({
             fillEmptyFields: true,
             schemaQuery : this.getSchemaQuery(),
-            rows
+            rows,
+            auditBehavior: this.auditBehavior
         })
     };
 

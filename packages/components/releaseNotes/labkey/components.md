@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.50.0
+*Released#: 16 April 2020
+* Add optional property for specifying auditBehavior with some API actions
+
 ### version 0.49.1
 *Released*: 16 April 2020
 * Merge forward changes from release20.4-SNAPSHOT branch

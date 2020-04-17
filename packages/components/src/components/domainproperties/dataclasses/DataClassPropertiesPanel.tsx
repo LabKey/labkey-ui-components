@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { Draft, produce } from 'immer';
 import { EntityDetailsForm } from "../entities/EntityDetailsForm";
 import { QuerySelect } from "../../forms/QuerySelect";
 import { SCHEMAS } from "../../base/models/schemas";
@@ -61,14 +62,15 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
     updateValidStatus = (newModel?: DataClassModel) => {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
-        const isValid = updatedModel && updatedModel.hasValidProperties();
-        this.setState(() => ({isValid}),
-            () => {
-                // Issue 39918: only consider the model changed if there is a newModel param
-                if (newModel) {
-                    onChange(updatedModel)
-                }
-            });
+        const isValid = updatedModel && updatedModel.hasValidProperties;
+        this.setState(produce((draft: Draft<State>) => {
+            draft.isValid = isValid;
+        }), () => {
+            // Issue 39918: only consider the model changed if there is a newModel param
+            if (newModel) {
+                onChange(updatedModel)
+            }
+        });
     };
 
     onFormChange = (evt: any) => {
@@ -79,7 +81,9 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
 
     onChange = (id: string, value: any) => {
         const { model } = this.props;
-        const newModel = model.set(getFormNameFromId(id), value) as DataClassModel;
+        const newModel = produce(model, (draft: Draft<DataClassModel>) => {
+            draft[getFormNameFromId(id)] = value;
+        });
         this.updateValidStatus(newModel);
     };
 
@@ -166,7 +170,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
                 <EntityDetailsForm
                     noun={nounSingular}
                     onFormChange={this.onFormChange}
-                    data={model}
+                    data={model.entityDataMap}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                 />

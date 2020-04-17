@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.51.0
+*Released*: 17 April 2020
 * Item 6961: DataClassDesigner updates for LKS
     - update fetchDataClass function to work for either a data class name or rowId
     - add support for PermissionTypes.DesignDataClass

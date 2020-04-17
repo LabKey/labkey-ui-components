@@ -138,12 +138,12 @@ export function fetchGetQueries(schemaName: string): Promise<List<QueryInfo>> {
         Query.getQueries({
             schemaName,
             success: (data) => {
-                let queries = data.queries.map((getQueryResult) => {
-                    getQueryResult.schemaName = schemaName;
-                    return QueryInfo.create(getQueryResult);
-                });
-
-                queries = List<QueryInfo>(queries)
+                const queries = List<QueryInfo>(
+                    data.queries.map((getQueryResult) => QueryInfo.create({
+                            ...getQueryResult,
+                            schemaName
+                        })
+                    ))
                     .sort((a, b) => {
                         if (a.name && b.name) {
                             let aLower = a.name.toLowerCase();
@@ -153,7 +153,8 @@ export function fetchGetQueries(schemaName: string): Promise<List<QueryInfo>> {
                         }
 
                         return a.name === b.name ? 0 : (a.name > b.name ? 1 : -1);
-                    }).toList();
+                    })
+                    .toList();
 
                 resolve(queries);
             },

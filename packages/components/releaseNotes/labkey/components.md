@@ -9,6 +9,20 @@ Components, models, actions, and utility functions for LabKey applications and p
     - DataClassPropertiesPanel and SampleTypePropertiesPanel default nameExpressionInfoUrl and nameExpressionPlaceholder properties
     - SampleTypeDesigner change to default to "Infer from File" in empty fields state
 
+## version 0.50.0
+*Released#: 16 April 2020
+* Add optional property for specifying auditBehavior with some API actions
+
+### version 0.49.1
+*Released*: 16 April 2020
+* Merge forward changes from release20.4-SNAPSHOT branch
+    - includes hotfix changes from version 0.41.6
+
+## version 0.49.0
+*Released*: 15 April 2020
+* `@labkey/api` dependency update.
+* Incorporate changes needed due to stricter typings.
+
 ## version 0.48.3
 *Released*: 14 April 2020
 * Bug fixes for ParentEntityEditPanel to better support editing of parent samples
@@ -68,6 +82,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 7031: Source aliasing
     - Allow Source (Data Class) Alias to be defined separate from a SampleSet type Parent Alias
     - Allow filtering of parent options (for example, only 'sources' type data classes will be included)
+
+### version 0.41.6
+*Released*: 8 April 2020
+* Issue 39803: signOut action support for a redirectUrl in the response, for the CAS identity provider logout case
 
 ### version 0.41.5
 *Released*: 1 April 2020

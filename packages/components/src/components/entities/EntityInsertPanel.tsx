@@ -16,7 +16,7 @@
 import React from 'reactn';
 import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable';
-import { Utils } from '@labkey/api';
+import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
 import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
@@ -105,7 +105,8 @@ interface OwnProps {
     nounPlural: string
     entityDataType: EntityDataType,
     parentDataTypes?: List<EntityDataType>,
-    importHelpLinkNode: React.ReactNode
+    importHelpLinkNode: React.ReactNode,
+    auditBehavior?: AuditBehaviorTypes,
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -213,13 +214,14 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         )
             return;
 
-        const { entityDataType } = props;
+        const { entityDataType, auditBehavior } = props;
         insertModel = new EntityIdCreationModel({
             originalParents: allowParents ? queryParams.parents : undefined,
             initialEntityType: queryParams.target,
             selectionKey: queryParams.selectionKey,
             entityCount: 0,
             entityDataType: entityDataType,
+            auditBehavior,
         });
 
         let schemaQueries = Map<string, EntityDataType>();

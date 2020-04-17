@@ -15,7 +15,7 @@
  */
 import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable';
 import { normalize, schema } from 'normalizr';
-import { Filter, Query, QueryDOM } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, Query, QueryDOM } from '@labkey/api';
 
 import { URLResolver } from '../util/URLResolver';
 import { getQueryMetadata } from '../global';
@@ -584,6 +584,7 @@ export interface InsertRowsOptions {
     fillEmptyFields?: boolean
     rows: List<any>
     schemaQuery: SchemaQuery
+    auditBehavior?: AuditBehaviorTypes
 }
 
 export class InsertRowsResponse extends Record({
@@ -611,12 +612,14 @@ export class InsertRowsResponse extends Record({
 
 export function insertRows(options: InsertRowsOptions): Promise<InsertRowsResponse> {
     return new Promise((resolve, reject) => {
-        const { fillEmptyFields, rows, schemaQuery } = options;
+        const { fillEmptyFields, rows, schemaQuery, auditBehavior } = options;
+        const _rows = fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows;
 
         Query.insertRows({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
-            rows: fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows,
+            rows: _rows.toArray(),
+            auditBehavior,
             apiVersion: 13.2,
             success: (response) => {
                 resolve(new InsertRowsResponse( {
@@ -677,6 +680,7 @@ interface IUpdateRowsOptions {
     containerPath?: string
     schemaQuery: SchemaQuery
     rows: Array<any>
+    auditBehavior?: AuditBehaviorTypes
 }
 
 export function updateRows(options: IUpdateRowsOptions): Promise<any> {
@@ -686,6 +690,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
             schemaName: options.schemaQuery.schemaName,
             queryName: options.schemaQuery.queryName,
             rows: options.rows,
+            auditBehavior: options.auditBehavior,
             success: (response) => {
                 resolve(Object.assign({}, {
                     schemaQuery: options.schemaQuery,
@@ -704,6 +709,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
 interface DeleteRowsOptions {
     schemaQuery: SchemaQuery
     rows: Array<any>
+    auditBehavior?: AuditBehaviorTypes
 }
 
 export function deleteRows(options: DeleteRowsOptions): Promise<any> {
@@ -712,6 +718,7 @@ export function deleteRows(options: DeleteRowsOptions): Promise<any> {
             schemaName: options.schemaQuery.schemaName,
             queryName: options.schemaQuery.queryName,
             rows: options.rows,
+            auditBehavior: options.auditBehavior,
             apiVersion: 13.2,
             success: () => {
                 resolve(Object.assign({}, {

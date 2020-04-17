@@ -335,6 +335,8 @@ export class URLResolver {
 
             new ActionMapper('core', 'downloadFileLink', () => false),
 
+            new ActionMapper('audit', 'detailedAuditChanges', () => false),
+
             new LookupMapper('q', {
                 'exp-dataclasses': (row) => row.get('displayValue') ? AppURL.create('rd', 'dataclass', row.get('displayValue')) : undefined,
                 'exp-runs': (row) => {

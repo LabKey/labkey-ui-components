@@ -1,0 +1,9 @@
+# exclude everything by default
+*.*
+
+# white-list files
+!*.ts
+!*.tsx
+
+# black-list files
+jest.setup.ts

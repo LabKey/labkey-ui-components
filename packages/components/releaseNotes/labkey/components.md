@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - add support for PermissionTypes.DesignDataClass
     - DataClassPropertiesPanel and SampleTypePropertiesPanel default nameExpressionInfoUrl and nameExpressionPlaceholder properties
     - SampleTypeDesigner change to default to "Infer from File" in empty fields state
+    - Issue 40232: Boolean fields show empty "Validation Options" section in expanded field design view
 
 ## version 0.50.0
 *Released#: 16 April 2020

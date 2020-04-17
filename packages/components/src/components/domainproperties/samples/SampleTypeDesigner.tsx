@@ -89,7 +89,6 @@ interface State {
 class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
 
     static defaultProps = {
-        nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         includeDataClasses: false,
         useSeparateDataClassesAliasMenu: false,
@@ -445,6 +444,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
                     validate={validatePanel === DOMAIN_PANEL_INDEX}
                     panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
+                    showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.domainChangeHandler}
                     onToggle={(collapsed, callback) => onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback)}

@@ -13,19 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Domain } from '@labkey/api';
-
+import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
 import { SCHEMAS } from '../../base/models/schemas';
 import { deleteEntityType } from '../../entities/actions';
-
 import { DataClassModel } from './models';
 
-export function fetchDataClass(name: string): Promise<DataClassModel> {
+export function fetchDataClass(queryName?: string, rowId?: number): Promise<DataClassModel> {
+    if (rowId) {
+        return fetchDataClassProperties(rowId)
+            .then((response) => {
+                return _fetchDataClass(undefined, response.domainId)
+            })
+            .catch(error => {
+                return Promise.reject(error)
+            });
+    } else {
+        return _fetchDataClass(queryName);
+    }
+}
+
+function _fetchDataClass(queryName?: string, domainId?: number): Promise<DataClassModel> {
     return new Promise((resolve, reject) => {
-        Domain.getDomainDetails({
+        return Domain.getDomainDetails({
             containerPath: LABKEY.container.path,
             schemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
-            queryName: name,
+            queryName,
+            domainId,
             success: data => {
                 if (data.domainKindName === 'DataClass') {
                     resolve(DataClassModel.create(data));
@@ -37,6 +50,23 @@ export function fetchDataClass(name: string): Promise<DataClassModel> {
             failure: error => {
                 reject(error);
             },
+        });
+    });
+}
+
+function fetchDataClassProperties(rowId: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('experiment', 'getDataClassProperties.api'),
+            method: 'GET',
+            params: {rowId},
+            scope: this,
+            success: Utils.getCallbackWrapper((data) => {
+                resolve(data);
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error);
+            })
         });
     });
 }

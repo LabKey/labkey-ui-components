@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.51.0
+*Released*: 17 April 2020
+* Item 6961: DataClassDesigner updates for LKS
+    - update fetchDataClass function to work for either a data class name or rowId
+    - add support for PermissionTypes.DesignDataClass
+    - DataClassPropertiesPanel and SampleTypePropertiesPanel default nameExpressionInfoUrl and nameExpressionPlaceholder properties
+    - SampleTypeDesigner change to default to "Infer from File" in empty fields state
+    - Issue 40232: Boolean fields show empty "Validation Options" section in expanded field design view
+
 ## version 0.50.0
 *Released#: 16 April 2020
 * Add optional property for specifying auditBehavior with some API actions

@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import { EntityDetailsForm } from "../entities/EntityDetailsForm";
 import { QuerySelect } from "../../forms/QuerySelect";
 import { SCHEMAS } from "../../base/models/schemas";
-import { DEFINE_DATA_CLASS_TOPIC } from "../../../util/helpLinks";
+import { DEFINE_DATA_CLASS_TOPIC, DATA_CLASS_NAME_EXPRESSION_TOPIC, getHelpLink } from "../../../util/helpLinks";
 import { ENTITY_FORM_ID_PREFIX } from "../entities/constants";
 import { getFormNameFromId } from "../entities/actions";
 import { DataClassModel } from "./models";
@@ -43,8 +43,10 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
     static defaultProps = {
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
-        appPropertiesOnly: false,
-        helpTopic: DEFINE_DATA_CLASS_TOPIC
+        helpTopic: DEFINE_DATA_CLASS_TOPIC,
+        nameExpressionInfoUrl: getHelpLink(DATA_CLASS_NAME_EXPRESSION_TOPIC),
+        nameExpressionPlaceholder: 'Enter a naming pattern (e.g., DC-${now:date}-${genId})',
+        appPropertiesOnly: false
     };
 
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {

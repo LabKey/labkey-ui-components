@@ -46,7 +46,7 @@ storiesOf('SampleTypeDesigner', module)
             initModel={DomainDetails.create()}
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
-            nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://wwDodomw.labkey.org')}
+            nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
             nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
             helpTopic={text('helpTopic', undefined)}
         />

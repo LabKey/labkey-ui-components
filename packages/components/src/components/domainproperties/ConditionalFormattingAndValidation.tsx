@@ -190,6 +190,14 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
         const RegexValidator = ValidatorModal(RegexValidationOptions);
 
         const title = hideConditionalFormatting ? 'Validation Options' : 'Conditional Formatting and Validation Options';
+        const showCondFormatSection = !hideConditionalFormatting;
+        const showRegexSection = DomainField.hasRegExValidation(field);
+        const showRangeSection = DomainField.hasRangeValidation(field);
+
+        // don't render anything for this component if none of the sections apply
+        if (!showCondFormatSection && !showRegexSection && !showRangeSection) {
+            return null;
+        }
 
         return (
             <div>
@@ -200,9 +208,9 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        {!hideConditionalFormatting && this.renderConditionalFormats()}
-                        {DomainField.hasRegExValidation(field) && this.renderValidator(false)}
-                        {DomainField.hasRangeValidation(field) && this.renderValidator(true)}
+                        {showCondFormatSection && this.renderConditionalFormats()}
+                        {showRegexSection && this.renderValidator(false)}
+                        {showRangeSection && this.renderValidator(true)}
                         {showCondFormat &&
                             <CondFormatModal
                                 title={'Conditional Formatting ' + (field.name ? ('for ' + field.name) : '')}

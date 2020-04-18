@@ -190,9 +190,7 @@ export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promis
 
 function persistLineage(seed: string, recipe: (draft: Draft<Lineage>) => void): Lineage {
     updateLineageResult(seed, produce(getLineageResult(seed), recipe));
-    const lineage = getLineageResult(seed);
-    console.log('new lineage', lineage);
-    return lineage;
+    return getLineageResult(seed);
 }
 
 function loadSeed(seed: string, options?: LineageOptions): void {

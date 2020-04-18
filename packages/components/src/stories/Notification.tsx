@@ -20,46 +20,56 @@ import { generateId } from '../util/utils';
 // initialize the global state and the LABKEY object
 notificationInit();
 
-storiesOf("Notification", module)
+storiesOf('Notification', module)
     .addDecorator(withKnobs)
-    .add("basic notification", () => {
-        const message = text("Message text", "Notify me");
-        const alertClass = radios("Alert class", {
-            'info': 'info',
-            'success': 'success',
-            'warning': 'warning',
-            'danger': 'danger'}, 'success');
-        const isDismissible = boolean("Is dismissible?", true);
-        const notifyItem = new NotificationItemModel( {
-            id: generateId("notification_"),
-            alertClass,
-            isDismissible,
-            message
-        });
-        createNotification(notifyItem);
-        const user = new User();
-        return <Notification user={user}/>
-    }, {knobs: {
-        timestamps: true, // Doesn't emit events while user is typing.
-   }})
-    .add("Trial notification", () => {
-
-        const endDate = text("Trial end date", moment().add(10, "days").format("YYYY-MM-DD"));
-        const hasUpgradeLink = boolean("Has upgrade link?", false);
-        const upgradeLinkText = text("Upgrade link text", undefined);
-        const userIsAdmin = boolean("User is admin?", false);
+    .add(
+        'basic notification',
+        () => {
+            const message = text('Message text', 'Notify me');
+            const alertClass = radios(
+                'Alert class',
+                {
+                    info: 'info',
+                    success: 'success',
+                    warning: 'warning',
+                    danger: 'danger',
+                },
+                'success'
+            );
+            const isDismissible = boolean('Is dismissible?', true);
+            const notifyItem = new NotificationItemModel({
+                id: generateId('notification_'),
+                alertClass,
+                isDismissible,
+                message,
+            });
+            createNotification(notifyItem);
+            const user = new User();
+            return <Notification user={user} />;
+        },
+        {
+            knobs: {
+                timestamps: true, // Doesn't emit events while user is typing.
+            },
+        }
+    )
+    .add('Trial notification', () => {
+        const endDate = text('Trial end date', moment().add(10, 'days').format('YYYY-MM-DD'));
+        const hasUpgradeLink = boolean('Has upgrade link?', false);
+        const upgradeLinkText = text('Upgrade link text', undefined);
+        const userIsAdmin = boolean('User is admin?', false);
         if (endDate) {
             LABKEY['moduleContext'] = {
-                'trialservices': {
-                    'trialEndDate': endDate,
-                    'upgradeLink': hasUpgradeLink ? 'http://upgrade/today' : undefined,
-                    'upgradeLinkText': hasUpgradeLink ? upgradeLinkText : undefined
-                }
-            }
+                trialservices: {
+                    trialEndDate: endDate,
+                    upgradeLink: hasUpgradeLink ? 'http://upgrade/today' : undefined,
+                    upgradeLinkText: hasUpgradeLink ? upgradeLinkText : undefined,
+                },
+            };
         }
 
         const user = new User({
-            isAdmin: userIsAdmin
+            isAdmin: userIsAdmin,
         });
-        return <Notification user={user}/>
+        return <Notification user={user} />;
     });

@@ -18,15 +18,13 @@ import { Map } from 'immutable';
 
 import { NotificationItemModel, Persistence } from './model';
 
-
 /**
  * Initialize the global state object for this package.
  */
 export function initNotificationsState() {
     if (!getGlobal().Notifications) {
-        resetNotificationsState()
+        resetNotificationsState();
     }
-
 }
 
 /**
@@ -35,15 +33,17 @@ export function initNotificationsState() {
 export function resetNotificationsState() {
     setGlobal({
         // map between ids and notifications.
-        Notifications: Map<string, NotificationItemModel>()
-    })
+        Notifications: Map<string, NotificationItemModel>(),
+    });
 }
 
-export function getNotifications() : Map<string, NotificationItemModel> {
+export function getNotifications(): Map<string, NotificationItemModel> {
     if (!getGlobal()['Notifications']) {
-        throw new Error('Must call initNotificationsState before you can access anything from the global.Notifications objects.');
+        throw new Error(
+            'Must call initNotificationsState before you can access anything from the global.Notifications objects.'
+        );
     }
-    return getGlobal()['Notifications']
+    return getGlobal()['Notifications'];
 }
 
 /**
@@ -53,11 +53,10 @@ export function getNotifications() : Map<string, NotificationItemModel> {
  */
 export function addNotification(item: NotificationItemModel) {
     const current = getNotifications();
-    if (current.has(item.id))
-        return current;
+    if (current.has(item.id)) return current;
     const updated = current.set(item.id, item);
-    setGlobal( {
-        Notifications: updated
+    setGlobal({
+        Notifications: updated,
     });
     return updated;
 }
@@ -69,18 +68,17 @@ export function addNotification(item: NotificationItemModel) {
  * @param updates
  * @param failIfNotFound
  */
-export function updateNotification(id: string, updates: any, failIfNotFound: boolean = true) {
+export function updateNotification(id: string, updates: any, failIfNotFound = true) {
     let state = getNotifications();
-    if (!updates)
-        return state;
+    if (!updates) return state;
     if (failIfNotFound && !state.has(id)) {
-        throw new Error("Unable to find NotificationItem for id " + id);
+        throw new Error('Unable to find NotificationItem for id ' + id);
     }
-    let currentNotification = state.get(id);
+    const currentNotification = state.get(id);
     if (currentNotification) {
         state = state.set(id, currentNotification.merge(updates) as NotificationItemModel);
-        setGlobal( {
-            Notifications: state
+        setGlobal({
+            Notifications: state,
         });
     }
     return state;
@@ -96,21 +94,16 @@ export function dismissNotifications(id?: string, persistence?: Persistence) {
     let state = getNotifications();
     persistence = persistence || Persistence.PAGE_LOAD;
     if (id) {
-        let notification = state.get(id);
-        if (notification.onDismiss)
-            notification.onDismiss();
-        return updateNotification(id, {'isDismissed': true});
-    } else  {
+        const notification = state.get(id);
+        if (notification.onDismiss) notification.onDismiss();
+        return updateNotification(id, { isDismissed: true });
+    } else {
+        const dismissed = state.filter(item => item.persistence == persistence);
 
-        let dismissed = state
-            .filter((item) => item.persistence == persistence);
-
-        dismissed.forEach((item) => {
-            if (item.onDismiss)
-                item.onDismiss();
-            state = updateNotification(item.id, {'isDismissed': true});
+        dismissed.forEach(item => {
+            if (item.onDismiss) item.onDismiss();
+            state = updateNotification(item.id, { isDismissed: true });
         });
         return state;
     }
-
 }

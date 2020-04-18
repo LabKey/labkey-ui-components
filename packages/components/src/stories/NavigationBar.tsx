@@ -7,51 +7,55 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 import { List, Map } from 'immutable';
+
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../components/navigation/model';
 import { NavigationBar } from '../components/navigation/NavigationBar';
 import { User } from '../components/base/models/model';
 import { AppURL } from '../url/AppURL';
-import { ICON_URL } from "./mock";
+
+import { ICON_URL } from './mock';
 import './stories.scss';
 
 const fruitTree = [
-    "Apple",
-    "Apricot",
-    "Banana",
-    "Lemon",
-    "Lime",
-    "Lychee",
-    "Mango",
-    "Orange",
-    "Pineapple",
-    "Plum",
-    "Pear",
-    "strawberry"
+    'Apple',
+    'Apricot',
+    'Banana',
+    'Lemon',
+    'Lime',
+    'Lychee',
+    'Mango',
+    'Orange',
+    'Pineapple',
+    'Plum',
+    'Pear',
+    'strawberry',
 ];
 
 const vegetableGarden = [
-    "Lettuce",
-    "Tomato",
-    "Spinach",
-    "Corn",
-    "Carrots",
-    "Broccoli",
-    "Cauliflower",
-    "Beet",
-    "Radish",
-    "Beans",
-    "Kale"
+    'Lettuce',
+    'Tomato',
+    'Spinach',
+    'Corn',
+    'Carrots',
+    'Broccoli',
+    'Cauliflower',
+    'Beet',
+    'Radish',
+    'Beans',
+    'Kale',
 ];
 
-function makeMenuItems(nounPlural: string, options, menuItemLimit) : List<MenuItemModel> {
-    let items = List<MenuItemModel>().asMutable();
+function makeMenuItems(nounPlural: string, options, menuItemLimit): List<MenuItemModel> {
+    const items = List<MenuItemModel>().asMutable();
     for (let i = 0; i < menuItemLimit; i++) {
-        items.push(new MenuItemModel({
-            key: options[i].toLowerCase(),
-            label: options[i],
-            url: "http://" + nounPlural.toLowerCase() + "/" + options[i].toLowerCase()
-        }))
+        items.push(
+            new MenuItemModel({
+                key: options[i].toLowerCase(),
+                label: options[i],
+                url: 'http://' + nounPlural.toLowerCase() + '/' + options[i].toLowerCase(),
+            })
+        );
     }
     return items.asImmutable();
 }
@@ -63,7 +67,7 @@ storiesOf('NavigationBar', module)
         const isLoaded = boolean('isLoaded', false);
         const isError = boolean('isError', false);
         const message = text('error message', 'There was an error loading the menu items.');
-        const productId = "testProduct";
+        const productId = 'testProduct';
 
         const model = new ProductMenuModel({
             isLoading: isLoading || !isError,
@@ -73,163 +77,194 @@ storiesOf('NavigationBar', module)
             productId,
         });
 
-        const brandIcon = text("brand icon", ICON_URL);
+        const brandIcon = text('brand icon', ICON_URL);
         const brandText = text('brand text', 'Logo');
-        const brand = brandIcon ? <img src={brandIcon}  height="38px" width="38px"/> : <b>{brandText}</b>;
+        const brand = brandIcon ? <img src={brandIcon} height="38px" width="38px" /> : <b>{brandText}</b>;
 
-        return <NavigationBar
-            brand={brand}
-            projectName={text('projectName', 'Current Project')}
-            menuSectionConfigs={undefined}
-            model={model}
-            showSearchBox={boolean('showSearchBox', true)}
-            onSearch={(value: string) => console.log('Search term: ' + value)}
-        />
-    })
-    .add("With empty section", () => {
-        let sections  = List<MenuSectionModel>().asMutable();
-        sections.push(new MenuSectionModel({
-            label: "Fruits",
-            url: undefined,
-            items: List<MenuItemModel>(),
-            totalCount: 0,
-            itemLimit: undefined,
-            key: "fruits"
-        }));
-
-        const model = new ProductMenuModel({
-            isLoading: false,
-            isLoaded: true,
-            isError: false,
-            productId: "emptySection",
-            sections
-        });
-
-        let sectionConfigs = List<Map<string, MenuSectionConfig>>().asMutable();
-        sectionConfigs.push(Map<string, MenuSectionConfig>().set("fruits", new MenuSectionConfig({
-            emptyText: text("emptySectionText", "We have no bananas"),
-            iconCls:  text('iconClass', "fas fa-user-circle"),
-            iconURL: text("iconURL", undefined),
-            emptyURL: boolean("showEmptyURL", true) ? AppURL.create('fruit', 'new') : undefined,
-            emptyURLText: text('emptyURLText', "Define a new fruit"),
-            headerURL: boolean("showCustomHeaderURL", true) ? AppURL.create('fruit', 'list').addParams({sort:'color'}) : undefined,
-        })));
-
-        return <NavigationBar
-                menuSectionConfigs={sectionConfigs}
+        return (
+            <NavigationBar
+                brand={brand}
+                projectName={text('projectName', 'Current Project')}
+                menuSectionConfigs={undefined}
                 model={model}
-                showSearchBox={false}
+                showSearchBox={boolean('showSearchBox', true)}
+                onSearch={(value: string) => console.log('Search term: ' + value)}
             />
+        );
     })
-    .add("With sections", () => {
-        const fruitGroup = "Fruit";
-        const vegGroup = "Vegetables";
-        const userGroup = "User";
-        let sections  = List<MenuSectionModel>().asMutable();
-        const fruitMenuLimit = number("Number of fruits in menu", 4, {
-            range: true,
-            min: 0,
-            max: fruitTree.length,
-            step: 1
-        }, fruitGroup);
-        const totalFruitCount = number("Total number of fruits", 4, {
-            range: true,
-            min: 0,
-            max: fruitTree.length,
-            step: 1
-        },  fruitGroup);
-        sections.push(new MenuSectionModel({
-            label: "Fruits",
-            url: undefined,
-            items: makeMenuItems("fruits", fruitTree, fruitMenuLimit),
-            totalCount: totalFruitCount,
-            itemLimit: fruitMenuLimit,
-            key: "fruits"
-        }));
-
-        const vegMenuLimit = number("Number of veggies in menu", 2, {
-            range: true,
-            min: 0,
-            max: vegetableGarden.length,
-            step: 1
-        },  vegGroup);
-        const totalVegCount = number("Total number of veggies", 4, {
-            range: true,
-            min: 0,
-            max: vegetableGarden.length,
-            step: 1
-        }, vegGroup);
-
-        sections.push(new MenuSectionModel({
-            label: "Vegetables",
-            items: makeMenuItems("vegetables", vegetableGarden, vegMenuLimit),
-            totalCount: totalVegCount,
-            itemLimit: vegMenuLimit,
-            key: "vegetables"
-        }));
-        sections.push(new MenuSectionModel({
-            key: "user",
-            label: "Your Items",
-            items: List<MenuItemModel>([
-                new MenuItemModel({
-                    key: "cart",
-                    label: "Shopping Cart"
-                }),
-                new MenuItemModel( {
-                    key: "profile",
-                    requiresLogin: true,
-                    label: "Profile"
-                })
-            ])
-        }));
-
+    .add('With empty section', () => {
+        const sections = List<MenuSectionModel>().asMutable();
+        sections.push(
+            new MenuSectionModel({
+                label: 'Fruits',
+                url: undefined,
+                items: List<MenuItemModel>(),
+                totalCount: 0,
+                itemLimit: undefined,
+                key: 'fruits',
+            })
+        );
 
         const model = new ProductMenuModel({
             isLoading: false,
             isLoaded: true,
             isError: false,
-            productId: "multipleSections",
-            sections
+            productId: 'emptySection',
+            sections,
         });
 
-        let fruitsSectionConfigs = new MenuSectionConfig({
-            iconCls:  text('Fruit Section iconClass', undefined, fruitGroup),
-            iconURL: text("Fruit Section iconURL", ICON_URL, fruitGroup),
-            maxItemsPerColumn: number("Max Fruits per column", 2, {}, fruitGroup),
-            maxColumns: number("Max Fruit columns", 1, {}, fruitGroup),
+        const sectionConfigs = List<Map<string, MenuSectionConfig>>().asMutable();
+        sectionConfigs.push(
+            Map<string, MenuSectionConfig>().set(
+                'fruits',
+                new MenuSectionConfig({
+                    emptyText: text('emptySectionText', 'We have no bananas'),
+                    iconCls: text('iconClass', 'fas fa-user-circle'),
+                    iconURL: text('iconURL', undefined),
+                    emptyURL: boolean('showEmptyURL', true) ? AppURL.create('fruit', 'new') : undefined,
+                    emptyURLText: text('emptyURLText', 'Define a new fruit'),
+                    headerURL: boolean('showCustomHeaderURL', true)
+                        ? AppURL.create('fruit', 'list').addParams({ sort: 'color' })
+                        : undefined,
+                })
+            )
+        );
+
+        return <NavigationBar menuSectionConfigs={sectionConfigs} model={model} showSearchBox={false} />;
+    })
+    .add('With sections', () => {
+        const fruitGroup = 'Fruit';
+        const vegGroup = 'Vegetables';
+        const userGroup = 'User';
+        const sections = List<MenuSectionModel>().asMutable();
+        const fruitMenuLimit = number(
+            'Number of fruits in menu',
+            4,
+            {
+                range: true,
+                min: 0,
+                max: fruitTree.length,
+                step: 1,
+            },
+            fruitGroup
+        );
+        const totalFruitCount = number(
+            'Total number of fruits',
+            4,
+            {
+                range: true,
+                min: 0,
+                max: fruitTree.length,
+                step: 1,
+            },
+            fruitGroup
+        );
+        sections.push(
+            new MenuSectionModel({
+                label: 'Fruits',
+                url: undefined,
+                items: makeMenuItems('fruits', fruitTree, fruitMenuLimit),
+                totalCount: totalFruitCount,
+                itemLimit: fruitMenuLimit,
+                key: 'fruits',
+            })
+        );
+
+        const vegMenuLimit = number(
+            'Number of veggies in menu',
+            2,
+            {
+                range: true,
+                min: 0,
+                max: vegetableGarden.length,
+                step: 1,
+            },
+            vegGroup
+        );
+        const totalVegCount = number(
+            'Total number of veggies',
+            4,
+            {
+                range: true,
+                min: 0,
+                max: vegetableGarden.length,
+                step: 1,
+            },
+            vegGroup
+        );
+
+        sections.push(
+            new MenuSectionModel({
+                label: 'Vegetables',
+                items: makeMenuItems('vegetables', vegetableGarden, vegMenuLimit),
+                totalCount: totalVegCount,
+                itemLimit: vegMenuLimit,
+                key: 'vegetables',
+            })
+        );
+        sections.push(
+            new MenuSectionModel({
+                key: 'user',
+                label: 'Your Items',
+                items: List<MenuItemModel>([
+                    new MenuItemModel({
+                        key: 'cart',
+                        label: 'Shopping Cart',
+                    }),
+                    new MenuItemModel({
+                        key: 'profile',
+                        requiresLogin: true,
+                        label: 'Profile',
+                    }),
+                ]),
+            })
+        );
+
+        const model = new ProductMenuModel({
+            isLoading: false,
+            isLoaded: true,
+            isError: false,
+            productId: 'multipleSections',
+            sections,
         });
 
-        let vegetablesSectionConfigs = new MenuSectionConfig( {
-            iconCls:  text('Veg Section iconClass', undefined, vegGroup),
-            iconURL: text("Veg Section iconURL", ICON_URL, vegGroup),
-            maxItemsPerColumn: number("Max veggies per column", 2, {}, vegGroup),
-            maxColumns: number("Max veggie columns", 1, {}, vegGroup),
+        const fruitsSectionConfigs = new MenuSectionConfig({
+            iconCls: text('Fruit Section iconClass', undefined, fruitGroup),
+            iconURL: text('Fruit Section iconURL', ICON_URL, fruitGroup),
+            maxItemsPerColumn: number('Max Fruits per column', 2, {}, fruitGroup),
+            maxColumns: number('Max Fruit columns', 1, {}, fruitGroup),
         });
 
-        let userSectionConfigs = new MenuSectionConfig({
-            iconCls: text('userIconClass', 'fas fa-user-circle', "User")
+        const vegetablesSectionConfigs = new MenuSectionConfig({
+            iconCls: text('Veg Section iconClass', undefined, vegGroup),
+            iconURL: text('Veg Section iconURL', ICON_URL, vegGroup),
+            maxItemsPerColumn: number('Max veggies per column', 2, {}, vegGroup),
+            maxColumns: number('Max veggie columns', 1, {}, vegGroup),
         });
 
+        const userSectionConfigs = new MenuSectionConfig({
+            iconCls: text('userIconClass', 'fas fa-user-circle', 'User'),
+        });
 
-        let threeColConfigs = List<Map<string, MenuSectionConfig>>().asMutable();
+        const threeColConfigs = List<Map<string, MenuSectionConfig>>().asMutable();
         threeColConfigs.push(Map<string, MenuSectionConfig>().set('fruits', fruitsSectionConfigs));
         threeColConfigs.push(Map<string, MenuSectionConfig>().set('vegetables', vegetablesSectionConfigs));
         threeColConfigs.push(Map<string, MenuSectionConfig>().set('user', userSectionConfigs));
 
-        let twoColConfigs = List<Map<string, MenuSectionConfig>>().asMutable();
+        const twoColConfigs = List<Map<string, MenuSectionConfig>>().asMutable();
         twoColConfigs.push(Map<string, MenuSectionConfig>().set('fruits', fruitsSectionConfigs));
-        let vegAndUserSectionConfig = Map<string, MenuSectionConfig>().asMutable();
+        const vegAndUserSectionConfig = Map<string, MenuSectionConfig>().asMutable();
         vegAndUserSectionConfig.set('vegetables', vegetablesSectionConfigs);
         vegAndUserSectionConfig.set('user', userSectionConfigs);
         twoColConfigs.push(vegAndUserSectionConfig);
 
         LABKEY['devMode'] = boolean('devMode', false, userGroup);
         const isSignedIn = boolean('User is signed in', true, userGroup);
-        const user = new User( {
+        const user = new User({
             avatar: undefined,
-            displayName: "Test User",
+            displayName: 'Test User',
             isSignedIn,
-            isGuest: !isSignedIn
+            isGuest: !isSignedIn,
         });
         return (
             <NavigationBar
@@ -239,5 +274,4 @@ storiesOf('NavigationBar', module)
                 user={user}
             />
         );
-    })
-;
+    });

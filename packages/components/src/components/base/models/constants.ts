@@ -19,7 +19,7 @@ export const GRID_SELECTION_INDEX = '__selection__';
 export enum GRID_CHECKBOX_OPTIONS {
     ALL,
     SOME,
-    NONE
+    NONE,
 }
 
 export const PermissionTypes = {

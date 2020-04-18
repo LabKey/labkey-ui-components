@@ -16,10 +16,10 @@
 import { generateNameWithTimestamp } from './Date';
 
 describe('generateNameWithTimestamp', () => {
-    test("generated text", () => {
-        const prefix = "Test";
+    test('generated text', () => {
+        const prefix = 'Test';
         const name = generateNameWithTimestamp(prefix);
-        expect(name.indexOf(prefix + "_") === 0).toBeTruthy();
+        expect(name.indexOf(prefix + '_') === 0).toBeTruthy();
         expect(name.length === prefix.length + 20).toBeTruthy(); // 2 underscores, 10 for date string, 8 for time string
     });
 });

@@ -4,49 +4,54 @@ import { FormControl } from 'react-bootstrap';
 
 import { decodeLookup, encodeLookup, PropDescType } from '../models';
 
-import { ILookupContext, LookupContextConsumer } from './Context';
 import { createFormInputName } from '../actions';
 import { DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA } from '../constants';
 import { Container, SchemaDetails } from '../../base/models/model';
 
+import { ILookupContext, LookupContextConsumer } from './Context';
+
 interface ILookupProps {
-    context: ILookupContext
-    name: string   // Used for testing
+    context: ILookupContext;
+    name: string; // Used for testing
 }
 
 interface IFolderSelectProps {
-    id: string
-    onChange: (any) => any
-    value?: any
-    disabled?: boolean
+    id: string;
+    onChange: (any) => any;
+    value?: any;
+    disabled?: boolean;
 }
 
 export class FolderSelect extends React.PureComponent<IFolderSelectProps, any> {
-
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <FolderSelectImpl {...this.props} context={context} name={createFormInputName(DOMAIN_FIELD_LOOKUP_CONTAINER)}/>}
+                {context => (
+                    <FolderSelectImpl
+                        {...this.props}
+                        context={context}
+                        name={createFormInputName(DOMAIN_FIELD_LOOKUP_CONTAINER)}
+                    />
+                )}
             </LookupContextConsumer>
         );
     }
 }
 
 export interface IFolderSelectImplState {
-    containers: List<Container>
-    loading: boolean
+    containers: List<Container>;
+    loading: boolean;
 }
 
 export type FolderSelectProps = IFolderSelectProps & ILookupProps;
 
 class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectImplState> {
-
     constructor(props) {
         super(props);
 
         this.state = {
             containers: List(),
-            loading: false
+            loading: false,
         };
     }
 
@@ -54,13 +59,13 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
         const { context } = this.props;
 
         this.setState({
-            loading: true
+            loading: true,
         });
 
-        context.fetchContainers().then((containers) => {
+        context.fetchContainers().then(containers => {
             this.setState({
                 containers,
-                loading: false
+                loading: false,
             });
         });
     }
@@ -71,46 +76,60 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
 
         return (
             <FormControl {...this.props} componentClass="select">
-                {context.activeContainer && <option key="_current" value={''}>Current {context.activeContainer.type.toLowerCase() === 'project' ? 'Project' : 'Folder'}</option>}
-                {containers.map((c) => <option key={c.id} value={c.path}>{c.path}</option>).toArray()}
+                {context.activeContainer && (
+                    <option key="_current" value="">
+                        Current {context.activeContainer.type.toLowerCase() === 'project' ? 'Project' : 'Folder'}
+                    </option>
+                )}
+                {containers
+                    .map(c => (
+                        <option key={c.id} value={c.path}>
+                            {c.path}
+                        </option>
+                    ))
+                    .toArray()}
             </FormControl>
-        )
+        );
     }
 }
 
 interface ITargetTableSelectProps {
-    containerPath: string
-    id: string
-    lookupURI?: string
-    onChange: (any) => any
-    schemaName: string
-    value?: any
-    disabled?: boolean
+    containerPath: string;
+    id: string;
+    lookupURI?: string;
+    onChange: (any) => any;
+    schemaName: string;
+    value?: any;
+    disabled?: boolean;
 }
 
 export class TargetTableSelect extends React.PureComponent<ITargetTableSelectProps, any> {
-
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <TargetTableSelectImpl {...this.props} context={context} name={createFormInputName(DOMAIN_FIELD_LOOKUP_QUERY)}/>}
+                {context => (
+                    <TargetTableSelectImpl
+                        {...this.props}
+                        context={context}
+                        name={createFormInputName(DOMAIN_FIELD_LOOKUP_QUERY)}
+                    />
+                )}
             </LookupContextConsumer>
         );
     }
 }
 
 export interface ITargetTableSelectImplState {
-    containerPath?: string
-    loading?: boolean
-    prevPath?: string
-    prevSchemaName?: string
-    queries?: List<{name: string, type: PropDescType}>
+    containerPath?: string;
+    loading?: boolean;
+    prevPath?: string;
+    prevSchemaName?: string;
+    queries?: List<{ name: string; type: PropDescType }>;
 }
 
 export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
 
 class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITargetTableSelectImplState> {
-
     constructor(props) {
         super(props);
 
@@ -119,15 +138,18 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
             loading: false,
             prevPath: null,
             prevSchemaName: undefined,
-            queries: List()
+            queries: List(),
         };
     }
 
-    static getDerivedStateFromProps(nextProps: TargetTableSelectProps, prevState: ITargetTableSelectImplState): ITargetTableSelectImplState {
+    static getDerivedStateFromProps(
+        nextProps: TargetTableSelectProps,
+        prevState: ITargetTableSelectImplState
+    ): ITargetTableSelectImplState {
         if (TargetTableSelectImpl.isChanged(nextProps, prevState)) {
             return {
                 prevPath: nextProps.containerPath,
-                prevSchemaName: nextProps.schemaName
+                prevSchemaName: nextProps.schemaName,
             };
         }
 
@@ -136,14 +158,18 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
     }
 
     static isChanged(props: Readonly<TargetTableSelectProps>, state: Readonly<ITargetTableSelectImplState>): boolean {
-        return (props.containerPath !== state.prevPath || props.schemaName !== state.prevSchemaName)
+        return props.containerPath !== state.prevPath || props.schemaName !== state.prevSchemaName;
     }
 
     componentDidMount(): void {
         this.loadData();
     }
 
-    componentDidUpdate(prevProps: Readonly<TargetTableSelectProps>, prevState: Readonly<ITargetTableSelectImplState>, snapshot?: any): void {
+    componentDidUpdate(
+        prevProps: Readonly<TargetTableSelectProps>,
+        prevState: Readonly<ITargetTableSelectImplState>,
+        snapshot?: any
+    ): void {
         if (TargetTableSelectImpl.isChanged(prevProps, this.state)) {
             this.loadData();
         }
@@ -155,22 +181,22 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         this.setState({
             loading: true,
             prevPath: containerPath,
-            prevSchemaName: schemaName
+            prevSchemaName: schemaName,
         });
 
         // special case for Current Project/Folder which uses a value of '' (empty string)
         const queryContainerPath = containerPath === '' ? null : containerPath;
 
-        context.fetchQueries(queryContainerPath, schemaName).then((queries) => {
-            let infos = List<{name: string, type: PropDescType}>();
+        context.fetchQueries(queryContainerPath, schemaName).then(queries => {
+            let infos = List<{ name: string; type: PropDescType }>();
 
-            queries.forEach((q) => {
+            queries.forEach(q => {
                 infos = infos.concat(q.getLookupInfo(this.props.lookupURI)).toList();
             });
 
             this.setState({
                 loading: false,
-                queries: infos
+                queries: infos,
             });
         });
     }
@@ -192,35 +218,56 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                 name={name}
                 onChange={onChange}
             >
-                {disabled && value && <option key="_disabled" value={value}>{decodeLookup(value).queryName}</option>}
-                {loading && <option disabled key="_loading" value={value}>Loading...</option>}
-                {blankOption && <option key="_default" value={undefined}/>}
-                {queries.map((q) => {
-                    let encoded = encodeLookup(q.name, q.type);
-                    return (
-                        <option key={encoded} value={encoded}>{q.name} ({q.type.shortDisplay || q.type.display})</option>
-                    )
-                }).toArray()}
-                {!loading && isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
+                {disabled && value && (
+                    <option key="_disabled" value={value}>
+                        {decodeLookup(value).queryName}
+                    </option>
+                )}
+                {loading && (
+                    <option disabled key="_loading" value={value}>
+                        Loading...
+                    </option>
+                )}
+                {blankOption && <option key="_default" value={undefined} />}
+                {queries
+                    .map(q => {
+                        const encoded = encodeLookup(q.name, q.type);
+                        return (
+                            <option key={encoded} value={encoded}>
+                                {q.name} ({q.type.shortDisplay || q.type.display})
+                            </option>
+                        );
+                    })
+                    .toArray()}
+                {!loading && isEmpty && (
+                    <option disabled key="_empty" value={undefined}>
+                        (No tables)
+                    </option>
+                )}
             </FormControl>
-        )
+        );
     }
 }
 
 interface ISchemaSelectProps {
-    containerPath: string
-    id: string
-    onChange: (any) => any
-    value?: any
-    disabled?: boolean
+    containerPath: string;
+    id: string;
+    onChange: (any) => any;
+    value?: any;
+    disabled?: boolean;
 }
 
 export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {
-
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <SchemaSelectImpl {...this.props} context={context} name={createFormInputName(DOMAIN_FIELD_LOOKUP_SCHEMA)}/>}
+                {context => (
+                    <SchemaSelectImpl
+                        {...this.props}
+                        context={context}
+                        name={createFormInputName(DOMAIN_FIELD_LOOKUP_SCHEMA)}
+                    />
+                )}
             </LookupContextConsumer>
         );
     }
@@ -229,28 +276,30 @@ export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {
 export type SchemaSelectProps = ISchemaSelectProps & ILookupProps;
 
 export interface ISchemaSelectImplState {
-    containerPath?: string
-    loading?: boolean
-    prevPath?: string
-    schemas?: List<SchemaDetails>
+    containerPath?: string;
+    loading?: boolean;
+    prevPath?: string;
+    schemas?: List<SchemaDetails>;
 }
 
 class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectImplState> {
-
     constructor(props) {
         super(props);
 
         this.state = {
             loading: false,
             prevPath: null,
-            schemas: List()
+            schemas: List(),
         };
     }
 
-    static getDerivedStateFromProps(nextProps: SchemaSelectProps, prevState: ISchemaSelectImplState): ISchemaSelectImplState {
+    static getDerivedStateFromProps(
+        nextProps: SchemaSelectProps,
+        prevState: ISchemaSelectImplState
+    ): ISchemaSelectImplState {
         if (nextProps.containerPath !== prevState.containerPath) {
             return {
-                prevPath: nextProps.containerPath
+                prevPath: nextProps.containerPath,
             };
         }
 
@@ -262,7 +311,11 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
         this.loadData();
     }
 
-    componentDidUpdate(prevProps: Readonly<SchemaSelectProps>, prevState: Readonly<ISchemaSelectImplState>, snapshot?: any): void {
+    componentDidUpdate(
+        prevProps: Readonly<SchemaSelectProps>,
+        prevState: Readonly<ISchemaSelectImplState>,
+        snapshot?: any
+    ): void {
         if (prevProps.containerPath !== this.state.prevPath) {
             this.loadData();
         }
@@ -273,13 +326,13 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
 
         this.setState({
             loading: true,
-            prevPath: containerPath
+            prevPath: containerPath,
         });
 
-        context.fetchSchemas(containerPath).then((schemas) => {
+        context.fetchSchemas(containerPath).then(schemas => {
             this.setState({
                 loading: false,
-                schemas
+                schemas,
             });
         });
     }
@@ -302,12 +355,30 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
                 onChange={onChange}
                 placeholder="Select Schema"
             >
-                {disabled && value && <option key="_disabled" value={value}>{value}</option>}
-                {loading && <option disabled key="_loading" value={value}>Loading...</option>}
-                {blankOption && <option key="_default" value={undefined}/>}
-                {schemas.map((s) => <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>{s.fullyQualifiedName}</option>).toArray()}
-                {!loading && isEmpty && <option disabled key="_empty" value={undefined}>(No schemas)</option>}
+                {disabled && value && (
+                    <option key="_disabled" value={value}>
+                        {value}
+                    </option>
+                )}
+                {loading && (
+                    <option disabled key="_loading" value={value}>
+                        Loading...
+                    </option>
+                )}
+                {blankOption && <option key="_default" value={undefined} />}
+                {schemas
+                    .map(s => (
+                        <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>
+                            {s.fullyQualifiedName}
+                        </option>
+                    ))
+                    .toArray()}
+                {!loading && isEmpty && (
+                    <option disabled key="_empty" value={undefined}>
+                        (No schemas)
+                    </option>
+                )}
             </FormControl>
-        )
+        );
     }
 }

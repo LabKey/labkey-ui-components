@@ -18,18 +18,17 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
 interface Props {
-    addContent?: React.ReactNode
-    iconSpacer?: boolean
-    label?: React.ReactNode
-    onAddClick?: () => any
-    showLabel?: boolean
+    addContent?: React.ReactNode;
+    iconSpacer?: boolean;
+    label?: React.ReactNode;
+    onAddClick?: () => any;
+    showLabel?: boolean;
 }
 
 export class FormSection extends React.Component<Props, any> {
-
     static defaultProps = {
         iconSpacer: true,
-        showLabel: true
+        showLabel: true,
     };
 
     showLabel(): boolean {
@@ -48,13 +47,19 @@ export class FormSection extends React.Component<Props, any> {
                                 <label className="control-label text-left">
                                     <strong>{label}</strong>
                                 </label>
-                            ) : label}
+                            ) : (
+                                label
+                            )}
                         </div>
                     </div>
                 )}
                 <div className="row">
                     <div className="col-sm-12">
-                        <div className={classNames('wizard-row--container', {'wizard-row--spacer': this.props.iconSpacer})}>
+                        <div
+                            className={classNames('wizard-row--container', {
+                                'wizard-row--spacer': this.props.iconSpacer,
+                            })}
+                        >
                             {this.props.children}
                             {this.props.addContent && (
                                 <div className="add-row--container" onClick={this.props.onAddClick}>
@@ -65,6 +70,6 @@ export class FormSection extends React.Component<Props, any> {
                     </div>
                 </div>
             </>
-        )
+        );
     }
 }

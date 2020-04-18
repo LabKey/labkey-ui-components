@@ -1,64 +1,68 @@
 import React from 'reactn';
 import { Button, Panel } from 'react-bootstrap';
+
+import { List } from 'immutable';
+
+import { AuditBehaviorTypes } from '@labkey/api';
+
 import {
     AddEntityButton,
     Alert,
     capitalizeFirstChar,
     EntityDataType,
     getActionErrorMessage,
-    getQueryGridModel, gridIdInvalidate,
+    getQueryGridModel,
+    gridIdInvalidate,
     LoadingSpinner,
     Progress,
     QueryGridModel,
     resolveErrorMessage,
-    updateRows
+    updateRows,
 } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
-import {
-    getEntityTypeOptions
-} from './actions';
-import { List } from 'immutable';
+
+import { DELIMITER } from '../forms/input/SelectInput';
+
+import { getEntityTypeOptions } from './actions';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
-import { DELIMITER } from '../forms/input/SelectInput';
+
 import {
     getInitialParentChoices,
     getParentGridPrefix,
     getUpdatedRowForParentChanges,
-    parentValuesDiffer
+    parentValuesDiffer,
 } from './utils';
-import { AuditBehaviorTypes } from '@labkey/api';
 
 interface Props {
-    canUpdate: boolean
-    childName: string
-    childNounSingular: string
-    childModel: QueryGridModel
-    onUpdate?: () => void
-    onEditToggle?: (editing: boolean) => any
-    parentDataType: EntityDataType
-    title: string
-    cancelText?: string
-    submitText?: string
-    auditBehavior?: AuditBehaviorTypes
+    canUpdate: boolean;
+    childName: string;
+    childNounSingular: string;
+    childModel: QueryGridModel;
+    onUpdate?: () => void;
+    onEditToggle?: (editing: boolean) => any;
+    parentDataType: EntityDataType;
+    title: string;
+    cancelText?: string;
+    submitText?: string;
+    auditBehavior?: AuditBehaviorTypes;
 }
 
 interface State {
-    editing: boolean
-    error: React.ReactNode
-    loading: boolean
-    parentTypeOptions: List<IEntityTypeOption>
-    submitting: boolean
-    originalParents: List<EntityChoice>
-    currentParents: List<EntityChoice>
-    originalValueLoaded: List<boolean>
+    editing: boolean;
+    error: React.ReactNode;
+    loading: boolean;
+    parentTypeOptions: List<IEntityTypeOption>;
+    submitting: boolean;
+    originalParents: List<EntityChoice>;
+    currentParents: List<EntityChoice>;
+    originalValueLoaded: List<boolean>;
 }
 
 export class ParentEntityEditPanel extends React.Component<Props, State> {
-
     static defaultProps = {
-        cancelText: "Cancel",
-        submitText: "Save",
+        cancelText: 'Cancel',
+        submitText: 'Save',
     };
 
     constructor(props: Props) {
@@ -72,7 +76,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             submitting: false,
             originalParents: undefined,
             currentParents: undefined,
-            originalValueLoaded: List<boolean>()
+            originalValueLoaded: List<boolean>(),
         };
     }
 
@@ -84,16 +88,20 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
     }
 
-    init()  {
+    init() {
         const { parentDataType } = this.props;
         const { typeListingSchemaQuery, instanceSchemaName, filterArray } = parentDataType;
 
         getEntityTypeOptions(typeListingSchemaQuery, instanceSchemaName, filterArray)
-            .then((optionsMap) => {
+            .then(optionsMap => {
                 const parentTypeOptions = optionsMap.get(typeListingSchemaQuery.queryName);
-                const originalParents = getInitialParentChoices(parentTypeOptions, parentDataType, this.getChildModel());
-                let currentParents = originalParents.reduce((list, parent) => {
-                    return list.push({...parent})
+                const originalParents = getInitialParentChoices(
+                    parentTypeOptions,
+                    parentDataType,
+                    this.getChildModel()
+                );
+                const currentParents = originalParents.reduce((list, parent) => {
+                    return list.push({ ...parent });
                 }, List<EntityChoice>());
 
                 this.setState(() => ({
@@ -102,75 +110,90 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     originalParents,
                     currentParents,
                 }));
-            }
-        ).catch((reason) => {
-            this.setState(() => ({
-                error: getActionErrorMessage("Unable to load " + parentDataType.descriptionSingular + " data.", parentDataType.descriptionPlural, true)
-            }))
-        })
+            })
+            .catch(reason => {
+                this.setState(() => ({
+                    error: getActionErrorMessage(
+                        'Unable to load ' + parentDataType.descriptionSingular + ' data.',
+                        parentDataType.descriptionPlural,
+                        true
+                    ),
+                }));
+            });
     }
 
     getChildModel() {
         return getQueryGridModel(this.props.childModel.getId());
     }
 
-    hasParents() : boolean {
-        return this.state.currentParents && !this.state.currentParents.isEmpty()
+    hasParents(): boolean {
+        return this.state.currentParents && !this.state.currentParents.isEmpty();
     }
 
     toggleEdit = () => {
         if (this.props.onEditToggle) {
             this.props.onEditToggle(!this.state.editing);
         }
-        this.setState((state) => ({editing: !state.editing}));
+        this.setState(state => ({ editing: !state.editing }));
     };
 
-    changeEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index): void  => {
-        this.setState((state) => {
-            const updatedParents = state.currentParents.set(index, {type: selectedOption, value: undefined, ids: undefined});
+    changeEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index): void => {
+        this.setState(state => {
+            const updatedParents = state.currentParents.set(index, {
+                type: selectedOption,
+                value: undefined,
+                ids: undefined,
+            });
             return {
                 currentParents: updatedParents,
-            }
+            };
         });
     };
 
-    onParentValueChange = (name: string, value: string | Array<any>, index: number) => {
-        this.updateParentValue(value, index, false)
+    onParentValueChange = (name: string, value: string | any[], index: number) => {
+        this.updateParentValue(value, index, false);
     };
 
     onInitialParentValue = (value: string, selectedValues: List<any>, index: number) => {
         this.updateParentValue(value, index, true);
     };
 
-    updateParentValue(value: string | Array<any>, index: number, updateOriginal: boolean) {
-        this.setState((state) => {
-            let newChoice = state.currentParents.get(index);
+    updateParentValue(value: string | any[], index: number, updateOriginal: boolean) {
+        this.setState(state => {
+            const newChoice = state.currentParents.get(index);
             newChoice.value = Array.isArray(value) ? value.join(DELIMITER) : value;
             return {
                 currentParents: state.currentParents.set(index, newChoice),
-                originalParents: updateOriginal && state.originalParents.has(index) && !state.originalValueLoaded.get(index) ? state.originalParents.set(index, {...newChoice}) : state.originalParents,
-                originalValueLoaded: state.originalParents.has(index) ? state.originalValueLoaded.set(index, true) : state.originalValueLoaded
-            }
+                originalParents:
+                    updateOriginal && state.originalParents.has(index) && !state.originalValueLoaded.get(index)
+                        ? state.originalParents.set(index, { ...newChoice })
+                        : state.originalParents,
+                originalValueLoaded: state.originalParents.has(index)
+                    ? state.originalValueLoaded.set(index, true)
+                    : state.originalValueLoaded,
+            };
         });
     }
 
     onCancel = () => {
-        this.setState((state) => ({
-            currentParents: state.originalParents,
-            originalValueLoaded: List<boolean>(),
-            editing: false
-        }), () => {
-            if (this.props.onEditToggle) {
-                this.props.onEditToggle(false);
+        this.setState(
+            state => ({
+                currentParents: state.originalParents,
+                originalValueLoaded: List<boolean>(),
+                editing: false,
+            }),
+            () => {
+                if (this.props.onEditToggle) {
+                    this.props.onEditToggle(false);
+                }
             }
-        })
+        );
     };
 
-    onSubmit = (values) => {
-        if (!this.canSubmit())
-            return;
+    onSubmit = values => {
+        if (!this.canSubmit()) return;
 
-        this.setState(() => ({submitting: true}));
+        this.setState(() => ({ submitting: true }));
 
         const { auditBehavior, parentDataType, onUpdate } = this.props;
         const { currentParents, originalParents } = this.state;
@@ -182,50 +205,53 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         return updateRows({
             schemaQuery,
             rows: [getUpdatedRowForParentChanges(parentDataType, originalParents, currentParents, childModel)],
-            auditBehavior
-        }).then(() => {
-            this.setState(() => ({
-                submitting: false,
-                editing: false
-            }), () => {
-                gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
+            auditBehavior,
+        })
+            .then(() => {
+                this.setState(
+                    () => ({
+                        submitting: false,
+                        editing: false,
+                    }),
+                    () => {
+                        gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
 
-                if (onUpdate) {
-                    onUpdate();
-                }
-                if (this.props.onEditToggle) {
-                    this.props.onEditToggle(false);
-                }
+                        if (onUpdate) {
+                            onUpdate();
+                        }
+                        if (this.props.onEditToggle) {
+                            this.props.onEditToggle(false);
+                        }
+                    }
+                );
+            })
+            .catch(error => {
+                console.error(error);
+                this.setState(() => ({
+                    submitting: false,
+                    error: resolveErrorMessage(error, 'data', undefined, 'update'),
+                }));
             });
-        }).catch((error) => {
-            console.error(error);
-            this.setState(() => ({
-                submitting: false,
-                error: resolveErrorMessage(error, 'data', undefined, 'update')
-            }));
-        });
     };
 
     canSubmit() {
-        return parentValuesDiffer(this.state.originalParents, this.state.currentParents)
+        return parentValuesDiffer(this.state.originalParents, this.state.currentParents);
     }
 
     renderProgress() {
         const { submitting } = this.state;
-        const parentCount = this.state.currentParents
-            .reduce((count, parent) => {
-                    const values = parent.value ? parent.value.split(",") : [];
-                    return count + values.length;
-                },
-                0);
+        const parentCount = this.state.currentParents.reduce((count, parent) => {
+            const values = parent.value ? parent.value.split(',') : [];
+            return count + values.length;
+        }, 0);
         return (
             <Progress
                 estimate={parentCount * 200}
                 modal={true}
-                title={"Updating " + this.props.parentDataType.nounPlural}
+                title={'Updating ' + this.props.parentDataType.nounPlural}
                 toggle={parentCount > 2 && submitting}
             />
-        )
+        );
     }
 
     renderEditControls() {
@@ -234,15 +260,12 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
         return (
             <div className="full-width bottom-spacing">
-                <Button
-                    className="pull-left"
-                    onClick={this.onCancel}
-                >
+                <Button className="pull-left" onClick={this.onCancel}>
                     {cancelText}
                 </Button>
                 <Button
                     className="pull-right"
-                    bsStyle={"success"}
+                    bsStyle="success"
                     type="submit"
                     disabled={submitting || !this.canSubmit()}
                     onClick={this.onSubmit}
@@ -250,11 +273,10 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     {submitText}
                 </Button>
             </div>
-        )
+        );
     }
 
-
-    getParentTypeOptions(currentIndex: number) : List<IEntityTypeOption> {
+    getParentTypeOptions(currentIndex: number): List<IEntityTypeOption> {
         const { currentParents, parentTypeOptions } = this.state;
         // include the current parent type as a choice, but not the others already chosen
         let toRemove = List<string>();
@@ -263,97 +285,103 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 toRemove = toRemove.push(parent.type.label);
             }
         });
-        return parentTypeOptions.filter((option) => (!toRemove.contains(option.label))).toList();
+        return parentTypeOptions.filter(option => !toRemove.contains(option.label)).toList();
     }
 
     onRemoveParentType = (index: number) => {
-        this.setState((state) => {
+        this.setState(state => {
             return {
                 currentParents: state.currentParents.delete(index),
-            }
+            };
         });
     };
 
     renderSingleParentPanels() {
         const { parentDataType } = this.props;
 
-        return this.state.currentParents.map((choice, index) => {
-            let key = choice.type ? choice.type.label + '-' + index : 'unknown-' + index;
-            return (
-                <div key={key}>
-                    {this.state.editing && <hr/>}
-                    <SingleParentEntityPanel
-                        key={key}
-                        parentDataType={parentDataType}
-                        parentTypeOptions={this.getParentTypeOptions(index)}
-                        parentTypeQueryName={choice.type ? choice.type.label : undefined}
-                        parentLSIDs={choice.ids}
-                        index={index}
-                        editing={this.state.editing}
-                        chosenValue={choice.value}
-                        onChangeParentType={this.changeEntityType}
-                        onChangeParentValue={this.onParentValueChange}
-                        onInitialParentValue={this.onInitialParentValue}
-                        onRemoveParentType={this.onRemoveParentType}
-                    />
-                </div>
-            )
-
-        }).toArray();
+        return this.state.currentParents
+            .map((choice, index) => {
+                const key = choice.type ? choice.type.label + '-' + index : 'unknown-' + index;
+                return (
+                    <div key={key}>
+                        {this.state.editing && <hr />}
+                        <SingleParentEntityPanel
+                            key={key}
+                            parentDataType={parentDataType}
+                            parentTypeOptions={this.getParentTypeOptions(index)}
+                            parentTypeQueryName={choice.type ? choice.type.label : undefined}
+                            parentLSIDs={choice.ids}
+                            index={index}
+                            editing={this.state.editing}
+                            chosenValue={choice.value}
+                            onChangeParentType={this.changeEntityType}
+                            onChangeParentValue={this.onParentValueChange}
+                            onInitialParentValue={this.onInitialParentValue}
+                            onRemoveParentType={this.onRemoveParentType}
+                        />
+                    </div>
+                );
+            })
+            .toArray();
     }
 
     renderParentData() {
         const { parentDataType, childNounSingular } = this.props;
         if (this.hasParents()) {
             return this.renderSingleParentPanels();
-        }
-        else {
+        } else {
             return (
                 <div key={1}>
-                    <hr/>
+                    <hr />
                     <SingleParentEntityPanel
-                       editing={this.state.editing}
-                       parentTypeOptions={this.state.parentTypeOptions}
-                       parentDataType={parentDataType}
-                       childNounSingular={childNounSingular}
-                       index={0}
-                       onChangeParentType={this.changeEntityType}
-                       onChangeParentValue={this.onParentValueChange}
-                       onInitialParentValue={this.onInitialParentValue}
+                        editing={this.state.editing}
+                        parentTypeOptions={this.state.parentTypeOptions}
+                        parentDataType={parentDataType}
+                        childNounSingular={childNounSingular}
+                        index={0}
+                        onChangeParentType={this.changeEntityType}
+                        onChangeParentValue={this.onParentValueChange}
+                        onInitialParentValue={this.onInitialParentValue}
                     />
                 </div>
-            )
+            );
         }
     }
 
     onAddParent = () => {
-        this.setState((state) => ({
-            currentParents: state.currentParents.push({type: undefined, value: undefined, ids: undefined})
+        this.setState(state => ({
+            currentParents: state.currentParents.push({ type: undefined, value: undefined, ids: undefined }),
         }));
     };
 
     renderAddParentButton() {
         const { parentTypeOptions } = this.state;
-        if (!parentTypeOptions || parentTypeOptions.size === 0)
-            return null;
+        if (!parentTypeOptions || parentTypeOptions.size === 0) return null;
         else {
             const { parentDataType } = this.props;
             const { currentParents } = this.state;
 
             const disabled = parentTypeOptions.size <= currentParents.size;
-            const title = disabled ? 'Only ' + parentTypeOptions.size + ' ' + (parentTypeOptions.size === 1 ? parentDataType.descriptionSingular : parentDataType.descriptionPlural) + ' available.' : undefined;
+            const title = disabled
+                ? 'Only ' +
+                  parentTypeOptions.size +
+                  ' ' +
+                  (parentTypeOptions.size === 1
+                      ? parentDataType.descriptionSingular
+                      : parentDataType.descriptionPlural) +
+                  ' available.'
+                : undefined;
 
             return (
                 <AddEntityButton
-                    containerClass={'top-spacing'}
+                    containerClass="top-spacing"
                     onClick={this.onAddParent}
                     title={title}
                     disabled={disabled}
                     entity={this.props.parentDataType.nounSingular}
                 />
-            )
+            );
         }
-
     }
 
     render() {
@@ -373,18 +401,22 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
         return (
             <>
-                <Panel bsStyle={editing ? "info" : "default"}>
+                <Panel bsStyle={editing ? 'info' : 'default'}>
                     <Panel.Heading>{heading}</Panel.Heading>
                     <Panel.Body>
                         {error && <Alert>{error}</Alert>}
-                        <div className={'bottom-spacing'}><b>{capitalizeFirstChar(parentDataType.nounPlural)} for {childName}</b></div>
-                        {loading ? <LoadingSpinner/> : this.renderParentData()}
+                        <div className="bottom-spacing">
+                            <b>
+                                {capitalizeFirstChar(parentDataType.nounPlural)} for {childName}
+                            </b>
+                        </div>
+                        {loading ? <LoadingSpinner /> : this.renderParentData()}
                         {editing && this.renderAddParentButton()}
                     </Panel.Body>
                 </Panel>
                 {editing && this.renderEditControls()}
                 {editing && this.renderProgress()}
             </>
-        )
+        );
     }
 }

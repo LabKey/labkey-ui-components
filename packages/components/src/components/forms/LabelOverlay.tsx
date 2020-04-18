@@ -15,27 +15,27 @@
  */
 import React from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+
 import { QueryColumn } from '../base/models/model';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { generateId } from '../../util/utils';
 
 export interface LabelOverlayProps {
-    inputId?: string
-    isFormsy?: boolean
-    label?: string
-    labelClass?: string
-    description?: string
-    placement?: any
-    type?: string
-    column?: QueryColumn
-    required?: boolean
-    addLabelAsterisk?: boolean
-    content?: any // other content to render to the popover
-    canMouseOverTooltip?: boolean
+    inputId?: string;
+    isFormsy?: boolean;
+    label?: string;
+    labelClass?: string;
+    description?: string;
+    placement?: any;
+    type?: string;
+    column?: QueryColumn;
+    required?: boolean;
+    addLabelAsterisk?: boolean;
+    content?: any; // other content to render to the popover
+    canMouseOverTooltip?: boolean;
 }
 
 export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
-
     static defaultProps = {
         isFormsy: true,
         addLabelAsterisk: false,
@@ -51,17 +51,38 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
         this._popoverId = generateId();
     }
 
-    overlayBody = ():any => {
+    overlayBody = (): any => {
         const { column, required, content } = this.props;
-        const description = this.props.description ? this.props.description : (column ? column.description : null);
-        const type = this.props.type ? this.props.type : (column ? column.type : null);
+        const description = this.props.description ? this.props.description : column ? column.description : null;
+        const type = this.props.type ? this.props.type : column ? column.type : null;
 
         return (
             <>
-                {description && <p><strong>Description: </strong>{description}</p>}
-                {type && <p><strong>Type: </strong>{type}</p>}
-                {(column && column.fieldKey != column.caption) && <p><strong>Field Key: </strong>{column.fieldKey}</p>}
-                {required && <p><small><i>This field is required.</i></small></p>}
+                {description && (
+                    <p>
+                        <strong>Description: </strong>
+                        {description}
+                    </p>
+                )}
+                {type && (
+                    <p>
+                        <strong>Type: </strong>
+                        {type}
+                    </p>
+                )}
+                {column && column.fieldKey != column.caption && (
+                    <p>
+                        <strong>Field Key: </strong>
+                        {column.fieldKey}
+                    </p>
+                )}
+                {required && (
+                    <p>
+                        <small>
+                            <i>This field is required.</i>
+                        </small>
+                    </p>
+                )}
                 {content}
             </>
         );
@@ -69,7 +90,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
 
     overlayContent() {
         const { column } = this.props;
-        const label = this.props.label ? this.props.label : (column ? column.caption : null);
+        const label = this.props.label ? this.props.label : column ? column.caption : null;
         const body = this.overlayBody();
         return (
             <Popover id={this._popoverId} title={label} bsClass="popover">
@@ -79,19 +100,20 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
     }
 
     getOverlay() {
-        const { column, placement, canMouseOverTooltip} = this.props;
-        const label = this.props.label ? this.props.label : (column ? column.caption : null);
+        const { column, placement, canMouseOverTooltip } = this.props;
+        const label = this.props.label ? this.props.label : column ? column.caption : null;
         return !canMouseOverTooltip ? (
-            <OverlayTrigger placement={placement}
-                            overlay={this.overlayContent()}>
-                <i className="fa fa-question-circle"/>
+            <OverlayTrigger placement={placement} overlay={this.overlayContent()}>
+                <i className="fa fa-question-circle" />
             </OverlayTrigger>
-        ) : (<LabelHelpTip id={this._popoverId} title={label} body={this.overlayBody} placement={placement} />);
+        ) : (
+            <LabelHelpTip id={this._popoverId} title={label} body={this.overlayBody} placement={placement} />
+        );
     }
 
     render() {
         const { column, inputId, isFormsy, labelClass, required, addLabelAsterisk } = this.props;
-        const label = this.props.label ? this.props.label : (column ? column.caption : null);
+        const label = this.props.label ? this.props.label : column ? column.caption : null;
 
         const overlay = this.getOverlay();
 
@@ -104,11 +126,15 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                     {overlay}
                     {!required && addLabelAsterisk ? <span className="required-symbol"> *</span> : null}
                 </span>
-            )
+            );
         }
 
         return (
-            <label className={labelClass ? labelClass + " text__truncate-and-wrap" : "text__truncate-and-wrap"} title={label} htmlFor={inputId}>
+            <label
+                className={labelClass ? labelClass + ' text__truncate-and-wrap' : 'text__truncate-and-wrap'}
+                title={label}
+                htmlFor={inputId}
+            >
                 <span>{label}</span>&nbsp;
                 {overlay}
                 {required || addLabelAsterisk ? <span className="required-symbol"> *</span> : null}

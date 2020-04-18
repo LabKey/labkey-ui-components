@@ -1,17 +1,18 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
+
 import { LoadingSpinner } from './LoadingSpinner';
 
 interface Props {
-    show: boolean
-    title?: string
-    onCancel?: (any) => void
+    show: boolean;
+    title?: string;
+    onCancel?: (any) => void;
 }
 
 export class LoadingModal extends React.PureComponent<Props, any> {
     static defaultProps = {
         show: true,
-        title: 'Loading...'
+        title: 'Loading...',
     };
 
     render() {
@@ -24,9 +25,9 @@ export class LoadingModal extends React.PureComponent<Props, any> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <LoadingSpinner/>
+                    <LoadingSpinner />
                 </Modal.Body>
             </Modal>
-        )
+        );
     }
 }

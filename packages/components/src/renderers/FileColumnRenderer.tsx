@@ -16,12 +16,12 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-interface FileColumnRendererProps{
-    data?: any
+interface FileColumnRendererProps {
+    data?: any;
 }
 
 interface FileColumnRendererState {
-    showModal?: boolean
+    showModal?: boolean;
 }
 
 function isImage(value) {
@@ -36,7 +36,7 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
     constructor(props) {
         super(props);
         this.state = {
-            showModal: false
+            showModal: false,
         };
     }
 
@@ -66,13 +66,7 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
             const alt = `${title} image`;
             return (
                 <>
-                    <img
-                        src={url}
-                        alt={alt}
-                        title={title}
-                        onClick={this.onImageClick}
-                        className="file-renderer-img"
-                    />
+                    <img src={url} alt={alt} title={title} onClick={this.onImageClick} className="file-renderer-img" />
 
                     <Modal bsSize="large" show={this.state.showModal} onHide={this.onHide}>
                         <Modal.Header closeButton>
@@ -91,7 +85,12 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
             return null;
         }
 
-        const content = <span>{displayValue}&nbsp;<i className="fa fa-file-o"/></span>;
+        const content = (
+            <span>
+                {displayValue}&nbsp;
+                <i className="fa fa-file-o" />
+            </span>
+        );
 
         if (url) {
             return <a href={url}>{content}</a>;

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Record } from "immutable";
-import { DomainDesign, IDomainField } from "../models";
+import { Record } from 'immutable';
+
+import { DomainDesign, IDomainField } from '../models';
 
 export class DataClassModel extends Record({
     rowId: undefined,
@@ -24,7 +25,7 @@ export class DataClassModel extends Record({
     description: undefined,
     sampleSet: undefined,
     category: undefined,
-    domain: undefined
+    domain: undefined,
 }) {
     rowId: number;
     exception: string;
@@ -35,7 +36,7 @@ export class DataClassModel extends Record({
     category: string;
     domain: DomainDesign;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -46,7 +47,7 @@ export class DataClassModel extends Record({
         }
 
         if (raw.options) {
-            let model = new DataClassModel({...raw.options, domain});
+            let model = new DataClassModel({ ...raw.options, domain });
             if (model.category === null) {
                 model = model.set('category', undefined) as DataClassModel;
             }
@@ -56,7 +57,7 @@ export class DataClassModel extends Record({
             return model;
         }
 
-        return new DataClassModel({...raw, domain});
+        return new DataClassModel({ ...raw, domain });
     }
 
     isNew(): boolean {
@@ -68,11 +69,11 @@ export class DataClassModel extends Record({
     }
 
     hasValidProperties(): boolean {
-        return (this.name !== undefined && this.name !==null && this.name.trim().length > 0);
+        return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
     }
 
     hasInvalidNameField(defaultNameFieldConfig: Partial<IDomainField>): boolean {
-        return (this.domain && defaultNameFieldConfig) ? this.domain.hasInvalidNameField(defaultNameFieldConfig) : false;
+        return this.domain && defaultNameFieldConfig ? this.domain.hasInvalidNameField(defaultNameFieldConfig) : false;
     }
 
     getOptions(): Object {
@@ -82,7 +83,7 @@ export class DataClassModel extends Record({
             description: this.description,
             nameExpression: this.nameExpression,
             category: this.category,
-            sampleSet: this.sampleSet
-        }
+            sampleSet: this.sampleSet,
+        };
     }
 }

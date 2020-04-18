@@ -16,42 +16,42 @@
 import React from 'react';
 import { Button, MenuItem, SplitButton } from 'react-bootstrap';
 import classNames from 'classnames';
+
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { LabelHelpTip } from '../..';
 
 export type PlacementType = 'top' | 'bottom' | 'both';
 
 export interface AddRowsControlProps {
-    disable?: boolean
-    initialCount?: number
-    maxCount?: number
-    maxTotalCount?: number
-    minCount?: number
-    nounPlural?: string
-    nounSingular?: string
-    addText?: string
-    onAdd: Function
-    quickAddText?: string
-    onQuickAdd?: Function
-    placement?: PlacementType
-    wrapperClass?: string
+    disable?: boolean;
+    initialCount?: number;
+    maxCount?: number;
+    maxTotalCount?: number;
+    minCount?: number;
+    nounPlural?: string;
+    nounSingular?: string;
+    addText?: string;
+    onAdd: Function;
+    quickAddText?: string;
+    onQuickAdd?: Function;
+    placement?: PlacementType;
+    wrapperClass?: string;
 }
 
 interface AddRowsControlState {
-    count?: number
+    count?: number;
 }
 
 export class AddRowsControl extends React.Component<AddRowsControlProps, AddRowsControlState> {
-
     static defaultProps = {
-        addText: "Add",
+        addText: 'Add',
         disable: false,
         initialCount: 1,
         maxCount: MAX_EDITABLE_GRID_ROWS,
         minCount: 1,
         nounPlural: 'rows',
         nounSingular: 'row',
-        placement: 'bottom'
+        placement: 'bottom',
     };
 
     private addCount: React.RefObject<any>;
@@ -60,7 +60,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         super(props);
 
         this.state = {
-            count: this.props.initialCount
+            count: this.props.initialCount,
         };
 
         this.getAddCount = this.getAddCount.bind(this);
@@ -79,20 +79,26 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     isValid(count: number): boolean {
-        return (!this.props.minCount || count > this.props.minCount - 1) && (!this.props.maxCount || count <= this.getMaxRowsToAdd());
+        return (
+            (!this.props.minCount || count > this.props.minCount - 1) &&
+            (!this.props.maxCount || count <= this.getMaxRowsToAdd())
+        );
     }
 
     onAdd() {
         if (this.isValid(this.state.count)) {
             const numToAdd = this.state.count;
-            this.setState(() => ({count: this.props.minCount}), () => this.props.onAdd(numToAdd));
+            this.setState(
+                () => ({ count: this.props.minCount }),
+                () => this.props.onAdd(numToAdd)
+            );
         }
     }
 
     onBlur() {
         if (!this.isValid(this.state.count)) {
             this.setState({
-                count: this.props.initialCount
+                count: this.props.initialCount,
             });
         }
     }
@@ -101,11 +107,11 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         let count = parseInt(event.target.value);
 
         if (isNaN(count)) {
-            count = undefined
+            count = undefined;
         }
 
         this.setState({
-            count
+            count,
         });
     }
 
@@ -126,22 +132,25 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         const { disable, quickAddText, onQuickAdd, addText, nounSingular, nounPlural } = this.props;
         const { count } = this.state;
 
-        let title = addText + " " + ((count === 1 ? nounSingular : nounPlural));
+        const title = addText + ' ' + (count === 1 ? nounSingular : nounPlural);
         return (
             <span className="input-group-btn">
-                {quickAddText && onQuickAdd ?
-                    <SplitButton
-                        id="addRowsDropdown"
-                        onClick={this.onAdd}
-                        title={title}
-                        bsStyle={"primary"}
-                    >
+                {quickAddText && onQuickAdd ? (
+                    <SplitButton id="addRowsDropdown" onClick={this.onAdd} title={title} bsStyle="primary">
                         <MenuItem onClick={this.onQuickAdd}>{quickAddText}</MenuItem>
-                    </SplitButton> :
-                    <Button bsStyle={"primary"} title={disable ? "Maximum number of " + nounPlural + " reached." : undefined} disabled={disable || this.hasError()} onClick={this.onAdd}>{title}</Button>
-                }
+                    </SplitButton>
+                ) : (
+                    <Button
+                        bsStyle="primary"
+                        title={disable ? 'Maximum number of ' + nounPlural + ' reached.' : undefined}
+                        disabled={disable || this.hasError()}
+                        onClick={this.onAdd}
+                    >
+                        {title}
+                    </Button>
+                )}
             </span>
-        )
+        );
     }
 
     shouldRenderHelpText() {
@@ -160,7 +169,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         const hasError = !disable && this.hasError();
         const wrapperClasses = classNames('editable-grid__controls', 'text-nowrap', wrapperClass, {
             'margin-top': placement === 'bottom',
-            'has-error': hasError
+            'has-error': hasError,
         });
         const maxToAdd = this.getMaxRowsToAdd();
 
@@ -176,29 +185,30 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                         onBlur={this.onBlur}
                         onChange={this.onChange}
                         ref={this.addCount}
-                        style={{width: '65px'}}
+                        style={{ width: '65px' }}
                         type="number"
                         value={count ? count.toString() : undefined}
                     />
                     {this.renderButton()}
                 </span>
-                {hasError &&
+                {hasError && (
                     <span className="text-danger pull-left add-control--error-message">
-                        {minCount == maxToAdd ? `${minCount} ${nounSingular.toLowerCase()} allowed` : `${minCount}-${maxToAdd} ${nounPlural.toLowerCase()} allowed`}
+                        {minCount == maxToAdd
+                            ? `${minCount} ${nounSingular.toLowerCase()} allowed`
+                            : `${minCount}-${maxToAdd} ${nounPlural.toLowerCase()} allowed`}
                     </span>
-                }
+                )}
             </div>
-        )
+        );
     }
 }
 
 interface RightClickToggleProps {
-    bsRole?: any
-    onClick?: any
+    bsRole?: any;
+    onClick?: any;
 }
 
 export class RightClickToggle extends React.Component<RightClickToggleProps, any> {
-
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
@@ -216,6 +226,6 @@ export class RightClickToggle extends React.Component<RightClickToggleProps, any
             <div className="cellular-count-content" onClick={this.handleClick} onContextMenu={this.handleClick}>
                 {this.props.children}
             </div>
-        )
+        );
     }
 }

@@ -5,6 +5,7 @@
 import React, { ReactNode } from 'react';
 import ReactN from 'reactn';
 import { List } from 'immutable';
+
 import { LoadingSpinner } from '../..';
 
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
@@ -15,13 +16,12 @@ import { createLineageNodeCollections } from './vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
 
 interface Props {
-    seed: string
-    highlightNode?: string
-    options?: LineageOptions
+    seed: string;
+    highlightNode?: string;
+    options?: LineageOptions;
 }
 
 export class LineageSummary extends ReactN.Component<Props> {
-
     componentDidMount() {
         this.load(this.props);
     }
@@ -59,16 +59,16 @@ export class LineageSummary extends ReactN.Component<Props> {
         const nodesByType = createLineageNodeCollections(nodes, this.props.options);
         const groups = Object.keys(nodesByType).sort();
 
-        const title = direction === LINEAGE_DIRECTIONS.Parent ? "Parents" : "Children";
+        const title = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
 
-        return groups.map(groupName =>
+        return groups.map(groupName => (
             <LineageNodeList
                 key={groupName}
-                title={groupName + " " + title}
+                title={groupName + ' ' + title}
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}
             />
-        );
+        ));
     };
 
     private empty(nodes?: List<LineageLink>): boolean {
@@ -80,16 +80,16 @@ export class LineageSummary extends ReactN.Component<Props> {
         const lineage = this.getLineage();
 
         if (!lineage) {
-            return <LoadingSpinner msg="Loading lineage..."/>
+            return <LoadingSpinner msg="Loading lineage..." />;
         } else if (lineage.error) {
-            return <div>{lineage.error}</div>
+            return <div>{lineage.error}</div>;
         }
 
         const result = lineage.filterResult(options);
         const node = result.nodes.get(result.seed);
 
         if (!node) {
-            return <div>Unable to resolve lineage for seed: {result.seed}</div>
+            return <div>Unable to resolve lineage for seed: {result.seed}</div>;
         }
 
         const { children, parents } = node;
@@ -97,13 +97,13 @@ export class LineageSummary extends ReactN.Component<Props> {
         const hasParents = !this.empty(parents);
 
         if (!hasChildren && !hasParents) {
-            return <div>No lineage for {node.name}</div>
+            return <div>No lineage for {node.name}</div>;
         }
 
         return (
             <>
                 {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents, highlightNode)}
-                {hasChildren && hasParents && <hr/>}
+                {hasChildren && hasParents && <hr />}
                 {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children, highlightNode)}
             </>
         );

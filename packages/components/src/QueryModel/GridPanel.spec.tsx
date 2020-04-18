@@ -1,12 +1,16 @@
 import React, { PureComponent } from 'react';
 import renderer from 'react-test-renderer';
+
 import { GridPanel, QueryInfo, SchemaQuery } from '..';
+
+import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
+
+import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
+
 import { RequiresModelAndActions } from './withQueryModels';
 import { LoadingState } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
 import { initUnitTests, makeQueryInfo, makeTestActions, makeTestData, makeTestModel } from './testUtils';
-import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
-import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -14,11 +18,7 @@ let DATA: RowsResponse;
 
 class TestButtons extends PureComponent<RequiresModelAndActions> {
     render() {
-        return (
-            <div className={"test-buttons-component"}>
-                ButtonComponent for {this.props.model.id}
-            </div>
-        );
+        return <div className="test-buttons-component">ButtonComponent for {this.props.model.id}</div>;
     }
 }
 

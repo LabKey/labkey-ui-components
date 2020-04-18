@@ -24,7 +24,7 @@ import { Chart } from '../chart/Chart';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { SVGIcon } from '../base/SVGIcon';
 import { SchemaQuery } from '../base/models/model';
-import { Alert } from '../../components/base/Alert';
+import { Alert } from '../base/Alert';
 import { DataViewInfo, IDataViewInfo } from '../../models';
 import { DataViewInfoTypes, GRID_REPORTS, VISUALIZATION_REPORTS } from '../../constants';
 
@@ -42,11 +42,11 @@ const ICONS = {
 };
 
 interface ReportConsumer {
-    report: IDataViewInfo,
+    report: IDataViewInfo;
 }
 
-interface ReportItemModalProps extends ReportConsumer{
-    onClose?(): void,
+interface ReportItemModalProps extends ReportConsumer {
+    onClose?(): void;
 }
 
 class ReportLinks extends PureComponent<ReportConsumer> {
@@ -55,12 +55,18 @@ class ReportLinks extends PureComponent<ReportConsumer> {
         let appLink;
 
         if (appUrl) {
-            appLink = <p><Link to={appUrl.toString()}>View in Biologics</Link></p>;
+            appLink = (
+                <p>
+                    <Link to={appUrl.toString()}>View in Biologics</Link>
+                </p>
+            );
         }
 
         return (
             <div className="report-item__links">
-                <p><a href={runUrl}>View in LabKey Server</a></p>
+                <p>
+                    <a href={runUrl}>View in LabKey Server</a>
+                </p>
                 {appLink}
             </div>
         );
@@ -98,16 +104,18 @@ class UnsupportedReportBody extends PureComponent<ReportConsumer> {
             <div className="report-list__unsupported-preview">
                 <div className="alert alert-warning unsupported-alert">
                     <div className="unsupported-alert__icon">
-                        <span className="fa fa-exclamation-circle"/>
+                        <span className="fa fa-exclamation-circle" />
                     </div>
 
                     <p className="unsupported-alert__message">
-                        This report is not currently supported. It is recommended that you view the report in
-                        LabKey Server.
+                        This report is not currently supported. It is recommended that you view the report in LabKey
+                        Server.
                     </p>
 
                     <div className="unsupported-alert__view-link">
-                        <a href={this.props.report.runUrl} className="btn btn-warning">View in LabKey</a>
+                        <a href={this.props.report.runUrl} className="btn btn-warning">
+                            View in LabKey
+                        </a>
                     </div>
                 </div>
 
@@ -118,7 +126,7 @@ class UnsupportedReportBody extends PureComponent<ReportConsumer> {
 }
 
 class GridReportBody extends PureComponent<ReportConsumer> {
-    render () {
+    render() {
         const { schemaName, queryName, viewName, runUrl, appUrl } = this.props.report;
         const schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
 
@@ -149,9 +157,9 @@ class ChartReportBody extends PureComponent<ReportConsumer, any> {
 }
 
 interface SampleComparisonState {
-    loading?: boolean,
-    report?: any,
-    error?: string,
+    loading?: boolean;
+    report?: any;
+    error?: string;
 }
 
 class SampleComparisonReportBody extends PureComponent<ReportConsumer, SampleComparisonState> {
@@ -162,7 +170,7 @@ class SampleComparisonReportBody extends PureComponent<ReportConsumer, SampleCom
             loading: false,
             report: null,
             error: null,
-        }
+        };
     }
 
     componentDidMount() {
@@ -183,7 +191,7 @@ class SampleComparisonReportBody extends PureComponent<ReportConsumer, SampleCom
             params: { id },
             method: 'GET',
             success: Utils.getCallbackWrapper(data => {
-                this.setState({ loading: false, report: data.data })
+                this.setState({ loading: false, report: data.data });
             }),
             failure: Utils.getCallbackWrapper(error => {
                 this.setState({ loading: false, error: 'Error loading Sample Comparison Report' });
@@ -196,7 +204,7 @@ class SampleComparisonReportBody extends PureComponent<ReportConsumer, SampleCom
         const { loading, report, error } = this.state;
         const container = ActionURL.getContainer();
         const id = this.getReportId();
-        const editUrl = ActionURL.buildURL('assayreport', 'edit', container, {id});
+        const editUrl = ActionURL.buildURL('assayreport', 'edit', container, { id });
         let body = <LoadingSpinner msg="Loading report definition..." />;
 
         if (!loading && report) {
@@ -210,7 +218,11 @@ class SampleComparisonReportBody extends PureComponent<ReportConsumer, SampleCom
                 return result;
             }, {});
             const numAssays = Object.keys(uniqueAssays).length;
-            body = <div>This report includes {numColumns} columns from {numAssays} assays.</div>;
+            body = (
+                <div>
+                    This report includes {numColumns} columns from {numAssays} assays.
+                </div>
+            );
         } else if (error) {
             body = <Alert bsStyle="danger">{this.state.error}</Alert>;
         }
@@ -218,14 +230,18 @@ class SampleComparisonReportBody extends PureComponent<ReportConsumer, SampleCom
         return (
             <div className="report-list__scr-preview">
                 <div className="report-item__links">
-                    <p><a href={runUrl}>View in LabKey Server</a></p>
-                    <p><a href={editUrl}>Edit in LabKey Server</a></p>
-                    <p><Link to={appUrl.toString()}>View in Biologics</Link></p>
+                    <p>
+                        <a href={runUrl}>View in LabKey Server</a>
+                    </p>
+                    <p>
+                        <a href={editUrl}>Edit in LabKey Server</a>
+                    </p>
+                    <p>
+                        <Link to={appUrl.toString()}>View in Biologics</Link>
+                    </p>
                 </div>
 
-                <div>
-                    {body}
-                </div>
+                <div>{body}</div>
 
                 <ReportMetadata report={this.props.report} />
             </div>
@@ -264,14 +280,14 @@ export class ReportItemModal extends PureComponent<ReportItemModalProps> {
 }
 
 interface ReportListItemProps {
-    report: IDataViewInfo,
-    onClick(IDataViewInfo): void,
+    report: IDataViewInfo;
+    onClick(IDataViewInfo): void;
 }
 
 export class ReportListItem extends PureComponent<ReportListItemProps> {
     onClick = () => this.props.onClick(this.props.report);
 
-    onLinkClicked = (e) => {
+    onLinkClicked = e => {
         // We need to stop event propagation when clicking on a link or it will also trigger the onClick handler
         e.stopPropagation();
         return true;
@@ -279,21 +295,29 @@ export class ReportListItem extends PureComponent<ReportListItemProps> {
 
     render() {
         const { name, icon, iconCls, createdBy, type, runUrl, appUrl } = this.props.report;
-        let nameEl = <a href={runUrl} onClick={this.onLinkClicked}>{name}</a>;
+        let nameEl = (
+            <a href={runUrl} onClick={this.onLinkClicked}>
+                {name}
+            </a>
+        );
 
         if (appUrl) {
-            nameEl = <Link to={appUrl.toString()} onClick={this.onLinkClicked}>{name}</Link>;
+            nameEl = (
+                <Link to={appUrl.toString()} onClick={this.onLinkClicked}>
+                    {name}
+                </Link>
+            );
         }
 
         const iconSrc = ICONS[type];
-        const iconClassName = "report-list-item__icon";
+        const iconClassName = 'report-list-item__icon';
         const hasCustomIcon = icon.indexOf('reports-thumbnail.view') > -1;
         let iconEl = <Image className={iconClassName} src={icon} />;
 
         if (iconSrc !== undefined && !hasCustomIcon) {
-            iconEl = <SVGIcon className={iconClassName} height={null} iconDir="_images" iconSrc={iconSrc}/>
+            iconEl = <SVGIcon className={iconClassName} height={null} iconDir="_images" iconSrc={iconSrc} />;
         } else if (iconCls) {
-            iconEl = <span className={`${iconClassName} ${iconCls} fa-4x`} />
+            iconEl = <span className={`${iconClassName} ${iconCls} fa-4x`} />;
         }
 
         let createdByEl;
@@ -304,9 +328,7 @@ export class ReportListItem extends PureComponent<ReportListItemProps> {
 
         return (
             <Media.ListItem className="report-list-item" onClick={this.onClick}>
-                <Media.Left>
-                    {iconEl}
-                </Media.Left>
+                <Media.Left>{iconEl}</Media.Left>
 
                 <Media.Body>
                     <Media.Heading className="report-list-item__name">{nameEl}</Media.Heading>
@@ -318,9 +340,9 @@ export class ReportListItem extends PureComponent<ReportListItemProps> {
 }
 
 export interface ReportListProps {
-    loading: boolean,
-    reports: Array<IDataViewInfo>,
-    onReportClicked(report: IDataViewInfo): void,
+    loading: boolean;
+    reports: IDataViewInfo[];
+    onReportClicked(report: IDataViewInfo): void;
 }
 
 export class ReportList extends PureComponent<ReportListProps> {
@@ -342,18 +364,12 @@ export class ReportList extends PureComponent<ReportListProps> {
                 return <ReportListItem key={report.runUrl} report={report} onClick={onReportClicked} />;
             });
 
-            body = (
-                <Media.List className="report-list__list">
-                    {reportEls}
-                </Media.List>
-            );
+            body = <Media.List className="report-list__list">{reportEls}</Media.List>;
         }
 
         return (
             <Panel>
-                <div className="report-list">
-                    {body}
-                </div>
+                <div className="report-list">{body}</div>
             </Panel>
         );
     }

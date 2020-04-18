@@ -7,10 +7,10 @@ import { QueryInfoLite } from '../models';
 import { Container, SchemaDetails } from '../../base/models/model';
 
 export interface ILookupContext {
-    activeContainer: Container
-    fetchContainers: () => Promise<List<Container>>
-    fetchQueries: (containerPath: string, schemaName: string) => Promise<List<QueryInfoLite>>
-    fetchSchemas: (containerPath: string) => Promise<List<SchemaDetails>>
+    activeContainer: Container;
+    fetchContainers: () => Promise<List<Container>>;
+    fetchQueries: (containerPath: string, schemaName: string) => Promise<List<QueryInfoLite>>;
+    fetchSchemas: (containerPath: string) => Promise<List<SchemaDetails>>;
 }
 
 const LookupContext = React.createContext<ILookupContext>(undefined);
@@ -19,7 +19,6 @@ export const LookupContextConsumer = LookupContext.Consumer;
 
 // default provider
 export class LookupProvider extends React.Component<any, ILookupContext> {
-
     constructor(props) {
         super(props);
 
@@ -27,15 +26,11 @@ export class LookupProvider extends React.Component<any, ILookupContext> {
             activeContainer: new Container(Security.currentContainer),
             fetchContainers,
             fetchQueries,
-            fetchSchemas
+            fetchSchemas,
         };
     }
 
     render() {
-        return (
-            <LookupContextProvider value={this.state}>
-                {this.props.children}
-            </LookupContextProvider>
-        )
+        return <LookupContextProvider value={this.state}>{this.props.children}</LookupContextProvider>;
     }
 }

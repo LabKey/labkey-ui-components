@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
+
 import { SCHEMAS } from '../../base/models/schemas';
 import { deleteEntityType } from '../../entities/actions';
+
 import { DataClassModel } from './models';
 
 export function fetchDataClass(queryName?: string, rowId?: number): Promise<DataClassModel> {
     if (rowId) {
         return fetchDataClassProperties(rowId)
-            .then((response) => {
-                return _fetchDataClass(undefined, response.domainId)
+            .then(response => {
+                return _fetchDataClass(undefined, response.domainId);
             })
             .catch(error => {
-                return Promise.reject(error)
+                return Promise.reject(error);
             });
     } else {
         return _fetchDataClass(queryName);
@@ -42,8 +44,7 @@ function _fetchDataClass(queryName?: string, domainId?: number): Promise<DataCla
             success: data => {
                 if (data.domainKindName === 'DataClass') {
                     resolve(DataClassModel.create(data));
-                }
-                else {
+                } else {
                     reject({ exception: 'Unexpected domainKind type found: ' + data.domainKindName });
                 }
             },
@@ -59,14 +60,14 @@ function fetchDataClassProperties(rowId: number): Promise<any> {
         Ajax.request({
             url: ActionURL.buildURL('experiment', 'getDataClassProperties.api'),
             method: 'GET',
-            params: {rowId},
+            params: { rowId },
             scope: this,
-            success: Utils.getCallbackWrapper((data) => {
+            success: Utils.getCallbackWrapper(data => {
                 resolve(data);
             }),
-            failure: Utils.getCallbackWrapper((error) => {
+            failure: Utils.getCallbackWrapper(error => {
                 reject(error);
-            })
+            }),
         });
     });
 }

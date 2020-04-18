@@ -22,11 +22,10 @@ export enum Theme {
     DEFAULT,
     GRAY,
     LIGHT,
-    ORANGE
+    ORANGE,
 }
 
 export function iconURL(iconDir: string, prefix?: string, theme?: Theme): string {
-
     if (!prefix || !Utils.isString(prefix)) {
         prefix = 'default';
     }
@@ -41,7 +40,7 @@ export function iconURL(iconDir: string, prefix?: string, theme?: Theme): string
 }
 
 function imgProps(props: Props): React.ImgHTMLAttributes<HTMLImageElement> {
-    let imgProps = Object.assign({}, props);
+    const imgProps = Object.assign({}, props);
     delete imgProps.activeTheme;
     delete imgProps.iconDir;
     delete imgProps.iconSrc;
@@ -55,51 +54,50 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
     /**
      * When isActive is true this is Theme that will be applied
      */
-    activeTheme?: Theme
+    activeTheme?: Theme;
 
     /**
      * The name of the icon directory you are pulling the image from (i.e. corresponds to the dir in the context/web location of the running server).
      */
-    iconDir?: string
+    iconDir?: string;
 
     /**
      * The iconSrc denotes which type of icon to use.
      */
-    iconSrc?: string
+    iconSrc?: string;
 
     /**
      * Determines whether this icon is active or not. The active logic is left open to the user.
      */
-    isActive?: boolean
+    isActive?: boolean;
 
     /**
      * Invert the paradigm of active/inactive theme. Useful if the default themes are still desired but
      * just inverse (e.g. white on blue instead of blue on white)
      */
-    isInverted?: boolean
+    isInverted?: boolean;
 
     /**
      * The theme to use for this icon.
      */
-    theme?: Theme
+    theme?: Theme;
 }
 
 export class SVGIcon extends PureComponent<Props> {
-
     static defaultProps = {
         activeTheme: Theme.LIGHT,
         iconDir: '_images',
         iconSrc: 'default',
         theme: Theme.DEFAULT,
         height: '100%',
-        width: '100%'
+        width: '100%',
     };
 
     getTheme(): Theme {
         let { activeTheme, isActive, isInverted, theme } = this.props;
 
         if (isInverted) {
-            let temp = activeTheme;
+            const temp = activeTheme;
             activeTheme = theme;
             theme = temp;
         }
@@ -113,9 +111,9 @@ export class SVGIcon extends PureComponent<Props> {
         return (
             <img
                 {...imgProps(this.props)}
-                alt={alt ? alt : (iconSrc + '-icon')}
+                alt={alt ? alt : iconSrc + '-icon'}
                 src={iconURL(iconDir, iconSrc, this.getTheme())}
             />
-        )
+        );
     }
 }

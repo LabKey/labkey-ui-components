@@ -15,14 +15,19 @@
  */
 
 import React from 'react';
-import {Form, Row, Col} from 'react-bootstrap';
-import {DataRowUniquenessContainer, BasicPropertiesFields} from "./DatasetPropertiesPanelFormElements";
-import {AdvancedSettings} from "./DatasetPropertiesAdvancedSettings";
-import {DatasetAdvancedSettingsForm, DatasetModel} from "./models";
-import {InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse} from "../DomainPropertiesPanelCollapse";
-import {BasePropertiesPanel, BasePropertiesPanelProps} from "../BasePropertiesPanel";
-import {HelpTopicURL} from "../HelpTopicURL";
-import {DEFINE_DATASET_TOPIC} from "../../../util/helpLinks";
+import { Form, Row, Col } from 'react-bootstrap';
+
+import {
+    InjectedDomainPropertiesPanelCollapseProps,
+    withDomainPropertiesPanelCollapse,
+} from '../DomainPropertiesPanelCollapse';
+import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
+import { HelpTopicURL } from '../HelpTopicURL';
+import { DEFINE_DATASET_TOPIC } from '../../../util/helpLinks';
+
+import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
+import { AdvancedSettings } from './DatasetPropertiesAdvancedSettings';
+import { DataRowUniquenessContainer, BasicPropertiesFields } from './DatasetPropertiesPanelFormElements';
 
 interface OwnProps {
     model: DatasetModel;
@@ -38,13 +43,15 @@ interface State {
     isValid?: boolean;
 }
 
-export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
-
+export class DatasetPropertiesPanelImpl extends React.PureComponent<
+    Props & InjectedDomainPropertiesPanelCollapseProps,
+    State
+> {
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
 
         this.state = {
-            isValid: true
+            isValid: true,
         };
     }
 
@@ -53,20 +60,22 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         const updatedModel = newModel || model;
 
         const isValid = updatedModel && updatedModel.hasValidProperties();
-        this.setState(() => ({isValid}),
+        this.setState(
+            () => ({ isValid }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
-                    onChange(updatedModel)
+                    onChange(updatedModel);
                 }
-            });
+            }
+        );
     };
 
     onChange = (identifier, value): void => {
         const { model } = this.props;
 
         const newModel = model.merge({
-            [identifier]: value
+            [identifier]: value,
         }) as DatasetModel;
 
         this.updateValidStatus(newModel);
@@ -76,49 +85,47 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         const id = evt.target.id;
         let value = evt.target.value;
 
-        if (evt.target.type === "checkbox") {
+        if (evt.target.type === 'checkbox') {
             value = evt.target.checked;
         }
 
         this.onChange(id, value);
     };
 
-    onCategoryChange = (category) => {
+    onCategoryChange = category => {
         this.onChange('categoryId', category.value);
     };
 
     onDataRowRadioChange = e => {
         const { model } = this.props;
 
-        let value = e.target.value;
+        const value = e.target.value;
         let newModel;
 
         if (value == 0) {
             newModel = model.merge({
                 keyPropertyId: undefined,
                 isDemographicData: true,
-                keyPropertyManaged: false
+                keyPropertyManaged: false,
             }) as DatasetModel;
-        }
-        else if (value == 1) {
+        } else if (value == 1) {
             newModel = model.merge({
                 keyPropertyId: undefined,
                 isDemographicData: false,
-                keyPropertyManaged: false
+                keyPropertyManaged: false,
             }) as DatasetModel;
-        }
-        else {
+        } else {
             newModel = model.merge({
                 keyPropertyId: 0, // resetting key property id
                 isDemographicData: false,
-                keyPropertyManaged: false
+                keyPropertyManaged: false,
             }) as DatasetModel;
         }
         this.updateValidStatus(newModel);
     };
 
     onAdditionalKeyFieldChange = (name, formValue, selected): void => {
-        let propertyId = undefined;
+        let propertyId;
 
         if (selected) {
             propertyId = selected.propertyId;
@@ -126,37 +133,29 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
         this.onChange(name, propertyId);
     };
 
-
     applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm) => {
         const { model } = this.props;
         const newModel = model.merge(advancedSettingsForm) as DatasetModel;
         this.updateValidStatus(newModel);
     };
 
-
     render() {
-        const {
-            model,
-            showDataspace,
-            showVisitDate
-        } = this.props;
+        const { model, showDataspace, showVisitDate } = this.props;
 
-        const {
-            isValid
-        } = this.state;
+        const { isValid } = this.state;
 
         return (
             <BasePropertiesPanel
                 {...this.props}
-                headerId={'dataset-header-id'}
-                title={'Dataset Properties'}
+                headerId="dataset-header-id"
+                title="Dataset Properties"
                 titlePrefix={model.name}
                 isValid={isValid}
                 updateValidStatus={this.updateValidStatus}
             >
-                <Row className={'margin-bottom'}>
+                <Row className="margin-bottom">
                     <Col xs={12}>
-                        <HelpTopicURL helpTopic={DEFINE_DATASET_TOPIC} nounPlural={'datasets'}/>
+                        <HelpTopicURL helpTopic={DEFINE_DATASET_TOPIC} nounPlural="datasets" />
                     </Col>
                 </Row>
                 <Row>
@@ -179,7 +178,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
 
                     <Col xs={12} md={2}>
                         <AdvancedSettings
-                            title={"Advanced Settings"}
+                            title="Advanced Settings"
                             model={model}
                             showDataspace={showDataspace}
                             applyAdvancedProperties={this.applyAdvancedProperties}
@@ -188,7 +187,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<Props & Inje
                     </Col>
                 </Row>
             </BasePropertiesPanel>
-        )
+        );
     }
 }
 

@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import {Record} from "immutable";
-import {DomainDesign} from "../models";
-import match from "react-router/lib/match";
-import {Option} from "react-select";
+import { Record } from 'immutable';
+
+import match from 'react-router/lib/match';
+import { Option } from 'react-select';
+
+import { DomainDesign } from '../models';
 
 export interface DatasetAdvancedSettingsForm {
     datasetId?: number;
@@ -29,12 +31,12 @@ export interface DatasetAdvancedSettingsForm {
 
 export class DatasetModel extends Record({
     domain: undefined,
-    entityId : undefined,
-    createdBy : undefined,
-    created : undefined,
-    modifiedBy : undefined,
-    modified : undefined,
-    containerId : undefined,
+    entityId: undefined,
+    createdBy: undefined,
+    created: undefined,
+    modifiedBy: undefined,
+    modified: undefined,
+    containerId: undefined,
     datasetId: undefined,
     name: undefined,
     category: undefined,
@@ -48,7 +50,7 @@ export class DatasetModel extends Record({
     tag: undefined,
     showInOverview: undefined,
     description: undefined,
-    dataSharing: undefined
+    dataSharing: undefined,
 }) {
     domain: DomainDesign;
     datasetId?: number;
@@ -67,17 +69,17 @@ export class DatasetModel extends Record({
     description?: string;
     dataSharing?: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
-    static create(newDataset=null, raw: any): DatasetModel {
+    static create(newDataset = null, raw: any): DatasetModel {
         if (newDataset) {
-            let domain = DomainDesign.create(undefined);
-            return new DatasetModel({...newDataset, domain});
+            const domain = DomainDesign.create(undefined);
+            return new DatasetModel({ ...newDataset, domain });
         } else {
-            let domain = DomainDesign.create(raw.domainDesign);
-            return new DatasetModel({...raw.datasetDesign, domain});
+            const domain = DomainDesign.create(raw.domainDesign);
+            return new DatasetModel({ ...raw.datasetDesign, domain });
         }
     }
 
@@ -85,7 +87,7 @@ export class DatasetModel extends Record({
         let isValidKeySetting = true;
 
         if (this.getDataRowSetting() === 2) {
-            isValidKeySetting = this.keyPropertyId !== undefined && this.keyPropertyId !== 0
+            isValidKeySetting = this.keyPropertyId !== undefined && this.keyPropertyId !== 0;
         }
 
         return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && isValidKeySetting;
@@ -95,7 +97,7 @@ export class DatasetModel extends Record({
         return !this.entityId;
     }
 
-    getDataRowSetting() : number {
+    getDataRowSetting(): number {
         let dataRowSetting;
 
         // participant id
@@ -115,23 +117,21 @@ export class DatasetModel extends Record({
     }
 
     validManagedKeyField(): boolean {
-
         if (this.keyPropertyId) {
             const domainFields = this.domain.fields;
 
-            const allowedFieldTypes = domainFields.filter((field) => {
-                return field.dataType.isString() || field.dataType.isInteger()
-            })
-                .map((field) => {
-                    return field.propertyId
+            const allowedFieldTypes = domainFields
+                .filter(field => {
+                    return field.dataType.isString() || field.dataType.isInteger();
+                })
+                .map(field => {
+                    return field.propertyId;
                 })
                 .toList();
 
             return allowedFieldTypes.contains(this.keyPropertyId);
-        }
-        else {
+        } else {
             return false;
         }
-
     }
 }

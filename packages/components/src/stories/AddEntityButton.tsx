@@ -6,30 +6,29 @@ import './stories.scss';
 import { AddEntityButton } from '..';
 
 interface State {
-    added: Array<string>
+    added: string[];
 }
 
-class WrappedAddEntityButton extends React.Component<any, State>
-{
+class WrappedAddEntityButton extends React.Component<any, State> {
     constructor(props: any) {
         super(props);
 
         this.state = {
-            added: []
-        }
+            added: [],
+        };
     }
 
     onClick = (e: string) => {
-        const {added} = this.state;
-        added.push("Another");
-        this.setState(() => ({added}));
+        const { added } = this.state;
+        added.push('Another');
+        this.setState(() => ({ added }));
     };
 
     renderValues() {
-        const {added} = this.state;
-        return (added.map( (val: string, index:number) => {
-            return (<div key={index}>{val}</div>);
-        }));
+        const { added } = this.state;
+        return added.map((val: string, index: number) => {
+            return <div key={index}>{val}</div>;
+        });
     }
 
     render() {
@@ -53,18 +52,25 @@ class WrappedAddEntityButton extends React.Component<any, State>
     }
 }
 
-storiesOf("AddEntityButton", module)
+storiesOf('AddEntityButton', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
-        const entity = text("Entity", 'Entity', 'Entity');
+    .add('with knobs', () => {
+        const entity = text('Entity', 'Entity', 'Entity');
         const helperId = 'ToolTip';
         const showHelper = boolean('Show tooltip', true, helperId);
-        const helperBody = text('HelperBody', "https://www.labkey.org", helperId);
+        const helperBody = text('HelperBody', 'https://www.labkey.org', helperId);
         const getHelperBody = showHelper ? () => helperBody : undefined;
         const helperTitle = text('HelperTitle', undefined, helperId);
-        const disabled = boolean("Disabled?", false);
-        const title = text("Button title", "Button title");
+        const disabled = boolean('Disabled?', false);
+        const title = text('Button title', 'Button title');
 
-        return <WrappedAddEntityButton title={title} disabled={disabled} entity={entity} helperTitle={helperTitle} getHelperBody={getHelperBody} />
-    })
-;
+        return (
+            <WrappedAddEntityButton
+                title={title}
+                disabled={disabled}
+                entity={entity}
+                helperTitle={helperTitle}
+                getHelperBody={getHelperBody}
+            />
+        );
+    });

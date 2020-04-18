@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
+
+import { DomainDesign } from '../models';
+
 import { DataClassModel } from './models';
-import { DomainDesign } from "../models";
 
 describe('DataClassModel', () => {
-
-    test("isNew", () => {
-        expect(DataClassModel.create({rowId: undefined}).isNew()).toBeTruthy();
-        expect(DataClassModel.create({rowId: 0}).isNew()).toBeTruthy();
-        expect(DataClassModel.create({rowId: 1}).isNew()).toBeFalsy();
+    test('isNew', () => {
+        expect(DataClassModel.create({ rowId: undefined }).isNew()).toBeTruthy();
+        expect(DataClassModel.create({ rowId: 0 }).isNew()).toBeTruthy();
+        expect(DataClassModel.create({ rowId: 1 }).isNew()).toBeFalsy();
     });
 
-    test("hasValidProperties", () => {
-        expect(DataClassModel.create({name: undefined}).hasValidProperties()).toBeFalsy();
-        expect(DataClassModel.create({name: null}).hasValidProperties()).toBeFalsy();
-        expect(DataClassModel.create({name: ''}).hasValidProperties()).toBeFalsy();
-        expect(DataClassModel.create({name: ' '}).hasValidProperties()).toBeFalsy();
-        expect(DataClassModel.create({name: 'test'}).hasValidProperties()).toBeTruthy();
+    test('hasValidProperties', () => {
+        expect(DataClassModel.create({ name: undefined }).hasValidProperties()).toBeFalsy();
+        expect(DataClassModel.create({ name: null }).hasValidProperties()).toBeFalsy();
+        expect(DataClassModel.create({ name: '' }).hasValidProperties()).toBeFalsy();
+        expect(DataClassModel.create({ name: ' ' }).hasValidProperties()).toBeFalsy();
+        expect(DataClassModel.create({ name: 'test' }).hasValidProperties()).toBeTruthy();
     });
 
-    test("getOptions", () => {
+    test('getOptions', () => {
         const model = DataClassModel.create({
             rowId: 1,
             exception: 'exception',
@@ -42,7 +43,7 @@ describe('DataClassModel', () => {
             description: 'description',
             sampleSet: 2,
             category: 'category',
-            domain: DomainDesign.create({})
+            domain: DomainDesign.create({}),
         });
 
         expect(model.getOptions()['exception']).toBeUndefined();
@@ -54,5 +55,4 @@ describe('DataClassModel', () => {
         expect(model.getOptions()['sampleSet']).toBe(2);
         expect(model.getOptions()['category']).toBe('category');
     });
-
 });

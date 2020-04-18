@@ -15,7 +15,7 @@
  */
 import React, { PureComponent } from 'react';
 import { fromJS, List } from 'immutable';
-import { LoadingSpinner } from '../..';
+import { LoadingSpinner } from '..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../components/forms/detail/DetailDisplay';
 

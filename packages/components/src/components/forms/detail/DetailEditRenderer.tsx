@@ -19,7 +19,7 @@ import { Checkbox, Input, Textarea } from 'formsy-react-components';
 import { LabelOverlay } from '../LabelOverlay';
 import { DateInput } from '../input/DateInput';
 import { DatePickerInput } from '../input/DatePickerInput';
-import { _defaultRenderer } from './Detail';
+import { _defaultRenderer } from './DetailDisplay';
 import {resolveDetailFieldValue, resolveRenderer} from '../renderers';
 import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
 import { AliasRenderer } from '../../../renderers/AliasRenderer';

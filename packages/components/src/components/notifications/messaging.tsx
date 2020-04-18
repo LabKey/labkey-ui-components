@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { createNotification, getActionErrorMessage } from '@labkey/components';
+import { createNotification } from './actions';
+import { getActionErrorMessage } from '../../util/messaging';
 
 export function createDeleteSuccessNotification(noun: string, count?: number, additionalInfo?: string) {
     const countStr = count === undefined ? '' : count;

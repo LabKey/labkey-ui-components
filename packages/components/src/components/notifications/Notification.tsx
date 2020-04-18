@@ -37,14 +37,14 @@ interface NotificationProps {
 export class Notification extends React.Component<NotificationProps, any> {
 
     componentWillMount() {
-        Notification.createSystemNotification();
+        this.createSystemNotification();
     }
 
     componentWillUnmount() {
         dismissNotifications();
     }
 
-    static renderTrialServicesNotification(props: NotificationItemProps, user: User, data: any) {
+    renderTrialServicesNotification(props: NotificationItemProps, user: User, data: any) {
         if (LABKEY.moduleContext.trialservices.trialEndDate) {
             let endDate = moment(LABKEY.moduleContext.trialservices.trialEndDate, getDateFormat());
             let today = moment();
@@ -71,20 +71,20 @@ export class Notification extends React.Component<NotificationProps, any> {
         return null;
     }
 
-    static createSystemNotification() {
+    createSystemNotification() {
         if (LABKEY.moduleContext && LABKEY.moduleContext.trialservices && LABKEY.moduleContext.trialservices.trialEndDate) {
 
             createNotification({
                 alertClass: 'warning',
                 id: 'trial_ending',
-                message: Notification.renderTrialServicesNotification,
+                message: this.renderTrialServicesNotification,
                 onDismiss: setTrialBannerDismissSessionKey,
                 persistence: Persistence.LOGIN_SESSION
             });
         }
     }
 
-    static renderItems(notifications: List<NotificationItemModel>, user: User) {
+    renderItems(notifications: List<NotificationItemModel>, user: User) {
 
         if (notifications.size > 1) {
             return (
@@ -133,7 +133,7 @@ export class Notification extends React.Component<NotificationProps, any> {
                 .map((list, alertClass) => (
                     <div className={'notification-container alert alert-' + alertClass} key={alertClass}>
                         {notificationHeader}
-                        {Notification.renderItems(list, user)}
+                        {this.renderItems(list, user)}
                     </div>
                 )).toArray()
         );

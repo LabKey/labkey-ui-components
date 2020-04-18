@@ -163,6 +163,7 @@ export class LineageNode extends Record ({
     url: undefined,
 
     // computed properties
+    isRun: false,
     links: {},
     meta: undefined,
 } ) {
@@ -189,6 +190,7 @@ export class LineageNode extends Record ({
     url?: string;
 
     // computed properties
+    isRun?: boolean;
     links?: LineageNodeLinks;
     meta?: LineageNodeMetadata;
 
@@ -201,6 +203,8 @@ export class LineageNode extends Record ({
             children:  LineageLink.createList(values.children),
             cpasType: values.cpasType,
             id: values.id,
+            // Duck-type check for "is a run". It's considered a run if it includes a "steps" property.
+            isRun: values.steps !== undefined && values.steps !== null,
             lsid,
             name:  values.name,
             parents: LineageLink.createList(values.parents),

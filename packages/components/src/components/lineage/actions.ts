@@ -36,10 +36,7 @@ export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 
 export function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
-        let options: any /* ILineageOptions */ = {
-            includeRunSteps: true,
-            lsid: seed,
-        };
+        let options: any /* ILineageOptions */ = {};
 
         if (!isNaN(distance)) {
             // The lineage includes a "run" object for each parent as well, so we
@@ -49,11 +46,11 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
 
         Experiment.lineage({
             ...options,
-
+            includeRunSteps: true,
+            lsid: seed,
             success: lineage => {
                 resolve(LineageResult.create(lineage))
             },
-
             failure: (error) => {
                 let message = `Failed to fetch lineage for seed "${seed}".`;
 

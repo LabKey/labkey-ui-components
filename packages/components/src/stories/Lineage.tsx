@@ -19,7 +19,7 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
 import { LineageGraph } from '../components/lineage/LineageGraph';
-import { LineageGrid } from '../components/lineage/LineageGrid';
+import { LineageGrid } from '../components/lineage/grid/LineageGrid';
 import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from '../components/lineage/types';
 
 import './stories.scss';

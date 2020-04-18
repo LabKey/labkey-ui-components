@@ -2,71 +2,35 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent, ReactNode } from 'react';
-import ReactN from 'reactn';
-import {
-    Detail,
-    getQueryGridModel,
-    gridInit,
-    LoadingSpinner,
-    QueryGridModel,
-    SVGIcon,
-    Theme,
-} from '../..';
+import React, { PureComponent } from 'react';
 
-import { createLineageNodeCollections, LineageNodeCollectionByType } from './vis/VisGraphGenerator';
+import { createLineageNodeCollections, LineageNodeCollectionByType } from '../vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
-import { LineageSummary } from './LineageSummary';
-import { LineageNode } from './models';
-import { LineageOptions } from './types';
-import { getIconAndShapeForNode } from './utils';
+import { LineageSummary } from '../LineageSummary';
+import { LineageNode } from '../models';
+import { LineageOptions } from '../types';
+import { getIconAndShapeForNode } from '../utils';
+import { NodeDetail } from './NodeDetail';
+import { NodeDetailHeader } from './NodeDetailHeader';
 
 export interface SummaryOptions {
     showSummary?: boolean
     summaryOptions?: LineageOptions
 }
 
-interface SelectedNodeProps {
-    entityModel?: QueryGridModel
+interface LineageNodeDetailProps {
     highlightNode?: string
     node: LineageNode
     seed: string
 }
 
-export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & SummaryOptions> {
+export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & SummaryOptions> {
 
     static defaultProps = {
         showSummary: true
     };
 
-    componentDidMount() {
-        this.loadEntity(this.props);
-    }
-
-    componentWillReceiveProps(nextProps: SelectedNodeProps) {
-        this.loadEntity(nextProps);
-    }
-
-    loadEntity(props: SelectedNodeProps) {
-        const { entityModel } = props;
-        if (entityModel) {
-            gridInit(entityModel, true, this);
-        }
-    }
-
-    getQueryGridModel(): QueryGridModel {
-        const { entityModel } = this.props;
-        if (entityModel) {
-            return getQueryGridModel(entityModel.getId());
-        }
-    }
-
     render() {
-        const model = this.getQueryGridModel();
-        if (!model || !model.isLoaded) {
-            return <LoadingSpinner msg="Loading details..."/>
-        }
-
         const { seed, node, highlightNode, showSummary, summaryOptions } = this.props;
         const { links, meta, name } = node;
         const lineageUrl = links.lineage;
@@ -114,7 +78,7 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
                 {description && <small title={description}>{description}</small>}
             </NodeDetailHeader>
 
-            <Detail queryModel={model} />
+            <NodeDetail node={node} />
 
             {showSummary && (
                 <LineageSummary
@@ -167,37 +131,5 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
                 )}
             </>
         );
-    }
-}
-
-interface NodeDetailHeaderProps {
-    header: ReactNode
-    iconSrc: string
-}
-
-class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
-    render() {
-        const { children, header, iconSrc } = this.props;
-
-        return (
-            <div className="margin-bottom lineage-node-detail">
-                <i className="component-detail--child--img">
-                    <SVGIcon
-                        theme={Theme.ORANGE}
-                        iconSrc={iconSrc}
-                        height="50px"
-                        width="50px"
-                    />
-                </i>
-                <div className="text__truncate">
-                    <div className="lineage-name">
-                        <h4 className="no-margin-top lineage-name-data">
-                            {header}
-                        </h4>
-                    </div>
-                    {children}
-                </div>
-            </div>
-        )
     }
 }

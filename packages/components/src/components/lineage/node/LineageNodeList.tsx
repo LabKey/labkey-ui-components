@@ -3,12 +3,12 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { SVGIcon } from '../..';
+import { SVGIcon } from '../../..';
 
-import { NodeInteractionConsumer, WithNodeInteraction } from './actions';
-import { LineageNode } from './models';
-import { getLineageNodeTitle } from './utils';
-import { LineageNodeCollection } from './vis/VisGraphGenerator';
+import { NodeInteractionConsumer, WithNodeInteraction } from '../actions';
+import { LineageNode } from '../models';
+import { getLineageNodeTitle } from '../utils';
+import { LineageNodeCollection } from '../vis/VisGraphGenerator';
 
 interface LineageNodeListProps {
     title: string

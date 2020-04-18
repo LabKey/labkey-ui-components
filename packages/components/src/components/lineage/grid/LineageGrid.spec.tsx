@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { LineageGrid } from './LineageGrid';
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelpers';
 
 beforeAll(() => {
     initUnitTestMocks();

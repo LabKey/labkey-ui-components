@@ -4,8 +4,7 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import ReactN from 'reactn';
-import { List } from 'immutable';
-import { Alert, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '../..';
+import { Alert, LoadingSpinner } from '../..';
 
 import { loadLineageIfNeeded, NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
@@ -22,10 +21,7 @@ import {
     VisGraphOptions,
 } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
-import { ClusterNodeDetail, SelectedNodeDetail, SummaryOptions } from './LineageNodeDetail';
-
-const omittedColumns = List(['Alias', 'Description', 'Name', 'SampleSet', 'DataClass']);
-const requiredColumns = List(['Run']);
+import { ClusterNodeDetail, LineageNodeDetail, SummaryOptions } from './node/LineageNodeDetail';
 
 interface LinageGraphOwnProps {
     distance?: number
@@ -165,6 +161,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         if (!lineage || lineage.error) {
             return null;
         } else if (!lineage.isLoaded()) {
+            // Render selected node if seed has been pre-fetched
             if (lineage.isSeedLoaded()) {
                 return this.renderSelectedNode(lineage.seedResult.nodes.get(lsid));
             }
@@ -199,10 +196,9 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         // Apply "LineageOptions" when summaryOptions not explicitly given
         const options = summaryOptions ? summaryOptions : {...this.props};
 
-        return <SelectedNodeDetail
+        return <LineageNodeDetail
             seed={lsid}
             node={node}
-            entityModel={this.getNodeGridDataModel(node)}
             highlightNode={hoverNodeLsid}
             showSummary={showSummaryOverride ?? showSummary}
             summaryOptions={options}
@@ -231,16 +227,6 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
             nodesByType={node.containedNodesByType}
             options={this.props}
         />;
-    }
-
-    getNodeGridDataModel(node: LineageNode): QueryGridModel {
-        if (node.schemaName && node.queryName && node.id) {
-            return getStateQueryGridModel('lineage-selected', SchemaQuery.create(node.schemaName, node.queryName), {
-                allowSelection: false,
-                omittedColumns,
-                requiredColumns
-            }, node.id);
-        }
     }
 
     render() {

@@ -12,7 +12,7 @@ import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { Lineage, LineageLink, LineageResult } from './models';
 import { loadLineageIfNeeded } from './actions';
 import { createLineageNodeCollections } from './vis/VisGraphGenerator';
-import { LineageNodeList } from './LineageNodeList';
+import { LineageNodeList } from './node/LineageNodeList';
 
 interface Props {
     seed: string

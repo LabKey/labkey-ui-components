@@ -2,6 +2,7 @@ import React, { ComponentType, PureComponent } from 'react';
 import { Draft, produce } from 'immer';
 
 import { resolveErrorMessage, SchemaQuery } from '..';
+
 import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 
@@ -43,8 +44,9 @@ interface State {
     queryModels: QueryModelMap;
 }
 
-export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & InjectedQueryModels>)
-    : ComponentType<Props & MakeQueryModels> {
+export function withQueryModels<Props>(
+    ComponentToWrap: ComponentType<Props & InjectedQueryModels>
+): ComponentType<Props & MakeQueryModels> {
     class ComponentWithQueryModels extends PureComponent<Props & MakeQueryModels, State> {
         actions: Actions;
         static defaultProps;
@@ -81,69 +83,82 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         loadRows = async (id: string) => {
             const { loadRows } = this.props.modelLoader;
 
-            this.setState(produce((draft: Draft<State>) => {
-                draft.queryModels[id].rowsLoadingState = LoadingState.LOADING;
-            }));
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.queryModels[id].rowsLoadingState = LoadingState.LOADING;
+                })
+            );
 
             try {
                 const result = await loadRows(this.state.queryModels[id]);
                 const { messages, rows, orderedRows, rowCount } = result;
 
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    model.messages = messages;
-                    model.rows = rows;
-                    model.orderedRows = orderedRows;
-                    model.rowCount = rowCount;
-                    model.rowsLoadingState = LoadingState.LOADED;
-                    model.error = undefined;
-                }));
-            } catch(error) {
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    let err = resolveErrorMessage(error);
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        model.messages = messages;
+                        model.rows = rows;
+                        model.orderedRows = orderedRows;
+                        model.rowCount = rowCount;
+                        model.rowsLoadingState = LoadingState.LOADED;
+                        model.error = undefined;
+                    })
+                );
+            } catch (error) {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        let err = resolveErrorMessage(error);
 
-                    if (err === undefined) {
-                        err = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;
-                    }
+                        if (err === undefined) {
+                            err = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;
+                        }
 
-                    console.error(`Error loading rows for model ${id}: `, err);
+                        console.error(`Error loading rows for model ${id}: `, err);
 
-                    model.rowsLoadingState = LoadingState.LOADED;
-                    model.error = err;
-                }));
+                        model.rowsLoadingState = LoadingState.LOADED;
+                        model.error = err;
+                    })
+                );
             }
         };
 
-        loadQueryInfo = async (id: string, loadRows: boolean = false) => {
+        loadQueryInfo = async (id: string, loadRows = false) => {
             const { loadQueryInfo } = this.props.modelLoader;
 
-            this.setState(produce((draft: Draft<State>) => {
-                draft.queryModels[id].queryInfoLoadingState = LoadingState.LOADING;
-            }));
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.queryModels[id].queryInfoLoadingState = LoadingState.LOADING;
+                })
+            );
 
             try {
                 const queryInfo = await loadQueryInfo(this.state.queryModels[id]);
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    model.queryInfo = queryInfo;
-                    model.queryInfoLoadingState = LoadingState.LOADED;
-                    model.error = undefined;
-                }), () => this.maybeLoad(id, loadRows));
-            } catch(error) {
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    let err = resolveErrorMessage(error);
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        model.queryInfo = queryInfo;
+                        model.queryInfoLoadingState = LoadingState.LOADED;
+                        model.error = undefined;
+                    }),
+                    () => this.maybeLoad(id, loadRows)
+                );
+            } catch (error) {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        let err = resolveErrorMessage(error);
 
-                    if (err === undefined) {
-                        err = `Error while loading QueryInfo for SchemaQuery: ${model.schemaQuery.toString()}`;
-                    }
+                        if (err === undefined) {
+                            err = `Error while loading QueryInfo for SchemaQuery: ${model.schemaQuery.toString()}`;
+                        }
 
-                    console.error(`Error loading QueryInfo for model ${id}:`, err);
+                        console.error(`Error loading QueryInfo for model ${id}:`, err);
 
-                    model.queryInfoLoadingState = LoadingState.LOADED;
-                    model.error = err ;
-                }));
+                        model.queryInfoLoadingState = LoadingState.LOADED;
+                        model.error = err;
+                    })
+                );
             }
         };
 
@@ -173,130 +188,157 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
 
         loadNextPage = (id: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: Draft<State>) => {
-                const model = draft.queryModels[id];
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
 
-                if (!model.isLastPage) {
-                    shouldLoad = true;
-                    model.offset = model.offset + model.maxRows;
-                }
-            }), () => this.maybeLoad(id, shouldLoad));
+                    if (!model.isLastPage) {
+                        shouldLoad = true;
+                        model.offset = model.offset + model.maxRows;
+                    }
+                }),
+                () => this.maybeLoad(id, shouldLoad)
+            );
         };
 
         loadPreviousPage = (id: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: Draft<State>) => {
-                const model = draft.queryModels[id];
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
 
-                if (!model.isFirstPage) {
-                    shouldLoad = true;
-                    model.offset = model.offset - model.maxRows;
-                }
-            }), () => this.maybeLoad(id, shouldLoad));
+                    if (!model.isFirstPage) {
+                        shouldLoad = true;
+                        model.offset = model.offset - model.maxRows;
+                    }
+                }),
+                () => this.maybeLoad(id, shouldLoad)
+            );
         };
 
         loadFirstPage = (id: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: Draft<State>) => {
-                const model = draft.queryModels[id];
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
 
-                if (!model.isFirstPage) {
-                    shouldLoad = true;
-                    model.offset = 0;
-                }
-            }), () => this.maybeLoad(id, shouldLoad));
+                    if (!model.isFirstPage) {
+                        shouldLoad = true;
+                        model.offset = 0;
+                    }
+                }),
+                () => this.maybeLoad(id, shouldLoad)
+            );
         };
 
         loadLastPage = (id: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: Draft<State>) => {
-                const model = draft.queryModels[id];
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
 
-                if (!model.isLastPage) {
-                    shouldLoad = true;
-                    model.offset = model.lastPageOffset;
-                }
-            }), () => this.maybeLoad(id, shouldLoad));
+                    if (!model.isLastPage) {
+                        shouldLoad = true;
+                        model.offset = model.lastPageOffset;
+                    }
+                }),
+                () => this.maybeLoad(id, shouldLoad)
+            );
         };
 
-        addModel = (queryConfig: QueryConfig, load: boolean = true) => {
+        addModel = (queryConfig: QueryConfig, load = true) => {
             let id;
-            this.setState(produce((draft: Draft<State>) => {
-                // Instantiate the model first because queryConfig.id is optional and is auto-generated in the
-                // QueryModel constructor if not set.
-                const queryModel = new QueryModel(queryConfig);
-                id = queryModel.id;
-                draft.queryModels[queryModel.id] = queryModel;
-            }), () => this.maybeLoad(id, load, true));
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    // Instantiate the model first because queryConfig.id is optional and is auto-generated in the
+                    // QueryModel constructor if not set.
+                    const queryModel = new QueryModel(queryConfig);
+                    id = queryModel.id;
+                    draft.queryModels[queryModel.id] = queryModel;
+                }),
+                () => this.maybeLoad(id, load, true)
+            );
         };
 
         setOffset = (id: string, offset: number) => {
             let shouldLoad = false;
-            this.setState(produce((draft: Draft<State>) => {
-                const model = draft.queryModels[id];
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
 
-                if (model.offset !== offset) {
-                    shouldLoad = true;
-                    model.offset = offset;
-                }
-            }), () => this.maybeLoad(id, shouldLoad));
+                    if (model.offset !== offset) {
+                        shouldLoad = true;
+                        model.offset = offset;
+                    }
+                }),
+                () => this.maybeLoad(id, shouldLoad)
+            );
         };
 
         setMaxRows = (id: string, maxRows: number) => {
             let shouldLoad = false;
-            this.setState(produce((draft: Draft<State>) => {
-                const model = draft.queryModels[id];
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
 
-                if (model.maxRows !== maxRows) {
-                    shouldLoad = true;
-                    model.maxRows = maxRows;
-                    model.offset = 0;
-                }
-            }), () => this.maybeLoad(id, shouldLoad));
+                    if (model.maxRows !== maxRows) {
+                        shouldLoad = true;
+                        model.maxRows = maxRows;
+                        model.offset = 0;
+                    }
+                }),
+                () => this.maybeLoad(id, shouldLoad)
+            );
         };
 
         setView = (id: string, viewName: string) => {
             let shouldLoad = false;
-            this.setState(produce((draft: Draft<State>) => {
-                const model = draft.queryModels[id];
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
 
-                if (model.viewName !== viewName) {
-                    shouldLoad = true;
-                    model.schemaQuery = SchemaQuery.create(model.schemaName, model.queryName, viewName);
-                    // We need to reset all data for the model because changing the view will change things such as
-                    // columns and rowCount. If we don't do this we'll render a grid with empty rows/columns.
-                    model.error = undefined;
-                    model.messages = undefined;
-                    model.offset = 0;
-                    model.orderedRows = undefined;
-                    model.rows = undefined;
-                    model.rowCount = undefined;
-                    model.rowsLoadingState = LoadingState.INITIALIZED;
-                }
-            }), () => this.maybeLoad(id, shouldLoad));
+                    if (model.viewName !== viewName) {
+                        shouldLoad = true;
+                        model.schemaQuery = SchemaQuery.create(model.schemaName, model.queryName, viewName);
+                        // We need to reset all data for the model because changing the view will change things such as
+                        // columns and rowCount. If we don't do this we'll render a grid with empty rows/columns.
+                        model.error = undefined;
+                        model.messages = undefined;
+                        model.offset = 0;
+                        model.orderedRows = undefined;
+                        model.rows = undefined;
+                        model.rowCount = undefined;
+                        model.rowsLoadingState = LoadingState.INITIALIZED;
+                    }
+                }),
+                () => this.maybeLoad(id, shouldLoad)
+            );
         };
 
         setSchemaQuery = (id: string, schemaQuery: SchemaQuery) => {
             let shouldLoad = false;
-            this.setState(produce((draft: Draft<State>) => {
-                const model = draft.queryModels[id];
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
 
-                if (!model.schemaQuery.isEqual(schemaQuery)) {
-                    shouldLoad = true;
-                    // We assume that we'll need a new QueryInfo if we're changing the SchemaQuery, so we reset the
-                    // QueryInfo and all rows related data.
-                    model.schemaQuery = schemaQuery;
-                    model.queryInfo = undefined;
-                    model.queryInfoLoadingState = LoadingState.INITIALIZED;
-                    model.error = undefined;
-                    model.messages = undefined;
-                    model.offset = 0;
-                    model.orderedRows = undefined;
-                    model.rows = undefined;
-                    model.rowCount = undefined;
-                    model.rowsLoadingState = LoadingState.INITIALIZED;
-                }
-            }), () => this.maybeLoad(id, shouldLoad, true));
+                    if (!model.schemaQuery.isEqual(schemaQuery)) {
+                        shouldLoad = true;
+                        // We assume that we'll need a new QueryInfo if we're changing the SchemaQuery, so we reset the
+                        // QueryInfo and all rows related data.
+                        model.schemaQuery = schemaQuery;
+                        model.queryInfo = undefined;
+                        model.queryInfoLoadingState = LoadingState.INITIALIZED;
+                        model.error = undefined;
+                        model.messages = undefined;
+                        model.offset = 0;
+                        model.orderedRows = undefined;
+                        model.rows = undefined;
+                        model.rowCount = undefined;
+                        model.rowsLoadingState = LoadingState.INITIALIZED;
+                    }
+                }),
+                () => this.maybeLoad(id, shouldLoad, true)
+            );
         };
 
         componentDidMount(): void {
@@ -308,7 +350,9 @@ export function withQueryModels<Props>(ComponentToWrap: ComponentType<Props & In
         render() {
             // Intentionally not using queryConfigs and modelLoader, we don't want to pass them to children.
             const { queryConfigs, modelLoader, ...props } = this.props;
-            return <ComponentToWrap queryModels={this.state.queryModels} actions={this.actions} {...props as Props} />
+            return (
+                <ComponentToWrap queryModels={this.state.queryModels} actions={this.actions} {...(props as Props)} />
+            );
         }
     }
 

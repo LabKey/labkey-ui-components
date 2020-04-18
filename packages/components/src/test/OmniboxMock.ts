@@ -1,15 +1,16 @@
 import { fromJS, List, Map } from 'immutable';
 
-import rawColumnData from './data/columns.json';
-import rawData from './data/data.json';
 import { QueryColumn, QueryGridModel } from '../components/base/models/model';
 
+import rawColumnData from './data/columns.json';
+import rawData from './data/data.json';
+
 export interface IActionContext {
-    columns: List<QueryColumn>
-    columnsByName: Map<string, QueryColumn>
-    model: QueryGridModel
-    resolveColumns: () => Promise<List<QueryColumn>>
-    resolveModel: () => Promise<QueryGridModel>
+    columns: List<QueryColumn>;
+    columnsByName: Map<string, QueryColumn>;
+    model: QueryGridModel;
+    resolveColumns: () => Promise<List<QueryColumn>>;
+    resolveModel: () => Promise<QueryGridModel>;
 }
 
 export const createMockActionContext = (dataKey: string): IActionContext => {
@@ -19,7 +20,7 @@ export const createMockActionContext = (dataKey: string): IActionContext => {
 
     const model = new QueryGridModel({
         dataIds: data.keySeq().toList(),
-        data
+        data,
     });
 
     return {
@@ -27,6 +28,6 @@ export const createMockActionContext = (dataKey: string): IActionContext => {
         columnsByName,
         model,
         resolveColumns: (): Promise<List<QueryColumn>> => Promise.resolve(columns),
-        resolveModel: (): Promise<QueryGridModel> => Promise.resolve(model)
-    }
+        resolveModel: (): Promise<QueryGridModel> => Promise.resolve(model),
+    };
 };

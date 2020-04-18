@@ -15,42 +15,41 @@
  */
 import React from 'react';
 import { Map } from 'immutable';
+
 import { SVGIcon } from '../base/SVGIcon';
+
 import { SearchResultCardData } from './models';
 import { getSearchResultCardData } from './actions';
 
-
 interface SearchResultProps {
-    category?: string
-    title: string
-    summary: string
-    url: string
-    data?: Map<any, any>
-    iconUrl?: string
-    getCardData?: (data: Map<any, any>, category?: string) => SearchResultCardData, // allows for customization of mappings from search results to icons, altText and titles.
+    category?: string;
+    title: string;
+    summary: string;
+    url: string;
+    data?: Map<any, any>;
+    iconUrl?: string;
+    getCardData?: (data: Map<any, any>, category?: string) => SearchResultCardData; // allows for customization of mappings from search results to icons, altText and titles.
 }
 
 export class SearchResultCard extends React.Component<SearchResultProps, any> {
-
-    getCardData() : SearchResultCardData {
+    getCardData(): SearchResultCardData {
         const { category, data, getCardData, title } = this.props;
 
         let cardData = getSearchResultCardData(data, category, title);
         if (getCardData) {
-            cardData = {...cardData, ...getCardData(data, category)}
+            cardData = { ...cardData, ...getCardData(data, category) };
         }
         return cardData;
     }
 
     renderType(cardData: SearchResultCardData) {
-
         if (cardData.typeName) {
             return (
                 <div>
                     <strong>Type: </strong>
                     {cardData.typeName}
                 </div>
-            )
+            );
         }
     }
 
@@ -58,22 +57,15 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
         const { iconUrl } = this.props;
 
         if (iconUrl) {
-            return <img className="search-result__card-icon" src={iconUrl}/>
+            return <img className="search-result__card-icon" src={iconUrl} />;
         }
 
-        const { iconSrc, altText }  = cardData;
+        const { iconSrc, altText } = cardData;
 
-        return (
-            <SVGIcon
-                iconDir={'_images'}
-                iconSrc={iconSrc}
-                alt={altText}
-                className="search-result__card-icon"
-            />
-        )
+        return <SVGIcon iconDir="_images" iconSrc={iconSrc} alt={altText} className="search-result__card-icon" />;
     }
 
-    render () {
+    render() {
         const { summary, url } = this.props;
 
         const cardData = this.getCardData();
@@ -86,17 +78,20 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
                     </div>
                     <div className="col-md-10 col-sm-12">
                         <div>
-                            <h4 className="text-capitalize">
-                                {cardData.title}
-                            </h4>
+                            <h4 className="text-capitalize">{cardData.title}</h4>
                         </div>
                         {this.renderType(cardData)}
                         <div title={summary}>
-                            <strong>Summary: </strong> {summary.length ? ( summary.length <= 35 ? summary : summary.substr(0, 35) + "..." ): 'No summary provided'}
+                            <strong>Summary: </strong>{' '}
+                            {summary.length
+                                ? summary.length <= 35
+                                    ? summary
+                                    : summary.substr(0, 35) + '...'
+                                : 'No summary provided'}
                         </div>
                     </div>
                 </div>
             </a>
-        )
+        );
     }
 }

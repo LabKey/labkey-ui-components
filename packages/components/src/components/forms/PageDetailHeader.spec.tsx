@@ -17,66 +17,52 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { PageDetailHeader } from './PageDetailHeader';
 import { User } from '../base/models/model';
 
-describe("<PageDetailHeader/>", () => {
+import { PageDetailHeader } from './PageDetailHeader';
 
-   test("default props", () => {
-      const component = (
-          <PageDetailHeader title={'Title'} user={new User()} iconSrc={'default'}/>
-      );
+describe('<PageDetailHeader/>', () => {
+    test('default props', () => {
+        const component = <PageDetailHeader title="Title" user={new User()} iconSrc="default" />;
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 
-   test("with additional props", () => {
-      const component = (
-          <PageDetailHeader
-              user={new User()}
-              title={'Title'}
-              subTitle={'Subtitle'}
-              description={'Description'}
-              iconDir={'iconDir'}
-              iconSrc={'iconSrc'}
-              leftColumns={5}
-          >
-             <div>Something off to the right</div>
-          </PageDetailHeader>
-      );
+    test('with additional props', () => {
+        const component = (
+            <PageDetailHeader
+                user={new User()}
+                title="Title"
+                subTitle="Subtitle"
+                description="Description"
+                iconDir="iconDir"
+                iconSrc="iconSrc"
+                leftColumns={5}
+            >
+                <div>Something off to the right</div>
+            </PageDetailHeader>
+        );
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 
-   test("prefer iconUrl", () => {
-      const component = (
-          <PageDetailHeader
-              user={new User()}
-              title={'Title'}
-              iconUrl={'iconUrl'}
-              iconDir={'iconDir'}
-              iconSrc={'iconSrc'}
-          />
-      );
+    test('prefer iconUrl', () => {
+        const component = (
+            <PageDetailHeader user={new User()} title="Title" iconUrl="iconUrl" iconDir="iconDir" iconSrc="iconSrc" />
+        );
 
-      const wrapper = mount(component);
-      const srcAttr = wrapper.find('img').getDOMNode().getAttribute('src');
-      expect(srcAttr).toBe('iconUrl');
-      wrapper.unmount();
-   });
+        const wrapper = mount(component);
+        const srcAttr = wrapper.find('img').getDOMNode().getAttribute('src');
+        expect(srcAttr).toBe('iconUrl');
+        wrapper.unmount();
+    });
 
-   test("without icon", () => {
-      const component = (
-          <PageDetailHeader
-              user={new User()}
-              title={'Title'}
-          />
-      );
+    test('without icon', () => {
+        const component = <PageDetailHeader user={new User()} title="Title" />;
 
-       const tree = renderer.create(component).toJSON();
-       expect(tree).toMatchSnapshot();
-   });
-
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });

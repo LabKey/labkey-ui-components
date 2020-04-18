@@ -4,15 +4,8 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import ReactN from 'reactn';
-import {
-    Detail,
-    getQueryGridModel,
-    gridInit,
-    LoadingSpinner,
-    QueryGridModel,
-    SVGIcon,
-    Theme,
-} from '../..';
+
+import { Detail, getQueryGridModel, gridInit, LoadingSpinner, QueryGridModel, SVGIcon, Theme } from '../..';
 
 import { createLineageNodeCollections, LineageNodeCollectionByType } from './vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
@@ -22,21 +15,20 @@ import { LineageOptions } from './types';
 import { getIconAndShapeForNode } from './utils';
 
 export interface SummaryOptions {
-    showSummary?: boolean
-    summaryOptions?: LineageOptions
+    showSummary?: boolean;
+    summaryOptions?: LineageOptions;
 }
 
 interface SelectedNodeProps {
-    entityModel?: QueryGridModel
-    highlightNode?: string
-    node: LineageNode
-    seed: string
+    entityModel?: QueryGridModel;
+    highlightNode?: string;
+    node: LineageNode;
+    seed: string;
 }
 
 export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & SummaryOptions> {
-
     static defaultProps = {
-        showSummary: true
+        showSummary: true,
     };
 
     componentDidMount() {
@@ -64,7 +56,7 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
     render() {
         const model = this.getQueryGridModel();
         if (!model || !model.isLoaded) {
-            return <LoadingSpinner msg="Loading details..."/>
+            return <LoadingSpinner msg="Loading details..." />;
         }
 
         const { seed, node, highlightNode, showSummary, summaryOptions } = this.props;
@@ -78,19 +70,13 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
 
         const header = (
             <>
-                {(lineageUrl && !isSeed) &&
-                <a href={lineageUrl}>{name}</a>
-                ||
-                name
-                }
+                {(lineageUrl && !isSeed && <a href={lineageUrl}>{name}</a>) || name}
                 <div className="pull-right">
-                    <a className="lineage-data-link-left"
-                       href={node.links.overview}>
+                    <a className="lineage-data-link-left" href={node.links.overview}>
                         <span className="lineage-data-link--text">Overview</span>
                     </a>
                     {lineageUrl !== undefined && (
-                        <a className="lineage-data-link-right"
-                           href={lineageUrl}>
+                        <a className="lineage-data-link-right" href={lineageUrl}>
                             <span className="lineage-data-link--text">Lineage</span>
                         </a>
                     )}
@@ -98,44 +84,36 @@ export class SelectedNodeDetail extends ReactN.Component<SelectedNodeProps & Sum
             </>
         );
 
-        return <>
-            <NodeDetailHeader
-                header={header}
-                iconSrc={getIconAndShapeForNode(node).iconURL}
-            >
-                {displayType && <small>{displayType}</small>}
-                {aliases && (
-                    <div>
-                        <small>
-                            {aliases.join(', ')}
-                        </small>
-                    </div>
+        return (
+            <>
+                <NodeDetailHeader header={header} iconSrc={getIconAndShapeForNode(node).iconURL}>
+                    {displayType && <small>{displayType}</small>}
+                    {aliases && (
+                        <div>
+                            <small>{aliases.join(', ')}</small>
+                        </div>
+                    )}
+                    {description && <small title={description}>{description}</small>}
+                </NodeDetailHeader>
+
+                <Detail queryModel={model} />
+
+                {showSummary && (
+                    <LineageSummary seed={node.lsid} highlightNode={highlightNode} options={summaryOptions} />
                 )}
-                {description && <small title={description}>{description}</small>}
-            </NodeDetailHeader>
-
-            <Detail queryModel={model} />
-
-            {showSummary && (
-                <LineageSummary
-                    seed={node.lsid}
-                    highlightNode={highlightNode}
-                    options={summaryOptions}
-                />
-            )}
-        </>;
+            </>
+        );
     }
 }
 
 interface ClusterNodeDetailProps {
-    highlightNode?: string
-    nodes: Array<LineageNode>
-    nodesByType: LineageNodeCollectionByType
-    options?: LineageOptions
+    highlightNode?: string;
+    nodes: LineageNode[];
+    nodesByType: LineageNodeCollectionByType;
+    options?: LineageOptions;
 }
 
 export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
-
     render() {
         const { highlightNode, nodes, options } = this.props;
 
@@ -147,8 +125,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
         if (groups.length === 1) {
             title = nodes.length + ' ' + groups[0];
             iconURL = nodes[0].meta.iconURL;
-        }
-        else {
+        } else {
             title = nodes.length + ' items of different types';
             iconURL = 'default';
         }
@@ -157,22 +134,22 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
             <>
                 <NodeDetailHeader header={title} iconSrc={iconURL} />
 
-                {groups.map(groupName =>
+                {groups.map(groupName => (
                     <LineageNodeList
                         key={groupName}
                         title={groupName}
                         nodes={nodesByType[groupName]}
                         highlightNode={highlightNode}
                     />
-                )}
+                ))}
             </>
         );
     }
 }
 
 interface NodeDetailHeaderProps {
-    header: ReactNode
-    iconSrc: string
+    header: ReactNode;
+    iconSrc: string;
 }
 
 class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
@@ -182,22 +159,15 @@ class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
         return (
             <div className="margin-bottom lineage-node-detail">
                 <i className="component-detail--child--img">
-                    <SVGIcon
-                        theme={Theme.ORANGE}
-                        iconSrc={iconSrc}
-                        height="50px"
-                        width="50px"
-                    />
+                    <SVGIcon theme={Theme.ORANGE} iconSrc={iconSrc} height="50px" width="50px" />
                 </i>
                 <div className="text__truncate">
                     <div className="lineage-name">
-                        <h4 className="no-margin-top lineage-name-data">
-                            {header}
-                        </h4>
+                        <h4 className="no-margin-top lineage-name-data">{header}</h4>
                     </div>
                     {children}
                 </div>
             </div>
-        )
+        );
     }
 }

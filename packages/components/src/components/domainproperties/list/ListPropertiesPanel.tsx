@@ -1,14 +1,21 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
-import { DomainDesign } from "../models";
-import { AllowableActions, BasicPropertiesFields } from "./ListPropertiesPanelFormElements";
-import { AdvancedSettings } from "./ListPropertiesAdvancedSettings";
-import { DEFINE_LIST_TOPIC } from "../../../util/helpLinks";
-import { HelpTopicURL } from "../HelpTopicURL";
-import {AdvancedSettingsForm, ListModel} from "./models";
-import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
-import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
+
+import { DomainDesign } from '../models';
+
+import { DEFINE_LIST_TOPIC } from '../../../util/helpLinks';
+import { HelpTopicURL } from '../HelpTopicURL';
+
+import {
+    InjectedDomainPropertiesPanelCollapseProps,
+    withDomainPropertiesPanelCollapse,
+} from '../DomainPropertiesPanelCollapse';
+import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
+
+import { AdvancedSettingsForm, ListModel } from './models';
+import { AdvancedSettings } from './ListPropertiesAdvancedSettings';
+import { AllowableActions, BasicPropertiesFields } from './ListPropertiesPanelFormElements';
 
 const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 
@@ -24,9 +31,11 @@ interface State {
     isValid: boolean;
 }
 
-//Note: exporting this class for jest test case
-export class ListPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
-
+// Note: exporting this class for jest test case
+export class ListPropertiesPanelImpl extends React.PureComponent<
+    Props & InjectedDomainPropertiesPanelCollapseProps,
+    State
+> {
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
 
@@ -39,13 +48,15 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props & Injecte
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
         const isValid = updatedModel && updatedModel.hasValidProperties();
-        this.setState(() => ({isValid}),
+        this.setState(
+            () => ({ isValid }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
-                    onChange(updatedModel)
+                    onChange(updatedModel);
                 }
-            });
+            }
+        );
     };
 
     onChange = (identifier, value): void => {
@@ -88,41 +99,35 @@ export class ListPropertiesPanelImpl extends React.PureComponent<Props & Injecte
     };
 
     render() {
-        const { model, successBsStyle} = this.props;
+        const { model, successBsStyle } = this.props;
         const { isValid } = this.state;
 
-        return(
+        return (
             <BasePropertiesPanel
                 {...this.props}
                 headerId={PROPERTIES_HEADER_ID}
-                title={'List Properties'}
+                title="List Properties"
                 titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >
-                <Row className={'margin-bottom'}>
+                <Row className="margin-bottom">
                     <Col xs={12}>
-                        <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural={'lists'}/>
+                        <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural="lists" />
                     </Col>
                 </Row>
                 <Form>
-                    <BasicPropertiesFields
-                        model={model}
-                        onInputChange={this.onInputChange}
-                    />
-                    <AllowableActions
-                        model={model}
-                        onCheckBoxChange={this.onCheckBoxChange}
-                    />
+                    <BasicPropertiesFields model={model} onInputChange={this.onInputChange} />
+                    <AllowableActions model={model} onCheckBoxChange={this.onCheckBoxChange} />
                     <AdvancedSettings
-                        title={"Advanced Settings"}
+                        title="Advanced Settings"
                         model={model}
                         applyAdvancedProperties={this.applyAdvancedProperties}
                         successBsStyle={successBsStyle}
                     />
                 </Form>
             </BasePropertiesPanel>
-        )
+        );
     }
 }
 

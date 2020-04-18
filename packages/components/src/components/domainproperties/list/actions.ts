@@ -13,25 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, Utils, Domain } from "@labkey/api";
-import { ListModel } from "./models";
-import {buildURL} from "../../..";
+import { ActionURL, Ajax, Utils, Domain } from '@labkey/api';
+
+import { buildURL } from '../../..';
+
+import { ListModel } from './models';
 
 export function getListProperties(listId?: number) {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('list', 'GetListProperties'),
             method: 'GET',
-            params: {listId},
+            params: { listId },
             scope: this,
-            success: Utils.getCallbackWrapper((data) => {
+            success: Utils.getCallbackWrapper(data => {
                 resolve(ListModel.create(null, data));
             }),
-            failure: Utils.getCallbackWrapper((error) => {
+            failure: Utils.getCallbackWrapper(error => {
                 reject(error);
-            })
+            }),
         });
-    })
+    });
 }
 
 export function fetchListDesign(listId: number): Promise<ListModel> {
@@ -43,17 +45,16 @@ export function fetchListDesign(listId: number): Promise<ListModel> {
                 Domain.getDomainDetails({
                     containerPath: LABKEY.container.path,
                     domainId: model.domainId,
-                    success: (data) => {
+                    success: data => {
                         resolve(ListModel.create(data));
                     },
-                    failure: (error) => {
+                    failure: error => {
                         reject(error);
-                    }
+                    },
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 reject(error);
             });
     });
 }
-

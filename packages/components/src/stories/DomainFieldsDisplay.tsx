@@ -12,25 +12,15 @@ import { DomainDesign } from '../components/domainproperties/models';
 import data from '../test/data/property-getDomain.json';
 import './stories.scss';
 
-storiesOf("DomainFieldsDisplay", module)
+storiesOf('DomainFieldsDisplay', module)
     .addDecorator(withKnobs)
-    .add("with empty domain", () => {
+    .add('with empty domain', () => {
         const domain = new DomainDesign();
 
-        return (
-            <DomainFieldsDisplay
-                title="Empty Domain Properties Example"
-                domain={domain}
-            />
-        )
+        return <DomainFieldsDisplay title="Empty Domain Properties Example" domain={domain} />;
     })
-    .add("with knobs", () => {
+    .add('with knobs', () => {
         const domain = new DomainDesign(data);
 
-        return (
-            <DomainFieldsDisplay
-                title={text('Title', 'Study Properties')}
-                domain={domain}
-            />
-        )
+        return <DomainFieldsDisplay title={text('Title', 'Study Properties')} domain={domain} />;
     });

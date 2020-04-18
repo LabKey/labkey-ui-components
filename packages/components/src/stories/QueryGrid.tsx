@@ -16,6 +16,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
+
 import { QueryGrid } from '../components/QueryGrid';
 import { updateQueryGridModel } from '../global';
 import { getStateQueryGridModel } from '../models';
@@ -25,51 +26,51 @@ import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
 storiesOf('QueryGrid', module)
     .addDecorator(withKnobs)
     .add('No data available', () => {
-        const modelId = "basicRendering";
+        const modelId = 'basicRendering';
         const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: "q-snapshot"
+            schemaName: 'schema',
+            queryName: 'q-snapshot',
         });
         const model = new QueryGridModel({
-            allowSelection: boolean("allowSelection?", false),
+            allowSelection: boolean('allowSelection?', false),
             id: modelId,
-            isLoaded: boolean("isLoaded?", true),
-            isLoading: boolean("isLoading?", false),
-            isError: boolean("isError?", false),
+            isLoaded: boolean('isLoaded?', true),
+            isLoading: boolean('isLoading?', false),
+            isError: boolean('isError?', false),
             schema: schemaQuery.schemaName,
             query: schemaQuery.queryName,
         });
         updateQueryGridModel(model, {}, undefined, false);
-        return <QueryGrid model={model} schemaQuery={schemaQuery}/>
+        return <QueryGrid model={model} schemaQuery={schemaQuery} />;
     })
     .add('without data', () => {
-        const modelId = "gridWithoutData";
+        const modelId = 'gridWithoutData';
         const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: "gridWithoutData"
+            schemaName: 'schema',
+            queryName: 'gridWithoutData',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery, {
-            allowSelection: false
+            allowSelection: false,
         });
 
-        return <QueryGrid model={model}/>
+        return <QueryGrid model={model} />;
     })
-    .add("with data", () => {
-        const modelId = "gridWithData";
+    .add('with data', () => {
+        const modelId = 'gridWithData';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery);
 
-        return <QueryGrid model={model}/>
+        return <QueryGrid model={model} />;
     })
-    .add("with message", () => {
-        const modelId = "gridWithMessage";
+    .add('with message', () => {
+        const modelId = 'gridWithMessage';
         const schemaQuery = new SchemaQuery({
-            schemaName: "assay.General.Amino Acids",
-            queryName: "Runs"
+            schemaName: 'assay.General.Amino Acids',
+            queryName: 'Runs',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery);
-        return <QueryGrid model={model}/>
+        return <QueryGrid model={model} />;
     });

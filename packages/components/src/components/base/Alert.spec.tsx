@@ -24,10 +24,9 @@ describe('<Alert />', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("Nothing displayed without children", () => {
+    test('Nothing displayed without children', () => {
         const message = undefined;
         const tree = renderer.create(<Alert>{message}</Alert>).toJSON();
         expect(tree).toMatchSnapshot();
-    })
+    });
 });
-

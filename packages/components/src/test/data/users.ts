@@ -1,5 +1,6 @@
 import { List } from 'immutable';
-import { User } from "../../components/base/models/model";
+
+import { User } from '../../components/base/models/model';
 
 export const GUEST = new User({
     canDelete: false,
@@ -15,9 +16,7 @@ export const GUEST = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<String>([
-        "org.labkey.api.security.permissions.ReadPermission"
-    ])
+    permissionsList: List<string>(['org.labkey.api.security.permissions.ReadPermission']),
 });
 
 export const READER = new User({
@@ -35,9 +34,7 @@ export const READER = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<String>([
-        "org.labkey.api.security.permissions.ReadPermission"
-    ])
+    permissionsList: List<string>(['org.labkey.api.security.permissions.ReadPermission']),
 });
 
 export const AUTHOR = new User({
@@ -55,10 +52,10 @@ export const AUTHOR = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: true,
-    permissionsList: List<String>([
-        "org.labkey.api.security.permissions.ReadPermission",
-        "org.labkey.api.security.permissions.InsertPermission"
-    ])
+    permissionsList: List<string>([
+        'org.labkey.api.security.permissions.ReadPermission',
+        'org.labkey.api.security.permissions.InsertPermission',
+    ]),
 });
 
 export const EDITOR = new User({
@@ -76,12 +73,12 @@ export const EDITOR = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: true,
-    permissionsList: List<String>([
-        "org.labkey.api.security.permissions.DeletePermission",
-        "org.labkey.api.security.permissions.ReadPermission",
-        "org.labkey.api.security.permissions.InsertPermission",
-        "org.labkey.api.security.permissions.UpdatePermission"
-    ])
+    permissionsList: List<string>([
+        'org.labkey.api.security.permissions.DeletePermission',
+        'org.labkey.api.security.permissions.ReadPermission',
+        'org.labkey.api.security.permissions.InsertPermission',
+        'org.labkey.api.security.permissions.UpdatePermission',
+    ]),
 });
 
 export const ASSAYDESIGNER = new User({
@@ -99,10 +96,10 @@ export const ASSAYDESIGNER = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<String>([
-        "org.labkey.api.security.permissions.ReadPermission",
-        "org.labkey.api.assay.security.DesignAssayPermission"
-    ])
+    permissionsList: List<string>([
+        'org.labkey.api.security.permissions.ReadPermission',
+        'org.labkey.api.assay.security.DesignAssayPermission',
+    ]),
 });
 
 export const FOLDER_ADMIN = new User({
@@ -120,16 +117,16 @@ export const FOLDER_ADMIN = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: true,
-    permissionsList: List<String>([
-        "org.labkey.api.security.permissions.DeletePermission",
-        "org.labkey.api.security.permissions.ReadPermission",
-        "org.labkey.api.security.permissions.DesignDataClassPermission",
-        "org.labkey.api.security.permissions.DesignSampleSetPermission",
-        "org.labkey.api.assay.security.DesignAssayPermission",
-        "org.labkey.api.security.permissions.InsertPermission",
-        "org.labkey.api.security.permissions.UpdatePermission",
-        "org.labkey.api.security.permissions.AdminPermission"
-    ])
+    permissionsList: List<string>([
+        'org.labkey.api.security.permissions.DeletePermission',
+        'org.labkey.api.security.permissions.ReadPermission',
+        'org.labkey.api.security.permissions.DesignDataClassPermission',
+        'org.labkey.api.security.permissions.DesignSampleSetPermission',
+        'org.labkey.api.assay.security.DesignAssayPermission',
+        'org.labkey.api.security.permissions.InsertPermission',
+        'org.labkey.api.security.permissions.UpdatePermission',
+        'org.labkey.api.security.permissions.AdminPermission',
+    ]),
 });
 
 export const APP_ADMIN = new User({
@@ -147,16 +144,16 @@ export const APP_ADMIN = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<String>([
-        "org.labkey.api.security.permissions.DeletePermission",
-        "org.labkey.api.security.permissions.ReadPermission",
-        "org.labkey.api.security.permissions.DesignDataClassPermission",
-        "org.labkey.api.security.permissions.DesignSampleSetPermission",
-        "org.labkey.api.assay.security.DesignAssayPermission",
-        "org.labkey.api.security.permissions.InsertPermission",
-        "org.labkey.api.security.permissions.UpdatePermission",
-        "org.labkey.api.security.permissions.AdminPermission",
-        "org.labkey.api.security.permissions.UserManagementPermission",
-        "org.labkey.api.security.permissions.ApplicationAdminPermission"
-    ])
+    permissionsList: List<string>([
+        'org.labkey.api.security.permissions.DeletePermission',
+        'org.labkey.api.security.permissions.ReadPermission',
+        'org.labkey.api.security.permissions.DesignDataClassPermission',
+        'org.labkey.api.security.permissions.DesignSampleSetPermission',
+        'org.labkey.api.assay.security.DesignAssayPermission',
+        'org.labkey.api.security.permissions.InsertPermission',
+        'org.labkey.api.security.permissions.UpdatePermission',
+        'org.labkey.api.security.permissions.AdminPermission',
+        'org.labkey.api.security.permissions.UserManagementPermission',
+        'org.labkey.api.security.permissions.ApplicationAdminPermission',
+    ]),
 });

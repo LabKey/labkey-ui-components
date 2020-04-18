@@ -16,64 +16,71 @@
 
 import React from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
-import { ProductMenuModel } from './model';
+
 import { User } from '../base/models/model';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
-import { AppURL } from "../../url/AppURL";
-import { signOut, signIn } from "./actions";
+import { AppURL } from '../../url/AppURL';
+
+import { ProductMenuModel } from './model';
+import { signOut, signIn } from './actions';
 
 interface UserMenuProps {
-    model: ProductMenuModel
-    user: User
-    showSwitchToLabKey: boolean
-    extraDevItems?: any
-    extraUserItems?: any
-    signOutUrl?: string
+    model: ProductMenuModel;
+    user: User;
+    showSwitchToLabKey: boolean;
+    extraDevItems?: any;
+    extraUserItems?: any;
+    signOutUrl?: string;
 }
 
 export class UserMenu extends React.Component<UserMenuProps, any> {
-
     render() {
         const { extraDevItems, extraUserItems, model, user, showSwitchToLabKey, signOutUrl } = this.props;
-        const menuSection = model.getSection("user");
+        const menuSection = model.getSection('user');
 
         if (menuSection) {
-            const beginUrl = buildURL('project', 'begin', undefined, {returnURL: false});
-            const switchToLabKeyItem = <MenuItem key="projectBegin" href={beginUrl}>Switch to LabKey</MenuItem>;
+            const beginUrl = buildURL('project', 'begin', undefined, { returnURL: false });
+            const switchToLabKeyItem = (
+                <MenuItem key="projectBegin" href={beginUrl}>
+                    Switch to LabKey
+                </MenuItem>
+            );
 
-            let menuItems = [];
-            menuSection.items.forEach((item) => {
+            const menuItems = [];
+            menuSection.items.forEach(item => {
                 if ((item.requiresLogin && user.isSignedIn) || !item.requiresLogin) {
                     const href = item.url instanceof AppURL ? item.url.toHref() : item.url;
-                    menuItems.push(<MenuItem key={item.key} href={href} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
+                    menuItems.push(
+                        <MenuItem key={item.key} href={href} target={item.key === 'docs' ? '_blank' : '_self'}>
+                            {item.label}
+                        </MenuItem>
+                    );
                 }
             });
 
             return (
                 <Dropdown id="user-menu-dropdown">
                     <Dropdown.Toggle useAnchor={true}>
-                        {user.avatar
-                            ? <Image src={user.avatar}
-                               alt="User Avatar"
-                               rounded={true}
-                               height={32}
-                               width={32}
-                            />
-                           : <span className="navbar-item">
-                                <span className="user-name"><span className="fas fa-user-circle"/> {user.displayName} </span>
+                        {user.avatar ? (
+                            <Image src={user.avatar} alt="User Avatar" rounded={true} height={32} width={32} />
+                        ) : (
+                            <span className="navbar-item">
+                                <span className="user-name">
+                                    <span className="fas fa-user-circle" /> {user.displayName}{' '}
+                                </span>
                             </span>
-                        }
+                        )}
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu pullRight className="pull-right">
-                        <div className="navbar-connector"/>
+                        <div className="navbar-connector" />
                         {menuItems}
                         {showSwitchToLabKey && switchToLabKeyItem}
                         {extraUserItems}
                         {LABKEY.devMode ? (
                             <>
-                                <MenuItem divider/>
+                                <MenuItem divider />
                                 <MenuItem header>Dev Tools</MenuItem>
                                 <MenuItem onClick={toggleDevTools}>
                                     {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
@@ -82,14 +89,15 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
                                 {extraDevItems}
                             </>
                         ) : null}
-                        <MenuItem divider/>
-                        {user.isSignedIn
-                            ? <MenuItem onClick={() => signOut(signOutUrl)}>Sign Out</MenuItem>
-                            : <MenuItem onClick={signIn}>Sign In</MenuItem>
-                        }
+                        <MenuItem divider />
+                        {user.isSignedIn ? (
+                            <MenuItem onClick={() => signOut(signOutUrl)}>Sign Out</MenuItem>
+                        ) : (
+                            <MenuItem onClick={signIn}>Sign In</MenuItem>
+                        )}
                     </Dropdown.Menu>
                 </Dropdown>
-            )
+            );
         }
         return null;
     }

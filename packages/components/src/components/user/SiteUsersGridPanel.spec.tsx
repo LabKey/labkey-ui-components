@@ -15,24 +15,25 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
+
+import { SecurityPolicy } from '../permissions/models';
+import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
+import { initQueryGridState } from '../../global';
+import policyJSON from '../../test/data/security-getPolicy.json';
+import rolesJSON from '../../test/data/security-getRoles.json';
+
 import { SiteUsersGridPanel } from './SiteUsersGridPanel';
-import { SecurityPolicy } from "../permissions/models";
-import { getRolesByUniqueName, processGetRolesResponse } from "../permissions/actions";
-import { initQueryGridState } from "../../global";
-import policyJSON from "../../test/data/security-getPolicy.json";
-import rolesJSON from "../../test/data/security-getRoles.json";
 
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 beforeAll(() => {
-    initQueryGridState()
+    initQueryGridState();
 });
 
-describe("<SiteUsersGridPanel/>", () => {
-
-    test("active users view", () => {
+describe('<SiteUsersGridPanel/>', () => {
+    test('active users view', () => {
         const component = (
             <SiteUsersGridPanel
                 onCreateComplete={jest.fn()}
@@ -58,7 +59,7 @@ describe("<SiteUsersGridPanel/>", () => {
         wrapper.unmount();
     });
 
-    test("without delete", () => {
+    test('without delete', () => {
         const component = (
             <SiteUsersGridPanel
                 onCreateComplete={jest.fn()}
@@ -85,7 +86,7 @@ describe("<SiteUsersGridPanel/>", () => {
         wrapper.unmount();
     });
 
-    test("inactive users view", () => {
+    test('inactive users view', () => {
         const component = (
             <SiteUsersGridPanel
                 onCreateComplete={jest.fn()}
@@ -96,7 +97,7 @@ describe("<SiteUsersGridPanel/>", () => {
         );
 
         const wrapper = mount(component);
-        wrapper.setState({usersView: 'inactive'});
+        wrapper.setState({ usersView: 'inactive' });
 
         expect(wrapper.find('QueryGridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
@@ -113,7 +114,7 @@ describe("<SiteUsersGridPanel/>", () => {
         wrapper.unmount();
     });
 
-    test("all users view", () => {
+    test('all users view', () => {
         const component = (
             <SiteUsersGridPanel
                 onCreateComplete={jest.fn()}
@@ -124,7 +125,7 @@ describe("<SiteUsersGridPanel/>", () => {
         );
 
         const wrapper = mount(component);
-        wrapper.setState({usersView: 'all'});
+        wrapper.setState({ usersView: 'all' });
 
         expect(wrapper.find('QueryGridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
@@ -140,5 +141,4 @@ describe("<SiteUsersGridPanel/>", () => {
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View All Users')).toHaveLength(0);
         wrapper.unmount();
     });
-
 });

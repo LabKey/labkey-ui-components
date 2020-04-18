@@ -5,53 +5,61 @@
 import React from 'reactn';
 import { List } from 'immutable';
 
-import { SelectInput, SelectInputProps } from './SelectInput';
 import { IUser } from '../model';
 import { getUsersWithPermissions } from '../actions';
 
+import { SelectInput, SelectInputProps } from './SelectInput';
+
 interface UserSelectInputProps extends SelectInputProps {
     // specify whether this Select should correspond with a NotifyList on the server
-    notifyList?: boolean
-    permissions?: string | Array<string>
+    notifyList?: boolean;
+    permissions?: string | string[];
 }
 
 export class UserSelectInput extends React.Component<UserSelectInputProps, any> {
-
     static defaultProps = {
         cache: false,
-        notifyList: false
+        notifyList: false,
     };
 
     loadOptions(value, cb) {
-        getUsersWithPermissions(this.props.permissions).then((users: List<IUser>) => {
-            cb(null, {
-                complete: true,
-                options: users.map((v) => {
-                    if (this.props.notifyList) {
-                        return {
-                            label: v.displayName,
-                            value: v.displayName
-                        }
-                    }
+        getUsersWithPermissions(this.props.permissions)
+            .then((users: List<IUser>) => {
+                cb(null, {
+                    complete: true,
+                    options: users
+                        .map(v => {
+                            if (this.props.notifyList) {
+                                return {
+                                    label: v.displayName,
+                                    value: v.displayName,
+                                };
+                            }
 
-                    return {
-                        label: v.displayName,
-                        value: v.userId
-                    }
-                }).toArray()
+                            return {
+                                label: v.displayName,
+                                value: v.userId,
+                            };
+                        })
+                        .toArray(),
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                cb(null, { complete: true, options: [] });
             });
-        }).catch((error) => {
-            console.error(error);
-            cb(null, {complete: true, options: []})
-        });
     }
 
     render() {
-        const inputProps = Object.assign({
-            loadOptions: this.loadOptions.bind(this),
-            delimiter: this.props.notifyList ? ';' : ',',
-        }, UserSelectInput.defaultProps, this.props);
+        const inputProps = Object.assign(
+            {
+                loadOptions: this.loadOptions.bind(this),
+                delimiter: this.props.notifyList ? ';' : ',',
+            },
+            UserSelectInput.defaultProps,
+            this.props
+        );
 
-        return <SelectInput {...inputProps} />
+        return <SelectInput {...inputProps} />;
     }
 }

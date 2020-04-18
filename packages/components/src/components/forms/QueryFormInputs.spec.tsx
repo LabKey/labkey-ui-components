@@ -16,37 +16,42 @@
 import React from 'react';
 import Formsy from 'formsy-react';
 import { List } from 'immutable';
-import { QueryFormInputs } from './QueryFormInputs';
+
 import { mount } from 'enzyme';
+
+import { initUnitTestMocks } from '../../testHelpers';
+
+import { getQueryDetails } from '../../query/api';
+
+import { SchemaQuery } from '../base/models/model';
+
+import { QueryFormInputs } from './QueryFormInputs';
 import { TextInput } from './input/TextInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { FileInput } from './input/FileInput';
 import { SelectInput } from './input/SelectInput';
-import { initUnitTestMocks } from '../../testHelpers';
-import { getQueryDetails } from '../../query/api';
-import { SchemaQuery } from '../base/models/model';
-import { DatePickerInput } from "./input/DatePickerInput";
+
+import { DatePickerInput } from './input/DatePickerInput';
 
 beforeAll(() => {
     initUnitTestMocks();
 });
 
 const SCHEMA_QUERY = new SchemaQuery({
-    schemaName: "assay.General.GPAT 1",
-    queryName: "Data"
+    schemaName: 'assay.General.GPAT 1',
+    queryName: 'Data',
 });
 
-describe("QueryFormInputs", () => {
-
-    test("default properties with queryInfo", () => {
-        return getQueryDetails(SCHEMA_QUERY).then((queryInfo) => {
+describe('QueryFormInputs', () => {
+    test('default properties with queryInfo', () => {
+        return getQueryDetails(SCHEMA_QUERY).then(queryInfo => {
             const formWrapper = mount(
                 <Formsy>
-                    <QueryFormInputs queryInfo = {queryInfo}/>
+                    <QueryFormInputs queryInfo={queryInfo} />
                 </Formsy>
             );
 
-            expect(formWrapper.find('input').findWhere((input) => input.prop('disabled'))).toHaveLength(0);
+            expect(formWrapper.find('input').findWhere(input => input.prop('disabled'))).toHaveLength(0);
             expect(formWrapper.find(TextInput)).toHaveLength(4);
             expect(formWrapper.find(DatePickerInput)).toHaveLength(1);
             expect(formWrapper.find(CheckboxInput)).toHaveLength(1);
@@ -58,12 +63,13 @@ describe("QueryFormInputs", () => {
         });
     });
 
-    test("render file inputs", () => {
-        return getQueryDetails(SCHEMA_QUERY).then((queryInfo) => {
+    test('render file inputs', () => {
+        return getQueryDetails(SCHEMA_QUERY).then(queryInfo => {
             const formWrapper = mount(
                 <Formsy>
-                    <QueryFormInputs renderFileInputs={true} queryInfo={queryInfo}/>
-                </Formsy>);
+                    <QueryFormInputs renderFileInputs={true} queryInfo={queryInfo} />
+                </Formsy>
+            );
 
             expect(formWrapper.find(FileInput)).toHaveLength(1);
 
@@ -71,16 +77,17 @@ describe("QueryFormInputs", () => {
         });
     });
 
-    test("custom columnFilter", () => {
-        const filter = (col) => {
-            return col.name === "Healthy";
+    test('custom columnFilter', () => {
+        const filter = col => {
+            return col.name === 'Healthy';
         };
 
-        return getQueryDetails(SCHEMA_QUERY).then((queryInfo) => {
+        return getQueryDetails(SCHEMA_QUERY).then(queryInfo => {
             const formWrapper = mount(
                 <Formsy>
-                    <QueryFormInputs columnFilter={filter} queryInfo={queryInfo}/>
-                </Formsy>);
+                    <QueryFormInputs columnFilter={filter} queryInfo={queryInfo} />
+                </Formsy>
+            );
 
             expect(formWrapper.find(CheckboxInput)).toHaveLength(1);
             expect(formWrapper.find(TextInput)).toHaveLength(0);
@@ -89,19 +96,21 @@ describe("QueryFormInputs", () => {
         });
     });
 
-    test("disabledFields", () => {
-        return getQueryDetails(SCHEMA_QUERY).then((queryInfo) => {
+    test('disabledFields', () => {
+        return getQueryDetails(SCHEMA_QUERY).then(queryInfo => {
             const formWrapper = mount(
                 <Formsy>
-                    <QueryFormInputs queryInfo = {queryInfo} disabledFields={List<string>(['date', 'ParticipantID', 'textarea'])}/>
+                    <QueryFormInputs
+                        queryInfo={queryInfo}
+                        disabledFields={List<string>(['date', 'ParticipantID', 'textarea'])}
+                    />
                 </Formsy>
             );
 
-            expect(formWrapper.find('input').findWhere((input) => !input.prop('disabled'))).toHaveLength(5);
-            expect(formWrapper.find('input').findWhere((input) => input.prop('disabled'))).toHaveLength(1);
+            expect(formWrapper.find('input').findWhere(input => !input.prop('disabled'))).toHaveLength(5);
+            expect(formWrapper.find('input').findWhere(input => input.prop('disabled'))).toHaveLength(1);
 
             formWrapper.unmount();
         });
     });
-
 });

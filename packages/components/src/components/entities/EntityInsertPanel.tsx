@@ -18,6 +18,8 @@ import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
+import { Link } from 'react-router';
+
 import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn } from '../../actions';
@@ -31,14 +33,6 @@ import { getQueryDetails, InsertRowsResponse } from '../../query/api';
 import { Location } from '../../util/URL';
 import { SelectInput } from '../forms/input/SelectInput';
 
-import {
-    EntityDataType,
-    EntityIdCreationModel,
-    EntityInsertPanelTabs,
-    EntityTypeOption,
-    IEntityTypeOption,
-    IParentOption,
-} from './models';
 import { Progress } from '../base/Progress';
 import { AppURL } from '../../url/AppURL';
 import { QueryInfo } from '../base/models/QueryInfo';
@@ -50,12 +44,12 @@ import {
     QueryGridModel,
     SchemaQuery,
 } from '../base/models/model';
-import { capitalizeFirstChar, } from '../../util/utils';
+import { capitalizeFirstChar } from '../../util/utils';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 import { Alert } from '../base/Alert';
-import { PlacementType } from "../editable/Controls";
+import { PlacementType } from '../editable/Controls';
 import {
     DATA_IMPORT_TOPIC,
     FileAttachmentForm,
@@ -64,16 +58,24 @@ import {
     LabelHelpTip,
     withFormSteps,
     WithFormStepsProps,
-    WizardNavButtons
-} from "../../index";
+    WizardNavButtons,
+} from '../../index';
 import { FormStep, FormTabs } from '../forms/FormStep';
-import { FileSizeLimitProps } from "../files/models";
-import { Link } from "react-router";
+import { FileSizeLimitProps } from '../files/models';
 import { resolveErrorMessage } from '../../util/messaging';
+
+import {
+    EntityDataType,
+    EntityIdCreationModel,
+    EntityInsertPanelTabs,
+    EntityTypeOption,
+    IEntityTypeOption,
+    IParentOption,
+} from './models';
+
 import { getEntityTypeData } from './actions';
 
 class EntityGridLoader implements IGridLoader {
-
     model: EntityIdCreationModel;
 
     constructor(model: EntityIdCreationModel) {
@@ -85,43 +87,42 @@ class EntityGridLoader implements IGridLoader {
 
         return Promise.resolve({
             data,
-            dataIds: data.keySeq().toList()
+            dataIds: data.keySeq().toList(),
         });
     }
 }
 
 interface OwnProps {
-    disableMerge?: boolean
-    afterEntityCreation?: (entityTypetName, filter, entityCount, actionStr) => void
-    getFileTemplateUrl?: (queryInfo: QueryInfo) => string
-    location?: Location
-    onCancel?: () => void
-    maxEntities?: number
-    fileSizeLimits?: Map<string, FileSizeLimitProps>
-    handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean) => Promise<any>
-    canEditEntityTypeDetails?: boolean
-    onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any
-    nounSingular: string
-    nounPlural: string
-    entityDataType: EntityDataType,
-    parentDataTypes?: List<EntityDataType>,
-    importHelpLinkNode: React.ReactNode,
-    auditBehavior?: AuditBehaviorTypes,
+    disableMerge?: boolean;
+    afterEntityCreation?: (entityTypetName, filter, entityCount, actionStr) => void;
+    getFileTemplateUrl?: (queryInfo: QueryInfo) => string;
+    location?: Location;
+    onCancel?: () => void;
+    maxEntities?: number;
+    fileSizeLimits?: Map<string, FileSizeLimitProps>;
+    handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean) => Promise<any>;
+    canEditEntityTypeDetails?: boolean;
+    onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
+    nounSingular: string;
+    nounPlural: string;
+    entityDataType: EntityDataType;
+    parentDataTypes?: List<EntityDataType>;
+    importHelpLinkNode: React.ReactNode;
+    auditBehavior?: AuditBehaviorTypes;
 }
 
 type Props = OwnProps & WithFormStepsProps;
 
 interface StateProps {
-    insertModel: EntityIdCreationModel
-    originalQueryInfo: QueryInfo
-    isSubmitting: boolean
-    error: React.ReactNode
-    isMerge: boolean
-    file: File
+    insertModel: EntityIdCreationModel;
+    originalQueryInfo: QueryInfo;
+    isSubmitting: boolean;
+    error: React.ReactNode;
+    isMerge: boolean;
+    file: File;
 }
 
 export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
-
     private readonly capNounSingular;
     private readonly capNounPlural;
     private readonly capIdsText;
@@ -135,10 +136,10 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
         this.capNounPlural = capitalizeFirstChar(props.nounPlural);
         this.capNounSingular = capitalizeFirstChar(props.nounSingular);
-        this.capIdsText = this.capNounSingular + " IDs";
-        this.capTypeTextSingular =  this.capNounSingular + " Type";
-        this.typeTextSingular =  props.nounSingular + " type";
-        this.typeTextPlural =  props.nounSingular + " types";
+        this.capIdsText = this.capNounSingular + ' IDs';
+        this.capTypeTextSingular = this.capNounSingular + ' Type';
+        this.typeTextSingular = props.nounSingular + ' type';
+        this.typeTextPlural = props.nounSingular + ' types';
 
         this.state = {
             insertModel: undefined,
@@ -151,12 +152,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     componentWillMount() {
-        this.init(this.props, true)
+        this.init(this.props, true);
     }
 
     componentWillReceiveProps(nextProps: OwnProps) {
         if (this.props.location != nextProps.location || this.props.entityDataType !== nextProps.entityDataType)
-            this.init(nextProps)
+            this.init(nextProps);
     }
 
     componentWillUnmount() {
@@ -175,7 +176,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         return this.props.parentDataTypes && !this.props.parentDataTypes.isEmpty();
     }
 
-    getTabs() : Array<string> {
+    getTabs(): string[] {
         return ['Create ' + this.capNounPlural + ' from Grid', 'Import ' + this.capNounPlural + ' from File'];
     }
 
@@ -189,28 +190,33 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         return {
             parents,
             selectionKey,
-            target
-        }
+            target,
+        };
     }
 
-    init(props: OwnProps, selectTab: boolean = false) {
-        const queryParams = props.location ? EntityInsertPanelImpl.getQueryParameters(props.location.query) : {
-            parents: undefined,
-            selectionKey: undefined,
-            target: undefined
-        };
+    init(props: OwnProps, selectTab = false) {
+        const queryParams = props.location
+            ? EntityInsertPanelImpl.getQueryParameters(props.location.query)
+            : {
+                  parents: undefined,
+                  selectionKey: undefined,
+                  target: undefined,
+              };
         const allowParents = this.allowParents();
 
-        const tab = props.location && props.location.query && props.location.query.tab ? props.location.query.tab : EntityInsertPanelTabs.Grid;
-        if (selectTab && tab != EntityInsertPanelTabs.Grid)
-            this.props.selectStep(parseInt(tab));
+        const tab =
+            props.location && props.location.query && props.location.query.tab
+                ? props.location.query.tab
+                : EntityInsertPanelTabs.Grid;
+        if (selectTab && tab != EntityInsertPanelTabs.Grid) this.props.selectStep(parseInt(tab));
 
         let { insertModel } = this.state;
 
-        if (insertModel
-            && insertModel.getTargetEntityTypeName() === queryParams.target
-            && insertModel.selectionKey === queryParams.selectionKey
-            && (insertModel.originalParents === queryParams.parents || !allowParents)
+        if (
+            insertModel &&
+            insertModel.getTargetEntityTypeName() === queryParams.target &&
+            insertModel.selectionKey === queryParams.selectionKey &&
+            (insertModel.originalParents === queryParams.parents || !allowParents)
         )
             return;
 
@@ -220,60 +226,75 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             initialEntityType: queryParams.target,
             selectionKey: queryParams.selectionKey,
             entityCount: 0,
-            entityDataType: entityDataType,
+            entityDataType,
             auditBehavior,
         });
 
         let schemaQueries = Map<string, EntityDataType>();
         schemaQueries = schemaQueries.set(entityDataType.instanceSchemaName, entityDataType);
         if (this.props.parentDataTypes) {
-            this.props.parentDataTypes.forEach((dataType) => {
+            this.props.parentDataTypes.forEach(dataType => {
                 schemaQueries = schemaQueries.set(dataType.instanceSchemaName, dataType);
             });
         }
         getEntityTypeData(insertModel, schemaQueries, entityDataType.typeListingSchemaQuery.queryName, allowParents)
-            .then((partialModel) => {
+            .then(partialModel => {
                 const updatedModel = insertModel.merge(partialModel) as EntityIdCreationModel;
                 this.gridInit(updatedModel);
             })
-            .catch((reason) => {
-                this.setState(() => ({error: getActionErrorMessage('There was a problem initializing the data for import.', this.typeTextPlural)}));
+            .catch(reason => {
+                this.setState(() => ({
+                    error: getActionErrorMessage(
+                        'There was a problem initializing the data for import.',
+                        this.typeTextPlural
+                    ),
+                }));
             });
     }
 
     gridInit(insertModel: EntityIdCreationModel) {
         const schemaQuery = insertModel.getSchemaQuery();
         if (schemaQuery) {
-            getQueryDetails(schemaQuery.toJS()).then(originalQueryInfo => {
-                this.setState(() => {
-                    return {
-                        insertModel: insertModel,
-                        originalQueryInfo,
-                    }
-                }, () => {
-                    gridInit(this.getQueryGridModel(), true, this);
-                });
-
-            }).catch((reason) => {
-                this.setState(() => {
-                    return {
-                        insertModel: insertModel.merge({
-                            isError: true,
-                            errors: "Problem retrieving data for " + this.typeTextSingular + " '" + insertModel.getTargetEntityTypeName() + "'."
-                        }) as EntityIdCreationModel
-                    }
+            getQueryDetails(schemaQuery.toJS())
+                .then(originalQueryInfo => {
+                    this.setState(
+                        () => {
+                            return {
+                                insertModel,
+                                originalQueryInfo,
+                            };
+                        },
+                        () => {
+                            gridInit(this.getQueryGridModel(), true, this);
+                        }
+                    );
                 })
-            });
-        }
-        else {
-            this.setState(() => {
-                return {
-                    insertModel
+                .catch(reason => {
+                    this.setState(() => {
+                        return {
+                            insertModel: insertModel.merge({
+                                isError: true,
+                                errors:
+                                    'Problem retrieving data for ' +
+                                    this.typeTextSingular +
+                                    " '" +
+                                    insertModel.getTargetEntityTypeName() +
+                                    "'.",
+                            }) as EntityIdCreationModel,
+                        };
+                    });
+                });
+        } else {
+            this.setState(
+                () => {
+                    return {
+                        insertModel,
+                    };
+                },
+                () => {
+                    gridInit(this.getQueryGridModel(), true, this);
                 }
-            }, () => {
-                gridInit(this.getQueryGridModel(), true, this);
-            });
-
+            );
         }
     }
 
@@ -284,12 +305,15 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             const entityTypeName = insertModel ? insertModel.getTargetEntityTypeName() : undefined;
             if (entityTypeName) {
                 const queryInfoWithParents = this.getGridQueryInfo();
-                const model = getStateQueryGridModel('insert-entities', SchemaQuery.create(this.props.entityDataType.instanceSchemaName, entityTypeName),
+                const model = getStateQueryGridModel(
+                    'insert-entities',
+                    SchemaQuery.create(this.props.entityDataType.instanceSchemaName, entityTypeName),
                     {
                         editable: true,
                         loader: new EntityGridLoader(insertModel),
-                        queryInfo: queryInfoWithParents
-                    });
+                        queryInfo: queryInfoWithParents,
+                    }
+                );
 
                 return getQueryGridModel(model.getId()) || model;
             }
@@ -303,10 +327,18 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const { entityDataType } = this.props;
 
         if (originalQueryInfo) {
-            const nameIndex = Math.max(0, originalQueryInfo.columns.toList().findIndex((column) => (column.fieldKey === entityDataType.uniqueFieldKey)));
+            const nameIndex = Math.max(
+                0,
+                originalQueryInfo.columns
+                    .toList()
+                    .findIndex(column => column.fieldKey === entityDataType.uniqueFieldKey)
+            );
             const newColumnIndex = nameIndex + insertModel.getParentCount();
-            const columns = originalQueryInfo.insertColumns(newColumnIndex, insertModel.getParentColumns(entityDataType.uniqueFieldKey));
-            return originalQueryInfo.merge({columns}) as QueryInfo;
+            const columns = originalQueryInfo.insertColumns(
+                newColumnIndex,
+                insertModel.getParentColumns(entityDataType.uniqueFieldKey)
+            );
+            return originalQueryInfo.merge({ columns }) as QueryInfo;
         }
         return undefined;
     }
@@ -317,32 +349,35 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         let updatedModel = insertModel.merge({
             targetEntityType: new EntityTypeOption(selectedOption),
             isError: false,
-            errors: undefined
+            errors: undefined,
         }) as EntityIdCreationModel;
         if (!selectedOption) {
             updatedModel = updatedModel.merge({
-                entityParents: insertModel.getClearedEntityParents()
+                entityParents: insertModel.getClearedEntityParents(),
             }) as EntityIdCreationModel;
         }
 
-        this.setState(() => {
-            return {
-                originalQueryInfo: undefined,
-                insertModel: updatedModel
+        this.setState(
+            () => {
+                return {
+                    originalQueryInfo: undefined,
+                    insertModel: updatedModel,
+                };
+            },
+            () => {
+                if (!selectedOption) {
+                    queryGridInvalidate(insertModel.getSchemaQuery(), true);
+                }
+                this.gridInit(updatedModel);
             }
-        }, () => {
-            if (!selectedOption) {
-                queryGridInvalidate(insertModel.getSchemaQuery(), true);
-            }
-            this.gridInit(updatedModel);
-        });
+        );
     };
 
     addParent(queryName: string) {
-        this.setState((state) => {
+        this.setState(state => {
             return {
-                insertModel: state.insertModel.addParent(queryName)
-            }
+                insertModel: state.insertModel.addParent(queryName),
+            };
         });
     }
 
@@ -351,88 +386,102 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         if (queryGridModel) {
             const { insertModel } = this.state;
             const { entityDataType } = this.props;
-            const [ updatedModel, column, existingParent, parentColumnName ] = insertModel.changeParent(index, queryName, entityDataType.uniqueFieldKey, parent);
-            if (!updatedModel) // no updated model if nothing has changed, so we can just stop
+            const [updatedModel, column, existingParent, parentColumnName] = insertModel.changeParent(
+                index,
+                queryName,
+                entityDataType.uniqueFieldKey,
+                parent
+            );
+            if (!updatedModel)
+                // no updated model if nothing has changed, so we can just stop
                 return;
 
-            this.setState(() => {
-                return {
-                    insertModel: updatedModel,
-                }
-            }, () => {
-                if (column && existingParent) {
-                    if (existingParent.query !== undefined) {
-                        changeColumn(queryGridModel, existingParent.createColumnName(), column);
-                    }
-                    else {
-                        let columnMap = OrderedMap<string, QueryColumn>();
-                        let fieldKey;
-                        if (existingParent.index === 1)
-                            fieldKey = entityDataType.uniqueFieldKey;
-                        else {
-                            const definedParents = updatedModel.entityParents.get(queryName).filter((parent) => parent.query !== undefined);
-                            if (definedParents.size === 0)
-                                fieldKey = entityDataType.uniqueFieldKey;
+            this.setState(
+                () => {
+                    return {
+                        insertModel: updatedModel,
+                    };
+                },
+                () => {
+                    if (column && existingParent) {
+                        if (existingParent.query !== undefined) {
+                            changeColumn(queryGridModel, existingParent.createColumnName(), column);
+                        } else {
+                            const columnMap = OrderedMap<string, QueryColumn>();
+                            let fieldKey;
+                            if (existingParent.index === 1) fieldKey = entityDataType.uniqueFieldKey;
                             else {
-                                // want the first defined parent before the new parent's index
-                                const prevParent = definedParents.findLast((parent) => parent.index < existingParent.index);
-                                fieldKey = prevParent ? prevParent.createColumnName() : entityDataType.uniqueFieldKey;
+                                const definedParents = updatedModel.entityParents
+                                    .get(queryName)
+                                    .filter(parent => parent.query !== undefined);
+                                if (definedParents.size === 0) fieldKey = entityDataType.uniqueFieldKey;
+                                else {
+                                    // want the first defined parent before the new parent's index
+                                    const prevParent = definedParents.findLast(
+                                        parent => parent.index < existingParent.index
+                                    );
+                                    fieldKey = prevParent
+                                        ? prevParent.createColumnName()
+                                        : entityDataType.uniqueFieldKey;
+                                }
                             }
+                            addColumns(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
                         }
-                        addColumns(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
+                    } else {
+                        removeColumn(queryGridModel, parentColumnName);
                     }
                 }
-                else {
-                    removeColumn(queryGridModel,  parentColumnName);
-                }
-            })
+            );
         }
     }
 
     removeParent(index: number, queryName: string) {
         const { insertModel } = this.state;
-        const [ updatedModel, parentColumnName ] = insertModel.removeParent(index, queryName);
-        this.setState((state) => {
-            return {
-                insertModel: updatedModel,
+        const [updatedModel, parentColumnName] = insertModel.removeParent(index, queryName);
+        this.setState(
+            state => {
+                return {
+                    insertModel: updatedModel,
+                };
+            },
+            () => {
+                removeColumn(this.getQueryGridModel(), parentColumnName);
             }
-        }, () => {
-            removeColumn(this.getQueryGridModel(),  parentColumnName);
-        });
+        );
     }
 
     renderParentTypes(entityDataType: EntityDataType) {
         const { insertModel } = this.state;
         const queryName = entityDataType.typeListingSchemaQuery.queryName;
         const entityParents = insertModel.entityParents.get(queryName);
-        return (
-            entityParents.map((parent) => {
+        return entityParents
+            .map(parent => {
                 const { index, key, query } = parent;
                 const capNounSingular = capitalizeFirstChar(entityDataType.nounAsParentSingular);
                 return (
                     <div className="form-group row" key={key}>
                         <SelectInput
                             formsy={false}
-                            containerClass=''
+                            containerClass=""
                             inputClass="col-sm-5"
-                            label={capNounSingular + " " + index + " Type"}
+                            label={capNounSingular + ' ' + index + ' Type'}
                             labelClass="col-sm-3 entity-insert--parent-label"
-                            name={"parent-re-select-" + index}
+                            name={'parent-re-select-' + index}
                             onChange={this.changeParent.bind(this, index, queryName)}
                             options={insertModel.getParentOptions(query, queryName)}
                             value={query}
                         />
 
                         <RemoveEntityButton
-                            labelClass={'entity-insert--remove-parent'}
+                            labelClass="entity-insert--remove-parent"
                             entity={capNounSingular}
                             index={index}
                             onClick={this.removeParent.bind(this, index, queryName)}
                         />
                     </div>
-                )
-            }).toArray()
-        )
+                );
+            })
+            .toArray();
     }
 
     renderAddEntityButton(entityDataType: EntityDataType) {
@@ -440,21 +489,26 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const queryName = entityDataType.typeListingSchemaQuery.queryName;
         const parentOptions = insertModel.parentOptions.get(queryName);
         const entityParents = insertModel.entityParents.get(queryName);
-        if (parentOptions.size === 0)
-            return null;
+        if (parentOptions.size === 0) return null;
         else {
             const disabled = parentOptions.size <= entityParents.size;
-            const title = disabled ? 'Only ' + parentOptions.size + ' ' + (parentOptions.size === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural) + ' available.' : undefined;
+            const title = disabled
+                ? 'Only ' +
+                  parentOptions.size +
+                  ' ' +
+                  (parentOptions.size === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural) +
+                  ' available.'
+                : undefined;
             return (
                 <AddEntityButton
-                    containerClass={'entity-insert--entity-add-button'}
+                    containerClass="entity-insert--entity-add-button"
                     key={'add-entity-' + queryName}
                     entity={capitalizeFirstChar(entityDataType.nounAsParentSingular)}
                     title={title}
                     disabled={disabled}
                     onClick={this.addParent.bind(this, queryName)}
                 />
-            )
+            );
         }
     }
 
@@ -468,19 +522,16 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             if (isInit && targetEntityType && parentDataTypes) {
                 return (
                     <>
-                        {parentDataTypes
-                            .map((dataType) => {
-                                return this.renderParentTypes(dataType);
-                            })
-                        }
-                        <div className={'entity-insert--header'}>
-                            {parentDataTypes
-                                .map((dataType) => {
-                                    return this.renderAddEntityButton(dataType);
-                                })}
+                        {parentDataTypes.map(dataType => {
+                            return this.renderParentTypes(dataType);
+                        })}
+                        <div className="entity-insert--header">
+                            {parentDataTypes.map(dataType => {
+                                return this.renderAddEntityButton(dataType);
+                            })}
                         </div>
                     </>
-                )
+                );
             }
         }
     }
@@ -488,18 +539,20 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     renderHeader(isGrid: boolean) {
         const { insertModel } = this.state;
 
-        if (!insertModel)
-            return null;
+        if (!insertModel) return null;
 
         const name = insertModel.getTargetEntityTypeName();
 
         return (
             <>
-                {isGrid && <div className="entity-insert--header">
-                    <p>
-                        Generate unique {this.props.nounPlural} individually or in bulk using the bulk insert option.
-                    </p>
-                </div>}
+                {isGrid && (
+                    <div className="entity-insert--header">
+                        <p>
+                            Generate unique {this.props.nounPlural} individually or in bulk using the bulk insert
+                            option.
+                        </p>
+                    </div>
+                )}
                 {insertModel.isInit && (
                     <SelectInput
                         formsy={false}
@@ -511,12 +564,20 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                         onChange={this.changeTargetEntityType}
                         options={insertModel.entityTypeOptions.toArray()}
                         required
-                        value={insertModel && insertModel.hasTargetEntityType() ? insertModel.targetEntityType.label.toLowerCase() : undefined}
+                        value={
+                            insertModel && insertModel.hasTargetEntityType()
+                                ? insertModel.targetEntityType.label.toLowerCase()
+                                : undefined
+                        }
                     />
                 )}
-                {insertModel.isError ? this.renderError() : (isGrid && insertModel.hasTargetEntityType() ? this.renderParentTypesAndButtons() : '')}
+                {insertModel.isError
+                    ? this.renderError()
+                    : isGrid && insertModel.hasTargetEntityType()
+                    ? this.renderParentTypesAndButtons()
+                    : ''}
             </>
-        )
+        );
     }
 
     onRowCountChange = (rowCount: number) => {
@@ -526,8 +587,8 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         if (editorModel) {
             this.setState(() => {
                 return {
-                    insertModel: insertModel.set('entityCount', editorModel.rowCount) as EntityIdCreationModel
-                }
+                    insertModel: insertModel.set('entityCount', editorModel.rowCount) as EntityIdCreationModel,
+                };
             });
             if (this.props.onDataChange) {
                 this.props.onDataChange(editorModel.rowCount > 0, IMPORT_DATA_FORM_TYPES.GRID);
@@ -550,8 +611,8 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             }) as EntityIdCreationModel;
             this.setState(() => {
                 return {
-                    insertModel: updatedModel
-                }
+                    insertModel: updatedModel,
+                };
             });
             queryGridInvalidate(updatedModel.getSchemaQuery());
             this.gridInit(updatedModel);
@@ -559,7 +620,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     };
 
     setSubmitting(isSubmitting: boolean) {
-        this.setState(() => ({isSubmitting}));
+        this.setState(() => ({ isSubmitting }));
     }
 
     insertRowsFromGrid = () => {
@@ -567,40 +628,46 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const { entityDataType } = this.props;
         const queryGridModel = this.getQueryGridModel();
         const editorModel = getEditorModel(queryGridModel.getId());
-        const errors =  editorModel.getValidationErrors(queryGridModel, entityDataType.uniqueFieldKey);
+        const errors = editorModel.getValidationErrors(queryGridModel, entityDataType.uniqueFieldKey);
         if (errors.length > 0) {
             this.setSubmitting(false);
             gridShowError(queryGridModel, {
-                message: errors.join("  ")
+                message: errors.join('  '),
             });
             return;
         }
 
         this.setSubmitting(true);
-        insertModel.postEntityGrid(this.getQueryGridModel()).then((response: InsertRowsResponse) => {
-            if (response && response.rows) {
-
-                this.setSubmitting(false);
-                if (this.props.onDataChange) {
-                    this.props.onDataChange(false);
+        insertModel
+            .postEntityGrid(this.getQueryGridModel())
+            .then((response: InsertRowsResponse) => {
+                if (response && response.rows) {
+                    this.setSubmitting(false);
+                    if (this.props.onDataChange) {
+                        this.props.onDataChange(false);
+                    }
+                    if (this.props.afterEntityCreation) {
+                        this.props.afterEntityCreation(
+                            insertModel.getTargetEntityTypeName(),
+                            response.getFilter(),
+                            response.rows.length,
+                            'created'
+                        );
+                    }
+                } else {
+                    this.setSubmitting(false);
+                    gridShowError(queryGridModel, {
+                        message: 'Insert response has unexpected format. No "rows" available.',
+                    });
                 }
-                if (this.props.afterEntityCreation) {
-                    this.props.afterEntityCreation(insertModel.getTargetEntityTypeName(), response.getFilter(), response.rows.length, 'created');
-                }
-            }
-            else {
+            })
+            .catch((response: InsertRowsResponse) => {
                 this.setSubmitting(false);
+                const message = resolveErrorMessage(response.error, this.props.nounPlural);
                 gridShowError(queryGridModel, {
-                    message: 'Insert response has unexpected format. No "rows" available.'
+                    message,
                 });
-            }
-        }).catch((response: InsertRowsResponse) => {
-            this.setSubmitting(false);
-            const message = resolveErrorMessage(response.error, this.props.nounPlural);
-            gridShowError(queryGridModel, {
-                message
             });
-        });
     };
 
     isNameRequired() {
@@ -620,18 +687,19 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
             return (
                 <div className="form-group no-margin-bottom">
-
                     <div className="pull-left">
-                        <Button className={"test-loc-cancel-button"} onClick={this.onCancel}>Cancel</Button>
+                        <Button className="test-loc-cancel-button" onClick={this.onCancel}>
+                            Cancel
+                        </Button>
                     </div>
                     <div className="btn-group pull-right">
                         <Button
-                            className={"test-loc-submit-button"}
+                            className="test-loc-submit-button"
                             bsStyle="success"
-                            disabled={isSubmitting || insertModel.entityCount === 0 || !editorModel }
+                            disabled={isSubmitting || insertModel.entityCount === 0 || !editorModel}
                             onClick={this.insertRowsFromGrid}
-                            >
-                            {isSubmitting ? "Creating..." : "Finish Creating " + insertModel.entityCount + " " + noun}
+                        >
+                            {isSubmitting ? 'Creating...' : 'Finish Creating ' + insertModel.entityCount + ' ' + noun}
                         </Button>
                     </div>
                 </div>
@@ -643,7 +711,13 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     renderError() {
         const { insertModel } = this.state;
         if (insertModel.isError) {
-            return <Alert>{insertModel.errors ? insertModel.errors : 'Something went wrong loading the data for this page.  Please try again.'}</Alert>
+            return (
+                <Alert>
+                    {insertModel.errors
+                        ? insertModel.errors
+                        : 'Something went wrong loading the data for this page.  Please try again.'}
+                </Alert>
+            );
         }
     }
 
@@ -651,24 +725,21 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const { insertModel } = this.state;
         const queryGridModel = this.getQueryGridModel();
 
-        if (!queryGridModel || !queryGridModel.queryInfo)
-            return null;
+        if (!queryGridModel || !queryGridModel.queryInfo) return null;
 
         // format/process parent column and values, for now, only parents are populated
         const allRows = insertModel.getGridValues(queryGridModel.queryInfo);
 
-        if (allRows.size > 0 ) {
+        if (allRows.size > 0) {
             let valueMap = Map<string, any>();
             let values = '';
             let sep = '';
             const row = allRows.get(0); // for insert, use the first (and only) row data
             row.keySeq().forEach(col => {
-                row
-                    .get(col)
-                    .forEach((val) => {
-                        values = values + sep + val.value;
-                        sep = ',';
-                    });
+                row.get(col).forEach(val => {
+                    values = values + sep + val.value;
+                    sep = ',';
+                });
                 // for some reason selectinput errors out if values are supplied as array
                 valueMap = valueMap.set(col, values);
             });
@@ -676,101 +747,119 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }
 
         return null;
-    };
+    }
 
     onTabChange = () => {
-        this.setState(() => ({error: undefined}));
+        this.setState(() => ({ error: undefined }));
     };
 
     renderCreateFromGrid() {
         const { insertModel } = this.state;
         const { entityDataType } = this.props;
 
-        const columnFilter = (colInfo) => {
-            return insertColumnFilter(colInfo) && colInfo["fieldKey"] !== entityDataType.uniqueFieldKey
+        const columnFilter = colInfo => {
+            return insertColumnFilter(colInfo) && colInfo['fieldKey'] !== entityDataType.uniqueFieldKey;
         };
 
         const bulkAddProps = {
-            title: "Bulk Creation of " + this.capNounPlural,
-            header: "Add a batch of " + this.props.nounPlural + " that will share the properties set below.",
-            columnFilter: columnFilter,
-            fieldValues: this.getBulkAddFormValues()
+            title: 'Bulk Creation of ' + this.capNounPlural,
+            header: 'Add a batch of ' + this.props.nounPlural + ' that will share the properties set below.',
+            columnFilter,
+            fieldValues: this.getBulkAddFormValues(),
         };
         const bulkUpdateProps = {
-            columnFilter: columnFilter
+            columnFilter,
         };
-        let addControlProps = {
+        const addControlProps = {
             nounSingular: this.capNounSingular,
             nounPlural: this.capNounPlural,
             placement: 'top' as PlacementType,
             wrapperClass: 'pull-left',
-            maxCount: MAX_EDITABLE_GRID_ROWS
+            maxCount: MAX_EDITABLE_GRID_ROWS,
         };
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
-                placeholder: "[generated id]",
-                toolTip: "A generated " + this.props.nounSingular + " ID will be provided for " + this.props.nounPlural + " that don't have a user-provided ID in the grid."
-            })
+                placeholder: '[generated id]',
+                toolTip:
+                    'A generated ' +
+                    this.props.nounSingular +
+                    ' ID will be provided for ' +
+                    this.props.nounPlural +
+                    " that don't have a user-provided ID in the grid.",
+            });
         } else {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
-                toolTip: "A " + this.props.nounSingular + " ID is required for each " + this.props.nounSingular + " since this " + this.typeTextSingular + " has no naming pattern. You can provide a naming pattern by editing the " + this.typeTextSingular + " design."
-            })
+                toolTip:
+                    'A ' +
+                    this.props.nounSingular +
+                    ' ID is required for each ' +
+                    this.props.nounSingular +
+                    ' since this ' +
+                    this.typeTextSingular +
+                    ' has no naming pattern. You can provide a naming pattern by editing the ' +
+                    this.typeTextSingular +
+                    ' design.',
+            });
         }
 
         const queryGridModel = this.getQueryGridModel();
 
-        return (<>
-            {this.renderHeader(true)}
-            <hr className={'bottom-spacing'}/>
-            <div className={'top-spacing'}>
-            {queryGridModel && queryGridModel.isLoaded ?
-                <EditableGridPanel
-                    addControlProps={addControlProps}
-                    allowBulkRemove={true}
-                    allowBulkAdd={true}
-                    allowBulkUpdate={true}
-                    bordered={true}
-                    condensed={false}
-                    striped={true}
-                    bulkAddText={"Bulk Insert"}
-                    bulkAddProps={bulkAddProps}
-                    bulkUpdateProps={bulkUpdateProps}
-                    bulkRemoveText={"Remove " + this.capNounPlural}
-                    columnMetadata={columnMetadata}
-                    onRowCountChange={this.onRowCountChange}
-                    model={queryGridModel}
-                    initialEmptyRowCount={0}
-                    emptyGridMsg={'Start by adding the quantity of ' + this.props.nounPlural + ' you want to create.'}
-                    maxTotalRows={this.props.maxEntities}
-                />
-                :
-                !insertModel.isError && insertModel.targetEntityType && insertModel.targetEntityType.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
-            }
-            </div>
-        </>);
+        return (
+            <>
+                {this.renderHeader(true)}
+                <hr className="bottom-spacing" />
+                <div className="top-spacing">
+                    {queryGridModel && queryGridModel.isLoaded ? (
+                        <EditableGridPanel
+                            addControlProps={addControlProps}
+                            allowBulkRemove={true}
+                            allowBulkAdd={true}
+                            allowBulkUpdate={true}
+                            bordered={true}
+                            condensed={false}
+                            striped={true}
+                            bulkAddText="Bulk Insert"
+                            bulkAddProps={bulkAddProps}
+                            bulkUpdateProps={bulkUpdateProps}
+                            bulkRemoveText={'Remove ' + this.capNounPlural}
+                            columnMetadata={columnMetadata}
+                            onRowCountChange={this.onRowCountChange}
+                            model={queryGridModel}
+                            initialEmptyRowCount={0}
+                            emptyGridMsg={
+                                'Start by adding the quantity of ' + this.props.nounPlural + ' you want to create.'
+                            }
+                            maxTotalRows={this.props.maxEntities}
+                        />
+                    ) : !insertModel.isError && insertModel.targetEntityType && insertModel.targetEntityType.value ? (
+                        <LoadingSpinner wrapperClassName="loading-data-message" />
+                    ) : null}
+                </div>
+            </>
+        );
     }
 
     toggleInsertOptionChange = () => {
-        this.setState((state) => ({isMerge: !state.isMerge}));
+        this.setState(state => ({ isMerge: !state.isMerge }));
     };
 
     importOptionHelpText = () => {
         return (
             <>
                 <p>
-                    By default, import will insert new {this.props.nounPlural} based on the file provided. The operation will fail if
-                    there are existing {this.capIdsText} that match those being imported.
+                    By default, import will insert new {this.props.nounPlural} based on the file provided. The operation
+                    will fail if there are existing {this.capIdsText} that match those being imported.
                 </p>
                 <p>
-                    When update is selected, data will be updated for matching {this.capIdsText}, and new {this.props.nounPlural} will
-                    be created for any new {this.capIdsText} provided. Data will not be changed for any columns not in the
-                    imported file.
+                    When update is selected, data will be updated for matching {this.capIdsText}, and new{' '}
+                    {this.props.nounPlural} will be created for any new {this.capIdsText} provided. Data will not be
+                    changed for any columns not in the imported file.
                 </p>
                 <p>
-                    For more information on import options for {this.props.nounPlural}, see
-                    the {this.props.importHelpLinkNode} documentation page.
+                    For more information on import options for {this.props.nounPlural}, see the{' '}
+                    {this.props.importHelpLinkNode} documentation page.
                 </p>
             </>
         );
@@ -778,22 +867,15 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
     renderImportOptions() {
         return (
-            <div className={'margin-bottom'}>
-                <input
-                    type="checkbox"
-                    checked={this.state.isMerge}
-                    onChange={this.toggleInsertOptionChange}
-                />
-                <span
-                    className={'entity-mergeoption-checkbox'}
-                    onClick={this.toggleInsertOptionChange}
-                >
+            <div className="margin-bottom">
+                <input type="checkbox" checked={this.state.isMerge} onChange={this.toggleInsertOptionChange} />
+                <span className="entity-mergeoption-checkbox" onClick={this.toggleInsertOptionChange}>
                     Update data for existing {this.props.nounPlural} during this file import
                 </span>
                 &nbsp;
-                <LabelHelpTip title={'Import Options'} body={this.importOptionHelpText}/>
+                <LabelHelpTip title="Import Options" body={this.importOptionHelpText} />
             </div>
-        )
+        );
     }
 
     handleFileChange = (files: Map<string, File>) => {
@@ -802,7 +884,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }
         this.setState(() => ({
             error: undefined,
-            file: files.first()
+            file: files.first(),
         }));
     };
 
@@ -812,7 +894,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }
         this.setState(() => ({
             error: undefined,
-            file: undefined
+            file: undefined,
         }));
     };
 
@@ -820,27 +902,31 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const { handleFileImport } = this.props;
         const { insertModel, file, isMerge, originalQueryInfo } = this.state;
 
-        if (!handleFileImport)
-            return;
+        if (!handleFileImport) return;
 
         this.setSubmitting(true);
 
-        handleFileImport(originalQueryInfo, file, isMerge).then((response) => {
-            this.setSubmitting(false);
-            if (this.props.onDataChange) {
-                this.props.onDataChange(false);
-            }
-            if (this.props.afterEntityCreation) {
-                this.props.afterEntityCreation(insertModel.getTargetEntityTypeName(), null, response.rowCount, 'imported');
-            }
-
-        }).catch((error) => {
-            this.setState(() => ({
-                error: resolveErrorMessage(error, this.props.nounPlural),
-                isSubmitting: false
-            }));
-        });
-
+        handleFileImport(originalQueryInfo, file, isMerge)
+            .then(response => {
+                this.setSubmitting(false);
+                if (this.props.onDataChange) {
+                    this.props.onDataChange(false);
+                }
+                if (this.props.afterEntityCreation) {
+                    this.props.afterEntityCreation(
+                        insertModel.getTargetEntityTypeName(),
+                        null,
+                        response.rowCount,
+                        'imported'
+                    );
+                }
+            })
+            .catch(error => {
+                this.setState(() => ({
+                    error: resolveErrorMessage(error, this.props.nounPlural),
+                    isSubmitting: false,
+                }));
+            });
     };
 
     renderFileButtons() {
@@ -854,41 +940,50 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                 finish={true}
                 nextStep={this.submitFileHandler} // nextStep is the function that will get called when finish button clicked
                 isFinishing={isSubmitting}
-                finishText={"Import"}
-                isFinishingText={"Importing..."}
+                finishText="Import"
+                isFinishingText="Importing..."
             />
-        )
+        );
     }
 
     getTemplateUrl(): any {
         const { getFileTemplateUrl } = this.props;
         const { originalQueryInfo } = this.state;
-        if (getFileTemplateUrl && originalQueryInfo)
-            return getFileTemplateUrl(originalQueryInfo);
+        if (getFileTemplateUrl && originalQueryInfo) return getFileTemplateUrl(originalQueryInfo);
 
-        return originalQueryInfo && Utils.isArray(originalQueryInfo.importTemplates)  && originalQueryInfo.importTemplates[0]
-            ? originalQueryInfo.importTemplates[0].url : undefined;
+        return originalQueryInfo &&
+            Utils.isArray(originalQueryInfo.importTemplates) &&
+            originalQueryInfo.importTemplates[0]
+            ? originalQueryInfo.importTemplates[0].url
+            : undefined;
     }
 
     renderImportEntitiesFromFile() {
         const { fileSizeLimits, disableMerge } = this.props;
 
-        return (<>
-            {this.renderHeader(false)}
-            {!disableMerge && this.renderImportOptions()}
-            <FileAttachmentForm
-                showLabel={false}
-                acceptedFormats={".csv, .tsv, .txt, .xls, .xlsx"}
-                allowMultiple={false}
-                allowDirectories={false}
-                previewGridProps={{previewCount: 3}}
-                onFileChange={this.handleFileChange}
-                onFileRemoval={this.handleFileRemoval}
-                templateUrl={this.getTemplateUrl()}
-                sizeLimits={fileSizeLimits}
-                sizeLimitsHelpText={<>We recommend dividing your data into smaller files that meet this limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, "help article")} for best practices on data import.</>}
-            />
-        </>);
+        return (
+            <>
+                {this.renderHeader(false)}
+                {!disableMerge && this.renderImportOptions()}
+                <FileAttachmentForm
+                    showLabel={false}
+                    acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
+                    allowMultiple={false}
+                    allowDirectories={false}
+                    previewGridProps={{ previewCount: 3 }}
+                    onFileChange={this.handleFileChange}
+                    onFileRemoval={this.handleFileRemoval}
+                    templateUrl={this.getTemplateUrl()}
+                    sizeLimits={fileSizeLimits}
+                    sizeLimitsHelpText={
+                        <>
+                            We recommend dividing your data into smaller files that meet this limit. See our{' '}
+                            {helpLinkNode(DATA_IMPORT_TOPIC, 'help article')} for best practices on data import.
+                        </>
+                    }
+                />
+            </>
+        );
     }
 
     renderButtons() {
@@ -900,19 +995,21 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const { currentStep } = this.props;
         const { insertModel, isSubmitting, file } = this.state;
 
-        return currentStep === EntityInsertPanelTabs.Grid  ?
+        return currentStep === EntityInsertPanelTabs.Grid ? (
             <Progress
                 estimate={insertModel.entityCount * 20}
                 modal={true}
-                title={"Generating " + this.props.nounPlural}
-                toggle={isSubmitting}
-            /> :
-            <Progress
-                estimate={file ? file.size * .1 : undefined}
-                modal={true}
-                title={"Importing " +  this.props.nounPlural + " from file"}
+                title={'Generating ' + this.props.nounPlural}
                 toggle={isSubmitting}
             />
+        ) : (
+            <Progress
+                estimate={file ? file.size * 0.1 : undefined}
+                modal={true}
+                title={'Importing ' + this.props.nounPlural + ' from file'}
+                toggle={isSubmitting}
+            />
+        );
     }
 
     render() {
@@ -920,27 +1017,33 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const { insertModel, error } = this.state;
 
         if (!insertModel) {
-            if (!error)
-                return <LoadingSpinner wrapperClassName="loading-data-message"/>;
-            else
-                return <Alert>{error}</Alert>;
+            if (!error) return <LoadingSpinner wrapperClassName="loading-data-message" />;
+            else return <Alert>{error}</Alert>;
         }
 
-
         const entityTypeName = insertModel.getTargetEntityTypeName();
-        const editEntityTypeDetailsLink = entityTypeName ? AppURL.create(this.props.nounPlural, entityTypeName, 'update') : undefined;
+        const editEntityTypeDetailsLink = entityTypeName
+            ? AppURL.create(this.props.nounPlural, entityTypeName, 'update')
+            : undefined;
 
         return (
             <>
-                <div className={"panel panel-default"}>
+                <div className="panel panel-default">
                     <div className="panel-body">
                         <div className="row">
-                            <div className={'import-panel col-sm-7'}>
-                                <FormTabs tabs={this.getTabs()} onTabChange={this.onTabChange}/>
+                            <div className="import-panel col-sm-7">
+                                <FormTabs tabs={this.getTabs()} onTabChange={this.onTabChange} />
                             </div>
-                            {editEntityTypeDetailsLink && canEditEntityTypeDetails ?
-                                <div className={'col-sm-5'}><Link className={'pull-right entity-insert--link'} to={editEntityTypeDetailsLink.toString()}>Edit {this.capTypeTextSingular} Design</Link></div>
-                                : undefined}
+                            {editEntityTypeDetailsLink && canEditEntityTypeDetails ? (
+                                <div className="col-sm-5">
+                                    <Link
+                                        className="pull-right entity-insert--link"
+                                        to={editEntityTypeDetailsLink.toString()}
+                                    >
+                                        Edit {this.capTypeTextSingular} Design
+                                    </Link>
+                                </div>
+                            ) : undefined}
                         </div>
                         <div className="row">
                             <div className="col-sm-12">
@@ -958,12 +1061,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                 {this.renderButtons()}
                 {this.renderProgress()}
             </>
-        )
+        );
     }
 }
 
 export const EntityInsertPanel = withFormSteps(EntityInsertPanelImpl, {
     currentStep: EntityInsertPanelTabs.Grid,
     furthestStep: EntityInsertPanelTabs.File,
-    hasDependentSteps: false
+    hasDependentSteps: false,
 });

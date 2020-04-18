@@ -14,52 +14,53 @@
  * limitations under the License.
  */
 import React from 'react';
+
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from "../base/Alert";
+import { Alert } from '../base/Alert';
+
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { DeleteConfirmationData, getDeleteConfirmationData } from './actions';
 import { EntityDataType } from './models';
 
 interface Props {
-    onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
-    onCancel: () => any
-    entityDataType: EntityDataType
-    rowIds?: Array<string>
-    selectionKey?: string
+    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
+    onCancel: () => any;
+    entityDataType: EntityDataType;
+    rowIds?: string[];
+    selectionKey?: string;
 }
 
 interface State {
-    error: string
-    isLoading: boolean
-    confirmationData: DeleteConfirmationData
+    error: string;
+    isLoading: boolean;
+    confirmationData: DeleteConfirmationData;
 }
 
 /**
  * The higher-order component that wraps DeleteConfirmModalDisplay or displays a loading modal or error modal.
  */
 export class EntityDeleteConfirmModal extends React.Component<Props, State> {
-
     // This is used because a user may cancel during the loading phase, in which case we don't want to update state
-    private _mounted : boolean;
+    private _mounted: boolean;
 
     constructor(props: Props) {
         super(props);
 
         if (props.rowIds === undefined && props.selectionKey === undefined) {
-            throw new Error("Either rowIds or selectionKey must be provided in order to confirm deletion.");
+            throw new Error('Either rowIds or selectionKey must be provided in order to confirm deletion.');
         }
 
         this.state = {
             error: undefined,
             isLoading: true,
-            confirmationData: undefined
-        }
+            confirmationData: undefined,
+        };
     }
 
     componentWillMount() {
         this._mounted = true;
-        this.init(this.props)
+        this.init(this.props);
     }
 
     componentWillUnmount() {
@@ -68,17 +69,17 @@ export class EntityDeleteConfirmModal extends React.Component<Props, State> {
 
     init(props: Props) {
         getDeleteConfirmationData(props.selectionKey, props.entityDataType, props.rowIds)
-            .then((confirmationData) => {
+            .then(confirmationData => {
                 if (this._mounted) {
-                    this.setState(() => ({isLoading: false, confirmationData}));
+                    this.setState(() => ({ isLoading: false, confirmationData }));
                 }
             })
-            .catch((reason) => {
-                console.error("There was a problem retrieving the delete confirmation data.", reason);
+            .catch(reason => {
+                console.error('There was a problem retrieving the delete confirmation data.', reason);
                 if (this._mounted) {
                     this.setState(() => ({
                         isLoading: false,
-                        error: "There was a problem retrieving the delete confirmation data."
+                        error: 'There was a problem retrieving the delete confirmation data.',
                     }));
                 }
             });
@@ -90,24 +91,24 @@ export class EntityDeleteConfirmModal extends React.Component<Props, State> {
         if (this.state.isLoading) {
             return (
                 <ConfirmModal
-                      title={"Loading confirmation data"}
-                      msg={<LoadingSpinner/>}
-                      onCancel={onCancel}
-                      cancelButtonText="Cancel"
+                    title="Loading confirmation data"
+                    msg={<LoadingSpinner />}
+                    onCancel={onCancel}
+                    cancelButtonText="Cancel"
                 />
-            )
+            );
         }
 
         if (this.state.error) {
             return (
                 <ConfirmModal
-                    title={"Deletion Error"}
+                    title="Deletion Error"
                     onCancel={onCancel}
                     msg={<Alert>{this.state.error}</Alert>}
                     onConfirm={undefined}
-                    cancelButtonText={"Dismiss"}
+                    cancelButtonText="Dismiss"
                 />
-            )
+            );
         }
 
         return (
@@ -117,6 +118,6 @@ export class EntityDeleteConfirmModal extends React.Component<Props, State> {
                 onCancel={onCancel}
                 entityDataType={entityDataType}
             />
-        )
+        );
     }
 }

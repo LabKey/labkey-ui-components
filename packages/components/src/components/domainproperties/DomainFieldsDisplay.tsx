@@ -16,17 +16,17 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
-import { DomainDesign } from './models';
-import { DOMAIN_FIELD_COLS } from './constants';
 import { Grid } from '../base/Grid';
 
+import { DomainDesign } from './models';
+import { DOMAIN_FIELD_COLS } from './constants';
+
 type Props = {
-    domain: DomainDesign,
-    title?: string
-}
+    domain: DomainDesign;
+    title?: string;
+};
 
 export class DomainFieldsDisplay extends React.Component<Props, any> {
-
     render() {
         const { domain, title } = this.props;
         const { name, description, fields } = domain;
@@ -34,13 +34,13 @@ export class DomainFieldsDisplay extends React.Component<Props, any> {
         return (
             <Panel>
                 <Panel.Heading>
-                    <div className={"panel-title"}>{title || name}</div>
+                    <div className="panel-title">{title || name}</div>
                 </Panel.Heading>
                 <Panel.Body>
                     <p>{description}</p>
                     <Grid columns={DOMAIN_FIELD_COLS} data={fields} />
                 </Panel.Body>
             </Panel>
-        )
+        );
     }
 }

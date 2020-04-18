@@ -305,7 +305,12 @@ import { PermissionAssignments } from './components/permissions/PermissionAssign
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './components/permissions/models';
 import { fetchContainerSecurityPolicy } from './components/permissions/actions';
-import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData, extractEntityTypeOptionFromRow } from './components/entities/actions';
+import {
+    getDataDeleteConfirmationData,
+    getSampleDeleteConfirmationData,
+    extractEntityTypeOptionFromRow,
+    deleteEntityDataRows,
+} from './components/entities/actions';
 import { EntityDataType } from './components/entities/models';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
 import { SampleTypeModel } from "./components/domainproperties/samples/models";
@@ -546,6 +551,7 @@ export {
     GenerateEntityResponse,
     createDeleteSuccessNotification,
     createDeleteErrorNotification,
+    deleteEntityDataRows,
 
     // Navigation
     MenuSectionConfig,

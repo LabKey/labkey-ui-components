@@ -1,5 +1,5 @@
 import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
-import { Ajax, Filter, Utils } from '@labkey/api';
+import {Ajax, AuditBehaviorTypes, Filter, Utils} from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 import {
     DisplayObject,
@@ -11,6 +11,8 @@ import {
     IParentOption
 } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
+import { QueryGridModel } from '../base/models/model';
+import { deleteRows } from '../../query/api';
 
 export interface DeleteConfirmationData {
     canDelete: Array<any>
@@ -295,6 +297,32 @@ export function deleteEntityType(deleteActionName: string, rowId: number): Promi
                 reject(response);
             }),
         });
+    });
+}
+
+/**
+ * Delete a sample or selection of samples from a given sample type (based on the QueryGridModel).
+ * @param model - QueryGridModel with row data for the sample type schema/query
+ * @param rows - the rows that are to be deleted.  Each element of the array contains, minimally,  RowId: <value>
+ * @param nounSingular - singular noun for the type being deleted
+ * @param nounPlural - plural noun for the type being deleted
+ * @param onComplete - callback function for after the deleteRows command finishes
+ * @param onFailure? - callback function for failure to delete samples
+ * @param auditBehavior? - optional property to indicate the audit behavior for this query
+ */
+export function deleteEntityDataRows(model: QueryGridModel, rows: Array<any>, nounSingular: string, nounPlural: string, onComplete: Function, onFailure?: Function, auditBehavior?: AuditBehaviorTypes) {
+    const schemaQuery = SchemaQuery.create(model.schema, model.query);
+
+    deleteRows({
+        schemaQuery,
+        rows: rows,
+        auditBehavior: auditBehavior
+    }).then(() => {
+        onComplete();
+    }).catch(error => {
+        if (onFailure) {
+            onFailure();
+        }
     });
 }
 

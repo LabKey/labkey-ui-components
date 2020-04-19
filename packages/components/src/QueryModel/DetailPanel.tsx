@@ -15,6 +15,7 @@
  */
 import React, { PureComponent } from 'react';
 import { fromJS, List } from 'immutable';
+import { Alert } from 'react-bootstrap';
 import { LoadingSpinner } from '..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../components/forms/detail/DetailDisplay';
@@ -39,7 +40,9 @@ class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps &
         const { editingMode } = this.props;
         const model = this.getModel();
 
-        if (model.isLoading) {
+        if (model.error !== undefined) {
+            return <Alert>{model.error}</Alert>
+        } else if (model.isLoading) {
             return <LoadingSpinner/>
         }
 

@@ -1,113 +1,113 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import { QueryGridPaging } from './QueryGridPaging';
+
 import { QueryGridModel } from '../base/models/model';
 
-describe("<QueryGridPaging/>", () => {
+import { QueryGridPaging } from './QueryGridPaging';
 
-    test("not isPaged", () => {
+describe('<QueryGridPaging/>', () => {
+    test('not isPaged', () => {
         const model = new QueryGridModel({
             isPaged: false,
             pageNumber: 1,
             maxRows: 20,
-            totalRows: 50
+            totalRows: 50,
         });
-        const component = <QueryGridPaging model={model}/>;
+        const component = <QueryGridPaging model={model} />;
 
         const tree = renderer.create(component);
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test("first page", () => {
+    test('first page', () => {
         const model = new QueryGridModel({
             isPaged: true,
             pageNumber: 1,
             maxRows: 20,
-            totalRows: 50
+            totalRows: 50,
         });
-        const component = <QueryGridPaging model={model}/>;
+        const component = <QueryGridPaging model={model} />;
 
         const tree = renderer.create(component);
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test("not showCounts", () => {
+    test('not showCounts', () => {
         const model = new QueryGridModel({
             isPaged: true,
             pageNumber: 1,
             maxRows: 20,
-            totalRows: 50
+            totalRows: 50,
         });
-        const component = <QueryGridPaging model={model} showCounts={false}/>;
+        const component = <QueryGridPaging model={model} showCounts={false} />;
 
         const tree = renderer.create(component);
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test("middle page", () => {
+    test('middle page', () => {
         const model = new QueryGridModel({
             isPaged: true,
             pageNumber: 2,
             maxRows: 20,
-            totalRows: 50
+            totalRows: 50,
         });
-        const component = <QueryGridPaging model={model}/>;
+        const component = <QueryGridPaging model={model} />;
 
         const tree = renderer.create(component);
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test("last page", () => {
+    test('last page', () => {
         const model = new QueryGridModel({
             isPaged: true,
             pageNumber: 3,
             maxRows: 20,
-            totalRows: 50
+            totalRows: 50,
         });
-        const component = <QueryGridPaging model={model}/>;
+        const component = <QueryGridPaging model={model} />;
 
         const tree = renderer.create(component);
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test("pageNumber past max", () => {
+    test('pageNumber past max', () => {
         const model = new QueryGridModel({
             isPaged: true,
             pageNumber: 4,
             maxRows: 20,
-            totalRows: 50
+            totalRows: 50,
         });
-        const component = <QueryGridPaging model={model}/>;
+        const component = <QueryGridPaging model={model} />;
 
         const tree = renderer.create(component);
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test("pageSize equals total rows", () => {
+    test('pageSize equals total rows', () => {
         const model = new QueryGridModel({
             isPaged: true,
             pageNumber: 1,
             maxRows: 50,
-            totalRows: 50
+            totalRows: 50,
         });
-        const component = <QueryGridPaging model={model}/>;
+        const component = <QueryGridPaging model={model} />;
 
         const tree = renderer.create(component);
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test("zero totalRows", () => {
+    test('zero totalRows', () => {
         const model = new QueryGridModel({
             isPaged: true,
             pageNumber: 1,
             maxRows: 20,
-            totalRows: 0
+            totalRows: 0,
         });
-        const component = <QueryGridPaging model={model}/>;
+        const component = <QueryGridPaging model={model} />;
 
         const tree = renderer.create(component);
         expect(tree.toJSON()).toMatchSnapshot();
     });
-
 });

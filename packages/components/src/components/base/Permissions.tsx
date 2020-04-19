@@ -15,18 +15,16 @@
  */
 import React from 'react';
 
-
 interface PermissionProps {
-    isAllowed: boolean
+    isAllowed: boolean;
 }
 
 /**
  * Used in conjunction with RequiresPermissionHOC and PermissionNotAllowed to selectively render content based on permissions.
  */
 export class PermissionAllowed extends React.Component<PermissionProps, any> {
-
     static defaultProps = {
-        isAllowed: true
+        isAllowed: true,
     };
 
     render() {
@@ -38,9 +36,8 @@ export class PermissionAllowed extends React.Component<PermissionProps, any> {
  * Used in conjunction with RequiresPermissionHOC and PermissionNotAllows to selectively render content based on permissions.
  */
 export class PermissionNotAllowed extends React.Component<PermissionProps, any> {
-
     static defaultProps = {
-        isAllowed: false
+        isAllowed: false,
     };
 
     render() {

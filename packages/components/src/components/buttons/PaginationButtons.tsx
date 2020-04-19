@@ -17,17 +17,17 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 export interface PaginationButtonsProps {
-    total: number,
-    currentPage: number,
-    perPage: number,
-    previousPage(): void,
-    nextPage(): void,
+    total: number;
+    currentPage: number;
+    perPage: number;
+    previousPage(): void;
+    nextPage(): void;
 }
 
 export class PaginationButtons extends React.PureComponent<PaginationButtonsProps> {
     render() {
         const { total, currentPage, perPage, previousPage, nextPage } = this.props;
-        const pageStart = (currentPage * perPage) + 1;
+        const pageStart = currentPage * perPage + 1;
         let pageEnd = (currentPage + 1) * perPage;
         const previousDisabled = currentPage === 0;
 
@@ -53,20 +53,15 @@ export class PaginationButtons extends React.PureComponent<PaginationButtonsProp
 
         return (
             <div className="pagination-buttons">
-                <div className="pagination-buttons__info">
-                    {pageInfo}
-                </div>
+                <div className="pagination-buttons__info">{pageInfo}</div>
 
                 <div className="pagination-buttons__buttons btn-group">
-                    <Button className="pagination-buttons__prev"
-                            onClick={previousPage}
-                            disabled={previousDisabled}
-                    >
-                        <i className="fa fa-chevron-left"/>
+                    <Button className="pagination-buttons__prev" onClick={previousPage} disabled={previousDisabled}>
+                        <i className="fa fa-chevron-left" />
                     </Button>
 
                     <Button className="pagination-buttons__next" onClick={nextPage} disabled={nextDisabled}>
-                        <i className="fa fa-chevron-right"/>
+                        <i className="fa fa-chevron-right" />
                     </Button>
                 </div>
             </div>

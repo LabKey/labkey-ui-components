@@ -16,62 +16,64 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+
 import { Location } from '../util/URL';
 
 import { EntityInsertPanel } from '../components/entities/EntityInsertPanel';
 
 import './stories.scss';
 import { helpLinkNode } from '..';
+
 import { List } from 'immutable';
+
 import { DataClassDataType, SampleTypeDataType } from '../components/entities/constants';
 import { EntityDataType } from '../components/entities/models';
 
 storiesOf('EntityInsertPanel', module)
     .addDecorator(withKnobs)
-    .add("No target sample set no parent data types", () => {
+    .add('No target sample set no parent data types', () => {
         return (
             <EntityInsertPanel
                 entityDataType={SampleTypeDataType}
                 canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
-                nounSingular={text("Singular noun", "sample")}
-                nounPlural={text("Plural noun", "samples")}
-                disableMerge={boolean("Disable merge?", false)}
+                nounSingular={text('Singular noun', 'sample')}
+                nounPlural={text('Plural noun', 'samples')}
+                disableMerge={boolean('Disable merge?', false)}
             />
         );
-
     })
-    .add("Target sample set without parent selections", () => {
-        const location : Location = {
+    .add('Target sample set without parent selections', () => {
+        const location: Location = {
             query: {
-                target: "Sample Set 2"
-            }
+                target: 'Sample Set 2',
+            },
         };
         return (
             <EntityInsertPanel
                 entityDataType={SampleTypeDataType}
                 canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
-                nounSingular={text("Singular noun", "sample")}
-                nounPlural={text("Plural noun", "samples")}
+                nounSingular={text('Singular noun', 'sample')}
+                nounPlural={text('Plural noun', 'samples')}
                 location={location}
-                importHelpLinkNode={helpLinkNode("help", "help text")}
+                importHelpLinkNode={helpLinkNode('help', 'help text')}
                 parentDataTypes={List<EntityDataType>([SampleTypeDataType])}
             />
         );
     })
-    .add("Multiple parent type options", () => {
-        const location : Location = {
+    .add('Multiple parent type options', () => {
+        const location: Location = {
             query: {
-                target: "Sample Set 2"
-            }
+                target: 'Sample Set 2',
+            },
         };
         return (
             <EntityInsertPanel
                 entityDataType={SampleTypeDataType}
                 canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
-                nounSingular={text("Singular noun", "sample")}
-                nounPlural={text("Plural noun", "samples")}
+                nounSingular={text('Singular noun', 'sample')}
+                nounPlural={text('Plural noun', 'samples')}
                 location={location}
-                importHelpLinkNode={helpLinkNode("help", "help text")}
+                importHelpLinkNode={helpLinkNode('help', 'help text')}
                 parentDataTypes={List<EntityDataType>([
                     SampleTypeDataType,
                     {
@@ -79,10 +81,9 @@ storiesOf('EntityInsertPanel', module)
                         nounSingular: 'source',
                         nounPlural: 'sources',
                         descriptionSingular: 'source type',
-                        descriptionPlural: 'source types'
-                    }
+                        descriptionPlural: 'source types',
+                    },
                 ])}
             />
-    );
-    })
-;
+        );
+    });

@@ -1,9 +1,14 @@
 import React from 'react';
 import { List } from 'immutable';
 import { mount } from 'enzyme';
-import { AssayPropertiesPanel } from './AssayPropertiesPanel';
+
+import toJson from 'enzyme-to-json';
+
 import { DomainDesign, DomainPanelStatus } from '../models';
-import { AssayProtocolModel } from '../assay/models';
+
+import { AssayPropertiesPanel } from './AssayPropertiesPanel';
+import { AssayProtocolModel } from './models';
+
 import {
     AutoCopyDataInput,
     BackgroundUploadInput,
@@ -20,7 +25,6 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput,
 } from './AssayPropertiesInput';
-import toJson from 'enzyme-to-json';
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
@@ -28,28 +32,21 @@ const BASE_PROPS = {
     useTheme: false,
     controlledCollapse: false,
     initCollapsed: false,
-    collapsed: false
+    collapsed: false,
 };
 
 const EMPTY_MODEL = AssayProtocolModel.create({
     providerName: 'General',
     domains: List([
-        DomainDesign.create({name: 'Batch Fields'}),
-        DomainDesign.create({name: 'Run Fields'}),
-        DomainDesign.create({name: 'Data Fields'})
-    ])
+        DomainDesign.create({ name: 'Batch Fields' }),
+        DomainDesign.create({ name: 'Run Fields' }),
+        DomainDesign.create({ name: 'Data Fields' }),
+    ]),
 });
 
 describe('AssayPropertiesPanel', () => {
-
     test('default properties', () => {
-        const form = mount(
-            <AssayPropertiesPanel
-                {...BASE_PROPS}
-                model={EMPTY_MODEL}
-                onChange={jest.fn}
-            />
-        );
+        const form = mount(<AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn} />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
@@ -62,7 +59,7 @@ describe('AssayPropertiesPanel', () => {
                 model={EMPTY_MODEL}
                 asPanel={false}
                 appPropertiesOnly={true}
-                helpTopic={'defineAssaySchema'}
+                helpTopic="defineAssaySchema"
                 onChange={jest.fn}
             />
         );
@@ -88,12 +85,7 @@ describe('AssayPropertiesPanel', () => {
 
     test('panelCls, initCollapsed, and markComplete', () => {
         const form = mount(
-            <AssayPropertiesPanel
-                {...BASE_PROPS}
-                model={EMPTY_MODEL}
-                initCollapsed={true}
-                onChange={jest.fn}
-            />
+            <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} initCollapsed={true} onChange={jest.fn} />
         );
 
         expect(toJson(form)).toMatchSnapshot();
@@ -109,7 +101,7 @@ describe('AssayPropertiesPanel', () => {
                     name: 'name should not be editable',
                     description: 'test description for this assay',
                     editableRuns: true,
-                    editableResults: true
+                    editableResults: true,
                 })}
                 onChange={jest.fn}
             />
@@ -121,11 +113,7 @@ describe('AssayPropertiesPanel', () => {
 
     test('visible properties based on empty AssayProtocolModel', () => {
         const simpleModelWrapper = mount(
-            <AssayPropertiesPanel
-                {...BASE_PROPS}
-                model={EMPTY_MODEL}
-                onChange={jest.fn}
-            />
+            <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn} />
         );
 
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
@@ -153,18 +141,12 @@ describe('AssayPropertiesPanel', () => {
             allowQCStates: true,
             allowTransformationScript: true,
             availableDetectionMethods: ['a', 'b', 'c'],
-            availableMetadataInputFormats: {test1: 'abc'},
-            availablePlateTemplates: ['d','e','f'],
-            moduleTransformScripts: ['validation.pl']
+            availableMetadataInputFormats: { test1: 'abc' },
+            availablePlateTemplates: ['d', 'e', 'f'],
+            moduleTransformScripts: ['validation.pl'],
         });
 
-        const simpleModelWrapper = mount(
-            <AssayPropertiesPanel
-                {...BASE_PROPS}
-                model={model}
-                onChange={jest.fn}
-            />
-        );
+        const simpleModelWrapper = mount(<AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn} />);
 
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
@@ -190,18 +172,13 @@ describe('AssayPropertiesPanel', () => {
             allowPlateMetadata: true,
             allowQCStates: true,
             availableDetectionMethods: ['a', 'b', 'c'],
-            availableMetadataInputFormats: {test1: 'abc'},
-            availablePlateTemplates: ['d','e','f'],
-            moduleTransformScripts: ['validation.pl']
+            availableMetadataInputFormats: { test1: 'abc' },
+            availablePlateTemplates: ['d', 'e', 'f'],
+            moduleTransformScripts: ['validation.pl'],
         });
 
         const simpleModelWrapper = mount(
-            <AssayPropertiesPanel
-                {...BASE_PROPS}
-                model={model}
-                onChange={jest.fn}
-                appPropertiesOnly={true}
-            />
+            <AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn} appPropertiesOnly={true} />
         );
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);

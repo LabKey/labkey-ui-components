@@ -14,160 +14,156 @@
  * limitations under the License.
  */
 import { fromJS, List, OrderedMap } from 'immutable';
-import { QueryInfo } from './QueryInfo';
-import {
-    AssayDefinitionModel,
-    AssayDomainTypes,
-    QueryColumn,
-    QueryGridModel,
-    SchemaQuery,
-} from './model';
+
 import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../../../test/data/assayDefinitionModelNoSampleId.json';
 import sampleSetQueryInfo from '../../../test/data/sampleSet-getQueryDetails.json';
 import nameExpSetQueryColumn from '../../../test/data/NameExprParent-QueryColumn.json';
 import sampleSet3QueryColumn from '../../../test/data/SampleSet3Parent-QueryColumn.json';
 
-describe("QueryGridModel", () => {
+import { AssayDefinitionModel, AssayDomainTypes, QueryColumn, QueryGridModel, SchemaQuery } from './model';
+import { QueryInfo } from './QueryInfo';
 
-   test("createParam no prefix", () => {
+describe('QueryGridModel', () => {
+    test('createParam no prefix', () => {
         const model = new QueryGridModel();
-        expect(model.createParam("param")).toEqual("param");
-        expect(model.createParam("param", "default")).toEqual("default.param");
-   });
+        expect(model.createParam('param')).toEqual('param');
+        expect(model.createParam('param', 'default')).toEqual('default.param');
+    });
 
-   test("createParam with prefix", () => {
-       const model = new QueryGridModel({
-           urlPrefix: "test"
-       });
-       expect(model.createParam('param')).toEqual("test.param");
-       expect(model.createParam("param", "default")).toEqual("test.param");
-   });
+    test('createParam with prefix', () => {
+        const model = new QueryGridModel({
+            urlPrefix: 'test',
+        });
+        expect(model.createParam('param')).toEqual('test.param');
+        expect(model.createParam('param', 'default')).toEqual('test.param');
+    });
 
-   describe("getSelectedData", () => {
-       test("nothing selected", () => {
-           const model = new QueryGridModel({
-               data: fromJS({
-                   "1": {
-                       "field1": {
-                           value: "value1"
-                       },
-                       "field2": {
-                           value: "value2"
-                       }
-                   },
-                   "2": {
-                       "field1": {
-                           value: "value3"
-                       },
-                       "field2": {
-                           value: "value4"
-                       },
-                   }
-               }),
-           });
-           expect(model.getSelectedData().size).toBe(0);
-       });
+    describe('getSelectedData', () => {
+        test('nothing selected', () => {
+            const model = new QueryGridModel({
+                data: fromJS({
+                    '1': {
+                        field1: {
+                            value: 'value1',
+                        },
+                        field2: {
+                            value: 'value2',
+                        },
+                    },
+                    '2': {
+                        field1: {
+                            value: 'value3',
+                        },
+                        field2: {
+                            value: 'value4',
+                        },
+                    },
+                }),
+            });
+            expect(model.getSelectedData().size).toBe(0);
+        });
 
-       test("all selected", () => {
-           const model = new QueryGridModel({
-               data: fromJS({
-                   "123": {
-                       "field1": {
-                           value: "value1"
-                       },
-                       "field2": {
-                           value: "value2"
-                       }
-                   },
-                   "232": {
-                       "field1": {
-                           value: "value3"
-                       },
-                       "field2": {
-                           value: "value4"
-                       },
-                   }
-               }),
-               selectedIds: List(["123", "232"])
-           });
-           expect(model.getSelectedData()).toEqual(model.data);
-       });
+        test('all selected', () => {
+            const model = new QueryGridModel({
+                data: fromJS({
+                    '123': {
+                        field1: {
+                            value: 'value1',
+                        },
+                        field2: {
+                            value: 'value2',
+                        },
+                    },
+                    '232': {
+                        field1: {
+                            value: 'value3',
+                        },
+                        field2: {
+                            value: 'value4',
+                        },
+                    },
+                }),
+                selectedIds: List(['123', '232']),
+            });
+            expect(model.getSelectedData()).toEqual(model.data);
+        });
 
-       test("some selected", () => {
-           const model = new QueryGridModel({
-               data: fromJS({
-                   "123": {
-                       "field1": {
-                           value: "value1"
-                       },
-                       "field2": {
-                           value: "value2"
-                       }
-                   },
-                   "234": {
-                       "field1": {
-                           value: "value3"
-                       },
-                       "field2": {
-                           value: "value4"
-                       },
-                   },
-                   "232": {
-                       "field1": {
-                           value: "value3"
-                       },
-                       "field2": {
-                           value: "value4"
-                       },
-                   }
-               }),
-               selectedIds: List(["123", "232", "nope"])
-           });
-           expect(model.getSelectedData()).toEqual(fromJS({
-               "123": {
-                   "field1": {
-                       value: "value1"
-                   },
-                   "field2": {
-                       value: "value2"
-                   }
-               },
-               "232": {
-                   "field1": {
-                       value: "value3"
-                   },
-                   "field2": {
-                       value: "value4"
-                   },
-               }
-           }));
-       })
-   });
+        test('some selected', () => {
+            const model = new QueryGridModel({
+                data: fromJS({
+                    '123': {
+                        field1: {
+                            value: 'value1',
+                        },
+                        field2: {
+                            value: 'value2',
+                        },
+                    },
+                    '234': {
+                        field1: {
+                            value: 'value3',
+                        },
+                        field2: {
+                            value: 'value4',
+                        },
+                    },
+                    '232': {
+                        field1: {
+                            value: 'value3',
+                        },
+                        field2: {
+                            value: 'value4',
+                        },
+                    },
+                }),
+                selectedIds: List(['123', '232', 'nope']),
+            });
+            expect(model.getSelectedData()).toEqual(
+                fromJS({
+                    '123': {
+                        field1: {
+                            value: 'value1',
+                        },
+                        field2: {
+                            value: 'value2',
+                        },
+                    },
+                    '232': {
+                        field1: {
+                            value: 'value3',
+                        },
+                        field2: {
+                            value: 'value4',
+                        },
+                    },
+                })
+            );
+        });
+    });
 });
 
-describe("QueryInfo", () => {
+describe('QueryInfo', () => {
+    const FIRST_COL_KEY = 'Sample Set 3 Parents';
+    const SECOND_COL_KEY = 'NameExpr Parents';
 
-    const FIRST_COL_KEY = "Sample Set 3 Parents";
-    const SECOND_COL_KEY = "NameExpr Parents";
-
-    let queryInfo = QueryInfo.fromJSON(sampleSetQueryInfo);
+    const queryInfo = QueryInfo.fromJSON(sampleSetQueryInfo);
     let newColumns = OrderedMap<string, QueryColumn>();
     newColumns = newColumns.set(FIRST_COL_KEY, QueryColumn.create(sampleSet3QueryColumn));
     newColumns = newColumns.set(SECOND_COL_KEY, QueryColumn.create(nameExpSetQueryColumn));
 
-    describe("insertColumns", () => {
-        test("negative columnIndex", () => {
+    describe('insertColumns', () => {
+        test('negative columnIndex', () => {
             const columns = queryInfo.insertColumns(-1, newColumns);
             expect(columns).toBe(queryInfo.columns);
         });
 
-        test("columnIndex just too large", () => {
+        test('columnIndex just too large', () => {
             const columns = queryInfo.insertColumns(queryInfo.columns.size + 1, newColumns);
             expect(columns).toBe(queryInfo.columns);
         });
 
-        test("as first column", () => {
+        test('as first column', () => {
             const columns = queryInfo.insertColumns(0, newColumns);
             const firstColKey = queryInfo.columns.keySeq().first();
             expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(0);
@@ -176,7 +172,7 @@ describe("QueryInfo", () => {
             expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
         });
 
-        test("as last column", () => {
+        test('as last column', () => {
             const columns = queryInfo.insertColumns(queryInfo.columns.size, newColumns);
             const firstColKey = queryInfo.columns.keySeq().first();
             expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
@@ -185,258 +181,255 @@ describe("QueryInfo", () => {
             expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(queryInfo.columns.size + 1);
         });
 
-        test("in middle", () => {
-            const nameIndex = queryInfo.columns.keySeq().findIndex((key) => (key.toLowerCase() === 'name'));
+        test('in middle', () => {
+            const nameIndex = queryInfo.columns.keySeq().findIndex(key => key.toLowerCase() === 'name');
             const columns = queryInfo.insertColumns(nameIndex + 1, newColumns);
             expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
-            expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe("name");
+            expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe('name');
             expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(nameIndex + 1);
             expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(nameIndex + 2);
         });
 
-        test("single column", () => {
-            const nameIndex = queryInfo.columns.keySeq().findIndex((key) => (key.toLowerCase() === 'name'));
-            const columns = queryInfo.insertColumns(nameIndex + 1, newColumns.filter((queryColumn) => (queryColumn.caption.toLowerCase() === FIRST_COL_KEY.toLowerCase())).toOrderedMap());
+        test('single column', () => {
+            const nameIndex = queryInfo.columns.keySeq().findIndex(key => key.toLowerCase() === 'name');
+            const columns = queryInfo.insertColumns(
+                nameIndex + 1,
+                newColumns
+                    .filter(queryColumn => queryColumn.caption.toLowerCase() === FIRST_COL_KEY.toLowerCase())
+                    .toOrderedMap()
+            );
             expect(columns.size).toBe(queryInfo.columns.size + 1);
-            expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe("name");
+            expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe('name');
             expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(nameIndex + 1);
         });
     });
 
-    describe("getUpdateColumns", () => {
-        test("without readOnly columns", () => {
+    describe('getUpdateColumns', () => {
+        test('without readOnly columns', () => {
             const columns = queryInfo.getUpdateColumns();
             expect(columns.size).toBe(3);
-            expect(columns.get(0).fieldKey).toBe("Description");
-            expect(columns.get(1).fieldKey).toBe("SampleSet");
-            expect(columns.get(2).fieldKey).toBe("New");
+            expect(columns.get(0).fieldKey).toBe('Description');
+            expect(columns.get(1).fieldKey).toBe('SampleSet');
+            expect(columns.get(2).fieldKey).toBe('New');
         });
 
-        test("with readOnly columns", () => {
-            const columns = queryInfo.getUpdateColumns(List<string>(["Name"]));
+        test('with readOnly columns', () => {
+            const columns = queryInfo.getUpdateColumns(
+                List<string>(['Name'])
+            );
             expect(columns.size).toBe(4);
-            expect(columns.get(0).fieldKey).toBe("Name");
-            expect(columns.get(1).fieldKey).toBe("Description");
-            expect(columns.get(2).fieldKey).toBe("SampleSet");
-            expect(columns.get(3).fieldKey).toBe("New");
+            expect(columns.get(0).fieldKey).toBe('Name');
+            expect(columns.get(1).fieldKey).toBe('Description');
+            expect(columns.get(2).fieldKey).toBe('SampleSet');
+            expect(columns.get(3).fieldKey).toBe('New');
         });
     });
 
-    describe("getIconURL", () => {
-        test("default", () => {
-            const queryInfo = QueryInfo.create({schemaName: 'test', name: 'test'});
+    describe('getIconURL', () => {
+        test('default', () => {
+            const queryInfo = QueryInfo.create({ schemaName: 'test', name: 'test' });
             expect(queryInfo.getIconURL()).toBe('default');
         });
 
-        test("with custom iconURL", () => {
-            const queryInfo = QueryInfo.create({schemaName: 'samples', name: 'test', iconURL: 'other'});
+        test('with custom iconURL', () => {
+            const queryInfo = QueryInfo.create({ schemaName: 'samples', name: 'test', iconURL: 'other' });
             expect(queryInfo.getIconURL()).toBe('other');
         });
     });
 });
 
-describe("AssayDefinitionModel", () => {
-
-   test("with getSampleColumn()", () => {
+describe('AssayDefinitionModel', () => {
+    test('with getSampleColumn()', () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
         const sampleColumn = modelWithSampleId.getSampleColumn();
         expect(sampleColumn).toBeTruthy();
         expect(sampleColumn.domain).toBe('Result');
         expect(sampleColumn.column.isLookup()).toBeTruthy();
         expect(sampleColumn.column.fieldKey).toBe('SampleID');
-   });
+    });
 
-   test("without getSampleColumn()", () => {
+    test('without getSampleColumn()', () => {
         const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
         const nonSampleColumn = modelWithout.getSampleColumn();
         expect(nonSampleColumn).toBe(null);
-   });
+    });
 
-   test("with getSampleColumn()", () => {
+    test('with getSampleColumn()', () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
         const sampleColumn = modelWithSampleId.getSampleColumn();
         expect(sampleColumn.column.name).toBe('SampleID');
-   });
+    });
 
-   test("without getSampleColumn()", () => {
+    test('without getSampleColumn()', () => {
         const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
         const nonSampleColumn = modelWithout.getSampleColumn();
         expect(nonSampleColumn).toBe(null);
-   });
+    });
 
-   test("hasLookup()", () => {
+    test('hasLookup()', () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
         expect(modelWithSampleId.hasLookup(SchemaQuery.create('samples', 'Samples'))).toBeTruthy();
         expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Study'))).toBeTruthy();
         expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Other'))).toBeFalsy();
-   });
+    });
 
-   test("getSampleColumnFieldKeys()", () => {
+    test('getSampleColumnFieldKeys()', () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
         const fieldKeys = modelWithSampleId.getSampleColumnFieldKeys();
         expect(fieldKeys.size).toBe(1);
-        expect(fieldKeys.get(0)).toBe("SampleID");
-   });
+        expect(fieldKeys.get(0)).toBe('SampleID');
+    });
 
-   test("getDomainColumns()", () => {
+    test('getDomainColumns()', () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
         const batchColumns = modelWithSampleId.getDomainColumns(AssayDomainTypes.BATCH);
         expect(batchColumns.size).toBe(2);
-        expect(batchColumns.has("ParticipantVisitResolver")).toBeFalsy();
-        expect(batchColumns.has("participantvisitresolver")).toBeTruthy();
-        expect(batchColumns.has("targetstudy")).toBeTruthy();
+        expect(batchColumns.has('ParticipantVisitResolver')).toBeFalsy();
+        expect(batchColumns.has('participantvisitresolver')).toBeTruthy();
+        expect(batchColumns.has('targetstudy')).toBeTruthy();
 
         const runColumns = modelWithSampleId.getDomainColumns(AssayDomainTypes.RUN);
         expect(runColumns.size).toBe(0);
 
         const dataColumns = modelWithSampleId.getDomainColumns(AssayDomainTypes.RESULT);
         expect(dataColumns.size).toBe(4);
-        expect(dataColumns.has("Date")).toBeFalsy();
-        expect(dataColumns.has("date")).toBeTruthy();
-   });
+        expect(dataColumns.has('Date')).toBeFalsy();
+        expect(dataColumns.has('date')).toBeTruthy();
+    });
 });
 
 describe('Sample Lookup', () => {
-
     // prepare stuff we need
     const validColumn = QueryColumn.create({
-        "align": "left",
-        "caption": "Special Column",
-        "conceptURI": null,
-        "defaultValue": null,
-        "fieldKey": "special_column",
-        "fieldKeyArray": [
-            "special_column"
-        ],
-        "hidden": false,
-        "inputType": "text",
-        "isKeyField": false,
-        "jsonType": "string",
-        "lookup": {
-            "displayColumn": "Name",
-            "isPublic": true,
-            "keyColumn": "Name",
-            "queryName": "Samples",
-            "schemaName": "samples",
-            "table": "Samples"
+        align: 'left',
+        caption: 'Special Column',
+        conceptURI: null,
+        defaultValue: null,
+        fieldKey: 'special_column',
+        fieldKeyArray: ['special_column'],
+        hidden: false,
+        inputType: 'text',
+        isKeyField: false,
+        jsonType: 'string',
+        lookup: {
+            displayColumn: 'Name',
+            isPublic: true,
+            keyColumn: 'Name',
+            queryName: 'Samples',
+            schemaName: 'samples',
+            table: 'Samples',
         },
-        "multiValue": false,
-        "name": "special_column",
-        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-        "readOnly": false,
-        "required": false,
-        "shortCaption": "Special Column",
-        "shownInInsertView": true,
-        "shownInUpdateView": true,
-        "sortable": true,
-        "type": "Text (String)",
-        "userEditable": true,
-        "removeFromViews": false
+        multiValue: false,
+        name: 'special_column',
+        rangeURI: 'http://www.w3.org/2001/XMLSchema#string',
+        readOnly: false,
+        required: false,
+        shortCaption: 'Special Column',
+        shownInInsertView: true,
+        shownInUpdateView: true,
+        sortable: true,
+        type: 'Text (String)',
+        userEditable: true,
+        removeFromViews: false,
     });
 
     const bogusColumn = QueryColumn.create({
-        "align": "left",
-        "caption": "Special Column",
-        "conceptURI": null,
-        "defaultValue": null,
-        "fieldKey": "special_column",
-        "fieldKeyArray": [
-            "special_column"
-        ],
-        "hidden": false,
-        "inputType": "text",
-        "isKeyField": false,
-        "jsonType": "string",
-        "lookup": {
-            "displayColumn": "Name",
-            "isPublic": true,
-            "keyColumn": "Name",
-            "queryName": "bogusQuery",
-            "schemaName": "bogusSchema",
-            "table": "WrongTable"
+        align: 'left',
+        caption: 'Special Column',
+        conceptURI: null,
+        defaultValue: null,
+        fieldKey: 'special_column',
+        fieldKeyArray: ['special_column'],
+        hidden: false,
+        inputType: 'text',
+        isKeyField: false,
+        jsonType: 'string',
+        lookup: {
+            displayColumn: 'Name',
+            isPublic: true,
+            keyColumn: 'Name',
+            queryName: 'bogusQuery',
+            schemaName: 'bogusSchema',
+            table: 'WrongTable',
         },
-        "multiValue": false,
-        "name": "special_column",
-        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-        "readOnly": false,
-        "required": false,
-        "shortCaption": "Special Column",
-        "shownInInsertView": true,
-        "shownInUpdateView": true,
-        "sortable": true,
-        "type": "Text (String)",
-        "userEditable": true,
-        "removeFromViews": false
+        multiValue: false,
+        name: 'special_column',
+        rangeURI: 'http://www.w3.org/2001/XMLSchema#string',
+        readOnly: false,
+        required: false,
+        shortCaption: 'Special Column',
+        shownInInsertView: true,
+        shownInUpdateView: true,
+        sortable: true,
+        type: 'Text (String)',
+        userEditable: true,
+        removeFromViews: false,
     });
 
     const materialSamplesColumn = QueryColumn.create({
-        "align": "left",
-        "caption": "Special Column",
-        "conceptURI": null,
-        "defaultValue": null,
-        "fieldKey": "special_column",
-        "fieldKeyArray": [
-            "special_column"
-        ],
-        "hidden": false,
-        "inputType": "text",
-        "isKeyField": false,
-        "jsonType": "string",
-        "lookup": {
-            "displayColumn": "Name",
-            "isPublic": true,
-            "keyColumn": "Name",
-            "queryName": "exp.Materials",
-            "schemaName": "samples",
-            "table": "Samples"
+        align: 'left',
+        caption: 'Special Column',
+        conceptURI: null,
+        defaultValue: null,
+        fieldKey: 'special_column',
+        fieldKeyArray: ['special_column'],
+        hidden: false,
+        inputType: 'text',
+        isKeyField: false,
+        jsonType: 'string',
+        lookup: {
+            displayColumn: 'Name',
+            isPublic: true,
+            keyColumn: 'Name',
+            queryName: 'exp.Materials',
+            schemaName: 'samples',
+            table: 'Samples',
         },
-        "multiValue": false,
-        "name": "special_column",
-        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-        "readOnly": false,
-        "required": false,
-        "shortCaption": "Special Column",
-        "shownInInsertView": true,
-        "shownInUpdateView": true,
-        "sortable": true,
-        "type": "Text (String)",
-        "userEditable": true,
-        "removeFromViews": false
+        multiValue: false,
+        name: 'special_column',
+        rangeURI: 'http://www.w3.org/2001/XMLSchema#string',
+        readOnly: false,
+        required: false,
+        shortCaption: 'Special Column',
+        shownInInsertView: true,
+        shownInUpdateView: true,
+        sortable: true,
+        type: 'Text (String)',
+        userEditable: true,
+        removeFromViews: false,
     });
 
     const materialSamplesWithAllCapsColumn = QueryColumn.create({
-        "align": "left",
-        "caption": "Special Column",
-        "conceptURI": null,
-        "defaultValue": null,
-        "fieldKey": "special_column",
-        "fieldKeyArray": [
-            "special_column"
-        ],
-        "hidden": false,
-        "inputType": "text",
-        "isKeyField": false,
-        "jsonType": "string",
-        "lookup": {
-            "displayColumn": "Name",
-            "isPublic": true,
-            "keyColumn": "Name",
-            "queryName": "EXP.MATERIALS",
-            "schemaName": "SAMPLES",
-            "table": "SAMPLES"
+        align: 'left',
+        caption: 'Special Column',
+        conceptURI: null,
+        defaultValue: null,
+        fieldKey: 'special_column',
+        fieldKeyArray: ['special_column'],
+        hidden: false,
+        inputType: 'text',
+        isKeyField: false,
+        jsonType: 'string',
+        lookup: {
+            displayColumn: 'Name',
+            isPublic: true,
+            keyColumn: 'Name',
+            queryName: 'EXP.MATERIALS',
+            schemaName: 'SAMPLES',
+            table: 'SAMPLES',
         },
-        "multiValue": false,
-        "name": "special_column",
-        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-        "readOnly": false,
-        "required": false,
-        "shortCaption": "Special Column",
-        "shownInInsertView": true,
-        "shownInUpdateView": true,
-        "sortable": true,
-        "type": "Text (String)",
-        "userEditable": true,
-        "removeFromViews": false
+        multiValue: false,
+        name: 'special_column',
+        rangeURI: 'http://www.w3.org/2001/XMLSchema#string',
+        readOnly: false,
+        required: false,
+        shortCaption: 'Special Column',
+        shownInInsertView: true,
+        shownInUpdateView: true,
+        sortable: true,
+        type: 'Text (String)',
+        userEditable: true,
+        removeFromViews: false,
     });
 
     test('lookup to samples/Samples', () => {

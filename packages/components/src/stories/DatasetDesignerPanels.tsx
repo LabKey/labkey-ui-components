@@ -17,29 +17,30 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
-import { NEW_DATASET_MODEL } from "../test/data/constants";
-import { DatasetDesignerPanels } from "../components/domainproperties/dataset/DatasetDesignerPanels";
-import { DatasetModel } from "../components/domainproperties/dataset/models";
+
+import { NEW_DATASET_MODEL } from '../test/data/constants';
+import { DatasetDesignerPanels } from '../components/domainproperties/dataset/DatasetDesignerPanels';
+import { DatasetModel } from '../components/domainproperties/dataset/models';
 import getDatasetDesign from '../test/data/dataset-getDatasetDesign.json';
 
-class NewDatasetDesigner extends React.PureComponent<any,any> {
+class NewDatasetDesigner extends React.PureComponent<any, any> {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-          <DatasetDesignerPanels
-              initModel={DatasetModel.create(this.props.model, undefined)}
-              useTheme={this.props.useTheme}
-              showDataSpace={this.props.showDataspace}
-              showVisitDate={this.props.showVisitDate}
-          />
+            <DatasetDesignerPanels
+                initModel={DatasetModel.create(this.props.model, undefined)}
+                useTheme={this.props.useTheme}
+                showDataSpace={this.props.showDataspace}
+                showVisitDate={this.props.showVisitDate}
+            />
         );
     }
 }
 
-class EditDatasetDesigner extends React.PureComponent<any,any> {
+class EditDatasetDesigner extends React.PureComponent<any, any> {
     constructor(props) {
         super(props);
     }
@@ -56,45 +57,25 @@ class EditDatasetDesigner extends React.PureComponent<any,any> {
     }
 }
 
-storiesOf("DatasetDesigner", module)
+storiesOf('DatasetDesigner', module)
     .addDecorator(withKnobs)
-    .add("create new dataset without dataspace", () => {
+    .add('create new dataset without dataspace', () => {
         return (
-            <NewDatasetDesigner
-                model={NEW_DATASET_MODEL}
-                useTheme={false}
-                showDataspace={false}
-                showVisitDate={true}
-            />
-        )
+            <NewDatasetDesigner model={NEW_DATASET_MODEL} useTheme={false} showDataspace={false} showVisitDate={true} />
+        );
     })
-    .add("create new dataset with dataspace", () => {
+    .add('create new dataset with dataspace', () => {
         return (
-            <NewDatasetDesigner
-                model={NEW_DATASET_MODEL}
-                useTheme={false}
-                showDataspace={true}
-                showVisitDate={true}
-            />
-        )
+            <NewDatasetDesigner model={NEW_DATASET_MODEL} useTheme={false} showDataspace={true} showVisitDate={true} />
+        );
     })
-    .add("edit dataset without dataspace" ,() => {
+    .add('edit dataset without dataspace', () => {
         return (
-            <EditDatasetDesigner
-                model={getDatasetDesign}
-                useTheme={false}
-                showDataspace={false}
-                showVisitDate={true}
-            />
-        )
+            <EditDatasetDesigner model={getDatasetDesign} useTheme={false} showDataspace={false} showVisitDate={true} />
+        );
     })
-    .add("edit dataset with dataspace" ,() => {
+    .add('edit dataset with dataspace', () => {
         return (
-            <EditDatasetDesigner
-                model={getDatasetDesign}
-                useTheme={false}
-                showDataspace={true}
-                showVisitDate={true}
-            />
-        )
+            <EditDatasetDesigner model={getDatasetDesign} useTheme={false} showDataspace={true} showVisitDate={true} />
+        );
     });

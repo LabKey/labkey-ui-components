@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 import React from 'react';
+
 import { ConfirmModal } from '../base/ConfirmModal';
 import { helpLinkNode } from '../../util/helpLinks';
+
 import { DeleteConfirmationData } from './actions';
 import { EntityDataType } from './models';
 
 interface Props {
-    onConfirm:  (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
-    onCancel: () => any
-    confirmationData: DeleteConfirmationData
-    entityDataType: EntityDataType
+    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
+    onCancel: () => any;
+    confirmationData: DeleteConfirmationData;
+    entityDataType: EntityDataType;
 }
 
 /**
@@ -33,14 +35,11 @@ interface Props {
  * different confirmation data scenarios.
  */
 export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any> {
-
-    getConfirmationProperties() : {message: any, title: string, canDelete: boolean}{
-
-        const { confirmationData, entityDataType  } = this.props;
+    getConfirmationProperties(): { message: any; title: string; canDelete: boolean } {
+        const { confirmationData, entityDataType } = this.props;
         const { deleteHelpLinkTopic, nounSingular, nounPlural, dependencyText } = entityDataType;
 
-        if (!confirmationData)
-            return undefined;
+        if (!confirmationData) return undefined;
 
         const numCanDelete = confirmationData.canDelete.length;
         const numCannotDelete = confirmationData.cannotDelete.length;
@@ -50,50 +49,62 @@ export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any>
         const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
         let text;
         if (totalNum === 0) {
-            text = "Either no " + nounPlural + " are selected for deletion or the selected " + nounPlural + " are no longer valid."
-        }
-        else if (numCannotDelete === 0)  {
-            text = totalNum === 1 ? "The selected "  : (totalNum === 2 ? "Both " : "All " + totalNum + " ");
-            text += totalNoun + " will be permanently deleted."
-        }
-        else if (numCanDelete === 0) {
+            text =
+                'Either no ' +
+                nounPlural +
+                ' are selected for deletion or the selected ' +
+                nounPlural +
+                ' are no longer valid.';
+        } else if (numCannotDelete === 0) {
+            text = totalNum === 1 ? 'The selected ' : totalNum === 2 ? 'Both ' : 'All ' + totalNum + ' ';
+            text += totalNoun + ' will be permanently deleted.';
+        } else if (numCanDelete === 0) {
             if (totalNum === 1) {
-                text = "The " + totalNoun + " you've selected cannot be deleted because it has " + dependencyText + ".  ";
+                text =
+                    'The ' + totalNoun + " you've selected cannot be deleted because it has " + dependencyText + '.  ';
             } else {
-                text = (numCannotDelete === 2) ? "Neither of" : "None of";
-                text += " the " + totalNum + " " + totalNoun + " you've selected can be deleted";
-                text += " because they have " + dependencyText + ".";
+                text = numCannotDelete === 2 ? 'Neither of' : 'None of';
+                text += ' the ' + totalNum + ' ' + totalNoun + " you've selected can be deleted";
+                text += ' because they have ' + dependencyText + '.';
             }
-        }
-        else {
-            text = "You've selected " + totalNum + " " + totalNoun + " but only " + numCanDelete + " can be deleted.  ";
-            text += numCannotDelete + " " + cannotDeleteNoun + " cannot be deleted because ";
-            text += (numCannotDelete === 1 ? " it has ": " they have ") + dependencyText + "."
+        } else {
+            text = "You've selected " + totalNum + ' ' + totalNoun + ' but only ' + numCanDelete + ' can be deleted.  ';
+            text += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
+            text += (numCannotDelete === 1 ? ' it has ' : ' they have ') + dependencyText + '.';
         }
         const message = (
             <span>
                 {text}
-                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(deleteHelpLinkTopic, "more info")})</>}
-                {numCanDelete > 0 && <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>  Do you want to proceed?</p>}
+                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(deleteHelpLinkTopic, 'more info')})</>}
+                {numCanDelete > 0 && (
+                    <p className="top-spacing">
+                        <strong>Deletion cannot be undone.</strong> Do you want to proceed?
+                    </p>
+                )}
             </span>
         );
 
         return {
-            message: message,
-            title: numCanDelete > 0 ? "Permanently delete " + numCanDelete + " " + canDeleteNoun + "?" : (totalNum === 1 ? "Cannot delete " + nounSingular : "No " + nounPlural + " can be deleted"),
-            canDelete: numCanDelete > 0
+            message,
+            title:
+                numCanDelete > 0
+                    ? 'Permanently delete ' + numCanDelete + ' ' + canDeleteNoun + '?'
+                    : totalNum === 1
+                    ? 'Cannot delete ' + nounSingular
+                    : 'No ' + nounPlural + ' can be deleted',
+            canDelete: numCanDelete > 0,
         };
     }
 
     onConfirm = () => {
         const { onConfirm } = this.props;
         if (onConfirm) {
-            onConfirm(this.props.confirmationData.canDelete, this.props.confirmationData.cannotDelete)
+            onConfirm(this.props.confirmationData.canDelete, this.props.confirmationData.cannotDelete);
         }
     };
 
     render() {
-        const {onCancel } = this.props;
+        const { onCancel } = this.props;
         const confirmProps = this.getConfirmationProperties();
         return (
             <ConfirmModal
@@ -101,10 +112,10 @@ export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any>
                 msg={confirmProps.message}
                 onConfirm={confirmProps.canDelete ? this.onConfirm : undefined}
                 onCancel={onCancel}
-                confirmVariant='danger'
+                confirmVariant="danger"
                 confirmButtonText={confirmProps.canDelete ? 'Yes, Delete' : undefined}
                 cancelButtonText={confirmProps.canDelete ? 'Cancel' : 'Dismiss'}
             />
-        )
+        );
     }
 }

@@ -1,32 +1,35 @@
 import React, { PureComponent, ComponentType } from 'react';
 
 export interface InjectedDomainPropertiesPanelCollapseProps {
-    controlledCollapse: boolean
-    collapsible?: boolean
-    collapsed: boolean
-    togglePanel: (evt: any, collapsed?: boolean) => void
+    controlledCollapse: boolean;
+    collapsible?: boolean;
+    collapsed: boolean;
+    togglePanel: (evt: any, collapsed?: boolean) => void;
 }
 
 export interface MakeDomainPropertiesPanelCollapseProps {
-    controlledCollapse: boolean
-    collapsible?: boolean
-    initCollapsed: boolean
-    onToggle?: (collapsed: boolean, callback: () => any) => any
+    controlledCollapse: boolean;
+    collapsible?: boolean;
+    initCollapsed: boolean;
+    onToggle?: (collapsed: boolean, callback: () => any) => any;
 }
 
 interface State {
-    collapsed: boolean
+    collapsed: boolean;
 }
 
-export function withDomainPropertiesPanelCollapse<Props>(ComponentToWrap: ComponentType<Props & InjectedDomainPropertiesPanelCollapseProps>)
-    : ComponentType<Props & MakeDomainPropertiesPanelCollapseProps> {
-    class ComponentWithDomainPropertiesPanelCollapse extends PureComponent<Props & MakeDomainPropertiesPanelCollapseProps, State> {
-
+export function withDomainPropertiesPanelCollapse<Props>(
+    ComponentToWrap: ComponentType<Props & InjectedDomainPropertiesPanelCollapseProps>
+): ComponentType<Props & MakeDomainPropertiesPanelCollapseProps> {
+    class ComponentWithDomainPropertiesPanelCollapse extends PureComponent<
+        Props & MakeDomainPropertiesPanelCollapseProps,
+        State
+    > {
         constructor(props: Props & MakeDomainPropertiesPanelCollapseProps) {
             super(props);
 
             this.state = {
-                collapsed: false
+                collapsed: false,
             };
         }
 
@@ -40,7 +43,7 @@ export function withDomainPropertiesPanelCollapse<Props>(ComponentToWrap: Compon
         }
 
         toggleLocalPanel = (collapsed?: boolean) => {
-            this.setState((state) => ({
+            this.setState(state => ({
                 collapsed: collapsed !== undefined ? collapsed : !state.collapsed,
             }));
         };
@@ -50,15 +53,14 @@ export function withDomainPropertiesPanelCollapse<Props>(ComponentToWrap: Compon
 
             if (collapsible || controlledCollapse) {
                 if (onToggle) {
-                    onToggle((collapsed !== undefined ? collapsed : !this.state.collapsed), this.toggleLocalPanel);
-                }
-                else {
-                    this.toggleLocalPanel(collapsed)
+                    onToggle(collapsed !== undefined ? collapsed : !this.state.collapsed, this.toggleLocalPanel);
+                } else {
+                    this.toggleLocalPanel(collapsed);
                 }
             }
         };
 
-        render () {
+        render() {
             // pull out MakeDomainPropertiesPanelCollapseProps as we don't want to pass that to children
             const { initCollapsed, onToggle, controlledCollapse, collapsible, ...props } = this.props;
             const { collapsed } = this.state;
@@ -69,9 +71,9 @@ export function withDomainPropertiesPanelCollapse<Props>(ComponentToWrap: Compon
                     collapsible={collapsible}
                     collapsed={collapsed}
                     togglePanel={this.togglePanel}
-                    {...props as Props}
+                    {...(props as Props)}
                 />
-            )
+            );
         }
     }
 

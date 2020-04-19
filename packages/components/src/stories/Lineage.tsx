@@ -26,23 +26,21 @@ import './stories.scss';
 
 storiesOf('Lineage', module)
     .addDecorator(withKnobs)
-    .add("LineageGraph", () => {
+    .add('LineageGraph', () => {
         return (
             <LineageGraph
-                lsid={'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3'}
-                grouping={{generations: LINEAGE_GROUPING_GENERATIONS.Specific}}
+                lsid="urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3"
+                grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
                 filters={[new LineageFilter('type', ['Sample', 'Data'])]}
             />
-        )
+        );
     })
-    .add("LineageGrid", () => {
+    .add('LineageGrid', () => {
         return (
             <Panel>
                 <Panel.Body>
-                    <LineageGrid
-                        lsid={'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3'}
-                    />
+                    <LineageGrid lsid="urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3" />
                 </Panel.Body>
             </Panel>
-        )
+        );
     });

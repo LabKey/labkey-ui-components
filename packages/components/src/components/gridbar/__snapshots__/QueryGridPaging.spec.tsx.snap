@@ -13,7 +13,8 @@ Array [
        - 
       20
     </span>
-     of 
+     
+    of 
     50
   </span>,
   <div
@@ -136,7 +137,8 @@ Array [
        - 
       50
     </span>
-     of 
+     
+    of 
     50
   </span>,
   <div
@@ -259,7 +261,8 @@ Array [
        - 
       40
     </span>
-     of 
+     
+    of 
     50
   </span>,
   <div
@@ -491,7 +494,8 @@ Array [
        - 
       50
     </span>
-     of 
+     
+    of 
     50
   </span>,
   <div
@@ -613,7 +617,8 @@ exports[`<QueryGridPaging/> pageSize equals total rows 1`] = `
      - 
     50
   </span>
-   of 
+   
+  of 
   50
 </span>
 `;

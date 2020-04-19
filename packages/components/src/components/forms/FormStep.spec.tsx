@@ -19,54 +19,50 @@ import renderer from 'react-test-renderer';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './FormStep';
 
 interface OwnProps {
-   step?: number
+    step?: number;
 }
 type Props = OwnProps & WithFormStepsProps;
 
 class FormStepTestImpl extends React.Component<Props, any> {
-   componentWillMount(): void {
-      if (this.props.step !== undefined) {
-         this.props.selectStep(this.props.step);
-      }
-   }
+    componentWillMount(): void {
+        if (this.props.step !== undefined) {
+            this.props.selectStep(this.props.step);
+        }
+    }
 
-   render() {
-      return (
-          <>
-             <FormTabs tabs={['Tab 1', 'Tab 2']}/>
-             <FormStep stepIndex={1}>
-                <div>test0</div>
-             </FormStep>
-             <FormStep stepIndex={2}>
-                <div>test1</div>
-             </FormStep>
-          </>
-      )
-   }
+    render() {
+        return (
+            <>
+                <FormTabs tabs={['Tab 1', 'Tab 2']} />
+                <FormStep stepIndex={1}>
+                    <div>test0</div>
+                </FormStep>
+                <FormStep stepIndex={2}>
+                    <div>test1</div>
+                </FormStep>
+            </>
+        );
+    }
 }
 
 const FormStepTest = withFormSteps(FormStepTestImpl, {
-   currentStep: 1,
-   furthestStep: 2,
-   hasDependentSteps: true
+    currentStep: 1,
+    furthestStep: 2,
+    hasDependentSteps: true,
 });
 
-describe("<FormStep/>", () => {
-   test("default props", () => {
-      const component = (
-          <FormStepTest/>
-      );
+describe('<FormStep/>', () => {
+    test('default props', () => {
+        const component = <FormStepTest />;
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 
-   test("currentStep", () => {
-      const component = (
-          <FormStepTest step={2}/>
-      );
+    test('currentStep', () => {
+        const component = <FormStepTest step={2} />;
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });

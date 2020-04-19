@@ -1,7 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { RunDataPanel } from './RunDataPanel';
 import { getQueryGridModel } from '../../global';
 import { getStateQueryGridModel } from '../../models';
 import { gridInit } from '../../actions';
@@ -9,6 +8,8 @@ import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
 import { ASSAY_WIZARD_MODEL } from '../../test/data/constants';
 import { initUnitTestMocks } from '../../testHelpers';
 import { AssayUploadTabs } from '../base/models/model';
+
+import { RunDataPanel } from './RunDataPanel';
 
 let MODEL_ID_NOT_LOADED;
 let MODEL_ID_LOADED;
@@ -19,14 +20,14 @@ beforeAll(() => {
     let model = getStateQueryGridModel('jest-test-0', ASSAY_WIZARD_MODEL.queryInfo.schemaQuery, {
         editable: true,
         allowSelection: false,
-        bindURL: false
+        bindURL: false,
     });
     MODEL_ID_NOT_LOADED = model.getId();
 
     model = getStateQueryGridModel('jest-test-1', ASSAY_WIZARD_MODEL.queryInfo.schemaQuery, {
         editable: true,
         allowSelection: false,
-        bindURL: false
+        bindURL: false,
     });
 
     gridInit(model, false);
@@ -34,8 +35,8 @@ beforeAll(() => {
 });
 
 interface OwnProps {
-    fullWidth?: boolean
-    allowBulkRemove?: boolean
+    fullWidth?: boolean;
+    allowBulkRemove?: boolean;
 }
 type Props = OwnProps & WithFormStepsProps;
 
@@ -54,21 +55,19 @@ class RunDataPanelWrapperImpl extends React.Component<Props, any> {
                 onTextChange={jest.fn}
                 fullWidth={fullWidth}
                 allowBulkRemove={allowBulkRemove}
-
             />
-        )
+        );
     }
 }
 
 const RunDataPanelWrapper = withFormSteps(RunDataPanelWrapperImpl, {
     currentStep: AssayUploadTabs.Files,
     furthestStep: AssayUploadTabs.Grid,
-    hasDependentSteps: false
+    hasDependentSteps: false,
 });
 
-
-describe("<RunDataPanel/>", () => {
-    test("loading state based on gridModel", () => {
+describe('<RunDataPanel/>', () => {
+    test('loading state based on gridModel', () => {
         const component = (
             <RunDataPanel
                 currentStep={AssayUploadTabs.Files}
@@ -84,22 +83,15 @@ describe("<RunDataPanel/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("default props", () => {
-        const component = (
-            <RunDataPanelWrapper/>
-        );
+    test('default props', () => {
+        const component = <RunDataPanelWrapper />;
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("custom display props", () => {
-        const component = (
-            <RunDataPanelWrapper
-                allowBulkRemove={true}
-                fullWidth={true}
-            />
-        );
+    test('custom display props', () => {
+        const component = <RunDataPanelWrapper allowBulkRemove={true} fullWidth={true} />;
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();

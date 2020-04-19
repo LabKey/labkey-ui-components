@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {List, Map} from 'immutable';
+import { List, Map } from 'immutable';
 
 import { getBrowserHistory } from './global';
 
@@ -21,30 +21,28 @@ import { getBrowserHistory } from './global';
 // but here we have all fields optional to make it also compatible with the window.location object
 // we are not making use of action, key, state fields for now, but keeping them so the type is consistent with history.location type
 export type Location = {
-    action?: string
-    hash?: string
-    key?: string
-    pathname?: string
-    query?: any //{[key:string]: string}
-    search?: string
-    state?: any // {[key:string]: string}
-}
+    action?: string;
+    hash?: string;
+    key?: string;
+    pathname?: string;
+    query?: any; // {[key:string]: string}
+    search?: string;
+    state?: any; // {[key:string]: string}
+};
 
-export function getLocation() : Location
-{
+export function getLocation(): Location {
     const location = getBrowserHistory().location;
     const { action, pathname, search, key, state } = location;
 
     let hash = location.hash;
-    let query =  Map<string, string>().asMutable();
-    const parseParams = (p) => {
+    let query = Map<string, string>().asMutable();
+    const parseParams = p => {
         const keyVal = p.split('=');
         query = query.set(keyVal[0].trim(), keyVal[1].trim());
     };
 
     // check for query params that are before the hash
-    if (search && search.length > 0)
-    {
+    if (search && search.length > 0) {
         const params = search.substring(1).split('&');
         params.forEach(parseParams);
     }
@@ -76,7 +74,8 @@ export function getRouteFromLocationHash(hash: string) {
 }
 
 export function buildQueryString(params: Map<string, string | number>): string {
-    let q = '', sep = '';
+    let q = '',
+        sep = '';
     params.forEach((v, k) => {
         q += sep + k + '=' + v;
         sep = '&';
@@ -89,29 +88,27 @@ function build(pathname: string, hash?: string, params?: Map<string, string | nu
     return pathname + (hash || '') + (params ? buildQueryString(params) : '');
 }
 
-function setParameter(location: Location, key: string, value: string | number, asReplace: boolean = false) {
+function setParameter(location: Location, key: string, value: string | number, asReplace = false) {
     const params = Map<string, string | number>();
     setParameters(location, params.set(key, value), asReplace);
 }
 
-function setParameters(location: Location, params: Map<string, string | number>, asReplace: boolean = false) {
+function setParameters(location: Location, params: Map<string, string | number>, asReplace = false) {
     const { query } = location;
 
-    let newParams = Map<string, string | number>(query).asMutable();
+    const newParams = Map<string, string | number>(query).asMutable();
     params.forEach((value, key) => {
         if (value === undefined) {
             newParams.delete(key);
-        }
-        else {
+        } else {
             newParams.set(key, value);
         }
     });
 
     if (asReplace) {
         getBrowserHistory().replace(build(location.pathname, location.hash, newParams.asImmutable()));
-    }
-    else {
-        getBrowserHistory().push(build(location.pathname, location.hash, newParams.asImmutable()))
+    } else {
+        getBrowserHistory().push(build(location.pathname, location.hash, newParams.asImmutable()));
     }
 }
 

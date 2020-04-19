@@ -1,44 +1,54 @@
 import React from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName } from './actions';
-import { DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR } from './constants';
-import { ConditionalFormat, DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DomainField, IDomainFormDisplayOptions, PropertyValidator } from './models';
-import { ValidatorModal } from './validation/ValidatorModal';
-import { RegexValidationOptions } from './validation/RegexValidationOptions';
-import { RangeValidationOptions } from './validation/RangeValidationOptions';
-import { ConditionalFormatOptions } from './validation/ConditionalFormatOptions';
+
 import {
     FIELD_EDITOR_CONDITIONAL_FORMAT_TOPIC,
     FIELD_EDITOR_RANGE_VALIDATION_TOPIC,
     FIELD_EDITOR_REGEX_TOPIC,
-    helpLinkNode
+    helpLinkNode,
 } from '../../util/helpLinks';
-import { SectionHeading } from "./SectionHeading";
-import { DomainFieldLabel } from "./DomainFieldLabel";
+
+import { isFieldFullyLocked } from './propertiesUtil';
+import { createFormInputId, createFormInputName } from './actions';
+import { DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR } from './constants';
+import {
+    ConditionalFormat,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    DomainField,
+    IDomainFormDisplayOptions,
+    PropertyValidator,
+} from './models';
+import { ValidatorModal } from './validation/ValidatorModal';
+import { RegexValidationOptions } from './validation/RegexValidationOptions';
+import { RangeValidationOptions } from './validation/RangeValidationOptions';
+import { ConditionalFormatOptions } from './validation/ConditionalFormatOptions';
+import { SectionHeading } from './SectionHeading';
+import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface ConditionalFormattingAndValidationProps {
-    index: number,
-    domainIndex: number
-    field: DomainField,
-    onChange: (string, any) => any
-    showingModal: (boolean) => any
-    hideConditionalFormatting?: boolean
-    successBsStyle?: string
-    domainFormDisplayOptions?: IDomainFormDisplayOptions
+    index: number;
+    domainIndex: number;
+    field: DomainField;
+    onChange: (string, any) => any;
+    showingModal: (boolean) => any;
+    hideConditionalFormatting?: boolean;
+    successBsStyle?: string;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
 }
 
 interface ConditionalFormattingAndValidationState {
-    showCondFormat: boolean,
-    showRegex: boolean,
-    showRange: boolean
+    showCondFormat: boolean;
+    showRegex: boolean;
+    showRange: boolean;
 }
 
-export class ConditionalFormattingAndValidation extends React.PureComponent<ConditionalFormattingAndValidationProps, ConditionalFormattingAndValidationState> {
-
+export class ConditionalFormattingAndValidation extends React.PureComponent<
+    ConditionalFormattingAndValidationProps,
+    ConditionalFormattingAndValidationState
+> {
     static defaultProps = {
-        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     };
 
     constructor(props) {
@@ -47,7 +57,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
         this.state = {
             showCondFormat: false,
             showRegex: false,
-            showRange: false
+            showRange: false,
         };
     }
 
@@ -68,19 +78,22 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>Range validators allow you to specify numeric comparisons that must be satisfied.</p>
 
-                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_RANGE_VALIDATION_TOPIC, "Range Validation")}.</p>
+                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_RANGE_VALIDATION_TOPIC, 'Range Validation')}.</p>
             </>
-        )
+        );
     };
 
     getRegexValidatorHelpText = () => {
         return (
             <>
-                <p>RegEx validators allow you to specify a regular expression that defines what string values are valid.</p>
+                <p>
+                    RegEx validators allow you to specify a regular expression that defines what string values are
+                    valid.
+                </p>
 
-                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_REGEX_TOPIC, "Regular Expression Validation")}.</p>
+                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_REGEX_TOPIC, 'Regular Expression Validation')}.</p>
             </>
-        )
+        );
     };
 
     getConditionalFormatHelpText = () => {
@@ -88,28 +101,29 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>Conditional formats allow targeted display formatting for values that meet defined conditions.</p>
 
-                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_CONDITIONAL_FORMAT_TOPIC, "Conditional Formats")}.</p>
+                <p>
+                    Learn more about using {helpLinkNode(FIELD_EDITOR_CONDITIONAL_FORMAT_TOPIC, 'Conditional Formats')}.
+                </p>
             </>
-        )
+        );
     };
 
     showHideConditionalFormat = () => {
         const { showingModal } = this.props;
 
-        this.setState((state) => ({showCondFormat: !state.showCondFormat}), showingModal(this.state.showCondFormat));
-
+        this.setState(state => ({ showCondFormat: !state.showCondFormat }), showingModal(this.state.showCondFormat));
     };
 
     showHideRegexValidator = () => {
         const { showingModal } = this.props;
 
-        this.setState((state) => ({showRegex: !state.showRegex}), showingModal(this.state.showRegex));
+        this.setState(state => ({ showRegex: !state.showRegex }), showingModal(this.state.showRegex));
     };
 
     showHideRangeValidator = () => {
         const { showingModal } = this.props;
 
-        this.setState((state) => ({showRange: !state.showRange}), showingModal(this.state.showRange));
+        this.setState(state => ({ showRange: !state.showRange }), showingModal(this.state.showRange));
     };
 
     renderValidator = (range: boolean) => {
@@ -120,48 +134,62 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
 
         return (
             <>
-            { domainFormDisplayOptions.showValidators &&
-                <div className={range ? '' : 'domain-validation-group'}>
-                    <div className={'domain-field-label domain-no-wrap'}>
-                        <DomainFieldLabel
-                            label={'Create ' + (range ? 'Range': 'Regular Expression') + ' Validator'}
-                            helpTipBody={range ? this.getRangeValidatorHelpText : this.getRegexValidatorHelpText}
-                        />
+                {domainFormDisplayOptions.showValidators && (
+                    <div className={range ? '' : 'domain-validation-group'}>
+                        <div className="domain-field-label domain-no-wrap">
+                            <DomainFieldLabel
+                                label={'Create ' + (range ? 'Range' : 'Regular Expression') + ' Validator'}
+                                helpTipBody={range ? this.getRangeValidatorHelpText : this.getRegexValidatorHelpText}
+                            />
+                        </div>
+                        <div>
+                            <Button
+                                className="domain-validation-button"
+                                name={createFormInputName(range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR)}
+                                id={createFormInputId(
+                                    range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR,
+                                    domainIndex,
+                                    index
+                                )}
+                                disabled={isFieldFullyLocked(field.lockType)}
+                                onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}
+                            >
+                                {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : range ? 'Add Range' : 'Add Regex'}
+                            </Button>
+                            {count === 0 ? (
+                                <span className="domain-text-label">None Set</span>
+                            ) : (
+                                <a
+                                    className="domain-validator-link"
+                                    onClick={
+                                        isFieldFullyLocked(field.lockType)
+                                            ? () => {}
+                                            : range
+                                            ? this.showHideRangeValidator
+                                            : this.showHideRegexValidator
+                                    }
+                                >
+                                    {'' + count + ' Active validator' + (count > 1 ? 's' : '')}
+                                </a>
+                            )}
+                        </div>
                     </div>
-                    <div>
-                        <Button
-                            className="domain-validation-button"
-                            name={createFormInputName((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR))}
-                            id={createFormInputId((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR), domainIndex, index)}
-                            disabled={isFieldFullyLocked(field.lockType)}
-                            onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}
-                        >
-                            {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : (range ? 'Add Range' : 'Add Regex')}
-                        </Button>
-                        {count === 0 ? <span className='domain-text-label'>None Set</span> :
-                            <a className='domain-validator-link'
-                               onClick={ isFieldFullyLocked(field.lockType) ? () => {} : (range ? this.showHideRangeValidator : this.showHideRegexValidator)}>
-                                {'' + count + ' Active validator' + (count > 1 ? 's' : '')}
-                            </a>}
-                    </div>
-                </div>
-                }
-             </>
-        )
+                )}
+            </>
+        );
     };
 
     renderConditionalFormats = () => {
         const { field, index, hideConditionalFormatting, domainIndex } = this.props;
-        if (hideConditionalFormatting)
-            return null;
+        if (hideConditionalFormatting) return null;
 
-        let count = field.conditionalFormats ? field.conditionalFormats.size : 0;
+        const count = field.conditionalFormats ? field.conditionalFormats.size : 0;
 
         return (
-            <div className='domain-validation-group'>
-                <div className={'domain-field-label domain-no-wrap'}>
+            <div className="domain-validation-group">
+                <div className="domain-field-label domain-no-wrap">
                     <DomainFieldLabel
-                        label={'Create Conditional Format Criteria'}
+                        label="Create Conditional Format Criteria"
                         helpTipBody={this.getConditionalFormatHelpText}
                     />
                 </div>
@@ -175,10 +203,19 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                     >
                         {count > 0 ? 'Edit Formats' : 'Add Format'}
                     </Button>
-                    {count === 0 ? <span className='domain-text-label'>None Set</span> :
-                        <a className='domain-validator-link' onClick={ isFieldFullyLocked(field.lockType) ? () => {} : (this.showHideConditionalFormat)}>{'' + count + ' Active format' + (count > 1 ? 's' : '')}</a>}
+                    {count === 0 ? (
+                        <span className="domain-text-label">None Set</span>
+                    ) : (
+                        <a
+                            className="domain-validator-link"
+                            onClick={isFieldFullyLocked(field.lockType) ? () => {} : this.showHideConditionalFormat}
+                        >
+                            {'' + count + ' Active format' + (count > 1 ? 's' : '')}
+                        </a>
+                    )}
                 </div>
-            </div>)
+            </div>
+        );
     };
 
     render() {
@@ -189,7 +226,9 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
         const RangeValidator = ValidatorModal(RangeValidationOptions);
         const RegexValidator = ValidatorModal(RegexValidationOptions);
 
-        const title = hideConditionalFormatting ? 'Validation Options' : 'Conditional Formatting and Validation Options';
+        const title = hideConditionalFormatting
+            ? 'Validation Options'
+            : 'Conditional Formatting and Validation Options';
         const showCondFormatSection = !hideConditionalFormatting;
         const showRegexSection = DomainField.hasRegExValidation(field);
         const showRangeSection = DomainField.hasRangeValidation(field);
@@ -201,21 +240,21 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
 
         return (
             <div>
-                <Row className='domain-row-expanded'>
+                <Row className="domain-row-expanded">
                     <Col xs={12}>
-                        <SectionHeading title={title} cls={'domain-field-section-hdr'}/>
+                        <SectionHeading title={title} cls="domain-field-section-hdr" />
                     </Col>
                 </Row>
-                <Row className='domain-row-expanded'>
+                <Row className="domain-row-expanded">
                     <Col xs={12}>
                         {showCondFormatSection && this.renderConditionalFormats()}
                         {showRegexSection && this.renderValidator(false)}
                         {showRangeSection && this.renderValidator(true)}
-                        {showCondFormat &&
+                        {showCondFormat && (
                             <CondFormatModal
-                                title={'Conditional Formatting ' + (field.name ? ('for ' + field.name) : '')}
-                                subTitle='Add New Formatting:'
-                                addName='formatting'
+                                title={'Conditional Formatting ' + (field.name ? 'for ' + field.name : '')}
+                                subTitle="Add New Formatting:"
+                                addName="formatting"
                                 index={index}
                                 show={showCondFormat}
                                 type={DOMAIN_COND_FORMAT}
@@ -226,12 +265,12 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                                 onApply={this.onApply}
                                 successBsStyle={successBsStyle}
                             />
-                        }
-                        {showRegex &&
+                        )}
+                        {showRegex && (
                             <RegexValidator
-                                title={'Regular Expression Validator ' + (field.name ? ('for ' + field.name) : '')}
-                                subTitle='Add New Validation Criteria:'
-                                addName='Regex Validator'
+                                title={'Regular Expression Validator ' + (field.name ? 'for ' + field.name : '')}
+                                subTitle="Add New Validation Criteria:"
+                                addName="Regex Validator"
                                 index={index}
                                 show={showRegex}
                                 type={DOMAIN_REGEX_VALIDATOR}
@@ -242,12 +281,12 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                                 onApply={this.onApply}
                                 successBsStyle={successBsStyle}
                             />
-                        }
-                        {showRange &&
+                        )}
+                        {showRange && (
                             <RangeValidator
-                                title={'Range Validator ' + (field.name ? ('for ' + field.name) : '')}
-                                subTitle='Add New Validation Criteria:'
-                                addName='Range Validator'
+                                title={'Range Validator ' + (field.name ? 'for ' + field.name : '')}
+                                subTitle="Add New Validation Criteria:"
+                                addName="Range Validator"
                                 index={index}
                                 show={showRange}
                                 type={DOMAIN_RANGE_VALIDATOR}
@@ -258,10 +297,10 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
                                 onApply={this.onApply}
                                 successBsStyle={successBsStyle}
                             />
-                        }
+                        )}
                     </Col>
                 </Row>
             </div>
-        )
+        );
     }
 }

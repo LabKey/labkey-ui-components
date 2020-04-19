@@ -11,7 +11,6 @@ import schemaData from '../data/query-getSchemas.json';
 import { Container, SchemaDetails } from '../../components/base/models/model';
 
 export class MockLookupProvider extends React.Component<any, ILookupContext> {
-
     constructor(props) {
         super(props);
 
@@ -19,7 +18,7 @@ export class MockLookupProvider extends React.Component<any, ILookupContext> {
             activeContainer: new Container({
                 id: 'e0ea3e55-3420-1035-8057-68fea9bfb3a0',
                 name: 'My Study',
-                path: '/StudyVerifyProject/My Study'
+                path: '/StudyVerifyProject/My Study',
             }),
             fetchContainers: () => Promise.resolve<List<Container>>(processContainers(containerData)),
             fetchQueries: (containerPath: string, schemaName: string) => {
@@ -30,15 +29,11 @@ export class MockLookupProvider extends React.Component<any, ILookupContext> {
                 const path = containerPath ? containerPath : this.state.activeContainer.path;
                 const data = schemaData.schemasByContainerPath[path];
                 return Promise.resolve<List<SchemaDetails>>(handleSchemas(data));
-            }
+            },
         };
     }
 
     render() {
-        return (
-            <LookupContextProvider value={this.state}>
-                {this.props.children}
-            </LookupContextProvider>
-        )
+        return <LookupContextProvider value={this.state}>{this.props.children}</LookupContextProvider>;
     }
 }

@@ -337,7 +337,8 @@ exports[`<QueryGridBar/> isPaged 1`] = `
              - 
             20
           </span>
-           of 
+           
+          of 
           34
         </span>
         <div

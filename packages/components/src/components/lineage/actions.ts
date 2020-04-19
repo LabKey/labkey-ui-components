@@ -74,7 +74,7 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
     });
 }
 
-function fetchLineageNodes(lsids: string[]): Promise<LineageNode[]> {
+export function fetchLineageNodes(lsids: string[]): Promise<LineageNode[]> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: ActionURL.buildURL('experiment', 'resolve.api'),
@@ -350,6 +350,6 @@ export function getPageNumberChangeURL(location: Location, seed: string, pageNum
     return url;
 }
 
-function processLineageResult(result: LineageResult, options?: LineageOptions): Promise<LineageResult> {
+export async function processLineageResult(result: LineageResult, options?: LineageOptions): Promise<LineageResult> {
     return getLineageNodeMetadata(result).then(r => getURLResolver(options).resolveNodes(r));
 }

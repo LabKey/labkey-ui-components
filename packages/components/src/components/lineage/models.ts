@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { immerable } from 'immer';
+import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
 import { GridColumn, LineageFilter, QueryInfo } from '../..';
 
@@ -417,6 +417,7 @@ export interface ILineage {
     sampleStats: any
     seed: string
     seedResult: LineageResult
+    seedResultError?: string
     seedResultLoadingState?: LineageLoadingState
 }
 
@@ -429,6 +430,7 @@ export class Lineage implements ILineage {
     readonly sampleStats: any;
     readonly seed: string;
     readonly seedResult: LineageResult;
+    readonly seedResultError?: string;
     readonly seedResultLoadingState: LineageLoadingState = LineageLoadingState.INITIALIZED;
 
     constructor(values?: Partial<ILineage>) {
@@ -494,7 +496,18 @@ export class Lineage implements ILineage {
     }
 
     isSeedLoaded(): boolean {
-        return this.seedResultLoadingState === LineageLoadingState.LOADED;
+        return !this.seedResultError && this.seedResultLoadingState === LineageLoadingState.LOADED;
+    }
+
+    /**
+     * Returns a deep copy of this model with props applied iff props is not empty/null/undefined else
+     * returns this.
+     * @param props
+     */
+    mutate(props: Partial<ILineage>): Lineage {
+        return produce(this, (draft: Draft<Lineage>) => {
+            Object.assign(draft, props);
+        });
     }
 }
 

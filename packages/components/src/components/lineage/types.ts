@@ -62,6 +62,6 @@ export interface LineageOptions {
     filterIn?: boolean
     filters?: LineageFilter[]
     grouping?: LineageGroupingOptions
-    prefetchSeed?: boolean
+    prefetchSeed?: boolean // TODO: Remove -- duplicate
     urlResolver?: LineageURLResolvers
 }

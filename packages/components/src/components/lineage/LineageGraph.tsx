@@ -3,13 +3,12 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import ReactN from 'reactn';
 import { Alert, LoadingSpinner } from '../..';
 
-import { loadLineageIfNeeded, NodeInteractionProvider, WithNodeInteraction } from './actions';
-import { DEFAULT_LINEAGE_DISTANCE } from './constants';
+import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage';
+import { NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { Lineage, LineageNode } from './models';
+import { LineageNode } from './models';
 import {
     isBasicNode,
     isClusterNode,
@@ -18,54 +17,13 @@ import {
     VisGraphCombinedNode,
     VisGraphNode,
     VisGraphNodeType,
-    VisGraphOptions,
 } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
 import { ClusterNodeDetail, LineageNodeDetail, SummaryOptions } from './node/LineageNodeDetail';
 
 interface LinageGraphOwnProps {
-    distance?: number
-    hideLegacyLinks?: boolean
-    lsid: string
     members?: LINEAGE_DIRECTIONS
     navigate?: (node: VisGraphNode) => any
-}
-
-export class LineageGraph extends ReactN.PureComponent<LinageGraphOwnProps & LineageOptions & SummaryOptions> {
-
-    static defaultProps = {
-        prefetchSeed: true
-    };
-
-    componentDidMount() {
-        loadLineageIfNeeded(this.props.lsid, this.props.distance, this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.lsid !== nextProps.lsid || this.props.distance !== nextProps.distance) {
-            loadLineageIfNeeded(nextProps.lsid, nextProps.distance, nextProps);
-        }
-    }
-
-    getLineage(): Lineage {
-        // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid_lineageResults.get(this.props.lsid);
-    }
-
-    render() {
-        const lineage = this.getLineage();
-
-        return <LineageGraphDisplay
-            {...this.props}
-            lineage={lineage}
-            visGraphOptions={lineage?.generateGraph(this.props)}
-        />
-    }
-}
-
-interface LineageGraphDisplayProps {
-    lineage: Lineage
-    visGraphOptions: VisGraphOptions
 }
 
 interface LineageGraphDisplayState {
@@ -74,15 +32,11 @@ interface LineageGraphDisplayState {
     selectedNodes: VisGraphNodeType[]
 }
 
-class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & LinageGraphOwnProps & LineageOptions & SummaryOptions, Partial<LineageGraphDisplayState>> {
-
-    static defaultProps = {
-        distance: DEFAULT_LINEAGE_DISTANCE
-    };
+class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOptions & LinageGraphOwnProps & LineageOptions & SummaryOptions, Partial<LineageGraphDisplayState>> {
 
     private readonly visGraphRef = undefined;
 
-    constructor(props: LineageGraphDisplayProps & LinageGraphOwnProps & LineageOptions & SummaryOptions) {
+    constructor(props: InjectedLineage & WithLineageOptions & LinageGraphOwnProps & LineageOptions & SummaryOptions) {
         super(props);
 
         this.visGraphRef = React.createRef();
@@ -262,3 +216,4 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
     }
 }
 
+export const LineageGraph = withLineage<LinageGraphOwnProps & SummaryOptions>(LineageGraphDisplay);

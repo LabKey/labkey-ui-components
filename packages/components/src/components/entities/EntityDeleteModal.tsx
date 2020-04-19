@@ -1,17 +1,14 @@
 import React from 'react'
 import { useState } from 'react'
 import { AuditBehaviorTypes } from '@labkey/api';
-import {
-    capitalizeFirstChar,
-    ConfirmModal,
-    EntityDataType,
-    EntityDeleteConfirmModal,
-    Progress,
-    QueryGridModel,
-    createDeleteErrorNotification,
-    createDeleteSuccessNotification,
-    deleteEntityDataRows,
-} from '@labkey/components';
+import { capitalizeFirstChar } from '../../util/utils';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { EntityDataType } from '../entities/models';
+import { EntityDeleteConfirmModal } from '../entities/EntityDeleteConfirmModal';
+import { Progress } from '../base/Progress';
+import { QueryGridModel } from '../base/models/model';
+import { createDeleteErrorNotification, createDeleteSuccessNotification } from '../notifications/messaging';
+import { deleteEntityDataRows } from '../entities/actions';
 
 interface Props {
     model: QueryGridModel
@@ -22,13 +19,14 @@ interface Props {
     onCancel: () => any
     entityDataType: EntityDataType
     auditBehavior?: AuditBehaviorTypes
+    notify?: () => void
 }
 
 export function EntityDeleteModal(props: Props) {
     const { auditBehavior, model, onCancel, afterDelete, beforeDelete, useSelected, entityDataType, maxSelected } = props;
     const { nounSingular, nounPlural } = entityDataType;
-    const [showProgress, setShowProgress] = useState();
-    const [numConfirmed, setNumConfirmed] = useState();
+    const [showProgress, setShowProgress] = useState(false);
+    const [numConfirmed, setNumConfirmed] = useState(0);
     const noun =  ' ' + getNoun(numConfirmed);
     let rowIds = undefined;
     let numSelected = 0;
@@ -51,6 +49,7 @@ export function EntityDeleteModal(props: Props) {
     }
 
     function onConfirm(rowsToDelete: Array<any>, rowsToKeep: Array<any>): void {
+        const { notify } = this.props;
         setNumConfirmed(rowsToDelete.length);
         setShowProgress(true);
         beforeDelete();
@@ -58,11 +57,11 @@ export function EntityDeleteModal(props: Props) {
 
         deleteEntityDataRows(model, rowsToDelete, nounSingular, nounPlural, () => {
             afterDelete(rowsToKeep);
-            createDeleteSuccessNotification(noun, rowsToDelete.length);
+            createDeleteSuccessNotification(noun, rowsToDelete.length, notify);
             // createDeleteSuccessNotification(notify, noun, rowsToDelete.length);
         }, () => {
             setShowProgress(false);
-            createDeleteErrorNotification(noun);
+            createDeleteErrorNotification(noun, notify);
             // createDeleteErrorNotification(notify, noun);
         }, auditBehavior);
     }

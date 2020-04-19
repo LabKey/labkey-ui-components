@@ -203,6 +203,7 @@ import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
+import { EntityDeleteModal } from './components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './components/entities/ParentEntityEditPanel';
 import { createDeleteSuccessNotification, createDeleteErrorNotification } from './components/notifications/messaging';
 import {
@@ -537,6 +538,7 @@ export {
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
+    EntityDeleteModal,
     EntityDataType,
     EntityInsertPanel,
     SampleTypeDataType,

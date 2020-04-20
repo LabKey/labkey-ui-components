@@ -17,7 +17,7 @@ import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DomainField,
     IDomainFormDisplayOptions,
-    PropertyValidator,
+    PropertyValidator
 } from './models';
 import { ValidatorModal } from './validation/ValidatorModal';
 import { RegexValidationOptions } from './validation/RegexValidationOptions';

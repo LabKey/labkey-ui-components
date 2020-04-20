@@ -22,7 +22,7 @@ import {
     IFieldChange,
     PropDescType,
 } from './models';
-import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
+import {createFormInputId, createFormInputName, getCheckedValue, getNameFromId} from './actions';
 import {
     DOMAIN_DEFAULT_TYPES,
     DOMAIN_EDITABLE_DEFAULT,
@@ -84,7 +84,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     constructor(props) {
         super(props);
 
-        this.state = this.getInitialState(this.props.field, this.props.domainId, this.props.defaultDefaultValueType);
+        this.state = this.getInitialState(
+            this.props.field, this.props.domainId, this.props.defaultDefaultValueType
+        );
     }
 
     initializeState = () => {

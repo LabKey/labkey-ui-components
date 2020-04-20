@@ -144,29 +144,27 @@ export function loadLineageIfNeeded(seed: string, distance?: number, options?: L
     }
 
     // create the initial lineage model for this seed
-    updateLineageResult(seed, new Lineage({ seed }));
-
-    if (options?.prefetchSeed) {
-        // fetch seed node asynchronously to allow for decoupled loading
-        loadSeed(seed, options);
-    }
-
-    persistLineage(seed, (draft: Draft<Lineage>) => {
-        draft.resultLoadingState = LineageLoadingState.LOADING;
+    const lineage = new Lineage({
+        seed,
+        resultLoadingState: LineageLoadingState.LOADING,
     });
 
     return fetchLineage(seed, distance)
         .then(result => processLineageResult(result, options))
-        .then(result => persistLineage(seed, (draft) => {
-            draft.result = result;
-            draft.resultLoadingState = LineageLoadingState.LOADED;
-        }))
+        .then(result => {
+            updateLineageResult(seed, produce(lineage, (draft: Draft<Lineage>) => {
+                draft.result = result;
+                draft.resultLoadingState = LineageLoadingState.LOADED;
+            }));
+            return getLineageResult(seed);
+        })
         .catch(reason => {
             console.error(reason);
-            return persistLineage(seed, (draft) => {
+            updateLineageResult(seed, produce(lineage, (draft: Draft<Lineage>) => {
                 draft.error = reason.message;
                 draft.resultLoadingState = LineageLoadingState.LOADED;
-            });
+            }));
+            return getLineageResult(seed);
         });
 }
 
@@ -182,35 +180,10 @@ export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promis
     ]).then(values => {
         const [ lineage, sampleSets ] = values;
 
-        return persistLineage(seed, (draft) => {
+        updateLineageResult(seed, produce(lineage, (draft: Draft<Lineage>) => {
             draft.sampleStats = computeSampleCounts(lineage, sampleSets);
-        });
-    });
-}
-
-function persistLineage(seed: string, recipe: (draft: Draft<Lineage>) => void): Lineage {
-    updateLineageResult(seed, produce(getLineageResult(seed), recipe));
-    return getLineageResult(seed);
-}
-
-function loadSeed(seed: string, options?: LineageOptions): void {
-    persistLineage(seed, (draft: Draft<Lineage>) => {
-        draft.seedResultLoadingState = LineageLoadingState.LOADING;
-    });
-
-    fetchLineageNodes([seed]).then((nodes) => {
-        if (nodes.length === 1) {
-            // create a LineageResult from the seed alone
-            processLineageResult(LineageResult.create({
-                nodes: { [seed]: nodes[0] },
-                seed,
-            }), options).then((seedResult) => {
-                persistLineage(seed, (draft: Draft<Lineage>) => {
-                    draft.seedResult = seedResult;
-                    draft.seedResultLoadingState = LineageLoadingState.LOADED;
-                });
-            });
-        }
+        }));
+        return getLineageResult(seed);
     });
 }
 

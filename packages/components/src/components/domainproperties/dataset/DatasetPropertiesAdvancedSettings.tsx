@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Checkbox, Col, FormControl, Modal, Row} from 'react-bootstrap';
 import {helpLinkNode, initQueryGridState, QuerySelect, SCHEMAS, SelectInput} from '../../..';
 import {DatasetAdvancedSettingsForm, DatasetModel} from "./models";
-import {fetchVisitDateColumns, getHelpTip} from "./actions";
+import {fetchCohorts, fetchVisitDateColumns, getHelpTip} from "./actions";
 import "../../../theme/dataset.scss";
 import {DomainFieldLabel} from "../DomainFieldLabel";
 import {SectionHeading} from "../SectionHeading";
@@ -154,6 +154,13 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     componentDidMount() {
         const model = this.props.model;
 
+        fetchCohorts()
+            .then((data) => {
+                this.setState(() => ({
+                    availableCohorts: data.toArray()
+                }));
+            });
+
         this.setState(() => ({
             visitDateColumns: fetchVisitDateColumns(model.domain).toArray()
         }));
@@ -231,7 +238,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             showByDefault,
             visitDatePropertyName,
             visitDateColumns,
-            dataSharing
+            dataSharing,
+            availableCohorts
         } = this.state;
 
         const {
@@ -286,34 +294,42 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 onSelectChange={this.onSelectChange}
                             />
                         }
-                        {/*** Category ID - Query Select ***/}
-                        <Row className={'margin-top'}>
+                        {/*** TODO: Look into - Cohort- Query Select didn't work  ***/}
+                        <DatasetSettingsSelect
+                            name="cohortId"
+                            label="Cohort Association"
+                            helpTip={this.getHelpTipElement("cohort")}
+                            selectOptions={availableCohorts}
+                            selectedValue={cohortId}
+                            onSelectChange={this.onSelectChange}
+                        />
+                        {/*<Row className={'margin-top'}>*/}
 
-                            <Col xs={5} >
-                                <DomainFieldLabel
-                                    label={"Cohort Association"}
-                                    helpTipBody={() => this.getHelpTipElement("tag")}
-                                />
-                            </Col>
+                        {/*    <Col xs={5} >*/}
+                        {/*        <DomainFieldLabel*/}
+                        {/*            label={"Cohort Association"}*/}
+                        {/*            helpTipBody={() => this.getHelpTipElement("tag")}*/}
+                        {/*        />*/}
+                        {/*    </Col>*/}
 
-                            <Col xs={7} >
-                                <QuerySelect
-                                    componentId={"cohortId"}
-                                    name={"cohortId"}
-                                    schemaQuery={SCHEMAS.STUDY_TABLES.COHORT}
-                                    formsy={false}
-                                    showLabel={false}
-                                    preLoad={true}
-                                    loadOnChange={true}
-                                    onQSChange={this.onSelectChange}
-                                    value={cohortId}
-                                    displayColumn={'label'}
-                                    valueColumn={'rowId'}
-                                    inputClass={"col-xs-12"}
+                        {/*    <Col xs={7} >*/}
+                        {/*        <QuerySelect*/}
+                        {/*            componentId={"cohortId"}*/}
+                        {/*            name={"cohortId"}*/}
+                        {/*            schemaQuery={SCHEMAS.STUDY_TABLES.COHORT}*/}
+                        {/*            formsy={false}*/}
+                        {/*            showLabel={false}*/}
+                        {/*            preLoad={true}*/}
+                        {/*            loadOnChange={true}*/}
+                        {/*            onQSChange={this.onSelectChange}*/}
+                        {/*            value={cohortId}*/}
+                        {/*            displayColumn={'label'}*/}
+                        {/*            valueColumn={'rowId'}*/}
+                        {/*            inputClass={"col-xs-12"}*/}
 
-                                />
-                            </Col>
-                        </Row>
+                        {/*        />*/}
+                        {/*    </Col>*/}
+                        {/*</Row>*/}
 
                         <DatasetSettingsInput
                             name="tag"

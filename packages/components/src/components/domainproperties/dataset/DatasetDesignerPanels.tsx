@@ -86,8 +86,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     };
 
     onColumnMappingChange = (participantIdField?: string, timePointField?: string) => {
-      console.log("ParticipantID = ", participantIdField);
-      console.log("Timepoint = ", timePointField);
+      //TODO: these will be needed in import data call
     };
 
     datasetColumnMapping = () => {
@@ -119,7 +118,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             file: fileImportData,
             importUrl: ActionURL.buildURL(
                 'study',
-                'UploadDatasetItems',
+                'import',
                 getServerContext().container.path,
                 {'name': model.name}
             )

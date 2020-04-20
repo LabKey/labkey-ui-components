@@ -68,6 +68,29 @@ export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
     return visitDateColumns;
 }
 
+export function fetchCohorts(): Promise<List<Option>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            saveInSession: true,
+            schemaName: 'study',
+            queryName: 'Cohort'
+        }).then((data) => {
+            const models = fromJS(data.models[data.key]);
+            let cohorts = List<Option>();
+
+            data.orderedModels[data.key].forEach((modelKey) => {
+                const row = models.get(modelKey);
+                const value = row.getIn(['rowid', 'value']);
+                const label = row.getIn(['label', 'value']);
+
+                cohorts = cohorts.push({value, label});
+            });
+
+            resolve(cohorts);
+        })
+    });
+}
+
 export function getHelpTip (fieldName: string) : string {
     let helpTip = '';
 

@@ -14,36 +14,39 @@
  * limitations under the License.
  */
 
-import {DatasetModel} from "./models";
-import {NEW_DATASET_MODEL} from "../../../test/data/constants";
-import getDatasetDesign from "../../../test/data/dataset-getDatasetDesign.json";
-import {DatasetDesignerPanels} from "./DatasetDesignerPanels";
-import renderer from "react-test-renderer";
-import React from "react";
-import {mount} from "enzyme";
-import toJson from "enzyme-to-json";
-import {Alert} from "../../..";
-import {PROPERTIES_PANEL_ERROR_MSG} from "../constants";
+import renderer from 'react-test-renderer';
+import React from 'react';
+import { mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
-describe("Dataset Designer", () => {
+import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
+import { NEW_DATASET_MODEL } from '../../../test/data/constants';
+import { Alert } from '../../..';
+import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
+import { DatasetDesignerPanels } from './DatasetDesignerPanels';
+
+import { DatasetModel } from './models';
+
+describe('Dataset Designer', () => {
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
-    test("New dataset", () => {
-        const designerPanel =
+    test('New dataset', () => {
+        const designerPanel = (
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
-            />;
+            />
+        );
 
         const dom = renderer.create(designerPanel).toJSON();
         expect(dom).toMatchSnapshot();
     });
 
-    test("Edit existing dataset", () => {
+    test('Edit existing dataset', () => {
         const designerPanels = mount(
             <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
@@ -79,7 +82,9 @@ describe("Dataset Designer", () => {
 
         expect(wrapped.find(Alert)).toHaveLength(2);
         expect(wrapped.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
-        expect(wrapped.find(Alert).at(1).text()).toEqual('Please correct errors in the properties panel before saving.');
+        expect(wrapped.find(Alert).at(1).text()).toEqual(
+            'Please correct errors in the properties panel before saving.'
+        );
         wrapped.unmount();
     });
 });

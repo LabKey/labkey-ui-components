@@ -132,7 +132,7 @@ import {
     initQueryGridState,
     invalidateLineageResults,
     invalidateUsers,
-    removeQueryGridModel
+    removeQueryGridModel,
 } from './global';
 import {
     deleteRows,
@@ -160,7 +160,7 @@ import {
     AssayResolver,
     AssayRunResolver,
     ListResolver,
-    SamplesResolver
+    SamplesResolver,
 } from './util/AppURLResolver';
 import { QueryGridPanel } from './components/QueryGridPanel';
 import { EditableGridPanel } from './components/editable/EditableGridPanel';
@@ -179,7 +179,7 @@ import { MultiValueRenderer } from './renderers/MultiValueRenderer';
 import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
-import { resolveDetailFieldValue } from './components/forms/renderers';
+import { resolveDetailFieldValue, resolveRenderer } from './components/forms/renderers';
 import { QueryFormInputs, getQueryFormLabelFieldName, isQueryFormLabelField } from './components/forms/QueryFormInputs';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput, SelectInputProps } from './components/forms/input/SelectInput';
@@ -192,8 +192,12 @@ import { FieldEditForm, FieldEditProps } from './components/forms/input/FieldEdi
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
-import { resolveRenderer } from './components/forms/renderers';
-import { resolveDetailRenderer, titleRenderer, resolveDetailEditRenderer } from './components/forms/detail/DetailEditRenderer';
+
+import {
+    resolveDetailRenderer,
+    titleRenderer,
+    resolveDetailEditRenderer,
+} from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
 import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
 import { ISelectInitData, IUser } from './components/forms/model';
@@ -211,12 +215,19 @@ import {
     IEntityTypeOption,
     MaterialOutput,
     GenerateEntityResponse,
+    EntityDataType,
 } from './components/entities/models';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
 import { searchUsingIndex } from './components/search/actions';
-import { SearchResultsModel,  SearchResultCardData } from './components/search/models';
-import { deleteSampleSet, fetchSamples, getSampleSet, getSampleTypeDetails, loadSelectedSamples } from './components/samples/actions';
+import { SearchResultsModel, SearchResultCardData } from './components/search/models';
+import {
+    deleteSampleSet,
+    fetchSamples,
+    getSampleSet,
+    getSampleTypeDetails,
+    loadSelectedSamples,
+} from './components/samples/actions';
 import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
@@ -268,12 +279,7 @@ import { UserProfile } from './components/user/UserProfile';
 import { ChangePasswordModal } from './components/user/ChangePasswordModal';
 import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 
-import {
-    createFormInputId,
-    fetchDomain,
-    saveDomain,
-    setDomainFields,
-} from './components/domainproperties/actions';
+import { createFormInputId, fetchDomain, saveDomain, setDomainFields } from './components/domainproperties/actions';
 import {
     DomainDesign,
     DomainField,
@@ -290,12 +296,12 @@ import { fetchProtocol, saveAssayDesign } from './components/domainproperties/as
 import { AssayProtocolModel } from './components/domainproperties/assay/models';
 import { AssayPropertiesPanel } from './components/domainproperties/assay/AssayPropertiesPanel';
 import { AssayDesignerPanels } from './components/domainproperties/assay/AssayDesignerPanels';
-import { ListDesignerPanels } from "./components/domainproperties/list/ListDesignerPanels";
-import { ListModel } from "./components/domainproperties/list/models";
-import { DatasetDesignerPanels} from "./components/domainproperties/dataset/DatasetDesignerPanels";
-import { DatasetModel} from "./components/domainproperties/dataset/models";
-import { fetchListDesign, getListProperties } from "./components/domainproperties/list/actions";
-import { fetchDatasetDesign, getDatasetProperties } from "./components/domainproperties/dataset/actions";
+import { ListDesignerPanels } from './components/domainproperties/list/ListDesignerPanels';
+import { ListModel } from './components/domainproperties/list/models';
+import { DatasetDesignerPanels } from './components/domainproperties/dataset/DatasetDesignerPanels';
+import { DatasetModel } from './components/domainproperties/dataset/models';
+import { fetchListDesign, getListProperties } from './components/domainproperties/list/actions';
+import { fetchDatasetDesign, getDatasetProperties } from './components/domainproperties/dataset/actions';
 import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
@@ -307,11 +313,15 @@ import { PermissionAssignments } from './components/permissions/PermissionAssign
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './components/permissions/models';
 import { fetchContainerSecurityPolicy } from './components/permissions/actions';
-import { getDataDeleteConfirmationData, getSampleDeleteConfirmationData, extractEntityTypeOptionFromRow } from './components/entities/actions';
-import { EntityDataType } from './components/entities/models';
+import {
+    getDataDeleteConfirmationData,
+    getSampleDeleteConfirmationData,
+    extractEntityTypeOptionFromRow,
+} from './components/entities/actions';
+
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
-import { SampleTypeModel } from "./components/domainproperties/samples/models";
-import { SampleTypeDesigner } from "./components/domainproperties/samples/SampleTypeDesigner";
+import { SampleTypeModel } from './components/domainproperties/samples/models';
+import { SampleTypeDesigner } from './components/domainproperties/samples/SampleTypeDesigner';
 
 import { QueryModel } from './QueryModel/QueryModel';
 import { QueryModelLoader } from './QueryModel/QueryModelLoader';
@@ -335,7 +345,6 @@ export {
     getQueryGridModelsForGridId,
     getEditorModel,
     removeQueryGridModel,
-
     // grid functions
     getSelected,
     getSelection,
@@ -345,7 +354,6 @@ export {
     queryGridInvalidate,
     schemaGridInvalidate,
     gridShowError,
-
     // query related items
     ISelectRowsResult,
     InsertRowsResponse,
@@ -362,13 +370,11 @@ export {
     invalidateQueryDetailsCacheKey,
     setSelected,
     unselectAll,
-
     // editable grid related items
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     EditableGridLoaderFromSelection,
     EditableGridLoader,
-
     // location related items
     Location,
     URLResolver,
@@ -382,7 +388,6 @@ export {
     replaceParameter,
     replaceParameters,
     resetParameters,
-
     // renderers
     AliasRenderer,
     AppendUnits,
@@ -393,7 +398,6 @@ export {
     resolveDetailRenderer,
     titleRenderer,
     resolveRenderer,
-
     // components
     LabelOverlay,
     EditableGridPanel,
@@ -427,7 +431,6 @@ export {
     EditableColumnMetadata,
     EditorModel,
     ExpandableContainer,
-
     // user-related
     getUsersWithPermissions,
     invalidateUsers,
@@ -436,13 +439,11 @@ export {
     UserProfile,
     ChangePasswordModal,
     SiteUsersGridPanel,
-
     // data class
     DataClassDesigner,
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
-
     // samples-related
     SampleTypeDesigner,
     SampleTypeModel,
@@ -452,14 +453,12 @@ export {
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
-
     // search-related
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
     SearchResultCardData,
-
     // assay
     AssayUploadResultModel,
     AssayDesignDeleteConfirmModal,
@@ -483,19 +482,16 @@ export {
     getRunPropertiesRow,
     getBatchPropertiesModel,
     getBatchPropertiesRow,
-
     // lists
     ListDesignerPanels,
     ListModel,
     fetchListDesign,
     getListProperties,
-
-    //dataset
+    // dataset
     DatasetDesignerPanels,
     DatasetModel,
     fetchDatasetDesign,
     getDatasetProperties,
-
     // forms
     handleInputTab,
     handleTabKeyOnTextArea,
@@ -508,23 +504,19 @@ export {
     FormTabs,
     ISelectInitData,
     IMPORT_DATA_FORM_TYPES,
-
     // heatmap
     addDateRangeFilter,
     last12Months,
     monthSort,
-
     // DataViewInfo
     DataViewInfoTypes,
     IDataViewInfo,
-
     // report-list
     loadReports,
     flattenBrowseDataTreeResponse,
     ReportListItem,
     ReportItemModal,
     ReportList,
-
     // lineage
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
@@ -536,7 +528,6 @@ export {
     invalidateLineageResults,
     getSampleDeleteConfirmationData,
     getDataDeleteConfirmationData,
-
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -552,7 +543,6 @@ export {
     IEntityTypeOption,
     MaterialOutput,
     GenerateEntityResponse,
-
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,
@@ -565,7 +555,6 @@ export {
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
-
     // DomainProperties
     DomainForm,
     DomainFieldsDisplay,
@@ -590,7 +579,6 @@ export {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
-
     // Base
     GRID_CHECKBOX_OPTIONS,
     PermissionTypes,
@@ -684,11 +672,9 @@ export {
     getUnFormattedNumber,
     formatDate,
     formatDateTime,
-
     // images
     Theme,
     SVGIcon,
-
     // utils
     BeforeUnload,
     caseInsensitive,
@@ -709,7 +695,6 @@ export {
     helpLinkNode,
     DATA_IMPORT_TOPIC,
     DELETE_SAMPLES_TOPIC,
-
     // url functions
     buildURL,
     hasParameter,
@@ -717,12 +702,10 @@ export {
     toggleParameter,
     spliceURL,
     WHERE_FILTER_TYPE,
-
     // devTools functions
     applyDevTools,
     devToolsActive,
     toggleDevTools,
-
     // Permissions
     fetchContainerSecurityPolicy,
     PermissionAssignments,
@@ -731,7 +714,6 @@ export {
     SecurityPolicy,
     SecurityRole,
     Principal,
-
     // QueryModel
     QueryModel,
     QueryConfigMap,
@@ -744,4 +726,4 @@ export {
     InjectedQueryModels,
     GridPanel,
     GridPanelWithModel,
-}
+};

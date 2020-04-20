@@ -14,54 +14,61 @@
  * limitations under the License.
  */
 
+import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
+
+import { fromJS, List } from 'immutable';
+import { Option } from 'react-select';
+
+import { DomainDesign, selectRows } from '../../..';
+
+import { DatasetModel } from './models';
 import {
     COHORT_TIP,
     DATA_ROW_UNIQUENESS,
     DATASET_CATEGORY_TIP,
     DATASET_ID_TIP,
     DATASET_LABEL_TIP,
-    DATASET_NAME_TIP, DATASPACE_TIP, TAG_TIP,
-    VISIT_DATE_TIP
-} from "./constants";
-import {DatasetModel} from "./models";
-import {ActionURL, Ajax, Domain, Utils} from "@labkey/api";
-import {DomainDesign, selectRows} from "../../..";
-import {fromJS, List} from "immutable";
-import {Option} from "react-select";
+    DATASET_NAME_TIP,
+    DATASPACE_TIP,
+    TAG_TIP,
+    VISIT_DATE_TIP,
+} from './constants';
 
 export function fetchCategories(): Promise<List<Option>> {
     return new Promise((resolve, reject) => {
         selectRows({
             saveInSession: true,
             schemaName: 'study',
-            sql: "SELECT DISTINCT CategoryId.Label, CategoryId.RowId FROM DataSets"
-        }).then((data) => {
-            const models = fromJS(data.models[data.key]);
-            let categories = List<Option>();
+            sql: 'SELECT DISTINCT CategoryId.Label, CategoryId.RowId FROM DataSets',
+        })
+            .then(data => {
+                const models = fromJS(data.models[data.key]);
+                let categories = List<Option>();
 
-            data.orderedModels[data.key].forEach((modelKey) => {
-                const row = models.get(modelKey);
-                const value = row.getIn(['Label', 'value']);
-                const label = row.getIn(['Label', 'value']);
+                data.orderedModels[data.key].forEach(modelKey => {
+                    const row = models.get(modelKey);
+                    const value = row.getIn(['Label', 'value']);
+                    const label = row.getIn(['Label', 'value']);
 
-                categories = categories.push({value, label});
+                    categories = categories.push({ value, label });
+                });
+
+                resolve(categories);
+            })
+            .catch(response => {
+                reject(response.message);
             });
-
-            resolve(categories);
-        }).catch((response) => {
-            reject(response.message);
-        });
     });
 }
 
 export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
     let visitDateColumns = List<Option>();
 
-    visitDateColumns = visitDateColumns.push({value: 'date', label: 'date'});
+    visitDateColumns = visitDateColumns.push({ value: 'date', label: 'date' });
 
     domain.fields.map((field, index) => {
         if (field.rangeURI.endsWith('dateTime')) {
-            visitDateColumns = visitDateColumns.push({value: field.name, label: field.name})
+            visitDateColumns = visitDateColumns.push({ value: field.name, label: field.name });
         }
     });
 
@@ -73,56 +80,55 @@ export function fetchCohorts(): Promise<List<Option>> {
         selectRows({
             saveInSession: true,
             schemaName: 'study',
-            queryName: 'Cohort'
-        }).then((data) => {
+            queryName: 'Cohort',
+        }).then(data => {
             const models = fromJS(data.models[data.key]);
             let cohorts = List<Option>();
 
-            data.orderedModels[data.key].forEach((modelKey) => {
+            data.orderedModels[data.key].forEach(modelKey => {
                 const row = models.get(modelKey);
                 const value = row.getIn(['rowid', 'value']);
                 const label = row.getIn(['label', 'value']);
 
-                cohorts = cohorts.push({value, label});
+                cohorts = cohorts.push({ value, label });
             });
 
             resolve(cohorts);
-        })
+        });
     });
 }
 
-export function getHelpTip (fieldName: string) : string {
+export function getHelpTip(fieldName: string): string {
     let helpTip = '';
 
     switch (fieldName) {
-        case "name" :
+        case 'name':
             helpTip = DATASET_NAME_TIP;
             break;
-        case "label" :
+        case 'label':
             helpTip = DATASET_LABEL_TIP;
             break;
-        case "category" :
+        case 'category':
             helpTip = DATASET_CATEGORY_TIP;
             break;
-        case "datasetId" :
+        case 'datasetId':
             helpTip = DATASET_ID_TIP;
             break;
-        case "visitDateColumn" :
+        case 'visitDateColumn':
             helpTip = VISIT_DATE_TIP;
             break;
-        case "cohort" :
+        case 'cohort':
             helpTip = COHORT_TIP;
             break;
-        case "tag" :
+        case 'tag':
             helpTip = TAG_TIP;
             break;
-        case "dataspace" :
+        case 'dataspace':
             helpTip = DATASPACE_TIP;
             break;
-        case "dataRowUniqueness" :
+        case 'dataRowUniqueness':
             helpTip = DATA_ROW_UNIQUENESS;
             break;
-
     }
     return helpTip;
 }
@@ -132,34 +138,34 @@ export function getDatasetProperties(datasetId?: number) {
         Ajax.request({
             url: ActionURL.buildURL('study', 'GetDataset'),
             method: 'GET',
-            params: {datasetId},
+            params: { datasetId },
             scope: this,
-            success: Utils.getCallbackWrapper((data) => {
-                resolve(DatasetModel.create(data, undefined))
+            success: Utils.getCallbackWrapper(data => {
+                resolve(DatasetModel.create(data, undefined));
             }),
-            failure: Utils.getCallbackWrapper((error) => {
+            failure: Utils.getCallbackWrapper(error => {
                 reject(error);
-            })
+            }),
         });
-    })
+    });
 }
 
-export function fetchDatasetDesign(datasetId: number) : Promise<DatasetModel> {
+export function fetchDatasetDesign(datasetId: number): Promise<DatasetModel> {
     return new Promise((resolve, reject) => {
         getDatasetProperties(datasetId)
             .then((model: DatasetModel) => {
                 Domain.getDomainDetails({
                     containerPath: LABKEY.container.path,
                     domainId: model.domainId,
-                    success: (data) => {
+                    success: data => {
                         resolve(DatasetModel.create(undefined, data));
                     },
-                    failure: (error) => {
+                    failure: error => {
                         reject(error);
-                    }
+                    },
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 reject(error);
             });
     });

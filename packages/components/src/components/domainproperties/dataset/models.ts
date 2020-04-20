@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import {Record} from "immutable";
-import {DomainDesign} from "../models";
-import match from "react-router/lib/match";
-import {Option} from "react-select";
-import {getServerContext} from "@labkey/api";
+import { Record } from 'immutable';
+
+import match from 'react-router/lib/match';
+import { Option } from 'react-select';
+import { getServerContext } from '@labkey/api';
+
+import { DomainDesign } from '../models';
 
 export interface DatasetAdvancedSettingsForm {
     datasetId?: number;
@@ -30,14 +32,14 @@ export interface DatasetAdvancedSettingsForm {
 
 export class DatasetModel extends Record({
     domain: undefined,
-    domainId : undefined,
+    domainId: undefined,
     exception: undefined,
-    entityId : undefined,
-    createdBy : undefined,
-    created : undefined,
-    modifiedBy : undefined,
-    modified : undefined,
-    containerId : undefined,
+    entityId: undefined,
+    createdBy: undefined,
+    created: undefined,
+    modifiedBy: undefined,
+    modified: undefined,
+    containerId: undefined,
     datasetId: undefined,
     name: undefined,
     category: undefined,
@@ -51,10 +53,10 @@ export class DatasetModel extends Record({
     showByDefault: undefined,
     description: undefined,
     dataSharing: undefined,
-    definitionIsShared: undefined
+    definitionIsShared: undefined,
 }) {
     domain: DomainDesign;
-    domainId : number;
+    domainId: number;
     exception: string;
     datasetId?: number;
     entityId: string;
@@ -72,17 +74,17 @@ export class DatasetModel extends Record({
     dataSharing?: string;
     definitionIsShared?: boolean;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
-    static create(newDataset=null, raw: any): DatasetModel {
+    static create(newDataset = null, raw: any): DatasetModel {
         if (newDataset) {
-            let domain = DomainDesign.create(undefined);
-            return new DatasetModel({...newDataset, domain});
+            const domain = DomainDesign.create(undefined);
+            return new DatasetModel({ ...newDataset, domain });
         } else {
-            let domain = DomainDesign.create(raw.domainDesign);
-            return new DatasetModel({...raw.options, domain});
+            const domain = DomainDesign.create(raw.domainDesign);
+            return new DatasetModel({ ...raw.options, domain });
         }
     }
 
@@ -90,7 +92,7 @@ export class DatasetModel extends Record({
         let isValidKeySetting = true;
 
         if (this.getDataRowSetting() === 2) {
-            isValidKeySetting = this.keyPropertyName !== undefined && this.keyPropertyName !== ''
+            isValidKeySetting = this.keyPropertyName !== undefined && this.keyPropertyName !== '';
         }
 
         return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && isValidKeySetting;
@@ -100,7 +102,7 @@ export class DatasetModel extends Record({
         return !this.datasetId;
     }
 
-    getDataRowSetting() : number {
+    getDataRowSetting(): number {
         let dataRowSetting;
 
         // participant id
@@ -123,33 +125,32 @@ export class DatasetModel extends Record({
         if (this.keyPropertyName) {
             const domainFields = this.domain.fields;
 
-            const allowedFieldTypes = domainFields.filter((field) => {
-                return field.dataType.isString() || field.dataType.isInteger()
-            })
-                .map((field) => {
-                    return field.name
+            const allowedFieldTypes = domainFields
+                .filter(field => {
+                    return field.dataType.isString() || field.dataType.isInteger();
+                })
+                .map(field => {
+                    return field.name;
                 })
                 .toList();
 
             return allowedFieldTypes.contains(this.keyPropertyName);
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     getDomainKind(): string {
-        if (getServerContext().moduleContext.study.timepointType === "DATE") {
-            return "StudyDatasetDate";
-        }
-        else if (getServerContext().moduleContext.study.timepointType === "VISIT") {
-            return "StudyDatasetVisit";
+        if (getServerContext().moduleContext.study.timepointType === 'DATE') {
+            return 'StudyDatasetDate';
+        } else if (getServerContext().moduleContext.study.timepointType === 'VISIT') {
+            return 'StudyDatasetVisit';
         }
         return undefined;
     }
 
-    getOptions(): Object {
-        let options = this.toJS();
+    getOptions(): Record<string, any> {
+        const options = this.toJS();
 
         delete options.exception;
         delete options.domain;

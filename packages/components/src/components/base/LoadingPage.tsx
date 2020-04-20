@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 import React from 'react';
+
 import { Page } from './Page';
 import { PageHeader } from './PageHeader';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export interface LoadingPageProps {
-    title?: string
-    msg?: string
+    title?: string;
+    msg?: string;
 }
 
 export class LoadingPage extends React.Component<LoadingPageProps> {
-    render () {
+    render() {
         return (
             <Page title={this.props.title} hasHeader={true}>
-                <PageHeader showNotifications={false}/>
-                <LoadingSpinner msg={this.props.msg} wrapperClassName="loading-page-message"/>
+                <PageHeader showNotifications={false} />
+                <LoadingSpinner msg={this.props.msg} wrapperClassName="loading-page-message" />
             </Page>
-        )
+        );
     }
 }

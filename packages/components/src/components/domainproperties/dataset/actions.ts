@@ -20,72 +20,75 @@ import {
     DATASET_CATEGORY_TIP,
     DATASET_ID_TIP,
     DATASET_LABEL_TIP,
-    DATASET_NAME_TIP, DATASPACE_TIP, TAG_TIP,
-    VISIT_DATE_TIP
-} from "./constants";
+    DATASET_NAME_TIP,
+    DATASPACE_TIP,
+    TAG_TIP,
+    VISIT_DATE_TIP,
+} from './constants';
 
 export const fetchCategories = async () => {
     // TODO: Replace this with server side call
     return {
-        'categories': [
-            {label: 'A', value: 20},
-            {label: 'B', value: 21},
-            {label: 'C', value: 22}]
+        categories: [
+            { label: 'A', value: 20 },
+            { label: 'B', value: 21 },
+            { label: 'C', value: 22 },
+        ],
     };
 };
 
 export const fetchCohorts = async () => {
     // TODO: Replace this with server side call
     return {
-        'cohorts': [
-            {label: 'Cohort1', value: 1},
-            {label: 'Cohort2', value: 2},
-            {label: 'Cohort3', value: 3}]
+        cohorts: [
+            { label: 'Cohort1', value: 1 },
+            { label: 'Cohort2', value: 2 },
+            { label: 'Cohort3', value: 3 },
+        ],
     };
 };
-
 
 export const fetchVisitDateColumns = async () => {
     // TODO: Keeping this action until next story in which visitDateColumns will be pulled from state change (for date fields) in the Domain Form.
     return {
-        'visitDateColumns': [
-            {label: 'Date', value: 'date'},
-            {label: 'Arrival Date', value: 'arrivalDate'}]
+        visitDateColumns: [
+            { label: 'Date', value: 'date' },
+            { label: 'Arrival Date', value: 'arrivalDate' },
+        ],
     };
 };
 
-export function getHelpTip (fieldName: string) : string {
+export function getHelpTip(fieldName: string): string {
     let helpTip = '';
 
     switch (fieldName) {
-        case "name" :
+        case 'name':
             helpTip = DATASET_NAME_TIP;
             break;
-        case "label" :
+        case 'label':
             helpTip = DATASET_LABEL_TIP;
             break;
-        case "category" :
+        case 'category':
             helpTip = DATASET_CATEGORY_TIP;
             break;
-        case "datasetId" :
+        case 'datasetId':
             helpTip = DATASET_ID_TIP;
             break;
-        case "visitDateColumn" :
+        case 'visitDateColumn':
             helpTip = VISIT_DATE_TIP;
             break;
-        case "cohort" :
+        case 'cohort':
             helpTip = COHORT_TIP;
             break;
-        case "tag" :
+        case 'tag':
             helpTip = TAG_TIP;
             break;
-        case "dataspace" :
+        case 'dataspace':
             helpTip = DATASPACE_TIP;
             break;
-        case "dataRowUniqueness" :
+        case 'dataRowUniqueness':
             helpTip = DATA_ROW_UNIQUENESS;
             break;
-
     }
     return helpTip;
 }

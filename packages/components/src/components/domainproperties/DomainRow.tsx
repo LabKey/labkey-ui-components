@@ -17,6 +17,19 @@ import React from 'react';
 import { Button, Checkbox, Col, Collapse, FormControl, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
+
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { FieldExpansionToggle } from '../base/FieldExpansionToggle';
+
+import { DeleteIcon } from '../base/DeleteIcon';
+
+import { DragDropHandle } from '../base/DragDropHandle';
+
+import { SCHEMAS } from '../base/models/schemas';
+
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_ADV,
@@ -45,54 +58,47 @@ import {
     resolveAvailableTypes,
 } from './models';
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
-import {isFieldFullyLocked, isFieldPartiallyLocked, isLegalName, isPrimaryKeyFieldLocked} from './propertiesUtil';
+import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName, isPrimaryKeyFieldLocked } from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
-import { FieldExpansionToggle } from "../base/FieldExpansionToggle";
-import { DeleteIcon } from "../base/DeleteIcon";
-import { DragDropHandle } from "../base/DragDropHandle";
-import { SCHEMAS } from '../base/models/schemas';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface IDomainRowProps {
-    domainId?: number
-    helpNoun: string
-    expanded: boolean
-    dragging: boolean
-    expandTransition: number
-    field: DomainField
-    index: number
-    maxPhiLevel: string
-    availableTypes: List<PropDescType>
-    onChange: (changes: List<IFieldChange>, index?: number, expand?: boolean) => any
-    fieldError?: DomainFieldError
-    onDelete: (any) => void
-    onExpand: (index?: number) => void
-    showDefaultValueSettings: boolean
-    defaultDefaultValueType: string
-    defaultValueOptions: List<string>
-    appPropertiesOnly?: boolean
-    showFilePropertyType?: boolean
-    domainIndex: number
-    successBsStyle?: string
-    domainFormDisplayOptions?: IDomainFormDisplayOptions
+    domainId?: number;
+    helpNoun: string;
+    expanded: boolean;
+    dragging: boolean;
+    expandTransition: number;
+    field: DomainField;
+    index: number;
+    maxPhiLevel: string;
+    availableTypes: List<PropDescType>;
+    onChange: (changes: List<IFieldChange>, index?: number, expand?: boolean) => any;
+    fieldError?: DomainFieldError;
+    onDelete: (any) => void;
+    onExpand: (index?: number) => void;
+    showDefaultValueSettings: boolean;
+    defaultDefaultValueType: string;
+    defaultValueOptions: List<string>;
+    appPropertiesOnly?: boolean;
+    showFilePropertyType?: boolean;
+    domainIndex: number;
+    successBsStyle?: string;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
 }
 
 interface IDomainRowState {
-    showAdv: boolean
-    closing: boolean
-    showingModal: boolean
-    isDragDisabled: boolean
+    showAdv: boolean;
+    closing: boolean;
+    showingModal: boolean;
+    isDragDisabled: boolean;
 }
 
 /**
  * React component for one property in a domain
  */
 export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowState> {
-
     static defaultProps = {
-        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     };
 
     constructor(props) {
@@ -102,7 +108,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             showAdv: false,
             closing: false,
             showingModal: false,
-            isDragDisabled: props.domainFormDisplayOptions.isDragDisabled
+            isDragDisabled: props.domainFormDisplayOptions.isDragDisabled,
         };
     }
 
@@ -118,13 +124,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
      */
     getDetailsText = (): React.ReactNode => {
         const { field, index, fieldError } = this.props;
-        let details = [];
+        const details = [];
 
         if (field.hasErrors()) {
             switch (field.getErrors()) {
                 case FieldErrors.MISSING_SCHEMA_QUERY:
                     details.push(
-                        <span key={details.length} style={{color: 'red'}}>
+                        <span key={details.length} style={{ color: 'red' }}>
                             Missing required lookup target schema/table properties.
                         </span>
                     );
@@ -132,24 +138,22 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 default:
                     break;
             }
-        }
-        else if (field.dataType.isSample()) {
-            let detailsText = field.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName && SCHEMAS.EXP_TABLES.MATERIALS.queryName.localeCompare(field.lookupQuery, 'en', {sensitivity: 'accent'}) === 0 ?
-                ALL_SAMPLES_DISPLAY_TEXT:
-                field.lookupQuery;
+        } else if (field.dataType.isSample()) {
+            const detailsText =
+                field.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName &&
+                SCHEMAS.EXP_TABLES.MATERIALS.queryName.localeCompare(field.lookupQuery, 'en', {
+                    sensitivity: 'accent',
+                }) === 0
+                    ? ALL_SAMPLES_DISPLAY_TEXT
+                    : field.lookupQuery;
             details.push(detailsText);
-        }
-        else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
-            details.push([
-                field.lookupContainer || 'Current Folder',
-                field.lookupSchema,
-                field.lookupQuery
-            ].join(' > '));
-        }
-        else if (field.isNew()) {
+        } else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
+            details.push(
+                [field.lookupContainer || 'Current Folder', field.lookupSchema, field.lookupQuery].join(' > ')
+            );
+        } else if (field.isNew()) {
             details.push('New Field');
-        }
-        else if (field.updatedField) {
+        } else if (field.updatedField) {
             details.push('Updated');
         }
 
@@ -177,13 +181,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             const msg = fieldError.severity + ': ' + fieldError.message;
             details.push(
                 <>
-                    <b key={field.name + "_" + index}>{msg}</b>&nbsp;
-                    {fieldError.extraInfo && <OverlayTrigger
-                        placement={'bottom'}
-                        overlay={<Popover bsClass="popover">{fieldError.extraInfo}</Popover>}
-                    >
-                        <FontAwesomeIcon icon={faExclamationCircle} className={'domain-warning-icon'}/>
-                    </OverlayTrigger>}
+                    <b key={field.name + '_' + index}>{msg}</b>&nbsp;
+                    {fieldError.extraInfo && (
+                        <OverlayTrigger
+                            placement="bottom"
+                            overlay={<Popover bsClass="popover">{fieldError.extraInfo}</Popover>}
+                        >
+                            <FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />
+                        </OverlayTrigger>
+                    )}
                 </>
             );
         }
@@ -196,34 +202,38 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         const { closing } = this.state;
 
         return (
-            <div id={createFormInputId(DOMAIN_FIELD_DETAILS, domainIndex, index)}
-                 className={(expanded || closing) ? 'domain-field-details-expanded' : 'domain-field-details'}>
+            <div
+                id={createFormInputId(DOMAIN_FIELD_DETAILS, domainIndex, index)}
+                className={expanded || closing ? 'domain-field-details-expanded' : 'domain-field-details'}
+            >
                 {this.getDetailsText()}
             </div>
-        )
+        );
     }
 
     getFieldErrorClass = (fieldError: DomainFieldError): string => {
         if (!fieldError) {
-            return 'domain-row-border-default'
-        }
-        else if (fieldError.severity === SEVERITY_LEVEL_ERROR) {
-            return 'domain-row-border-error'
-        }
-        else {
+            return 'domain-row-border-default';
+        } else if (fieldError.severity === SEVERITY_LEVEL_ERROR) {
+            return 'domain-row-border-error';
+        } else {
             return 'domain-row-border-warning';
         }
     };
 
-    getRowCssClasses = (expanded: boolean, closing: boolean, dragging: boolean, fieldError: DomainFieldError): string => {
-        let classes = List<string>().asMutable();
+    getRowCssClasses = (
+        expanded: boolean,
+        closing: boolean,
+        dragging: boolean,
+        fieldError: DomainFieldError
+    ): string => {
+        const classes = List<string>().asMutable();
 
         classes.push('domain-field-row');
 
         if (!dragging) {
             classes.push(this.getFieldErrorClass(fieldError));
-        }
-        else {
+        } else {
             classes.push('domain-row-border-dragging');
         }
 
@@ -249,7 +259,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         const { onChange } = this.props;
 
         if (onChange) {
-            onChange(List([{id, value} as IFieldChange]), index, expand === true);
+            onChange(List([{ id, value } as IFieldChange]), index, expand === true);
         }
     };
 
@@ -261,34 +271,39 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         }
     };
 
-    onNameChange  = (evt) => {
+    onNameChange = evt => {
         const { index, onChange, domainIndex } = this.props;
 
-        let value = evt.target.value;
-        let nameAndErrorList = List<IFieldChange>().asMutable();
+        const value = evt.target.value;
+        const nameAndErrorList = List<IFieldChange>().asMutable();
 
-        //set value for the field
-        nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value: value});
+        // set value for the field
+        nameAndErrorList.push({ id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value });
 
         if (isLegalName(value) && !value.includes(' ')) {
-            //set value to undefined for field error
-            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index), value: undefined});
-        }
-        else {
-            let fieldName = value;
-            let severity = SEVERITY_LEVEL_WARN;
-            let indexes = List<number>([index]);
-            let domainFieldError = new DomainFieldError({
+            // set value to undefined for field error
+            nameAndErrorList.push({
+                id: createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index),
+                value: undefined,
+            });
+        } else {
+            const fieldName = value;
+            const severity = SEVERITY_LEVEL_WARN;
+            const indexes = List<number>([index]);
+            const domainFieldError = new DomainFieldError({
                 message: FIELD_NAME_CHAR_WARNING_MSG,
                 extraInfo: FIELD_NAME_CHAR_WARNING_INFO,
                 fieldName,
                 propertyId: undefined,
                 severity,
-                rowIndexes: indexes
+                rowIndexes: indexes,
             });
 
-            //set value for field error
-            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index), value: domainFieldError});
+            // set value for field error
+            nameAndErrorList.push({
+                id: createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index),
+                value: domainFieldError,
+            });
         }
 
         if (onChange) {
@@ -301,13 +316,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     };
 
     onShowAdvanced = (): any => {
-        this.setState(() => ({showAdv: true}));
+        this.setState(() => ({ showAdv: true }));
 
         this.setDragDisabled(this.props.domainFormDisplayOptions.isDragDisabled, true);
     };
 
     onHideAdvanced = (): any => {
-        this.setState(() => ({showAdv: false}));
+        this.setState(() => ({ showAdv: false }));
 
         this.setDragDisabled(this.props.domainFormDisplayOptions.isDragDisabled, false);
     };
@@ -328,24 +343,32 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         }
     };
 
-    onCollapsed = () : void => {
-        this.setState(() =>({closing: false}));
+    onCollapsed = (): void => {
+        this.setState(() => ({ closing: false }));
     };
 
-    onCollapsing = () : void => {
-        this.setState(() => ({closing: true}));
+    onCollapsing = (): void => {
+        this.setState(() => ({ closing: true }));
     };
 
     setDragDisabled = (propDragDisabled: boolean, disabled: boolean) => {
-        this.setState(() => ({isDragDisabled: (disabled || propDragDisabled)}));
+        this.setState(() => ({ isDragDisabled: disabled || propDragDisabled }));
     };
 
     showingModal = (showing: boolean) => {
-        this.setState(() => ({showingModal: showing}));
+        this.setState(() => ({ showingModal: showing }));
     };
 
     renderBaseFields() {
-        const { index, field, availableTypes, appPropertiesOnly, showFilePropertyType, domainIndex, domainFormDisplayOptions } = this.props;
+        const {
+            index,
+            field,
+            availableTypes,
+            appPropertiesOnly,
+            showFilePropertyType,
+            domainIndex,
+            domainFormDisplayOptions,
+        } = this.props;
         const lockNameForPK = !field.isNew() && isPrimaryKeyFieldLocked(field.lockType);
 
         return (
@@ -358,44 +381,56 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
                         id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
                         onChange={this.onNameChange}
-                        disabled={isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType) || lockNameForPK}
+                        disabled={
+                            isFieldPartiallyLocked(field.lockType) ||
+                            isFieldFullyLocked(field.lockType) ||
+                            lockNameForPK
+                        }
                     />
                 </Col>
                 <Col xs={4}>
                     <FormControl
                         componentClass="select"
                         name={createFormInputName(DOMAIN_FIELD_TYPE)}
-                        disabled={(!field.isNew() && field.primaryKey) || isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
+                        disabled={
+                            (!field.isNew() && field.primaryKey) ||
+                            isFieldPartiallyLocked(field.lockType) ||
+                            isFieldFullyLocked(field.lockType) ||
+                            isPrimaryKeyFieldLocked(field.lockType)
+                        }
                         id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
                         onChange={this.onDataTypeChange}
                         value={field.dataType.name}
                     >
-                        {
-                            isPrimaryKeyFieldLocked(field.lockType)
-                                ? <option value={field.dataType.name}>{field.dataType.display}</option>
-                                : resolveAvailableTypes(field, availableTypes, appPropertiesOnly, showFilePropertyType).map(
-                                    (type, i) => (<option key={i} value={type.name}>{type.display}</option>
-                                ))
-                        }
+                        {isPrimaryKeyFieldLocked(field.lockType) ? (
+                            <option value={field.dataType.name}>{field.dataType.display}</option>
+                        ) : (
+                            resolveAvailableTypes(field, availableTypes, appPropertiesOnly, showFilePropertyType).map(
+                                (type, i) => (
+                                    <option key={i} value={type.name}>
+                                        {type.display}
+                                    </option>
+                                )
+                            )
+                        )}
                     </FormControl>
                 </Col>
                 <Col xs={2}>
-                    <div className='domain-field-checkbox-container'>
-                        {
-                            domainFormDisplayOptions.showRequired &&
+                    <div className="domain-field-checkbox-container">
+                        {domainFormDisplayOptions.showRequired && (
                             <Checkbox
-                                className='domain-field-checkbox'
+                                className="domain-field-checkbox"
                                 name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
                                 id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
                                 checked={field.required}
                                 onChange={this.onFieldChange}
                                 disabled={isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
                             />
-                        }
+                        )}
                     </div>
                 </Col>
             </div>
-        )
+        );
     }
 
     renderButtons() {
@@ -403,7 +438,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         const { closing } = this.state;
 
         return (
-            <div className={expanded ? "domain-field-buttons-expanded" : "domain-field-buttons"}>
+            <div className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}>
                 {(expanded || closing) && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
                     <Button
                         disabled={isFieldFullyLocked(field.lockType)}
@@ -415,41 +450,65 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         Advanced Settings
                     </Button>
                 )}
-                {!(isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)) &&
+                {!(
+                    isFieldFullyLocked(field.lockType) ||
+                    isFieldPartiallyLocked(field.lockType) ||
+                    isPrimaryKeyFieldLocked(field.lockType)
+                ) && (
                     <DeleteIcon
                         id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
-                        title={'Remove field'}
-                        iconCls={'domain-field-delete-icon'}
+                        title="Remove field"
+                        iconCls="domain-field-delete-icon"
                         onDelete={this.onDelete}
                     />
-                }
+                )}
                 <FieldExpansionToggle
-                    cls={'domain-field-expand-icon'}
+                    cls="domain-field-expand-icon"
                     expanded={expanded}
-                    expandedTitle={"Hide additional field properties"}
-                    collapsedTitle={"Show additional field properties"}
+                    expandedTitle="Hide additional field properties"
+                    collapsedTitle="Show additional field properties"
                     id={createFormInputId(DOMAIN_FIELD_EXPAND, domainIndex, index)}
                     onClick={this.onExpand}
                 />
             </div>
-        )
+        );
     }
 
     render() {
         const { closing, isDragDisabled, showAdv, showingModal } = this.state;
-        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId, domainIndex,
-            helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions, appPropertiesOnly,
-            successBsStyle, domainFormDisplayOptions } = this.props;
+        const {
+            index,
+            field,
+            expanded,
+            expandTransition,
+            fieldError,
+            maxPhiLevel,
+            dragging,
+            domainId,
+            domainIndex,
+            helpNoun,
+            showDefaultValueSettings,
+            defaultDefaultValueType,
+            defaultValueOptions,
+            appPropertiesOnly,
+            successBsStyle,
+            domainFormDisplayOptions,
+        } = this.props;
 
         return (
-            <Draggable draggableId={createFormInputId("domaindrag", domainIndex, index)} index={index} isDragDisabled={showingModal || isDragDisabled}>
-                {(provided) => (
-                    <div className={this.getRowCssClasses(expanded, closing, dragging, fieldError)}
-                         {...provided.draggableProps}
-                         ref={provided.innerRef}
-                         tabIndex={index}
+            <Draggable
+                draggableId={createFormInputId('domaindrag', domainIndex, index)}
+                index={index}
+                isDragDisabled={showingModal || isDragDisabled}
+            >
+                {provided => (
+                    <div
+                        className={this.getRowCssClasses(expanded, closing, dragging, fieldError)}
+                        {...provided.draggableProps}
+                        ref={provided.innerRef}
+                        tabIndex={index}
                     >
-                        <Row key={createFormInputId("domainrow", domainIndex, index)} className={'domain-row-container'}>
+                        <Row key={createFormInputId('domainrow', domainIndex, index)} className="domain-row-container">
                             <AdvancedSettings
                                 domainIndex={domainIndex}
                                 domainId={domainId}
@@ -466,34 +525,47 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 defaultValueOptions={defaultValueOptions}
                                 successBsStyle={successBsStyle}
                             />
-                            <div className='domain-row-handle' {...provided.dragHandleProps}>
-                                {<DragDropHandle highlighted={dragging ? true : isDragDisabled ? false: undefined /* use undefined instead of false to allow for css to handle the highlight color for hover*/}/>}
+                            <div className="domain-row-handle" {...provided.dragHandleProps}>
+                                <DragDropHandle
+                                    highlighted={
+                                        dragging
+                                            ? true
+                                            : isDragDisabled
+                                            ? false
+                                            : undefined /* use undefined instead of false to allow for css to handle the highlight color for hover*/
+                                    }
+                                />
                             </div>
-                            <div className='domain-row-main'>
-                                <Col xs={6} className='domain-row-base-fields'>
+                            <div className="domain-row-main">
+                                <Col xs={6} className="domain-row-base-fields">
                                     {this.renderBaseFields()}
                                 </Col>
-                                <Col xs={6} className='field-details-container'>
+                                <Col xs={6} className="field-details-container">
                                     {this.getDetails()}
                                     {this.renderButtons()}
                                 </Col>
                             </div>
                         </Row>
-                            <Collapse in={expanded} timeout={expandTransition} onExited={this.onCollapsed} onExiting={this.onCollapsing}>
-                                <div>
-                                    <DomainRowExpandedOptions
-                                        field={field}
-                                        index={index}
-                                        domainIndex={domainIndex}
-                                        onMultiChange={this.onMultiFieldChange}
-                                        onChange={this.onSingleFieldChange}
-                                        showingModal={this.showingModal}
-                                        appPropertiesOnly={appPropertiesOnly}
-                                        successBsStyle={successBsStyle}
-                                        domainFormDisplayOptions={domainFormDisplayOptions}
-                                    />
-                                </div>
-                            </Collapse>
+                        <Collapse
+                            in={expanded}
+                            timeout={expandTransition}
+                            onExited={this.onCollapsed}
+                            onExiting={this.onCollapsing}
+                        >
+                            <div>
+                                <DomainRowExpandedOptions
+                                    field={field}
+                                    index={index}
+                                    domainIndex={domainIndex}
+                                    onMultiChange={this.onMultiFieldChange}
+                                    onChange={this.onSingleFieldChange}
+                                    showingModal={this.showingModal}
+                                    appPropertiesOnly={appPropertiesOnly}
+                                    successBsStyle={successBsStyle}
+                                    domainFormDisplayOptions={domainFormDisplayOptions}
+                                />
+                            </div>
+                        </Collapse>
                     </div>
                 )}
             </Draggable>

@@ -15,22 +15,27 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { List } from 'immutable'
+import { List } from 'immutable';
+
 import { UserDeleteConfirmModal } from '../components/user/UserDeleteConfirmModal';
 import './stories.scss';
 
 storiesOf('UserDeleteConfirmModal', module)
-    .add("single user selected", () => {
-        return <UserDeleteConfirmModal
-            userIds={List<number>([1])}
-            onComplete={(response) => console.log('complete', response)}
-            onCancel={() => console.log('cancel')}
-        />
+    .add('single user selected', () => {
+        return (
+            <UserDeleteConfirmModal
+                userIds={List<number>([1])}
+                onComplete={response => console.log('complete', response)}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     })
-    .add("multiple user selected", () => {
-        return <UserDeleteConfirmModal
-            userIds={List<number>([1,2])}
-            onComplete={(response) => console.log('complete', response)}
-            onCancel={() => console.log('cancel')}
-        />
+    .add('multiple user selected', () => {
+        return (
+            <UserDeleteConfirmModal
+                userIds={List<number>([1, 2])}
+                onComplete={response => console.log('complete', response)}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     });

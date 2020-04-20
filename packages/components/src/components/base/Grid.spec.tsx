@@ -20,115 +20,116 @@ import renderer from 'react-test-renderer';
 
 import { Grid, GridColumn } from './Grid';
 
-const gridData = fromJS([{
-    name: 'Dee Gordon',
-    number: 9,
-    position: 4
-},{
-    name: 'Mike Zunino',
-    number: 3,
-    position: 2
-},{
-    name: 'Kyle Seager',
-    number: 15,
-    position: 5
-}]);
+const gridData = fromJS([
+    {
+        name: 'Dee Gordon',
+        number: 9,
+        position: 4,
+    },
+    {
+        name: 'Mike Zunino',
+        number: 3,
+        position: 2,
+    },
+    {
+        name: 'Kyle Seager',
+        number: 15,
+        position: 5,
+    },
+]);
 
-const gridMessages = fromJS([{
-    area: 'view',
-    type: 'WARNING',
-    content: 'There are 1 rows not shown due to unapproved QC state',
-}]);
+const gridMessages = fromJS([
+    {
+        area: 'view',
+        type: 'WARNING',
+        content: 'There are 1 rows not shown due to unapproved QC state',
+    },
+]);
 
 const gridColumns = List([
     {
         index: 'name',
-        caption: 'Player Name'
+        caption: 'Player Name',
     },
     {
         index: 'number',
-        caption: 'Number'
+        caption: 'Number',
     },
     new GridColumn({
         index: 'position',
         title: 'Position',
-        cell: (posNumber) => {
+        cell: posNumber => {
             switch (posNumber) {
-                case 2: return 'C';
-                case 4: return '2B';
-                case 5: return '3B';
+                case 2:
+                    return 'C';
+                case 4:
+                    return '2B';
+                case 5:
+                    return '3B';
             }
 
             return `<${posNumber}>`;
-        }
-    })
+        },
+    }),
 ]);
 
 describe('Grid component', () => {
-
     test('handles empty props', () => {
-        const component = shallow(<Grid/>);
+        const component = shallow(<Grid />);
 
         expect(component.exists()).toBe(true);
     });
 
     test('rendering with data', () => {
-        const tree  = renderer.create(<Grid data={gridData}/>).toJSON();
+        const tree = renderer.create(<Grid data={gridData} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('rendering with data and columns', () => {
-        const tree = renderer.create(<Grid data={gridData} columns={gridColumns}/>).toJSON();
+        const tree = renderer.create(<Grid data={gridData} columns={gridColumns} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('rendering with no data and columns', () => {
-        const wrapper = shallow(<Grid data={[]}
-                                      columns={gridColumns}
-                                      emptyText={"my empty text"}
-                                      gridId={"someId"}
-        />);
-        expect(wrapper.find({emptyText: "my empty text"})).toHaveLength(1);
-        expect(wrapper.find({"data-gridid": "someId"})).toHaveLength(1);
-        const tree = renderer.create(
-            <Grid data={[]}
-                  columns={gridColumns}
-                  emptyText={"my empty text"}
-                  gridId={"someId"}
-            />).toJSON();
+        const wrapper = shallow(<Grid data={[]} columns={gridColumns} emptyText="my empty text" gridId="someId" />);
+        expect(wrapper.find({ emptyText: 'my empty text' })).toHaveLength(1);
+        expect(wrapper.find({ 'data-gridid': 'someId' })).toHaveLength(1);
+        const tree = renderer
+            .create(<Grid data={[]} columns={gridColumns} emptyText="my empty text" gridId="someId" />)
+            .toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('loading text and action', () => {
-        const wrapper = shallow(<Grid data={[]}
-                                      columns={gridColumns}
-                                      isLoading={true}
-                                      loadingText={"Your data is loading...."}/>);
-        expect(wrapper.find({loadingText: "Your data is loading...."})).toHaveLength(1);
-        expect(wrapper.find({isLoading: true})).toHaveLength(1);
-        const tree = renderer.create(
-            <Grid data={[]}
-                  columns={gridColumns}
-                  isLoading={true}
-                  loadingText={"You data is loading...."}
-            />).toJSON();
+        const wrapper = shallow(
+            <Grid data={[]} columns={gridColumns} isLoading={true} loadingText="Your data is loading...." />
+        );
+        expect(wrapper.find({ loadingText: 'Your data is loading....' })).toHaveLength(1);
+        expect(wrapper.find({ isLoading: true })).toHaveLength(1);
+        const tree = renderer
+            .create(<Grid data={[]} columns={gridColumns} isLoading={true} loadingText="You data is loading...." />)
+            .toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('render with non-default properties', () => {
-        const tree = renderer.create(
-            <Grid data={gridData}
-                  columns={gridColumns}
-                  bordered={false}
-                  calcWidths={true}
-                  cellular={true}
-                  condensed={true}
-            />).toJSON();
+        const tree = renderer
+            .create(
+                <Grid
+                    data={gridData}
+                    columns={gridColumns}
+                    bordered={false}
+                    calcWidths={true}
+                    cellular={true}
+                    condensed={true}
+                />
+            )
+            .toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('render with messages', () => {
-        const tree  = renderer.create(<Grid data={gridData} messages={gridMessages}/>).toJSON();
+        const tree = renderer.create(<Grid data={gridData} messages={gridMessages} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 });

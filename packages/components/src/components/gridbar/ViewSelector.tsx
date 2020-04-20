@@ -24,7 +24,7 @@ import { generateId, naturalSort } from '../../util/utils';
 const emptyList = List<React.ReactNode>();
 
 interface Props {
-    model: QueryGridModel,
+    model: QueryGridModel;
 }
 
 /**
@@ -35,7 +35,6 @@ interface Props {
  * If the model has only one associated view (the default view), the selector will be disabled.
  */
 export class ViewSelector extends React.Component<Props, any> {
-
     dropId: string;
 
     constructor(props: Props) {
@@ -50,13 +49,10 @@ export class ViewSelector extends React.Component<Props, any> {
         const activeViewName = model.view ? model.view : ViewInfo.DEFAULT_NAME;
 
         return (
-            <MenuItem
-                active={activeViewName === view.name}
-                key={key}
-                onSelect={this.onSelectView.bind(this, view)}>
+            <MenuItem active={activeViewName === view.name} key={key} onSelect={this.onSelectView.bind(this, view)}>
                 {view.label}
             </MenuItem>
-        )
+        );
     }
 
     createMenuItems(): List<React.ReactNode> {
@@ -65,37 +61,42 @@ export class ViewSelector extends React.Component<Props, any> {
         if (model.queryInfo) {
             const items = List<React.ReactNode>().asMutable();
 
-            const valid = model.queryInfo.views
-                .filter((view) => view && !view.isDefault && view.name.indexOf('~~') !== 0);
+            const valid = model.queryInfo.views.filter(
+                view => view && !view.isDefault && view.name.indexOf('~~') !== 0
+            );
 
-            const publicViews = valid
-                .filter((view) => view.shared)
-                .sortBy(v => v.label, naturalSort);
+            const publicViews = valid.filter(view => view.shared).sortBy(v => v.label, naturalSort);
 
-            const privateViews = valid
-                .filter((view) => !view.shared)
-                .sortBy(v => v.label, naturalSort);
+            const privateViews = valid.filter(view => !view.shared).sortBy(v => v.label, naturalSort);
 
-            const defaultView = model.queryInfo.views.find((view) => view.isDefault);
+            const defaultView = model.queryInfo.views.find(view => view.isDefault);
 
             if (defaultView) {
                 items.push(this.createItem(defaultView, 'default-view'));
             }
 
             if (privateViews.size) {
-                items.push(<MenuItem header key="private-header">My Saved Views</MenuItem>);
+                items.push(
+                    <MenuItem header key="private-header">
+                        My Saved Views
+                    </MenuItem>
+                );
 
                 privateViews.valueSeq().forEach((view, i) => {
                     items.push(this.createItem(view, `private-${i}`));
-                })
+                });
             }
 
             if (publicViews.size) {
-                items.push(<MenuItem header key="public-header">All Saved Views</MenuItem>);
+                items.push(
+                    <MenuItem header key="public-header">
+                        All Saved Views
+                    </MenuItem>
+                );
 
                 publicViews.valueSeq().forEach((view, i) => {
                     items.push(this.createItem(view, `public-${i}`));
-                })
+                });
             }
 
             return items.asImmutable();
@@ -117,15 +118,11 @@ export class ViewSelector extends React.Component<Props, any> {
         }
 
         return (
-            <span className={'gridbar-button-spacer'}>
-                <DropdownButton
-                    disabled={viewItems.size <= 1}
-                    id={this.dropId}
-                    pullRight
-                    title="Grid Views">
+            <span className="gridbar-button-spacer">
+                <DropdownButton disabled={viewItems.size <= 1} id={this.dropId} pullRight title="Grid Views">
                     {viewItems.toArray()}
                 </DropdownButton>
             </span>
-        )
+        );
     }
 }

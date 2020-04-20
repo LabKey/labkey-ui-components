@@ -27,17 +27,16 @@ import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
 import { DataClassDataType, ParentEntityEditPanel } from '..';
 
 interface Props {
-    canUpdate: boolean
-    title?: string,
-    cancelText?: string,
-    submitText?: string,
-    childName: string,
-    childNounSingular: string
-    multipleSources?: boolean
+    canUpdate: boolean;
+    title?: string;
+    cancelText?: string;
+    submitText?: string;
+    childName: string;
+    childNounSingular: string;
+    multipleSources?: boolean;
 }
 
 class ParentEntityEditPage extends React.Component<Props, any> {
-
     componentWillMount() {
         this.initModel();
     }
@@ -48,7 +47,12 @@ class ParentEntityEditPage extends React.Component<Props, any> {
     }
 
     getQueryGridModel(): QueryGridModel {
-        const model = getStateQueryGridModel('detailediting', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, this.props.multipleSources ? 'multisource' : 'examples'), {}, 53412);
+        const model = getStateQueryGridModel(
+            'detailediting',
+            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, this.props.multipleSources ? 'multisource' : 'examples'),
+            {},
+            53412
+        );
         return getQueryGridModel(model.getId()) || model;
     }
 
@@ -57,10 +61,10 @@ class ParentEntityEditPage extends React.Component<Props, any> {
     };
 
     render() {
-        const { canUpdate, childName, childNounSingular, title} = this.props;
+        const { canUpdate, childName, childNounSingular, title } = this.props;
         const model = this.getQueryGridModel();
         if (!model.isLoaded) {
-            return <LoadingSpinner/>
+            return <LoadingSpinner />;
         }
 
         return (
@@ -72,35 +76,34 @@ class ParentEntityEditPage extends React.Component<Props, any> {
                 title={title}
                 parentDataType={DataClassDataType}
             />
-        )
+        );
     }
 }
 
 storiesOf('ParentEntityEditPanel', module)
     .addDecorator(withKnobs)
-    .add("single source", () => {
+    .add('single source', () => {
         return (
             <ParentEntityEditPage
                 canUpdate={boolean('Can update?', true)}
-                childName={text("Child name", "B-123")}
-                childNounSingular={text("Child noun", "Sample")}
-                title={text("Title", "Details")}
-                submitText={text("Submit Text", "Save")}
-                cancelText={text("Cancel Text", "Cancel")}
+                childName={text('Child name', 'B-123')}
+                childNounSingular={text('Child noun', 'Sample')}
+                title={text('Title', 'Details')}
+                submitText={text('Submit Text', 'Save')}
+                cancelText={text('Cancel Text', 'Cancel')}
             />
-        )
+        );
     })
     .add('multiple sources', () => {
         return (
             <ParentEntityEditPage
                 canUpdate={boolean('Can update?', true)}
-                childName={text("Child name", "B-123")}
-                childNounSingular={text("Child noun", "Sample")}
-                title={text("Title", "Details")}
-                submitText={text("Submit Text", "Save")}
-                cancelText={text("Cancel Text", "Cancel")}
+                childName={text('Child name', 'B-123')}
+                childNounSingular={text('Child noun', 'Sample')}
+                title={text('Title', 'Details')}
+                submitText={text('Submit Text', 'Save')}
+                cancelText={text('Cancel Text', 'Cancel')}
                 multipleSources={true}
             />
-        )
-    })
-;
+        );
+    });

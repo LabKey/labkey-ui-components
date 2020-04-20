@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.52.0
+*Released*: 18 April 2020
+* Item 7178: Prettier/ESLint bulk update
+    - Initial Prettier/ESLint bulk update across packages/components/src directory.
+    - yarn run lint-fix ./src/\*\*/\*
+
 ### version 0.51.0
 *Released*: 17 April 2020
 * Item 6961: DataClassDesigner updates for LKS

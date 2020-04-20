@@ -17,60 +17,60 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import './stories.scss';
-import { EntityDeleteConfirmModal } from '..';
 import { text, withKnobs } from '@storybook/addon-knobs';
+
+import { EntityDeleteConfirmModal } from '..';
 import { SampleTypeDataType } from '../components/entities/constants';
 
 storiesOf('EntityDeleteConfirmModal', module)
     .addDecorator(withKnobs)
-    .add("Error getting data", () => {
+    .add('Error getting data', () => {
         return (
             <EntityDeleteConfirmModal
-                selectionKey={'nonesuch'}
+                selectionKey="nonesuch"
                 onConfirm={() => console.log('confirm')}
                 onCancel={() => console.log('cancel')}
                 entityDataType={SampleTypeDataType}
             />
         );
     })
-    .add("Cannot delete any", () => {
+    .add('Cannot delete any', () => {
         return (
             <EntityDeleteConfirmModal
-                selectionKey={'deleteNone'}
+                selectionKey="deleteNone"
                 onConfirm={() => console.log('confirm')}
                 onCancel={() => console.log('cancel')}
                 entityDataType={SampleTypeDataType}
             />
         );
     })
-    .add("Can delete one", () => {
+    .add('Can delete one', () => {
         return (
             <EntityDeleteConfirmModal
-                selectionKey={'deleteOne'}
+                selectionKey="deleteOne"
                 onConfirm={() => console.log('confirm')}
                 onCancel={() => console.log('cancel')}
                 entityDataType={SampleTypeDataType}
             />
-        )
+        );
     })
-    .add("Can delete all", () => {
+    .add('Can delete all', () => {
         return (
             <EntityDeleteConfirmModal
-                selectionKey={'deleteAll'}
+                selectionKey="deleteAll"
                 onConfirm={() => console.log('confirm')}
                 onCancel={() => console.log('cancel')}
                 entityDataType={SampleTypeDataType}
             />
-        )
+        );
     })
-    .add("Can delete some", () => {
+    .add('Can delete some', () => {
         return (
             <EntityDeleteConfirmModal
-                selectionKey={'deleteSome'}
+                selectionKey="deleteSome"
                 onConfirm={() => console.log('confirm')}
                 onCancel={() => console.log('cancel')}
                 entityDataType={SampleTypeDataType}
             />
-        )
-    })
-;
+        );
+    });

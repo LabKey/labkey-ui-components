@@ -11,14 +11,14 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { ManageDropdownButton } from '../components/buttons/ManageDropdownButton';
 import './stories.scss';
 
-storiesOf("ManageDropdownButton", module)
+storiesOf('ManageDropdownButton', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
+    .add('with knobs', () => {
         // adding div with padding so that you can see the menu items when pullRight=true
         return (
-            <div style={{padding: '20px 0 0 100px'}}>
+            <div style={{ padding: '20px 0 0 100px' }}>
                 <ManageDropdownButton
-                    id={'storybook-manage'}
+                    id="storybook-manage"
                     pullRight={boolean('pullRight', false)}
                     collapsed={boolean('collapsed', false)}
                 >
@@ -26,5 +26,5 @@ storiesOf("ManageDropdownButton", module)
                     <MenuItem disabled={true}>Second Item</MenuItem>
                 </ManageDropdownButton>
             </div>
-        )
+        );
     });

@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 import { Map } from 'immutable';
-import { IEntityDetails } from "./models";
-import { ENTITY_FORM_ID_PREFIX, ENTITY_FORM_IDS } from "./constants";
+
+import { IEntityDetails } from './models';
+import { ENTITY_FORM_ID_PREFIX, ENTITY_FORM_IDS } from './constants';
 
 export function getFormNameFromId(id: string): string {
     const index = id.indexOf(ENTITY_FORM_ID_PREFIX);
     return index === 0 ? id.substring(index + ENTITY_FORM_ID_PREFIX.length) : id;
 }
 
-function getEntityFormDataValue(key: string, propName: string, defaultValue: any, formValues: IEntityDetails, data: Map<string, any>): any {
+function getEntityFormDataValue(
+    key: string,
+    propName: string,
+    defaultValue: any,
+    formValues: IEntityDetails,
+    data: Map<string, any>
+): any {
     if (key && formValues && formValues[key] !== undefined) {
         return formValues[key] || defaultValue;
-    }
-    else if (data) {
+    } else if (data) {
         return data.get(propName) || defaultValue;
     }
 
@@ -34,7 +40,10 @@ function getEntityFormDataValue(key: string, propName: string, defaultValue: any
 }
 
 export function isEntityFormValid(formValues: IEntityDetails, data: Map<string, any>): boolean {
-    const hasValidName = formValues !== undefined && formValues[ENTITY_FORM_IDS.NAME] !== undefined && formValues[ENTITY_FORM_IDS.NAME].length > 0;
+    const hasValidName =
+        formValues !== undefined &&
+        formValues[ENTITY_FORM_IDS.NAME] !== undefined &&
+        formValues[ENTITY_FORM_IDS.NAME].length > 0;
     return isExistingEntity(formValues, data) || hasValidName;
 }
 

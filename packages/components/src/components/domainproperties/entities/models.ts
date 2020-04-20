@@ -15,9 +15,9 @@
  */
 
 export interface IEntityDetails {
-    isUpdate?: boolean
-    rowId?: number
-    name?: string
-    nameExpression?: string
-    description?: string
+    isUpdate?: boolean;
+    rowId?: number;
+    name?: string;
+    nameExpression?: string;
+    description?: string;
 }

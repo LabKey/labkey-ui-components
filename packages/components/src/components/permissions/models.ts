@@ -2,14 +2,14 @@
  * Copyright (c) 2015-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Record, List, Map } from 'immutable'
+import { Record, List, Map } from 'immutable';
 
 export class Principal extends Record({
     userId: undefined,
     name: undefined,
     displayName: undefined,
     type: undefined,
-    active: true
+    active: true,
 }) {
     userId: number;
     name: string;
@@ -17,7 +17,7 @@ export class Principal extends Record({
     type: string;
     active: boolean;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -29,18 +29,24 @@ export class Principal extends Record({
         let displayName = row.getIn(['DisplayName', 'value']);
         displayName = type === 'u' && displayName ? name + ' (' + displayName + ')' : name;
 
-        return new Principal({userId, name, type, displayName});
+        return new Principal({ userId, name, type, displayName });
     }
 
-    static filterAndSort(principals: List<Principal>, typeToShow: string, excludeUserIds?: List<number>): List<Principal> {
-        return principals
-            // filter for a specific typeToShow
-            .filter((principal) => typeToShow === undefined || principal.type === typeToShow)
-            // filter out any principals that are already members of this role
-            .filter((principal) => excludeUserIds === undefined || !excludeUserIds.contains(principal.userId))
-            // finally sort by display name
-            .sortBy((principal) => principal.displayName)
-            .toList();
+    static filterAndSort(
+        principals: List<Principal>,
+        typeToShow: string,
+        excludeUserIds?: List<number>
+    ): List<Principal> {
+        return (
+            principals
+                // filter for a specific typeToShow
+                .filter(principal => typeToShow === undefined || principal.type === typeToShow)
+                // filter out any principals that are already members of this role
+                .filter(principal => excludeUserIds === undefined || !excludeUserIds.contains(principal.userId))
+                // finally sort by display name
+                .sortBy(principal => principal.displayName)
+                .toList()
+        );
     }
 }
 
@@ -51,7 +57,7 @@ export class SecurityRole extends Record({
     name: undefined,
     permissions: List<string>(),
     sourceModule: undefined,
-    uniqueName: undefined
+    uniqueName: undefined,
 }) {
     description: string;
     displayName: string;
@@ -61,7 +67,7 @@ export class SecurityRole extends Record({
     sourceModule: string;
     uniqueName: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -79,15 +85,19 @@ export class SecurityRole extends Record({
         return new SecurityRole({
             ...raw,
             excludedPrincipals,
-            permissions
+            permissions,
         });
     }
 
     // use the explicit set of roles, fall back to the relevant roles for the policy
     static filter(roles: List<SecurityRole>, policy: SecurityPolicy, rolesToShow?: List<string>): List<SecurityRole> {
-        return roles.filter((role) => {
-            return rolesToShow ? rolesToShow.contains(role.uniqueName) : policy.relevantRoles.contains(role.uniqueName)
-        }).toList();
+        return roles
+            .filter(role => {
+                return rolesToShow
+                    ? rolesToShow.contains(role.uniqueName)
+                    : policy.relevantRoles.contains(role.uniqueName);
+            })
+            .toList();
     }
 }
 
@@ -96,7 +106,7 @@ export class SecurityAssignment extends Record({
     userId: undefined,
     displayName: undefined,
     type: undefined,
-    isNew: false
+    isNew: false,
 }) {
     role: string;
     userId: number;
@@ -104,7 +114,7 @@ export class SecurityAssignment extends Record({
     type: string;
     isNew: boolean;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -133,23 +143,25 @@ export class SecurityPolicy extends Record({
     modified: undefined,
     resourceId: undefined,
     relevantRoles: List<string>(),
-    containerId: undefined
+    containerId: undefined,
 }) {
     assignments: List<SecurityAssignment>;
     assignmentsByRole: Map<string, List<SecurityAssignment>>;
     modified: string;
     resourceId: string;
-    relevantRoles: List<String>;
+    relevantRoles: List<string>;
     containerId: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
     static create(raw: any): SecurityPolicy {
         let assignments = List<SecurityAssignment>();
         if (raw.policy && raw.policy.assignments) {
-            assignments = List<SecurityAssignment>(raw.policy.assignments.map((assignment) => new SecurityAssignment(assignment)));
+            assignments = List<SecurityAssignment>(
+                raw.policy.assignments.map(assignment => new SecurityAssignment(assignment))
+            );
         }
 
         let relevantRoles = List<string>();
@@ -162,14 +174,14 @@ export class SecurityPolicy extends Record({
             assignments,
             assignmentsByRole: SecurityPolicy.getAssignmentsByRole(assignments),
             relevantRoles,
-            containerId: raw.containerId
+            containerId: raw.containerId,
         });
     }
 
     static getAssignmentsByRole(assignments: List<SecurityAssignment>): Map<string, List<SecurityAssignment>> {
         let assignmentsByRole = Map<string, List<SecurityAssignment>>();
 
-        assignments.map((assignment) => {
+        assignments.map(assignment => {
             if (!assignmentsByRole.has(assignment.role)) {
                 assignmentsByRole = assignmentsByRole.set(assignment.role, List<SecurityAssignment>());
             }
@@ -182,48 +194,52 @@ export class SecurityPolicy extends Record({
     }
 
     static removeAssignment(policy: SecurityPolicy, userId: number, role: SecurityRole): SecurityPolicy {
-        const assignments = policy.assignments.filter((assignment) => !(assignment.role === role.uniqueName && assignment.userId === userId)).toList();
+        const assignments = policy.assignments
+            .filter(assignment => !(assignment.role === role.uniqueName && assignment.userId === userId))
+            .toList();
 
         return policy.merge({
             assignments,
-            assignmentsByRole: SecurityPolicy.getAssignmentsByRole(assignments)
+            assignmentsByRole: SecurityPolicy.getAssignmentsByRole(assignments),
         }) as SecurityPolicy;
     }
 
     static addUserIdAssignment(policy: SecurityPolicy, userId: number, roleUniqueName: string): SecurityPolicy {
-        const principal = new Principal({userId, type: 'u'});
-        const role = new SecurityRole({uniqueName: roleUniqueName});
+        const principal = new Principal({ userId, type: 'u' });
+        const role = new SecurityRole({ uniqueName: roleUniqueName });
         return this.addAssignment(policy, principal, role);
     }
 
     static addAssignment(policy: SecurityPolicy, principal: Principal, role: SecurityRole): SecurityPolicy {
-        const assignments = policy.assignments.push(new SecurityAssignment(
-            Object.assign({role: role.uniqueName, isNew: true}, principal.toJS())
-        ));
+        const assignments = policy.assignments.push(
+            new SecurityAssignment(Object.assign({ role: role.uniqueName, isNew: true }, principal.toJS()))
+        );
 
         return policy.merge({
             assignments,
-            assignmentsByRole: SecurityPolicy.getAssignmentsByRole(assignments)
+            assignmentsByRole: SecurityPolicy.getAssignmentsByRole(assignments),
         }) as SecurityPolicy;
     }
 
     static updateAssignmentsData(policy: SecurityPolicy, principalsById: Map<number, Principal>): SecurityPolicy {
-        const assignments = policy.assignments.map((assignment) => {
-            const principal = principalsById ? principalsById.get(assignment.userId) : undefined;
+        const assignments = policy.assignments
+            .map(assignment => {
+                const principal = principalsById ? principalsById.get(assignment.userId) : undefined;
 
-            const updatedAssignment  = principal
-                ? assignment.merge({
-                        displayName: (!principal.active ? 'Inactive User: ' : '') + principal.displayName,
-                        type: principal.type
-                    }) as SecurityAssignment
-                : assignment;
+                const updatedAssignment = principal
+                    ? (assignment.merge({
+                          displayName: (!principal.active ? 'Inactive User: ' : '') + principal.displayName,
+                          type: principal.type,
+                      }) as SecurityAssignment)
+                    : assignment;
 
-            return updatedAssignment;
-        }).toList();
+                return updatedAssignment;
+            })
+            .toList();
 
         return policy.merge({
             assignments,
-            assignmentsByRole: SecurityPolicy.getAssignmentsByRole(assignments)
+            assignmentsByRole: SecurityPolicy.getAssignmentsByRole(assignments),
         }) as SecurityPolicy;
     }
 
@@ -233,10 +249,10 @@ export class SecurityPolicy extends Record({
 }
 
 export interface PermissionsProviderProps {
-    roles: List<SecurityRole>
-    rolesByUniqueName: Map<string, SecurityRole>
-    principals: List<Principal>
-    principalsById: Map<number, Principal>
-    inactiveUsersById: Map<number, Principal>
-    error: string
+    roles: List<SecurityRole>;
+    rolesByUniqueName: Map<string, SecurityRole>;
+    principals: List<Principal>;
+    principalsById: Map<number, Principal>;
+    inactiveUsersById: Map<number, Principal>;
+    error: string;
 }

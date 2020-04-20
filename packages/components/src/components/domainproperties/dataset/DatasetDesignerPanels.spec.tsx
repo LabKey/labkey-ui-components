@@ -14,43 +14,49 @@
  * limitations under the License.
  */
 
-import {DatasetModel} from "./models";
-import {NEW_DATASET_MODEL} from "../../../test/data/constants";
-import getDatasetDesign from "../../../test/data/dataset-getDatasetDesign.json";
-import {DatasetDesignerPanels} from "./DatasetDesignerPanels";
-import renderer from "react-test-renderer";
-import React from "react";
+import renderer from 'react-test-renderer';
 
-describe("Dataset Designer", () => {
+import React from 'react';
 
+import { NEW_DATASET_MODEL } from '../../../test/data/constants';
+
+import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
+
+import { DatasetModel } from './models';
+
+import { DatasetDesignerPanels } from './DatasetDesignerPanels';
+
+describe('Dataset Designer', () => {
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
-    test("New dataset", () => {
-        const designerPanel =
+    test('New dataset', () => {
+        const designerPanel = (
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
                 useTheme={true}
                 showDataSpace={true}
                 showVisitDate={true}
-            />;
+            />
+        );
 
         const dom = renderer.create(designerPanel).toJSON();
         expect(dom).toMatchSnapshot();
     });
 
-    test("Edit existing dataset", () => {
-        const designerPanel =
+    test('Edit existing dataset', () => {
+        const designerPanel = (
             <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
                 useTheme={true}
                 showDataSpace={true}
                 showVisitDate={true}
-            />;
+            />
+        );
 
         const dom = renderer.create(designerPanel).toJSON();
         expect(dom).toMatchSnapshot();
-    })
+    });
 
     // TODO: testCase for testing the alert / error message similar to DataClassDesigner.spec.tsx
 });

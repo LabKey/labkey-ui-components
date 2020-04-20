@@ -15,6 +15,7 @@
  */
 import { getGlobal, setGlobal } from 'reactn';
 import { List, Map } from 'immutable';
+
 import { initBrowserHistoryState } from './util/global';
 import { EditorModel, LookupStore } from './models';
 import { Lineage } from './components/lineage/models';
@@ -30,7 +31,7 @@ import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
  */
 export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Map<string, any>) {
     if (!getGlobal().QueryGrid_models) {
-        resetQueryGridState()
+        resetQueryGridState();
     }
 
     initBrowserHistoryState();
@@ -54,13 +55,17 @@ export function resetQueryGridState() {
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
         QueryGrid_columnrenderers: Map<string, any>(),
-        QueryGrid_users: Map<string, List<IUser>>()
+        QueryGrid_users: Map<string, List<IUser>>(),
     });
 }
 
 function getGlobalState(property: string) {
     if (!getGlobal()['QueryGrid_' + property]) {
-        throw new Error('Must call initQueryGridState before you can access anything from the global.QueryGrid_' + property + ' objects.');
+        throw new Error(
+            'Must call initQueryGridState before you can access anything from the global.QueryGrid_' +
+                property +
+                ' objects.'
+        );
     }
 
     return getGlobal()['QueryGrid_' + property];
@@ -75,17 +80,23 @@ export function getQueryGridModel(modelId: string): QueryGridModel {
 }
 
 export function getQueryGridModelsForSchema(schemaName: string): List<QueryGridModel> {
-    return getGlobalState('models').filter(model => model.schema.toLowerCase() === schemaName.toLowerCase()).toList();
+    return getGlobalState('models')
+        .filter(model => model.schema.toLowerCase() === schemaName.toLowerCase())
+        .toList();
 }
 
 export function getQueryGridModelsForSchemaQuery(schemaQuery: SchemaQuery): List<QueryGridModel> {
     const modelName = resolveSchemaQuery(schemaQuery);
-    return getGlobalState('models').filter(model => model.getModelName() === modelName).toList();
+    return getGlobalState('models')
+        .filter(model => model.getModelName() === modelName)
+        .toList();
 }
 
 export function getQueryGridModelsForGridId(gridIdPrefix: string): List<QueryGridModel> {
     const prefix = (gridIdPrefix + '|').toLowerCase();
-    return getGlobalState('models').filter(model => model.getId().indexOf(prefix) === 0).toList();
+    return getGlobalState('models')
+        .filter(model => model.getId().indexOf(prefix) === 0)
+        .toList();
 }
 
 /**
@@ -95,22 +106,29 @@ export function getQueryGridModelsForGridId(gridIdPrefix: string): List<QueryGri
  * @param connectedComponent Optional React.Component which should be re-rendered with this QueryGridModel update (prevents the need to "connect" the component to the global state)
  * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
-export function updateQueryGridModel(model: QueryGridModel, updates: any, connectedComponent?: React.Component, failIfNotFound: boolean = true): QueryGridModel {
+export function updateQueryGridModel(
+    model: QueryGridModel,
+    updates: any,
+    connectedComponent?: React.Component,
+    failIfNotFound = true
+): QueryGridModel {
     if (failIfNotFound && !getGlobalState('models').has(model.getId())) {
         throw new Error('Unable to find QueryGridModel for modelId: ' + model.getId());
     }
 
     const updatedModel = model.merge(updates) as QueryGridModel;
 
-    setGlobal({
-        QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel)
-    },
+    setGlobal(
+        {
+            QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel),
+        },
 
-    (global) => {
-        if (connectedComponent) {
-            connectedComponent.forceUpdate();
+        global => {
+            if (connectedComponent) {
+                connectedComponent.forceUpdate();
+            }
         }
-    });
+    );
 
     return updatedModel;
 }
@@ -121,16 +139,18 @@ export function updateQueryGridModel(model: QueryGridModel, updates: any, connec
  * @param connectedComponent Optional React.Component which should be re-rendered with this QueryGridModel update (prevents the need to "connect" the component to the global state)
  */
 export function removeQueryGridModel(model: QueryGridModel, connectedComponent?: React.Component) {
-    setGlobal({
-        QueryGrid_models: getGlobalState('models').delete(model.getId()),
-        QueryGrid_editors: getGlobalState('editors').delete(model.getId())
-    },
+    setGlobal(
+        {
+            QueryGrid_models: getGlobalState('models').delete(model.getId()),
+            QueryGrid_editors: getGlobalState('editors').delete(model.getId()),
+        },
 
-    (global) => {
-        if (connectedComponent) {
-            connectedComponent.forceUpdate();
+        global => {
+            if (connectedComponent) {
+                connectedComponent.forceUpdate();
+            }
         }
-    });
+    );
 }
 
 /**
@@ -146,7 +166,7 @@ export function getQueryMetadata() {
  */
 export function setQueryMetadata(metadata: Map<string, any>) {
     setGlobal({
-        QueryGrid_metadata: metadata
+        QueryGrid_metadata: metadata,
     });
 }
 
@@ -163,7 +183,7 @@ export function getQueryColumnRenderers() {
  */
 export function setQueryColumnRenderers(columnrenderers: Map<string, any>) {
     setGlobal({
-        QueryGrid_columnrenderers: columnrenderers
+        QueryGrid_columnrenderers: columnrenderers,
     });
 }
 
@@ -171,7 +191,7 @@ export function setQueryColumnRenderers(columnrenderers: Map<string, any>) {
  * Get the lineage results from the global state for a given seed / lsid
  * @param seed Key for the lineage results map
  */
-export function getLineageResult(seed: string) : Lineage {
+export function getLineageResult(seed: string): Lineage {
     return getGlobalState('lineageResults').get(seed);
 }
 
@@ -182,7 +202,7 @@ export function getLineageResult(seed: string) : Lineage {
  */
 export function updateLineageResult(seed: string, lineage: Lineage) {
     setGlobal({
-        QueryGrid_lineageResults: getGlobalState('lineageResults').set(seed, lineage)
+        QueryGrid_lineageResults: getGlobalState('lineageResults').set(seed, lineage),
     });
 }
 
@@ -191,7 +211,7 @@ export function updateLineageResult(seed: string, lineage: Lineage) {
  */
 export function invalidateLineageResults() {
     setGlobal({
-        QueryGrid_lineageResults: Map<string, Lineage>()
+        QueryGrid_lineageResults: Map<string, Lineage>(),
     });
 }
 
@@ -201,18 +221,16 @@ function getSelectedState(
     maxRows: number,
     totalRows: number
 ): GRID_CHECKBOX_OPTIONS {
-
-    const selectedOnPage: number = dataIds.filter((id) => selected.indexOf(id) !== -1).size,
+    const selectedOnPage: number = dataIds.filter(id => selected.indexOf(id) !== -1).size,
         totalSelected: number = selected.size;
 
     if (
         maxRows === selectedOnPage ||
-        totalRows === totalSelected && totalRows !== 0 ||
-        selectedOnPage === totalSelected && selectedOnPage === dataIds.size && selectedOnPage > 0
+        (totalRows === totalSelected && totalRows !== 0) ||
+        (selectedOnPage === totalSelected && selectedOnPage === dataIds.size && selectedOnPage > 0)
     ) {
         return GRID_CHECKBOX_OPTIONS.ALL;
-    }
-    else if (totalSelected > 0) {
+    } else if (totalSelected > 0) {
         // if model has any selected show checkbox as indeterminate
         return GRID_CHECKBOX_OPTIONS.SOME;
     }
@@ -221,7 +239,7 @@ function getSelectedState(
 }
 
 interface IGridSelectionResponse {
-    selectedIds: List<any>
+    selectedIds: List<any>;
 }
 
 /**
@@ -229,7 +247,7 @@ interface IGridSelectionResponse {
  * @param model
  * @param response
  */
-export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse): QueryGridModel  {
+export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse): QueryGridModel {
     const selectedIds = response.selectedIds;
     const id = model.getId();
     const selectedLoaded = true;
@@ -241,20 +259,19 @@ export function updateSelections(model: QueryGridModel, response: IGridSelection
             selectedIds,
             selectedLoaded,
             selectedQuantity: selectedIds.size,
-            selectedState
+            selectedState,
         } as any;
 
         const updatedModel = model.merge(updatedState) as QueryGridModel;
         setGlobal({
-            QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel)
+            QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel),
         });
 
         return updatedModel;
-    }
-    else {
-        const updatedModel = model.merge({selectedLoaded, ...QueryGridModel.EMPTY_SELECTION}) as QueryGridModel;
+    } else {
+        const updatedModel = model.merge({ selectedLoaded, ...QueryGridModel.EMPTY_SELECTION }) as QueryGridModel;
         setGlobal({
-            QueryGrid_models: getGlobalState('models').set(id, updatedModel)
+            QueryGrid_models: getGlobalState('models').set(id, updatedModel),
         });
 
         return updatedModel;
@@ -275,7 +292,7 @@ export function getEditorModel(modelId: string): EditorModel {
  * @param updates JS Object with the key/value pairs for updates to make to the model
  * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
-export function updateEditorModel(model: EditorModel, updates: any, failIfNotFound: boolean = true): EditorModel {
+export function updateEditorModel(model: EditorModel, updates: any, failIfNotFound = true): EditorModel {
     if (failIfNotFound && !getGlobalState('editors').has(model.id)) {
         throw new Error('Unable to find EditorModel for modelId: ' + model.id);
     }
@@ -283,7 +300,7 @@ export function updateEditorModel(model: EditorModel, updates: any, failIfNotFou
     const updatedModel = model.merge(updates) as EditorModel;
 
     setGlobal({
-        QueryGrid_editors: getGlobalState('editors').set(model.id, updatedModel)
+        QueryGrid_editors: getGlobalState('editors').set(model.id, updatedModel),
     });
 
     return updatedModel;
@@ -304,7 +321,7 @@ export function getLookupStore(col: QueryColumn): LookupStore {
  * @param updates JS Object with the key/value pairs for updates to make to the store
  * @param failIfNotFound Boolean indicating if an error should be thrown if the store is not found in global state
  */
-export function updateLookupStore(store: LookupStore, updates: any, failIfNotFound: boolean = true): LookupStore {
+export function updateLookupStore(store: LookupStore, updates: any, failIfNotFound = true): LookupStore {
     if (failIfNotFound && !getGlobalState('lookups').has(store.key)) {
         throw new Error('Unable to find LookupStore for col: ' + store.key);
     }
@@ -312,19 +329,18 @@ export function updateLookupStore(store: LookupStore, updates: any, failIfNotFou
     const updatedStore = store.merge(updates) as LookupStore;
 
     setGlobal({
-        QueryGrid_lookups: getGlobalState('lookups').set(store.key, updatedStore)
+        QueryGrid_lookups: getGlobalState('lookups').set(store.key, updatedStore),
     });
 
     return updatedStore;
 }
 
-function getPermissionsKey(permissions?: string | Array<string>) : string {
-    let key = "allPermissions";
+function getPermissionsKey(permissions?: string | string[]): string {
+    let key = 'allPermissions';
     if (permissions) {
         if (Array.isArray(permissions)) {
-            key = permissions.sort(naturalSort).join(";")
-        }
-        else {
+            key = permissions.sort(naturalSort).join(';');
+        } else {
             key = permissions;
         }
     }
@@ -334,7 +350,7 @@ function getPermissionsKey(permissions?: string | Array<string>) : string {
 /**
  * Get the users list from the global QueryGrid state
  */
-export function getUsers(permissions?: string | Array<string>) : List<IUser> {
+export function getUsers(permissions?: string | string[]): List<IUser> {
     return getGlobalState('users').get(getPermissionsKey(permissions));
 }
 
@@ -342,9 +358,9 @@ export function getUsers(permissions?: string | Array<string>) : List<IUser> {
  * Sets the users list to be used for this application in the global QueryGrid state
  * @param users List of users
  */
-export function setUsers(users: List<IUser>, permissions?: string | Array<string>) {
+export function setUsers(users: List<IUser>, permissions?: string | string[]) {
     setGlobal({
-        QueryGrid_users: getGlobalState('users').set(getPermissionsKey(permissions), users)
+        QueryGrid_users: getGlobalState('users').set(getPermissionsKey(permissions), users),
     });
 }
 
@@ -352,7 +368,7 @@ export function setUsers(users: List<IUser>, permissions?: string | Array<string
  * Invalidate the global state users list
  */
 export function invalidateUsers() {
-    setGlobal( {
-        QueryGrid_users: Map<string, List<IUser>>()
+    setGlobal({
+        QueryGrid_users: Map<string, List<IUser>>(),
     });
 }

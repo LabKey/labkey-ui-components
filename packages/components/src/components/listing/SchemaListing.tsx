@@ -16,6 +16,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { List, Map } from 'immutable';
+
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { SchemaDetails } from '../base/models/model';
 import { AppURL } from '../../url/AppURL';
@@ -36,33 +37,32 @@ const columns = List([
             }
 
             return <span className="text-capitalize">{schemaName}</span>;
-        }
+        },
     }),
     new GridColumn({
         index: 'description',
-        title: 'Description'
-    })
+        title: 'Description',
+    }),
 ]);
 
 interface SchemaListingProps {
-    schemaName?: string
-    hideEmpty?: boolean
-    asPanel?: boolean
-    title?: string
+    schemaName?: string;
+    hideEmpty?: boolean;
+    asPanel?: boolean;
+    title?: string;
 }
 
 interface SchemaListingState {
-    schemas: List<Map<string, SchemaDetails>>
+    schemas: List<Map<string, SchemaDetails>>;
 }
 
 export class SchemaListing extends React.Component<SchemaListingProps, SchemaListingState> {
-
     constructor(props: SchemaListingProps) {
         super(props);
 
         this.state = {
-            schemas: undefined
-        }
+            schemas: undefined,
+        };
     }
 
     componentWillMount() {
@@ -77,8 +77,8 @@ export class SchemaListing extends React.Component<SchemaListingProps, SchemaLis
     }
 
     loadSchemas(schemaName: string) {
-        fetchSchemas(schemaName).then((schemas) => {
-            this.setState(() => ({schemas}));
+        fetchSchemas(schemaName).then(schemas => {
+            this.setState(() => ({ schemas }));
         });
     }
 
@@ -94,32 +94,28 @@ export class SchemaListing extends React.Component<SchemaListingProps, SchemaLis
             if (asPanel) {
                 return (
                     <div className="panel panel-default">
-                        <div className="panel-heading">
-                            {title || 'Schemas'}
-                        </div>
+                        <div className="panel-heading">{title || 'Schemas'}</div>
                         <div className="panel-body">
-                            <SchemaListingDisplay schemas={schemas}/>
+                            <SchemaListingDisplay schemas={schemas} />
                         </div>
                     </div>
-                )
+                );
             }
 
-            return <SchemaListingDisplay schemas={schemas}/>;
+            return <SchemaListingDisplay schemas={schemas} />;
         }
 
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
     }
 }
 
-
 interface SchemaListingDisplayProps {
-    schemas: List<Map<string, SchemaDetails>>
+    schemas: List<Map<string, SchemaDetails>>;
 }
 
 export class SchemaListingDisplay extends React.PureComponent<SchemaListingDisplayProps, any> {
-
     render() {
         const { schemas } = this.props;
-        return <Grid data={schemas} columns={columns}/>;
+        return <Grid data={schemas} columns={columns} />;
     }
 }

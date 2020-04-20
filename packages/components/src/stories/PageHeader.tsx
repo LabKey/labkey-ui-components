@@ -17,27 +17,28 @@ import { PageHeader } from '../components/base/PageHeader';
 
 notificationInit();
 
-createNotification(new NotificationItemModel({
-    id: "login_seesion_notice",
-    message: "A login session notification (from PageHeader story)",
-    persistence: Persistence.LOGIN_SESSION
-}));
+createNotification(
+    new NotificationItemModel({
+        id: 'login_seesion_notice',
+        message: 'A login session notification (from PageHeader story)',
+        persistence: Persistence.LOGIN_SESSION,
+    })
+);
 
-storiesOf("PageHeader", module)
+storiesOf('PageHeader', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
-
-        const hasChildren = boolean("Add content above title?", true);
+    .add('with knobs', () => {
+        const hasChildren = boolean('Add content above title?', true);
         const children = hasChildren ? <Button href="#">Header action link</Button> : undefined;
-        const showNotifications = boolean("Show notifications?", false);
+        const showNotifications = boolean('Show notifications?', false);
 
         return (
             <PageHeader
-                iconCls={text("Icon class name", "fa fa-spinner fa-pulse")}
+                iconCls={text('Icon class name', 'fa fa-spinner fa-pulse')}
                 showNotifications={showNotifications}
-                title={text("Title", "Loading...")}
-                >
+                title={text('Title', 'Loading...')}
+            >
                 {children}
             </PageHeader>
-        )
+        );
     });

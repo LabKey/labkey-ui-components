@@ -15,13 +15,15 @@
  */
 
 import React from 'react';
-import {DatasetModel} from "./models";
-import {DatasetPropertiesPanel} from "./DatasetPropertiesPanel";
-import {InjectedBaseDomainDesignerProps, withBaseDomainDesigner} from "../BaseDomainDesigner";
+
+import { InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
+
+import { DatasetModel } from './models';
+import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 
 interface Props {
     initModel?: DatasetModel;
-    onChange?: (model: DatasetModel) => void
+    onChange?: (model: DatasetModel) => void;
     useTheme?: boolean;
     showDataSpace: boolean;
     showVisitDate: boolean;
@@ -36,18 +38,21 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         super(props);
 
         this.state = {
-            model: props.initModel || DatasetModel.create(null,{})
+            model: props.initModel || DatasetModel.create(null, {}),
         };
     }
 
     onPropertiesChange = (model: DatasetModel) => {
-      const { onChange } = this.props;
+        const { onChange } = this.props;
 
-        this.setState(() => ({model}), () => {
-            if (onChange) {
-                onChange(model);
+        this.setState(
+            () => ({ model }),
+            () => {
+                if (onChange) {
+                    onChange(model);
+                }
             }
-        });
+        );
     };
 
     render() {
@@ -62,16 +67,18 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     model={model}
                     controlledCollapse={true}
                     useTheme={useTheme}
-                    panelStatus={'COMPLETE'}
+                    panelStatus="COMPLETE"
                     validate={false}
-                    onToggle={(collapsed, callback) => {onTogglePanel(0, collapsed, callback);}}
+                    onToggle={(collapsed, callback) => {
+                        onTogglePanel(0, collapsed, callback);
+                    }}
                     onChange={this.onPropertiesChange}
                     showDataspace={showDataSpace}
                     showVisitDate={showVisitDate}
                 />
             </>
         );
-    };
+    }
 }
 
 export const DatasetDesignerPanels = withBaseDomainDesigner<Props>(DatasetDesignerPanelImpl);

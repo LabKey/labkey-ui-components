@@ -48,12 +48,12 @@ export class GridPanel extends PureComponent<Props> {
             showExport,
             showViewSelector,
         } = this.props;
-        const { id, error, messages, queryInfo, hasData } = model;
+        const { id, rowsError, messages, queryInfo, hasData } = model;
         const paginate = isPaged && hasData;
         let body;
 
-        if (model.error !== undefined) {
-            body = <Alert>{error}</Alert>;
+        if (model.rowsError !== undefined) {
+            body = <Alert>{rowsError}</Alert>;
         } else {
             let buttons;
 

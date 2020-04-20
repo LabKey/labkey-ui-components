@@ -24,8 +24,8 @@ export class PageSizeSelector extends PureComponent<PageSizeSelectorProps> {
 
     render() {
         const { model, actions, pageSizes } = this.props;
-        const { id, error, maxRows, isLoading, rowCount } = model;
-        const disabled = error !== undefined || isLoading;
+        const { id, rowsError, maxRows, isLoading, rowCount } = model;
+        const disabled = rowsError !== undefined || isLoading;
         const show = rowCount > pageSizes[0];
         const menuItems = pageSizes.map(size => (
             <MenuItem key={size} active={size === maxRows} onClick={() => this.setMaxRows(size)}>

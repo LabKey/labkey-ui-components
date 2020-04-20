@@ -57,11 +57,11 @@ describe('PageSizeSelector', () => {
         const dropdownSelector = 'div.dropdown';
         let wrapper = render(<PageSizeSelector model={model} actions={actions} />);
         expect(wrapper.find(dropdownSelector)[0].attribs.class).not.toContain('disabled');
-        model = model.mutate({ error: 'Oh no!' });
+        model = model.mutate({ rowsError: 'Oh no!' });
         wrapper = render(<PageSizeSelector model={model} actions={actions} />);
         expect(wrapper.find(dropdownSelector)[0].attribs.class).toContain('disabled');
         model = model.mutate({
-            error: undefined,
+            rowsError: undefined,
             rowsLoadingState: LoadingState.LOADING,
         });
         wrapper = render(<PageSizeSelector model={model} actions={actions} />);

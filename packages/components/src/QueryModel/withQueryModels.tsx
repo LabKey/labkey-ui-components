@@ -101,23 +101,23 @@ export function withQueryModels<Props>(
                         model.orderedRows = orderedRows;
                         model.rowCount = rowCount;
                         model.rowsLoadingState = LoadingState.LOADED;
-                        model.error = undefined;
+                        model.rowsError = undefined;
                     })
                 );
             } catch (error) {
                 this.setState(
                     produce((draft: Draft<State>) => {
                         const model = draft.queryModels[id];
-                        let err = resolveErrorMessage(error);
+                        let rowsError = resolveErrorMessage(error);
 
-                        if (err === undefined) {
-                            err = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;
+                        if (rowsError === undefined) {
+                            rowsError = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;
                         }
 
-                        console.error(`Error loading rows for model ${id}: `, err);
+                        console.error(`Error loading rows for model ${id}: `, rowsError);
 
                         model.rowsLoadingState = LoadingState.LOADED;
-                        model.error = err;
+                        model.rowsError = rowsError;
                     })
                 );
             }
@@ -139,7 +139,7 @@ export function withQueryModels<Props>(
                         const model = draft.queryModels[id];
                         model.queryInfo = queryInfo;
                         model.queryInfoLoadingState = LoadingState.LOADED;
-                        model.error = undefined;
+                        model.rowsError = undefined;
                     }),
                     () => this.maybeLoad(id, loadRows)
                 );
@@ -147,16 +147,16 @@ export function withQueryModels<Props>(
                 this.setState(
                     produce((draft: Draft<State>) => {
                         const model = draft.queryModels[id];
-                        let err = resolveErrorMessage(error);
+                        let rowsError = resolveErrorMessage(error);
 
-                        if (err === undefined) {
-                            err = `Error while loading QueryInfo for SchemaQuery: ${model.schemaQuery.toString()}`;
+                        if (rowsError === undefined) {
+                            rowsError = `Error while loading QueryInfo for SchemaQuery: ${model.schemaQuery.toString()}`;
                         }
 
-                        console.error(`Error loading QueryInfo for model ${id}:`, err);
+                        console.error(`Error loading QueryInfo for model ${id}:`, rowsError);
 
                         model.queryInfoLoadingState = LoadingState.LOADED;
-                        model.error = err;
+                        model.rowsError = rowsError;
                     })
                 );
             }
@@ -302,7 +302,7 @@ export function withQueryModels<Props>(
                         model.schemaQuery = SchemaQuery.create(model.schemaName, model.queryName, viewName);
                         // We need to reset all data for the model because changing the view will change things such as
                         // columns and rowCount. If we don't do this we'll render a grid with empty rows/columns.
-                        model.error = undefined;
+                        model.rowsError = undefined;
                         model.messages = undefined;
                         model.offset = 0;
                         model.orderedRows = undefined;
@@ -328,7 +328,7 @@ export function withQueryModels<Props>(
                         model.schemaQuery = schemaQuery;
                         model.queryInfo = undefined;
                         model.queryInfoLoadingState = LoadingState.INITIALIZED;
-                        model.error = undefined;
+                        model.rowsError = undefined;
                         model.messages = undefined;
                         model.offset = 0;
                         model.orderedRows = undefined;

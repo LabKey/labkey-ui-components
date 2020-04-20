@@ -104,11 +104,7 @@ describe('<Detail/>', () => {
         const component = (
             <Detail
                 queryModel={model}
-                detailRenderer={() => {
-                    return () => {
-                        return <h1>TESTING</h1>;
-                    };
-                }}
+                detailRenderer={() => () => <h1>TESTING</h1>}
             />
         );
 

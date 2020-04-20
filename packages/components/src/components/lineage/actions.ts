@@ -324,7 +324,7 @@ export function createGridModel(
         isLoading: false,
         members,
         message: undefined,
-        nodeCounts,
+        nodeCounts: nodeCounts.asImmutable(),
         pageNumber,
         seedNode: nodeList.get(0),
         totalRows: nodeList.size

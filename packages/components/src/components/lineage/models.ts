@@ -548,11 +548,11 @@ export class LineageGridModel implements ILineageGridModel {
         Object.assign(this, { ...config });
     }
 
-    getOffset(): number {
+    get offset(): number {
         return this.pageNumber > 1 ? (this.pageNumber - 1) * this.maxRows : 0;
     }
 
-    getMaxRowIndex(): number {
+    get maxRowIndex(): number {
         let max = this.pageNumber > 1 ? this.pageNumber * this.maxRows : this.maxRows;
 
         if (max > this.totalRows) {
@@ -562,8 +562,8 @@ export class LineageGridModel implements ILineageGridModel {
         return max;
     }
 
-    getMinRowIndex(): number {
-        return this.getOffset() + 1;
+    get minRowIndex(): number {
+        return this.offset + 1;
     }
 }
 

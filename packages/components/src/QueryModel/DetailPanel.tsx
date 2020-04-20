@@ -16,6 +16,7 @@
 import React, { PureComponent } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
+
 import { LoadingSpinner } from '..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../components/forms/detail/DetailDisplay';
@@ -23,9 +24,7 @@ import { DetailDisplay, DetailDisplaySharedProps } from '../components/forms/det
 import { QueryModel } from './QueryModel';
 import { InjectedQueryModels, withQueryModels } from './withQueryModels';
 
-export interface DetailPanelWithModelProps extends DetailDisplaySharedProps { }
-
-class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps & InjectedQueryModels> {
+class DetailPanelWithModelImpl extends PureComponent<DetailDisplaySharedProps & InjectedQueryModels> {
     componentDidMount(): void {
         const { actions } = this.props;
         actions.loadModel(this.getModel().id);
@@ -41,18 +40,19 @@ class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps &
         const model = this.getModel();
 
         if (model.error !== undefined) {
-            return <Alert>{model.error}</Alert>
+            return <Alert>{model.error}</Alert>;
         } else if (model.isLoading) {
-            return <LoadingSpinner/>
+            return <LoadingSpinner />;
         }
 
         return (
             <DetailDisplay
+                {...this.props}
                 data={fromJS(model.gridData)}
                 displayColumns={List(editingMode ? model.updateColumns : model.detailColumns)}
             />
-        )
+        );
     }
 }
 
-export const DetailPanelWithModel = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelImpl);
+export const DetailPanelWithModel = withQueryModels<DetailDisplaySharedProps>(DetailPanelWithModelImpl);

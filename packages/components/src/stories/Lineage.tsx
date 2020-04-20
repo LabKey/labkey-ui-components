@@ -26,31 +26,29 @@ import './stories.scss';
 
 storiesOf('Lineage', module)
     .addDecorator(withKnobs)
-    .add("LineageGraph", () => {
+    .add('LineageGraph', () => {
         return (
             <LineageGraph
-                lsid={'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3'}
-                grouping={{generations: LINEAGE_GROUPING_GENERATIONS.Specific}}
+                lsid="urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3"
+                grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
                 filters={[new LineageFilter('type', ['Sample', 'Data'])]}
             />
-        )
+        );
     })
-    .add("LineageGraph (Runs)", () => {
+    .add('LineageGraph (Runs)', () => {
         return (
             <LineageGraph
-                lsid={'urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6'}
-                grouping={{generations: LINEAGE_GROUPING_GENERATIONS.Specific}}
+                lsid="urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6"
+                grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
             />
-        )
+        );
     })
-    .add("LineageGrid", () => {
+    .add('LineageGrid', () => {
         return (
             <Panel>
                 <Panel.Body>
-                    <LineageGrid
-                        lsid={'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3'}
-                    />
+                    <LineageGrid lsid="urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3" />
                 </Panel.Body>
             </Panel>
-        )
+        );
     });

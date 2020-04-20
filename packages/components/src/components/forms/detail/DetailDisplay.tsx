@@ -1,4 +1,4 @@
-import React, {PureComponent, ReactNode} from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
 import { DefaultRenderer, QueryColumn } from '../../..';

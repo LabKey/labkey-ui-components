@@ -25,12 +25,18 @@ interface DetailProps extends DetailDisplaySharedProps {
 }
 
 export class Detail extends PureComponent<DetailProps> {
+    get detailDisplayProps() {
+        const { queryColumns, queryModel, ...detailDisplayProps } = this.props;
+        return detailDisplayProps;
+    }
+
     render() {
         const { editingMode, queryModel } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
             return (
                 <DetailDisplay
+                    {...this.detailDisplayProps}
                     data={queryModel.getData()}
                     displayColumns={editingMode ? queryModel.getUpdateDisplayColumns() : queryModel.getDetailsDisplayColumns()}
                 />

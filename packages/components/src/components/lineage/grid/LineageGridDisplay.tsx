@@ -20,8 +20,8 @@ export class LineagePaging extends PureComponent<LineagePagingProps> {
 
     render() {
         const { model } = this.props;
-        const min = model.getMinRowIndex();
-        const max = model.getMaxRowIndex();
+        const min = model.minRowIndex;
+        const max = model.maxRowIndex;
         const total = model.totalRows;
         const location = getLocation();
 
@@ -145,7 +145,7 @@ export class LineageGridDisplay extends PureComponent<LineageGridProps> {
         const { model } = this.props;
 
         return model.data
-            .slice(model.getOffset(), model.getMaxRowIndex())
+            .slice(model.offset, model.maxRowIndex)
             .map(d => d.toMap()
                 .merge({
                     membersShown: model.members, // added so we can determine which lineage links to disable in the seed rows

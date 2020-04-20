@@ -1,6 +1,29 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.52.1
+*Released*: 20 April 2020
+* `@labkey/api` dependency update.
+
+### version 0.52.0
+*Released*: 18 April 2020
+* Item 7178: Prettier/ESLint bulk update
+    - Initial Prettier/ESLint bulk update across packages/components/src directory.
+    - yarn run lint-fix ./src/\*\*/\*
+
+### version 0.51.0
+*Released*: 17 April 2020
+* Item 6961: DataClassDesigner updates for LKS
+    - update fetchDataClass function to work for either a data class name or rowId
+    - add support for PermissionTypes.DesignDataClass
+    - DataClassPropertiesPanel and SampleTypePropertiesPanel default nameExpressionInfoUrl and nameExpressionPlaceholder properties
+    - SampleTypeDesigner change to default to "Infer from File" in empty fields state
+    - Issue 40232: Boolean fields show empty "Validation Options" section in expanded field design view
+
+## version 0.50.0
+*Released#: 16 April 2020
+* Add optional property for specifying auditBehavior with some API actions
+
 ### version 0.49.1-fb-datasetDesigner.2
 *Released*: TBD April 2020
 * Item 7138: DatasetDesignerPanels and related components, models, actions

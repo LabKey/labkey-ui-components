@@ -15,40 +15,49 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { List } from 'immutable'
+import { List } from 'immutable';
+
 import { UserActivateChangeConfirmModal } from '../components/user/UserActivateChangeConfirmModal';
 import './stories.scss';
 
 storiesOf('UserActivateChangeConfirmModal', module)
-    .add("reactivate - single user selected", () => {
-        return <UserActivateChangeConfirmModal
-            userIds={List<number>([1])}
-            reactivate={true}
-            onComplete={(response) => console.log('complete', response)}
-            onCancel={() => console.log('cancel')}
-        />
+    .add('reactivate - single user selected', () => {
+        return (
+            <UserActivateChangeConfirmModal
+                userIds={List<number>([1])}
+                reactivate={true}
+                onComplete={response => console.log('complete', response)}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     })
-    .add("reactivate - multiple user selected", () => {
-        return <UserActivateChangeConfirmModal
-            userIds={List<number>([1,2])}
-            reactivate={true}
-            onComplete={(response) => console.log('complete', response)}
-            onCancel={() => console.log('cancel')}
-        />
+    .add('reactivate - multiple user selected', () => {
+        return (
+            <UserActivateChangeConfirmModal
+                userIds={List<number>([1, 2])}
+                reactivate={true}
+                onComplete={response => console.log('complete', response)}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     })
-    .add("deactivate - single user selected", () => {
-        return <UserActivateChangeConfirmModal
-            userIds={List<number>([1])}
-            reactivate={false}
-            onComplete={(response) => console.log('complete', response)}
-            onCancel={() => console.log('cancel')}
-        />
+    .add('deactivate - single user selected', () => {
+        return (
+            <UserActivateChangeConfirmModal
+                userIds={List<number>([1])}
+                reactivate={false}
+                onComplete={response => console.log('complete', response)}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     })
-    .add("deactivate - multiple user selected", () => {
-        return <UserActivateChangeConfirmModal
-            userIds={List<number>([1,2])}
-            reactivate={false}
-            onComplete={(response) => console.log('complete', response)}
-            onCancel={() => console.log('cancel')}
-        />
+    .add('deactivate - multiple user selected', () => {
+        return (
+            <UserActivateChangeConfirmModal
+                userIds={List<number>([1, 2])}
+                reactivate={false}
+                onComplete={response => console.log('complete', response)}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     });

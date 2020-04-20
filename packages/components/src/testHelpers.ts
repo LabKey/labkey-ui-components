@@ -1,6 +1,7 @@
 import { Map } from 'immutable';
 import { LabKey } from '@labkey/api';
-import mock, { proxy } from "xhr-mock";
+import mock, { proxy } from 'xhr-mock';
+
 import { initQueryGridState } from './global';
 import { initQueryGridMocks, initLineageMocks, initUserPropsMocks } from './stories/mock';
 

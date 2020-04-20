@@ -1,17 +1,17 @@
 import React from 'react';
+
 import { ConfirmModal } from '../base/ConfirmModal';
 
 interface Props {
-    onConfirm: () => any
-    onCancel: () => any
-    assayDesignName?: string
-    numRuns?: number
+    onConfirm: () => any;
+    onCancel: () => any;
+    assayDesignName?: string;
+    numRuns?: number;
 }
 
 export class AssayDesignDeleteConfirmModal extends React.Component<Props, any> {
-
     static defaultProps = {
-        assayDesignName: 'Assay Design'
+        assayDesignName: 'Assay Design',
     };
 
     render() {
@@ -23,11 +23,12 @@ export class AssayDesignDeleteConfirmModal extends React.Component<Props, any> {
 
         return (
             <ConfirmModal
-                title={`Permanently delete assay design?`}
+                title="Permanently delete assay design?"
                 msg={
                     <span>
-                        {assayDesignName}{runsMsg} will be permanently deleted.&nbsp;
-                        <p className={'top-spacing'}>
+                        {assayDesignName}
+                        {runsMsg} will be permanently deleted.&nbsp;
+                        <p className="top-spacing">
                             <strong>Deletion cannot be undone.</strong>
                             &nbsp;Do you want to proceed?
                         </p>
@@ -35,10 +36,10 @@ export class AssayDesignDeleteConfirmModal extends React.Component<Props, any> {
                 }
                 onConfirm={onConfirm}
                 onCancel={onCancel}
-                confirmVariant='danger'
-                confirmButtonText='Yes, Delete'
-                cancelButtonText='Cancel'
+                confirmVariant="danger"
+                confirmButtonText="Yes, Delete"
+                cancelButtonText="Cancel"
             />
-        )
+        );
     }
 }

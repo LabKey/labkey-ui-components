@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { imageURL } from '../../url/ActionURL';
+
 import { iconURL, Theme } from './SVGIcon';
 
 describe('iconURL', () => {
-
     const iconDir = 'testDir';
     const sourceToken = '<SOURCE>';
     const baseImageURL = imageURL(iconDir, sourceToken).split(sourceToken)[0];

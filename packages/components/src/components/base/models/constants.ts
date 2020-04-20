@@ -19,7 +19,7 @@ export const GRID_SELECTION_INDEX = '__selection__';
 export enum GRID_CHECKBOX_OPTIONS {
     ALL,
     SOME,
-    NONE
+    NONE,
 }
 
 export const PermissionTypes = {
@@ -32,6 +32,7 @@ export const PermissionTypes = {
 
     // Other
     DesignAssay: 'org.labkey.api.assay.security.DesignAssayPermission',
+    DesignDataClass: 'org.labkey.api.security.permissions.DesignDataClassPermission',
     DesignSampleSet: 'org.labkey.api.security.permissions.DesignSampleSetPermission',
     DesignList: 'org.labkey.api.lists.permissions.DesignListPermission',
     UserManagement: 'org.labkey.api.security.permissions.UserManagementPermission',

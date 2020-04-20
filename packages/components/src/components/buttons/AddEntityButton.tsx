@@ -15,21 +15,21 @@
  */
 import React from 'react';
 import classNames from 'classnames';
+
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface AddEntityButtonProps {
-    buttonClass?: string
-    containerClass?: string
-    disabled?: boolean
-    title?: string
-    entity?: string
-    onClick: () => void
-    helperTitle?:string
-    helperBody?: any
+    buttonClass?: string;
+    containerClass?: string;
+    disabled?: boolean;
+    title?: string;
+    entity?: string;
+    onClick: () => void;
+    helperTitle?: string;
+    helperBody?: any;
 }
 
 export class AddEntityButton extends React.Component<AddEntityButtonProps, any> {
-
     static defaultProps = {
         containerClass: 'form-group',
         helperTitle: 'More Info',
@@ -38,15 +38,15 @@ export class AddEntityButton extends React.Component<AddEntityButtonProps, any> 
     render() {
         const { buttonClass, containerClass, entity, disabled, onClick, title, helperBody, helperTitle } = this.props;
 
-        const buttonClasses = classNames('container--action-button btn btn-default', {'disabled' : disabled});
+        const buttonClasses = classNames('container--action-button btn btn-default', { disabled });
 
         return (
             <div className={containerClass} title={title}>
                 <div className={buttonClass}>
                     <span className={buttonClasses} onClick={disabled ? undefined : onClick}>
-                        <i className="fa fa-plus-circle container--addition-icon"/> Add {entity}
+                        <i className="fa fa-plus-circle container--addition-icon" /> Add {entity}
                     </span>
-                    {helperBody ? <LabelHelpTip body={helperBody} title={helperTitle}/> : '' }
+                    {helperBody ? <LabelHelpTip body={helperBody} title={helperTitle} /> : ''}
                 </div>
             </div>
         );

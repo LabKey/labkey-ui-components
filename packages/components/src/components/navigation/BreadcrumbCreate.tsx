@@ -16,18 +16,18 @@
 import React from 'react';
 import { Map } from 'immutable';
 
-import { Breadcrumb } from './Breadcrumb';
 import { CreatedModified } from '../base/CreatedModified';
 
+import { Breadcrumb } from './Breadcrumb';
+
 interface Props {
-    row?: Map<string, any>
-    useServerDate?: boolean
+    row?: Map<string, any>;
+    useServerDate?: boolean;
 }
 
 export class BreadcrumbCreate extends React.Component<Props, any> {
-
     static defaultProps = {
-        useServerDate: true
+        useServerDate: true,
     };
 
     render() {
@@ -35,11 +35,9 @@ export class BreadcrumbCreate extends React.Component<Props, any> {
 
         return (
             <div className="row component-crumbcreate--container">
-                <Breadcrumb className="col-xs-8 col-sm-8 col-md-8">
-                    {children}
-                </Breadcrumb>
-                <CreatedModified row={row} useServerDate={useServerDate} className="col-xs-4 col-sm-4 col-md-4"/>
+                <Breadcrumb className="col-xs-8 col-sm-8 col-md-8">{children}</Breadcrumb>
+                <CreatedModified row={row} useServerDate={useServerDate} className="col-xs-4 col-sm-4 col-md-4" />
             </div>
-        )
+        );
     }
 }

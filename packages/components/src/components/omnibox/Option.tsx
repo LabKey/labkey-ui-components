@@ -20,18 +20,18 @@ import { ActionOption } from './actions/Action';
 
 interface OptionProps {
     // required
-    actionOption: ActionOption
-    text: string
+    actionOption: ActionOption;
+    text: string;
 
     // optional
-    index?: number
-    isAction?: boolean
-    isComplete?: boolean
-    isFocused?: boolean
-    isSelected?: boolean
-    nextText?: string
-    onFocus?: (actionOption?: ActionOption, index?: number, event?: React.SyntheticEvent<any>) => any
-    onOptionClick?: (actionOption?: ActionOption) => any
+    index?: number;
+    isAction?: boolean;
+    isComplete?: boolean;
+    isFocused?: boolean;
+    isSelected?: boolean;
+    nextText?: string;
+    onFocus?: (actionOption?: ActionOption, index?: number, event?: React.SyntheticEvent<any>) => any;
+    onOptionClick?: (actionOption?: ActionOption) => any;
 }
 
 export class Option extends React.Component<OptionProps, any> {
@@ -39,7 +39,7 @@ export class Option extends React.Component<OptionProps, any> {
         isAction: false,
         isComplete: false,
         isFocused: false,
-        isSelected: false
+        isSelected: false,
     };
 
     constructor(props: OptionProps) {
@@ -72,24 +72,31 @@ export class Option extends React.Component<OptionProps, any> {
         const { action } = actionOption;
         const { iconCls, oneWordLabel, keyword } = action;
 
-        let optionClass = classNames('OmniBox-option', {
+        const optionClass = classNames('OmniBox-option', {
             'is-focused': isFocused,
-            'is-selected': isSelected
+            'is-selected': isSelected,
         });
 
         return (
-            <li className={optionClass}
+            <li
+                className={optionClass}
                 onMouseDown={this.handleMouseDown}
                 onMouseEnter={this.handleFocus}
                 onMouseMove={this.handleFocus}
-                role="option">
+                role="option"
+            >
                 <span className="completion">
-                    {iconCls ? <i className={classNames('fa', (iconCls ? 'fa-' + iconCls : ''))} style={{paddingRight: '5px'}} /> : null}
+                    {iconCls ? (
+                        <i
+                            className={classNames('fa', iconCls ? 'fa-' + iconCls : '')}
+                            style={{ paddingRight: '5px' }}
+                        />
+                    ) : null}
                     {action && keyword ? <b>{oneWordLabel ? oneWordLabel : keyword}&nbsp;</b> : null}
                     <span className="completion-text">{text}</span>
-                    {nextText ? <span style={{fontStyle: 'italic', opacity: 0.7}}>{nextText}</span> : null}
+                    {nextText ? <span style={{ fontStyle: 'italic', opacity: 0.7 }}>{nextText}</span> : null}
                 </span>
             </li>
-        )
+        );
     }
 }

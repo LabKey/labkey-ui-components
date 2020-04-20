@@ -1,12 +1,13 @@
-import {ListModel} from "./models";
-import {DEFAULT_LIST_SETTINGS} from "../../../test/data/constants";
-import getDomainDetailsJSON from "../../../test/data/list-getDomainDetails.json";
+import { DEFAULT_LIST_SETTINGS } from '../../../test/data/constants';
+import getDomainDetailsJSON from '../../../test/data/list-getDomainDetails.json';
+
+import { ListModel } from './models';
 
 // Minimal domain object mock
-const domainDesign = {fields: [{name:"PK", isPrimaryKey: true}]};
+const domainDesign = { fields: [{ name: 'PK', isPrimaryKey: true }] };
 
 describe('ListModel', () => {
-    test("new model", () => {
+    test('new model', () => {
         const newModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 
         expect(newModel.getIn(['domain', 'name'])).toEqual(undefined);
@@ -17,7 +18,7 @@ describe('ListModel', () => {
         expect(newModel.isNew()).toBeTruthy();
     });
 
-    test("existing model", () => {
+    test('existing model', () => {
         const existingModel = ListModel.create(getDomainDetailsJSON);
 
         expect(existingModel.getIn(['domain', 'name'])).toEqual('NIMHDemographics');
@@ -29,32 +30,34 @@ describe('ListModel', () => {
         expect(existingModel.isNew()).toBeFalsy();
     });
 
-    test("isValid", () => {
+    test('isValid', () => {
         const validModel = ListModel.create(getDomainDetailsJSON);
         expect(ListModel.isValid(validModel)).toBeTruthy();
     });
 
-    test("hasValidProperties", () => {
-        expect(ListModel.create({options: {name: undefined}, domainDesign}).hasValidProperties()).toBeFalsy();
-        expect(ListModel.create({options: {name: null}, domainDesign}).hasValidProperties()).toBeFalsy();
-        expect(ListModel.create({options: {name: ''}, domainDesign}).hasValidProperties()).toBeFalsy();
-        expect(ListModel.create({options: {name: ' '}, domainDesign}).hasValidProperties()).toBeFalsy();
-        expect(ListModel.create({options: {name: 'test'}, domainDesign}).hasValidProperties()).toBeTruthy();
+    test('hasValidProperties', () => {
+        expect(ListModel.create({ options: { name: undefined }, domainDesign }).hasValidProperties()).toBeFalsy();
+        expect(ListModel.create({ options: { name: null }, domainDesign }).hasValidProperties()).toBeFalsy();
+        expect(ListModel.create({ options: { name: '' }, domainDesign }).hasValidProperties()).toBeFalsy();
+        expect(ListModel.create({ options: { name: ' ' }, domainDesign }).hasValidProperties()).toBeFalsy();
+        expect(ListModel.create({ options: { name: 'test' }, domainDesign }).hasValidProperties()).toBeTruthy();
     });
 
-    test("hasValidKeyType", () => {
-        expect(ListModel.create({options: {keyType: undefined}, domainDesign}).hasValidKeyType()).toBeFalsy();
-        expect(ListModel.create({options: {keyType: "Varchar"}, domainDesign}).hasValidKeyType()).toBeTruthy();
+    test('hasValidKeyType', () => {
+        expect(ListModel.create({ options: { keyType: undefined }, domainDesign }).hasValidKeyType()).toBeFalsy();
+        expect(ListModel.create({ options: { keyType: 'Varchar' }, domainDesign }).hasValidKeyType()).toBeTruthy();
     });
 
-    test("getDomainKind", () => {
-        expect(ListModel.create({options: {keyType: "Varchar"}, domainDesign}).getDomainKind()).toEqual("VarList");
-        expect(ListModel.create({options: {keyType: "Integer"}, domainDesign}).getDomainKind()).toEqual("IntList");
-        expect(ListModel.create({options: {keyType: "AutoIncrementInteger"}, domainDesign}).getDomainKind()).toEqual("IntList");
-        expect(ListModel.create({options: {keyType: undefined}, domainDesign}).getDomainKind()).toBeFalsy();
+    test('getDomainKind', () => {
+        expect(ListModel.create({ options: { keyType: 'Varchar' }, domainDesign }).getDomainKind()).toEqual('VarList');
+        expect(ListModel.create({ options: { keyType: 'Integer' }, domainDesign }).getDomainKind()).toEqual('IntList');
+        expect(
+            ListModel.create({ options: { keyType: 'AutoIncrementInteger' }, domainDesign }).getDomainKind()
+        ).toEqual('IntList');
+        expect(ListModel.create({ options: { keyType: undefined }, domainDesign }).getDomainKind()).toBeFalsy();
     });
 
-    test("getOptions", () => {
+    test('getOptions', () => {
         const existingModel = ListModel.create(getDomainDetailsJSON);
 
         const options = existingModel.getOptions();
@@ -64,12 +67,16 @@ describe('ListModel', () => {
         expect(options).toHaveProperty('description');
         expect(options).toHaveProperty('discussionSetting');
 
-
-        const PKFieldName = existingModel.getIn(['domain', 'fields']).filter((field) => {return field.isPrimaryKey}).get(0).get('name');
+        const PKFieldName = existingModel
+            .getIn(['domain', 'fields'])
+            .filter(field => {
+                return field.isPrimaryKey;
+            })
+            .get(0)
+            .get('name');
         const optionsPKName = existingModel.get('keyName');
 
         expect(PKFieldName).toEqual(options['keyName']);
         expect(optionsPKName).toEqual(options['keyName']);
-
     });
 });

@@ -21,14 +21,16 @@ import createHistory from 'history/createBrowserHistory';
  */
 export function initBrowserHistoryState() {
     if (!getGlobal().BrowserHistory) {
-        setGlobal( {
-                BrowserHistory: createHistory()
-        },
+        setGlobal(
+            {
+                BrowserHistory: createHistory(),
+            },
 
-        (global) => {
-            // add a no-op listener just to connect this global state history to the url changes
-            getBrowserHistory().listen((location, action) => {});
-        });
+            global => {
+                // add a no-op listener just to connect this global state history to the url changes
+                getBrowserHistory().listen((location, action) => {});
+            }
+        );
     }
 }
 

@@ -17,8 +17,12 @@ import React from 'react';
 
 import { Page } from './Page';
 
-export class NotFound extends React.Component<any, any>{
+export class NotFound extends React.Component<any, any> {
     render() {
-        return <Page><h1>Not Found</h1></Page>;
+        return (
+            <Page>
+                <h1>Not Found</h1>
+            </Page>
+        );
     }
 }

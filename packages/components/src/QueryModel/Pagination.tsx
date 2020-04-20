@@ -3,6 +3,7 @@ import { ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { QueryModel, Tip } from '..';
 import { PagingButton } from '../components/gridbar/QueryGridPaging';
+
 import { RequiresModelAndActions } from './withQueryModels';
 
 interface PaginationInfoProps {
@@ -32,11 +33,7 @@ export class PaginationInfo extends PureComponent<PaginationInfoProps> {
             }
         }
 
-        return (
-            <div className="pagination-info">
-                {message}
-            </div>
-        );
+        return <div className="pagination-info">{message}</div>;
     }
 }
 
@@ -47,26 +44,23 @@ export class PageSelector extends PureComponent<RequiresModelAndActions> {
         const { id, currentPage, isFirstPage, isLastPage, isLoading, isPaged, pageCount } = model;
 
         return (
-            isPaged &&
-            <Tip caption="Current Page" trigger={['hover']}>
-                <DropdownButton id={`current-page-drop-${id}`} pullRight title={currentPage}>
-                    <MenuItem header>
-                        Jump To
-                    </MenuItem>
+            isPaged && (
+                <Tip caption="Current Page" trigger={['hover']}>
+                    <DropdownButton id={`current-page-drop-${id}`} pullRight title={currentPage}>
+                        <MenuItem header>Jump To</MenuItem>
 
-                    <MenuItem disabled={isLoading || isFirstPage} onClick={() => loadFirstPage(id)}>
-                        First Page
-                    </MenuItem>
+                        <MenuItem disabled={isLoading || isFirstPage} onClick={() => loadFirstPage(id)}>
+                            First Page
+                        </MenuItem>
 
-                    <MenuItem disabled={isLoading || isLastPage} onClick={() => loadLastPage(id)}>
-                        Last Page
-                    </MenuItem>
+                        <MenuItem disabled={isLoading || isLastPage} onClick={() => loadLastPage(id)}>
+                            Last Page
+                        </MenuItem>
 
-                    <MenuItem header>
-                        {isLoading ? '...' :  pageCount} Total Pages
-                    </MenuItem>
-                </DropdownButton>
-            </Tip>
+                        <MenuItem header>{isLoading ? '...' : pageCount} Total Pages</MenuItem>
+                    </DropdownButton>
+                </Tip>
+            )
         );
     }
 }
@@ -76,24 +70,25 @@ export class PaginationButtons extends PureComponent<RequiresModelAndActions> {
         const { model, actions } = this.props;
         const { id, isFirstPage, isLastPage, isLoading, isPaged } = model;
         return (
-            isPaged &&
-            <ButtonGroup className="pagination-button-group">
-                <PagingButton
-                    disabled={isLoading || isFirstPage}
-                    iconClass="fa-chevron-left"
-                    tooltip="Previous Page"
-                    onClick={() => actions.loadPreviousPage(id)}
-                />
+            isPaged && (
+                <ButtonGroup className="pagination-button-group">
+                    <PagingButton
+                        disabled={isLoading || isFirstPage}
+                        iconClass="fa-chevron-left"
+                        tooltip="Previous Page"
+                        onClick={() => actions.loadPreviousPage(id)}
+                    />
 
-                <PageSelector model={model} actions={actions} />
+                    <PageSelector model={model} actions={actions} />
 
-                <PagingButton
-                    disabled={isLoading || isLastPage}
-                    iconClass="fa-chevron-right"
-                    tooltip="Next Page"
-                    onClick={() => actions.loadNextPage(id)}
-                />
-            </ButtonGroup>
+                    <PagingButton
+                        disabled={isLoading || isLastPage}
+                        iconClass="fa-chevron-right"
+                        tooltip="Next Page"
+                        onClick={() => actions.loadNextPage(id)}
+                    />
+                </ButtonGroup>
+            )
         );
     }
 }

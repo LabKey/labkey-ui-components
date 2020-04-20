@@ -4,42 +4,42 @@
  */
 import React, { PureComponent } from 'react';
 import { List } from 'immutable';
+
 import { Alert, Grid, GridColumn, LoadingSpinner } from '../..';
 
 import { loadSampleStatsIfNeeded } from './actions';
 import { Lineage } from './models';
 
 interface Props {
-    seed: string
+    seed: string;
 }
 
 interface State {
-    lineage: Lineage
+    lineage: Lineage;
 }
 
 export class SampleTypeLineageCounts extends PureComponent<Props, State> {
-
     private columns = List([
         new GridColumn({
             index: 'name',
-            title: 'Sample Type'
+            title: 'Sample Type',
         }),
         new GridColumn({
             index: 'sampleCount',
-            title: 'Number of Samples'
+            title: 'Number of Samples',
         }),
         new GridColumn({
             index: 'modified',
-            title: 'Most Recent (Date)'
-        })
+            title: 'Most Recent (Date)',
+        }),
     ]);
 
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            lineage: undefined
-        }
+            lineage: undefined,
+        };
     }
 
     componentDidMount() {
@@ -53,25 +53,22 @@ export class SampleTypeLineageCounts extends PureComponent<Props, State> {
     }
 
     init(seed: string) {
-        loadSampleStatsIfNeeded(seed)
-            .then(lineage => {
-                this.setState(() => ({lineage}));
-            });
+        loadSampleStatsIfNeeded(seed).then(lineage => {
+            this.setState(() => ({ lineage }));
+        });
     }
 
     render() {
         const { lineage } = this.state;
 
         if (!lineage) {
-            return <LoadingSpinner/>
+            return <LoadingSpinner />;
         }
 
         if (lineage.error) {
-            return <Alert>{lineage.error}</Alert>
+            return <Alert>{lineage.error}</Alert>;
         }
 
-        return (
-            <Grid data={lineage.sampleStats} columns={this.columns}/>
-        )
+        return <Grid data={lineage.sampleStats} columns={this.columns} />;
     }
 }

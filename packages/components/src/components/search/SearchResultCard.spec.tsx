@@ -16,15 +16,14 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { fromJS } from 'immutable';
-import { SearchResultCard } from './SearchResultCard';
+
 import { mount } from 'enzyme';
 
-describe("<SearchResultCard/>", () => {
+import { SearchResultCard } from './SearchResultCard';
 
-    test("default props", () => {
-        const component = (
-            <SearchResultCard title={'Card Title'} summary={'Card Summary'} url={'#card'}/>
-        );
+describe('<SearchResultCard/>', () => {
+    test('default props', () => {
+        const component = <SearchResultCard title="Card Title" summary="Card Summary" url="#card" />;
 
         const wrapper = mount(component);
         const icon = wrapper.find('img');
@@ -36,11 +35,9 @@ describe("<SearchResultCard/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("resolve image and type from dataClass", () => {
-        const data = fromJS({dataClass: {name: 'molecule'}});
-        const component = (
-            <SearchResultCard title={'Card Title'} summary={'Card Summary'} url={'#card'} data={data}/>
-        );
+    test('resolve image and type from dataClass', () => {
+        const data = fromJS({ dataClass: { name: 'molecule' } });
+        const component = <SearchResultCard title="Card Title" summary="Card Summary" url="#card" data={data} />;
 
         const wrapper = mount(component);
         const icon = wrapper.find('img');
@@ -49,11 +46,9 @@ describe("<SearchResultCard/>", () => {
         wrapper.unmount();
     });
 
-    test("resolve image and type from sampleSet", () => {
-        const data = fromJS({sampleSet: {name: 'Sample Set 1'}});
-        const component = (
-            <SearchResultCard title={'Card Title'} summary={'Card Summary'} url={'#card'} data={data}/>
-        );
+    test('resolve image and type from sampleSet', () => {
+        const data = fromJS({ sampleSet: { name: 'Sample Set 1' } });
+        const component = <SearchResultCard title="Card Title" summary="Card Summary" url="#card" data={data} />;
 
         const wrapper = mount(component);
         const icon = wrapper.find('img');
@@ -62,11 +57,9 @@ describe("<SearchResultCard/>", () => {
         wrapper.unmount();
     });
 
-    test("with iconUrl", () => {
+    test('with iconUrl', () => {
         const iconUrl = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
-        const component = (
-            <SearchResultCard title={'Card Title'} summary={'Card Summary'} url={'#card'} iconUrl={iconUrl}/>
-        );
+        const component = <SearchResultCard title="Card Title" summary="Card Summary" url="#card" iconUrl={iconUrl} />;
 
         const wrapper = mount(component);
         const icon = wrapper.find('img');
@@ -74,5 +67,4 @@ describe("<SearchResultCard/>", () => {
         expect(wrapper.text().indexOf('Type: ')).toBe(-1);
         wrapper.unmount();
     });
-
 });

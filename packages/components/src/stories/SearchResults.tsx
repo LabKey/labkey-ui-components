@@ -17,55 +17,52 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+
 import { SearchResultCard } from '../components/search/SearchResultCard';
 import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
 import { SearchResultCardData, SearchResultsModel } from '../components/search/models';
 import entitiesJSON from '../test/data/searchResults.json';
-import { ICON_URL } from "./mock";
+
+import { ICON_URL } from './mock';
 import './stories.scss';
 
 storiesOf('SearchResults', module)
     .addDecorator(withKnobs)
-    .add("search result card", () => {
+    .add('search result card', () => {
         return (
             <SearchResultCard
                 iconUrl={ICON_URL}
                 title={text('title', 'Sample - 20190101.123')}
                 summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
                 url={text('url', '#samples')}
-                data={Map(fromJS({sampleSet: {name: 'Sample Type 1'}}))}
+                data={Map(fromJS({ sampleSet: { name: 'Sample Type 1' } }))}
             />
-        )
+        );
     })
-    .add("search result card with custom card data", () => {
+    .add('search result card with custom card data', () => {
         return (
             <SearchResultCard
-                getCardData={(data, category) : SearchResultCardData => {
+                getCardData={(data, category): SearchResultCardData => {
                     return {
-                        iconSrc: "test",
-                        altText: "test-alt-text",
-                        title: "Test title",
-                        typeName: "other"
-                    }
+                        iconSrc: 'test',
+                        altText: 'test-alt-text',
+                        title: 'Test title',
+                        typeName: 'other',
+                    };
                 }}
                 title={text('title', 'Sample - 20190101.123')}
                 summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
                 url={text('url', '#samples')}
-                data={Map(fromJS({sampleSet: {name: 'Sample Type 1'}}))}
+                data={Map(fromJS({ sampleSet: { name: 'Sample Type 1' } }))}
             />
-        )
+        );
     })
-    .add("search result panel", () => {
+    .add('search result panel', () => {
         const model = SearchResultsModel.create({
             isLoading: boolean('isLoading', false),
             error: text('error', ''),
-            entities: Map(fromJS(entitiesJSON))
+            entities: Map(fromJS(entitiesJSON)),
         });
 
-        return (
-            <SearchResultsPanel
-                iconUrl={ICON_URL}
-                model={model}
-            />
-        )
-    })
+        return <SearchResultsPanel iconUrl={ICON_URL} model={model} />;
+    });

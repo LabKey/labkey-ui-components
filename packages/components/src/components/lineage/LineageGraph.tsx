@@ -150,24 +150,28 @@ class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOpt
         // Apply "LineageOptions" when summaryOptions not explicitly given
         const options = summaryOptions ? summaryOptions : {...this.props};
 
-        return <LineageNodeDetail
-            seed={lsid}
-            node={node}
-            highlightNode={hoverNodeLsid}
-            showSummary={showSummaryOverride ?? showSummary}
-            summaryOptions={options}
-        />;
+        return (
+            <LineageNodeDetail
+                seed={lsid}
+                node={node}
+                highlightNode={hoverNodeLsid}
+                showSummary={showSummaryOverride ?? showSummary}
+                summaryOptions={options}
+            />
+        );
     }
 
     renderSelectedClusterNode(node: VisGraphClusterNode, hoverNodeLsid: string): ReactNode {
         // LineageNodes in the cluster
         const nodes = node.nodesInCluster.map(n => n.kind === 'node' && n.lineageNode);
 
-        return <ClusterNodeDetail
-            highlightNode={hoverNodeLsid}
-            nodes={nodes}
-            options={this.props}
-        />;
+        return (
+            <ClusterNodeDetail
+                highlightNode={hoverNodeLsid}
+                nodes={nodes}
+                options={this.props}
+            />
+        );
     }
 
     renderSelectedCombinedNode(node: VisGraphCombinedNode, hoverNodeLsid?: string): ReactNode {
@@ -175,12 +179,14 @@ class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOpt
         if (!lineage && !lineage.result)
             return null;
 
-        return <ClusterNodeDetail
-            highlightNode={hoverNodeLsid}
-            nodes={node.containedNodes}
-            nodesByType={node.containedNodesByType}
-            options={this.props}
-        />;
+        return (
+            <ClusterNodeDetail
+                highlightNode={hoverNodeLsid}
+                nodes={node.containedNodes}
+                nodesByType={node.containedNodesByType}
+                options={this.props}
+            />
+        );
     }
 
     render() {

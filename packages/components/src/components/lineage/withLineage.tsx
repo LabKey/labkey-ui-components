@@ -129,15 +129,23 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
             this.loadLineage();
         }
 
+        componentDidUpdate(prevProps: Readonly<Props & WithLineageOptions>): void {
+            if (prevProps.lsid !== this.props.lsid) {
+                this.loadLineage();
+            }
+        }
+
         render() {
             const { ...props } = this.props;
             const { lineage } = this.state;
 
-            return <ComponentToWrap
-                lineage={lineage}
-                visGraphOptions={lineage?.generateGraph(this.props)}
-                {...props as Props}
-            />
+            return (
+                <ComponentToWrap
+                    lineage={lineage}
+                    visGraphOptions={lineage?.generateGraph(this.props)}
+                    {...props as Props}
+                />
+            )
         }
     }
 

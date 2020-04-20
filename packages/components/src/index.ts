@@ -22,6 +22,7 @@ import {
     inferDomainFromFile,
 } from './components/base/actions';
 import { QueryInfo } from './components/base/models/QueryInfo';
+import { QuerySort } from './components/base/models/QuerySort';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -753,6 +754,7 @@ export {
     QueryInfo,
     QueryLookup,
     QueryInfoStatus,
+    QuerySort,
     SchemaDetails,
     SchemaQuery,
     ViewInfo,

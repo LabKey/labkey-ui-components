@@ -3,7 +3,7 @@ import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
 import { LoadingState, naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
-import { QuerySort } from '../components/base/models/model';
+import { QuerySort } from '..';
 
 import { getOrDefault } from './utils';
 

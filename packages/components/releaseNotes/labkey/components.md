@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.52.1
+*Released*: 20 April 2020
+* `@labkey/api` dependency update.
+
 ### version 0.52.0
 *Released*: 18 April 2020
 * Item 7178: Prettier/ESLint bulk update

@@ -20,11 +20,13 @@ import {AdvancedSettings, DatasetSettingsInput, DatasetSettingsSelect} from "./D
 import React from "react";
 import renderer from "react-test-renderer";
 import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
+import getDatasetDesignSharedStudy from "../../../test/data/dataset-getDatasetDesignSharedStudy.json";
 import {mount} from "enzyme";
 import {SelectInput} from "../../..";
 
 const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
-const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
+const datasetModel = DatasetModel.create(null, getDatasetDesign);
+const sharedDatasetModel = DatasetModel.create(null, getDatasetDesignSharedStudy );
 
 describe("Dataset Advanced Settings", () => {
 
@@ -58,7 +60,7 @@ describe("Dataset Advanced Settings", () => {
         const datasetAdvancedSetting =
             <AdvancedSettings
                 title={"Advanced Settings"}
-                model={populatedDatasetModel}
+                model={datasetModel}
                 applyAdvancedProperties={jest.fn()}
             />;
 
@@ -70,7 +72,7 @@ describe("Dataset Advanced Settings", () => {
         const datasetAdvancedSetting =
             <AdvancedSettings
                 title={"Advanced Settings"}
-                model={populatedDatasetModel}
+                model={sharedDatasetModel}
                 applyAdvancedProperties={jest.fn()}
             />;
 

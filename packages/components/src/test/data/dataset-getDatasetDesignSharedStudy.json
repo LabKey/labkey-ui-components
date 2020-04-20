@@ -18,7 +18,7 @@
     "keyManagementType": "GUID",
     "dataRowSetting" : 1,
     "dataSharing": "PTID",
-    "definitionIsShared": false
+    "definitionIsShared": true
   },
   "domainDesign" : {
     "domainId" : 2280,

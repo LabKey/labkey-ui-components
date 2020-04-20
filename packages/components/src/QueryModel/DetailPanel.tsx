@@ -46,10 +46,12 @@ class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps &
             return <LoadingSpinner/>
         }
 
-        return <DetailDisplay
-            data={fromJS(model.gridData)}
-            displayColumns={List(editingMode ? model.updateColumns : model.detailColumns)}
-        />
+        return (
+            <DetailDisplay
+                data={fromJS(model.gridData)}
+                displayColumns={List(editingMode ? model.updateColumns : model.detailColumns)}
+            />
+        )
     }
 }
 

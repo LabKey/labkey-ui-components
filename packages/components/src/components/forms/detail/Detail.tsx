@@ -29,10 +29,12 @@ export class Detail extends PureComponent<DetailProps> {
         const { editingMode, queryModel } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
-            return <DetailDisplay
-                data={queryModel.getData()}
-                displayColumns={editingMode ? queryModel.getUpdateDisplayColumns() : queryModel.getDetailsDisplayColumns()}
-            />
+            return (
+                <DetailDisplay
+                    data={queryModel.getData()}
+                    displayColumns={editingMode ? queryModel.getUpdateDisplayColumns() : queryModel.getDetailsDisplayColumns()}
+                />
+            )
         }
 
         return <LoadingSpinner/>

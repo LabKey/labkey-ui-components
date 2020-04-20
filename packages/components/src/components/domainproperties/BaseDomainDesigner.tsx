@@ -34,7 +34,7 @@ export function withBaseDomainDesigner<Props>(
 ): ComponentType<Props> {
     class ComponentWithBaseDomainDesigner extends PureComponent<Props, State> {
         constructor(props: Props) {
-            super(props)
+            super(props);
 
             this.state = {
                 submitting: false,

@@ -1,10 +1,14 @@
-import React, { ComponentType, PureComponent } from 'react';
+import React, { ComponentType, PureComponent, createContext } from 'react';
 
 import { fetchLineage, fetchLineageNodes, processLineageResult } from './actions';
 import { ILineage, Lineage, LineageLoadingState, LineageResult } from './models';
 import { LineageOptions } from './types';
 import { VisGraphOptions } from './vis/VisGraphGenerator';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
+
+const LineageContext = createContext(undefined);
+const LineageContextProvider = LineageContext.Provider;
+export const LineageContextConsumer = LineageContext.Consumer;
 
 export interface InjectedLineage {
     lineage: Lineage
@@ -140,11 +144,13 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
             const { lineage } = this.state;
 
             return (
-                <ComponentToWrap
-                    lineage={lineage}
-                    visGraphOptions={lineage?.generateGraph(this.props)}
-                    {...props as Props}
-                />
+                <LineageContextProvider value={lineage}>
+                    <ComponentToWrap
+                        lineage={lineage}
+                        visGraphOptions={lineage?.generateGraph(this.props)}
+                        {...props as Props}
+                    />
+                </LineageContextProvider>
             )
         }
     }

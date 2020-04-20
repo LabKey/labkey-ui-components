@@ -82,7 +82,6 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
 
             {showSummary && (
                 <LineageSummary
-                    seed={node.lsid}
                     highlightNode={highlightNode}
                     options={summaryOptions}
                 />

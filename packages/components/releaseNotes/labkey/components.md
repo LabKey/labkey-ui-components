@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Misc 20.5 issue fixes for Sample Manager
     - Issue 40139: DetailEditing panel editing - updating time but not date does not recognize change
     - Issue 39328: Assay run should use renamed file name as its Assay Id when the same data file is being imported
+    - Issue 40233: EntityInsertPanel columns for Sources should not include "Parents" in column name caption
 
 ### version 0.52.1
 *Released*: 20 April 2020

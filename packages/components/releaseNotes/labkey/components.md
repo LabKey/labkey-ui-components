@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.52.1-fb-datasetDesigner.0
+*Released*: TBD April 2020
+* Item 7138: DatasetDesignerPanels and related components, models, actions
+    - new dataset related components DatasetDesignerPanels.tsx and DatasetPropertiesPanel.tsx
+    - DomainForm changes to support Column mapping option
+
 ### version 0.52.1
 *Released*: 20 April 2020
 * `@labkey/api` dependency update.
@@ -23,12 +29,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ## version 0.50.0
 *Released#: 16 April 2020
 * Add optional property for specifying auditBehavior with some API actions
-
-### version 0.49.1-fb-datasetDesigner.2
-*Released*: TBD April 2020
-* Item 7138: DatasetDesignerPanels and related components, models, actions
-    - new dataset related components DatasetDesignerPanels.tsx and DatasetPropertiesPanel.tsx
-    - DomainForm changes to support Column mapping option
 
 ### version 0.49.1
 *Released*: 16 April 2020

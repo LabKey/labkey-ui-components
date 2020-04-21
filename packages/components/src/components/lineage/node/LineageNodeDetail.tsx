@@ -14,7 +14,6 @@ import { NodeDetail } from './NodeDetail';
 import { NodeDetailHeader } from './NodeDetailHeader';
 
 export interface SummaryOptions {
-    showSummary?: boolean
     summaryOptions?: LineageOptions
 }
 
@@ -26,12 +25,8 @@ interface LineageNodeDetailProps {
 
 export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & SummaryOptions> {
 
-    static defaultProps = {
-        showSummary: true
-    };
-
     render() {
-        const { seed, node, highlightNode, showSummary, summaryOptions } = this.props;
+        const { seed, node, highlightNode, summaryOptions } = this.props;
         const { links, meta, name } = node;
         const lineageUrl = links.lineage;
         const isSeed = seed === node.lsid;
@@ -62,31 +57,31 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
             </>
         );
 
-        return <>
-            <NodeDetailHeader
-                header={header}
-                iconSrc={getIconAndShapeForNode(node).iconURL}
-            >
-                {displayType && <small>{displayType}</small>}
-                {aliases && (
-                    <div>
-                        <small>
-                            {aliases.join(', ')}
-                        </small>
-                    </div>
-                )}
-                {description && <small title={description}>{description}</small>}
-            </NodeDetailHeader>
+        return (
+            <>
+                <NodeDetailHeader
+                    header={header}
+                    iconSrc={getIconAndShapeForNode(node).iconURL}
+                >
+                    {displayType && <small>{displayType}</small>}
+                    {aliases && (
+                        <div>
+                            <small>
+                                {aliases.join(', ')}
+                            </small>
+                        </div>
+                    )}
+                    {description && <small title={description}>{description}</small>}
+                </NodeDetailHeader>
 
-            <NodeDetail node={node} />
+                <NodeDetail node={node} />
 
-            {showSummary && (
                 <LineageSummary
                     highlightNode={highlightNode}
                     options={summaryOptions}
                 />
-            )}
-        </>;
+            </>
+        );
     }
 }
 

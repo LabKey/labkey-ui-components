@@ -2,7 +2,8 @@
  * Copyright (c) 2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState } from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
 
 import { LineageNode } from '../models';
 import { NodeDetail } from './NodeDetail';
@@ -14,46 +15,39 @@ interface RunDetailProps {
     node: LineageNode
 }
 
-interface RunDetailState {
-    selectedStepIndex: number
-}
+export const RunNodeDetail: React.FC<RunDetailProps> = (props) => {
+    const [ stepIdx, setStepIdx ] = useState(undefined);
+    const [ tabIdx, setTabIdx ] = useState(1);
 
-export class RunNodeDetail extends PureComponent<RunDetailProps> {
+    const { highlightNode, node } = props;
 
-    readonly state: RunDetailState = { selectedStepIndex: undefined };
-
-    selectStep = (selectedStepIndex: number): void => {
-        this.setState({ selectedStepIndex });
-    };
-
-    render() {
-        const { node } = this.props;
-        const { selectedStepIndex } = this.state;
-
-        if (!node.isRun) {
-            throw new Error('RunNodeDetail can only display nodes of that are Runs.');
-        }
-
-        if (selectedStepIndex) {
-            return (
-                <RunStepNodeDetail
-                    node={node}
-                    stepIdx={selectedStepIndex}
-                />
-            );
-        } else {
-            return (
-                <>
-                    <NodeDetailHeader
-                        header="Some Run"
-                        iconSrc={getIconAndShapeForNode(node).iconURL}
-                    />
-                    <NodeDetail node={node} />
-                </>
-            )
-        }
+    if (!node.isRun) {
+        throw new Error('RunNodeDetail can only display nodes of that are Runs.');
     }
-}
+
+    if (stepIdx) {
+        return <RunStepNodeDetail node={node} stepIdx={stepIdx} />;
+    }
+
+    return (
+        <>
+            <NodeDetailHeader
+                header="Some Run"
+                iconSrc={getIconAndShapeForNode(node).iconURL}
+            />
+            <NodeDetail node={node} />
+
+            <Tabs activeKey={tabIdx} defaultActiveKey={1} onSelect={t => setTabIdx(t)}>
+                <Tab eventKey={2} title="Run properties">
+                    <NodeDetail node={node} />
+                </Tab>
+                <Tab eventKey={1} title="Details">
+                    <span>RunProperties</span>
+                </Tab>
+            </Tabs>
+        </>
+    );
+};
 
 export interface RunStepNodeDetailProps {
     node: LineageNode

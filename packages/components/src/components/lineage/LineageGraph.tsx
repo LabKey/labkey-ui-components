@@ -144,8 +144,8 @@ class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOpt
         }
     }
 
-    renderSelectedNode(node: LineageNode, hoverNodeLsid?: string, showSummaryOverride?: boolean): ReactNode {
-        const { lsid, showSummary, summaryOptions } = this.props;
+    renderSelectedNode(node: LineageNode, hoverNodeLsid?: string): ReactNode {
+        const { lsid, summaryOptions } = this.props;
 
         // Apply "LineageOptions" when summaryOptions not explicitly given
         const options = summaryOptions ? summaryOptions : {...this.props};
@@ -155,7 +155,6 @@ class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOpt
                 seed={lsid}
                 node={node}
                 highlightNode={hoverNodeLsid}
-                showSummary={showSummaryOverride ?? showSummary}
                 summaryOptions={options}
             />
         );

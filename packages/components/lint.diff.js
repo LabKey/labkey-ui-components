@@ -13,47 +13,82 @@ let lintPath = 'src/';
 // Default lint target (--fix changes to lint-fix)
 let yarnTarget = 'lint';
 
+let currentBranch = false;
+
 // Parameters all optional.
 // --fix: this will perform eslint --fix instead of regular eslint
-// File path if wanting to do a lint-diff on a specific directory or file
+// --currentBranch: this will perform eslint on the files that have been changed in this branch compared
+//   to the master branch. Can be run with our without --fix. Will ignore any file paths passed in.
+// File path, if wanting to do a lint-diff on a specific directory or file otherwise defaults to src/
 if (process.argv.length > 2) {
-    const param1 = process.argv[2];
-    if (param1 === '--fix') {
-        yarnTarget = 'lint-fix';
-    }
-    else {
-        lintPath = param1;
-    }
-
-    if (process.argv.length > 3) {
-        lintPath = process.argv[3];
+    for (let i=2; i<process.argv.length; i++) {
+        switch(process.argv[i]) {
+            case '--fix':
+                yarnTarget = 'lint-fix';
+                break;
+            case '--currentBranch':
+                currentBranch = true;
+                break;
+            default:
+                lintPath = process.argv[i];
+        }
     }
 }
 
 (async () => {
-    let {stdout} = await execa('git', ['diff', '--name-only', lintPath]);
-    if (!stdout) {
-        console.log('No changed files at ' + lintPath);
+    let files;
+    let stdout; // This is the supported way to pipe stdout to a local variable
+    if (currentBranch) {
+        // Get name of the current branch
+        ({ stdout } = await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD']));
+        if (!stdout) {
+            console.log('Error finding git branch name');
+        } else {
+            console.log('Checking for updated files in branch: ', stdout);
+        }
+
+        const branch = stdout;
+
+        // Diff current branch against master to get changed file names
+        ({stdout} = await execa('git', ['diff', 'master...' + branch, '--name-only']));
+        if (!stdout) {
+            console.log('No changed files in branch ' + branch);
+        }
+
+        files = stdout;
+    } else {
+        // Diff uncommitted changes against committed to
+        ({stdout} = await execa('git', ['diff', '--name-only', lintPath]));
+        if (!stdout) {
+            console.log('No changed files at ' + lintPath);
+        }
+
+        files = stdout;
     }
-    else {
+
+    if (files) {
         let filtered = stdout.split('\n');
 
-        // Filter by file extension
+        // Filter by file extension and file path
         filtered = filtered.filter(file => {
             file = file.trim();
-            return fileExtensions.findIndex(ext => (file.endsWith(ext))) !== -1;
+            const correctPath = file.startsWith(repoPath + 'src/');
+            const correctExt = fileExtensions.findIndex(ext => (file.endsWith(ext))) !== -1;
+            return correctPath && correctExt
         });
 
         if (filtered.length < 1) {
             console.log('No changed files match the file extension.')
         }
         else {
-
             // Remove file path relative to git repo
             filtered = filtered.map(file => {
                 return file.substring(repoPath.length);
             });
 
+            console.log('Linting files:\n', filtered);
+
+            // Perform yarn run lint(-fix) on changed files
             try {
                 await execa('yarn', ['run', yarnTarget, ...filtered]).stdout.pipe(process.stdout);
             }

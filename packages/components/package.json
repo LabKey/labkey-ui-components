@@ -25,7 +25,9 @@
     "lint": "eslint",
     "lint-fix": "eslint --fix",
     "lint-diff": "node lint.diff.js",
-    "lint-diff-fix": "node lint.diff.js --fix"
+    "lint-diff-fix": "node lint.diff.js --fix",
+    "lint-branch": "node lint.diff.js --currentBranch",
+    "lint-branch-fix": "node lint.diff.js --currentBranch --fix"
   },
   "repository": {
     "type": "git",

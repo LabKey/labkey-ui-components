@@ -182,36 +182,56 @@ yarn run storybook
 When changes are made to the source code or .scss files for the components or the stories, the storybook instance will automatically reload.
 
 ### ESLint and Prettier
-**In an effort to maintain consistent formatting, it is highly recommended to run lint-fix or lint-diff-fix on any files you've changed.**
+**In an effort to maintain consistent formatting, use best practices and catch errors before they reach production, it
+is highly recommended to lint any files you've changed before merging them to master.**
 
-ESLint / Prettier package scripts and configurations are included in this package. ESLint can be run on a file, directory or
-all directories with the following commands.
+There are two scripts that are likely be most useful. The first:
 
-```shell script
-yarn run lint ./src/components/files/FileTree.tsx
-yarn run lint ./src/components/files/*
-yarn run lint ./src/components/**/*
-```
+````shell script
+yarn run lint-branch-fix
+````
+This will automatically format, lint and attempt to fix lint errors in files that have been changed in your feature branch.
+This will only detect changes that have been committed and pushed to github.  You can run this as many times as you want.
+It does not automatically commit the fixes, giving you an opportunity to review the fixes and the generated warnings before
+committing. Not all warnings are must fix, they are there for your consideration.
 
-ESLint can be run with the --fix flag, to automatically fix as many issues as possible, with the following command.
-
-```shell script
-yarn run lint-fix ./src/components/files/FileTree.tsx
-```
-
-To lint only the files you have changed there are two target scripts, lint-diff and lint-diff-fix. These will perform
-a git diff and lint only the files that have local changes (precommit). By default these scripts will lint any changed
-files in the src/ directory, but a parameter can be passed to them with a different file or directory path relative to the
-labkey-ui-components/packages/components directory (eg. src/components/files).
-
+The second most likely useful script is,
 ```shell script
 yarn run lint-diff-fix
-yarn run lint-diff src/components/files
+```
+This is exactly the same as lint-branch-fix, except it runs only on files with uncommitted changes.
+
+So a couple possible workflows would be to run lint-diff-fix before every commit; or to commit and push some code then run lint-branch-fix
+and iterate fixing the warnings and using lint-diff-fix to check if they are cleared before committing.
+
+Less commonly used commands:
+```shell script
+# Lints a file or directory without any auto-formatting or fixing
+yarn run lint <file path>
+
+# Lints a file or directory including auto-formatting or fixing
+yarn run lint-fix <file path>
+
+# Exactly the same as lint-branch-fix except does not auto-format or fix
+yarn run lint-branch
+
+# Exactly the same as lint-diff-fix except does not auto-format or fix
+yarn run lint-diff
 ```
 
-Prettier is an ESLint plugin with additional formatting rules. This is automatically run with ESLint in this package.
+Any command with a file path should make the file path relative to the labkey-ui-components/packages/components directory.
+The format of the file path should match node file path format and be in double quotes. This ensures node resolves the file
+path instead of relying on your OS shell.  Some examples:
+```shell script
+# Single file
+yarn run lint "./src/components/files/FileTree.tsx"
 
-For more information on [ESLint](https://eslint.org/) or [Prettier](https://github.com/prettier/prettier-eslint) please refer to their online docs.
+# All files in a directory
+yarn run lint-fix "./src/components/files/*"
+
+# Recursively all files in a directory and its sub-directories
+yarn run lint-fix "./src/components/**/*"
+```
 
 ## Publishing
 

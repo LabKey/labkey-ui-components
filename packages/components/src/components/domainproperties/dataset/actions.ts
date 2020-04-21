@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 
 import { fromJS, List } from 'immutable';
 import { Option } from 'react-select';
@@ -31,6 +31,8 @@ import {
     DATASET_NAME_TIP,
     DATASPACE_TIP,
     TAG_TIP,
+    TIME_KEY_FIELD_DISPLAY,
+    TIME_KEY_FIELD_KEY,
     VISIT_DATE_TIP,
 } from './constants';
 
@@ -66,7 +68,7 @@ export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
 
     visitDateColumns = visitDateColumns.push({ value: 'date', label: 'date' });
 
-    domain.fields.map((field, index) => {
+    domain.fields.map(field => {
         if (field.rangeURI.endsWith('dateTime')) {
             visitDateColumns = visitDateColumns.push({ value: field.name, label: field.name });
         }
@@ -75,26 +77,44 @@ export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
     return visitDateColumns;
 }
 
+export function fetchAdditionalKeyFields(domain: DomainDesign): List<Option> {
+    let additionalKeyFields = List<Option>();
+
+    if (getServerContext().moduleContext.study.timepointType !== 'VISIT') {
+        additionalKeyFields = additionalKeyFields.push({ value: TIME_KEY_FIELD_KEY, label: TIME_KEY_FIELD_DISPLAY });
+    }
+
+    domain.fields.map(field => {
+        additionalKeyFields = additionalKeyFields.push({ value: field.name, label: field.name });
+    });
+
+    return additionalKeyFields;
+}
+
 export function fetchCohorts(): Promise<List<Option>> {
     return new Promise((resolve, reject) => {
         selectRows({
             saveInSession: true,
             schemaName: 'study',
             queryName: 'Cohort',
-        }).then(data => {
-            const models = fromJS(data.models[data.key]);
-            let cohorts = List<Option>();
+        })
+            .then(data => {
+                const models = fromJS(data.models[data.key]);
+                let cohorts = List<Option>();
 
-            data.orderedModels[data.key].forEach(modelKey => {
-                const row = models.get(modelKey);
-                const value = row.getIn(['rowid', 'value']);
-                const label = row.getIn(['label', 'value']);
+                data.orderedModels[data.key].forEach(modelKey => {
+                    const row = models.get(modelKey);
+                    const value = row.getIn(['rowid', 'value']);
+                    const label = row.getIn(['label', 'value']);
 
-                cohorts = cohorts.push({ value, label });
+                    cohorts = cohorts.push({ value, label });
+                });
+
+                resolve(cohorts);
+            })
+            .catch(response => {
+                reject(response.message);
             });
-
-            resolve(cohorts);
-        });
     });
 }
 

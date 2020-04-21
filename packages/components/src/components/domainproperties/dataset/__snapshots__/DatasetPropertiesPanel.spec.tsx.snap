@@ -327,7 +327,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                     />
                   </svg>
                 </span>
-                
+                 *
               </span>
             </div>
             <div
@@ -433,7 +433,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             </div>
           </div>
           <div
-            className="dataset_data_row_uniqueness_keyField_hide"
+            className="dataset_data_row_element_hide"
           >
             <div
               className="margin-top row"
@@ -538,7 +538,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             </div>
           </div>
           <div
-            className="dataset_data_row_uniqueness_keyField_hide margin-top"
+            className="dataset_data_row_element_hide margin-top"
           >
             <div
               className="checkbox disabled"
@@ -714,7 +714,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             >
               <input
                 className="form-control"
-                disabled={false}
+                disabled={true}
                 id="name"
                 onChange={[Function]}
                 placeholder="Enter a name for this dataset"
@@ -904,7 +904,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                     />
                   </svg>
                 </span>
-                
+                 *
               </span>
             </div>
             <div
@@ -959,14 +959,14 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             className="dataset_data_row_uniqueness_container"
           >
             <div
-              className="radio"
+              className="radio disabled"
             >
               <label
                 title=""
               >
                 <input
                   checked={false}
-                  disabled={false}
+                  disabled={true}
                   name="dataRowSetting"
                   onChange={[Function]}
                   type="radio"
@@ -976,14 +976,14 @@ exports[`Dataset Properties Panel New dataset 1`] = `
               </label>
             </div>
             <div
-              className="radio"
+              className="radio disabled"
             >
               <label
                 title=""
               >
                 <input
                   checked={true}
-                  disabled={false}
+                  disabled={true}
                   name="dataRowSetting"
                   onChange={[Function]}
                   type="radio"
@@ -993,14 +993,14 @@ exports[`Dataset Properties Panel New dataset 1`] = `
               </label>
             </div>
             <div
-              className="radio"
+              className="radio disabled"
             >
               <label
                 title=""
               >
                 <input
                   checked={false}
-                  disabled={false}
+                  disabled={true}
                   name="dataRowSetting"
                   onChange={[Function]}
                   type="radio"
@@ -1011,7 +1011,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             </div>
           </div>
           <div
-            className="dataset_data_row_uniqueness_keyField_hide"
+            className="dataset_data_row_element_show margin-top"
           >
             <div
               className="margin-top row"
@@ -1060,7 +1060,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                     className=""
                   >
                     <div
-                      className="Select Select--single is-disabled is-searchable"
+                      className="Select Select--single is-searchable"
                     >
                       <div
                         className="Select-control"
@@ -1080,24 +1080,48 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                             Select...
                           </div>
                           <div
-                            aria-activedescendant="react-select-3--value"
-                            aria-expanded={false}
-                            aria-owns=""
-                            aria-readonly="true"
                             className="Select-input"
-                            id="selectinput-0"
-                            onBlur={[Function]}
-                            onFocus={[Function]}
-                            role="combobox"
                             style={
                               Object {
-                                "border": 0,
                                 "display": "inline-block",
-                                "width": 1,
                               }
                             }
-                            tabIndex={0}
-                          />
+                          >
+                            <input
+                              aria-activedescendant="react-select-3--value"
+                              aria-expanded="false"
+                              aria-haspopup="false"
+                              aria-owns=""
+                              id="selectinput-0"
+                              onBlur={[Function]}
+                              onChange={[Function]}
+                              onFocus={[Function]}
+                              required={false}
+                              role="combobox"
+                              style={
+                                Object {
+                                  "boxSizing": "content-box",
+                                  "width": "5px",
+                                }
+                              }
+                              value=""
+                            />
+                            <div
+                              style={
+                                Object {
+                                  "height": 0,
+                                  "left": 0,
+                                  "overflow": "scroll",
+                                  "position": "absolute",
+                                  "top": 0,
+                                  "visibility": "hidden",
+                                  "whiteSpace": "pre",
+                                }
+                              }
+                            >
+                              
+                            </div>
+                          </div>
                         </span>
                         <span
                           className="Select-arrow-zone"
@@ -1116,7 +1140,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             </div>
           </div>
           <div
-            className="dataset_data_row_uniqueness_keyField_hide margin-top"
+            className="dataset_data_row_element_hide margin-top"
           >
             <div
               className="checkbox disabled"

@@ -20,7 +20,7 @@ import { Col, Checkbox, Radio, Row } from 'react-bootstrap';
 import { Creatable, Option } from 'react-select';
 
 import { DatasetModel } from './models';
-import { fetchCategories, getHelpTip } from './actions';
+import { fetchAdditionalKeyFields, fetchCategories, getHelpTip } from './actions';
 import { DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 
 import '../../../theme/dataset.scss';
@@ -100,7 +100,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     helpTip={this.getHelpTipElement('name')}
                     value={model.name}
                     placeholder="Enter a name for this dataset"
-                    disabled={false}
+                    disabled={model.isFromAssay()}
                     onValueChange={onInputChange}
                     showInAdvancedSettings={false}
                     required={true}
@@ -138,7 +138,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     disabled={false}
                     onValueChange={onInputChange}
                     showInAdvancedSettings={false}
-                    required={false}
+                    required={true}
                 />
             </>
         );
@@ -148,24 +148,43 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
 interface DataRowUniquenessElementsProps {
     onRadioChange: (evt: any) => any;
     dataRowSetting: number;
+    isFromAssay: boolean;
 }
 
 class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessElementsProps> {
     render() {
-        const { onRadioChange, dataRowSetting } = this.props;
+        const { onRadioChange, dataRowSetting, isFromAssay } = this.props;
         const radioName = 'dataRowSetting';
 
         return (
             <div className="dataset_data_row_uniqueness_container">
-                <Radio name={radioName} value={0} checked={dataRowSetting == 0} onChange={onRadioChange}>
+                <Radio
+                    name={radioName}
+                    value={0}
+                    checked={dataRowSetting == 0}
+                    onChange={onRadioChange}
+                    disabled={isFromAssay}
+                >
                     Participant ID only (demographic data)
                 </Radio>
 
-                <Radio name={radioName} value={1} checked={dataRowSetting == 1} onChange={onRadioChange}>
+                <Radio
+                    name={radioName}
+                    value={1}
+                    checked={dataRowSetting == 1}
+                    onChange={onRadioChange}
+                    disabled={isFromAssay}
+                >
                     Participant ID and timepoint
                 </Radio>
 
-                <Radio name={radioName} value={2} checked={dataRowSetting == 2} onChange={onRadioChange}>
+                <Radio
+                    name={radioName}
+                    value={2}
+                    checked={dataRowSetting == 2}
+                    onChange={onRadioChange}
+                    disabled={isFromAssay}
+                >
                     Participant ID, timepoint, and additional key field
                 </Radio>
             </div>
@@ -208,19 +227,20 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
     render() {
         const { model, onRadioChange, onCheckBoxChange, onSelectChange } = this.props;
         const domain = model.domain;
+        const additionalKeyFields = fetchAdditionalKeyFields(domain);
 
         const dataRowSetting = model.getDataRowSetting();
-        const showAdditionalKeyField = dataRowSetting === 2;
+        const showAdditionalKeyField = dataRowSetting === 2 || model.isFromAssay();
 
         const validKeyField = model.validManagedKeyField();
 
         const showAdditionalKeyFieldCls = showAdditionalKeyField
-            ? 'dataset_data_row_uniqueness_keyField_show margin-top'
-            : 'dataset_data_row_uniqueness_keyField_hide';
+            ? 'dataset_data_row_element_show margin-top'
+            : 'dataset_data_row_element_hide';
         const keyPropertyManagedCls =
             showAdditionalKeyField && validKeyField
-                ? 'dataset_data_row_uniqueness_keyField_show margin-top'
-                : 'dataset_data_row_uniqueness_keyField_hide margin-top';
+                ? 'dataset_data_row_element_show margin-top'
+                : 'dataset_data_row_element_hide margin-top';
 
         return (
             <>
@@ -229,16 +249,20 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                     helpTipBody={() => this.getHelpTipElement('dataRowUniqueness')}
                 />
 
-                <DataRowUniquenessElements onRadioChange={onRadioChange} dataRowSetting={dataRowSetting} />
+                <DataRowUniquenessElements
+                    onRadioChange={onRadioChange}
+                    dataRowSetting={dataRowSetting}
+                    isFromAssay={model.isFromAssay()}
+                />
 
                 <div className={showAdditionalKeyFieldCls}>
                     <DatasetSettingsSelect
                         name="keyPropertyName"
                         label="Additional Key Field"
-                        selectOptions={domain.fields.toArray()}
+                        selectOptions={additionalKeyFields.toArray()}
                         onSelectChange={onSelectChange}
-                        labelKey="name"
-                        valueKey="name"
+                        labelKey="label"
+                        valueKey="value"
                         selectedValue={model.keyPropertyName}
                         disabled={!showAdditionalKeyField}
                         helpTip={this.getHelpTipForAdditionalField()}
@@ -251,7 +275,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                         checked={model.keyPropertyManaged}
                         onChange={onCheckBoxChange}
                         id="keyPropertyManaged"
-                        disabled={!showAdditionalKeyField || !validKeyField}
+                        disabled={!showAdditionalKeyField || !validKeyField || model.isFromAssay()}
                     >
                         Let server manage fields to make entries unique
                     </Checkbox>

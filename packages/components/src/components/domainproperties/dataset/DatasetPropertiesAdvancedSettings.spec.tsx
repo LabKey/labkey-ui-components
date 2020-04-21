@@ -21,13 +21,13 @@ import { mount } from 'enzyme';
 
 import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
 import getDatasetDesignSharedStudy from '../../../test/data/dataset-getDatasetDesignSharedStudy.json';
-import { NEW_DATASET_MODEL } from '../../../test/data/constants';
+import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../test/data/constants';
 import { SelectInput } from '../../..';
 
 import { AdvancedSettings, DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 import { DatasetModel } from './models';
 
-const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
+const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
 const datasetModel = DatasetModel.create(null, getDatasetDesign);
 const sharedDatasetModel = DatasetModel.create(null, getDatasetDesignSharedStudy);
 

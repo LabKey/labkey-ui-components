@@ -16,7 +16,13 @@ export const COHORT_TIP = 'Datasets may be cohort specific, or associated with a
 export const TAG_TIP = 'Adding a tag provides an additional, flexible way to categorize this dataset.';
 
 export const DATASPACE_TIP =
-    "Shared data across studies,   When 'No' is selected (default) each study folder 'owns' its own data rows.  If study has shared visits, then 'Share by Participants' means that data rows are shared across the project, and studies will only see data rows for participants that are part of that study.";
+    "Shared data across studies,   When 'No' is selected (default) each study folder 'owns' its own data rows.  " +
+    "If study has shared visits, then 'Share by Participants' means that data rows are shared across the project, and studies will only see data rows for participants that are part of that study." +
+    'Only valid when the dataset is a demographics dataset.';
 
 export const DATA_ROW_UNIQUENESS =
     'Choose criteria for how participants and visits are paired with or without an additional data column.';
+
+export const TIME_KEY_FIELD_KEY = '_Special$Time_';
+
+export const TIME_KEY_FIELD_DISPLAY = 'Time (from Date/Time)';

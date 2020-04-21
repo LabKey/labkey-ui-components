@@ -20,7 +20,7 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
 import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
-import { NEW_DATASET_MODEL } from '../../../test/data/constants';
+import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../test/data/constants';
 import { Alert } from '../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
@@ -29,7 +29,7 @@ import { DatasetDesignerPanels } from './DatasetDesignerPanels';
 import { DatasetModel } from './models';
 
 describe('Dataset Designer', () => {
-    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
+    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
     test('New dataset', () => {

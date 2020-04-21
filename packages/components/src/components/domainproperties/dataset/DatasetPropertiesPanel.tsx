@@ -28,6 +28,7 @@ import { DEFINE_DATASET_TOPIC } from '../../../util/helpLinks';
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { AdvancedSettings } from './DatasetPropertiesAdvancedSettings';
 import { DataRowUniquenessContainer, BasicPropertiesFields } from './DatasetPropertiesPanelFormElements';
+import { TIME_KEY_FIELD_KEY } from './constants';
 
 interface OwnProps {
     model: DatasetModel;
@@ -129,24 +130,31 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                 keyPropertyName: undefined,
                 demographicData: false,
                 keyPropertyManaged: false,
+                dataSharing: 'NONE',
             }) as DatasetModel;
         } else {
             newModel = model.merge({
                 keyPropertyName: '', // resetting key property id
                 demographicData: false,
                 keyPropertyManaged: false,
+                dataSharing: 'NONE',
             }) as DatasetModel;
         }
         this.updateValidStatus(newModel);
     };
 
     onAdditionalKeyFieldChange = (name, formValue, selected): void => {
-        let propertyName;
+        const { model } = this.props;
 
-        if (selected) {
-            propertyName = selected.name;
+        if (formValue === TIME_KEY_FIELD_KEY) {
+            const newModel = model.merge({
+                keyPropertyName: formValue,
+            }) as DatasetModel;
+
+            this.updateValidStatus(newModel);
+        } else {
+            this.onChange(name, formValue);
         }
-        this.onChange(name, propertyName);
     };
 
     applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm) => {

@@ -22,7 +22,7 @@ import { mount } from 'enzyme';
 
 import { Radio } from 'react-bootstrap';
 
-import { NEW_DATASET_MODEL } from '../../../test/data/constants';
+import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../test/data/constants';
 
 import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
 
@@ -48,7 +48,7 @@ describe('Dataset Properties Panel', () => {
         collapsed: false,
     };
 
-    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
+    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
     test('New dataset', () => {

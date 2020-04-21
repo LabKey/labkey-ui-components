@@ -128,7 +128,7 @@ export const DEFAULT_LIST_SETTINGS = {
     fileAttachmentIndex: false,
 };
 
-export const NEW_DATASET_MODEL = {
+export const NEW_DATASET_MODEL_WITHOUT_DATASPACE = {
     datasetId: null,
     name: null,
     typeURI: null,
@@ -144,6 +144,26 @@ export const NEW_DATASET_MODEL = {
     sourceAssayName: null,
     sourceAssayURL: null,
     dataSharing: null,
+    definitionIsShared: false
+};
+
+export const NEW_DATASET_MODEL_WITH_DATASPACE = {
+    datasetId: null,
+    name: null,
+    typeURI: null,
+    category: null,
+    visitDatePropertyName: null,
+    keyProperty: null,
+    demographicData: null,
+    label: null,
+    cohortId: null,
+    tag: null,
+    showByDefault: null,
+    description: null,
+    sourceAssayName: null,
+    sourceAssayURL: null,
+    dataSharing: null,
+    definitionIsShared: true
 };
 
 export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 
-import { helpLinkNode, initQueryGridState, QuerySelect, SCHEMAS, SelectInput } from '../../..';
+import { helpLinkNode, initQueryGridState, SelectInput } from '../../..';
 
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { fetchCohorts, fetchVisitDateColumns, getHelpTip } from './actions';
@@ -240,6 +240,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         const { model, title } = this.props;
 
+        const showDataspace = model.definitionIsShared && model.getDataRowSetting() === 0;
+        const showDataspaceCls = showDataspace ? 'dataset_data_row_element_show' : 'dataset_data_row_element_hide';
+
         return (
             <>
                 <Button className="domain-field-float-right" onClick={() => this.toggleModal(true)}>
@@ -331,21 +334,24 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                         {model.definitionIsShared && (
                             <>
-                                <div className="margin-top">
-                                    <SectionHeading title="Dataspace Project Options" />
-                                </div>
+                                <div className={showDataspaceCls}>
+                                    <div className="margin-top">
+                                        <SectionHeading title="Dataspace Project Options" />
+                                    </div>
 
-                                <DatasetSettingsSelect
-                                    name="dataSharing"
-                                    label="Share demographic data"
-                                    helpTip={this.getHelpTipElement('dataspace')}
-                                    selectOptions={[
-                                        { label: 'No', value: 'NONE' },
-                                        { label: 'Share by Participants', value: 'PTID' },
-                                    ]}
-                                    selectedValue={dataSharing}
-                                    onSelectChange={this.onSelectChange}
-                                />
+                                    <DatasetSettingsSelect
+                                        name="dataSharing"
+                                        label="Share demographic data"
+                                        helpTip={this.getHelpTipElement('dataspace')}
+                                        selectOptions={[
+                                            { label: 'No', value: 'NONE' },
+                                            { label: 'Share by Participants', value: 'PTID' },
+                                        ]}
+                                        selectedValue={dataSharing}
+                                        onSelectChange={this.onSelectChange}
+                                        disabled={model.getDataRowSetting() !== 0}
+                                    />
+                                </div>
                             </>
                         )}
                     </Modal.Body>

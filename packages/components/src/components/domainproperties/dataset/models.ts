@@ -34,12 +34,6 @@ export class DatasetModel extends Record({
     domain: undefined,
     domainId: undefined,
     exception: undefined,
-    entityId: undefined,
-    createdBy: undefined,
-    created: undefined,
-    modifiedBy: undefined,
-    modified: undefined,
-    containerId: undefined,
     datasetId: undefined,
     name: undefined,
     category: undefined,
@@ -54,12 +48,13 @@ export class DatasetModel extends Record({
     description: undefined,
     dataSharing: undefined,
     definitionIsShared: undefined,
+    sourceAssayName: undefined,
+    sourceAssayUrl: undefined,
 }) {
     domain: DomainDesign;
     domainId: number;
     exception: string;
     datasetId?: number;
-    entityId: string;
     name: string;
     category?: string;
     visitDatePropertyName?: string;
@@ -73,6 +68,8 @@ export class DatasetModel extends Record({
     description?: string;
     dataSharing?: string;
     definitionIsShared?: boolean;
+    sourceAssayName?: string;
+    sourceAssayUrl?: string;
 
     constructor(values?: { [key: string]: any }) {
         super(values);
@@ -95,7 +92,15 @@ export class DatasetModel extends Record({
             isValidKeySetting = this.keyPropertyName !== undefined && this.keyPropertyName !== '';
         }
 
-        return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && isValidKeySetting;
+        return (
+            this.name !== undefined &&
+            this.name !== null &&
+            this.name.trim().length > 0 &&
+            this.label !== undefined &&
+            this.label !== null &&
+            this.label.trim().length > 0 &&
+            isValidKeySetting
+        );
     }
 
     isNew(): boolean {
@@ -159,5 +164,9 @@ export class DatasetModel extends Record({
 
     isValid(): boolean {
         return this.hasValidProperties();
+    }
+
+    isFromAssay(): boolean {
+        return this.sourceAssayName != null || this.sourceAssayName !== undefined;
     }
 }

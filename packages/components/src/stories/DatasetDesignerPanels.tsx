@@ -18,10 +18,11 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
-import { NEW_DATASET_MODEL } from '../test/data/constants';
+import {NEW_DATASET_MODEL_WITH_DATASPACE, NEW_DATASET_MODEL_WITHOUT_DATASPACE} from '../test/data/constants';
 import { DatasetDesignerPanels } from '../components/domainproperties/dataset/DatasetDesignerPanels';
 import { DatasetModel } from '../components/domainproperties/dataset/models';
 import getDatasetDesign from '../test/data/dataset-getDatasetDesign.json';
+import getDatasetDesignSharedStudy from '../test/data/dataset-getDatasetDesignSharedStudy.json';
 
 class NewDatasetDesigner extends React.PureComponent<any, any> {
     constructor(props) {
@@ -60,14 +61,14 @@ class EditDatasetDesigner extends React.PureComponent<any, any> {
 storiesOf('DatasetDesigner', module)
     .addDecorator(withKnobs)
     .add('create new dataset without dataspace', () => {
-        return <NewDatasetDesigner model={NEW_DATASET_MODEL} useTheme={false} showVisitDate={true} />;
+        return <NewDatasetDesigner model={NEW_DATASET_MODEL_WITHOUT_DATASPACE} useTheme={false} showVisitDate={true} />;
     })
     .add('create new dataset with dataspace', () => {
-        return <NewDatasetDesigner model={NEW_DATASET_MODEL} useTheme={false} />;
+        return <NewDatasetDesigner model={NEW_DATASET_MODEL_WITH_DATASPACE} useTheme={false} />;
     })
     .add('edit dataset without dataspace', () => {
         return <EditDatasetDesigner model={getDatasetDesign} useTheme={false} />;
     })
     .add('edit dataset with dataspace', () => {
-        return <EditDatasetDesigner model={getDatasetDesign} useTheme={false} />;
+        return <EditDatasetDesigner model={getDatasetDesignSharedStudy} useTheme={false} />;
     });

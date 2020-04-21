@@ -1,4 +1,5 @@
 import React, { ComponentType, PureComponent, createContext } from 'react';
+import { Draft, produce } from 'immer';
 
 import { fetchLineage, fetchLineageNodes, processLineageResult } from './actions';
 import { ILineage, Lineage, LineageLoadingState, LineageResult } from './models';
@@ -37,7 +38,7 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
 
         static defaultProps;
 
-        readonly state: State = { lineage: undefined };
+        readonly state: State = produce({ lineage: undefined }, () => {});
 
         cacheLineage = (): void => {
             const { cacheResults, prefetchSeed, lsid } = this.props;
@@ -50,69 +51,71 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
             }
         };
 
-        loadLineage = (): void => {
+        loadLineage = async (): Promise<void> => {
             const { cacheResults, distance, prefetchSeed, lsid } = this.props;
 
             // Lineage is already processed
             if (this.state.lineage) {
                 return;
             } else if (cacheResults && lineageCache[lsid]) {
-                this.setState({ lineage: lineageCache[lsid] });
+                this.setLineage(lineageCache[lsid]);
                 return;
             }
 
             // Create the initial lineage model for this seed
-            this.setState({
-                lineage: new Lineage({ seed: lsid })
-            }, async () => {
-                if (prefetchSeed === true) {
-                    // Fetch seed node asynchronously to allow for decoupled loading
-                    this.loadSeed();
-                }
+            await this.setLineage(new Lineage({
+                seed: lsid,
+                resultLoadingState: LineageLoadingState.LOADING,
+            }));
 
-                await this.persistLineage({ resultLoadingState: LineageLoadingState.LOADING });
+            if (prefetchSeed === true) {
+                // Fetch seed node asynchronously to allow for decoupled loading
+                this.loadSeed();
+            }
 
-                try {
-                    const result = await fetchLineage(lsid, distance)
-                        .then(r => processLineageResult(r, this.props));
+            try {
+                const result = await fetchLineage(lsid, distance)
+                    .then(r => processLineageResult(r, this.props));
 
-                    await this.persistLineage({
-                        result,
-                        resultLoadingState: LineageLoadingState.LOADED,
-                    });
-                } catch(e) {
-                    console.error(e);
-                    await this.persistLineage({
-                        error: e.message,
-                        resultLoadingState: LineageLoadingState.LOADED,
-                    });
-                }
+                await this.updateLineage({
+                    result,
+                    resultLoadingState: LineageLoadingState.LOADED,
+                });
+            } catch(e) {
+                console.error(e);
+                await this.updateLineage({
+                    error: e.message,
+                    resultLoadingState: LineageLoadingState.LOADED,
+                });
+            }
 
-                this.cacheLineage();
-            });
-
+            this.cacheLineage();
         };
 
         loadSeed = async (): Promise<void> => {
             const { lsid } = this.props;
 
-            await this.persistLineage({ seedResultLoadingState: LineageLoadingState.LOADING });
+            await this.updateLineage({ seedResultLoadingState: LineageLoadingState.LOADING });
 
             try {
-                const seedNode = (await fetchLineageNodes([lsid]))[0];
+                const seedNodes = await fetchLineageNodes([lsid]);
+
+                if (seedNodes.length !== 1) {
+                    throw new Error('withLineage: Can only process a single seed node.');
+                }
 
                 const seedResult = await processLineageResult(LineageResult.create({
-                    nodes: { [lsid]: seedNode },
+                    nodes: { [lsid]: seedNodes[0] },
                     seed: lsid,
                 }));
 
-                await this.persistLineage({
+                await this.updateLineage({
                     seedResult,
                     seedResultLoadingState: LineageLoadingState.LOADED,
                 });
             } catch(e) {
                 console.error(e);
-                await this.persistLineage({
+                await this.updateLineage({
                     seedResultError: 'Error while pre-fetching the lineage seed',
                     seedResultLoadingState: LineageLoadingState.LOADED,
                 });
@@ -121,10 +124,26 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
             this.cacheLineage();
         };
 
-        persistLineage = async (lineageProps: Partial<ILineage>): Promise<void> => {
+        /**
+         * An asynchronous helper function to update properties of the state's lineage.
+         * Throws an error if called prior to the state's lineage having been initialized.
+         * @param lineageProps The lineage properties to update. Properties not specified will be left unchanged.
+         */
+        updateLineage = async (lineageProps: Partial<ILineage>): Promise<void> => {
+            if (!this.state.lineage) {
+                throw new Error('withLineage: Called "updateLineage" prior to setting lineage.');
+            }
+            return this.setLineage(this.state.lineage.mutate(lineageProps));
+        };
+
+        /**
+         * An asynchronous helper function that sets the lineage on state.
+         * @param lineage The lineage object to set to
+         */
+        setLineage = async (lineage: Lineage): Promise<void> => {
             return new Promise((resolve) => {
-                this.setState((state) => ({
-                    lineage: state.lineage.mutate(lineageProps)
+                this.setState(produce((draft: Draft<State>) => {
+                    draft.lineage = lineage;
                 }), () => { resolve(); });
             });
         };

@@ -185,24 +185,25 @@ When changes are made to the source code or .scss files for the components or th
 **In an effort to maintain consistent formatting, use best practices and catch errors before they reach production, it
 is highly recommended to lint any files you've changed before merging them to master.**
 
-There are two scripts that are likely be most useful. The first:
+There are two scripts that are most likely to be useful. The first:
 
 ````shell script
 yarn run lint-branch-fix
 ````
-This will automatically format, lint and attempt to fix lint errors in files that have been changed in your feature branch.
-This will only detect changes that have been committed and pushed to github.  You can run this as many times as you want.
+This script will automatically format, lint and attempt to fix lint errors in files that have been changed in your feature branch.
+This will only detect changed files that have been committed and pushed to github.  You can run this as many times as you want.
 It does not automatically commit the fixes, giving you an opportunity to review the fixes and the generated warnings before
 committing. Not all warnings are must fix, they are there for your consideration.
 
-The second most likely useful script is,
+The second most likely useful script:
 ```shell script
 yarn run lint-diff-fix
 ```
-This is exactly the same as lint-branch-fix, except it runs only on files with uncommitted changes.
+This script is exactly the same as lint-branch-fix, except it runs only on files with uncommitted changes.
 
-So a couple possible workflows would be to run lint-diff-fix before every commit; or to commit and push some code then run lint-branch-fix
-and iterate fixing the warnings and using lint-diff-fix to check if they are cleared before committing.
+So a couple possible workflows would be either to run lint-diff-fix before every commit; or to do some commits and pushes
+then run lint-branch-fix and iterate fixing the warnings and using lint-diff-fix to check if they are cleared before
+committing the fixes.
 
 Less commonly used commands:
 ```shell script

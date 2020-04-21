@@ -185,44 +185,51 @@ When changes are made to the source code or .scss files for the components or th
 **In an effort to maintain consistent formatting, use best practices and catch errors before they reach production, it
 is highly recommended to lint any files you've changed before merging them to master.**
 
-There are two scripts that are most likely to be useful. The first:
+#### Commands
 
-````shell script
-yarn run lint-branch-fix
-````
-This script will automatically format, lint and attempt to fix lint errors in files that have been changed in your feature branch.
-This will only detect changed files that have been committed and pushed to github in the feature branch your local repo is on.
-You can run this as many times as you want. It does not automatically commit the fixes, giving you an opportunity to review the fixes and the generated warnings before
-committing. Not all warnings are must fix, they are there for your consideration.
-
-The second script most likely to be useful:
 ```shell script
-yarn run lint-precommit-fix
-```
-This script is exactly the same as lint-branch-fix, except it runs only on files with uncommitted changes.
-
-So a couple possible workflows would be either to run lint-precommit-fix before every commit; or to do some commits and pushes
-then run lint-branch-fix and iterate fixing the warnings and using lint-precommit-fix to check if they are cleared before
-committing the fixes.
-
-Less commonly used commands:
-```shell script
-# Lints a file or directory without any auto-formatting or fixing
+# Lints files matching file path glob without any auto-formatting or fixing
 yarn run lint <file path>
 
-# Lints a file or directory including auto-formatting or fixing
+# Lints, auto-formats, and fixes files matching file path glob
 yarn run lint-fix <file path>
 
-# Exactly the same as lint-branch-fix except does not auto-format or fix
+# Lints files with uncommitted local changes without auto-formatting or fixing
+yarn run lint-precommit
+
+# Lints, auto-formats, and fixes files with uncommitted local changes
+yarn run lint-precommit-fix
+
+# Lints files that have been modified in the branch without auto-formatting or fixing
 yarn run lint-branch
 
-# Exactly the same as lint-diff-fix except does not auto-format or fix
-yarn run lint-precommit
+# Lints, auto-formats, and fixes files that have been modified in the branch
+yarn run lint-branch-fix
+
 ```
 
-Any command with a file path should make the file path relative to the labkey-ui-components/packages/components directory.
+**Using `lint-branch-fix`**:
+
+This script will automatically format, lint and attempt to fix lint errors in files that have been changed
+in your feature branch. This will only detect changed files that have been committed and pushed to GitHub in the
+feature branch your local repo is on. You can run this as many times as you want. It does not automatically commit
+the fixes, giving you an opportunity to review the fixes and the generated warnings before committing.
+Not all warnings are must fix, they are there for your consideration.
+
+**Using `lint-precommit-fix`**:
+
+This script is exactly the same as lint-branch-fix, except it runs only on files with uncommitted changes.
+
+A couple of possible workflows would be either to run `lint-precommit-fix` before every commit; or to do some
+commits and pushes then run lint-branch-fix and iterate fixing the warnings and using `lint-precommit-fix` to check
+if they are cleared before committing the fixes.
+
+**Working with file paths**
+
+Any command with a file path should make the file path relative to the `/packages/components` directory.
 The format of the file path should match node file path format and be in double quotes. This ensures node resolves the file
 path instead of relying on your OS shell.  Some examples:
+
 ```shell script
 # Single file
 yarn run lint "./src/components/files/FileTree.tsx"

@@ -2,41 +2,36 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PureComponent } from 'react';
 import { Alert, LoadingSpinner } from '../..';
 
 import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage';
 import { NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { LineageNode } from './models';
-import {
-    isBasicNode,
-    isClusterNode,
-    isCombinedNode,
-    VisGraphClusterNode,
-    VisGraphCombinedNode,
-    VisGraphNode,
-    VisGraphNodeType,
-} from './vis/VisGraphGenerator';
+import { isBasicNode, VisGraphNode, VisGraphNodeType } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
-import { ClusterNodeDetail, LineageNodeDetail, SummaryOptions } from './node/LineageNodeDetail';
+import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
+import { SummaryOptions } from './node/LineageNodeDetail';
 
-interface LinageGraphOwnProps {
+interface LinageGraphOwnProps extends SummaryOptions {
     members?: LINEAGE_DIRECTIONS
     navigate?: (node: VisGraphNode) => any
 }
 
 interface LineageGraphDisplayState {
-    hoverNode: VisGraphNodeType
+    hoverNode: string
     nodeInteractions: WithNodeInteraction
     selectedNodes: VisGraphNodeType[]
 }
 
-class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOptions & LinageGraphOwnProps & LineageOptions & SummaryOptions, Partial<LineageGraphDisplayState>> {
+type LineageGraphDisplayProps = InjectedLineage & WithLineageOptions & LinageGraphOwnProps & LineageOptions;
+
+class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partial<LineageGraphDisplayState>> {
 
     private readonly visGraphRef = undefined;
 
-    constructor(props: InjectedLineage & WithLineageOptions & LinageGraphOwnProps & LineageOptions & SummaryOptions) {
+    constructor(props: LineageGraphDisplayProps) {
         super(props);
 
         this.visGraphRef = React.createRef();
@@ -62,14 +57,12 @@ class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOpt
 
     onSummaryNodeClick = (node: LineageNode): void => {
         this.onSummaryNodeMouseOut(node);
-
         this.visGraphRef.current?.selectNodes([node.lsid]);
     };
 
     onSummaryNodeMouseEvent = (node: LineageNode, hover: boolean): void => {
         // clear the hoverNode so the popover will hide
         this.clearHover();
-
         this.visGraphRef.current?.highlightNode(node, hover);
     };
 
@@ -87,113 +80,31 @@ class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOpt
         }
     };
 
-    onVisGraphNodeSelect = (selectedNodes: VisGraphNodeType[]): void => {
-        this.setState({
-            selectedNodes,
-        });
+    onNodeSelectionChange = (selectedNodes: VisGraphNodeType[]): void => {
+        this.setState({ selectedNodes });
     };
 
-    onVisGraphNodeDeselect = (selectedNodes: VisGraphNodeType[]): void => {
-        this.setState({
-            selectedNodes,
-        });
-    };
+    updateHover = (node: VisGraphNodeType): void => {
+        let hoverNode: string;
 
-    onVisGraphNodeBlur = (): void => {
-        this.clearHover();
-    };
-
-    updateHover = (hoverNode: VisGraphNodeType): void => {
-        this.setState({
-            hoverNode,
-        });
-    };
-
-    renderNodeDetails(): ReactNode {
-        const { lineage, lsid } = this.props;
-
-        if (!lineage || lineage.error) {
-            return null;
-        } else if (!lineage.isLoaded()) {
-            // Render selected node if seed has been pre-fetched
-            if (lineage.isSeedLoaded()) {
-                return this.renderSelectedNode(lineage.seedResult.nodes.get(lsid));
-            }
-            return <LoadingSpinner msg="Loading details..."/>;
+        if (node) {
+            hoverNode = isBasicNode(node) && node.lineageNode && node.lineageNode.lsid;
         }
 
-        const { selectedNodes, hoverNode } = this.state;
-
-        if (!selectedNodes || selectedNodes.length == 0) {
-            return <em>Select a node from the graph to view the details.</em>;
-        } else if (selectedNodes.length === 1) {
-            const hoverNodeLsid = isBasicNode(hoverNode) && hoverNode.lineageNode && hoverNode.lineageNode.lsid;
-            const selectedNode = selectedNodes[0];
-
-            if (isBasicNode(selectedNode)) {
-                return this.renderSelectedNode(selectedNode.lineageNode, hoverNodeLsid);
-            } else if (isCombinedNode(selectedNode)) {
-                return this.renderSelectedCombinedNode(selectedNode, hoverNodeLsid)
-            } else if (isClusterNode(selectedNode)) {
-                return this.renderSelectedClusterNode(selectedNode, hoverNodeLsid);
-            }
-
-            throw new Error('unknown node kind');
-        } else {
-            return <div>multiple selected nodes</div>;
-        }
-    }
-
-    renderSelectedNode(node: LineageNode, hoverNodeLsid?: string): ReactNode {
-        const { lsid, summaryOptions } = this.props;
-
-        // Apply "LineageOptions" when summaryOptions not explicitly given
-        const options = summaryOptions ? summaryOptions : {...this.props};
-
-        return (
-            <LineageNodeDetail
-                seed={lsid}
-                node={node}
-                highlightNode={hoverNodeLsid}
-                summaryOptions={options}
-            />
-        );
-    }
-
-    renderSelectedClusterNode(node: VisGraphClusterNode, hoverNodeLsid: string): ReactNode {
-        // LineageNodes in the cluster
-        const nodes = node.nodesInCluster.map(n => n.kind === 'node' && n.lineageNode);
-
-        return (
-            <ClusterNodeDetail
-                highlightNode={hoverNodeLsid}
-                nodes={nodes}
-                options={this.props}
-            />
-        );
-    }
-
-    renderSelectedCombinedNode(node: VisGraphCombinedNode, hoverNodeLsid?: string): ReactNode {
-        const { lineage } = this.props;
-        if (!lineage && !lineage.result)
-            return null;
-
-        return (
-            <ClusterNodeDetail
-                highlightNode={hoverNodeLsid}
-                nodes={node.containedNodes}
-                nodesByType={node.containedNodesByType}
-                options={this.props}
-            />
-        );
-    }
+        this.setState({ hoverNode });
+    };
 
     render() {
-        const { lineage, lsid, visGraphOptions } = this.props;
+        const { lineage, lsid, summaryOptions, visGraphOptions } = this.props;
+        const { hoverNode, selectedNodes } = this.state;
 
         if (lineage?.error) {
             return <Alert>{lineage.error}</Alert>
         }
+
+        // Apply "LineageOptions" when summaryOptions not explicitly given
+        const lineageOptions = {...this.props};
+        const options = summaryOptions ? summaryOptions : {...lineageOptions};
 
         return (
             <NodeInteractionProvider value={this.state.nodeInteractions}>
@@ -203,17 +114,23 @@ class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOpt
                             <VisGraph
                                 ref={this.visGraphRef}
                                 onNodeDoubleClick={this.onVisGraphNodeDoubleClick}
-                                onNodeSelect={this.onVisGraphNodeSelect}
-                                onNodeDeselect={this.onVisGraphNodeDeselect}
+                                onNodeSelect={this.onNodeSelectionChange}
+                                onNodeDeselect={this.onNodeSelectionChange}
                                 onNodeHover={this.updateHover}
-                                onNodeBlur={this.onVisGraphNodeBlur}
+                                onNodeBlur={this.clearHover}
                                 options={visGraphOptions}
                                 seed={lsid}
                             />
                         ) : <LoadingSpinner msg="Loading lineage..."/>}
                     </div>
                     <div className="col-md-4 lineage-node-detail-container">
-                        {this.renderNodeDetails()}
+                        <LineageNodeDetailFactory
+                            highlightNode={hoverNode}
+                            lineage={lineage}
+                            lineageOptions={lineageOptions}
+                            selectedNodes={selectedNodes}
+                            summaryOptions={options}
+                        />
                     </div>
                 </div>
             </NodeInteractionProvider>
@@ -221,4 +138,4 @@ class LineageGraphDisplay extends PureComponent<InjectedLineage & WithLineageOpt
     }
 }
 
-export const LineageGraph = withLineage<LinageGraphOwnProps & SummaryOptions>(LineageGraphDisplay);
+export const LineageGraph = withLineage<LinageGraphOwnProps>(LineageGraphDisplay);

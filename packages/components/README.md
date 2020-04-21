@@ -197,12 +197,12 @@ committing. Not all warnings are must fix, they are there for your consideration
 
 The second script most likely to be useful:
 ```shell script
-yarn run lint-diff-fix
+yarn run lint-precommit-fix
 ```
 This script is exactly the same as lint-branch-fix, except it runs only on files with uncommitted changes.
 
-So a couple possible workflows would be either to run lint-diff-fix before every commit; or to do some commits and pushes
-then run lint-branch-fix and iterate fixing the warnings and using lint-diff-fix to check if they are cleared before
+So a couple possible workflows would be either to run lint-precommit-fix before every commit; or to do some commits and pushes
+then run lint-branch-fix and iterate fixing the warnings and using lint-precommit-fix to check if they are cleared before
 committing the fixes.
 
 Less commonly used commands:
@@ -217,7 +217,7 @@ yarn run lint-fix <file path>
 yarn run lint-branch
 
 # Exactly the same as lint-diff-fix except does not auto-format or fix
-yarn run lint-diff
+yarn run lint-precommit
 ```
 
 Any command with a file path should make the file path relative to the labkey-ui-components/packages/components directory.

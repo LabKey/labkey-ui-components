@@ -24,8 +24,8 @@
     "deploy:docs": "npm run build:docs && gh-pages -t -d ../../docs",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
-    "lint-diff": "node lint.diff.js",
-    "lint-diff-fix": "node lint.diff.js --fix",
+    "lint-precommit": "node lint.diff.js",
+    "lint-precommit-fix": "node lint.diff.js --fix",
     "lint-branch": "node lint.diff.js --currentBranch",
     "lint-branch-fix": "node lint.diff.js --currentBranch --fix"
   },

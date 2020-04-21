@@ -191,11 +191,11 @@ There are two scripts that are most likely to be useful. The first:
 yarn run lint-branch-fix
 ````
 This script will automatically format, lint and attempt to fix lint errors in files that have been changed in your feature branch.
-This will only detect changed files that have been committed and pushed to github.  You can run this as many times as you want.
-It does not automatically commit the fixes, giving you an opportunity to review the fixes and the generated warnings before
+This will only detect changed files that have been committed and pushed to github in the feature branch your local repo is on.
+You can run this as many times as you want. It does not automatically commit the fixes, giving you an opportunity to review the fixes and the generated warnings before
 committing. Not all warnings are must fix, they are there for your consideration.
 
-The second most likely useful script:
+The second script most likely to be useful:
 ```shell script
 yarn run lint-diff-fix
 ```

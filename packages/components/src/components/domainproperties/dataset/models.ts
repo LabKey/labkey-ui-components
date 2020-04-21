@@ -167,6 +167,6 @@ export class DatasetModel extends Record({
     }
 
     isFromAssay(): boolean {
-        return this.sourceAssayName != null || this.sourceAssayName !== undefined;
+        return this.sourceAssayName !== null;
     }
 }

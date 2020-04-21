@@ -181,7 +181,7 @@ yarn run storybook
 
 When changes are made to the source code or .scss files for the components or the stories, the storybook instance will automatically reload.
 
-### ESLint and Prettier
+### Linting
 **In an effort to maintain consistent formatting, use best practices and catch errors before they reach production, it
 is highly recommended to lint any files you've changed before merging them to master.**
 

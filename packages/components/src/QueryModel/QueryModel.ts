@@ -32,7 +32,7 @@ export interface QueryConfig {
     id?: string;
     includeDetailsColumn?: boolean;
     includeUpdateColumn?: boolean;
-    keyValue?: any; // TODO: better name
+    keyValue?: any; // Should be a Primary Key Value, used when loading/rendering details pages.
     maxRows?: number;
     offset?: number;
     omittedColumns?: string[];
@@ -46,8 +46,9 @@ export interface IQueryModel extends QueryConfig {
     // Separate from baseFilters because these are set by the user when interacting with grids (e.g. via omnibox)
     filterArray: Filter.IFilter[];
     // Set by server (Assay QC, etc)
-    messages: GridMessage[];
+    messages?: GridMessage[];
     queryInfo?: QueryInfo;
+    queryInfoError?: string;
     queryInfoLoadingState: LoadingState;
     orderedRows?: string[];
     rows?: { [key: string]: any };
@@ -72,7 +73,7 @@ export class QueryModel implements IQueryModel {
     readonly id: string;
     readonly includeDetailsColumn: boolean;
     readonly includeUpdateColumn: boolean;
-    readonly keyValue?: any; // TODO: better name
+    readonly keyValue?: any;
     readonly maxRows?: number;
     readonly offset: number;
     readonly omittedColumns: string[];
@@ -83,13 +84,14 @@ export class QueryModel implements IQueryModel {
 
     // QueryModel only fields
     readonly filterArray: Filter.IFilter[];
-    readonly messages: GridMessage[];
+    readonly messages?: GridMessage[];
     readonly orderedRows?: string[];
     readonly queryInfo?: QueryInfo;
+    readonly queryInfoError?: string;
     readonly queryInfoLoadingState: LoadingState;
     readonly rows?: { [key: string]: any };
     readonly rowCount?: number;
-    readonly rowsError: string;
+    readonly rowsError?: string;
     readonly rowsLoadingState: LoadingState;
     readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set
     readonly selectionsError?: string;
@@ -122,6 +124,7 @@ export class QueryModel implements IQueryModel {
         this.filterArray = [];
         this.messages = [];
         this.queryInfo = undefined;
+        this.queryInfoError = undefined;
         this.queryInfoLoadingState = LoadingState.INITIALIZED;
         this.orderedRows = undefined;
         this.rows = undefined;

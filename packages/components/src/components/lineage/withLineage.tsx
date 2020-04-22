@@ -40,6 +40,8 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
 
         readonly state: State = produce({ lineage: undefined }, () => {});
 
+        private _mounted = true;
+
         cacheLineage = (): void => {
             const { cacheResults, prefetchSeed, lsid } = this.props;
             const { lineage } = this.state;
@@ -142,13 +144,16 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
          */
         setLineage = async (lineage: Lineage): Promise<void> => {
             return new Promise((resolve) => {
-                this.setState(produce((draft: Draft<State>) => {
-                    draft.lineage = lineage;
-                }), () => { resolve(); });
+                if (this._mounted) {
+                    this.setState(produce((draft: Draft<State>) => {
+                        draft.lineage = lineage;
+                    }), () => { resolve(); });
+                }
             });
         };
 
         componentDidMount(): void {
+            this._mounted = true;
             this.loadLineage();
         }
 
@@ -156,6 +161,10 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
             if (prevProps.lsid !== this.props.lsid) {
                 this.loadLineage();
             }
+        }
+
+        componentWillUnmount(): void {
+            this._mounted = false;
         }
 
         render() {

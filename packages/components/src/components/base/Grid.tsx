@@ -229,7 +229,7 @@ interface GridBodyProps {
     transpose: boolean;
 }
 
-class GridBody extends React.PureComponent<GridBodyProps, any> {
+class GridBody extends React.PureComponent<GridBodyProps> {
     constructor(props: GridBodyProps) {
         super(props);
 
@@ -330,7 +330,7 @@ export interface GridProps {
     transpose?: boolean;
 }
 
-export class Grid extends React.PureComponent<GridProps, any> {
+export class Grid extends React.PureComponent<GridProps> {
     static defaultProps = {
         bordered: true,
         calcWidths: false,

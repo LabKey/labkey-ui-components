@@ -181,7 +181,7 @@ export function selectAll(
             failure: Utils.getCallbackWrapper(response => {
                 console.error('Problem in selecting all items in the grid', key, schemaName, queryName, response);
                 reject(response);
-            }),
+            }, this, true),
         });
     });
 }
@@ -960,16 +960,16 @@ export function getSelected(
             }),
             failure: Utils.getCallbackWrapper(response => {
                 reject(response);
-            }),
+            }, this, true),
         });
     });
 }
 
-interface ISelectResponse {
+export interface ISelectResponse {
     count: number;
 }
 
-function clearSelected(
+export function clearSelected(
     key: string,
     schemaName?: string,
     queryName?: string,
@@ -989,7 +989,7 @@ function clearSelected(
             failure: Utils.getCallbackWrapper(response => {
                 console.error('Problem clearing the selection ', key, schemaName, queryName, response);
                 reject(response);
-            }),
+            }, this, true),
         });
     });
 }
@@ -1028,7 +1028,7 @@ export function setSelected(
             }),
             failure: Utils.getCallbackWrapper(response => {
                 reject(response);
-            }),
+            }, this, true),
         });
     });
 }

@@ -26,10 +26,10 @@ interface State {
     lineage: Lineage
 }
 
-const lineageCache: { [seed:string]: Lineage } = {};
-
-export function withLineage<Props>(ComponentToWrap: ComponentType<Props & InjectedLineage>)
-    : ComponentType<Props & WithLineageOptions> {
+export function withLineage<Props>(
+    ComponentToWrap: ComponentType<Props & InjectedLineage>,
+    defaultProps?: LoadLineage
+): ComponentType<Props & WithLineageOptions> {
     class ComponentWithLineage extends PureComponent<Props & WithLineageOptions, State> {
 
         static defaultProps;
@@ -38,25 +38,11 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
 
         private _mounted = true;
 
-        cacheLineage = (): void => {
-            const { cacheResults, prefetchSeed, lsid } = this.props;
-            const { lineage } = this.state;
-
-            if (cacheResults && lineage &&
-                lineage.resultLoadingState === LineageLoadingState.LOADED &&
-                (!prefetchSeed || lineage.seedResultLoadingState === LineageLoadingState.LOADED)) {
-                lineageCache[lsid] = lineage;
-            }
-        };
-
         loadLineage = async (): Promise<void> => {
-            const { cacheResults, distance, prefetchSeed, lsid } = this.props;
+            const { distance, prefetchSeed, lsid } = this.props;
 
             // Lineage is already processed
             if (this.state.lineage) {
-                return;
-            } else if (cacheResults && lineageCache[lsid]) {
-                this.setLineage(lineageCache[lsid]);
                 return;
             }
 
@@ -85,8 +71,6 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
                     resultLoadingState: LineageLoadingState.LOADED,
                 });
             }
-
-            this.cacheLineage();
         };
 
         loadSeed = async (): Promise<void> => {
@@ -117,8 +101,6 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
                     seedResultLoadingState: LineageLoadingState.LOADED,
                 });
             }
-
-            this.cacheLineage();
         };
 
         /**
@@ -178,9 +160,11 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
     }
 
     ComponentWithLineage.defaultProps = {
-        cacheResults: true,
-        distance: DEFAULT_LINEAGE_DISTANCE,
-        prefetchSeed: true,
+        ...{
+            distance: DEFAULT_LINEAGE_DISTANCE,
+            prefetchSeed: false,
+        },
+        ...defaultProps
     };
 
     return ComponentWithLineage;

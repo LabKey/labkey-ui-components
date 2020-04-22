@@ -138,4 +138,4 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partia
     }
 }
 
-export const LineageGraph = withLineage<LinageGraphOwnProps>(LineageGraphDisplay);
+export const LineageGraph = withLineage<LinageGraphOwnProps>(LineageGraphDisplay, { prefetchSeed: true });

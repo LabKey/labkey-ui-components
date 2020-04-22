@@ -7,9 +7,10 @@ import { QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 
 export interface Actions {
-    addModel: (queryConfig: QueryConfig, load?: boolean) => void;
-    loadModel: (id: string) => void;
-    loadAllModels: () => void;
+    addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
+    clearSelections: (id: string) => void;
+    loadModel: (id: string, loadSelections?: boolean) => void;
+    loadAllModels: (loadSelections?: boolean) => void;
     loadRows: (id: string) => void;
     loadNextPage: (id: string) => void;
     loadPreviousPage: (id: string) => void;
@@ -17,8 +18,11 @@ export interface Actions {
     loadLastPage: (id: string) => void;
     setOffset: (id: string, offset: number) => void;
     setMaxRows: (id: string, maxRows: number) => void;
-    setView: (id: string, viewName: string) => void;
-    setSchemaQuery: (id: string, schemaQuery: SchemaQuery) => void;
+    setView: (id: string, viewName: string, loadSelections?: boolean) => void;
+    setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
+    selectAllRows: (id: string) => void;
+    selectRow: (id: string, checked, row: { [key: string]: any }) => void;
+    selectPage: (id: string, checked) => void;
 }
 
 export interface RequiresModelAndActions {
@@ -44,6 +48,43 @@ interface State {
     queryModels: QueryModelMap;
 }
 
+/**
+ * Resets queryInfo state to initialized state. Use this when you need to load/reload QueryInfo.
+ * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
+ * @param model: Draft<QueryModel> the model to reset queryInfo state on.
+ */
+const resetQueryInfoState = (model: Draft<QueryModel>) => {
+    model.queryInfo = undefined;
+    model.queryInfoError = undefined;
+    model.queryInfoLoadingState = LoadingState.INITIALIZED;
+};
+
+/**
+ * Resets rows state to initialized state. Use this when you need to load/reload selections.
+ * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
+ * @param model: Draft<QueryModel> the model to reset selection state on.
+ */
+const resetRowsState = (model: Draft<QueryModel>) => {
+    model.rowsError = undefined;
+    model.messages = undefined;
+    model.offset = 0;
+    model.orderedRows = undefined;
+    model.rows = undefined;
+    model.rowCount = undefined;
+    model.rowsLoadingState = LoadingState.INITIALIZED;
+};
+
+/**
+ * Resets selection state to initialized state. Use this when you need to load/reload selections.
+ * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
+ * @param model: Draft<QueryModel> the model to reset selection state on.
+ */
+const resetSelectionState = (model: Draft<QueryModel>) => {
+    model.selections = undefined;
+    model.selectionsError = undefined;
+    model.selectionsLoadingState = LoadingState.INITIALIZED;
+};
+
 export function withQueryModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedQueryModels>
 ): ComponentType<Props & MakeQueryModels> {
@@ -66,6 +107,7 @@ export function withQueryModels<Props>(
 
             this.actions = {
                 addModel: this.addModel,
+                clearSelections: this.clearSelections,
                 loadModel: this.loadModel,
                 loadAllModels: this.loadAllModels,
                 loadRows: this.loadRows,
@@ -77,8 +119,145 @@ export function withQueryModels<Props>(
                 setMaxRows: this.setMaxRows,
                 setView: this.setView,
                 setSchemaQuery: this.setSchemaQuery,
+                selectAllRows: this.selectAllRows,
+                selectRow: this.selectRow,
+                selectPage: this.selectPage,
             };
         }
+
+        loadSelections = async(id: string) => {
+            const { loadSelections } = this.props.modelLoader;
+
+            this.setState(produce((draft: Draft<State>) => {
+                draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+            }));
+
+            try {
+                const selections = await loadSelections(this.state.queryModels[id]);
+
+                this.setState(produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    model.selections = selections;
+                    model.selectionsLoadingState = LoadingState.LOADED;
+                    model.selectionsError = undefined;
+                }));
+            } catch (error) {
+                this.setState(produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    let selectionsError = resolveErrorMessage(error);
+
+                    if (selectionsError === undefined) {
+                        const schemaQuery = model.schemaQuery.toString();
+                        selectionsError = `Error while loading selections for SchemaQuery: ${schemaQuery}`;
+                    }
+
+                    console.error(`Error loading selections for model ${id}: `, selectionsError);
+                    model.selectionsLoadingState = LoadingState.LOADED;
+                    model.selectionsError = selectionsError;
+                }));
+            }
+        };
+
+        clearSelections = async (id: string) => {
+            const { modelLoader } = this.props;
+
+            try {
+                await modelLoader.clearSelections(this.state.queryModels[id]);
+                this.setState(produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    model.selections = new Set();
+                    model.selectionsError = undefined;
+                }));
+            } catch (error) {
+                this.setState(produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    let selectionsError = resolveErrorMessage(error);
+
+                    if (selectionsError === undefined) {
+                        const schemaQuery = model.schemaQuery.toString();
+                        selectionsError = `Error while clearing selections for SchemaQuery: ${schemaQuery}`;
+                    }
+
+                    console.error(`Error clearing selections for model ${id}:`, selectionsError);
+                    model.selectionsError = selectionsError;
+                }));
+            }
+        };
+
+        setSelections = async(id: string, checked: boolean, selections: string[]) => {
+            const { modelLoader } = this.props;
+
+            try {
+                await modelLoader.setSelections(this.state.queryModels[id], checked, selections);
+                this.setState(produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    selections.forEach((selection) => {
+                        if (checked) {
+                            model.selections.add(selection);
+                        } else {
+                            model.selections.delete(selection);
+                        }
+                    });
+                    model.selectionsError = undefined;
+                }));
+            } catch (error) {
+                this.setState(produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    let selectionsError = resolveErrorMessage(error);
+
+                    if (selectionsError === undefined) {
+                        const schemaQuery = model.schemaQuery.toString();
+                        selectionsError = `Error while setting selections for SchemaQuery: ${schemaQuery}`;
+                    }
+
+                    console.error(`Error setting selections for model ${id}:`, selectionsError);
+                    model.selectionsError = selectionsError;
+                }));
+            }
+        }
+
+        selectAllRows = async (id: string) => {
+            const { modelLoader } = this.props;
+
+            this.setState(produce((draft: Draft<State>) => {
+                draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+            }));
+
+            try {
+                const selections = await modelLoader.selectAllRows(this.state.queryModels[id]);
+                this.setState(produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    model.selections = selections;
+                    model.selectionsError = undefined;
+                    model.selectionsLoadingState = LoadingState.LOADED;
+                }));
+            } catch (error) {
+
+            }
+        };
+
+        selectRow = (id: string, checked: boolean, row: { [key: string]: any }) => {
+            const model = this.state.queryModels[id];
+            const pkCols = model.queryInfo.getPkCols();
+
+            if (pkCols.size === 1) {
+                const pkValue = row[pkCols.first().name]?.value?.toString();
+
+                if (!pkValue) {
+                    console.warn(`Unable to resolve PK value for model ${id} row`, row);
+                    return;
+                }
+
+                this.setSelections(id, checked, [pkValue]);
+            } else {
+                let msg = `Cannot set row selection for model ${id}. The model has multiple PK Columns.`;
+                console.warn(msg, pkCols.toJS());
+            }
+        };
+
+        selectPage = (id: string, checked: boolean) => {
+            this.setSelections(id, checked, this.state.queryModels[id].orderedRows);
+        };
 
         loadRows = async (id: string) => {
             const { loadRows } = this.props.modelLoader;
@@ -114,16 +293,14 @@ export function withQueryModels<Props>(
                             rowsError = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;
                         }
 
-                        console.error(`Error loading rows for model ${id}: `, rowsError);
-
-                        model.rowsLoadingState = LoadingState.LOADED;
-                        model.rowsError = rowsError;
-                    })
-                );
+                    console.error(`Error loading rows for model ${id}: `, rowsError);
+                    model.rowsLoadingState = LoadingState.LOADED;
+                    model.rowsError = rowsError;
+                }));
             }
         };
 
-        loadQueryInfo = async (id: string, loadRows = false) => {
+        loadQueryInfo = async (id: string, loadRows = false, loadSelections = false) => {
             const { loadQueryInfo } = this.props.modelLoader;
 
             this.setState(
@@ -139,51 +316,59 @@ export function withQueryModels<Props>(
                         const model = draft.queryModels[id];
                         model.queryInfo = queryInfo;
                         model.queryInfoLoadingState = LoadingState.LOADED;
-                        model.rowsError = undefined;
+                        model.queryInfoError = undefined;
                     }),
-                    () => this.maybeLoad(id, loadRows)
+                    () => this.maybeLoad(id, false, loadRows, loadSelections)
                 );
             } catch (error) {
                 this.setState(
                     produce((draft: Draft<State>) => {
                         const model = draft.queryModels[id];
-                        let rowsError = resolveErrorMessage(error);
+                        let queryInfoError = resolveErrorMessage(error);
 
-                        if (rowsError === undefined) {
-                            rowsError = `Error while loading QueryInfo for SchemaQuery: ${model.schemaQuery.toString()}`;
+                        if (queryInfoError === undefined) {
+                            queryInfoError = `Error while loading QueryInfo for SchemaQuery: ${model.schemaQuery.toString()}`;
                         }
 
-                        console.error(`Error loading QueryInfo for model ${id}:`, rowsError);
+                        console.error(`Error loading QueryInfo for model ${id}:`, queryInfoError);
 
                         model.queryInfoLoadingState = LoadingState.LOADED;
-                        model.rowsError = rowsError;
+                        model.queryInfoError = queryInfoError;
                     })
                 );
             }
         };
 
         /**
-         * Helper for various actions that may or may want to trigger loadRows, useful for reducing boilerplate.
+         * Helper for various actions that may want to trigger loadQueryInfo, loadRows, or loadSelections.
          * @param id: The id of the QueryModel you want to load
-         * @param shouldLoad: boolean, if true will load the model's rows, if false does nothing.
          * @param loadQueryInfo: boolean, if true will load the QueryInfo before loading the model's rows.
+         * @param loadRows: boolean, if true will load the model's rows.
+         * @param loadSelections: boolean, if true will load selections after loading QueryInfo.
          */
-        maybeLoad = (id: string, shouldLoad: boolean, loadQueryInfo = false) => {
-            if (shouldLoad) {
-                if (loadQueryInfo) {
-                    this.loadQueryInfo(id, true);
-                } else {
+        maybeLoad = (id: string, loadQueryInfo = false, loadRows = false, loadSelections = false) => {
+            if (loadQueryInfo) {
+                // Postpone loading any rows or selections if we're loading the QueryInfo.
+                this.loadQueryInfo(id, loadRows, loadSelections);
+            } else {
+                // It's safe to load selections and rows in parallel.
+
+                if (loadRows) {
                     this.loadRows(id);
                 }
+
+                if (loadSelections) {
+                    this.loadSelections(id);
+                }
             }
+        }
+
+        loadModel = (id: string, loadSelections = false) => {
+            this.loadQueryInfo(id, true, loadSelections);
         };
 
-        loadModel = (id: string) => {
-            this.loadQueryInfo(id, true);
-        };
-
-        loadAllModels = () => {
-            Object.keys(this.state.queryModels).forEach(this.loadModel);
+        loadAllModels = (loadSelections = false) => {
+            Object.keys(this.state.queryModels).forEach((id) => this.loadModel(id, loadSelections));
         };
 
         loadNextPage = (id: string) => {
@@ -197,7 +382,7 @@ export function withQueryModels<Props>(
                         model.offset = model.offset + model.maxRows;
                     }
                 }),
-                () => this.maybeLoad(id, shouldLoad)
+                () => this.maybeLoad(id, false, shouldLoad)
             );
         };
 
@@ -212,7 +397,7 @@ export function withQueryModels<Props>(
                         model.offset = model.offset - model.maxRows;
                     }
                 }),
-                () => this.maybeLoad(id, shouldLoad)
+                () => this.maybeLoad(id, false, shouldLoad)
             );
         };
 
@@ -227,7 +412,7 @@ export function withQueryModels<Props>(
                         model.offset = 0;
                     }
                 }),
-                () => this.maybeLoad(id, shouldLoad)
+                () => this.maybeLoad(id, false, shouldLoad)
             );
         };
 
@@ -242,11 +427,11 @@ export function withQueryModels<Props>(
                         model.offset = model.lastPageOffset;
                     }
                 }),
-                () => this.maybeLoad(id, shouldLoad)
+                () => this.maybeLoad(id, false, shouldLoad)
             );
         };
 
-        addModel = (queryConfig: QueryConfig, load = true) => {
+        addModel = (queryConfig: QueryConfig, load = true, loadSelections = false) => {
             let id;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -256,7 +441,7 @@ export function withQueryModels<Props>(
                     id = queryModel.id;
                     draft.queryModels[queryModel.id] = queryModel;
                 }),
-                () => this.maybeLoad(id, load, true)
+                () => this.maybeLoad(id, load, load, loadSelections)
             );
         };
 
@@ -271,7 +456,7 @@ export function withQueryModels<Props>(
                         model.offset = offset;
                     }
                 }),
-                () => this.maybeLoad(id, shouldLoad)
+                () => this.maybeLoad(id, false, shouldLoad)
             );
         };
 
@@ -287,11 +472,11 @@ export function withQueryModels<Props>(
                         model.offset = 0;
                     }
                 }),
-                () => this.maybeLoad(id, shouldLoad)
+                () => this.maybeLoad(id, false, shouldLoad)
             );
         };
 
-        setView = (id: string, viewName: string) => {
+        setView = (id: string, viewName: string, loadSelections = false) => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -302,20 +487,15 @@ export function withQueryModels<Props>(
                         model.schemaQuery = SchemaQuery.create(model.schemaName, model.queryName, viewName);
                         // We need to reset all data for the model because changing the view will change things such as
                         // columns and rowCount. If we don't do this we'll render a grid with empty rows/columns.
-                        model.rowsError = undefined;
-                        model.messages = undefined;
-                        model.offset = 0;
-                        model.orderedRows = undefined;
-                        model.rows = undefined;
-                        model.rowCount = undefined;
-                        model.rowsLoadingState = LoadingState.INITIALIZED;
+                        resetRowsState(model);
+                        resetSelectionState(model);
                     }
                 }),
-                () => this.maybeLoad(id, shouldLoad)
+                () => this.maybeLoad(id, false, shouldLoad, loadSelections)
             );
         };
 
-        setSchemaQuery = (id: string, schemaQuery: SchemaQuery) => {
+        setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false) => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -326,18 +506,12 @@ export function withQueryModels<Props>(
                         // We assume that we'll need a new QueryInfo if we're changing the SchemaQuery, so we reset the
                         // QueryInfo and all rows related data.
                         model.schemaQuery = schemaQuery;
-                        model.queryInfo = undefined;
-                        model.queryInfoLoadingState = LoadingState.INITIALIZED;
-                        model.rowsError = undefined;
-                        model.messages = undefined;
-                        model.offset = 0;
-                        model.orderedRows = undefined;
-                        model.rows = undefined;
-                        model.rowCount = undefined;
-                        model.rowsLoadingState = LoadingState.INITIALIZED;
+                        resetQueryInfoState(model);
+                        resetRowsState(model);
+                        resetSelectionState(model);
                     }
                 }),
-                () => this.maybeLoad(id, shouldLoad, true)
+                () => this.maybeLoad(id, shouldLoad, shouldLoad, loadSelections)
             );
         };
 

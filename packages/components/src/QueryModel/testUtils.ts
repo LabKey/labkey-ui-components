@@ -42,6 +42,7 @@ export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, or
 export const makeTestActions = (): Actions => {
     return {
         addModel: jest.fn(),
+        clearSelections: jest.fn(),
         loadModel: jest.fn(),
         loadAllModels: jest.fn(),
         loadRows: jest.fn(),
@@ -53,5 +54,8 @@ export const makeTestActions = (): Actions => {
         setMaxRows: jest.fn(),
         setView: jest.fn(),
         setSchemaQuery: jest.fn(),
+        selectAllRows: jest.fn(),
+        selectRow: jest.fn(),
+        selectPage: jest.fn(),
     };
 };

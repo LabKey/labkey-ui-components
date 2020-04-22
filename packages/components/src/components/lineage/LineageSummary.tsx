@@ -83,13 +83,12 @@ class LineageSummaryImpl extends PureComponent<{ lineage: Lineage } & LineageSum
     }
 }
 
-export const LineageSummary: React.FC<LineageSummaryOwnProps> = (props) => (
-    <LineageContextConsumer>
-        {(lineage) => (
-            <LineageSummaryImpl
-                {...props}
-                lineage={lineage}
-            />
-        )}
-    </LineageContextConsumer>
-);
+export class LineageSummary extends PureComponent<LineageSummaryOwnProps> {
+    render() {
+        return (
+            <LineageContextConsumer>
+                {(lineage) => <LineageSummaryImpl {...this.props} lineage={lineage} />}
+            </LineageContextConsumer>
+        );
+    }
+}

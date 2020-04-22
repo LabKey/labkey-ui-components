@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FunctionComponent, PureComponent, useState } from 'react';
+import React, { PureComponent } from 'react';
 
 import { createLineageNodeCollections, LineageNodeCollectionByType } from '../vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
@@ -22,36 +22,44 @@ interface LineageNodeDetailProps {
     seed: string
 }
 
-export const LineageNodeDetail: FunctionComponent<LineageNodeDetailProps & SummaryOptions> = (props) => {
-    const [ stepIdx, setStepIdx ] = useState<number>(undefined);
-    const { seed, node, highlightNode, summaryOptions } = props;
+interface LineageNodeDetailState {
+    stepIdx: number
+}
 
-    if (node.isRun && stepIdx !== undefined) {
+export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & SummaryOptions, LineageNodeDetailState> {
+    readonly state: LineageNodeDetailState = { stepIdx: undefined };
+
+    render() {
+        const { seed, node, highlightNode, summaryOptions } = this.props;
+        const { stepIdx } = this.state;
+
+        if (node.isRun && stepIdx !== undefined) {
+            return (
+                <RunStepNodeDetail
+                    node={node}
+                    onBack={() => this.setState({ stepIdx: undefined })}
+                    stepIdx={stepIdx}
+                />
+            );
+        }
+
         return (
-            <RunStepNodeDetail
-                node={node}
-                onBack={() => setStepIdx(undefined)}
-                stepIdx={stepIdx}
-            />
+            <>
+                <NodeDetailHeader node={node} seed={seed} />
+                <NodeDetail node={node} />
+                <LineageSummary highlightNode={highlightNode} options={summaryOptions} />
+                {/*{node.isRun && node.steps.map((step, i) => (*/}
+                {/*    <button key={i} onClick={() => { setStepIdx(i); }}>{step.name}</button>*/}
+                {/*))}*/}
+                {/*<DetailListGroup>*/}
+                {/*    <DetailsList items={node.steps} onSelect={(s, i) => setStepIdx(i)} />*/}
+                {/*    <DetailsList items={node.parents} itemType={DetailType.Parents} />*/}
+                {/*    <DetailsList items={node.children} itemType={DetailType.Children} />*/}
+                {/*</DetailListGroup>*/}
+            </>
         );
     }
-
-    return (
-        <>
-            <NodeDetailHeader node={node} seed={seed} />
-            <NodeDetail node={node} />
-            <LineageSummary highlightNode={highlightNode} options={summaryOptions} />
-            {/*{node.isRun && node.steps.map((step, i) => (*/}
-            {/*    <button key={i} onClick={() => { setStepIdx(i); }}>{step.name}</button>*/}
-            {/*))}*/}
-            {/*<DetailListGroup>*/}
-            {/*    <DetailsList items={node.steps} onSelect={(s, i) => setStepIdx(i)} />*/}
-            {/*    <DetailsList items={node.parents} itemType={DetailType.Parents} />*/}
-            {/*    <DetailsList items={node.children} itemType={DetailType.Children} />*/}
-            {/*</DetailListGroup>*/}
-        </>
-    );
-};
+}
 
 interface ClusterNodeDetailProps {
     highlightNode?: string
@@ -101,19 +109,21 @@ interface RunStepNodeDetailProps {
     stepIdx: number
 }
 
-const RunStepNodeDetail: FunctionComponent<RunStepNodeDetailProps> = (props) => {
-    const { node, onBack, stepIdx } = props;
-    const step = node.steps.get(stepIdx);
+class RunStepNodeDetail extends PureComponent<RunStepNodeDetailProps> {
+    render() {
+        const { node, onBack, stepIdx } = this.props;
+        const step = node.steps.get(stepIdx);
 
-    return (
-        <>
-            <DetailHeader
-                header={`Step: ${step.name}`}
-                iconSrc="default"
-            >
-                <a className="pointer" onClick={onBack}>{node.name}</a>&nbsp;>&nbsp;<span>{step.name}</span>
-            </DetailHeader>
-            <NodeDetail node={step.protocol} />
-        </>
-    );
-};
+        return (
+            <>
+                <DetailHeader
+                    header={`Step: ${step.name}`}
+                    iconSrc="default"
+                >
+                    <a className="pointer" onClick={onBack}>{node.name}</a>&nbsp;>&nbsp;<span>{step.name}</span>
+                </DetailHeader>
+                <NodeDetail node={step.protocol} />
+            </>
+        );
+    }
+}

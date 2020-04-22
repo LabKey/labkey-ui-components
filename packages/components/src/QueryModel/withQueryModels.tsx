@@ -45,7 +45,8 @@ interface State {
 }
 
 export function withQueryModels<Props>(
-    ComponentToWrap: ComponentType<Props & InjectedQueryModels>
+    ComponentToWrap: ComponentType<Props & InjectedQueryModels>,
+    defaultProps?: MakeQueryModels
 ): ComponentType<Props & MakeQueryModels> {
     class ComponentWithQueryModels extends PureComponent<Props & MakeQueryModels, State> {
         actions: Actions;
@@ -361,9 +362,12 @@ export function withQueryModels<Props>(
     // case defaultProps is Partial<Props & MakeQueryModels>.
     // https://stackoverflow.com/questions/59279796/typescript-partial-of-a-generic-type
     ComponentWithQueryModels.defaultProps = {
-        autoLoad: false,
-        modelLoader: DefaultQueryModelLoader,
-        queryConfigs: {},
+        ...{
+            autoLoad: false,
+            modelLoader: DefaultQueryModelLoader,
+            queryConfigs: {},
+        },
+        ...defaultProps
     };
 
     return ComponentWithQueryModels;

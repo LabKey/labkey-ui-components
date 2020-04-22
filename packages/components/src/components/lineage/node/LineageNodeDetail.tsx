@@ -2,16 +2,15 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { FunctionComponent, PureComponent, useState } from 'react';
 
 import { createLineageNodeCollections, LineageNodeCollectionByType } from '../vis/VisGraphGenerator';
 import { LineageNodeList } from './LineageNodeList';
 import { LineageSummary } from '../LineageSummary';
 import { LineageNode } from '../models';
 import { LineageOptions } from '../types';
-import { getIconAndShapeForNode } from '../utils';
 import { NodeDetail } from './NodeDetail';
-import { NodeDetailHeader } from './NodeDetailHeader';
+import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
 
 export interface SummaryOptions {
     summaryOptions?: LineageOptions
@@ -23,67 +22,36 @@ interface LineageNodeDetailProps {
     seed: string
 }
 
-export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & SummaryOptions> {
+export const LineageNodeDetail: FunctionComponent<LineageNodeDetailProps & SummaryOptions> = (props) => {
+    const [ stepIdx, setStepIdx ] = useState<number>(undefined);
+    const { seed, node, highlightNode, summaryOptions } = props;
 
-    render() {
-        const { seed, node, highlightNode, summaryOptions } = this.props;
-        const { links, meta, name } = node;
-        const lineageUrl = links.lineage;
-        const isSeed = seed === node.lsid;
-
-        const aliases = meta?.aliases;
-        const description = meta?.description;
-        const displayType = meta?.displayType;
-
-        const header = (
-            <>
-                {(lineageUrl && !isSeed) &&
-                <a href={lineageUrl}>{name}</a>
-                ||
-                name
-                }
-                <div className="pull-right">
-                    <a className="lineage-data-link-left"
-                       href={node.links.overview}>
-                        <span className="lineage-data-link--text">Overview</span>
-                    </a>
-                    {lineageUrl !== undefined && (
-                        <a className="lineage-data-link-right"
-                           href={lineageUrl}>
-                            <span className="lineage-data-link--text">Lineage</span>
-                        </a>
-                    )}
-                </div>
-            </>
-        );
-
+    if (node.isRun && stepIdx !== undefined) {
         return (
-            <>
-                <NodeDetailHeader
-                    header={header}
-                    iconSrc={getIconAndShapeForNode(node).iconURL}
-                >
-                    {displayType && <small>{displayType}</small>}
-                    {aliases && (
-                        <div>
-                            <small>
-                                {aliases.join(', ')}
-                            </small>
-                        </div>
-                    )}
-                    {description && <small title={description}>{description}</small>}
-                </NodeDetailHeader>
-
-                <NodeDetail node={node} />
-
-                <LineageSummary
-                    highlightNode={highlightNode}
-                    options={summaryOptions}
-                />
-            </>
+            <RunStepNodeDetail
+                node={node}
+                onBack={() => setStepIdx(undefined)}
+                stepIdx={stepIdx}
+            />
         );
     }
-}
+
+    return (
+        <>
+            <NodeDetailHeader node={node} seed={seed} />
+            <NodeDetail node={node} />
+            <LineageSummary highlightNode={highlightNode} options={summaryOptions} />
+            {/*{node.isRun && node.steps.map((step, i) => (*/}
+            {/*    <button key={i} onClick={() => { setStepIdx(i); }}>{step.name}</button>*/}
+            {/*))}*/}
+            {/*<DetailListGroup>*/}
+            {/*    <DetailsList items={node.steps} onSelect={(s, i) => setStepIdx(i)} />*/}
+            {/*    <DetailsList items={node.parents} itemType={DetailType.Parents} />*/}
+            {/*    <DetailsList items={node.children} itemType={DetailType.Children} />*/}
+            {/*</DetailListGroup>*/}
+        </>
+    );
+};
 
 interface ClusterNodeDetailProps {
     highlightNode?: string
@@ -113,8 +81,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
 
         return (
             <>
-                <NodeDetailHeader header={title} iconSrc={iconURL} />
-
+                <DetailHeader header={title} iconSrc={iconURL} />
                 {groups.map(groupName =>
                     <LineageNodeList
                         key={groupName}
@@ -127,3 +94,26 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
         );
     }
 }
+
+interface RunStepNodeDetailProps {
+    node: LineageNode
+    onBack: () => any
+    stepIdx: number
+}
+
+const RunStepNodeDetail: FunctionComponent<RunStepNodeDetailProps> = (props) => {
+    const { node, onBack, stepIdx } = props;
+    const step = node.steps.get(stepIdx);
+
+    return (
+        <>
+            <DetailHeader
+                header={`Step: ${step.name}`}
+                iconSrc="default"
+            >
+                <a className="pointer" onClick={onBack}>{node.name}</a>&nbsp;>&nbsp;<span>{step.name}</span>
+            </DetailHeader>
+            <NodeDetail node={step.protocol} />
+        </>
+    );
+};

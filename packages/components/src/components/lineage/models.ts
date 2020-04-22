@@ -124,7 +124,7 @@ export interface LineagePKFilter {
     value: any
 }
 
-export interface LineageRunStep {
+export interface ILineageRunStep {
     applicationType: string
     activityDate: string
     activitySequence: number
@@ -135,7 +135,33 @@ export interface LineageRunStep {
     modified: string
     modifiedBy: string
     name: string
-    protocol: any
+    protocol: LineageNode
+}
+
+export class LineageRunStep implements ILineageRunStep {
+    [immerable] = true;
+
+    readonly applicationType: string;
+    readonly activityDate: string;
+    readonly activitySequence: number;
+    readonly created: string;
+    readonly createdBy: string;
+    readonly id: number;
+    readonly lsid: string;
+    readonly modified: string;
+    readonly modifiedBy: string;
+    readonly name: string;
+    readonly protocol: LineageNode;
+
+    constructor(values?: Partial<ILineageRunStep>) {
+        let protocol: LineageNode;
+
+        if (values?.protocol?.lsid) {
+            protocol = LineageNode.create(values.protocol.lsid, {...values.protocol});
+        }
+
+        Object.assign(this, values, { protocol });
+    }
 }
 
 // commented out attributes are not yet used
@@ -146,7 +172,6 @@ export class LineageNode extends Record ({
     // created: undefined,
     // createdBy: undefined,
     // dataFileURL: undefined,
-    distance: undefined,
     id: undefined,
     listURL: undefined,
     lsid: undefined,
@@ -163,6 +188,7 @@ export class LineageNode extends Record ({
     url: undefined,
 
     // computed properties
+    distance: undefined,
     isRun: false,
     links: {},
     meta: undefined,
@@ -173,7 +199,6 @@ export class LineageNode extends Record ({
     // created?: string;
     // createdBy?: string;
     // dataFileURL?: string;
-    distance?: number;
     id?: number;
     listURL?: string;
     lsid?: string;
@@ -190,6 +215,7 @@ export class LineageNode extends Record ({
     url?: string;
 
     // computed properties
+    distance?: number;
     isRun?: boolean;
     links?: LineageNodeLinks;
     meta?: LineageNodeMetadata;
@@ -211,7 +237,7 @@ export class LineageNode extends Record ({
             pkFilters: List(values.pkFilters),
             queryName: values.queryName,
             schemaName: values.schemaName,
-            steps: values.steps ? List(values.steps): List(),
+            steps: List(values.steps?.map(stepProps => new LineageRunStep(stepProps))),
             type: values.type,
             url: values.url,
             meta: values.meta

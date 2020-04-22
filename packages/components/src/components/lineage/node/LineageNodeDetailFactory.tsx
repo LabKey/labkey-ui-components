@@ -5,7 +5,6 @@ import { LoadingSpinner } from '../../..';
 import { LineageOptions } from '../types';
 import { Lineage } from '../models';
 import { isBasicNode, isClusterNode, isCombinedNode, VisGraphNodeType } from '../vis/VisGraphGenerator';
-import { RunNodeDetail } from './RunNodeDetail';
 import { ClusterNodeDetail, LineageNodeDetail } from './LineageNodeDetail';
 
 export interface LineageNodeDetailFactoryProps {
@@ -43,23 +42,14 @@ export const LineageNodeDetailFactory: React.FC<LineageNodeDetailFactoryProps> =
         const node = selectedNodes[0];
 
         if (isBasicNode(node)) {
-            if (node.lineageNode.isRun) {
-                return (
-                    <RunNodeDetail
-                        highlightNode={highlightNode}
-                        node={node.lineageNode}
-                    />
-                );
-            } else {
-                return (
-                    <LineageNodeDetail
-                        highlightNode={highlightNode}
-                        node={node.lineageNode}
-                        seed={seed}
-                        summaryOptions={summaryOptions}
-                    />
-                );
-            }
+            return (
+                <LineageNodeDetail
+                    highlightNode={highlightNode}
+                    node={node.lineageNode}
+                    seed={seed}
+                    summaryOptions={summaryOptions}
+                />
+            );
         } else if (isCombinedNode(node)) {
             return (
                 <ClusterNodeDetail

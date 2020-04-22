@@ -1,15 +1,11 @@
-import React, { ComponentType, PureComponent, createContext } from 'react';
+import React, { ComponentType, PureComponent } from 'react';
 import { Draft, produce } from 'immer';
 
-import { fetchLineage, fetchLineageNodes, processLineageResult } from './actions';
+import { fetchLineageNodes, processLineageResult, loadLineageResult } from './actions';
 import { ILineage, Lineage, LineageLoadingState, LineageResult } from './models';
 import { LineageOptions } from './types';
 import { VisGraphOptions } from './vis/VisGraphGenerator';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
-
-const LineageContext = createContext(undefined);
-const LineageContextProvider = LineageContext.Provider;
-export const LineageContextConsumer = LineageContext.Consumer;
 
 export interface InjectedLineage {
     lineage: Lineage
@@ -76,8 +72,7 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
             }
 
             try {
-                const result = await fetchLineage(lsid, distance)
-                    .then(r => processLineageResult(r, this.props));
+                const result = await loadLineageResult(lsid, distance, this.props);
 
                 await this.updateLineage({
                     result,
@@ -171,14 +166,13 @@ export function withLineage<Props>(ComponentToWrap: ComponentType<Props & Inject
             const { ...props } = this.props;
             const { lineage } = this.state;
 
+            // TODO: Move "visGraphOptions" to a Graph specific wrapper
             return (
-                <LineageContextProvider value={lineage}>
-                    <ComponentToWrap
-                        lineage={lineage}
-                        visGraphOptions={lineage?.generateGraph(this.props)}
-                        {...props as Props}
-                    />
-                </LineageContextProvider>
+                <ComponentToWrap
+                    lineage={lineage}
+                    visGraphOptions={lineage?.generateGraph(this.props)}
+                    {...props as Props}
+                />
             )
         }
     }

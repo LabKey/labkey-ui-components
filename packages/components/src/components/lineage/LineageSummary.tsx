@@ -7,17 +7,17 @@ import { List } from 'immutable';
 import { LoadingSpinner } from '../..';
 
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { Lineage, LineageLink, LineageResult } from './models';
+import { LineageLink, LineageResult } from './models';
 import { createLineageNodeCollections } from './vis/VisGraphGenerator';
 import { LineageNodeList } from './node/LineageNodeList';
-import { LineageContextConsumer } from './withLineage';
+import { InjectedLineage, withLineage } from './withLineage';
 
 interface LineageSummaryOwnProps {
     highlightNode?: string
     options?: LineageOptions
 }
 
-class LineageSummaryImpl extends PureComponent<{ lineage: Lineage } & LineageSummaryOwnProps> {
+class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryOwnProps> {
     renderNodeList = (
         direction: LINEAGE_DIRECTIONS,
         lineage: LineageResult,
@@ -83,12 +83,4 @@ class LineageSummaryImpl extends PureComponent<{ lineage: Lineage } & LineageSum
     }
 }
 
-export class LineageSummary extends PureComponent<LineageSummaryOwnProps> {
-    render() {
-        return (
-            <LineageContextConsumer>
-                {(lineage) => <LineageSummaryImpl {...this.props} lineage={lineage} />}
-            </LineageContextConsumer>
-        );
-    }
-}
+export const LineageSummary = withLineage<LineageSummaryOwnProps>(LineageSummaryImpl);

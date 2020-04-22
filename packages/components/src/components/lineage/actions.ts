@@ -34,7 +34,7 @@ const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);
 export const NodeInteractionProvider = NodeInteractionContext.Provider;
 export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 
-export function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
+function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
         let options: any /* ILineageOptions */ = {};
 
@@ -137,6 +137,18 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
     });
 }
 
+const lineageResultCache: { [key:string]: Promise<LineageResult> } = {};
+
+export function loadLineageResult(seed: string, distance?: number, options?: LineageOptions): Promise<LineageResult> {
+    const key = [seed, distance ?? -1].join('|');
+
+    if (!lineageResultCache[key]) {
+        lineageResultCache[key] = fetchLineage(seed, distance).then(r => processLineageResult(r, options));
+    }
+
+    return lineageResultCache[key];
+}
+
 export function loadLineageIfNeeded(seed: string, distance?: number, options?: LineageOptions): Promise<Lineage> {
     const existing = getLineageResult(seed);
     if (existing) {
@@ -149,8 +161,7 @@ export function loadLineageIfNeeded(seed: string, distance?: number, options?: L
         resultLoadingState: LineageLoadingState.LOADING,
     });
 
-    return fetchLineage(seed, distance)
-        .then(result => processLineageResult(result, options))
+    return loadLineageResult(seed, distance, options)
         .then(result => {
             updateLineageResult(seed, produce(lineage, (draft: Draft<Lineage>) => {
                 draft.result = result;

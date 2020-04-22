@@ -47,7 +47,13 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
             <>
                 <NodeDetailHeader node={node} seed={seed} />
                 <NodeDetail node={node} />
-                <LineageSummary highlightNode={highlightNode} options={summaryOptions} />
+                <LineageSummary
+                    highlightNode={highlightNode}
+                    key={node.lsid}
+                    lsid={node.lsid}
+                    prefetchSeed={false}
+                    options={summaryOptions}
+                />
                 {/*{node.isRun && node.steps.map((step, i) => (*/}
                 {/*    <button key={i} onClick={() => { setStepIdx(i); }}>{step.name}</button>*/}
                 {/*))}*/}

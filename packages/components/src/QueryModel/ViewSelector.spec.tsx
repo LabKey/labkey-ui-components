@@ -46,34 +46,46 @@ describe('ViewSelector', () => {
     test('Render', () => {
         // Renders nothing
         let model = makeTestModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
-        let tree = renderer.create(<ViewSelector hideEmptyViewSelector={true} model={model} actions={actions} />);
+        let tree = renderer.create(
+            <ViewSelector allowSelections hideEmptyViewSelector model={model} actions={actions} />
+        );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // Renders empty view selector with disabled dropdown.
-        tree = renderer.create(<ViewSelector hideEmptyViewSelector={false} model={model} actions={actions} />);
+        tree = renderer.create(
+            <ViewSelector allowSelections hideEmptyViewSelector={false} model={model} actions={actions} />
+        );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // No Extra columns shows up under "All Saved Views"
         model = makeTestModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
-        tree = renderer.create(<ViewSelector hideEmptyViewSelector={true} model={model} actions={actions} />);
+        tree = renderer.create(
+            <ViewSelector allowSelections hideEmptyViewSelector={true} model={model} actions={actions} />
+        );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // No Extra columns shows up under "My Saved Views"
         model = makeTestModel(SCHEMA_QUERY, QUERY_INFO_PRIVATE_VIEWS, {}, []);
-        tree = renderer.create(<ViewSelector hideEmptyViewSelector={true} model={model} actions={actions} />);
+        tree = renderer.create(
+            <ViewSelector allowSelections hideEmptyViewSelector={true} model={model} actions={actions} />
+        );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // Same as previous, but the No Extra Column view is set to active.
         model = model.mutate({
             schemaQuery: SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
         });
-        tree = renderer.create(<ViewSelector hideEmptyViewSelector={true} model={model} actions={actions} />);
+        tree = renderer.create(
+            <ViewSelector allowSelections hideEmptyViewSelector={true} model={model} actions={actions} />
+        );
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
     test('Interactivity', () => {
         const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
-        const wrapper = mount(<ViewSelector hideEmptyViewSelector={true} model={model} actions={actions} />);
+        const wrapper = mount(
+            <ViewSelector allowSelections hideEmptyViewSelector={true} model={model} actions={actions} />
+        );
         wrapper.find('MenuItem').last().find('a').simulate('click');
         expect(actions.setView).toHaveBeenCalledWith('model', 'noExtraColumn');
     });

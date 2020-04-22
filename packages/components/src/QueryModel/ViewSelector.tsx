@@ -6,12 +6,13 @@ import { ViewInfo } from '..';
 import { RequiresModelAndActions } from './withQueryModels';
 
 interface ViewSelectorProps extends RequiresModelAndActions {
+    allowSelections: boolean;
     hideEmptyViewSelector: boolean;
 }
 
 export class ViewSelector extends PureComponent<ViewSelectorProps> {
     render() {
-        const { model, actions, hideEmptyViewSelector } = this.props;
+        const { model, actions, allowSelections, hideEmptyViewSelector } = this.props;
         const { isLoading, views, viewName } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
@@ -24,8 +25,9 @@ export class ViewSelector extends PureComponent<ViewSelectorProps> {
 
         const viewMapper = view => {
             const { name, label, isDefault } = view;
+            const viewName = isDefault ? undefined : name;
             const onSelect = () => {
-                actions.setView(model.id, isDefault ? undefined : name);
+                actions.setView(model.id, viewName, allowSelections);
             };
 
             return (

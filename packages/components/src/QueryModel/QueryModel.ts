@@ -2,10 +2,9 @@ import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
-import { LoadingState, naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
-import { QuerySort } from '..';
-
+import { GRID_CHECKBOX_OPTIONS, LoadingState, naturalSort, QueryColumn, QueryInfo, QuerySort, SchemaQuery, ViewInfo } from '..';
 import { getOrDefault } from './utils';
+import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
@@ -55,6 +54,9 @@ export interface IQueryModel extends QueryConfig {
     rowCount?: number;
     rowsError?: string;
     rowsLoadingState: LoadingState;
+    selections?: Set<string>;
+    selectionsError?: string;
+    selectionsLoadingState: LoadingState;
 }
 
 const DEFAULT_OFFSET = 0;
@@ -80,15 +82,18 @@ export class QueryModel implements IQueryModel {
     readonly sorts?: QuerySort[];
 
     // QueryModel only fields
-    readonly rowsError: string;
     readonly filterArray: Filter.IFilter[];
-    readonly rowsLoadingState: LoadingState;
     readonly messages: GridMessage[];
     readonly orderedRows?: string[];
     readonly queryInfo?: QueryInfo;
     readonly queryInfoLoadingState: LoadingState;
     readonly rows?: { [key: string]: any };
     readonly rowCount?: number;
+    readonly rowsError: string;
+    readonly rowsLoadingState: LoadingState;
+    readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set
+    readonly selectionsError?: string;
+    readonly selectionsLoadingState: LoadingState;
 
     constructor(queryConfig: QueryConfig) {
         this.baseFilters = getOrDefault(queryConfig.baseFilters, []);
@@ -117,11 +122,15 @@ export class QueryModel implements IQueryModel {
         this.filterArray = [];
         this.messages = [];
         this.queryInfo = undefined;
+        this.queryInfoLoadingState = LoadingState.INITIALIZED;
         this.orderedRows = undefined;
         this.rows = undefined;
         this.rowCount = undefined;
+        this.rowsError = undefined;
         this.rowsLoadingState = LoadingState.INITIALIZED;
-        this.queryInfoLoadingState = LoadingState.INITIALIZED;
+        this.selections = undefined;
+        this.selectionsError = undefined;
+        this.selectionsLoadingState = LoadingState.INITIALIZED;
     }
 
     get schemaName() {
@@ -249,7 +258,20 @@ export class QueryModel implements IQueryModel {
      * Returns the data needed for a <Grid /> component to render.
      */
     get gridData() {
-        return this.orderedRows.map(i => this.rows[i]);
+        const { hasSelections, selections } = this;
+
+        return this.orderedRows.map(value => {
+            const row = this.rows[value];
+
+            if (hasSelections) {
+                return {
+                    ...row,
+                    [GRID_SELECTION_INDEX]: selections.has(value),
+                };
+            }
+
+            return row;
+        });
     }
 
     get pageCount(): number {
@@ -274,6 +296,28 @@ export class QueryModel implements IQueryModel {
         return this.rows !== undefined;
     }
 
+    get hasSelections(): boolean {
+        return  this.selections !== undefined;
+    }
+
+    get selectedState(): GRID_CHECKBOX_OPTIONS {
+        const { hasSelections, hasData, isLoading, maxRows, orderedRows, selections, rowCount } = this;
+
+        if (!isLoading && hasData && hasSelections) {
+            const selectedOnPage = orderedRows.filter(rowId => selections.has(rowId)).length;
+
+            if (selectedOnPage === maxRows && rowCount > 0) {
+                return GRID_CHECKBOX_OPTIONS.ALL;
+            } else if (selectedOnPage > 0) {
+                // if model has any selected on the page show checkbox as indeterminate
+                return GRID_CHECKBOX_OPTIONS.SOME;
+            }
+        }
+
+        // Default to none.
+        return GRID_CHECKBOX_OPTIONS.NONE;
+    }
+
     get isLoading(): boolean {
         const { queryInfoLoadingState, rowsLoadingState } = this;
         return (
@@ -281,6 +325,14 @@ export class QueryModel implements IQueryModel {
             queryInfoLoadingState === LoadingState.LOADING ||
             rowsLoadingState === LoadingState.INITIALIZED ||
             rowsLoadingState === LoadingState.LOADING
+        );
+    }
+
+    get isLoadingSelections(): boolean {
+        const { selectionsLoadingState } = this;
+        return (
+            selectionsLoadingState === LoadingState.INITIALIZED ||
+            selectionsLoadingState === LoadingState.LOADING
         );
     }
 

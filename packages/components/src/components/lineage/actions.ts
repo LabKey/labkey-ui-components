@@ -75,6 +75,12 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
     // Node metadata does not support nodes with multiple primary keys. These could be supported, however,
     // each node would require it's own request for the unique keys combination. Also, nodes without any primary
     // keys cannot be filtered upon and thus are also not supported.
+    const filteredNodes = lineage.nodes.filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.size === 1);
+    console.log(lineage.nodes.size, filteredNodes.size);
+    if (lineage.nodes.size !== filteredNodes.size) {
+        lineage.nodes.map(node => console.error(JSON.stringify(node.toJS())));
+    }
+
     return lineage.nodes
         .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.size === 1)
         .groupBy(n => SchemaQuery.create(n.schemaName, n.queryName))

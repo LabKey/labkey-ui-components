@@ -47,4 +47,16 @@ export class MockQueryModelLoader implements QueryModelLoader {
     loadSelections = async (model: QueryModel) => {
         return Promise.reject('Not implemented!');
     };
+
+    setSelections = (model: QueryModel, selections) => {
+        return Promise.reject('Not implemented!');
+    };
+
+    selectAllRows = (model: QueryModel) => {
+        return Promise.reject('Not implemented!');
+    }
+
+    clearSelections = (model: QueryModel) => {
+        return Promise.reject('Not implemented!');
+    };
 }

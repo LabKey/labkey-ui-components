@@ -69,6 +69,18 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
             );
         }
 
+        const nodeDetails = (
+            <>
+                <NodeDetail node={node} />
+                <LineageSummary
+                    highlightNode={highlightNode}
+                    key={node.lsid}
+                    lsid={node.lsid}
+                    {...summaryOptions}
+                />
+            </>
+        );
+
         return (
             <>
                 <NodeDetailHeader node={node} seed={seed} />
@@ -80,13 +92,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
                         onSelect={this.changeTab as any}
                     >
                         <Tab eventKey={1} title="Details">
-                            <NodeDetail node={node} />
-                            <LineageSummary
-                                highlightNode={highlightNode}
-                                key={node.lsid}
-                                lsid={node.lsid}
-                                {...summaryOptions}
-                            />
+                            {nodeDetails}
                         </Tab>
                         <Tab eventKey={2} title="Run Properties">
                             <DetailsListGroup>
@@ -94,17 +100,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
                             </DetailsListGroup>
                         </Tab>
                     </Tabs>
-                ) : (
-                    <>
-                        <NodeDetail node={node} />
-                        <LineageSummary
-                            highlightNode={highlightNode}
-                            key={node.lsid}
-                            lsid={node.lsid}
-                            {...summaryOptions}
-                        />
-                    </>
-                )}
+                ) : nodeDetails}
             </>
         );
     }

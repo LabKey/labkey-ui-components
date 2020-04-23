@@ -8,11 +8,11 @@ import { isBasicNode, isClusterNode, isCombinedNode, VisGraphNodeType } from '..
 import { ClusterNodeDetail, LineageNodeDetail } from './LineageNodeDetail';
 
 export interface LineageNodeDetailFactoryProps {
-    highlightNode: string
-    lineage: Lineage
-    lineageOptions: LineageOptions
-    selectedNodes: VisGraphNodeType[]
-    summaryOptions: LineageOptions
+    highlightNode: string;
+    lineage: Lineage;
+    lineageOptions: LineageOptions;
+    selectedNodes: VisGraphNodeType[];
+    summaryOptions: LineageOptions;
 }
 
 export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFactoryProps> {

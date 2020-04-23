@@ -9,7 +9,7 @@ import { LoadingSpinner } from '../..';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { LineageLink, LineageResult } from './models';
 import { createLineageNodeCollections } from './vis/VisGraphGenerator';
-import { LineageNodeList } from './node/LineageNodeList';
+import { DetailsListNodes } from './node/DetailsList';
 import { InjectedLineage, withLineage } from './withLineage';
 
 interface LineageSummaryOwnProps {
@@ -36,7 +36,7 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         const title = direction === LINEAGE_DIRECTIONS.Parent ? "Parents" : "Children";
 
         return groups.map(groupName =>
-            <LineageNodeList
+            <DetailsListNodes
                 key={groupName}
                 title={groupName + " " + title}
                 nodes={nodesByType[groupName]}

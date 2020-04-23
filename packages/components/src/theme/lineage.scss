@@ -28,6 +28,10 @@
     }
 }
 
+.lineage-link {
+    cursor: pointer;
+}
+
 .lineage-name-data {
     display: inline;
 }
@@ -41,6 +45,11 @@
     color: $gray-light;
     font-size: 75%;
     font-weight: 400;
+    cursor: pointer;
+
+    &:hover, &:focus {
+        color: $gray-dark;
+    }
 }
 
 .lineage-data-link-right {

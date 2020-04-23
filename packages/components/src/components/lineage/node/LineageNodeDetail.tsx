@@ -3,41 +3,67 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent } from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
 
 import { createLineageNodeCollections, LineageNodeCollectionByType } from '../vis/VisGraphGenerator';
-import { LineageNodeList } from './LineageNodeList';
 import { LineageSummary } from '../LineageSummary';
 import { LineageNode } from '../models';
 import { LineageOptions } from '../types';
 import { NodeDetail } from './NodeDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
+import { DetailsListGroup, DetailsListNodes, DetailsListSteps } from './DetailsList';
 
 export interface SummaryOptions {
-    summaryOptions?: LineageOptions
+    summaryOptions?: LineageOptions;
 }
 
 interface LineageNodeDetailProps {
-    highlightNode?: string
-    node: LineageNode
-    seed: string
+    highlightNode?: string;
+    node: LineageNode;
+    seed: string;
 }
 
 interface LineageNodeDetailState {
-    stepIdx: number
+    stepIdx: number;
+    tabKey: number;
 }
 
+const initialState: LineageNodeDetailState = {
+    stepIdx: undefined,
+    tabKey: 1,
+};
+
 export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & SummaryOptions, LineageNodeDetailState> {
-    readonly state: LineageNodeDetailState = { stepIdx: undefined };
+    readonly state: LineageNodeDetailState = initialState;
+
+    changeTab = (tabKey: number) => {
+        this.setState({ tabKey });
+    };
+
+    selectStep = (stepIdx: number): void => {
+        this.setState({ stepIdx });
+    };
+
+    componentDidUpdate(prevProps: Readonly<LineageNodeDetailProps & SummaryOptions>): void {
+        const prevNode = prevProps.node;
+        const { node } = this.props;
+
+        if (prevNode.isRun || node.isRun) {
+            if (prevNode.lsid !== node.lsid) {
+                this.setState(initialState);
+            }
+        }
+    }
 
     render() {
         const { seed, node, highlightNode, summaryOptions } = this.props;
-        const { stepIdx } = this.state;
+        const { stepIdx, tabKey } = this.state;
 
         if (node.isRun && stepIdx !== undefined) {
             return (
                 <RunStepNodeDetail
                     node={node}
-                    onBack={() => this.setState({ stepIdx: undefined })}
+                    onBack={() => this.selectStep(undefined)}
                     stepIdx={stepIdx}
                 />
             );
@@ -46,32 +72,49 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
         return (
             <>
                 <NodeDetailHeader node={node} seed={seed} />
-                <NodeDetail node={node} />
-                <LineageSummary
-                    highlightNode={highlightNode}
-                    key={node.lsid}
-                    lsid={node.lsid}
-                    prefetchSeed={false}
-                    options={summaryOptions}
-                />
-                {/*{node.isRun && node.steps.map((step, i) => (*/}
-                {/*    <button key={i} onClick={() => { setStepIdx(i); }}>{step.name}</button>*/}
-                {/*))}*/}
-                {/*<DetailListGroup>*/}
-                {/*    <DetailsList items={node.steps} onSelect={(s, i) => setStepIdx(i)} />*/}
-                {/*    <DetailsList items={node.parents} itemType={DetailType.Parents} />*/}
-                {/*    <DetailsList items={node.children} itemType={DetailType.Children} />*/}
-                {/*</DetailListGroup>*/}
+                {node.isRun ? (
+                    <Tabs
+                        activeKey={tabKey}
+                        defaultActiveKey={1}
+                        id="lineage-run-tabs"
+                        onSelect={this.changeTab as any}
+                    >
+                        <Tab eventKey={1} title="Details">
+                            <NodeDetail node={node} />
+                            <LineageSummary
+                                highlightNode={highlightNode}
+                                key={node.lsid}
+                                lsid={node.lsid}
+                                options={summaryOptions}
+                            />
+                        </Tab>
+                        <Tab eventKey={2} title="Run Properties">
+                            <DetailsListGroup>
+                                <DetailsListSteps node={node} onSelect={this.selectStep} />
+                            </DetailsListGroup>
+                        </Tab>
+                    </Tabs>
+                ) : (
+                    <>
+                        <NodeDetail node={node} />
+                        <LineageSummary
+                            highlightNode={highlightNode}
+                            key={node.lsid}
+                            lsid={node.lsid}
+                            options={summaryOptions}
+                        />
+                    </>
+                )}
             </>
         );
     }
 }
 
 interface ClusterNodeDetailProps {
-    highlightNode?: string
-    nodes: LineageNode[]
-    nodesByType?: LineageNodeCollectionByType
-    options?: LineageOptions
+    highlightNode?: string;
+    nodes: LineageNode[];
+    nodesByType?: LineageNodeCollectionByType;
+    options?: LineageOptions;
 }
 
 export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
@@ -97,7 +140,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
             <>
                 <DetailHeader header={title} iconSrc={iconURL} />
                 {groups.map(groupName =>
-                    <LineageNodeList
+                    <DetailsListNodes
                         key={groupName}
                         title={groupName}
                         nodes={nodesByType[groupName]}
@@ -110,9 +153,9 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
 }
 
 interface RunStepNodeDetailProps {
-    node: LineageNode
-    onBack: () => any
-    stepIdx: number
+    node: LineageNode;
+    onBack: () => any;
+    stepIdx: number;
 }
 
 class RunStepNodeDetail extends PureComponent<RunStepNodeDetailProps> {
@@ -123,10 +166,10 @@ class RunStepNodeDetail extends PureComponent<RunStepNodeDetailProps> {
         return (
             <>
                 <DetailHeader
-                    header={`Step: ${step.name}`}
+                    header={`Run Step: ${step.name}`}
                     iconSrc="default"
                 >
-                    <a className="pointer" onClick={onBack}>{node.name}</a>&nbsp;>&nbsp;<span>{step.name}</span>
+                    <a className="lineage-link" onClick={onBack}>{node.name}</a>&nbsp;>&nbsp;<span>{step.name}</span>
                 </DetailHeader>
                 <NodeDetail node={step.protocol} />
             </>

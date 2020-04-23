@@ -5,7 +5,7 @@ import { DetailPanelWithModel, QueryConfigMap, SchemaQuery } from '../../..';
 import { LineageNode } from '../models';
 
 export interface NodeDetailProps {
-    node: LineageNode
+    node: LineageNode;
 }
 
 export class NodeDetail extends PureComponent<NodeDetailProps> {

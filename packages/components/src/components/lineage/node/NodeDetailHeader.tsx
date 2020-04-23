@@ -5,8 +5,8 @@ import { LineageNode } from '../models';
 import { getIconAndShapeForNode } from '../utils';
 
 export interface DetailHeaderProps {
-    header: ReactNode
-    iconSrc: string
+    header: ReactNode;
+    iconSrc: string;
 }
 
 export class DetailHeader extends PureComponent<DetailHeaderProps> {
@@ -38,8 +38,8 @@ export class DetailHeader extends PureComponent<DetailHeaderProps> {
 }
 
 export interface NodeDetailHeaderProps {
-    node: LineageNode
-    seed?: string
+    node: LineageNode;
+    seed?: string;
 }
 
 export class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {

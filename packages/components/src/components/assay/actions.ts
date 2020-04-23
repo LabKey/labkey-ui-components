@@ -249,7 +249,7 @@ export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, run
 }
 
 export function getRunPropertiesFileName(row: Map<string, any>): string {
-    const dataOutputs = row && row.has('DataOutputs') ? row.get('DataOutputs') : undefined;
+    const dataOutputs = row?.get('DataOutputs');
     return dataOutputs && dataOutputs.size === 1 ? dataOutputs.getIn([0, 'displayValue']) : undefined;
 }
 

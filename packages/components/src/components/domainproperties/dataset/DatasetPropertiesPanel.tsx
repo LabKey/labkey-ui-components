@@ -17,6 +17,8 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 
+import produce, { Draft } from 'immer';
+
 import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,
@@ -73,9 +75,9 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     onChange = (identifier, value): void => {
         const { model } = this.props;
 
-        const newModel = model.merge({
-            [identifier]: value,
-        }) as DatasetModel;
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            draft[identifier] = value;
+        });
 
         this.updateValidStatus(newModel);
     };
@@ -93,23 +95,14 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
 
     onCategoryChange = category => {
         const { model } = this.props;
-        let newModel;
-
-        if (category && category.value) {
-            if (category.rowId) {
-                newModel = model.merge({
-                    category: category.value,
-                }) as DatasetModel;
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            if (category && category.value) {
+                draft.category = category.value;
             } else {
-                newModel = model.merge({
-                    category: category.value,
-                }) as DatasetModel;
+                draft.category = undefined;
             }
-        } else {
-            newModel = model.merge({
-                category: undefined,
-            }) as DatasetModel;
-        }
+        });
+
         this.updateValidStatus(newModel);
     };
 
@@ -117,29 +110,23 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
         const { model } = this.props;
 
         const value = e.target.value;
-        let newModel;
-
-        if (value == 0) {
-            newModel = model.merge({
-                keyPropertyName: undefined,
-                demographicData: true,
-                keyPropertyManaged: false,
-            }) as DatasetModel;
-        } else if (value == 1) {
-            newModel = model.merge({
-                keyPropertyName: undefined,
-                demographicData: false,
-                keyPropertyManaged: false,
-                dataSharing: 'NONE',
-            }) as DatasetModel;
-        } else {
-            newModel = model.merge({
-                keyPropertyName: '', // resetting key property id
-                demographicData: false,
-                keyPropertyManaged: false,
-                dataSharing: 'NONE',
-            }) as DatasetModel;
-        }
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            if (value == 0) {
+                draft.keyPropertyName = undefined;
+                draft.demographicData = true;
+                draft.keyPropertyManaged = false;
+            } else if (value == 1) {
+                draft.keyPropertyName = undefined;
+                draft.demographicData = false;
+                draft.keyPropertyManaged = false;
+                draft.dataSharing = 'NONE';
+            } else {
+                draft.keyPropertyName = ''; // resetting key property name
+                draft.demographicData = false;
+                draft.keyPropertyManaged = false;
+                draft.dataSharing = 'NONE';
+            }
+        });
         this.updateValidStatus(newModel);
     };
 
@@ -147,9 +134,9 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
         const { model } = this.props;
 
         if (formValue === TIME_KEY_FIELD_KEY) {
-            const newModel = model.merge({
-                keyPropertyName: formValue,
-            }) as DatasetModel;
+            const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+                draft.keyPropertyName = formValue;
+            });
 
             this.updateValidStatus(newModel);
         } else {
@@ -159,8 +146,16 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
 
     applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm) => {
         const { model } = this.props;
-        const newModel = model.merge(advancedSettingsForm) as DatasetModel;
-        this.updateValidStatus(newModel);
+
+        this.updateValidStatus(
+            produce(model, (draft: Draft<DatasetModel>) => {
+                draft.cohortId = advancedSettingsForm.cohortId;
+                draft.visitDatePropertyName = advancedSettingsForm.visitDatePropertyName;
+                draft.datasetId = advancedSettingsForm.datasetId;
+                draft.showByDefault = advancedSettingsForm.showByDefault;
+                draft.tag = advancedSettingsForm.tag;
+            })
+        );
     };
 
     render() {

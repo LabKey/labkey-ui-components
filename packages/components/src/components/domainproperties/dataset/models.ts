@@ -18,6 +18,8 @@ import { Record } from 'immutable';
 
 import { getServerContext } from '@labkey/api';
 
+import { Draft, immerable, produce } from 'immer';
+
 import { DomainDesign } from '../models';
 
 export interface DatasetAdvancedSettingsForm {
@@ -28,27 +30,7 @@ export interface DatasetAdvancedSettingsForm {
     visitDatePropertyName?: string;
 }
 
-export class DatasetModel extends Record({
-    domain: undefined,
-    domainId: undefined,
-    exception: undefined,
-    datasetId: undefined,
-    name: undefined,
-    category: undefined,
-    visitDatePropertyName: undefined,
-    keyPropertyName: undefined,
-    keyPropertyManaged: undefined,
-    demographicData: undefined,
-    label: undefined,
-    cohortId: undefined,
-    tag: undefined,
-    showByDefault: undefined,
-    description: undefined,
-    dataSharing: undefined,
-    definitionIsShared: undefined,
-    sourceAssayName: undefined,
-    sourceAssayUrl: undefined,
-}) {
+export interface IDatasetModel {
     domain: DomainDesign;
     domainId: number;
     exception: string;
@@ -68,9 +50,33 @@ export class DatasetModel extends Record({
     definitionIsShared?: boolean;
     sourceAssayName?: string;
     sourceAssayUrl?: string;
+}
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
+export class DatasetModel implements IDatasetModel {
+    [immerable] = true;
+
+    readonly domain: DomainDesign;
+    readonly domainId: number;
+    readonly exception: string;
+    readonly datasetId?: number;
+    readonly name: string;
+    readonly category?: string;
+    readonly visitDatePropertyName?: string;
+    readonly keyPropertyName?: string;
+    readonly keyPropertyManaged: boolean;
+    readonly demographicData: boolean;
+    readonly label?: string;
+    readonly cohortId?: number;
+    readonly tag?: string;
+    readonly showByDefault: boolean;
+    readonly description?: string;
+    readonly dataSharing?: string;
+    readonly definitionIsShared?: boolean;
+    readonly sourceAssayName?: string;
+    readonly sourceAssayUrl?: string;
+
+    constructor(datasetModel: IDatasetModel) {
+        Object.assign(this, datasetModel);
     }
 
     static create(newDataset = null, raw: any): DatasetModel {
@@ -153,11 +159,12 @@ export class DatasetModel extends Record({
     }
 
     getOptions(): Record<string, any> {
-        const options = this.toJS();
+        return produce(this, (draft: Draft<IDatasetModel>) => {
+            const model = draft;
 
-        delete options.exception;
-        delete options.domain;
-        return options;
+            delete model.exception;
+            delete model.domain;
+        });
     }
 
     isValid(): boolean {

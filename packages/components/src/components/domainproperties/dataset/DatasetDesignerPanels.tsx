@@ -20,6 +20,8 @@ import { List } from 'immutable';
 
 import { ActionURL, getServerContext } from '@labkey/api';
 
+import produce, { Draft } from 'immer';
+
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
 import { DomainDesign } from '../models';
@@ -27,7 +29,7 @@ import { DomainDesign } from '../models';
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
 
-import {importData, Progress, resolveErrorMessage} from '../../..';
+import { importData, Progress, resolveErrorMessage } from '../../..';
 
 import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
@@ -83,8 +85,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const { onChange } = this.props;
 
         this.setState(
-            state => ({
-                model: state.model.merge({ domain }) as DatasetModel,
+            produce((draft: Draft<State>) => {
+                draft.model.domain = domain;
             }),
             () => {
                 // Issue 39918: use the dirty property that DomainForm onChange passes
@@ -149,27 +151,40 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
         saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
             .then(response => {
-                let updatedModel = model.set('exception', undefined) as DatasetModel;
-                updatedModel = updatedModel.merge({ domain: response }) as DatasetModel;
-                this.setState(() => ({ model: updatedModel }));
-
-                // If we're importing Dataset file data, import file contents
-                if (fileImportData) {
-                    this.handleFileImport();
-                } else {
-                    setSubmitting(false, () => {
-                        this.props.onComplete(updatedModel);
-                    });
-                }
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const updatedModel = draft.model;
+                        updatedModel.exception = undefined;
+                        updatedModel.domain = response;
+                    }),
+                    () => {
+                        // If we're importing Dataset file data, import file contents
+                        if (fileImportData) {
+                            this.handleFileImport();
+                        } else {
+                            const { model } = this.state;
+                            setSubmitting(false, () => {
+                                this.props.onComplete(model);
+                            });
+                        }
+                    }
+                );
             })
             .catch(response => {
                 const exception = resolveErrorMessage(response);
-                const updatedModel = exception
-                    ? (model.set('exception', exception) as DatasetModel)
-                    : (model.merge({ domain: response, exception: undefined }) as DatasetModel);
 
                 setSubmitting(false, () => {
-                    this.setState(() => ({ model: updatedModel }));
+                    this.setState(
+                        produce((draft: Draft<State>) => {
+                            const updatedModel = draft.model;
+                            if (exception) {
+                                updatedModel.exception = exception;
+                            } else {
+                                updatedModel.exception = undefined;
+                                updatedModel.domain = Object.assign(updatedModel.domain, response);
+                            }
+                        })
+                    );
                 });
             });
     };
@@ -186,7 +201,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             validatePanel,
             containerTop,
             successBsStyle,
-            saveBtnText
+            saveBtnText,
         } = this.props;
 
         const { model, fileImportData } = this.state;

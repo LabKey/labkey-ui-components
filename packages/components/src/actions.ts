@@ -1251,7 +1251,7 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
             }),
             failure: Utils.getCallbackWrapper(error => {
                 reject(error);
-            }),
+            }, this, true),
         });
     });
 }

@@ -16,6 +16,7 @@ export interface Actions {
     loadPreviousPage: (id: string) => void;
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
+    loadCharts: (id: string, includeSampleComparison: boolean) => void;
     setOffset: (id: string, offset: number) => void;
     setMaxRows: (id: string, maxRows: number) => void;
     setView: (id: string, viewName: string, loadSelections?: boolean) => void;
@@ -115,6 +116,7 @@ export function withQueryModels<Props>(
                 loadPreviousPage: this.loadPreviousPage,
                 loadFirstPage: this.loadFirstPage,
                 loadLastPage: this.loadLastPage,
+                loadCharts: this.loadCharts,
                 setOffset: this.setOffset,
                 setMaxRows: this.setMaxRows,
                 setView: this.setView,
@@ -447,6 +449,44 @@ export function withQueryModels<Props>(
                 () => this.maybeLoad(id, false, shouldLoad)
             );
         };
+
+        loadCharts = async (id: string, includeSampleComparison) => {
+            const { modelLoader } = this.props;
+
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.queryModels[id].chartsLoadingState = LoadingState.LOADING;
+                })
+            );
+
+            try {
+                const charts = await modelLoader.loadCharts(this.state.queryModels[id], includeSampleComparison);
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        model.charts = charts;
+                        model.chartsLoadingState = LoadingState.LOADED;
+                        model.chartsError = undefined;
+                    })
+                );
+            } catch (error) {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        let chartsError = resolveErrorMessage(error);
+
+                        if (chartsError === undefined) {
+                            const schemaQuery = model.schemaQuery.toString();
+                            chartsError = `Error while loading selections for SchemaQuery: ${schemaQuery}`;
+                        }
+
+                        console.error(`Error loading charts for model ${id}`, chartsError);
+                        model.chartsLoadingState = LoadingState.LOADED;
+                        model.chartsError = chartsError;
+                    })
+                );
+            }
+        }
 
         addModel = (queryConfig: QueryConfig, load = true, loadSelections = false) => {
             let id;

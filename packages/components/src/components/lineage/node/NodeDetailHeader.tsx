@@ -30,7 +30,7 @@ export class DetailHeader extends PureComponent<DetailHeaderProps> {
                             {header}
                         </h4>
                     </div>
-                    {children}
+                    <div className="small">{children}</div>
                 </div>
             </div>
         )
@@ -81,15 +81,9 @@ export class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
                 header={header}
                 iconSrc={getIconAndShapeForNode(node).iconURL}
             >
-                {displayType && <small>{displayType}</small>}
-                {aliases && (
-                    <div>
-                        <small>
-                            {aliases.join(', ')}
-                        </small>
-                    </div>
-                )}
-                {description && <small title={description}>{description}</small>}
+                {displayType && <div>{displayType}</div>}
+                {aliases && <div>{aliases.join(', ')}</div>}
+                {description && <div title={description}>{description}</div>}
             </DetailHeader>
         )
     }

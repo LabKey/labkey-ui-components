@@ -503,16 +503,18 @@ export function initQueryGridMocks(delayMs = undefined) {
     mock.post(/.*\/query\/?.*\/getSelected.*/, getSelected);
 
     mock.post(/.*\/query\/?.*\/setSelected.*/, (req, res) => {
-        const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
-            const [name, value] = param.split('=');
+        const params = decodeURIComponent(req.body())
+            .split('&')
+            .reduce((result, param) => {
+                const [name, value] = param.split('=');
 
-            if (result[name] === undefined) {
-                result[name] = [];
-            }
+                if (result[name] === undefined) {
+                    result[name] = [];
+                }
 
-            result[name].push(value);
-            return result;
-        }, {}) as any;
+                result[name].push(value);
+                return result;
+            }, {}) as any;
         const reqSelections = params.id;
         const queryParams = req.url().query;
         const { key, checked } = queryParams;
@@ -541,18 +543,20 @@ export function initQueryGridMocks(delayMs = undefined) {
     });
 
     mock.post(/.*\/query\/?.*\/selectAll.*/, (req, res) => {
-        const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
-            const [name, value] = param.split('=');
-            result[name] = value;
-            return result;
-        }, {}) as any;
+        const params = decodeURIComponent(req.body())
+            .split('&')
+            .reduce((result, param) => {
+                const [name, value] = param.split('=');
+                result[name] = value;
+                return result;
+            }, {}) as any;
         const key = params['query.selectionKey'];
         const { schemaName, queryName } = params;
         const queryResponse = QUERY_RESPONSES.getIn([schemaName, queryName]);
         const reqSelections = new Set();
 
         if (queryResponse) {
-            queryResponse.get('rows').forEach((row) => {
+            queryResponse.get('rows').forEach(row => {
                 reqSelections.add(row.getIn(['data', 'RowId', 'value']).toString());
             });
             const selections = getSelections();

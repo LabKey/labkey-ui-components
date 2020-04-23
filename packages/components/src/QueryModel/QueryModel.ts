@@ -2,7 +2,17 @@ import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
-import { GRID_CHECKBOX_OPTIONS, LoadingState, naturalSort, QueryColumn, QueryInfo, QuerySort, SchemaQuery, ViewInfo } from '..';
+import {
+    GRID_CHECKBOX_OPTIONS,
+    LoadingState,
+    IDataViewInfo,
+    naturalSort,
+    QueryColumn,
+    QueryInfo,
+    QuerySort,
+    SchemaQuery,
+    ViewInfo,
+} from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { getOrDefault } from './utils';
 
@@ -58,6 +68,9 @@ export interface IQueryModel extends QueryConfig {
     selections?: Set<string>;
     selectionsError?: string;
     selectionsLoadingState: LoadingState;
+    charts: IDataViewInfo[];
+    chartsError: string;
+    chartsLoadingState: LoadingState;
 }
 
 const DEFAULT_OFFSET = 0;
@@ -96,6 +109,9 @@ export class QueryModel implements IQueryModel {
     readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set
     readonly selectionsError?: string;
     readonly selectionsLoadingState: LoadingState;
+    readonly charts: IDataViewInfo[];
+    readonly chartsError: string;
+    readonly chartsLoadingState: LoadingState;
 
     constructor(queryConfig: QueryConfig) {
         this.baseFilters = getOrDefault(queryConfig.baseFilters, []);
@@ -134,6 +150,9 @@ export class QueryModel implements IQueryModel {
         this.selections = undefined;
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;
+        this.charts = undefined;
+        this.chartsError = undefined;
+        this.chartsLoadingState = LoadingState.INITIALIZED;
     }
 
     get schemaName() {

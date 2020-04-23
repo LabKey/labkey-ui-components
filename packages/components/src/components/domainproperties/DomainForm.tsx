@@ -94,7 +94,7 @@ interface IDomainFormInput {
     successBsStyle?: string;
     setFileImportData?: (file: File) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    renderDatasetColumnMapping?: () => any;
+    importDataChildRenderer?: () => any;
 }
 
 interface IDomainFormState {
@@ -779,12 +779,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return appDomainHeaderRenderer(config);
     };
 
-    renderDatasetColumMapping = () => {
-        const { renderDatasetColumnMapping } = this.props;
-
-        return renderDatasetColumnMapping();
-    };
-
     renderForm() {
         const {
             domain,
@@ -875,7 +869,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             useTheme,
             helpNoun,
             setFileImportData,
-            renderDatasetColumnMapping,
+            importDataChildRenderer,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -919,7 +913,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 setFileImportData={setFileImportData}
                                 file={file}
                             >
-                                {renderDatasetColumnMapping && this.renderDatasetColumMapping()}
+                                {importDataChildRenderer && importDataChildRenderer()}
                             </ImportDataFilePreview>
                         )}
                     </Panel.Body>

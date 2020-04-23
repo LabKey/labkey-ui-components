@@ -33,7 +33,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
     <span
       className="domain-panel-title"
     >
-      Dataset Properties
+      Dataset1 - Dataset Properties
     </span>
     <span
       className="pull-right"
@@ -144,6 +144,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 onChange={[Function]}
                 placeholder="Enter a name for this dataset"
                 type="text"
+                value="Dataset1"
               />
             </div>
             <div
@@ -170,6 +171,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 className="form-control textarea-noresize"
                 id="description"
                 onChange={[Function]}
+                value="This is the first dataset"
               />
             </div>
             <div
@@ -279,6 +281,24 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                     </div>
                   </span>
                   <span
+                    aria-label="Clear value"
+                    className="Select-clear-zone"
+                    onMouseDown={[Function]}
+                    onTouchEnd={[Function]}
+                    onTouchMove={[Function]}
+                    onTouchStart={[Function]}
+                    title="Clear value"
+                  >
+                    <span
+                      className="Select-clear"
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "&times;",
+                        }
+                      }
+                    />
+                  </span>
+                  <span
                     className="Select-arrow-zone"
                     onMouseDown={[Function]}
                   >
@@ -339,6 +359,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 id="label"
                 onChange={[Function]}
                 type="text"
+                value="Dataset One"
               />
             </div>
             <div
@@ -394,24 +415,8 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                   type="radio"
                   value={0}
                 />
-                Participant ID only (demographic data)
-              </label>
-            </div>
-            <div
-              className="radio"
-            >
-              <label
-                title=""
-              >
-                <input
-                  checked={true}
-                  disabled={false}
-                  name="dataRowSetting"
-                  onChange={[Function]}
-                  type="radio"
-                  value={1}
-                />
-                Participant ID and timepoint
+                Participants
+                 only (demographic data)
               </label>
             </div>
             <div
@@ -426,14 +431,36 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                   name="dataRowSetting"
                   onChange={[Function]}
                   type="radio"
+                  value={1}
+                />
+                Participants
+                 and 
+                Visit
+              </label>
+            </div>
+            <div
+              className="radio"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={true}
+                  disabled={false}
+                  name="dataRowSetting"
+                  onChange={[Function]}
+                  type="radio"
                   value={2}
                 />
-                Participant ID, timepoint, and additional key field
+                Participants
+                , 
+                Visit
+                , and additional key field
               </label>
             </div>
           </div>
           <div
-            className="dataset_data_row_element_hide"
+            className="dataset_data_row_element_show margin-top"
           >
             <div
               className="margin-top row"
@@ -482,8 +509,14 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                     className=""
                   >
                     <div
-                      className="Select Select--single is-disabled is-searchable"
+                      className="Select Select--single is-searchable has-value"
                     >
+                      <input
+                        disabled={false}
+                        name="keyPropertyName"
+                        type="hidden"
+                        value="Name"
+                      />
                       <div
                         className="Select-control"
                         onKeyDown={[Function]}
@@ -497,29 +530,60 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                           id="react-select-5--value"
                         >
                           <div
-                            className="Select-placeholder"
+                            className="Select-value"
                           >
-                            Select...
+                            <span
+                              aria-selected="true"
+                              className="Select-value-label"
+                              id="react-select-5--value-item"
+                              role="option"
+                            >
+                              Name
+                            </span>
                           </div>
                           <div
-                            aria-activedescendant="react-select-5--value"
-                            aria-expanded={false}
-                            aria-owns=""
-                            aria-readonly="true"
                             className="Select-input"
-                            id="selectinput-1"
-                            onBlur={[Function]}
-                            onFocus={[Function]}
-                            role="combobox"
                             style={
                               Object {
-                                "border": 0,
                                 "display": "inline-block",
-                                "width": 1,
                               }
                             }
-                            tabIndex={0}
-                          />
+                          >
+                            <input
+                              aria-activedescendant="react-select-5--value"
+                              aria-expanded="false"
+                              aria-haspopup="false"
+                              aria-owns=""
+                              id="selectinput-1"
+                              onBlur={[Function]}
+                              onChange={[Function]}
+                              onFocus={[Function]}
+                              required={false}
+                              role="combobox"
+                              style={
+                                Object {
+                                  "boxSizing": "content-box",
+                                  "width": "5px",
+                                }
+                              }
+                              value=""
+                            />
+                            <div
+                              style={
+                                Object {
+                                  "height": 0,
+                                  "left": 0,
+                                  "overflow": "scroll",
+                                  "position": "absolute",
+                                  "top": 0,
+                                  "visibility": "hidden",
+                                  "whiteSpace": "pre",
+                                }
+                              }
+                            >
+                              
+                            </div>
+                          </div>
                         </span>
                         <span
                           className="Select-arrow-zone"
@@ -538,16 +602,17 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             </div>
           </div>
           <div
-            className="dataset_data_row_element_hide margin-top"
+            className="dataset_data_row_element_show margin-top"
           >
             <div
-              className="checkbox disabled"
+              className="checkbox"
             >
               <label
                 title=""
               >
                 <input
-                  disabled={true}
+                  checked={false}
+                  disabled={false}
                   id="keyPropertyManaged"
                   onChange={[Function]}
                   type="checkbox"
@@ -714,7 +779,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             >
               <input
                 className="form-control"
-                disabled={true}
+                disabled={false}
                 id="name"
                 onChange={[Function]}
                 placeholder="Enter a name for this dataset"
@@ -959,59 +1024,65 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             className="dataset_data_row_uniqueness_container"
           >
             <div
-              className="radio disabled"
+              className="radio"
             >
               <label
                 title=""
               >
                 <input
                   checked={false}
-                  disabled={true}
+                  disabled={false}
                   name="dataRowSetting"
                   onChange={[Function]}
                   type="radio"
                   value={0}
                 />
-                Participant ID only (demographic data)
+                Participants
+                 only (demographic data)
               </label>
             </div>
             <div
-              className="radio disabled"
+              className="radio"
             >
               <label
                 title=""
               >
                 <input
                   checked={true}
-                  disabled={true}
+                  disabled={false}
                   name="dataRowSetting"
                   onChange={[Function]}
                   type="radio"
                   value={1}
                 />
-                Participant ID and timepoint
+                Participants
+                 and 
+                Visit
               </label>
             </div>
             <div
-              className="radio disabled"
+              className="radio"
             >
               <label
                 title=""
               >
                 <input
                   checked={false}
-                  disabled={true}
+                  disabled={false}
                   name="dataRowSetting"
                   onChange={[Function]}
                   type="radio"
                   value={2}
                 />
-                Participant ID, timepoint, and additional key field
+                Participants
+                , 
+                Visit
+                , and additional key field
               </label>
             </div>
           </div>
           <div
-            className="dataset_data_row_element_show margin-top"
+            className="dataset_data_row_element_hide"
           >
             <div
               className="margin-top row"
@@ -1060,7 +1131,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                     className=""
                   >
                     <div
-                      className="Select Select--single is-searchable"
+                      className="Select Select--single is-disabled is-searchable"
                     >
                       <div
                         className="Select-control"
@@ -1080,48 +1151,24 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                             Select...
                           </div>
                           <div
+                            aria-activedescendant="react-select-3--value"
+                            aria-expanded={false}
+                            aria-owns=""
+                            aria-readonly="true"
                             className="Select-input"
+                            id="selectinput-0"
+                            onBlur={[Function]}
+                            onFocus={[Function]}
+                            role="combobox"
                             style={
                               Object {
+                                "border": 0,
                                 "display": "inline-block",
+                                "width": 1,
                               }
                             }
-                          >
-                            <input
-                              aria-activedescendant="react-select-3--value"
-                              aria-expanded="false"
-                              aria-haspopup="false"
-                              aria-owns=""
-                              id="selectinput-0"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              onFocus={[Function]}
-                              required={false}
-                              role="combobox"
-                              style={
-                                Object {
-                                  "boxSizing": "content-box",
-                                  "width": "5px",
-                                }
-                              }
-                              value=""
-                            />
-                            <div
-                              style={
-                                Object {
-                                  "height": 0,
-                                  "left": 0,
-                                  "overflow": "scroll",
-                                  "position": "absolute",
-                                  "top": 0,
-                                  "visibility": "hidden",
-                                  "whiteSpace": "pre",
-                                }
-                              }
-                            >
-                              
-                            </div>
-                          </div>
+                            tabIndex={0}
+                          />
                         </span>
                         <span
                           className="Select-arrow-zone"

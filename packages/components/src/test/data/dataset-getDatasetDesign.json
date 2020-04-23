@@ -1,5 +1,5 @@
 {
-  "datasetDesign" : {
+  "options" : {
     "datasetId": 1,
     "name": "Dataset1",
     "category": "A",
@@ -14,7 +14,9 @@
     "description": "This is the first dataset",
     "dataRowSetting" : 1,
     "dataSharing": "PTID",
-    "definitionIsShared": false
+    "definitionIsShared": false,
+    "sourceAssayName": null,
+    "sourceAssayUrl": null
   },
   "domainDesign" : {
     "domainId" : 2280,

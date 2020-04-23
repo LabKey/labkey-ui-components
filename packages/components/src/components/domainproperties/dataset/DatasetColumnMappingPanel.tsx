@@ -18,6 +18,8 @@ import React from 'react';
 
 import { Col, Row } from 'react-bootstrap';
 
+import { getServerContext } from '@labkey/api';
+
 import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { DomainField, SelectInput } from '../../..';
@@ -60,26 +62,23 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
 
         if (targetColumnName === subjectColumnName) {
             return this.compareNames(targetColumn, inferredFieldName) && inferredField.rangeURI === 'xsd:string';
-        } else if (targetColumnName == timepointType && timepointType === 'DATE') {
+        } else if (targetColumnName === timepointType && timepointType === 'DATE') {
             return this.compareNames('visitdate', inferredFieldName) && inferredField.rangeURI === 'xsd:datetime';
-        } else if (targetColumnName == timepointType && timepointType === 'VISIT') {
+        } else if (targetColumnName === timepointType && timepointType === 'VISIT') {
             return this.compareNames('sequencenum', inferredFieldName) && inferredField.rangeURI === 'xsd:double';
-        } else if (targetColumnName == timepointType) {
+        } else if (targetColumnName === timepointType) {
             return this.compareNames('date', inferredFieldName) && inferredField.rangeURI === 'xsd:datetime';
         }
+
+        return false;
     }
 
     findClosestColumn(targetColumn: string): string {
         const inferredColumns = this.props.model.domain.fields;
 
-        const matchedField = inferredColumns.find(field => {
-            let matchingNames = false;
-
-            if (field.name && field.rangeURI) {
-                matchingNames = this.areColumnNamesAndTypesEquivalent(targetColumn, field);
-            }
-            return matchingNames;
-        });
+        const matchedField = inferredColumns.find(
+            field => field.name && field.rangeURI && this.areColumnNamesAndTypesEquivalent(targetColumn, field)
+        );
 
         return matchedField ? matchedField.name : undefined;
     }
@@ -102,6 +101,9 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         const { model } = this.props;
         const { closestParticipantIdField, closestTimepointField } = this.state;
 
+        const participantIdTxt = getServerContext().moduleContext.study.subject.nounPlural;
+        const timepointTxt = getServerContext().moduleContext.study.timepointType === 'VISIT' ? 'Visit' : 'Timepoint';
+
         const domain = model.domain;
 
         return (
@@ -109,11 +111,11 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                 <SectionHeading title="Column mapping" />
                 <div className="margin-top">
                     Columns already existing in the domain can be mapped with columns from your file. Choose a column to
-                    match your ParticipantID and Timepoints.
+                    match your {participantIdTxt} and {timepointTxt}.
                 </div>
                 <Row className="margin-top">
                     <Col xs={4}>
-                        <DomainFieldLabel label="ParticipantID" />
+                        <DomainFieldLabel label={participantIdTxt} />
                     </Col>
                     <Col xs={5}>
                         <SelectInput
@@ -136,7 +138,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                 </Row>
                 <Row className="margin-top">
                     <Col xs={4}>
-                        <DomainFieldLabel label="Timepoint" />
+                        <DomainFieldLabel label={timepointTxt} />
                     </Col>
                     <Col xs={5}>
                         <SelectInput

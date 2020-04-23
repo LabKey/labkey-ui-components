@@ -76,7 +76,7 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
                     )}
                 </div>
 
-                {this.props.children}
+                {importData && this.props.children}
 
                 {importData && (
                     <div>

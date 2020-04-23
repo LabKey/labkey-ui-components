@@ -66,6 +66,7 @@ export function fetchCategories(): Promise<List<Option>> {
 export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
     let visitDateColumns = List<Option>();
 
+    // date field is a built in field for a dataset for a date based study
     visitDateColumns = visitDateColumns.push({ value: 'date', label: 'date' });
 
     domain.fields.map(field => {
@@ -80,6 +81,8 @@ export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
 export function fetchAdditionalKeyFields(domain: DomainDesign): List<Option> {
     let additionalKeyFields = List<Option>();
 
+    // In a date-based or continuous study, an additional third key option is to use the Time (from Date/Time) portion of a datestamp field
+    // where multiple measurements happen on a given day or visit (tracking primate weight for example), the time portion of the date field can be used as an additional key
     if (getServerContext().moduleContext.study.timepointType !== 'VISIT') {
         additionalKeyFields = additionalKeyFields.push({ value: TIME_KEY_FIELD_KEY, label: TIME_KEY_FIELD_DISPLAY });
     }
@@ -94,7 +97,6 @@ export function fetchAdditionalKeyFields(domain: DomainDesign): List<Option> {
 export function fetchCohorts(): Promise<List<Option>> {
     return new Promise((resolve, reject) => {
         selectRows({
-            saveInSession: true,
             schemaName: 'study',
             queryName: 'Cohort',
         })
@@ -159,7 +161,6 @@ export function getDatasetProperties(datasetId?: number) {
             url: ActionURL.buildURL('study', 'GetDataset'),
             method: 'GET',
             params: { datasetId },
-            scope: this,
             success: Utils.getCallbackWrapper(data => {
                 resolve(DatasetModel.create(data, undefined));
             }),

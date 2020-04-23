@@ -16,8 +16,6 @@
 
 import { Record } from 'immutable';
 
-import match from 'react-router/lib/match';
-import { Option } from 'react-select';
 import { getServerContext } from '@labkey/api';
 
 import { DomainDesign } from '../models';
@@ -167,6 +165,6 @@ export class DatasetModel extends Record({
     }
 
     isFromAssay(): boolean {
-        return this.sourceAssayName !== null;
+        return this.sourceAssayName !== undefined && this.sourceAssayName !== null;
     }
 }

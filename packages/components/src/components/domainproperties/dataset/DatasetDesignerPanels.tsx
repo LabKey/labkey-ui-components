@@ -27,7 +27,7 @@ import { DomainDesign } from '../models';
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
 
-import { importData, resolveErrorMessage } from '../../..';
+import {importData, Progress, resolveErrorMessage} from '../../..';
 
 import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
@@ -112,8 +112,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     <DatasetColumnMappingPanel
                         model={model}
                         onColumnMappingChange={this.onColumnMappingChange}
-                        subjectColumnName={LABKEY.moduleContext.study.subject.columnName}
-                        timepointType={LABKEY.moduleContext.study.timepointType}
+                        subjectColumnName={getServerContext().moduleContext.study.subject.columnName}
+                        timepointType={getServerContext().moduleContext.study.timepointType}
                     />
                 )}
             </>
@@ -153,7 +153,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 updatedModel = updatedModel.merge({ domain: response }) as DatasetModel;
                 this.setState(() => ({ model: updatedModel }));
 
-                // If we're importing List file data, import file contents
+                // If we're importing Dataset file data, import file contents
                 if (fileImportData) {
                     this.handleFileImport();
                 } else {
@@ -186,9 +186,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             validatePanel,
             containerTop,
             successBsStyle,
+            saveBtnText
         } = this.props;
 
-        const { model } = this.state;
+        const { model, fileImportData } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -200,20 +201,25 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 submitting={submitting}
                 onCancel={onCancel}
                 onFinish={this.onFinish}
-                saveBtnText="Save"
+                saveBtnText={saveBtnText}
                 successBsStyle={successBsStyle}
             >
                 <DatasetPropertiesPanel
-                    initCollapsed={false}
+                    initCollapsed={currentPanelIndex !== 0}
                     model={model}
                     controlledCollapse={true}
                     useTheme={useTheme}
-                    panelStatus="COMPLETE"
-                    validate={false}
+                    panelStatus={
+                        model.isNew()
+                            ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState)
+                            : 'COMPLETE'
+                    }
+                    validate={validatePanel === 0}
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(0, collapsed, callback);
                     }}
                     onChange={this.onPropertiesChange}
+                    successBsStyle={successBsStyle}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
@@ -238,8 +244,15 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         onTogglePanel(1, collapsed, callback);
                     }}
                     useTheme={useTheme}
-                    renderDatasetColumnMapping={this.datasetColumnMapping}
+                    importDataChildRenderer={this.datasetColumnMapping}
                     successBsStyle={successBsStyle}
+                />
+                <Progress
+                    modal={true}
+                    delay={1000}
+                    estimate={fileImportData ? fileImportData.size * 0.005 : undefined}
+                    title="Importing data from selected file..."
+                    toggle={submitting && fileImportData !== undefined}
                 />
             </BaseDomainDesigner>
         );

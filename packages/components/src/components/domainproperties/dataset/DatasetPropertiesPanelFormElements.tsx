@@ -27,6 +27,8 @@ import '../../../theme/dataset.scss';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SectionHeading } from '../SectionHeading';
 
+import { getServerContext } from '@labkey/api';
+
 interface BasicPropertiesInputsProps {
     model: DatasetModel;
     onInputChange: (any) => void;
@@ -156,6 +158,9 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
         const { onRadioChange, dataRowSetting, isFromAssay } = this.props;
         const radioName = 'dataRowSetting';
 
+        const participantIdTxt = getServerContext().moduleContext.study.subject.nounPlural;
+        const timepointTxt = getServerContext().moduleContext.study.timepointType === 'VISIT' ? 'Visit' : 'Timepoint';
+
         return (
             <div className="dataset_data_row_uniqueness_container">
                 <Radio
@@ -165,7 +170,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                     onChange={onRadioChange}
                     disabled={isFromAssay}
                 >
-                    Participant ID only (demographic data)
+                    {participantIdTxt} only (demographic data)
                 </Radio>
 
                 <Radio
@@ -175,7 +180,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                     onChange={onRadioChange}
                     disabled={isFromAssay}
                 >
-                    Participant ID and timepoint
+                    {participantIdTxt} and {timepointTxt}
                 </Radio>
 
                 <Radio
@@ -185,7 +190,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                     onChange={onRadioChange}
                     disabled={isFromAssay}
                 >
-                    Participant ID, timepoint, and additional key field
+                    {participantIdTxt}, {timepointTxt}, and additional key field
                 </Radio>
             </div>
         );

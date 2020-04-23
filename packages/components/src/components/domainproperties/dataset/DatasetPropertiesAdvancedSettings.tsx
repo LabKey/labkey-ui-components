@@ -1,18 +1,22 @@
 import React from 'react';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 
+import { getServerContext } from '@labkey/api';
+
+import { Option } from 'react-select';
+
 import { helpLinkNode, initQueryGridState, SelectInput } from '../../..';
+
+import { DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
+
+import { SectionHeading } from '../SectionHeading';
+
+import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { fetchCohorts, fetchVisitDateColumns, getHelpTip } from './actions';
 
 import '../../../theme/dataset.scss';
-import { DomainFieldLabel } from '../DomainFieldLabel';
-import { SectionHeading } from '../SectionHeading';
-
-import { Option } from 'react-select';
-
-import { DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
 
 interface DatasetSettingsSelectProps {
     name: string;
@@ -274,7 +278,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             showInAdvancedSettings={true}
                             required={true}
                         />
-                        {LABKEY.moduleContext.study.timepointType === 'VISIT' && (
+                        {getServerContext().moduleContext.study.timepointType === 'VISIT' && (
                             <DatasetSettingsSelect
                                 name="visitDatePropertyName"
                                 label="Visit Date Column"

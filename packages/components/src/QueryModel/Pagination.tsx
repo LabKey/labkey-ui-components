@@ -4,8 +4,9 @@ import { ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 import { QueryModel, Tip } from '..';
 import { PagingButton } from '../components/gridbar/QueryGridPaging';
 
-import { RequiresModelAndActions } from './withQueryModels';
 import { blurActiveElement } from '../util/utils';
+
+import { RequiresModelAndActions } from './withQueryModels';
 
 interface PaginationInfoProps {
     model: QueryModel;

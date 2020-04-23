@@ -1,14 +1,19 @@
 import React, { ComponentType, PureComponent } from 'react';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
+
 import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner } from '..';
+
+import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
+
+import { headerCell, headerSelectionCell } from '../renderers';
+
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { PaginationButtons, PaginationInfo } from './Pagination';
 import { PageSizeSelector } from './PageSizeSelector';
 import { ViewSelector } from './ViewSelector';
 import { ExportMenu } from './ExportMenu';
-import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
-import { headerCell, headerSelectionCell } from '../renderers';
+
 import { SelectionStatus } from './SelectionStatus';
 
 interface GridPanelProps {
@@ -49,7 +54,7 @@ export class GridPanel extends PureComponent<Props> {
         actions.selectRow(model.id, checked, row.toJS());
     };
 
-    selectPage = (event) => {
+    selectPage = event => {
         const { model, actions } = this.props;
         const checked = event.currentTarget.checked === true && model.selectedState !== GRID_CHECKBOX_OPTIONS.SOME;
         actions.selectPage(model.id, checked);
@@ -69,15 +74,10 @@ export class GridPanel extends PureComponent<Props> {
                 title: '',
                 showHeader: true,
                 cell: (selected: boolean, row: any) => {
-                    const onChange = (event) => this.selectRow(row, event);
+                    const onChange = event => this.selectRow(row, event);
                     const disabled = isLoading || isLoadingSelections;
                     return (
-                        <input
-                            type="checkbox"
-                            disabled={disabled}
-                            checked={selected === true}
-                            onChange={onChange}
-                        />
+                        <input type="checkbox" disabled={disabled} checked={selected === true} onChange={onChange} />
                     );
                 },
             });
@@ -90,7 +90,7 @@ export class GridPanel extends PureComponent<Props> {
 
     headerCell = (column: GridColumn, index: number, columnCount?: number) => {
         const { allowSelections, allowSorting, model } = this.props;
-        const { isLoading, isLoadingSelections, hasData, rowCount} = model;
+        const { isLoading, isLoadingSelections, hasData, rowCount } = model;
         const disabled = isLoadingSelections || isLoading || (hasData && rowCount === 0);
 
         if (column.index === GRID_SELECTION_INDEX) {
@@ -123,7 +123,7 @@ export class GridPanel extends PureComponent<Props> {
             selectionsError,
             messages,
             queryInfo,
-            queryInfoError
+            queryInfoError,
         } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
         const paginate = isPaged && hasData && !hasError;
@@ -162,13 +162,11 @@ export class GridPanel extends PureComponent<Props> {
         }
 
         return (
-            <div className={classNames('grid-panel', {'panel': asPanel, 'panel-default': asPanel})}>
-                <div className={classNames('grid-panel__body', {'panel-body': asPanel})}>
+            <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
+                <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
                     <div className="grid-panel__bar">
                         <div className="grid-panel__bar-left">
-                            <div className="grid-bar__section">
-                                {buttons}
-                            </div>
+                            <div className="grid-bar__section">{buttons}</div>
                         </div>
 
                         <div className="grid-panel__bar-right">
@@ -177,33 +175,29 @@ export class GridPanel extends PureComponent<Props> {
                                 {paginate && <PaginationButtons model={model} actions={actions} />}
                                 {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
                                 {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} />}
-                                {
-                                    canSelectView &&
+                                {canSelectView && (
                                     <ViewSelector
                                         model={model}
                                         actions={actions}
                                         allowSelections={allowSelections}
                                         hideEmptyViewSelector={hideEmptyViewSelector}
                                     />
-                                }
+                                )}
                             </div>
                         </div>
                     </div>
 
                     <div className="grid-panel__info">
-                        {showLoading  && <LoadingSpinner msg={loadingMessage} />}
+                        {showLoading && <LoadingSpinner msg={loadingMessage} />}
                         {allowSelections && <SelectionStatus model={model} actions={actions} />}
                     </div>
 
-                    <div className="grid-panel__grid">
-                        {grid}
-                    </div>
+                    <div className="grid-panel__grid">{grid}</div>
                 </div>
             </div>
         );
     }
 }
-
 
 class GridPanelWithModelImpl extends PureComponent<GridPanelProps & InjectedQueryModels> {
     render() {

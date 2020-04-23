@@ -125,36 +125,42 @@ export function withQueryModels<Props>(
             };
         }
 
-        loadSelections = async(id: string) => {
+        loadSelections = async (id: string) => {
             const { loadSelections } = this.props.modelLoader;
 
-            this.setState(produce((draft: Draft<State>) => {
-                draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
-            }));
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+                })
+            );
 
             try {
                 const selections = await loadSelections(this.state.queryModels[id]);
 
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    model.selections = selections;
-                    model.selectionsLoadingState = LoadingState.LOADED;
-                    model.selectionsError = undefined;
-                }));
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        model.selections = selections;
+                        model.selectionsLoadingState = LoadingState.LOADED;
+                        model.selectionsError = undefined;
+                    })
+                );
             } catch (error) {
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    let selectionsError = resolveErrorMessage(error);
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        let selectionsError = resolveErrorMessage(error);
 
-                    if (selectionsError === undefined) {
-                        const schemaQuery = model.schemaQuery.toString();
-                        selectionsError = `Error while loading selections for SchemaQuery: ${schemaQuery}`;
-                    }
+                        if (selectionsError === undefined) {
+                            const schemaQuery = model.schemaQuery.toString();
+                            selectionsError = `Error while loading selections for SchemaQuery: ${schemaQuery}`;
+                        }
 
-                    console.error(`Error loading selections for model ${id}: `, selectionsError);
-                    model.selectionsLoadingState = LoadingState.LOADED;
-                    model.selectionsError = selectionsError;
-                }));
+                        console.error(`Error loading selections for model ${id}: `, selectionsError);
+                        model.selectionsLoadingState = LoadingState.LOADED;
+                        model.selectionsError = selectionsError;
+                    })
+                );
             }
         };
 
@@ -163,77 +169,87 @@ export function withQueryModels<Props>(
 
             try {
                 await modelLoader.clearSelections(this.state.queryModels[id]);
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    model.selections = new Set();
-                    model.selectionsError = undefined;
-                }));
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        model.selections = new Set();
+                        model.selectionsError = undefined;
+                    })
+                );
             } catch (error) {
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    let selectionsError = resolveErrorMessage(error);
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        let selectionsError = resolveErrorMessage(error);
 
-                    if (selectionsError === undefined) {
-                        const schemaQuery = model.schemaQuery.toString();
-                        selectionsError = `Error while clearing selections for SchemaQuery: ${schemaQuery}`;
-                    }
+                        if (selectionsError === undefined) {
+                            const schemaQuery = model.schemaQuery.toString();
+                            selectionsError = `Error while clearing selections for SchemaQuery: ${schemaQuery}`;
+                        }
 
-                    console.error(`Error clearing selections for model ${id}:`, selectionsError);
-                    model.selectionsError = selectionsError;
-                }));
+                        console.error(`Error clearing selections for model ${id}:`, selectionsError);
+                        model.selectionsError = selectionsError;
+                    })
+                );
             }
         };
 
-        setSelections = async(id: string, checked: boolean, selections: string[]) => {
+        setSelections = async (id: string, checked: boolean, selections: string[]) => {
             const { modelLoader } = this.props;
 
             try {
                 await modelLoader.setSelections(this.state.queryModels[id], checked, selections);
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    selections.forEach((selection) => {
-                        if (checked) {
-                            model.selections.add(selection);
-                        } else {
-                            model.selections.delete(selection);
-                        }
-                    });
-                    model.selectionsError = undefined;
-                }));
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        selections.forEach(selection => {
+                            if (checked) {
+                                model.selections.add(selection);
+                            } else {
+                                model.selections.delete(selection);
+                            }
+                        });
+                        model.selectionsError = undefined;
+                    })
+                );
             } catch (error) {
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    let selectionsError = resolveErrorMessage(error);
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        let selectionsError = resolveErrorMessage(error);
 
-                    if (selectionsError === undefined) {
-                        const schemaQuery = model.schemaQuery.toString();
-                        selectionsError = `Error while setting selections for SchemaQuery: ${schemaQuery}`;
-                    }
+                        if (selectionsError === undefined) {
+                            const schemaQuery = model.schemaQuery.toString();
+                            selectionsError = `Error while setting selections for SchemaQuery: ${schemaQuery}`;
+                        }
 
-                    console.error(`Error setting selections for model ${id}:`, selectionsError);
-                    model.selectionsError = selectionsError;
-                }));
+                        console.error(`Error setting selections for model ${id}:`, selectionsError);
+                        model.selectionsError = selectionsError;
+                    })
+                );
             }
-        }
+        };
 
         selectAllRows = async (id: string) => {
             const { modelLoader } = this.props;
 
-            this.setState(produce((draft: Draft<State>) => {
-                draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
-            }));
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+                })
+            );
 
             try {
                 const selections = await modelLoader.selectAllRows(this.state.queryModels[id]);
-                this.setState(produce((draft: Draft<State>) => {
-                    const model = draft.queryModels[id];
-                    model.selections = selections;
-                    model.selectionsError = undefined;
-                    model.selectionsLoadingState = LoadingState.LOADED;
-                }));
-            } catch (error) {
-
-            }
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        model.selections = selections;
+                        model.selectionsError = undefined;
+                        model.selectionsLoadingState = LoadingState.LOADED;
+                    })
+                );
+            } catch (error) {}
         };
 
         selectRow = (id: string, checked: boolean, row: { [key: string]: any }) => {
@@ -250,7 +266,7 @@ export function withQueryModels<Props>(
 
                 this.setSelections(id, checked, [pkValue]);
             } else {
-                let msg = `Cannot set row selection for model ${id}. The model has multiple PK Columns.`;
+                const msg = `Cannot set row selection for model ${id}. The model has multiple PK Columns.`;
                 console.warn(msg, pkCols.toJS());
             }
         };
@@ -293,10 +309,11 @@ export function withQueryModels<Props>(
                             rowsError = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;
                         }
 
-                    console.error(`Error loading rows for model ${id}: `, rowsError);
-                    model.rowsLoadingState = LoadingState.LOADED;
-                    model.rowsError = rowsError;
-                }));
+                        console.error(`Error loading rows for model ${id}: `, rowsError);
+                        model.rowsLoadingState = LoadingState.LOADED;
+                        model.rowsError = rowsError;
+                    })
+                );
             }
         };
 
@@ -361,14 +378,14 @@ export function withQueryModels<Props>(
                     this.loadSelections(id);
                 }
             }
-        }
+        };
 
         loadModel = (id: string, loadSelections = false) => {
             this.loadQueryInfo(id, true, loadSelections);
         };
 
         loadAllModels = (loadSelections = false) => {
-            Object.keys(this.state.queryModels).forEach((id) => this.loadModel(id, loadSelections));
+            Object.keys(this.state.queryModels).forEach(id => this.loadModel(id, loadSelections));
         };
 
         loadNextPage = (id: string) => {

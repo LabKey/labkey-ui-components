@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
-import { RequiresModelAndActions } from './withQueryModels';
+
 import { Button } from 'react-bootstrap';
+
+import { RequiresModelAndActions } from './withQueryModels';
 
 export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
     clearSelections = () => {

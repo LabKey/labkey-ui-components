@@ -1,6 +1,7 @@
+import { List } from 'immutable';
+
 import { getQueryDetails, getSelected, QueryInfo, selectRows, setSelected } from '..';
 import { bindColumnRenderers } from '../renderers';
-import { List } from 'immutable';
 import { clearSelected, ISelectResponse, selectAll } from '../actions';
 
 import { QueryModel, GridMessage } from './QueryModel';

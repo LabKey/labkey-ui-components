@@ -3,8 +3,8 @@ import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
 import { GRID_CHECKBOX_OPTIONS, LoadingState, naturalSort, QueryColumn, QueryInfo, QuerySort, SchemaQuery, ViewInfo } from '..';
-import { getOrDefault } from './utils';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
+import { getOrDefault } from './utils';
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
@@ -300,7 +300,7 @@ export class QueryModel implements IQueryModel {
     }
 
     get hasSelections(): boolean {
-        return  this.selections !== undefined;
+        return this.selections !== undefined;
     }
 
     get selectedState(): GRID_CHECKBOX_OPTIONS {
@@ -333,10 +333,7 @@ export class QueryModel implements IQueryModel {
 
     get isLoadingSelections(): boolean {
         const { selectionsLoadingState } = this;
-        return (
-            selectionsLoadingState === LoadingState.INITIALIZED ||
-            selectionsLoadingState === LoadingState.LOADING
-        );
+        return selectionsLoadingState === LoadingState.INITIALIZED || selectionsLoadingState === LoadingState.LOADING;
     }
 
     get isLastPage(): boolean {

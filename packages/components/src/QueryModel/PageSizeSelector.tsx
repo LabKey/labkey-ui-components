@@ -3,8 +3,9 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { Tip } from '..';
 
-import { RequiresModelAndActions } from './withQueryModels';
 import { blurActiveElement } from '../util/utils';
+
+import { RequiresModelAndActions } from './withQueryModels';
 
 interface PageSizeSelectorProps extends RequiresModelAndActions {
     // pageSizes is expected to be sorted (ascending)
@@ -16,7 +17,7 @@ export class PageSizeSelector extends PureComponent<PageSizeSelectorProps> {
         pageSizes: [20, 40, 100, 250, 400],
     };
 
-    setMaxRows = (size) => {
+    setMaxRows = size => {
         const { model, actions } = this.props;
         actions.setMaxRows(model.id, size);
         blurActiveElement();

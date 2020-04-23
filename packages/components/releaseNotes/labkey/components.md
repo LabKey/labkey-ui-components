@@ -1,11 +1,39 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.50.0
+### version 0.??.0
 *Released*: ?? April 2020
 * [Issue 34627: Lookup column is sorting by raw value and not display column](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=34627)
 * [Issue 36486: omnibox only shows options on drop-down for current page](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=36486)
 * [Issue 40195: Omnibox filter value invalid if user enters multiple words](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=40195)
+
+### version 0.52.1
+*Released*: 20 April 2020
+* `@labkey/api` dependency update.
+
+### version 0.52.0
+*Released*: 18 April 2020
+* Item 7178: Prettier/ESLint bulk update
+    - Initial Prettier/ESLint bulk update across packages/components/src directory.
+    - yarn run lint-fix ./src/\*\*/\*
+
+### version 0.51.0
+*Released*: 17 April 2020
+* Item 6961: DataClassDesigner updates for LKS
+    - update fetchDataClass function to work for either a data class name or rowId
+    - add support for PermissionTypes.DesignDataClass
+    - DataClassPropertiesPanel and SampleTypePropertiesPanel default nameExpressionInfoUrl and nameExpressionPlaceholder properties
+    - SampleTypeDesigner change to default to "Infer from File" in empty fields state
+    - Issue 40232: Boolean fields show empty "Validation Options" section in expanded field design view
+
+## version 0.50.0
+*Released#: 16 April 2020
+* Add optional property for specifying auditBehavior with some API actions
+
+### version 0.49.1
+*Released*: 16 April 2020
+* Merge forward changes from release20.4-SNAPSHOT branch
+    - includes hotfix changes from version 0.41.6
 
 ## version 0.49.0
 *Released*: 15 April 2020
@@ -71,6 +99,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 7031: Source aliasing
     - Allow Source (Data Class) Alias to be defined separate from a SampleSet type Parent Alias
     - Allow filtering of parent options (for example, only 'sources' type data classes will be included)
+
+### version 0.41.6
+*Released*: 8 April 2020
+* Issue 39803: signOut action support for a redirectUrl in the response, for the CAS identity provider logout case
 
 ### version 0.41.5
 *Released*: 1 April 2020

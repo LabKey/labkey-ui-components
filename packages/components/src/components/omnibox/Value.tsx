@@ -19,27 +19,26 @@ import classNames from 'classnames';
 import { ActionValue } from './actions/Action';
 
 interface ValueProps {
-    actionValue: ActionValue
-    index: number
-    onClick?: Function
-    onRemove?: Function
+    actionValue: ActionValue;
+    index: number;
+    onClick?: Function;
+    onRemove?: Function;
 }
 
 interface ValueState {
-    isActive?: boolean
-    isDisabled?: boolean
+    isActive?: boolean;
+    isDisabled?: boolean;
 }
 
 export const valueClassName = 'OmniBox-value';
 
 export class Value extends React.Component<ValueProps, ValueState> {
-
     constructor(props: ValueProps) {
         super(props);
 
         this.state = {
             isActive: false,
-            isDisabled: false
+            isDisabled: false,
         };
     }
 
@@ -61,13 +60,13 @@ export class Value extends React.Component<ValueProps, ValueState> {
 
     onMouseEnter() {
         this.setState({
-            isActive: true
+            isActive: true,
         });
     }
 
     onMouseLeave() {
         this.setState({
-            isActive: false
+            isActive: false,
         });
     }
 
@@ -77,18 +76,23 @@ export class Value extends React.Component<ValueProps, ValueState> {
         const className = classNames(valueClassName, {
             'is-active': this.state.isActive,
             'is-disabled': this.state.isDisabled,
-            'is-readonly': isReadOnly
+            'is-readonly': isReadOnly,
         });
 
-        const iconClassNames = classNames('symbol', 'fa', this.state.isActive && isRemovable !== false ? 'fa-close' : (action.iconCls ? 'fa-' + action.iconCls : ''));
+        const iconClassNames = classNames(
+            'symbol',
+            'fa',
+            this.state.isActive && isRemovable !== false ? 'fa-close' : action.iconCls ? 'fa-' + action.iconCls : ''
+        );
 
         return (
-            <div className={className}
-                 onClick={this.onClick.bind(this)}
-                 onMouseEnter={this.onMouseEnter.bind(this)}
-                 onMouseLeave={this.onMouseLeave.bind(this)}>
-                <i className={iconClassNames}
-                   onClick={this.onIconClick.bind(this)} />
+            <div
+                className={className}
+                onClick={this.onClick.bind(this)}
+                onMouseEnter={this.onMouseEnter.bind(this)}
+                onMouseLeave={this.onMouseLeave.bind(this)}
+            >
+                <i className={iconClassNames} onClick={this.onIconClick.bind(this)} />
                 {isReadOnly ? <i className="read-lock fa fa-lock" title="locked (read only)" /> : null}
                 <span>{displayValue ? displayValue : value}</span>
             </div>

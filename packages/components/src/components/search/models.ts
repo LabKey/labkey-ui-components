@@ -28,14 +28,14 @@ export class SearchResultsModel extends Record({
     isLoaded: boolean;
     lastUpdate: Date;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
     static create(raw: any): SearchResultsModel {
         return new SearchResultsModel({
             ...raw,
-            entities: raw.entities ? fromJS(raw.entities) : undefined
+            entities: raw.entities ? fromJS(raw.entities) : undefined,
         });
     }
 }
@@ -47,8 +47,8 @@ export class SearchIdData {
 }
 
 export interface SearchResultCardData {
-    iconSrc?: string
-    altText?: string
-    title?: string
-    typeName?: string
+    iconSrc?: string;
+    altText?: string;
+    title?: string;
+    typeName?: string;
 }

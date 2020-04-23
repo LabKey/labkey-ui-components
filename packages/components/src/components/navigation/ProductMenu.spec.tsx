@@ -23,176 +23,186 @@ import { ProductMenu } from './ProductMenu';
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { MenuSectionConfig } from './ProductMenuSection';
 
-describe("ProductMenu render", () => {
+describe('ProductMenu render', () => {
     const sampleSetItems = List<MenuSectionModel>([
         {
             id: 1,
-            label: "Sample Set 1",
+            label: 'Sample Set 1',
         },
         {
             id: 2,
-            label: "Sample Set 2",
+            label: 'Sample Set 2',
         },
         {
             id: 3,
-            label: "Sample Set 3",
+            label: 'Sample Set 3',
         },
         {
             id: 4,
-            label: "Sample Set 4",
-        }
+            label: 'Sample Set 4',
+        },
     ]);
 
     const assayItems = List<MenuSectionModel>([
         {
             id: 11,
-            label: "Assay 1",
+            label: 'Assay 1',
         },
         {
             id: 12,
-            label: "Assay 2",
+            label: 'Assay 2',
         },
         {
             id: 13,
-            label: "Assay 3",
+            label: 'Assay 3',
         },
         {
             id: 14,
-            label: "Assay 4",
+            label: 'Assay 4',
         },
         {
             id: 15,
-            label: "Assay 5"
-        }
+            label: 'Assay 5',
+        },
     ]);
 
-    const yourItems  = List<MenuSectionModel>([
+    const yourItems = List<MenuSectionModel>([
         {
             id: 21,
-            label: "Documentation"
-        }
+            label: 'Documentation',
+        },
     ]);
 
-    const yourItemsSection =  MenuSectionModel.create({
-        label: "Your Items",
+    const yourItemsSection = MenuSectionModel.create({
+        label: 'Your Items',
         items: yourItems,
-        key: 'user'
+        key: 'user',
     });
 
-    test("loading", () => {
+    test('loading', () => {
         const model = new ProductMenuModel({
-            productId: "testProduct"
+            productId: 'testProduct',
         });
-        const tree = renderer.create(<ProductMenu model={model}/>).toJSON();
+        const tree = renderer.create(<ProductMenu model={model} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("error display", () => {
+    test('error display', () => {
         const model = new ProductMenuModel({
-            productId: "testProduct",
+            productId: 'testProduct',
             isLoaded: true,
             isLoading: false,
             isError: true,
-            message: "Test error message"
+            message: 'Test error message',
         });
 
-        const tree = renderer.create(<ProductMenu model={model}/>).toJSON();
+        const tree = renderer.create(<ProductMenu model={model} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("no sections", () => {
-        const productId = "testNoSections";
+    test('no sections', () => {
+        const productId = 'testNoSections';
 
-        const model = new ProductMenuModel(
-            {
-                productId: productId,
-                isLoaded: true,
-                isLoading: false,
-                sections: List<MenuSectionModel>()
-            }
-        );
+        const model = new ProductMenuModel({
+            productId,
+            isLoaded: true,
+            isLoading: false,
+            sections: List<MenuSectionModel>(),
+        });
         const menuButton = mount(<ProductMenu model={model} />);
-        expect(menuButton.find(".menu-section").length).toBe(0);
+        expect(menuButton.find('.menu-section').length).toBe(0);
         menuButton.unmount();
     });
 
-    test("multiple sections no sectionConfigs", () => {
-        const productId = "testProduct3Columns";
+    test('multiple sections no sectionConfigs', () => {
+        const productId = 'testProduct3Columns';
 
-        let sections = List<MenuSectionModel>().asMutable();
-        sections.push( MenuSectionModel.create({
-            label: "Sample Sets",
-            url: undefined,
-            items: sampleSetItems,
-            itemLimit: 2,
-            key: "samples"
-        }));
-        sections.push( MenuSectionModel.create({
-            label: "Assays",
-            items: assayItems,
-            key: "assays"
-        }));
-        sections.push(yourItemsSection);
-        const model = new ProductMenuModel(
-            {
-                productId: productId,
-                isLoaded: true,
-                isLoading: false,
-                sections: sections.asImmutable()
-            }
+        const sections = List<MenuSectionModel>().asMutable();
+        sections.push(
+            MenuSectionModel.create({
+                label: 'Sample Sets',
+                url: undefined,
+                items: sampleSetItems,
+                itemLimit: 2,
+                key: 'samples',
+            })
         );
+        sections.push(
+            MenuSectionModel.create({
+                label: 'Assays',
+                items: assayItems,
+                key: 'assays',
+            })
+        );
+        sections.push(yourItemsSection);
+        const model = new ProductMenuModel({
+            productId,
+            isLoaded: true,
+            isLoading: false,
+            sections: sections.asImmutable(),
+        });
 
         const menuButton = mount(<ProductMenu model={model} />);
-        expect(menuButton.find(".menu-section").length).toBe(3);
+        expect(menuButton.find('.menu-section').length).toBe(3);
         expect(toJson(menuButton)).toMatchSnapshot();
         menuButton.unmount();
     });
 
-    test("multiple sections with sectionConfigs", () => {
-        const productId = "testProduct2Columns";
+    test('multiple sections with sectionConfigs', () => {
+        const productId = 'testProduct2Columns';
 
-        let sections = List<MenuSectionModel>().asMutable();
-        sections.push( MenuSectionModel.create({
-            label: "Sample Sets",
-            url: undefined,
-            items: sampleSetItems,
-            itemLimit: 2,
-            key: "samples"
-        }));
-        sections.push( MenuSectionModel.create({
-            label: "Assays",
-            items: assayItems,
-            key: "assays"
-        }));
-        sections.push(yourItemsSection);
-        const model = new ProductMenuModel(
-            {
-                productId: productId,
-                isLoaded: true,
-                isLoading: false,
-                sections: sections.asImmutable()
-            }
+        const sections = List<MenuSectionModel>().asMutable();
+        sections.push(
+            MenuSectionModel.create({
+                label: 'Sample Sets',
+                url: undefined,
+                items: sampleSetItems,
+                itemLimit: 2,
+                key: 'samples',
+            })
         );
+        sections.push(
+            MenuSectionModel.create({
+                label: 'Assays',
+                items: assayItems,
+                key: 'assays',
+            })
+        );
+        sections.push(yourItemsSection);
+        const model = new ProductMenuModel({
+            productId,
+            isLoaded: true,
+            isLoading: false,
+            sections: sections.asImmutable(),
+        });
 
         let sectionConfigs = List<Map<string, MenuSectionConfig>>().asImmutable();
 
-        let samplesSectionConfigs = Map<string, MenuSectionConfig>().set('samples', new MenuSectionConfig({
-            iconCls: 'test-icon-cls'
-        }));
+        const samplesSectionConfigs = Map<string, MenuSectionConfig>().set(
+            'samples',
+            new MenuSectionConfig({
+                iconCls: 'test-icon-cls',
+            })
+        );
         sectionConfigs = sectionConfigs.push(samplesSectionConfigs);
 
-        let twoSectionConfig = Map<string, MenuSectionConfig>().set('assays', new MenuSectionConfig({
-            iconCls: 'test-icon-cls'
-        }));
-        twoSectionConfig.set('user', new MenuSectionConfig({
-            iconCls: 'test-icon-cls'
-        }));
+        const twoSectionConfig = Map<string, MenuSectionConfig>().set(
+            'assays',
+            new MenuSectionConfig({
+                iconCls: 'test-icon-cls',
+            })
+        );
+        twoSectionConfig.set(
+            'user',
+            new MenuSectionConfig({
+                iconCls: 'test-icon-cls',
+            })
+        );
         sectionConfigs = sectionConfigs.push(twoSectionConfig);
 
-        const menuButton = mount(<ProductMenu model={model} sectionConfigs={sectionConfigs}/>);
-        expect(menuButton.find(".menu-section").length).toBe(2);
+        const menuButton = mount(<ProductMenu model={model} sectionConfigs={sectionConfigs} />);
+        expect(menuButton.find('.menu-section').length).toBe(2);
         expect(toJson(menuButton)).toMatchSnapshot();
         menuButton.unmount();
     });
-
 });

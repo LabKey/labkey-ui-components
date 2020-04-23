@@ -3,27 +3,29 @@ import renderer from 'react-test-renderer';
 
 import { SplitButtonGroup } from './SplitButtonGroup';
 
-describe("<SplitButtonGroup/>", () => {
-
-    test("both buttons enabled", () => {
+describe('<SplitButtonGroup/>', () => {
+    test('both buttons enabled', () => {
         const onClickFn = jest.fn();
-        const component = (<SplitButtonGroup defaultBtnLabel="click me" onClickDefaultBtn={onClickFn}/>);
+        const component = <SplitButtonGroup defaultBtnLabel="click me" onClickDefaultBtn={onClickFn} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("main button enabled, dropdown disabled", () => {
+    test('main button enabled, dropdown disabled', () => {
         const onClickFn = jest.fn();
-        const component = (<SplitButtonGroup defaultBtnLabel="click me" onClickDefaultBtn={onClickFn} dropdownBtnDisabled={true}/>);
+        const component = (
+            <SplitButtonGroup defaultBtnLabel="click me" onClickDefaultBtn={onClickFn} dropdownBtnDisabled={true} />
+        );
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("main button disabled, dropdown enabled", () => {
+    test('main button disabled, dropdown enabled', () => {
         const onClickFn = jest.fn();
-        const component = (<SplitButtonGroup defaultBtnLabel="click me" onClickDefaultBtn={onClickFn} defaultBtnDisabled={true}/>);
+        const component = (
+            <SplitButtonGroup defaultBtnLabel="click me" onClickDefaultBtn={onClickFn} defaultBtnDisabled={true} />
+        );
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
-
 });

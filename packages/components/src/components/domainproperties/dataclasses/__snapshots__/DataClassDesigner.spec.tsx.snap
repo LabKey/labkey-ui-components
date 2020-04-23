@@ -419,7 +419,7 @@ Array [
       onClick={[Function]}
       type="button"
     >
-      Save
+      Finish it up
     </button>
   </div>,
 ]
@@ -635,6 +635,7 @@ Array [
                 className="form-control"
                 id="entity-nameExpression"
                 onChange={[Function]}
+                placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                 type="text"
                 value=""
               />
@@ -2438,6 +2439,8 @@ exports[`DataClassDesigner initModel 1`] = `
               },
             }
           }
+          nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name"
+          nameExpressionPlaceholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
           nounPlural="Data Classes"
           nounSingular="Data Class"
           onChange={[Function]}
@@ -2729,6 +2732,8 @@ exports[`DataClassDesigner initModel 1`] = `
                 },
               }
             }
+            nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name"
+            nameExpressionPlaceholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
             nounPlural="Data Classes"
             nounSingular="Data Class"
             onChange={[Function]}
@@ -3259,6 +3264,8 @@ exports[`DataClassDesigner initModel 1`] = `
                                     },
                                   }
                                 }
+                                nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name"
+                                nameExpressionPlaceholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                 noun="Data Class"
                                 onFormChange={[Function]}
                               >
@@ -3776,6 +3783,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               componentClass="input"
                                               id="entity-nameExpression"
                                               onChange={[Function]}
+                                              placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                               type="text"
                                               value="Source-\${genId}"
                                             >
@@ -3783,6 +3791,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                 className="form-control"
                                                 id="entity-nameExpression"
                                                 onChange={[Function]}
+                                                placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                                 type="text"
                                                 value="Source-\${genId}"
                                               />

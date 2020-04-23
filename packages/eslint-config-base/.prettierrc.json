@@ -4,7 +4,7 @@
   "bracketSpacing": true,
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,
-  "jsxBracketSameLine": true,
+  "jsxBracketSameLine": false,
   "jsxSingleQuote": false,
   "proseWrap": "never",
   "quoteProps": "as-needed",
@@ -15,6 +15,6 @@
   "trailingComma": "es5",
   "useTabs": false,
   "printWidth": 120,
-  "endOfLine": "lf"
+  "endOfLine": "auto"
 }
 

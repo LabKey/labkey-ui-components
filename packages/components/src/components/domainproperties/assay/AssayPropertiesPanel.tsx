@@ -1,7 +1,17 @@
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
-import { AssayProtocolModel } from '../assay/models';
+
+import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
+import { HelpTopicURL } from '../HelpTopicURL';
+import {
+    InjectedDomainPropertiesPanelCollapseProps,
+    withDomainPropertiesPanelCollapse,
+} from '../DomainPropertiesPanelCollapse';
+import { SectionHeading } from '../SectionHeading';
+import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
+
+import { AssayProtocolModel } from './models';
 import {
     AutoCopyDataInput,
     BackgroundUploadInput,
@@ -18,14 +28,6 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput,
 } from './AssayPropertiesInput';
-import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
-import { HelpTopicURL } from "../HelpTopicURL";
-import {
-    InjectedDomainPropertiesPanelCollapseProps,
-    withDomainPropertiesPanelCollapse
-} from "../DomainPropertiesPanelCollapse";
-import { SectionHeading } from "../SectionHeading";
-import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
 
 const PROPERTIES_HEADER_ID = 'assay-properties-hdr';
 const FORM_ID_PREFIX = 'assay-design-';
@@ -42,29 +44,32 @@ export const FORM_IDS = {
     PROTOCOL_TRANSFORM_SCRIPTS: FORM_ID_PREFIX + 'protocolTransformScripts',
     QC_ENABLED: FORM_ID_PREFIX + 'qcEnabled',
     SAVE_SCRIPT_FILES: FORM_ID_PREFIX + 'saveScriptFiles',
-    PLATE_METADATA: FORM_ID_PREFIX + 'plateMetadata'
+    PLATE_METADATA: FORM_ID_PREFIX + 'plateMetadata',
 };
 const BOOLEAN_FIELDS = [
-    FORM_IDS.BACKGROUND_UPLOAD, FORM_IDS.EDITABLE_RUNS, FORM_IDS.EDITABLE_RESULTS,
-    FORM_IDS.QC_ENABLED, FORM_IDS.SAVE_SCRIPT_FILES, FORM_IDS.PLATE_METADATA
+    FORM_IDS.BACKGROUND_UPLOAD,
+    FORM_IDS.EDITABLE_RUNS,
+    FORM_IDS.EDITABLE_RESULTS,
+    FORM_IDS.QC_ENABLED,
+    FORM_IDS.SAVE_SCRIPT_FILES,
+    FORM_IDS.PLATE_METADATA,
 ];
 
 interface OwnProps {
-    model: AssayProtocolModel
-    onChange: (model: AssayProtocolModel) => any
-    appPropertiesOnly?: boolean
-    asPanel?: boolean
-    helpTopic?: string
+    model: AssayProtocolModel;
+    onChange: (model: AssayProtocolModel) => any;
+    appPropertiesOnly?: boolean;
+    asPanel?: boolean;
+    helpTopic?: string;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
-    isValid: boolean
+    isValid: boolean;
 }
 
 class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
-
     static defaultProps = {
         appPropertiesOnly: false,
         asPanel: true,
@@ -75,7 +80,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
         super(props);
 
         this.state = {
-            isValid: true
+            isValid: true,
         };
     }
 
@@ -83,16 +88,18 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
         const isValid = updatedModel && updatedModel.hasValidProperties();
-        this.setState(() => ({isValid}),
+        this.setState(
+            () => ({ isValid }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
-                    onChange(updatedModel)
+                    onChange(updatedModel);
                 }
-            });
+            }
+        );
     };
 
-    onInputChange = (evt) => {
+    onInputChange = evt => {
         const id = evt.target.id;
         let value = evt.target.value;
 
@@ -113,7 +120,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
         const { model } = this.props;
 
         const newModel = model.merge({
-            [id.replace(FORM_ID_PREFIX, '')]: value
+            [id.replace(FORM_ID_PREFIX, '')]: value,
         }) as AssayProtocolModel;
 
         this.updateValidStatus(newModel);
@@ -124,18 +131,44 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
 
         return (
             <>
-                <div className='domain-field-padding-bottom'>
-                    <SectionHeading title={'Basic Properties'}/>
-                    <NameInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>
-                    <DescriptionInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>
-                    {model.allowPlateTemplateSelection() && <PlateTemplatesInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
-                    {model.allowDetectionMethodSelection() && <DetectionMethodsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
-                    {model.allowMetadataInputFormatSelection() && <MetadataInputFormatsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
-                    {!appPropertiesOnly && model.allowQCStates && <QCStatesInput model={model} onChange={this.onInputChange}/>}
-                    {!appPropertiesOnly && model.allowPlateMetadata && <PlateMetadataInput model={model} onChange={this.onInputChange}/>}
+                <div className="domain-field-padding-bottom">
+                    <SectionHeading title="Basic Properties" />
+                    <NameInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly} />
+                    <DescriptionInput
+                        model={model}
+                        onChange={this.onInputChange}
+                        appPropertiesOnly={appPropertiesOnly}
+                    />
+                    {model.allowPlateTemplateSelection() && (
+                        <PlateTemplatesInput
+                            model={model}
+                            onChange={this.onInputChange}
+                            appPropertiesOnly={appPropertiesOnly}
+                        />
+                    )}
+                    {model.allowDetectionMethodSelection() && (
+                        <DetectionMethodsInput
+                            model={model}
+                            onChange={this.onInputChange}
+                            appPropertiesOnly={appPropertiesOnly}
+                        />
+                    )}
+                    {model.allowMetadataInputFormatSelection() && (
+                        <MetadataInputFormatsInput
+                            model={model}
+                            onChange={this.onInputChange}
+                            appPropertiesOnly={appPropertiesOnly}
+                        />
+                    )}
+                    {!appPropertiesOnly && model.allowQCStates && (
+                        <QCStatesInput model={model} onChange={this.onInputChange} />
+                    )}
+                    {!appPropertiesOnly && model.allowPlateMetadata && (
+                        <PlateMetadataInput model={model} onChange={this.onInputChange} />
+                    )}
                 </div>
             </>
-        )
+        );
     }
 
     renderImportSettings() {
@@ -143,16 +176,24 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
 
         return (
             <>
-                <div className='domain-field-padding-bottom'>
-                    <SectionHeading title={'Import Settings'}/>
-                    {<AutoCopyDataInput model={model} onChange={this.onInputChange}/>}
-                    {model.allowBackgroundUpload && <BackgroundUploadInput model={model} onChange={this.onInputChange}/>}
-                    {model.allowTransformationScript && <TransformScriptsInput model={model} onChange={this.onValueChange}/>}
-                    {model.allowTransformationScript && <SaveScriptDataInput model={model} onChange={this.onInputChange}/>}
-                    {model.moduleTransformScripts && model.moduleTransformScripts.size > 0 && <ModuleProvidedScriptsInput model={model}/>}
+                <div className="domain-field-padding-bottom">
+                    <SectionHeading title="Import Settings" />
+                    <AutoCopyDataInput model={model} onChange={this.onInputChange} />
+                    {model.allowBackgroundUpload && (
+                        <BackgroundUploadInput model={model} onChange={this.onInputChange} />
+                    )}
+                    {model.allowTransformationScript && (
+                        <TransformScriptsInput model={model} onChange={this.onValueChange} />
+                    )}
+                    {model.allowTransformationScript && (
+                        <SaveScriptDataInput model={model} onChange={this.onInputChange} />
+                    )}
+                    {model.moduleTransformScripts && model.moduleTransformScripts.size > 0 && (
+                        <ModuleProvidedScriptsInput model={model} />
+                    )}
                 </div>
             </>
-        )
+        );
     }
 
     renderEditSettings() {
@@ -161,12 +202,22 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
         return (
             <>
                 <div className="domain-field-padding-bottom">
-                    <SectionHeading title={'Editing Settings'}/>
-                    {<EditableRunsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
-                    {model.allowEditableResults && <EditableResultsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
+                    <SectionHeading title="Editing Settings" />
+                    <EditableRunsInput
+                        model={model}
+                        onChange={this.onInputChange}
+                        appPropertiesOnly={appPropertiesOnly}
+                    />
+                    {model.allowEditableResults && (
+                        <EditableResultsInput
+                            model={model}
+                            onChange={this.onInputChange}
+                            appPropertiesOnly={appPropertiesOnly}
+                        />
+                    )}
                 </div>
             </>
-        )
+        );
     }
 
     renderForm() {
@@ -174,11 +225,11 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
 
         return (
             <Form>
-                {children &&
+                {children && (
                     <Row>
                         <Col xs={12}>{children}</Col>
                     </Row>
-                }
+                )}
                 <Col xs={12} lg={appPropertiesOnly ? 12 : 6}>
                     {this.renderBasicProperties()}
                     {this.renderEditSettings()}
@@ -187,7 +238,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                     {!appPropertiesOnly && this.renderImportSettings()}
                 </Col>
             </Form>
-        )
+        );
     }
 
     renderPanel() {
@@ -198,23 +249,19 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
             <BasePropertiesPanel
                 {...this.props}
                 headerId={PROPERTIES_HEADER_ID}
-                title={'Assay Properties'}
+                title="Assay Properties"
                 titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >
-                {helpTopic && <HelpTopicURL nounPlural={'assays'} helpTopic={helpTopic}/>}
+                {helpTopic && <HelpTopicURL nounPlural="assays" helpTopic={helpTopic} />}
                 {this.renderForm()}
             </BasePropertiesPanel>
-        )
+        );
     }
 
     render() {
-        return (
-            <>
-                {this.props.asPanel ? this.renderPanel() : this.renderForm()}
-            </>
-        )
+        return <>{this.props.asPanel ? this.renderPanel() : this.renderForm()}</>;
     }
 }
 

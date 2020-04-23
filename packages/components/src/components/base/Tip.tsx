@@ -17,14 +17,13 @@ import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 interface Props {
-    caption: React.ReactNode
-    trigger?: Array<string>
+    caption: React.ReactNode;
+    trigger?: string[];
 }
 
 export class Tip extends React.Component<Props, any> {
-
     static defaultProps = {
-        trigger: ['focus', 'hover']
+        trigger: ['focus', 'hover'],
     };
 
     render() {
@@ -33,16 +32,12 @@ export class Tip extends React.Component<Props, any> {
         return (
             <OverlayTrigger
                 delay={200}
-                overlay={(
-                    <Tooltip id="tooltip">
-                        {caption}
-                    </Tooltip>
-                )}
+                overlay={<Tooltip id="tooltip">{caption}</Tooltip>}
                 placement="top"
                 trigger={trigger}
             >
                 {this.props.children}
             </OverlayTrigger>
-        )
+        );
     }
 }

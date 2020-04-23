@@ -185,7 +185,7 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
             className="form-control"
             id="entity-nameExpression"
             onChange={[Function]}
-            placeholder="S-\${now:date}-\${dailySampleCount}"
+            placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             type="text"
             value=""
           />
@@ -433,7 +433,7 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
             className="form-control"
             id="entity-nameExpression"
             onChange={[Function]}
-            placeholder="S-\${now:date}-\${dailySampleCount}"
+            placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             type="text"
             value=""
           />
@@ -733,7 +733,7 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
             className="form-control"
             id="entity-nameExpression"
             onChange={[Function]}
-            placeholder="S-\${now:date}-\${dailySampleCount}"
+            placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             type="text"
             value=""
           />

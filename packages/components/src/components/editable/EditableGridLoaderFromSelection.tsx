@@ -15,12 +15,12 @@
  */
 import React from 'react';
 import { List, Map } from 'immutable';
+
 import { getSelectedData } from '../../actions';
 import { EditorModel } from '../../models';
 import { IGridLoader, IGridResponse, QueryGridModel } from '../base/models/model';
 
 export class EditableGridLoaderFromSelection implements IGridLoader {
-
     updateData: any;
     dataForSelection: Map<string, any>;
     dataIdsForSelection: List<any>;
@@ -37,31 +37,35 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
         return new Promise((resolve, reject) => {
             // N.B.  gridModel is the model backing the editable grid, which has no selection on it,
             // so we use this.model, the model for the original query grid with selection.
-            return getSelectedData(this.model).then( response => {
-                const { data, dataIds, totalRows } = response;
-                resolve( {
-                    data: EditorModel.convertQueryDataToEditorData(data,  Map<any, any>(this.updateData)),
-                    dataIds,
-                    totalRows
+            return getSelectedData(this.model)
+                .then(response => {
+                    const { data, dataIds, totalRows } = response;
+                    resolve({
+                        data: EditorModel.convertQueryDataToEditorData(data, Map<any, any>(this.updateData)),
+                        dataIds,
+                        totalRows,
+                    });
                 })
-            }).catch( error => {
-                reject({
-                    gridModel,
-                    error
-                })
-            });
+                .catch(error => {
+                    reject({
+                        gridModel,
+                        error,
+                    });
+                });
         });
     }
 
     fetchFromData(gridModel: QueryGridModel): Promise<IGridResponse> {
-        return new Promise((resolve) => {
-
-            const data = EditorModel.convertQueryDataToEditorData(this.dataForSelection, Map<any, any>(this.updateData));
+        return new Promise(resolve => {
+            const data = EditorModel.convertQueryDataToEditorData(
+                this.dataForSelection,
+                Map<any, any>(this.updateData)
+            );
 
             resolve({
                 data,
                 dataIds: this.dataIdsForSelection,
-                totalRows: data.size
+                totalRows: data.size,
             });
         });
     }

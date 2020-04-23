@@ -1,27 +1,18 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { FileTree } from "./FileTree";
-import { fetchFileTestTree } from './FileTreeTest';
 
+import { FileTree } from './FileTree';
+import { fetchFileTestTree } from './FileTreeTest';
 
 const waitForLoad = jest.fn(component => Promise.resolve(!component.state().loading));
 
 describe('FileTree', () => {
-
     test('with data', () => {
-        const tree = shallow(<FileTree
-            loadData={fetchFileTestTree}
-            onFileSelect={jest.fn()}
-        />);
+        const tree = shallow(<FileTree loadData={fetchFileTestTree} onFileSelect={jest.fn()} />);
 
         return waitForLoad(tree).then(() => {
-            const node = tree
-                .childAt(0)
-                .dive()
-                .childAt(0)
-                .dive()
-                .find('NodeHeader');
+            const node = tree.childAt(0).dive().childAt(0).dive().find('NodeHeader');
             expect(node.prop('node')['children'].length).toEqual(0);
 
             node.simulate('click');

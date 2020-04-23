@@ -16,9 +16,10 @@
 import React from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
+
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
-import { setMaxRows } from "../../actions";
+import { setMaxRows } from '../../actions';
 
 const DEFAULT_SIZE_OPTIONS = List.of(20, 40, 100, 250, 400);
 
@@ -27,17 +28,16 @@ const DEFAULT_SIZE_OPTIONS = List.of(20, 40, 100, 250, 400);
  * @options the page size options to use for this QueryGridPanel button dropdown
  */
 interface Props {
-    model: QueryGridModel
-    options?: List<number>
+    model: QueryGridModel;
+    options?: List<number>;
 }
 
 /**
  * Displays a dropdown button with the different supported page size options. The default, from getStateQueryGridModel, is 20.
  */
 export class PageSizeSelector extends React.PureComponent<Props, any> {
-
     static defaultProps = {
-        options: DEFAULT_SIZE_OPTIONS
+        options: DEFAULT_SIZE_OPTIONS,
     };
 
     onClick(selectedVal: number) {
@@ -51,28 +51,30 @@ export class PageSizeSelector extends React.PureComponent<Props, any> {
         const minOptions = sizeOptions.sort().get(0);
         const showSelector = model && model.totalRows > minOptions;
 
-        return (showSelector &&
-            <span className={'gridbar-button-spacer'}>
-                <Tip caption="Page Size" trigger={['hover']}>
-                    <DropdownButton
-                        id={`page-size-drop-${model.getId()}`}
-                        pullRight
-                        title={model.maxRows}
-                        disabled={model.isError || !model.isPaged}
-                    >
-                        <MenuItem header>Page Size</MenuItem>
-                        {sizeOptions.map((option, index) =>
-                            <MenuItem
-                                key={index}
-                                active={option === model.maxRows}
-                                onClick={() => this.onClick(option)}
-                            >
-                                {option}
-                            </MenuItem>
-                        )}
-                    </DropdownButton>
-                </Tip>
-            </span>
-        )
+        return (
+            showSelector && (
+                <span className="gridbar-button-spacer">
+                    <Tip caption="Page Size" trigger={['hover']}>
+                        <DropdownButton
+                            id={`page-size-drop-${model.getId()}`}
+                            pullRight
+                            title={model.maxRows}
+                            disabled={model.isError || !model.isPaged}
+                        >
+                            <MenuItem header>Page Size</MenuItem>
+                            {sizeOptions.map((option, index) => (
+                                <MenuItem
+                                    key={index}
+                                    active={option === model.maxRows}
+                                    onClick={() => this.onClick(option)}
+                                >
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </DropdownButton>
+                    </Tip>
+                </span>
+            )
+        );
     }
 }

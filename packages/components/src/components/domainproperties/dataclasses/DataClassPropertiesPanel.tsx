@@ -1,58 +1,68 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { EntityDetailsForm } from "../entities/EntityDetailsForm";
-import { QuerySelect } from "../../forms/QuerySelect";
-import { SCHEMAS } from "../../base/models/schemas";
-import { DEFINE_DATA_CLASS_TOPIC } from "../../../util/helpLinks";
-import { ENTITY_FORM_ID_PREFIX } from "../entities/constants";
-import { getFormNameFromId } from "../entities/actions";
-import { DataClassModel } from "./models";
-import { HelpTopicURL } from "../HelpTopicURL";
-import { initQueryGridState } from "../../../global";
-import { InjectedDomainPropertiesPanelCollapseProps, withDomainPropertiesPanelCollapse } from "../DomainPropertiesPanelCollapse";
-import { BasePropertiesPanel, BasePropertiesPanelProps } from "../BasePropertiesPanel";
-import { DomainFieldLabel } from "../DomainFieldLabel";
+
+import { EntityDetailsForm } from '../entities/EntityDetailsForm';
+import { QuerySelect } from '../../forms/QuerySelect';
+import { SCHEMAS } from '../../base/models/schemas';
+import { DEFINE_DATA_CLASS_TOPIC, DATA_CLASS_NAME_EXPRESSION_TOPIC, getHelpLink } from '../../../util/helpLinks';
+import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
+import { getFormNameFromId } from '../entities/actions';
+
+import { HelpTopicURL } from '../HelpTopicURL';
+import { initQueryGridState } from '../../../global';
+import {
+    InjectedDomainPropertiesPanelCollapseProps,
+    withDomainPropertiesPanelCollapse,
+} from '../DomainPropertiesPanelCollapse';
+import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
+import { DomainFieldLabel } from '../DomainFieldLabel';
+
+import { DataClassModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
     CATEGORY: ENTITY_FORM_ID_PREFIX + 'category',
-    SAMPLE_TYPE_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet'
+    SAMPLE_TYPE_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet',
 };
 
 interface OwnProps {
-    model: DataClassModel
-    onChange: (model: DataClassModel) => any
-    appPropertiesOnly?: boolean
-    headerText?: string
-    helpTopic?: string
-    nameExpressionInfoUrl?: string
-    nameExpressionPlaceholder?: string
-    nounSingular?: string
-    nounPlural?: string
+    model: DataClassModel;
+    onChange: (model: DataClassModel) => any;
+    appPropertiesOnly?: boolean;
+    headerText?: string;
+    helpTopic?: string;
+    nameExpressionInfoUrl?: string;
+    nameExpressionPlaceholder?: string;
+    nounSingular?: string;
+    nounPlural?: string;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
-    isValid: boolean
+    isValid: boolean;
 }
 
-//Note: exporting this class for jest test case
-export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
-
+// Note: exporting this class for jest test case
+export class DataClassPropertiesPanelImpl extends React.PureComponent<
+    Props & InjectedDomainPropertiesPanelCollapseProps,
+    State
+> {
     static defaultProps = {
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
+        helpTopic: DEFINE_DATA_CLASS_TOPIC,
+        nameExpressionInfoUrl: getHelpLink(DATA_CLASS_NAME_EXPRESSION_TOPIC),
+        nameExpressionPlaceholder: 'Enter a naming pattern (e.g., DC-${now:date}-${genId})',
         appPropertiesOnly: false,
-        helpTopic: DEFINE_DATA_CLASS_TOPIC
     };
 
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
-        initQueryGridState(); //needed for QuerySelect usage
+        initQueryGridState(); // needed for QuerySelect usage
 
         this.state = {
-            isValid: true
+            isValid: true,
         };
     }
 
@@ -60,13 +70,15 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
         const isValid = updatedModel && updatedModel.hasValidProperties();
-        this.setState(() => ({isValid}),
+        this.setState(
+            () => ({ isValid }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
-                    onChange(updatedModel)
+                    onChange(updatedModel);
                 }
-            });
+            }
+        );
     };
 
     onFormChange = (evt: any) => {
@@ -88,8 +100,10 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
             <Row>
                 <Col xs={2}>
                     <DomainFieldLabel
-                        label={'Sample Set'}
-                        helpTipBody={() => `The default Sample Set where new samples will be created for this ${nounSingular.toLowerCase()}.`}
+                        label="Sample Set"
+                        helpTipBody={() =>
+                            `The default Sample Set where new samples will be created for this ${nounSingular.toLowerCase()}.`
+                        }
                     />
                 </Col>
                 <Col xs={10}>
@@ -106,7 +120,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
                     />
                 </Col>
             </Row>
-        )
+        );
     }
 
     renderCategorySelect() {
@@ -115,17 +129,15 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
         return (
             <Row>
                 <Col xs={2}>
-                    <DomainFieldLabel
-                        label={'Category'}
-                    />
+                    <DomainFieldLabel label="Category" />
                 </Col>
                 <Col xs={10}>
                     <QuerySelect
                         componentId={FORM_IDS.CATEGORY}
                         name={FORM_IDS.CATEGORY}
                         schemaQuery={SCHEMAS.EXP_TABLES.DATA_CLASS_CATEGORY_TYPE}
-                        displayColumn={'Value'}
-                        valueColumn={'Value'}
+                        displayColumn="Value"
+                        valueColumn="Value"
                         formsy={false}
                         showLabel={false}
                         preLoad={true}
@@ -135,11 +147,20 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
                     />
                 </Col>
             </Row>
-        )
+        );
     }
 
     render() {
-        const { model, headerText, appPropertiesOnly, nounSingular, nounPlural, nameExpressionInfoUrl, nameExpressionPlaceholder, helpTopic } = this.props;
+        const {
+            model,
+            headerText,
+            appPropertiesOnly,
+            nounSingular,
+            nounPlural,
+            nameExpressionInfoUrl,
+            nameExpressionPlaceholder,
+            helpTopic,
+        } = this.props;
         const { isValid } = this.state;
 
         return (
@@ -151,14 +172,14 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >
-                <Row className={'margin-bottom'}>
-                    {headerText &&
+                <Row className="margin-bottom">
+                    {headerText && (
                         <Col xs={9}>
-                            <div className={'entity-form--headerhelp'}>{headerText}</div>
+                            <div className="entity-form--headerhelp">{headerText}</div>
                         </Col>
-                    }
+                    )}
                     <Col xs={headerText ? 3 : 12}>
-                        <HelpTopicURL helpTopic={helpTopic} nounPlural={nounPlural}/>
+                        <HelpTopicURL helpTopic={helpTopic} nounPlural={nounPlural} />
                     </Col>
                 </Row>
                 <EntityDetailsForm
@@ -171,7 +192,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<Props & In
                 {!appPropertiesOnly && this.renderCategorySelect()}
                 {!appPropertiesOnly && this.renderSampleTypeSelect()}
             </BasePropertiesPanel>
-        )
+        );
     }
 }
 

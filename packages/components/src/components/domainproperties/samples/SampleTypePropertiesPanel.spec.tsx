@@ -16,12 +16,14 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import {fromJS, Map} from 'immutable';
-import { initUnitTestMocks } from "../../../testHelpers";
-import { ENTITY_FORM_IDS } from "../entities/constants";
-import { DomainDetails, DomainPanelStatus } from "../models";
-import {SampleTypePropertiesPanel} from "./SampleTypePropertiesPanel";
-import {SampleTypeModel} from "./models";
+import { fromJS, Map } from 'immutable';
+
+import { initUnitTestMocks } from '../../../testHelpers';
+import { ENTITY_FORM_IDS } from '../entities/constants';
+import { DomainDetails, DomainPanelStatus } from '../models';
+
+import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
+import { SampleTypeModel } from './models';
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
@@ -29,16 +31,15 @@ const BASE_PROPS = {
     useTheme: false,
     controlledCollapse: false,
     initCollapsed: false,
-    collapsed: false
+    collapsed: false,
 };
 
 beforeAll(() => {
     initUnitTestMocks();
 });
 
-describe("<SampleTypePropertiesPanel/>", () => {
-
-    test("default props", (done) => {
+describe('<SampleTypePropertiesPanel/>', () => {
+    test('default props', done => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
@@ -57,13 +58,13 @@ describe("<SampleTypePropertiesPanel/>", () => {
         });
     });
 
-    test("nameExpressionInfoUrl", (done) => {
+    test('nameExpressionInfoUrl', done => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 model={SampleTypeModel.create()}
                 updateModel={jest.fn}
-                nameExpressionInfoUrl={'#anything'}
+                nameExpressionInfoUrl="#anything"
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
@@ -77,17 +78,19 @@ describe("<SampleTypePropertiesPanel/>", () => {
         });
     });
 
-    test("Load existing SampleTypeModel", () => {
+    test('Load existing SampleTypeModel', () => {
         const nameExpVal = 'S-${genId}';
         const descVal = 'My sample set description.';
-        const data = DomainDetails.create(fromJS({
-            options: Map<string, any>({
-                rowId: 1,
-                nameExpression: nameExpVal,
-                description: descVal,
-            }),
-            domainKindName: "SampleType",
-        }));
+        const data = DomainDetails.create(
+            fromJS({
+                options: Map<string, any>({
+                    rowId: 1,
+                    nameExpression: nameExpVal,
+                    description: descVal,
+                }),
+                domainKindName: 'SampleType',
+            })
+        );
 
         const component = (
             <SampleTypePropertiesPanel
@@ -111,13 +114,13 @@ describe("<SampleTypePropertiesPanel/>", () => {
         expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME_EXPRESSION).props().value).toBe(nameExpVal);
         expect(wrapper.find('textarea#' + ENTITY_FORM_IDS.DESCRIPTION).props().value).toBe(descVal);
 
-        //Add parent alias button should be visible
+        // Add parent alias button should be visible
         expect(wrapper.find('.container--addition-icon')).toHaveLength(1);
 
         wrapper.unmount();
     });
 
-    test("include dataclass and use custom labels", (done) => {
+    test('include dataclass and use custom labels', done => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
@@ -126,14 +129,14 @@ describe("<SampleTypePropertiesPanel/>", () => {
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
-                parentOptions={[{schema: 'exp.data'}]}
+                parentOptions={[{ schema: 'exp.data' }]}
                 includeDataClasses={true}
                 useSeparateDataClassesAliasMenu={true}
-                sampleAliasCaption={'Parent Alias'}
-                sampleTypeCaption={'sample type'}
-                dataClassAliasCaption={'Source Alias'}
-                dataClassTypeCaption={'source type'}
-                dataClassParentageLabel={"source"}
+                sampleAliasCaption="Parent Alias"
+                sampleTypeCaption="sample type"
+                dataClassAliasCaption="Source Alias"
+                dataClassTypeCaption="source type"
+                dataClassParentageLabel="source"
             />
         );
 
@@ -142,5 +145,4 @@ describe("<SampleTypePropertiesPanel/>", () => {
             done();
         });
     });
-
 });

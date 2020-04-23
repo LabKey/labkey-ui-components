@@ -18,51 +18,56 @@ import { Option } from 'react-select';
 import { Filter } from '@labkey/api';
 
 import { ISelectRowsResult } from '../../query/api';
-import { DELIMITER } from './input/SelectInput';
-import * as actions from './actions';
+
 import { QueryInfo } from '../base/models/QueryInfo';
+
 import { SchemaQuery } from '../base/models/model';
 
+import { DELIMITER } from './input/SelectInput';
+import * as actions from './actions';
+
 export interface QuerySelectModelProps {
-    allResults: Map<string, Map<string, any>>
-    containerPath?: string
-    displayColumn: string
-    delimiter: string
-    id: string
-    isInit: boolean
-    maxRows: number
-    multiple: boolean
-    preLoad: boolean
-    queryFilters: List<Filter.IFilter>
-    queryInfo: QueryInfo
-    rawSelectedValue: any
-    schemaQuery: SchemaQuery
-    searchResults: Map<string, Map<string, any>>
-    selectedQuery: string
-    selectedItems: Map<string, any>
-    valueColumn: string
+    allResults: Map<string, Map<string, any>>;
+    containerPath?: string;
+    displayColumn: string;
+    delimiter: string;
+    id: string;
+    isInit: boolean;
+    maxRows: number;
+    multiple: boolean;
+    preLoad: boolean;
+    queryFilters: List<Filter.IFilter>;
+    queryInfo: QueryInfo;
+    rawSelectedValue: any;
+    schemaQuery: SchemaQuery;
+    searchResults: Map<string, Map<string, any>>;
+    selectedQuery: string;
+    selectedItems: Map<string, any>;
+    valueColumn: string;
 }
 
-export class QuerySelectModel extends Record({
-    addExactFilter: true,
-    allResults: Map<string, Map<string, any>>(),
-    containerPath: undefined,
-    displayColumn: undefined,
-    delimiter: DELIMITER,
-    id: undefined,
-    isInit: false,
-    maxRows: 20,
-    multiple: false,
-    preLoad: false,
-    queryFilters: undefined,
-    queryInfo: undefined,
-    rawSelectedValue: undefined,
-    schemaQuery: undefined,
-    searchResults: Map<string, Map<string, any>>(),
-    selectedQuery: '',
-    selectedItems: Map<string, any>(),
-    valueColumn: undefined
-}) implements QuerySelectModelProps {
+export class QuerySelectModel
+    extends Record({
+        addExactFilter: true,
+        allResults: Map<string, Map<string, any>>(),
+        containerPath: undefined,
+        displayColumn: undefined,
+        delimiter: DELIMITER,
+        id: undefined,
+        isInit: false,
+        maxRows: 20,
+        multiple: false,
+        preLoad: false,
+        queryFilters: undefined,
+        queryInfo: undefined,
+        rawSelectedValue: undefined,
+        schemaQuery: undefined,
+        searchResults: Map<string, Map<string, any>>(),
+        selectedQuery: '',
+        selectedItems: Map<string, any>(),
+        valueColumn: undefined,
+    })
+    implements QuerySelectModelProps {
     addExactFilter: boolean;
     allResults: Map<string, Map<string, any>>;
     containerPath: string;
@@ -86,21 +91,21 @@ export class QuerySelectModel extends Record({
         super(values);
     }
 
-    formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): Array<Option> {
+    formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): Option[] {
         return actions.formatSavedResults(this, data, token);
     }
 
-    getSelectedOptions(): Option | Array<Option> {
+    getSelectedOptions(): Option | Option[] {
         const options = actions.formatResults(this, this.selectedItems);
 
         if (this.multiple) {
             return options;
-        }
-        else if (options.length === 1) {
+        } else if (options.length === 1) {
             return options[0];
-        }
-        else if (options.length > 1) {
-            console.warn('QuerySelect.getSelectedOptions: There are more than one options available, however, must in in "multiple" mode.');
+        } else if (options.length > 1) {
+            console.warn(
+                'QuerySelect.getSelectedOptions: There are more than one options available, however, must in in "multiple" mode.'
+            );
         }
 
         return undefined;
@@ -124,13 +129,13 @@ export class QuerySelectModel extends Record({
 }
 
 export interface ISelectInitData {
-    name: string
-    type: string
-    getSelectComponentId(): string
+    name: string;
+    type: string;
+    getSelectComponentId(): string;
 }
 
 export interface IUser {
-    displayName: string
-    email: string
-    userId: number
+    displayName: string;
+    email: string;
+    userId: number;
 }

@@ -17,178 +17,216 @@ import React from 'reactn';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { List } from 'immutable';
-import { MenuSectionModel } from './model';
-import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
+
 import { AppURL } from '../../url/AppURL';
 
-describe("ProductMenuSection render", () => {
+import { MenuSectionModel } from './model';
+import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
+
+describe('ProductMenuSection render', () => {
     const sampleSetItems = List<MenuSectionModel>([
         {
             id: 1,
-            label: "Sample Set 1",
+            label: 'Sample Set 1',
         },
         {
             id: 2,
-            label: "Sample Set 2",
+            label: 'Sample Set 2',
         },
         {
             id: 3,
-            label: "Sample Set 3",
+            label: 'Sample Set 3',
         },
         {
             id: 4,
-            label: "Sample Set 4",
-        }
+            label: 'Sample Set 4',
+        },
     ]);
 
     const assayItems = List<MenuSectionModel>([
         {
             id: 11,
-            label: "Assay 1",
+            label: 'Assay 1',
         },
         {
             id: 12,
-            label: "Assay 2",
+            label: 'Assay 2',
         },
         {
             id: 13,
-            label: "Assay 3",
+            label: 'Assay 3',
         },
         {
             id: 14,
-            label: "Assay 4",
+            label: 'Assay 4',
         },
         {
             id: 15,
-            label: "Assay 5"
-        }
+            label: 'Assay 5',
+        },
     ]);
 
-    const yourItems  = List<MenuSectionModel>([
+    const yourItems = List<MenuSectionModel>([
         {
             id: 21,
-            label: "Documentation"
-        }
+            label: 'Documentation',
+        },
     ]);
 
-    const yourItemsSection =  MenuSectionModel.create({
-        label: "Your Items",
+    const yourItemsSection = MenuSectionModel.create({
+        label: 'Your Items',
         items: yourItems,
-        key: 'user'
+        key: 'user',
     });
 
-    test("empty section no text", () => {
-        let section = MenuSectionModel.create({
-            label: "Sample Sets",
+    test('empty section no text', () => {
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
             items: List<MenuSectionModel>(),
             itemLimit: 2,
-            key: "samples",
+            key: 'samples',
         });
 
-        const menuSection = mount(<ProductMenuSection productId="testProduct" section={section} config={new MenuSectionConfig({
-            iconURL: "/testProduct/images/samples.svg"
-        })}/>);
+        const menuSection = mount(
+            <ProductMenuSection
+                productId="testProduct"
+                section={section}
+                config={
+                    new MenuSectionConfig({
+                        iconURL: '/testProduct/images/samples.svg',
+                    })
+                }
+            />
+        );
 
         expect(menuSection.find('li').length).toBe(0);
         expect(toJson(menuSection)).toMatchSnapshot();
     });
 
-    test("empty section with empty text and create link", () => {
-        let section = MenuSectionModel.create({
-            label: "Sample Sets",
+    test('empty section with empty text and create link', () => {
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
             items: List<MenuSectionModel>(),
-            key: "samples",
+            key: 'samples',
         });
-        const menuSection = mount(<ProductMenuSection productId="testProduct" section={section} config={new MenuSectionConfig({
-            emptyText: "Test empty text",
-            iconURL: "/testProduct/images/samples.svg",
-            emptyURL: AppURL.create('sample', 'new'),
-            emptyURLText: "Test empty link"
-        })}/>);
+        const menuSection = mount(
+            <ProductMenuSection
+                productId="testProduct"
+                section={section}
+                config={
+                    new MenuSectionConfig({
+                        emptyText: 'Test empty text',
+                        iconURL: '/testProduct/images/samples.svg',
+                        emptyURL: AppURL.create('sample', 'new'),
+                        emptyURLText: 'Test empty link',
+                    })
+                }
+            />
+        );
 
         expect(menuSection.find('li.empty-section').length).toBe(1);
-        expect(menuSection.contains("Test empty text")).toBe(true);
+        expect(menuSection.contains('Test empty text')).toBe(true);
         expect(toJson(menuSection)).toMatchSnapshot();
     });
 
-    test("section with custom headerURL", () => {
-        let section = MenuSectionModel.create({
-            label: "Sample Sets",
+    test('section with custom headerURL', () => {
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
             items: List<MenuSectionModel>(),
             itemLimit: 2,
-            key: "samples"
+            key: 'samples',
         });
 
-        const menuSection = mount(<ProductMenuSection productId="testProductHeaderUrl" section={section} config={new MenuSectionConfig({
-            iconURL: "/testProduct/images/samples.svg",
-            headerURL: AppURL.create('sample', 'new').addParams({sort: 'date'})
-        })}/>);
+        const menuSection = mount(
+            <ProductMenuSection
+                productId="testProductHeaderUrl"
+                section={section}
+                config={
+                    new MenuSectionConfig({
+                        iconURL: '/testProduct/images/samples.svg',
+                        headerURL: AppURL.create('sample', 'new').addParams({ sort: 'date' }),
+                    })
+                }
+            />
+        );
 
         expect(toJson(menuSection)).toMatchSnapshot();
     });
 
-    test("one-column section", () => {
-        const productId = "testProduct3Columns";
+    test('one-column section', () => {
+        const productId = 'testProduct3Columns';
 
-        let section = MenuSectionModel.create({
-            label: "Sample Sets",
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
             url: undefined,
             items: sampleSetItems,
             itemLimit: 2,
-            key: "samples"
+            key: 'samples',
         });
 
-        const menuSection = mount(<ProductMenuSection productId={productId} section={section} config={new MenuSectionConfig({
-            iconURL: "/testProduct3Columns/images/samples.svg"
-        })} />);
+        const menuSection = mount(
+            <ProductMenuSection
+                productId={productId}
+                section={section}
+                config={
+                    new MenuSectionConfig({
+                        iconURL: '/testProduct3Columns/images/samples.svg',
+                    })
+                }
+            />
+        );
         expect(menuSection.find('ul').length).toBe(1);
         expect(toJson(menuSection)).toMatchSnapshot();
         menuSection.unmount();
     });
 
-    test("two-column section", () => {
-        const productId = "testProduct4Columns";
+    test('two-column section', () => {
+        const productId = 'testProduct4Columns';
 
         const section = MenuSectionModel.create({
-            label: "Assays",
+            label: 'Assays',
             items: assayItems,
-            key: "assays"
+            key: 'assays',
         });
 
         const sectionConfig = new MenuSectionConfig({
-            iconURL: "/testProduct4Columns/images/assays.svg",
+            iconURL: '/testProduct4Columns/images/assays.svg',
             maxColumns: 2,
-            maxItemsPerColumn: 2
+            maxItemsPerColumn: 2,
         });
 
-        const menuSection = mount(<ProductMenuSection section={section} productId={productId} config={sectionConfig}/>);
+        const menuSection = mount(
+            <ProductMenuSection section={section} productId={productId} config={sectionConfig} />
+        );
 
         expect(menuSection.find('ul').length).toBe(2);
         expect(toJson(menuSection)).toMatchSnapshot();
         menuSection.unmount();
     });
 
-    test("two columns with overflow link", () => {
-        const productId = "testProductOverflowLink";
-        let sections = List<MenuSectionModel>().asMutable();
+    test('two columns with overflow link', () => {
+        const productId = 'testProductOverflowLink';
+        const sections = List<MenuSectionModel>().asMutable();
 
         const section = new MenuSectionModel({
-            label: "Assays",
+            label: 'Assays',
             items: assayItems,
-            key: "assays",
-            totalCount: 5
+            key: 'assays',
+            totalCount: 5,
         });
 
         const sectionConfig = new MenuSectionConfig({
-            iconURL: "/testProductOverflowLink/images/assays.svg",
+            iconURL: '/testProductOverflowLink/images/assays.svg',
             maxColumns: 2,
-            maxItemsPerColumn: 2
+            maxItemsPerColumn: 2,
         });
 
-        const menuSection = mount(<ProductMenuSection section={section} productId={productId} config={sectionConfig}/>);
+        const menuSection = mount(
+            <ProductMenuSection section={section} productId={productId} config={sectionConfig} />
+        );
         expect(menuSection.find('ul').length).toBe(2);
         expect(menuSection.find('span.overflow-link').length).toBe(1);
         expect(toJson(menuSection)).toMatchSnapshot();
         menuSection.unmount();
-    })
+    });
 });

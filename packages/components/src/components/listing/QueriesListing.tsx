@@ -17,13 +17,14 @@ import React from 'react';
 import { Link } from 'react-router';
 import { List } from 'immutable';
 
-import { SchemaListing } from './SchemaListing';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AppURL } from '../../url/AppURL';
 import { Grid, GridColumn } from '../base/Grid';
 import { fetchGetQueries } from '../base/models/schemas';
 import { QueryInfo } from '../base/models/QueryInfo';
-import { Alert } from "../base/Alert";
+import { Alert } from '../base/Alert';
+
+import { SchemaListing } from './SchemaListing';
 
 const columns = List([
     new GridColumn({
@@ -31,42 +32,37 @@ const columns = List([
         title: 'Name',
         cell: (name: string, info: QueryInfo) => {
             if (name && info) {
-                return (
-                    <Link to={AppURL.create('q', info.schemaName, info.name).toString()}>
-                        {info.title}
-                    </Link>
-                );
+                return <Link to={AppURL.create('q', info.schemaName, info.name).toString()}>{info.title}</Link>;
             }
             return name;
-        }
+        },
     }),
     new GridColumn({
         index: 'description',
-        title: 'Description'
-    })
+        title: 'Description',
+    }),
 ]);
 
 interface QueriesListingProps {
-    schemaName: string
-    hideEmpty?: boolean
-    asPanel?: boolean
-    title?: string
+    schemaName: string;
+    hideEmpty?: boolean;
+    asPanel?: boolean;
+    title?: string;
 }
 
 interface QueriesListingState {
-    queries: List<QueryInfo>,
-    error: string
+    queries: List<QueryInfo>;
+    error: string;
 }
 
 export class QueriesListing extends React.Component<QueriesListingProps, QueriesListingState> {
-
     constructor(props: QueriesListingProps) {
         super(props);
 
         this.state = {
             queries: undefined,
-            error: undefined
-        }
+            error: undefined,
+        };
     }
 
     componentWillMount() {
@@ -82,12 +78,12 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
 
     loadQueries(schemaName: string) {
         fetchGetQueries(schemaName)
-            .then((queries) => {
-                this.setState(() => ({queries}));
+            .then(queries => {
+                this.setState(() => ({ queries }));
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error(error);
-                this.setState(() => ({error: error.exception}));
+                this.setState(() => ({ error: error.exception }));
             });
     }
 
@@ -98,33 +94,25 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
         if (queries) {
             return (
                 <>
-                    <SchemaListing
-                        schemaName={schemaName}
-                        hideEmpty={true}
-                        asPanel={true}
-                        title={'Nested Schemas'}
-                    />
-                    {hideEmpty && queries.count() === 0
-                        ? null
-                        : asPanel ?
-                            <div className="panel panel-default">
-                                <div className="panel-heading">
-                                    {title || 'Queries'}
-                                </div>
-                                <div className="panel-body">
-                                    <Grid data={queries} columns={columns}/>
-                                </div>
+                    <SchemaListing schemaName={schemaName} hideEmpty={true} asPanel={true} title="Nested Schemas" />
+                    {hideEmpty && queries.count() === 0 ? null : asPanel ? (
+                        <div className="panel panel-default">
+                            <div className="panel-heading">{title || 'Queries'}</div>
+                            <div className="panel-body">
+                                <Grid data={queries} columns={columns} />
                             </div>
-                            : <Grid data={queries} columns={columns}/>
-                    }
+                        </div>
+                    ) : (
+                        <Grid data={queries} columns={columns} />
+                    )}
                 </>
             );
         }
 
         if (error) {
-            return <Alert>{error}</Alert>
+            return <Alert>{error}</Alert>;
         }
 
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
     }
 }

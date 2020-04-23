@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
-import { Ajax, Utils} from '@labkey/api';
+import { Ajax, Utils } from '@labkey/api';
+
 import { SEVERITY_LEVEL_ERROR } from '../constants';
 import { DomainException } from '../models';
-import { AssayProtocolModel } from './models';
+
 import { buildURL } from '../../../url/ActionURL';
-import { setDomainException } from "../actions";
-import { Container } from "../../base/models/model";
+import { setDomainException } from '../actions';
+import { Container } from '../../base/models/model';
+
+import { AssayProtocolModel } from './models';
 
 export function fetchProtocol(protocolId?: number, providerName?: string, copy?: boolean): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
@@ -29,15 +32,15 @@ export function fetchProtocol(protocolId?: number, providerName?: string, copy?:
                 // give precedence to the protocolId if both are provided
                 protocolId,
                 providerName: protocolId !== undefined ? undefined : providerName,
-                copy: copy || false
+                copy: copy || false,
             }),
-            success: Utils.getCallbackWrapper((data) => {
+            success: Utils.getCallbackWrapper(data => {
                 resolve(AssayProtocolModel.create(data.data));
             }),
-            failure: Utils.getCallbackWrapper((error) => {
+            failure: Utils.getCallbackWrapper(error => {
                 reject(error);
-            })
-        })
+            }),
+        });
     });
 }
 
@@ -46,28 +49,31 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
         Ajax.request({
             url: buildURL('assay', 'saveProtocol.api'),
             jsonData: AssayProtocolModel.serialize(model),
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(AssayProtocolModel.create(response.data));
             }),
-            failure: Utils.getCallbackWrapper((error) => {
-                // clear any previous exception at the model level
-                let updatedModel = model.set("exception", undefined) as AssayProtocolModel;
+            failure: Utils.getCallbackWrapper(
+                error => {
+                    // clear any previous exception at the model level
+                    let updatedModel = model.set('exception', undefined) as AssayProtocolModel;
 
-                // Check for validation exception
-                const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                if (exception) {
-                    if (exception.domainName) {
-                        updatedModel = setAssayDomainException(updatedModel, exception);
+                    // Check for validation exception
+                    const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    if (exception) {
+                        if (exception.domainName) {
+                            updatedModel = setAssayDomainException(updatedModel, exception);
+                        } else {
+                            updatedModel = updatedModel.set('exception', exception.exception) as AssayProtocolModel;
+                        }
+                    } else {
+                        updatedModel = updatedModel.set('exception', error.exception || error) as AssayProtocolModel;
                     }
-                    else {
-                        updatedModel = updatedModel.set("exception", exception.exception) as AssayProtocolModel;
-                    }
-                } else {
-                    updatedModel = updatedModel.set("exception", error.exception || error) as AssayProtocolModel;
-                }
 
-                reject(updatedModel);
-            }, this, false)
+                    reject(updatedModel);
+                },
+                this,
+                false
+            ),
         });
     });
 }
@@ -77,7 +83,7 @@ export function setAssayDomainException(model: AssayProtocolModel, exception: Do
 
     // If a domain is identified in the exception, attach to that domain
     if (exception.domainName) {
-        const exceptionDomains = model.domains.map((domain) => {
+        const exceptionDomains = model.domains.map(domain => {
             if (exception.domainName.endsWith(domain.get('name'))) {
                 return setDomainException(domain, exception);
             }
@@ -99,12 +105,12 @@ export function getValidPublishTargets(): Promise<List<Container>> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('assay', 'getValidPublishTargets.api'),
-            success: Utils.getCallbackWrapper((response) => {
-                resolve(List<Container>(response.containers.map((container) => new Container(container))));
+            success: Utils.getCallbackWrapper(response => {
+                resolve(List<Container>(response.containers.map(container => new Container(container))));
             }),
-            failure: Utils.getCallbackWrapper((error) => {
+            failure: Utils.getCallbackWrapper(error => {
                 reject(error);
-            })
-        })
+            }),
+        });
     });
 }

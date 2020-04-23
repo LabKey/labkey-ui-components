@@ -1,4 +1,3 @@
-
 /**
  * Returns value if it is not undefined, or defaultValue.
  * @param value

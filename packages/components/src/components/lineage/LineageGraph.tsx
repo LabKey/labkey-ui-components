@@ -9,29 +9,32 @@ import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage'
 import { NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { LineageNode } from './models';
-import { isBasicNode, VisGraphNode, VisGraphNodeType } from './vis/VisGraphGenerator';
+import { isBasicNode, VisGraphOptions, VisGraphNode, VisGraphNodeType } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
 import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
-import { SummaryOptions } from './node/LineageNodeDetail';
 
-interface LinageGraphOwnProps extends SummaryOptions {
+interface LinageGraphOwnProps {
     members?: LINEAGE_DIRECTIONS
     navigate?: (node: VisGraphNode) => any
 }
 
-interface LineageGraphDisplayState {
+interface LineageGraphDisplayOwnProps {
+    visGraphOptions: VisGraphOptions
+}
+
+interface State {
     hoverNode: string
     nodeInteractions: WithNodeInteraction
     selectedNodes: VisGraphNodeType[]
 }
 
-type LineageGraphDisplayProps = InjectedLineage & WithLineageOptions & LinageGraphOwnProps & LineageOptions;
+type Props = InjectedLineage & LineageGraphDisplayOwnProps & WithLineageOptions & LinageGraphOwnProps & LineageOptions;
 
-class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partial<LineageGraphDisplayState>> {
+class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
 
     private readonly visGraphRef = undefined;
 
-    constructor(props: LineageGraphDisplayProps) {
+    constructor(props: Props) {
         super(props);
 
         this.visGraphRef = React.createRef();
@@ -95,16 +98,12 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partia
     };
 
     render() {
-        const { lineage, lsid, summaryOptions, visGraphOptions } = this.props;
+        const { lineage, lsid, visGraphOptions } = this.props;
         const { hoverNode, selectedNodes } = this.state;
 
         if (lineage?.error) {
             return <Alert>{lineage.error}</Alert>
         }
-
-        // Apply "LineageOptions" when summaryOptions not explicitly given
-        const lineageOptions = {...this.props};
-        const options = summaryOptions ? summaryOptions : {...lineageOptions};
 
         return (
             <NodeInteractionProvider value={this.state.nodeInteractions}>
@@ -127,9 +126,8 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partia
                         <LineageNodeDetailFactory
                             highlightNode={hoverNode}
                             lineage={lineage}
-                            lineageOptions={lineageOptions}
+                            lineageOptions={this.props}
                             selectedNodes={selectedNodes}
-                            summaryOptions={options}
                         />
                     </div>
                 </div>
@@ -138,4 +136,9 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps, Partia
     }
 }
 
-export const LineageGraph = withLineage<LinageGraphOwnProps>(LineageGraphDisplay, { prefetchSeed: true });
+export const LineageGraph = withLineage<LinageGraphOwnProps>((props: Props) => (
+    // Optimization: This FunctionComponent allows for "generateGraph" to only be called
+    // when the lineage is updated. If it is called in the render loop of <LineageGraphDisplay/>
+    // it is run each time a user interacts with the graph (e.g. hovers a node, clicks a node, etc).
+    <LineageGraphDisplay {...props} visGraphOptions={props.lineage?.generateGraph(props)} />
+));

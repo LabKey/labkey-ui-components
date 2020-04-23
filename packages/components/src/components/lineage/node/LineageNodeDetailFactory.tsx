@@ -12,12 +12,11 @@ export interface LineageNodeDetailFactoryProps {
     lineage: Lineage;
     lineageOptions: LineageOptions;
     selectedNodes: VisGraphNodeType[];
-    summaryOptions: LineageOptions;
 }
 
 export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFactoryProps> {
     render() {
-        const { highlightNode, lineage, lineageOptions, selectedNodes, summaryOptions } = this.props;
+        const { highlightNode, lineage, lineageOptions, selectedNodes } = this.props;
 
         if (!lineage || lineage.error) {
             return null;
@@ -26,9 +25,9 @@ export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFac
             if (lineage.isSeedLoaded()) {
                 return (
                     <LineageNodeDetail
-                        seed={lineage.seed}
+                        lineageOptions={lineageOptions}
                         node={lineage.seedResult.nodes.get(lineage.seed)}
-                        summaryOptions={summaryOptions}
+                        seed={lineage.seed}
                     />
                 );
             }
@@ -46,9 +45,9 @@ export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFac
                 return (
                     <LineageNodeDetail
                         highlightNode={highlightNode}
+                        lineageOptions={lineageOptions}
                         node={node.lineageNode}
                         seed={seed}
-                        summaryOptions={summaryOptions}
                     />
                 );
             } else if (isCombinedNode(node)) {

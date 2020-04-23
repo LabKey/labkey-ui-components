@@ -4,16 +4,13 @@ import { Draft, produce } from 'immer';
 import { fetchLineageNodes, processLineageResult, loadLineageResult } from './actions';
 import { ILineage, Lineage, LineageLoadingState, LineageResult } from './models';
 import { LineageOptions } from './types';
-import { VisGraphOptions } from './vis/VisGraphGenerator';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 
 export interface InjectedLineage {
     lineage: Lineage
-    visGraphOptions: VisGraphOptions
 }
 
 export interface LoadLineage {
-    cacheResults?: boolean
     distance?: number
     prefetchSeed?: boolean
 }
@@ -27,8 +24,7 @@ interface State {
 }
 
 export function withLineage<Props>(
-    ComponentToWrap: ComponentType<Props & InjectedLineage>,
-    defaultProps?: LoadLineage
+    ComponentToWrap: ComponentType<Props & InjectedLineage>
 ): ComponentType<Props & WithLineageOptions> {
     class ComponentWithLineage extends PureComponent<Props & WithLineageOptions, State> {
 
@@ -148,23 +144,13 @@ export function withLineage<Props>(
             const { ...props } = this.props;
             const { lineage } = this.state;
 
-            // TODO: Move "visGraphOptions" to a Graph specific wrapper
-            return (
-                <ComponentToWrap
-                    lineage={lineage}
-                    visGraphOptions={lineage?.generateGraph(this.props)}
-                    {...props as Props}
-                />
-            )
+            return <ComponentToWrap {...props as Props} lineage={lineage} />;
         }
     }
 
     ComponentWithLineage.defaultProps = {
-        ...{
-            distance: DEFAULT_LINEAGE_DISTANCE,
-            prefetchSeed: false,
-        },
-        ...defaultProps
+        distance: DEFAULT_LINEAGE_DISTANCE,
+        prefetchSeed: true,
     };
 
     return ComponentWithLineage;

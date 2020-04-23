@@ -13,12 +13,9 @@ import { NodeDetail } from './NodeDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
 import { DetailsListGroup, DetailsListNodes, DetailsListSteps } from './DetailsList';
 
-export interface SummaryOptions {
-    summaryOptions?: LineageOptions;
-}
-
 interface LineageNodeDetailProps {
     highlightNode?: string;
+    lineageOptions?: LineageOptions;
     node: LineageNode;
     seed: string;
 }
@@ -33,7 +30,7 @@ const initialState: LineageNodeDetailState = {
     tabKey: 1,
 };
 
-export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & SummaryOptions, LineageNodeDetailState> {
+export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, LineageNodeDetailState> {
     readonly state: LineageNodeDetailState = initialState;
 
     changeTab = (tabKey: number) => {
@@ -44,7 +41,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
         this.setState({ stepIdx });
     };
 
-    componentDidUpdate(prevProps: Readonly<LineageNodeDetailProps & SummaryOptions>): void {
+    componentDidUpdate(prevProps: Readonly<LineageNodeDetailProps>): void {
         const prevNode = prevProps.node;
         const { node } = this.props;
 
@@ -56,7 +53,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
     }
 
     render() {
-        const { seed, node, highlightNode, summaryOptions } = this.props;
+        const { seed, node, highlightNode, lineageOptions } = this.props;
         const { stepIdx, tabKey } = this.state;
 
         if (node.isRun && stepIdx !== undefined) {
@@ -73,10 +70,11 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
             <>
                 <NodeDetail node={node} />
                 <LineageSummary
+                    {...lineageOptions}
                     highlightNode={highlightNode}
                     key={node.lsid}
                     lsid={node.lsid}
-                    {...summaryOptions}
+                    prefetchSeed={false}
                 />
             </>
         );

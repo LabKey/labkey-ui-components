@@ -88,7 +88,7 @@ export function withLineage<Props>(
                 const seedResult = await processLineageResult(LineageResult.create({
                     nodes: { [lsid]: seedNodes[0] },
                     seed: lsid,
-                }));
+                }), this.props);
 
                 await this.updateLineage({
                     seedResult,

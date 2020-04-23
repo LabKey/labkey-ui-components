@@ -12,9 +12,8 @@ import { createLineageNodeCollections } from './vis/VisGraphGenerator';
 import { DetailsListNodes } from './node/DetailsList';
 import { InjectedLineage, withLineage } from './withLineage';
 
-interface LineageSummaryOwnProps {
+interface LineageSummaryOwnProps extends LineageOptions {
     highlightNode?: string
-    options?: LineageOptions
 }
 
 class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryOwnProps> {
@@ -30,7 +29,7 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
 
         const nodes = edges.map(edge => lineage.nodes.get(edge.lsid)).toArray();
 
-        const nodesByType = createLineageNodeCollections(nodes, this.props.options);
+        const nodesByType = createLineageNodeCollections(nodes, this.props);
         const groups = Object.keys(nodesByType).sort();
 
         const title = direction === LINEAGE_DIRECTIONS.Parent ? "Parents" : "Children";
@@ -50,7 +49,7 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
     }
 
     render() {
-        const { lineage, options } = this.props;
+        const { lineage } = this.props;
 
         if (!lineage || !lineage.isLoaded()) {
             return <LoadingSpinner msg="Loading lineage..."/>;
@@ -58,7 +57,7 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
             return <div>{lineage.error}</div>;
         }
 
-        const result = lineage.filterResult(options);
+        const result = lineage.filterResult(this.props);
         const node = result.nodes.get(result.seed);
 
         if (!node) {

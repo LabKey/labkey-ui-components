@@ -85,7 +85,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
                                 highlightNode={highlightNode}
                                 key={node.lsid}
                                 lsid={node.lsid}
-                                options={summaryOptions}
+                                {...summaryOptions}
                             />
                         </Tab>
                         <Tab eventKey={2} title="Run Properties">
@@ -101,7 +101,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps & Su
                             highlightNode={highlightNode}
                             key={node.lsid}
                             lsid={node.lsid}
-                            options={summaryOptions}
+                            {...summaryOptions}
                         />
                     </>
                 )}

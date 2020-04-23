@@ -6,7 +6,7 @@ to add Immer as a dependency and start using it for new development in lieu of [
 That said, we do not plan on actively migrating all usages away from ImmutableJS and it will remain a dependency for
 the foreseeable future.
 
-This document intends to out outline why we're moving to Immer, provide some links to good resources for Immer, and provide
+This document intends to outline why we're moving to Immer, provide some links to good resources for Immer, and provide
 a couple of scenarios highlighting aspects of note.
 
 ## Rationale for switching
@@ -21,19 +21,19 @@ several reasons.
 
 1. No longer actively developed. We use `v3.8.2` which was released in late 2016. `v4` has yet to get
 passed "release candidate" status with it's most recent candidate releasing in late 2018.
-1. API learning curve. Immutable provides all of it's own data structures (e.g. `List`, `Map`, `Set`, etc) which are
+1. API learning curve. Immutable provides all of its own data structures (e.g. `List`, `Map`, `Set`, etc) which are
 wholy different from native JS data structures. While the API for these structures is powerful, allowing for really
 complex mutations and iterations, it can be difficult to ramp up on understanding it all.
-1. Poorly constructed `Record`. A class we rely on heavily is `Immutable.Record`. Extending record requires and
+1. Poorly constructed `Record`. A class we rely on heavily is `Immutable.Record`. Extending record and
 providing the correct typings annotations requires three declarations of each value. Additionally, due to the
-nature of ImmutableJS, the constructor isn't able to make any effectual modifications of what the user passes in
+nature of ImmutableJS, the constructor isn't able to make any effectual modifications of what the user passes in,
 which lead to us using a `RecordType.create()` static method pattern. `Immutable.Record` was removed in `v4`.
 1. Difficult to debug. The Immutable data structures can be difficult to debug and generally requires the code to be
 modified to include `.toJS()` statements to understand what is actually held in a data structure.
 
 #### Advantages of Immer
 
-There are copied [directly from the website](https://immerjs.github.io/immer/docs/introduction#benefits):
+These are copied [directly from the website](https://immerjs.github.io/immer/docs/introduction#benefits):
 
 1. Immutability with normal JavaScript objects, arrays, Sets and Maps. No new APIs to learn!
 1. Strongly typed, no string based paths selectors etc.
@@ -64,7 +64,7 @@ Immer so things may have changed if you're working with a more current version.
 
 This scenario highlights declaring an immutable class in TypeScript using Immer. By the end we'll have an immutable class
 that is both compile-time and run-time safe. To keep the class simple we're going to define a `Circle` class defined only
-by it's `radius`:
+by its `radius`:
 
 ```ts
 class Circle {
@@ -94,7 +94,7 @@ let circle = produce(new Circle(5), () => {});
 circle.radius = 10; // circle.radius is now 10! I thought using produce made it immutable!
 ```
 
-To make a class immutable with Immer you first annotate the class with a [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) called
+To make a class immutable with Immer you first annotate the class with a [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
 provided by Immer called `immerable`:
 
 ```ts
@@ -133,7 +133,7 @@ circle.radius = 10; // strict mode: Run-time error: Cannot assign to read only p
 
 Instances of this class declared via `produce` can only be mutated via `produce`. When an instance is passed through
 Immer's `produce` function it will [freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
-the object (when `immer.setAutoFreeze(true)`). Depending on strict mode any attempts to explicitly modify the object
+the object (when `immer.setAutoFreeze(true)`). Depending on the strict mode, any attempts to explicitly modify the object
 will either fail to modify or throw a run-time error.
 
 Now, let's actually make an update to the immutable instance with Immer:
@@ -195,7 +195,7 @@ Immer. To quote the docs:
 > For curried reducers, the type is inferred from the first argument of recipe function, so make sure to type it.
 The `Draft` utility type can be used if the state argument type is immutable.
 
-This will help ensure the passed in type is immutable.
+This will help ensure the passed-in type is immutable.
 
 ```ts
 import { Draft, produce } from 'immer';
@@ -211,7 +211,7 @@ let circle = produce(new Circle(5), (draft: Draft<Circle>) => {
 });
 ```
 
-If you'd like to have your class instance's be immutable without requiring use of `produce` you can directly call
+If you'd like to have your class instances be immutable without requiring use of `produce` you can directly call
 `Object.freeze` at the end of the constructor.
 
 ```ts

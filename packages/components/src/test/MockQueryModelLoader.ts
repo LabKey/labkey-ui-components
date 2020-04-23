@@ -59,4 +59,8 @@ export class MockQueryModelLoader implements QueryModelLoader {
     clearSelections = (model: QueryModel) => {
         return Promise.reject('Not implemented!');
     };
+
+    loadCharts = (model: QueryModel, includeSampleComparison: boolean) => {
+        return Promise.reject('Not Implemented!');
+    }
 }

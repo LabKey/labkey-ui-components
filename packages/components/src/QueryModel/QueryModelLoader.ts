@@ -1,10 +1,21 @@
 import { List } from 'immutable';
 
-import { getQueryDetails, getSelected, QueryInfo, selectRows, setSelected } from '..';
+import {
+    DataViewInfoTypes,
+    getQueryDetails,
+    getSelected,
+    IDataViewInfo,
+    loadReports,
+    QueryInfo,
+    selectRows,
+    setSelected,
+} from '..';
 import { bindColumnRenderers } from '../renderers';
-import { clearSelected, ISelectResponse, selectAll } from '../actions';
+import { clearSelected, fetchCharts, ISelectResponse, selectAll } from '../actions';
 
-import { QueryModel, GridMessage } from './QueryModel';
+import { GridMessage, QueryModel } from './QueryModel';
+import { VISUALIZATION_REPORTS } from '../constants';
+import { dataViewInfoSorter } from './utils';
 
 export interface RowsResponse {
     messages: GridMessage[];
@@ -51,6 +62,15 @@ export interface QueryModelLoader {
      * @param model: QueryModel
      */
     selectAllRows: (model: QueryModel) => Promise<Set<string>>;
+
+    /**
+     * Loads the charts (DataViewInfos) for a given model.
+     * @param model
+     * @param includeSampleComparison: boolean, loads DataViewInfos via browseDataTree.api and includes SampleComparison
+     * reports in the results. If false loads DataViewInfos via getReportInfos and does not include SampleComparison
+     * reports.
+     */
+    loadCharts: (model: QueryModel, includeSampleComparison: boolean) => Promise<IDataViewInfo[]>;
 }
 
 export const DefaultQueryModelLoader: QueryModelLoader = {
@@ -103,5 +123,23 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         const { id, schemaName, queryName, filters, containerPath } = model;
         await selectAll(id, schemaName, queryName, List(filters), containerPath);
         return DefaultQueryModelLoader.loadSelections(model);
+    },
+    async loadCharts(model, includeSampleComparison) {
+        const { schemaQuery, containerPath } = model;
+
+        if (includeSampleComparison) {
+            const { schemaName, queryName } = schemaQuery;
+            const charts = await loadReports();
+            return charts.filter(report => {
+                const { type } = report;
+                const matchingSq = report.schemaName === schemaName && report.queryName === queryName;
+                const isVisualization = VISUALIZATION_REPORTS.contains(type);
+                const isSampleComparison = type === DataViewInfoTypes.SampleComparison;
+                return matchingSq && (isVisualization || isSampleComparison);
+            }).sort(dataViewInfoSorter);
+        } else {
+            const charts = await fetchCharts(schemaQuery, containerPath);
+            return charts.toArray().sort(dataViewInfoSorter);
+        }
     },
 };

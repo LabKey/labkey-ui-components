@@ -50,6 +50,7 @@ export const makeTestActions = (): Actions => {
         loadPreviousPage: jest.fn(),
         loadFirstPage: jest.fn(),
         loadLastPage: jest.fn(),
+        loadCharts: jest.fn(),
         setOffset: jest.fn(),
         setMaxRows: jest.fn(),
         setView: jest.fn(),

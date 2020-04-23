@@ -1,6 +1,7 @@
 import { Map } from 'immutable';
 import { LabKey, Query } from '@labkey/api';
-import mock, { proxy } from "xhr-mock";
+import mock, { proxy } from 'xhr-mock';
+
 import { initQueryGridState } from './global';
 import { initQueryGridMocks, initLineageMocks, initUserPropsMocks } from './stories/mock';
 import { QueryInfo } from './components/base/models/QueryInfo';
@@ -65,7 +66,7 @@ export const makeTestData = (getQueryResponse): Promise<RowsResponse> => {
     // Hack: need to stringify and parse the query response object because Query.Response modifies the object in place,
     // which causes errors if you try to use the same response object twice.
     const response = new Query.Response(JSON.parse(JSON.stringify(getQueryResponse)));
-    return handle132Response(response).then((resp) => {
+    return handle132Response(response).then(resp => {
         const { messages, models, orderedModels, rowCount } = resp;
         const key = Object.keys(models)[0];
         return {

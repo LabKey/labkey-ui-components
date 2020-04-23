@@ -21,19 +21,22 @@ import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGri
 import { getStateModelId, getStateQueryGridModel } from '../models';
 import { headerCell, headerSelectionCell } from '../renderers';
 import { getBrowserHistory } from '../util/global';
-import { QueryColumn, QueryGridModel, SchemaQuery } from './base/models/model';
+
 import { generateId } from '../util/utils';
+
+import { getRouteFromLocationHash } from '../util/URL';
+
+import { QueryColumn, QueryGridModel, SchemaQuery } from './base/models/model';
 import { Grid, GridColumn, GridProps } from './base/Grid';
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './base/models/constants';
 import { LoadingSpinner } from './base/LoadingSpinner';
 import { Alert } from './base/Alert';
-import { getRouteFromLocationHash } from "../util/URL";
 
 interface QueryGridProps {
-    model?: QueryGridModel
-    schemaQuery?: SchemaQuery
-    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
-    highlightLastSelectedRow?: boolean
+    model?: QueryGridModel;
+    schemaQuery?: SchemaQuery;
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any;
+    highlightLastSelectedRow?: boolean;
 }
 
 interface QueryGridState {
@@ -41,21 +44,20 @@ interface QueryGridState {
      * modelId can be used to maintain a single instance model. This is useful when an explicit model
      * is not provided but persistence of the generated model is desired (fetched results, etc)
      */
-    modelId: string
+    modelId: string;
 
     /**
      * Original location.hash value so that we can avoid calling the reloadQueryGridModel listener on navigation
      */
-    locationHash?: string
+    locationHash?: string;
 
     /**
      * Function returned by the getBrowserHistory().listen() call so that we can cleanup after unmount
      */
-    unlisten?: any
+    unlisten?: any;
 }
 
 export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
-
     constructor(props: QueryGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
@@ -65,8 +67,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
         if (model) {
             _modelId = model.getId();
-        }
-        else {
+        } else {
             if (!schemaQuery) {
                 throw new Error('QueryGrid: If a model is not provided, a SchemaQuery is required.');
             }
@@ -76,7 +77,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
         // set local state for this component
         this.state = {
-            modelId: _modelId
+            modelId: _modelId,
         };
     }
 
@@ -89,7 +90,8 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         this.initModel(nextProps);
 
         // if the nextProps has a model and we didn't before or we have a different model id, then reset the url route listener
-        const modelIdMisMatch = nextProps.model && this.props.model && nextProps.model.getId() !== this.props.model.getId();
+        const modelIdMisMatch =
+            nextProps.model && this.props.model && nextProps.model.getId() !== this.props.model.getId();
         if (nextProps.model && (this.props.model === undefined || modelIdMisMatch)) {
             this.initUrlRouteListener();
         }
@@ -124,7 +126,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
             this.setState(() => ({
                 locationHash: getBrowserHistory().location.hash,
-                unlisten
+                unlisten,
             }));
         }
     }
@@ -135,8 +137,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
         if (model && !model.isLoaded && !model.isLoading) {
             gridInit(model);
-        }
-        else if (!this.getModel(props)) {
+        } else if (!this.getModel(props)) {
             gridInit(getStateQueryGridModel(modelId, schemaQuery));
         }
     }
@@ -144,7 +145,12 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
     headerCell = (column: GridColumn, i: number, columnCount?: number): any => {
         const model = this.getModel(this.props);
 
-        if (model.allowSelection && column.index && column.index.toLowerCase() === GRID_SELECTION_INDEX && !model.editable) {
+        if (
+            model.allowSelection &&
+            column.index &&
+            column.index.toLowerCase() === GRID_SELECTION_INDEX &&
+            !model.editable
+        ) {
             return headerSelectionCell(this.selectAll, model.selectedState, !model.isLoaded || model.totalRows === 0);
         }
 
@@ -164,11 +170,8 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
                 title: '&nbsp;',
                 showHeader: true,
                 cell: (selected: boolean, row) => {
-                    return <input
-                        checked={selected === true}
-                        type="checkbox"
-                        onChange={this.select.bind(this, row)}/>;
-                }
+                    return <input checked={selected === true} type="checkbox" onChange={this.select.bind(this, row)} />;
+                },
             });
 
             return List([selColumn]).concat(model.getDisplayColumns()).toList();
@@ -228,18 +231,16 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         return highlightLastSelectedRow ? this.getLastSelectedRowInd(model) : undefined;
     }
 
-
     render() {
         const model = this.getModel(this.props);
         if (!model) {
             return (
                 <div>
-                    <LoadingSpinner/>
+                    <LoadingSpinner />
                 </div>
-            )
-        }
-        else if (model.isError) {
-            return <Alert>{model.message ? model.message : 'Something went wrong loading the QueryGridModel.'}</Alert>
+            );
+        } else if (model.isError) {
+            return <Alert>{model.message ? model.message : 'Something went wrong loading the QueryGridModel.'}</Alert>;
         }
 
         const gridProps: GridProps = {
@@ -252,9 +253,9 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             messages: model.messages,
             headerCell: this.headerCell,
             isLoading: model.isLoading,
-            loadingText: <LoadingSpinner/>
+            loadingText: <LoadingSpinner />,
         };
 
-        return <Grid {...gridProps} />
+        return <Grid {...gridProps} />;
     }
 }

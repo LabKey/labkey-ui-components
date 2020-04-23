@@ -7,18 +7,19 @@ import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
+import { fromJS } from 'immutable';
+
 import { SearchAction } from '../components/omnibox/actions/Search';
 import { FilterAction } from '../components/omnibox/actions/Filter';
 import { SortAction } from '../components/omnibox/actions/Sort';
 import './stories.scss';
 import { OmniBox } from '../components/omnibox/OmniBox';
 import { Grid } from '../components/base/Grid';
-import {ViewAction} from "../components/omnibox/actions/View";
+import { ViewAction } from '../components/omnibox/actions/View';
 import { makeQueryInfo, makeTestData } from '../testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQuery.json';
 import { LoadingSpinner, QueryGridModel } from '..';
-import { fromJS } from 'immutable';
 
 interface Props {
     actions: string[];
@@ -30,19 +31,18 @@ interface State {
     actions: any[];
 }
 
-
 class OmniBoxRenderer extends PureComponent<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
             model: undefined,
             actions: undefined,
-        }
+        };
     }
 
     componentDidMount(): void {
         // Need to load data here so we run makeQueryInfo after initQueryGridState has been called.
-        makeTestData(mixturesQuery).then((mockData) => {
+        makeTestData(mixturesQuery).then(mockData => {
             const queryInfo = makeQueryInfo(mixturesQueryInfo);
             const model = new QueryGridModel({
                 queryInfo,
@@ -55,7 +55,7 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
                 totalRows: mockData.rowCount,
             });
             const getModel = () => model;
-            const actions = this.props.actions.map((action) => {
+            const actions = this.props.actions.map(action => {
                 switch (action) {
                     case 'search':
                         return new SearchAction('q');
@@ -71,7 +71,7 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
             this.setState({
                 model,
                 actions,
-            })
+            });
         });
     }
 
@@ -91,17 +91,17 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
     }
 }
 
-storiesOf("Omnibox", module)
+storiesOf('Omnibox', module)
     .addDecorator(withKnobs)
-    .add("search (only)", () => {
-        return <OmniBoxRenderer actions={['search']} placeholder={'Search the data...'} />;
+    .add('search (only)', () => {
+        return <OmniBoxRenderer actions={['search']} placeholder="Search the data..." />;
     })
-    .add("filter (only)", () => {
-        return <OmniBoxRenderer actions={['filter']} placeholder={'Filter the data...'} />;
+    .add('filter (only)', () => {
+        return <OmniBoxRenderer actions={['filter']} placeholder="Filter the data..." />;
     })
-    .add("sort (only)", () => {
-        return <OmniBoxRenderer actions={['sort']} placeholder={'Sort the data...'} />;
+    .add('sort (only)', () => {
+        return <OmniBoxRenderer actions={['sort']} placeholder="Sort the data..." />;
     })
     .add('All actions', () => {
-        return <OmniBoxRenderer actions={['search', 'filter', 'sort', 'view']} placeholder={'Do all the things...'} />;
+        return <OmniBoxRenderer actions={['search', 'filter', 'sort', 'view']} placeholder="Do all the things..." />;
     });

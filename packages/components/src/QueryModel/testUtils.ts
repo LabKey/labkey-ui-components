@@ -1,4 +1,5 @@
 import { Actions, QueryInfo, QueryModel } from '..';
+
 import { LoadingState } from './QueryModel';
 
 /**
@@ -12,7 +13,7 @@ import { LoadingState } from './QueryModel';
 export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, orderedRows?: any, rowCount?: number) => {
     let model = new QueryModel({
         id: 'model',
-        schemaQuery: schemaQuery,
+        schemaQuery,
     });
 
     if (queryInfo) {
@@ -39,7 +40,7 @@ export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, or
  * between every test, jest.fn() objects track all calls overtime, so you'll want a fresh one for every test.
  */
 export const makeTestActions = (): Actions => {
-    return  {
+    return {
         addModel: jest.fn(),
         loadModel: jest.fn(),
         loadAllModels: jest.fn(),

@@ -19,44 +19,43 @@ import classNames from 'classnames';
 import AutosizeInput from 'react-input-autosize';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
+
+import { naturalSort, QueryColumn, QueryGridModel } from '../..';
+
 import { Action, ActionOption, ActionValue, ActionValueCollection } from './actions/Action';
 import { Option } from './Option';
 import { Value, valueClassName } from './Value';
-import { naturalSort, QueryColumn, QueryGridModel } from '../..';
 import { parseColumns, resolveFieldKey } from './utils';
 
 // Export for type declarations (.d.ts)
-export {
-    Option,
-    Value
-}
+export { Option, Value };
 
 interface OmniBoxProps {
-    actions: Array<Action>;
+    actions: Action[];
     backspaceRemoves?: boolean;
     className?: string;
     closeOnComplete?: boolean;
     disabled?: boolean;
     getModel: () => QueryGridModel;
     inputProps?: {
-        className?: string
+        className?: string;
     };
-    onChange?: (actionValueCollection: Array<ActionValueCollection>, actions?: Array<Action>) => any;
+    onChange?: (actionValueCollection: ActionValueCollection[], actions?: Action[]) => any;
     onInputChange?: Function;
     openAfterFocus?: boolean;
     placeholder?: string;
     tabSelectsValue?: boolean;
-    values?: Array<ActionValue>;
+    values?: ActionValue[];
 }
 
 export interface OmniBoxState {
-    actionValues?: Array<ActionValue>;
+    actionValues?: ActionValue[];
     activeAction?: Action;
     focusedIndex?: number;
     inputValue?: string;
     isFocused?: boolean;
     isOpen?: boolean;
-    options?: Array<ActionOption>;
+    options?: ActionOption[];
     previewInputValue?: string;
     distinctValues?: List<any>;
     distinctValuesLoading?: boolean;
@@ -73,14 +72,14 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         inputProps: {},
         openAfterFocus: true,
         placeholder: 'Select...',
-        tabSelectsValue: true
+        tabSelectsValue: true,
     };
 
-    static defaultTokenizer(inputValue: string): Array<string> {
-        let tokens = [];
+    static defaultTokenizer(inputValue: string): string[] {
+        const tokens = [];
         if (inputValue) {
-            let subTokens = inputValue.split(/[^\S|\-"']+|"([^"]*)"|'([^']*)'/);
-            for (let i=0; i < subTokens.length; i++) {
+            const subTokens = inputValue.split(/[^\S|\-"']+|"([^"]*)"|'([^']*)'/);
+            for (let i = 0; i < subTokens.length; i++) {
                 if (subTokens[i] && subTokens[i].replace(/"|'/g, '').length > 0) {
                     tokens.push(subTokens[i].replace(/"|'/g, ''));
                 }
@@ -93,7 +92,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         let value = inputValue || '';
         if (action && value && action.keyword && value.length > 0) {
             if (value.toLowerCase().indexOf(action.keyword.toLowerCase()) === 0) {
-                let newInputArray = value.split(' ');
+                const newInputArray = value.split(' ');
                 newInputArray.shift(); // remove keyword
                 value = newInputArray.join(' ');
             }
@@ -122,16 +121,14 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         if (lastSpace > lastQuote) {
             if (numQuotes % 2 === 0) {
                 // 'filter "Molecule Set" '
-                if (lastSpace !== inputValue.length-1) {
+                if (lastSpace !== inputValue.length - 1) {
                     respectSpace = true;
                 }
-            }
-            else {
+            } else {
                 // 'filter "Molecule S'
                 respectQuote = true;
             }
-        }
-        else {
+        } else {
             // last quote is after last space
             if (numQuotes % 2 === 1) {
                 respectQuote = true;
@@ -148,10 +145,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         if (respectSpace) {
-            const includeSpace = lastSpace !== inputValue.length-1;
+            const includeSpace = lastSpace !== inputValue.length - 1;
             return inputValue.substr(0, lastSpace + (includeSpace ? 1 : 0));
-        }
-        else if (respectQuote) {
+        } else if (respectQuote) {
             return inputValue.substr(0, lastQuote);
         }
 
@@ -183,25 +179,24 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     }
 
     componentWillMount() {
-        this._instancePrefix = 'omnibox-' + (++instanceId) + '-';
+        this._instancePrefix = 'omnibox-' + ++instanceId + '-';
     }
 
     componentWillReceiveProps(nextProps: OmniBoxProps) {
         this.setState({
-            actionValues: nextProps.values ? nextProps.values : []
+            actionValues: nextProps.values ? nextProps.values : [],
         });
     }
 
     activateValue = (value: ActionValue): void => {
         let newInputValue;
-        let newActionValues = [];
+        const newActionValues = [];
         const { actionValues } = this.state;
 
-        for (let i=actionValues.length-1; i >= 0; i--) {
+        for (let i = actionValues.length - 1; i >= 0; i--) {
             if (value && value.value === actionValues[i].value) {
                 newInputValue = actionValues[i].action.keyword + ' ' + actionValues[i].value;
-            }
-            else {
+            } else {
                 newActionValues.push(actionValues[i]);
             }
         }
@@ -211,13 +206,12 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         if (newInputValue) {
-
             const matches = this.getMatchingActions(newInputValue);
 
             this.setState({
                 activeAction: matches.activeAction,
                 inputValue: newInputValue,
-                actionValues: newActionValues
+                actionValues: newActionValues,
             });
 
             this.fetchOptions(matches.matchingActions, newInputValue);
@@ -247,28 +241,30 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             const tokenize = this.resolveTokenizer(action);
 
             completed = true;
-            action.completeAction(tokenize(newInputValue)).then((result) => {
+            action.completeAction(tokenize(newInputValue)).then(result => {
                 if (result.isValid !== false) {
                     // determine if previous actionValues need to be replaced
                     if (action.singleton === true) {
-                        const isEqual = action.isEqual ? action.isEqual : (other: Action) => action.keyword === other.keyword;
-                        newActionValues = newActionValues.filter((actionValue) => !isEqual(actionValue.action));
+                        const isEqual = action.isEqual
+                            ? action.isEqual
+                            : (other: Action) => action.keyword === other.keyword;
+                        newActionValues = newActionValues.filter(actionValue => !isEqual(actionValue.action));
                     }
 
                     newActionValues.push({
                         action,
                         displayValue: result.displayValue,
                         param: result.param,
-                        value: result.value
+                        value: result.value,
                     });
                 }
 
-                let newState: OmniBoxState = {
+                const newState: OmniBoxState = {
                     actionValues: newActionValues,
                     activeAction: undefined,
                     focusedIndex: -1,
                     inputValue: '',
-                    previewInputValue: ''
+                    previewInputValue: '',
                 };
 
                 if (this.props.closeOnComplete) {
@@ -300,7 +296,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         this.setState({
             // auto-focus first option iff one selectable option available
             focusedIndex: options.length === 1 && options[0].selectable !== false ? 0 : -1,
-            options: options.map(option => ({...option, action}))
+            options: options.map(option => ({ ...option, action })),
         });
     };
 
@@ -319,7 +315,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         if (column.multiValue) {
             // We don't support multi value columns for the dropdown list because SelectDistinct just returns LSIDs for
             // every row even if the column has no values.
-            this.setState({ distinctValues: List<any>()});
+            this.setState({ distinctValues: List<any>() });
         }
 
         if (this.state.distinctValuesFieldKey === fieldKey) {
@@ -338,7 +334,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             filterArray: model.getFilters().toJS(),
             parameters: model.queryParameters,
             column: fieldKey,
-            success: (result) => {
+            success: result => {
                 if (!this.state.activeAction) {
                     // The user closed the action menu, do nothing.
                     return;
@@ -353,25 +349,28 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                     return;
                 }
 
-                this.setState({
-                    distinctValuesLoading: false,
-                    distinctValues: List(result.values.sort(naturalSort)),
-                }, () => {
-                    // Need to call fetchOptions again on Filter action so we clear the "Loading..." option and render
-                    // the possible options.
-                    this.fetchOptions([ this.state.activeAction ], this.state.inputValue);
-                });
+                this.setState(
+                    {
+                        distinctValuesLoading: false,
+                        distinctValues: List(result.values.sort(naturalSort)),
+                    },
+                    () => {
+                        // Need to call fetchOptions again on Filter action so we clear the "Loading..." option and render
+                        // the possible options.
+                        this.fetchOptions([this.state.activeAction], this.state.inputValue);
+                    }
+                );
             },
-            failure: (error) => {
+            failure: error => {
                 console.error('Error fetching distinct values while fetching options for Omnibox:', error);
                 // Note: Is there a better way to handle an error here? Doesn't seem like there is a good place to
                 // notify the user of any errors in this situation.
                 this.setState({ distinctValuesLoading: false, distinctValues: List<any>() });
-            }
-        })
+            },
+        });
     };
 
-    fetchOptions = (activeActions: Array<Action>, inputValue: string): void => {
+    fetchOptions = (activeActions: Action[], inputValue: string): void => {
         const { actions } = this.props;
         if (inputValue && activeActions && activeActions.length > 0) {
             if (activeActions.length === 1) {
@@ -385,10 +384,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                     this.fetchDistinctValues(columnName);
                 }
 
-                activeAction.fetchOptions(tokens, this.state.distinctValues)
-                    .then((options) => this.setOptions(activeAction, options));
-            }
-            else {
+                activeAction
+                    .fetchOptions(tokens, this.state.distinctValues)
+                    .then(options => this.setOptions(activeAction, options));
+            } else {
                 // more than one active action, the user hasn't selected an action, fetch only for default
                 let defaultAction: Action,
                     options = [];
@@ -400,39 +399,41 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                             isAction: true,
                             label: '',
                             nextLabel: action.optionalLabel,
-                            value: action.keyword
+                            value: action.keyword,
                         });
-                    }
-                    else if (!defaultAction) {
+                    } else if (!defaultAction) {
                         defaultAction = action;
                     }
                 });
 
                 if (defaultAction) {
-                    let tokenize = this.resolveTokenizer(defaultAction);
+                    const tokenize = this.resolveTokenizer(defaultAction);
                     // The only default action is search. This makes it so search renders: `search for ${inputValue}`
                     defaultAction
                         .fetchOptions(tokenize(OmniBox.stripKeyword(inputValue, defaultAction)))
-                        .then((defaultOptions) => {
-                            defaultOptions.forEach((defaultOption) => {
-                                options.push(Object.assign({
-                                    action: defaultAction
-                                }, defaultOption));
+                        .then(defaultOptions => {
+                            defaultOptions.forEach(defaultOption => {
+                                options.push(
+                                    Object.assign(
+                                        {
+                                            action: defaultAction,
+                                        },
+                                        defaultOption
+                                    )
+                                );
                             });
 
                             this.setState({
-                                options
-                            })
+                                options,
+                            });
                         });
-                }
-                else {
+                } else {
                     this.setState({
-                        options
+                        options,
                     });
                 }
             }
-        }
-        else {
+        } else {
             // show all available actions
             this.setState({
                 options: actions.map((action: Action) => {
@@ -441,14 +442,14 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                         isAction: true,
                         label: '',
                         nextLabel: action.optionalLabel,
-                        value: action.keyword
-                    }
-                })
-            })
+                        value: action.keyword,
+                    };
+                }),
+            });
         }
     };
 
-    fireOnChange = (actionValues: Array<ActionValue>): void => {
+    fireOnChange = (actionValues: ActionValue[]): void => {
         if (this.props.onChange) {
             this.props.onChange(this.mergeActionValues(actionValues), this.props.actions);
         }
@@ -462,7 +463,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         if (this.props.openAfterFocus) {
             this.setState({
-                isOpen: true
+                isOpen: true,
             });
 
             this.fetchOptions(this.state.activeAction ? [this.state.activeAction] : undefined, this.state.inputValue);
@@ -473,12 +474,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         const { focusedIndex, isOpen, options } = this.state;
 
         if (isOpen) {
-
             let index = -1;
             if (dir === 'next') {
                 index = focusedIndex + 1;
-            }
-            else if (dir === 'previous') {
+            } else if (dir === 'previous') {
                 index = focusedIndex - 1 > -2 ? focusedIndex - 1 : options.length - 1;
             }
 
@@ -487,8 +486,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
             this.setState({
                 focusedIndex: index,
-                previewInputValue
-            })
+                previewInputValue,
+            });
         }
     };
 
@@ -500,30 +499,27 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         this.focusAdjacentOption('previous');
     };
 
-    getMatchingActions = (inputValue: string): {activeAction?: Action, matchingActions: Array<Action>} => {
+    getMatchingActions = (inputValue: string): { activeAction?: Action; matchingActions: Action[] } => {
         const { actions } = this.props;
 
         if (inputValue) {
-
             let defaultAction: Action,
                 exactAction: Action,
-                matchingActions: Array<Action> = [];
+                matchingActions: Action[] = [];
 
             // determine active keyword
             const inputKeyword = inputValue ? inputValue.toLowerCase().split(' ')[0] : '';
 
-            for (let a=0; a < actions.length; a++) {
-                let actionKeyword = actions[a].keyword.toLowerCase();
+            for (let a = 0; a < actions.length; a++) {
+                const actionKeyword = actions[a].keyword.toLowerCase();
 
                 if (!defaultAction && actions[a].isDefaultAction) {
                     defaultAction = actions[a];
                     matchingActions.push(actions[a]);
-                }
-                else if (actionKeyword === inputKeyword) {
+                } else if (actionKeyword === inputKeyword) {
                     exactAction = actions[a];
                     matchingActions.push(actions[a]);
-                }
-                else if (actionKeyword.indexOf(inputKeyword) === 0) {
+                } else if (actionKeyword.indexOf(inputKeyword) === 0) {
                     matchingActions.push(actions[a]);
                 }
             }
@@ -531,18 +527,18 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             if (exactAction) {
                 return {
                     activeAction: exactAction,
-                    matchingActions: [exactAction]
+                    matchingActions: [exactAction],
                 };
             }
 
             return {
                 activeAction: defaultAction,
-                matchingActions
+                matchingActions,
             };
         }
 
         return {
-            matchingActions: actions
+            matchingActions: actions,
         };
     };
 
@@ -574,7 +570,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 focusedIndex: -1,
                 isFocused: false,
                 isOpen: false,
-                options: []
+                options: [],
             });
         }
     };
@@ -582,14 +578,14 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     handleInputChange = (event): void => {
         let newInputValue = event.target.value;
         if (this.state.inputValue !== event.target.value && this.props.onInputChange) {
-            let nextState = this.props.onInputChange(newInputValue);
+            const nextState = this.props.onInputChange(newInputValue);
             // Note: != used deliberately here to catch undefined and null
             if (nextState != null && typeof nextState !== 'object') {
                 newInputValue = '' + nextState;
             }
         }
 
-        let trimmed = newInputValue.trim();
+        const trimmed = newInputValue.trim();
 
         // Once a user clears the inputValue the onChange should be fired since clearing an action is the same
         // as completing an action.
@@ -604,7 +600,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             activeAction: matches.activeAction,
             isOpen: true,
             inputValue: newInputValue,
-            previewInputValue: ''
+            previewInputValue: '',
         });
 
         if (requireOnChange) {
@@ -647,7 +643,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 if (!this.state.isOpen) return;
                 this.cancelEvent(event);
                 this.setState({
-                    isOpen: false
+                    isOpen: false,
                 });
                 break;
             case 38: // up
@@ -659,7 +655,6 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 this.focusNextOption();
                 break;
             default:
-                return;
         }
     };
 
@@ -675,8 +670,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         if (event.target.tagName === 'INPUT') {
             return;
-        }
-        else if ($(event.target).closest('.' + valueClassName).length > 0) {
+        } else if ($(event.target).closest('.' + valueClassName).length > 0) {
             return;
         }
 
@@ -688,17 +682,16 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         this.cancelBlur();
 
         if (option.selectable !== false) {
-            let newInputValue = this.resolveInputValue(option);
+            const newInputValue = this.resolveInputValue(option);
 
             if (option.isComplete) {
                 this.completeAction(newInputValue, option.action);
-            }
-            else {
+            } else {
                 const nextState: OmniBoxState = {
                     activeAction: option.action,
                     focusedIndex: -1,
                     inputValue: newInputValue,
-                    previewInputValue: ''
+                    previewInputValue: '',
                 };
 
                 this.setState(nextState);
@@ -710,25 +703,24 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
     handleOptionFocus = (option: ActionOption, focusedIndex: number): void => {
         this.setState({
-            focusedIndex
-        })
+            focusedIndex,
+        });
     };
 
-    mergeActionValues = (actionValues: Array<ActionValue>): Array<ActionValueCollection> => {
-        let newActionValueCollection: Array<ActionValueCollection> = [];
+    mergeActionValues = (actionValues: ActionValue[]): ActionValueCollection[] => {
+        const newActionValueCollection: ActionValueCollection[] = [];
 
-        for (let a=0; a < actionValues.length; a++) {
+        for (let a = 0; a < actionValues.length; a++) {
             let found = false;
             const actionValue = actionValues[a];
 
-            for (let i=0; i < newActionValueCollection.length; i++) {
+            for (let i = 0; i < newActionValueCollection.length; i++) {
                 const action = newActionValueCollection[i].action;
                 let isEqual = false;
 
                 if (action.isEqual) {
                     isEqual = action.isEqual(actionValue.action);
-                }
-                else {
+                } else {
                     isEqual = action.keyword === actionValue.action.keyword;
                 }
 
@@ -737,8 +729,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
                     if (action.singleton === true) {
                         newActionValueCollection[i].values = [actionValue];
-                    }
-                    else {
+                    } else {
                         newActionValueCollection[i].values.push(actionValue);
                     }
                 }
@@ -747,7 +738,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             if (!found) {
                 newActionValueCollection.push({
                     action: actionValue.action,
-                    values: [actionValue]
+                    values: [actionValue],
                 });
             }
         }
@@ -759,16 +750,15 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         const { actionValues } = this.state;
 
         if (actionValueIndex < actionValues.length) {
-
-            let newActionValues = [];
-            for (let i=0; i < actionValues.length; i++) {
+            const newActionValues = [];
+            for (let i = 0; i < actionValues.length; i++) {
                 if (i !== actionValueIndex) {
                     newActionValues.push(actionValues[i]);
                 }
             }
 
             this.setState({
-                actionValues: newActionValues
+                actionValues: newActionValues,
             });
 
             this.fireOnChange(newActionValues);
@@ -779,7 +769,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         let newInputValue = this.state.inputValue;
 
         if (option.isAction) {
-            let keyword = option.action.keyword;
+            const keyword = option.action.keyword;
             return keyword + (keyword.length > 0 ? ' ' : '');
         }
 
@@ -791,8 +781,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
             if (option.appendValue !== false) {
                 newInputValue += value;
-            }
-            else {
+            } else {
                 newInputValue = value;
             }
         }
@@ -806,13 +795,12 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         return OmniBox.defaultTokenizer;
     };
 
-    selectFocusedOption = (canComplete: boolean = true): void => {
+    selectFocusedOption = (canComplete = true): void => {
         const { focusedIndex, options } = this.state;
 
         if (focusedIndex > -1) {
             this.handleOptionClick(options[focusedIndex]);
-        }
-        else if (canComplete !== false) {
+        } else if (canComplete !== false) {
             this.completeAction();
         }
     };
@@ -825,10 +813,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             onBlur: this.handleInputBlur,
             onChange: this.handleInputChange,
             onFocus: this.handleInputFocus,
-            value: this.renderInputValue()
+            value: this.renderInputValue(),
         });
 
-        return <AutosizeInput {...inputProps}/>;
+        return <AutosizeInput {...inputProps} />;
     };
 
     renderInputValue = (): string => {
@@ -837,11 +825,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         if (previewInputValue) {
             if (value && value.length > 0) {
-                if (value[value.length-1] === ' ') {
+                if (value[value.length - 1] === ' ') {
                     value += previewInputValue.trim();
                 }
-            }
-            else {
+            } else {
                 value = previewInputValue.trim();
             }
         }
@@ -852,9 +839,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     renderMenu = (): ReactNode => {
         return (
             <div>
-                <ul className="OmniBox-autocomplete">
-                    {this.state.options.map(this.renderMenuOption)}
-                </ul>
+                <ul className="OmniBox-autocomplete">{this.state.options.map(this.renderMenuOption)}</ul>
             </div>
         );
     };
@@ -902,10 +887,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     };
 
     render() {
-        let className = classNames('OmniBox', 'OmniBox--multi', this.props.className, {
+        const className = classNames('OmniBox', 'OmniBox--multi', this.props.className, {
             'is-disabled': this.props.disabled,
             'is-focused': this.state.isFocused,
-            'is-open': this.state.isOpen
+            'is-open': this.state.isOpen,
         });
 
         return (
@@ -918,6 +903,6 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 </div>
                 {this.state.isOpen && this.renderMenu()}
             </div>
-        )
+        );
     }
 }

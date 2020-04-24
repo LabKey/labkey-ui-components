@@ -83,7 +83,7 @@ export function getLineageNodeTitle(node: LineageNode, html?: boolean): string {
 
 export function getLineageDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LINEAGE_DIRECTIONS, maxDistance: number) : List<LineageNode> {
     let nodeList = List<LineageNode>().asMutable();
-    nodeList.push(nodes.get(lsid).set('distance', 0));
+    nodeList.push(nodes.get(lsid).set('distance', 0) as LineageNode);
 
     let nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
     if (nextNodes) {
@@ -99,7 +99,7 @@ function _getDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, d
     let nodeList = List<LineageNode>().asMutable();
     const nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
     if (distance <= maxDistance) {
-        nodeList.push(nodes.get(lsid).set('distance', distance));
+        nodeList.push(nodes.get(lsid).set('distance', distance) as LineageNode);
         if (nextNodes !== undefined) {
             nextNodes.forEach((nextNode) => {
                 nodeList.push(..._getDepthFirstNodeList(nodes, nextNode.get('lsid'), direction, maxDistance, distance + 1).toArray());

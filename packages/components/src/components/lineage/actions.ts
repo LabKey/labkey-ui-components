@@ -46,6 +46,7 @@ function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
 
         Experiment.lineage({
             ...options,
+            includeExpType: true,
             includeRunSteps: true,
             lsid: seed,
             success: lineage => {

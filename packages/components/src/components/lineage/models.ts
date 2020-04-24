@@ -148,6 +148,7 @@ export class LineageNode extends Record ({
     // created: undefined,
     // createdBy: undefined,
     // dataFileURL: undefined,
+    expType: undefined,
     id: undefined,
     listURL: undefined,
     lsid: undefined,
@@ -170,7 +171,6 @@ export class LineageNode extends Record ({
     imageBackup: undefined,
     imageSelected: undefined,
     imageShape: undefined,
-    isRun: false,
     links: {},
     meta: undefined,
 }) implements Partial<LineageIconMetadata> {
@@ -180,6 +180,7 @@ export class LineageNode extends Record ({
     // created?: string;
     // createdBy?: string;
     // dataFileURL?: string;
+    expType?: string;
     id?: number;
     listURL?: string;
     lsid?: string;
@@ -202,7 +203,6 @@ export class LineageNode extends Record ({
     imageBackup?: string;
     imageSelected?: string;
     imageShape?: string;
-    isRun?: boolean;
     links?: LineageNodeLinks;
     meta?: LineageNodeMetadata;
 
@@ -215,8 +215,6 @@ export class LineageNode extends Record ({
             children:  LineageLink.createList(values.children),
             cpasType: values.cpasType,
             id: values.id,
-            // Duck-type check for "is a run". It's considered a run if it includes a "steps" property.
-            isRun: values.steps !== undefined && values.steps !== null,
             lsid,
             name:  values.name,
             parents: LineageLink.createList(values.parents),
@@ -228,6 +226,10 @@ export class LineageNode extends Record ({
             url: values.url,
             meta: values.meta
         }) : new LineageNode({lsid});
+    }
+
+    get isRun(): boolean {
+        return this.expType === 'ExperimentRun';
     }
 }
 

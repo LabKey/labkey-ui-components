@@ -53,6 +53,35 @@ export function getPrincipals(): Promise<List<Principal>> {
     });
 }
 
+export function getCoreGroups(): Promise<List<Principal>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            saveInSession: true, // needed so that we can call getQueryDetails
+            schemaName: 'core',
+            sql: "SELECT p.UserId, p.Name FROM Principals p WHERE p.type='g'",
+        })
+            .then((data: ISelectRowsResult) => {
+                const models = fromJS(data.models[data.key]);
+                let principals = List<Principal>();
+
+                data.orderedModels[data.key].forEach(modelKey => {
+                    const row = models.get(modelKey);
+                    const type = row.getIn(['Type', 'value']);
+                    if (type === 'g') {
+                        const principal = Principal.createFromSelectRow(row);
+                        principals = principals.push(principal);
+                    }
+                });
+
+                resolve(principals);
+            })
+            .catch(response => {
+                console.error(response);
+                reject(response.message);
+            });
+    });
+}
+
 export function getInactiveUsers(): Promise<List<Principal>> {
     return new Promise((resolve, reject) => {
         selectRows({

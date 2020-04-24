@@ -7,6 +7,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 you on the page but the URL will have been updated to the page where you had originally intended to go, which means
 using that link again from the starting page will not work.
 * Issue 38002: Set isSubmitting to false after updateRows in EditableGridPanelForUpdate in case you stay on the page after updating
+* Update resolveErrorMessage to strip off java.lang.IllegalArgumentException prefixes and detect "Bad SQL grammar" exceptions.
+
 
 ### version 0.52.2
 *Released*: 24 April 2020

@@ -18,6 +18,8 @@ export function getActionErrorMessage(
     );
 }
 
+const IllegalArgumentMessage = 'java.lang.illegalargumentexception:';
+
 export function resolveErrorMessage(error: any, noun: string = undefined, nounPlural?: string, verb?: string): string {
     let errorMsg;
     if (!error) {
@@ -39,6 +41,9 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
             lcMessage.indexOf('violation of unique key constraint') >= 0
         )
             return 'There was a problem ' + (verb || 'creating') + ' your ' + noun + '.  Check the existing ' + (nounPlural || noun) + ' for possible duplicates and make sure any referenced ' + (nounPlural || noun) + ' are still valid.';
+        else if (lcMessage.indexOf('bad sql grammar') >= 0) {
+            return 'There was a problem ' + (verb || 'creating') + ' your ' + noun + '.  Check that the format of the data matches the expected type for each field.';
+        }
         else if (lcMessage.indexOf('existing row was not found') >= 0) {
             return (
                 'We could not find the ' +
@@ -54,6 +59,9 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
             return 'There was a problem retrieving your ' + (noun || 'data') + '. Your session may have expired or the ' + (noun || 'data') + ' may no longer be valid.  Try refreshing your page.';
         } else if (lcMessage.indexOf('either rowid or lsid is required') >= 0) {
             return 'There was a problem retrieving or updating your ' + (noun || 'data') + '.  The request did not contain the proper identifiers.  Make sure the ' + (noun || 'data') + ' are still valid.';
+        } else if (lcMessage.indexOf(IllegalArgumentMessage) >= 0) {
+            const startIndex = lcMessage.indexOf(IllegalArgumentMessage);
+            return errorMsg.substring(startIndex + IllegalArgumentMessage.length);
         }
     }
     return errorMsg;

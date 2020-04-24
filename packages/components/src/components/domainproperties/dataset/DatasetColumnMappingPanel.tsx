@@ -63,11 +63,11 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         if (targetColumnName === subjectColumnName) {
             return this.compareNames(targetColumn, inferredFieldName) && inferredField.rangeURI === 'xsd:string';
         } else if (targetColumnName === timepointType && timepointType === 'DATE') {
-            return this.compareNames('visitdate', inferredFieldName) && inferredField.rangeURI === 'xsd:datetime';
+            return this.compareNames('visitdate', inferredFieldName) && (inferredField.rangeURI === 'xsd:datetime' || inferredField.rangeURI === 'xsd:dateTime');
         } else if (targetColumnName === timepointType && timepointType === 'VISIT') {
             return this.compareNames('sequencenum', inferredFieldName) && inferredField.rangeURI === 'xsd:double';
         } else if (targetColumnName === timepointType) {
-            return this.compareNames('date', inferredFieldName) && inferredField.rangeURI === 'xsd:datetime';
+            return this.compareNames('date', inferredFieldName) && (inferredField.rangeURI === 'xsd:datetime' || inferredField.rangeURI === 'xsd:dateTime');
         }
 
         return false;

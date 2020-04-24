@@ -1,5 +1,5 @@
-import { getBackupImageFromLineageNode, getImageNameWithTheme, getImagesForNode } from './utils';
-import { LineageNode, LineageNodeMetadata } from './models';
+import { getBackupImageFromLineageNode, getImageNameWithTheme, resolveIconAndShapeForNode } from './utils';
+import { LineageNode } from './models';
 
 describe('getImageNameWithTheme', () => {
     it('support all parameter combinations', () => {
@@ -22,38 +22,28 @@ describe('getBackupImageFromLineageNode', () => {
     });
 });
 
-describe('getImagesForNode', () => {
+describe('resolveIconAndShapeForNode', () => {
     it('accept no arguments', () => {
-        expect(getImagesForNode()).toStrictEqual({
+        expect(resolveIconAndShapeForNode()).toStrictEqual({
+            iconURL: 'default',
             image: '/labkey/_images/default_gray.svg',
             imageBackup: 'https://labkey.org/_images/default_gray.svg',
             imageSelected: '/labkey/_images/default_orange.svg',
-            shape: 'circularImage',
-        });
-    });
-
-    it('use meta supplied iconURL', () => {
-        const node = LineageNode.create('test', {
-            meta: new LineageNodeMetadata({
-                iconURL: 'aladdin',
-            }),
-            type: 'run',
-        });
-        expect(getImagesForNode(node)).toStrictEqual({
-            image: '/labkey/_images/aladdin_gray.svg',
-            imageBackup: 'https://labkey.org/_images/default_gray.svg',
-            imageSelected: '/labkey/_images/aladdin_orange.svg',
-            shape: 'circularImage',
+            imageShape: 'circularImage',
         });
     });
 
     it('support run type nodes', () => {
-        const node = LineageNode.create('test', { type: 'run' });
-        expect(getImagesForNode(node)).toStrictEqual({
+        const node = LineageNode.create('test', {
+            expType: 'run',
+            steps: [],
+        });
+        expect(resolveIconAndShapeForNode(node)).toStrictEqual({
+            iconURL: 'run',
             image: '/labkey/_images/run_gray.svg',
             imageBackup: 'https://labkey.org/_images/default_gray.svg',
             imageSelected: '/labkey/_images/run_orange.svg',
-            shape: 'image',
+            imageShape: 'image',
         });
     });
 });

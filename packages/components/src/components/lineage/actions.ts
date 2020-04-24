@@ -18,7 +18,7 @@ import {
 } from './models';
 import { getLineageResult, updateLineageResult } from '../../global';
 import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
-import { getLineageDepthFirstNodeList } from './utils';
+import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
 import { getURLResolver } from './LineageURLResolvers';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
@@ -117,18 +117,23 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
     return new Promise((resolve) => {
         return Promise.all(fetchNodeMetadata(lineage))
             .then(results => {
+                let iconURLByLsid = {};
                 let metadata = {};
                 results.forEach(result => {
                     const queryInfo = result.queries[result.key];
                     const model = fromJS(result.models[result.key]);
                     model.forEach((data) => {
                         const lsid = data.getIn(['LSID', 'value']);
+                        iconURLByLsid[lsid] = queryInfo.iconURL;
                         metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
                     });
                 });
 
                 return lineage.set('nodes', lineage.nodes.map(node => (
-                    node.set('meta', metadata[node.lsid])
+                    node.merge({
+                        ...resolveIconAndShapeForNode(node, lineage.seed === node.lsid, iconURLByLsid[node.lsid]),
+                        meta: metadata[node.lsid],
+                    })
                 ))) as LineageResult;
             })
             .then((result) => {

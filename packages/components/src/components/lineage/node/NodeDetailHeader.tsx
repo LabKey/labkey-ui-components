@@ -2,7 +2,6 @@ import React, { PureComponent, ReactNode } from 'react';
 import { SVGIcon, Theme } from '../../..';
 
 import { LineageNode } from '../models';
-import { getIconAndShapeForNode } from '../utils';
 
 export interface DetailHeaderProps {
     header: ReactNode;
@@ -79,7 +78,7 @@ export class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
         return (
             <DetailHeader
                 header={header}
-                iconSrc={getIconAndShapeForNode(node).iconURL}
+                iconSrc={node.iconURL}
             >
                 {displayType && <div>{displayType}</div>}
                 {aliases && <div>{aliases.join(', ')}</div>}

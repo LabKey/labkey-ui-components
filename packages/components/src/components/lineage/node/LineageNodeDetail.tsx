@@ -123,7 +123,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
         let title;
         if (groups.length === 1) {
             title = nodes.length + ' ' + groups[0];
-            iconURL = nodes[0].meta.iconURL;
+            iconURL = nodes[0].iconURL;
         }
         else {
             title = nodes.length + ' items of different types';

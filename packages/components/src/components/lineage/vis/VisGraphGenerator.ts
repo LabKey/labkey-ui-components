@@ -7,7 +7,7 @@ import { List, Map } from 'immutable';
 import { DataSet, Edge, Network, Node } from 'vis-network';
 
 import { applyLineageOptions, LineageLink, LineageNode, LineageResult } from '../models';
-import { getImagesForNode, getLineageNodeTitle } from '../utils';
+import { getLineageNodeTitle } from '../utils';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -555,7 +555,7 @@ export function findConnectedNodes(visEdges: Array<Edge>, id: string, dir?: 'fro
 function createVisNode(node: LineageNode, id: string, isSeed: boolean): VisGraphNode {
 
     // show the alternate icon image color if this node is the seed or has been selected
-    const { image, imageBackup, imageSelected, shape } = getImagesForNode(node, isSeed);
+    const { image, imageBackup, imageSelected, imageShape } = node;
 
     return {
         kind: 'node',
@@ -568,7 +568,7 @@ function createVisNode(node: LineageNode, id: string, isSeed: boolean): VisGraph
             selected: imageSelected,
         },
         brokenImage: imageBackup,
-        shape,
+        shape: imageShape,
         shadow: isSeed === true,
         font: isSeed ? {
                 multi: 'html',
@@ -637,9 +637,9 @@ function createCombinedVisNode(
     };
 
     if (commonNode) {
-        const { image, imageBackup, imageSelected, shape } = getImagesForNode(commonNode, false);
+        const { image, imageBackup, imageSelected, imageShape } = commonNode;
 
-        clusterOptions.shape = shape;
+        clusterOptions.shape = imageShape;
         clusterOptions.image = {
             unselected: image,
             selected: imageSelected

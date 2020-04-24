@@ -64,3 +64,11 @@ export interface LineageOptions {
     grouping?: LineageGroupingOptions
     urlResolver?: LineageURLResolvers
 }
+
+export interface LineageIconMetadata {
+    iconURL: string;
+    image: string;
+    imageBackup: string;
+    imageSelected: string;
+    imageShape: string;
+}

@@ -17,6 +17,7 @@ import {
     LINEAGE_DIRECTIONS,
     LineageNodeLinks,
     LineageOptions,
+    LineageIconMetadata,
 } from './types'
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
@@ -66,13 +67,11 @@ export class LineageNodeMetadata extends Record ({
     description: undefined,
     aliases: undefined,
     displayType: undefined,
-    iconURL: undefined
 }) {
     date?: string;
     description?: string;
     aliases?: List<string>;
     displayType?: string;
-    iconURL?: string;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -96,7 +95,6 @@ export class LineageNodeMetadata extends Record ({
 
         return new LineageNodeMetadata({
             displayType: queryInfo.queryLabel,
-            iconURL: queryInfo.getIconURL(),
             description,
             date: created,
             aliases
@@ -189,10 +187,15 @@ export class LineageNode extends Record ({
 
     // computed properties
     distance: undefined,
+    iconURL: undefined,
+    image: undefined,
+    imageBackup: undefined,
+    imageSelected: undefined,
+    imageShape: undefined,
     isRun: false,
     links: {},
     meta: undefined,
-} ) {
+}) implements Partial<LineageIconMetadata> {
     // absolutePath?: string;
     children?: List<LineageLink>;
     cpasType?: string;
@@ -216,6 +219,11 @@ export class LineageNode extends Record ({
 
     // computed properties
     distance?: number;
+    iconURL?: string;
+    image?: string;
+    imageBackup?: string;
+    imageSelected?: string;
+    imageShape?: string;
     isRun?: boolean;
     links?: LineageNodeLinks;
     meta?: LineageNodeMetadata;

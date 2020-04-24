@@ -4,45 +4,18 @@
  */
 import { List, Map } from 'immutable';
 import { Utils } from '@labkey/api';
-import { imageURL, Theme } from '../..';
+import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../..';
 
 import { LineageLink, LineageNode } from './models';
-import { LINEAGE_DIRECTIONS } from './types';
+import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
 
 const DEFAULT_ICON_URL = 'default';
 
-export function getImagesForNode(node?: LineageNode, isSeed?: boolean) {
-    const { iconURL, shape } = getIconAndShapeForNode(node);
+// The default vis-network icon shape to use for nodes in the lineage graph
+const DEFAULT_ICON_SHAPE = 'circularImage';
 
-    return {
-        image: imageFromIdentifier(iconURL, isSeed, false),
-        imageBackup: getBackupImageFromLineageNode(node, isSeed, false),
-        imageSelected: imageFromIdentifier(iconURL, isSeed, true),
-        shape,
-    }
-}
-
-export function getIconAndShapeForNode(node?: LineageNode): { iconURL: string, shape: string } {
-    let iconURL = DEFAULT_ICON_URL;
-    let shape = 'circularImage';
-
-    if (node) {
-        if (node.meta) {
-            iconURL = node.meta.iconURL;
-        }
-
-        // run icon is not circular so the vis shape is adjusted accordingly
-        if (iconURL === DEFAULT_ICON_URL && node.type && node.type.toLowerCase().indexOf('run') > -1) {
-            iconURL = 'run';
-            shape = 'image';
-        }
-    }
-
-    return {
-        iconURL,
-        shape
-    };
-}
+// A constant set of icons that are better displayed as a normal image (since default is "circularImage")
+const NON_CIRCULAR_IMAGES = ['expressionsystem', 'mixtures', 'rawmaterials', 'run'];
 
 export function getBackupImageFromLineageNode(node: LineageNode, isSeed: boolean, isSelected: boolean): string {
     let iconURL = DEFAULT_ICON_URL;
@@ -54,6 +27,13 @@ export function getBackupImageFromLineageNode(node: LineageNode, isSeed: boolean
 
     // use labkey.org as a backup for images src
     return 'https://labkey.org/_images/' + getImageNameWithTheme(iconURL, isSeed, isSelected);
+}
+
+function getQueryFromSchema(schemasObject: any, queryName: string): SchemaQuery {
+    return Object.keys(schemasObject)
+        .map(k => schemasObject[k])
+        .filter(value => !Utils.isString(value))
+        .find(schemaQuery => schemaQuery.queryName.toLowerCase() === queryName.toLowerCase());
 }
 
 function imageFromIdentifier(iconURL: string, isSeed: boolean, isSelected: boolean): string {
@@ -127,4 +107,57 @@ function _getDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, d
         }
     }
     return nodeList.asImmutable();
+}
+
+// TODO: The iconURL should be resolved by the server.
+export function resolveIconAndShapeForNode(
+    node?: LineageNode,
+    isSeed?: boolean,
+    queryInfoIconURL?: string
+): LineageIconMetadata {
+    let iconURL = DEFAULT_ICON_URL;
+    let imageShape = DEFAULT_ICON_SHAPE;
+
+    if (queryInfoIconURL && queryInfoIconURL !== DEFAULT_ICON_URL) {
+        iconURL = queryInfoIconURL.toLowerCase();
+    } else if (node) {
+        const schemaName = node.schemaName?.toLowerCase() ?? '';
+        const queryName = node.queryName?.toLowerCase() ?? '';
+
+        if (schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase()) {
+            // Samples
+            const schemaQuery = getQueryFromSchema(SCHEMAS.SAMPLE_SETS, queryName);
+
+            iconURL = schemaQuery ? queryName : 'samples';
+
+            // eesh...
+            if (queryName === 'mixturebatches') {
+                iconURL = 'batch';
+            }
+        } else if (schemaName === SCHEMAS.DATA_CLASSES.SCHEMA.toLowerCase()) {
+            // Data Classes
+            const schemaQuery = getQueryFromSchema(SCHEMAS.DATA_CLASSES, queryName);
+
+            if (schemaQuery) {
+                iconURL = queryName;
+            }
+        } else if (schemaName === 'exp.materials') {
+            // Materials
+            iconURL = 'samples';
+        } else if (node.isRun) {
+            iconURL = 'run';
+        }
+    }
+
+    if (NON_CIRCULAR_IMAGES.indexOf(iconURL) > -1) {
+        imageShape = 'image';
+    }
+
+    return {
+        iconURL,
+        image: imageFromIdentifier(iconURL, isSeed, false),
+        imageBackup: getBackupImageFromLineageNode(node, isSeed, false),
+        imageSelected: imageFromIdentifier(iconURL, isSeed, true),
+        imageShape,
+    }
 }

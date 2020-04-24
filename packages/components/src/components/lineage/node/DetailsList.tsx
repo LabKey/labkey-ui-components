@@ -134,8 +134,7 @@ export class DetailsListNodes extends PureComponent<DetailsListNodesProps> {
 
         const title = getLineageNodeTitle(node);
 
-        const { links, name, meta } = node;
-        const iconURL = meta.iconURL;
+        const { iconURL, links, name } = node;
 
         return (
             <div

@@ -50,6 +50,7 @@ export interface IDatasetModel {
     definitionIsShared?: boolean;
     sourceAssayName?: string;
     sourceAssayUrl?: string;
+    useTimeKeyField?: boolean;
 }
 
 export class DatasetModel implements IDatasetModel {
@@ -74,6 +75,7 @@ export class DatasetModel implements IDatasetModel {
     readonly definitionIsShared?: boolean;
     readonly sourceAssayName?: string;
     readonly sourceAssayUrl?: string;
+    readonly useTimeKeyField?: boolean;
 
     constructor(datasetModel: IDatasetModel) {
         Object.assign(this, datasetModel);

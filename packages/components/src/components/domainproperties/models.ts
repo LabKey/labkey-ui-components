@@ -686,6 +686,7 @@ export interface IDomainField {
     updatedField: boolean;
     isPrimaryKey: boolean;
     lockType: string;
+    disablePhiLevel?: boolean;
 }
 
 export class DomainField
@@ -734,6 +735,7 @@ export class DomainField
         isPrimaryKey: false,
         lockType: DOMAIN_FIELD_NOT_LOCKED,
         wrappedColumnName: undefined,
+        disablePhiLevel: false,
     })
     implements IDomainField {
     conceptURI?: string;
@@ -780,6 +782,7 @@ export class DomainField
     isPrimaryKey: boolean;
     lockType: string;
     wrappedColumnName?: string;
+    disablePhiLevel?: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         const baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);

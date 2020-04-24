@@ -934,6 +934,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "isPrimaryKey": false,
             "lockType": "NotLocked",
             "wrappedColumnName": undefined,
+            "disablePhiLevel": false,
           },
         ],
         "indices": Immutable.List [],
@@ -1076,6 +1077,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
           ],
           "indices": Immutable.List [],
@@ -1192,6 +1194,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -1314,6 +1317,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -1445,6 +1449,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -1584,6 +1589,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -1905,6 +1911,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
                                           "wrappedColumnName": undefined,
+                                          "disablePhiLevel": false,
                                         },
                                       ],
                                       "indices": Immutable.List [],
@@ -2563,6 +2570,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -2680,6 +2688,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -3420,6 +3429,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -3587,6 +3597,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -4158,6 +4169,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={0}
@@ -4578,6 +4590,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={0}
@@ -5113,6 +5126,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={true}

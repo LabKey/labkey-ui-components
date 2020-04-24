@@ -304,6 +304,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   }
                 }
                 helpNoun="domain"
@@ -476,6 +477,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
+                                "disablePhiLevel": false,
                               }
                             }
                             helpNoun="domain"
@@ -1021,6 +1023,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
+                                  "disablePhiLevel": false,
                                 }
                               }
                               index={0}
@@ -1380,6 +1383,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={0}
@@ -1915,6 +1919,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={0}
@@ -2469,6 +2474,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   }
                 }
                 fieldError={
@@ -2653,6 +2659,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
+                                "disablePhiLevel": false,
                               }
                             }
                             helpNoun="domain"
@@ -3336,6 +3343,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
+                                  "disablePhiLevel": false,
                                 }
                               }
                               index={1}
@@ -3449,6 +3457,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={1}
@@ -3984,6 +3993,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={1}
@@ -4538,6 +4548,7 @@ exports[`DomainRow date time field 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   }
                 }
                 helpNoun="domain"
@@ -4710,6 +4721,7 @@ exports[`DomainRow date time field 1`] = `
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
+                                "disablePhiLevel": false,
                               }
                             }
                             helpNoun="domain"
@@ -5235,6 +5247,7 @@ exports[`DomainRow date time field 1`] = `
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
+                                  "disablePhiLevel": false,
                                 }
                               }
                               index={0}
@@ -5600,6 +5613,7 @@ exports[`DomainRow date time field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={0}
@@ -6135,6 +6149,7 @@ exports[`DomainRow date time field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={0}
@@ -6855,6 +6870,7 @@ exports[`DomainRow decimal field 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   }
                 }
                 helpNoun="domain"
@@ -7027,6 +7043,7 @@ exports[`DomainRow decimal field 1`] = `
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
+                                "disablePhiLevel": false,
                               }
                             }
                             helpNoun="domain"
@@ -7552,6 +7569,7 @@ exports[`DomainRow decimal field 1`] = `
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
+                                  "disablePhiLevel": false,
                                 }
                               }
                               index={2}
@@ -7952,6 +7970,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={2}
@@ -8487,6 +8506,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={2}
@@ -9207,6 +9227,7 @@ exports[`DomainRow participant id field 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   }
                 }
                 helpNoun="domain"
@@ -9379,6 +9400,7 @@ exports[`DomainRow participant id field 1`] = `
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
+                                "disablePhiLevel": false,
                               }
                             }
                             helpNoun="domain"
@@ -9928,6 +9950,7 @@ exports[`DomainRow participant id field 1`] = `
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
+                                  "disablePhiLevel": false,
                                 }
                               }
                               index={0}
@@ -10041,6 +10064,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={0}
@@ -10576,6 +10600,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={0}
@@ -11296,6 +11321,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   }
                 }
                 fieldError={
@@ -11480,6 +11506,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
+                                "disablePhiLevel": false,
                               }
                             }
                             helpNoun="domain"
@@ -12086,6 +12113,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
+                                  "disablePhiLevel": false,
                                 }
                               }
                               index={1}
@@ -12199,6 +12227,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={1}
@@ -12734,6 +12763,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={1}
@@ -13288,6 +13318,7 @@ exports[`DomainRow string field test 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   }
                 }
                 helpNoun="domain"
@@ -13460,6 +13491,7 @@ exports[`DomainRow string field test 1`] = `
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
+                                "disablePhiLevel": false,
                               }
                             }
                             helpNoun="domain"
@@ -14009,6 +14041,7 @@ exports[`DomainRow string field test 1`] = `
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
+                                  "disablePhiLevel": false,
                                 }
                               }
                               index={1}
@@ -14428,6 +14461,7 @@ exports[`DomainRow string field test 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={1}
@@ -14963,6 +14997,7 @@ exports[`DomainRow string field test 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={1}
@@ -15683,6 +15718,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   }
                 }
                 helpNoun="domain"
@@ -15855,6 +15891,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "isPrimaryKey": false,
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
+                                "disablePhiLevel": false,
                               }
                             }
                             helpNoun="domain"
@@ -16453,6 +16490,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   "isPrimaryKey": false,
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
+                                  "disablePhiLevel": false,
                                 }
                               }
                               index={1}
@@ -16872,6 +16910,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={1}
@@ -17407,6 +17446,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "isPrimaryKey": false,
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
                                           }
                                         }
                                         index={1}

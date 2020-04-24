@@ -4044,6 +4044,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -4121,6 +4122,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -4198,6 +4200,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
           ],
           "indices": Immutable.List [],
@@ -4358,6 +4361,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -4435,6 +4439,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -4512,6 +4517,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -4660,6 +4666,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -4737,6 +4744,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -4814,6 +4822,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -4962,6 +4971,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -5039,6 +5049,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -5116,6 +5127,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -5280,6 +5292,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -5357,6 +5370,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -5434,6 +5448,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -5600,6 +5615,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "isPrimaryKey": false,
                         "lockType": "NotLocked",
                         "wrappedColumnName": undefined,
+                        "disablePhiLevel": false,
                       },
                       Immutable.Record {
                         "conceptURI": undefined,
@@ -5677,6 +5693,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "isPrimaryKey": false,
                         "lockType": "NotLocked",
                         "wrappedColumnName": undefined,
+                        "disablePhiLevel": false,
                       },
                       Immutable.Record {
                         "conceptURI": undefined,
@@ -5754,6 +5771,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "isPrimaryKey": false,
                         "lockType": "NotLocked",
                         "wrappedColumnName": undefined,
+                        "disablePhiLevel": false,
                       },
                     ],
                     "indices": Immutable.List [],
@@ -6169,6 +6187,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -6246,6 +6265,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -6323,6 +6343,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -6671,6 +6692,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -6748,6 +6770,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -6825,6 +6848,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -7168,6 +7192,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -7245,6 +7270,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -7322,6 +7348,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -7653,6 +7680,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -7730,6 +7758,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -7807,6 +7836,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -8179,6 +8209,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -8256,6 +8287,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -8333,6 +8365,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -8504,6 +8537,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -8581,6 +8615,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -8658,6 +8693,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -9187,6 +9223,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -9264,6 +9301,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -9341,6 +9379,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -9467,6 +9506,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -9544,6 +9584,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -9621,6 +9662,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -9733,6 +9775,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -9810,6 +9853,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -9887,6 +9931,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -10024,6 +10069,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -10101,6 +10147,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -10178,6 +10225,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -10994,6 +11042,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -11162,6 +11211,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -11733,6 +11783,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={0}
@@ -12153,6 +12204,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={0}
@@ -12688,6 +12740,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={true}
@@ -13156,6 +13209,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -13324,6 +13378,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -13895,6 +13950,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={1}
@@ -14296,6 +14352,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={1}
@@ -14831,6 +14888,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={true}
@@ -15299,6 +15357,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -15467,6 +15526,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -16038,6 +16098,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={2}
@@ -16404,6 +16465,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={2}
@@ -16939,6 +17001,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={true}
@@ -25125,6 +25188,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -25202,6 +25266,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -25279,6 +25344,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
           ],
           "indices": Immutable.List [],
@@ -25439,6 +25505,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -25516,6 +25583,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -25593,6 +25661,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -25741,6 +25810,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -25818,6 +25888,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -25895,6 +25966,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -26042,6 +26114,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -26119,6 +26192,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -26196,6 +26270,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -26360,6 +26435,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -26437,6 +26513,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -26514,6 +26591,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -26680,6 +26758,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "isPrimaryKey": false,
                         "lockType": "NotLocked",
                         "wrappedColumnName": undefined,
+                        "disablePhiLevel": false,
                       },
                       Immutable.Record {
                         "conceptURI": undefined,
@@ -26757,6 +26836,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "isPrimaryKey": false,
                         "lockType": "NotLocked",
                         "wrappedColumnName": undefined,
+                        "disablePhiLevel": false,
                       },
                       Immutable.Record {
                         "conceptURI": undefined,
@@ -26834,6 +26914,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "isPrimaryKey": false,
                         "lockType": "NotLocked",
                         "wrappedColumnName": undefined,
+                        "disablePhiLevel": false,
                       },
                     ],
                     "indices": Immutable.List [],
@@ -27249,6 +27330,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -27326,6 +27408,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -27403,6 +27486,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -27751,6 +27835,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -27828,6 +27913,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -27905,6 +27991,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -28248,6 +28335,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -28325,6 +28413,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -28402,6 +28491,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -28733,6 +28823,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -28810,6 +28901,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -28887,6 +28979,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -29241,6 +29334,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -29318,6 +29412,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -29395,6 +29490,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -29733,6 +29829,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -29810,6 +29907,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -29887,6 +29985,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -30199,6 +30298,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -30276,6 +30376,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -30353,6 +30454,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -30479,6 +30581,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -30556,6 +30659,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -30633,6 +30737,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -30745,6 +30850,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -30822,6 +30928,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -30899,6 +31006,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -31036,6 +31144,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -31113,6 +31222,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -31190,6 +31300,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -32006,6 +32117,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -32174,6 +32286,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -32775,6 +32888,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={0}
@@ -33195,6 +33309,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={0}
@@ -33730,6 +33845,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}
@@ -34364,6 +34480,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -34532,6 +34649,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -35133,6 +35251,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={1}
@@ -35534,6 +35653,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={1}
@@ -36069,6 +36189,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}
@@ -36703,6 +36824,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -36871,6 +36993,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -37472,6 +37595,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={2}
@@ -37838,6 +37962,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={2}
@@ -38373,6 +38498,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}
@@ -39022,6 +39148,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -39099,6 +39226,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
             Immutable.Record {
               "conceptURI": undefined,
@@ -39176,6 +39304,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
           ],
           "indices": Immutable.List [],
@@ -39335,6 +39464,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -39412,6 +39542,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -39489,6 +39620,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -39637,6 +39769,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -39714,6 +39847,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -39791,6 +39925,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -39938,6 +40073,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -40015,6 +40151,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -40092,6 +40229,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -40256,6 +40394,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -40333,6 +40472,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -40410,6 +40550,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -40576,6 +40717,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "isPrimaryKey": false,
                         "lockType": "NotLocked",
                         "wrappedColumnName": undefined,
+                        "disablePhiLevel": false,
                       },
                       Immutable.Record {
                         "conceptURI": undefined,
@@ -40653,6 +40795,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "isPrimaryKey": false,
                         "lockType": "NotLocked",
                         "wrappedColumnName": undefined,
+                        "disablePhiLevel": false,
                       },
                       Immutable.Record {
                         "conceptURI": undefined,
@@ -40730,6 +40873,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "isPrimaryKey": false,
                         "lockType": "NotLocked",
                         "wrappedColumnName": undefined,
+                        "disablePhiLevel": false,
                       },
                     ],
                     "indices": Immutable.List [],
@@ -41145,6 +41289,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -41222,6 +41367,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -41299,6 +41445,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -41647,6 +41794,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -41724,6 +41872,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -41801,6 +41950,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -42144,6 +42294,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -42221,6 +42372,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -42298,6 +42450,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -42629,6 +42782,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -42706,6 +42860,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -42783,6 +42938,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -43137,6 +43293,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -43214,6 +43371,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -43291,6 +43449,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -43629,6 +43788,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -43706,6 +43866,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                     Immutable.Record {
                                                       "conceptURI": undefined,
@@ -43783,6 +43944,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       "isPrimaryKey": false,
                                                       "lockType": "NotLocked",
                                                       "wrappedColumnName": undefined,
+                                                      "disablePhiLevel": false,
                                                     },
                                                   ],
                                                   "indices": Immutable.List [],
@@ -44143,6 +44305,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -44220,6 +44383,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -44297,6 +44461,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -44468,6 +44633,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -44545,6 +44711,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -44622,6 +44789,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -45150,6 +45318,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -45227,6 +45396,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": undefined,
@@ -45304,6 +45474,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -45430,6 +45601,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -45507,6 +45679,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": undefined,
@@ -45584,6 +45757,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -45696,6 +45870,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -45773,6 +45948,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": undefined,
@@ -45850,6 +46026,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -45987,6 +46164,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -46064,6 +46242,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
@@ -46141,6 +46320,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -46957,6 +47137,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -47125,6 +47306,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -47726,6 +47908,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={0}
@@ -48146,6 +48329,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={0}
@@ -48681,6 +48865,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}
@@ -49315,6 +49500,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -49483,6 +49669,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -50084,6 +50271,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={1}
@@ -50485,6 +50673,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={1}
@@ -51020,6 +51209,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}
@@ -51654,6 +51844,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -51822,6 +52013,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -52423,6 +52615,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={2}
@@ -52789,6 +52982,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={2}
@@ -53324,6 +53518,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}

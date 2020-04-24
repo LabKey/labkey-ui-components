@@ -166,7 +166,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                 <Radio
                     name={radioName}
                     value={0}
-                    checked={dataRowSetting == 0}
+                    checked={dataRowSetting === 0}
                     onChange={onRadioChange}
                     disabled={isFromAssay}
                 >
@@ -176,7 +176,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                 <Radio
                     name={radioName}
                     value={1}
-                    checked={dataRowSetting == 1}
+                    checked={dataRowSetting === 1}
                     onChange={onRadioChange}
                     disabled={isFromAssay}
                 >
@@ -186,7 +186,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                 <Radio
                     name={radioName}
                     value={2}
-                    checked={dataRowSetting == 2}
+                    checked={dataRowSetting === 2}
                     onChange={onRadioChange}
                     disabled={isFromAssay}
                 >
@@ -202,6 +202,7 @@ interface DataRowUniquenessContainerProps {
     onRadioChange: (e: any) => any;
     onCheckBoxChange: (any) => void;
     onSelectChange: (name, formValue, selected) => void;
+    keyPropertyIndex?: number;
 }
 
 export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {
@@ -230,7 +231,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
     }
 
     render() {
-        const { model, onRadioChange, onCheckBoxChange, onSelectChange } = this.props;
+        const { model, onRadioChange, onCheckBoxChange, onSelectChange, keyPropertyIndex } = this.props;
         const domain = model.domain;
         const additionalKeyFields = fetchAdditionalKeyFields(domain);
 
@@ -246,6 +247,9 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
             showAdditionalKeyField && validKeyField
                 ? 'dataset_data_row_element_show margin-top'
                 : 'dataset_data_row_element_hide margin-top';
+
+        const keyPropertyName =
+            keyPropertyIndex !== undefined ? model.domain.fields.get(keyPropertyIndex).name : model.keyPropertyName;
 
         return (
             <>
@@ -268,7 +272,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                         onSelectChange={onSelectChange}
                         labelKey="label"
                         valueKey="value"
-                        selectedValue={model.keyPropertyName}
+                        selectedValue={keyPropertyName}
                         disabled={!showAdditionalKeyField}
                         helpTip={this.getHelpTipForAdditionalField()}
                         clearable={false}

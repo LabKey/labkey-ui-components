@@ -107,6 +107,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
       "isPrimaryKey": false,
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
+      "disablePhiLevel": false,
     }
   }
   index={1}
@@ -549,6 +550,7 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
       "isPrimaryKey": false,
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
+      "disablePhiLevel": false,
     }
   }
   index={1}
@@ -867,6 +869,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
       "isPrimaryKey": false,
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
+      "disablePhiLevel": false,
     }
   }
   index={1}

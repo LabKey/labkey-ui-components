@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
 import produce, { Draft } from 'immer';
 
@@ -27,9 +27,11 @@ import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BaseProperties
 import { HelpTopicURL } from '../HelpTopicURL';
 import { DEFINE_DATASET_TOPIC } from '../../../util/helpLinks';
 
+import { DomainDesign } from '../models';
+
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { AdvancedSettings } from './DatasetPropertiesAdvancedSettings';
-import { DataRowUniquenessContainer, BasicPropertiesFields } from './DatasetPropertiesPanelFormElements';
+import { BasicPropertiesFields, DataRowUniquenessContainer } from './DatasetPropertiesPanelFormElements';
 import { TIME_KEY_FIELD_KEY } from './constants';
 
 interface OwnProps {
@@ -42,6 +44,7 @@ type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
     isValid?: boolean;
+    keyPropertyIndex?: number;
 }
 
 export class DatasetPropertiesPanelImpl extends React.PureComponent<
@@ -133,15 +136,30 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     onAdditionalKeyFieldChange = (name, formValue, selected): void => {
         const { model } = this.props;
 
-        if (formValue === TIME_KEY_FIELD_KEY) {
-            const newModel = produce(model, (draft: Draft<DatasetModel>) => {
-                draft.keyPropertyName = formValue;
-            });
+        let keyPropIndex;
+        const updatedDomain = model.domain.merge({
+            fields: model.domain.fields
+                .map((field, index) => {
+                    if (field.name === formValue) {
+                        keyPropIndex = index;
+                        return field.set('disablePhiLevel', true);
+                    } else {
+                        return field.set('disablePhiLevel', false);
+                    }
+                })
+                .toList(),
+        }) as DomainDesign;
 
-            this.updateValidStatus(newModel);
-        } else {
-            this.onChange(name, formValue);
-        }
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            draft.useTimeKeyField = formValue === TIME_KEY_FIELD_KEY;
+            draft.domain = updatedDomain;
+            draft[name] = formValue;
+        });
+
+        this.setState(
+            () => ({ keyPropertyIndex: keyPropIndex }),
+            () => this.updateValidStatus(newModel)
+        );
     };
 
     applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm) => {
@@ -161,7 +179,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     render() {
         const { model } = this.props;
 
-        const { isValid } = this.state;
+        const { isValid, keyPropertyIndex } = this.state;
 
         return (
             <BasePropertiesPanel
@@ -192,6 +210,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                             onRadioChange={this.onDataRowRadioChange}
                             onCheckBoxChange={this.onInputChange}
                             onSelectChange={this.onAdditionalKeyFieldChange}
+                            keyPropertyIndex={keyPropertyIndex}
                         />
                     </Col>
 

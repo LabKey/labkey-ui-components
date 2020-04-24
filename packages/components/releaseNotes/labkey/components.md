@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.52.2
+*Released*: 24 April 2020
 * Misc 20.5 issue fixes for Sample Manager
     - Issue 40139: DetailEditing panel editing - updating time but not date does not recognize change
     - Issue 39328: Assay run should use renamed file name as its Assay Id when the same data file is being imported (for both re-import case and new import case)

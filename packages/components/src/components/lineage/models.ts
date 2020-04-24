@@ -40,28 +40,6 @@ export function applyLineageOptions(options?: LineageOptions): LineageOptions {
     return _options;
 }
 
-// TODO add jest test coverage for this function
-function mergeNodes(aNodes: List<any>, bNodes: List<any>): List<any> {
-    let newNodes = aNodes.asMutable();
-
-    bNodes.forEach(node => {
-        const lsid = node.get('lsid');
-        const role = node.get('role');
-
-        const N = newNodes.find(aN => (
-            lsid === aN.get('lsid') &&
-            role === aN.get('role')
-        ));
-
-        if (!N) {
-            newNodes.push(node);
-        }
-    });
-
-    return newNodes.asImmutable();
-}
-
-
 export class LineageNodeMetadata extends Record ({
     date: undefined,
     description: undefined,
@@ -294,32 +272,6 @@ export class LineageResult extends Record({
 
     filterOut(field: string, value: undefined | string | Array<string>): LineageResult {
         return LineageResult._filter(this, field, value, false);
-    }
-
-    mergeLineage(other: LineageResult): LineageResult {
-        let newNodes = (this.nodes.map(node => {
-            const otherNode = other.nodes.get(node.get('lsid'));
-
-            if (otherNode) {
-                return node.merge({
-                    children: mergeNodes(node.get('children'), otherNode.get('children')),
-                    parents: mergeNodes(node.get('parents'), otherNode.get('parents'))
-                });
-            }
-
-            return node;
-        }) as Map<string, any>).asMutable();
-
-        other.nodes.forEach((otherNode, otherLsid: string) => {
-            if (!this.nodes.get(otherLsid)) {
-                newNodes.set(otherLsid, otherNode);
-            }
-        });
-
-        return this.merge({
-            mergedIn: this.mergedIn.push(other.seed),
-            nodes: newNodes.asImmutable()
-        }) as LineageResult;
     }
 
     /**

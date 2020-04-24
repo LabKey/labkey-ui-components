@@ -457,28 +457,6 @@ describe('Lineage Graph', () => {
             });
 
         });
-
-        describe('#mergeLineage()', () => {
-
-            test('Should merge in an empty lineage', () => {
-                let result = fullScreenSampleLineageResult.mergeLineage(LineageResult.create({
-                    "nodes": {}
-                }));
-                expect(result.nodes.size).toBe(17);
-            });
-
-            test('Should merge in an duplicate lineage', () => {
-                let result = fullScreenSampleLineageResult.mergeLineage(fullScreenSampleLineageResult);
-                expect(result.nodes.size).toBe(17);
-            });
-
-            test('Should merge in an other lineage', () => {
-                let result = fullScreenSampleLineageResult.mergeLineage(sampleLineageResult);
-                // fullScreenSampleLineageResult has 17 nodes, sampleLineageResult has 4 nodes,
-                // but they have 2 nodes with the same name (run1 and run2), so merged there is a total of 19 nodes.
-                expect(result.nodes.size).toBe(19);
-            });
-        });
     });
 
     describe('VisGraphGenerator', () => {

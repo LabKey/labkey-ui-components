@@ -19,7 +19,7 @@ import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 import { fromJS, List } from 'immutable';
 import { Option } from 'react-select';
 
-import { DomainDesign, selectRows } from '../../..';
+import { DomainDesign, DomainField, selectRows } from '../../..';
 
 import { DatasetModel } from './models';
 import {
@@ -190,4 +190,8 @@ export function fetchDatasetDesign(datasetId: number): Promise<DatasetModel> {
                 reject(error);
             });
     });
+}
+
+export function allowAsManagedField(field: DomainField): boolean {
+    return field.dataType.isString() || field.dataType.isNumeric() || field.dataType.isLookup();
 }

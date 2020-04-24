@@ -33,6 +33,7 @@ import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { AdvancedSettings } from './DatasetPropertiesAdvancedSettings';
 import { BasicPropertiesFields, DataRowUniquenessContainer } from './DatasetPropertiesPanelFormElements';
 import { TIME_KEY_FIELD_KEY } from './constants';
+import { allowAsManagedField } from './actions';
 
 interface OwnProps {
     model: DatasetModel;
@@ -154,6 +155,11 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
             draft.useTimeKeyField = formValue === TIME_KEY_FIELD_KEY;
             draft.domain = updatedDomain;
             draft[name] = formValue;
+
+            // if we are switching to a field type that is not allowed to be managed, set keyPropertyManaged as false
+            if (!allowAsManagedField(draft.domain.fields.get(keyPropIndex))) {
+                draft.keyPropertyManaged = false;
+            }
         });
 
         this.setState(

@@ -115,6 +115,16 @@ export class PropDescType
         return rangeURI === INT_RANGE_URI || rangeURI === USER_RANGE_URI;
     }
 
+    static isNumeric(rangeURI: string): boolean {
+        return (
+            this.isInteger(rangeURI) ||
+            rangeURI === DECIMAL_RANGE_URI ||
+            rangeURI === DOUBLE_RANGE_URI ||
+            rangeURI === FLOAT_RANGE_URI ||
+            rangeURI === LONG_RANGE_URI
+        );
+    }
+
     static isString(rangeURI: string): boolean {
         return rangeURI === STRING_RANGE_URI || rangeURI === MULTILINE_RANGE_URI;
     }
@@ -169,6 +179,10 @@ export class PropDescType
 
     isInteger(): boolean {
         return PropDescType.isInteger(this.rangeURI);
+    }
+
+    isNumeric(): boolean {
+        return PropDescType.isNumeric(this.rangeURI);
     }
 
     isString(): boolean {

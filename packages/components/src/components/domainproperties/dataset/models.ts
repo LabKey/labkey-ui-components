@@ -22,6 +22,8 @@ import { Draft, immerable, produce } from 'immer';
 
 import { DomainDesign } from '../models';
 
+import { allowAsManagedField } from './actions';
+
 export interface DatasetAdvancedSettingsForm {
     datasetId?: number;
     cohortId?: number;
@@ -137,9 +139,7 @@ export class DatasetModel implements IDatasetModel {
             const domainFields = this.domain.fields;
 
             const allowedFieldTypes = domainFields
-                .filter(field => {
-                    return field.dataType.isString() || field.dataType.isInteger();
-                })
+                .filter(field => allowAsManagedField(field))
                 .map(field => {
                     return field.name;
                 })

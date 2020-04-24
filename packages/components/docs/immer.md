@@ -111,9 +111,9 @@ class Circle {
 }
 ```
 
-What does this symbol do? To quote the Immer docs:
+What does this symbol do? To paraphrase the Immer docs:
 
-> Every other object must use the `immerable` symbol to mark itself as compatible with Immer.
+> Classes must use the `immerable` symbol to mark itself as compatible with Immer.
 When one of these objects is mutated within a producer, its prototype is preserved between copies.
 
 Now this class is ready to be used with Immer. Let's try again using `produce`:
@@ -156,9 +156,9 @@ The instance is now immutable, a mutated copy can be made via `produce`, and we 
 
 #### Compile-time safety
 
-The main advantage of using TypeScript is that it compiles your code to ensure correctness before you run it. Additionally,
-the run-time safety is great but it still may be something that only occurs in production if say our test coverage misses
-a code path.
+Immer results in run-time safety from mutations to your objects, but used in conjunction with Typescript you can
+also get compile-time safety. This has the advantages of catching errors earlier and applying to all code paths,
+even those not covered by tests.
 
 To get started, let's first declare all the properties on the `Circle` class as [`readonly`](https://www.typescriptlang.org/docs/handbook/classes.html#readonly-modifier).
 
@@ -190,12 +190,9 @@ circle.radius = 5; // Error: TS2540: Cannot assign to 'radius' because it is a r
 ```
 
 This gives us compile-time safety against invalid writes. The next feature we can use is the `Draft` utility from
-Immer. To quote the docs:
+Immer. `Draft` To quote the docs:
 
-> For curried reducers, the type is inferred from the first argument of recipe function, so make sure to type it.
-The `Draft` utility type can be used if the state argument type is immutable.
-
-This will help ensure the passed-in type is immutable.
+> The `Draft` utility type can be used if the state argument type is immutable.
 
 ```ts
 import { Draft, produce } from 'immer';

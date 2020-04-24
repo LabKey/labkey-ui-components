@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version TBD
+*Released*: TBD
+* Issue 39633: Choosing to cancel navigating away from a page when using react-router's setRouteLeaveHook will leave
+you on the page but the URL will have been updated to the page where you had originally intended to go, which means
+using that link again from the starting page will not work.
+
 ### version 0.52.2
 *Released*: 24 April 2020
 * Misc 20.5 issue fixes for Sample Manager
@@ -13,13 +19,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 20 April 2020
 * `@labkey/api` dependency update.
 
-### version 0.52.0
+## version 0.52.0
 *Released*: 18 April 2020
 * Item 7178: Prettier/ESLint bulk update
     - Initial Prettier/ESLint bulk update across packages/components/src directory.
     - yarn run lint-fix ./src/\*\*/\*
 
-### version 0.51.0
+## version 0.51.0
 *Released*: 17 April 2020
 * Item 6961: DataClassDesigner updates for LKS
     - update fetchDataClass function to work for either a data class name or rowId

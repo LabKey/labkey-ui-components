@@ -44,6 +44,10 @@ export class LineageSummary extends ReactN.Component<Props> {
         return this.global.QueryGrid_lineageResults.get(seed);
     }
 
+    private getTitleSuffix(direction: LINEAGE_DIRECTIONS): string {
+        return direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
+    }
+
     renderNodeList = (
         direction: LINEAGE_DIRECTIONS,
         lineage: LineageResult,

@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 39633: Choosing to cancel navigating away from a page when using react-router's setRouteLeaveHook will leave
 you on the page but the URL will have been updated to the page where you had originally intended to go, which means
 using that link again from the starting page will not work.
+* Issue 38002: Set isSubmitting to false after updateRows in EditableGridPanelForUpdate in case you stay on the page after updating
 
 ### version 0.52.2
 *Released*: 24 April 2020

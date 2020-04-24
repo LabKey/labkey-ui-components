@@ -57,7 +57,9 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             if (updatedRows.length > 0) {
                 this.setState(() => ({ isSubmitting: true }));
             }
-            updateRows(model.queryInfo.schemaQuery, updatedRows).then(() => onComplete());
+            updateRows(model.queryInfo.schemaQuery, updatedRows).then(() => {
+                this.setState(() => ({isSubmitting: false}),  onComplete())
+            });
         }
     };
 

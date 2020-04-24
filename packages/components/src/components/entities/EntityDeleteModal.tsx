@@ -9,6 +9,7 @@ import { Progress } from '../base/Progress';
 import { QueryGridModel } from '../base/models/model';
 import { createDeleteErrorNotification, createDeleteSuccessNotification } from '../notifications/messaging';
 import { deleteEntityDataRows } from '../entities/actions';
+import {NotificationItemProps} from "../..";
 
 interface Props {
     model: QueryGridModel
@@ -19,7 +20,7 @@ interface Props {
     onCancel: () => any
     entityDataType: EntityDataType
     auditBehavior?: AuditBehaviorTypes
-    notify?: () => void
+    notify?: (notification: NotificationItemProps) => void
 }
 
 export function EntityDeleteModal(props: Props) {
@@ -49,7 +50,7 @@ export function EntityDeleteModal(props: Props) {
     }
 
     function onConfirm(rowsToDelete: Array<any>, rowsToKeep: Array<any>): void {
-        const { notify } = this.props;
+        const { notify } = props;
         setNumConfirmed(rowsToDelete.length);
         setShowProgress(true);
         beforeDelete();
@@ -57,12 +58,10 @@ export function EntityDeleteModal(props: Props) {
 
         deleteEntityDataRows(model, rowsToDelete, nounSingular, nounPlural, () => {
             afterDelete(rowsToKeep);
-            createDeleteSuccessNotification(noun, rowsToDelete.length, notify);
-            // createDeleteSuccessNotification(notify, noun, rowsToDelete.length);
+            createDeleteSuccessNotification(noun, rowsToDelete.length, undefined, notify);
         }, () => {
             setShowProgress(false);
             createDeleteErrorNotification(noun, notify);
-            // createDeleteErrorNotification(notify, noun);
         }, auditBehavior);
     }
 

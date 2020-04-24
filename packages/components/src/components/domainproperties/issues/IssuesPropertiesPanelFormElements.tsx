@@ -1,10 +1,14 @@
-import React from "react";
-import {Col, FormControl, Row} from "react-bootstrap";
-import {SectionHeading} from "../SectionHeading";
-import {IssuesModel} from "./models";
-import {DomainFieldLabel} from "../DomainFieldLabel";
-import {Principal, SecurityRole, SelectInput} from "../../..";
-import {List} from "immutable";
+import React from 'react';
+import { Col, FormControl, Row } from 'react-bootstrap';
+
+import { List } from 'immutable';
+
+import { SectionHeading } from '../SectionHeading';
+
+import { DomainFieldLabel } from '../DomainFieldLabel';
+import { Principal, SelectInput } from '../../..';
+
+import { IssuesModel } from './models';
 
 interface IssuesBasicPropertiesInputsProps {
     model: IssuesModel;
@@ -36,8 +40,12 @@ export class AssignmentOptions extends React.PureComponent<SecurityGroupsProps> 
         return (
             <Col xs={11} md={6}>
                 <SectionHeading title="Assignment Options" />
-                <AssignedToGroupInput model={model} coreGroups={coreGroups} onSelect={(selected: Principal) => onSelect(selected)} />
-                {/*<DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onInputChange={onInputChange} />*/}
+                <AssignedToGroupInput
+                    model={model}
+                    coreGroups={coreGroups}
+                    onSelect={(selected: Principal) => onSelect(selected)}
+                />
+                {/* <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onInputChange={onInputChange} />*/}
             </Col>
         );
     }
@@ -50,10 +58,7 @@ export class SingularItemNameInput extends React.PureComponent<IssuesBasicProper
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel
-                        label="Singular item name"
-                        required={false}
-                    />
+                    <DomainFieldLabel label="Singular item name" required={false} />
                 </Col>
 
                 <Col xs={9} lg={8}>
@@ -79,10 +84,7 @@ export class PluralItemNameInput extends React.PureComponent<IssuesBasicProperti
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel
-                        label="Plural items name"
-                        required={false}
-                    />
+                    <DomainFieldLabel label="Plural items name" required={false} />
                 </Col>
 
                 <Col xs={9} lg={8}>
@@ -102,18 +104,14 @@ export class PluralItemNameInput extends React.PureComponent<IssuesBasicProperti
 }
 
 export class CommentSortDirectionDropDown extends React.PureComponent<IssuesBasicPropertiesInputsProps> {
-    render()
-    {
-        const {model, onInputChange} = this.props;
+    render() {
+        const { model, onInputChange } = this.props;
         const value = model.commentSortDirection;
 
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel
-                        label="Comment sort direction"
-                        required={false}
-                    />
+                    <DomainFieldLabel label="Comment sort direction" required={false} />
                 </Col>
 
                 <Col xs={9} lg={8}>
@@ -123,29 +121,22 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesBasi
                         onChange={onInputChange}
                         value={value ? value : ''}
                     >
-                        <option
-                            key={'Oldest first'}
-                            value={'ASC'}
-                        >
+                        <option key="Oldest first" value="ASC">
                             Oldest first
                         </option>
-                        <option
-                            key={'Newest first'}
-                            value={'DESC'}
-                        >
+                        <option key="Newest first" value="DESC">
                             Newest first
                         </option>
                     </FormControl>
                 </Col>
 
-                <Col lg={2}/>
+                <Col lg={2} />
             </Row>
         );
     }
 }
 
 export class AssignedToGroupInput extends React.PureComponent<SecurityGroupsProps, any> {
-
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         if (selected && this.props.onSelect) {
             this.props.onSelect(selected);
@@ -158,16 +149,13 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityGroupsProp
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel
-                        label="Assigned to list comes from"
-                        required={false}
-                    />
+                    <DomainFieldLabel label="Assigned to list comes from" required={false} />
                 </Col>
                 <Col xs={9} lg={8}>
                     <SelectInput
                         name={name}
                         options={coreGroups.toArray()}
-                        placeholder=''
+                        placeholder=""
                         inputClass="col-xs-12"
                         valueKey="userId"
                         labelKey="displayName"
@@ -185,7 +173,6 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityGroupsProp
 }
 
 export class DefaultUserAssignmentInput extends React.PureComponent<SecurityGroupsProps, any> {
-
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         if (selected && this.props.onSelect) {
             this.props.onSelect(selected);
@@ -201,16 +188,13 @@ export class DefaultUserAssignmentInput extends React.PureComponent<SecurityGrou
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel
-                        label="Default user assignment"
-                        required={false}
-                    />
+                    <DomainFieldLabel label="Default user assignment" required={false} />
                 </Col>
                 <Col xs={9} lg={8}>
                     <SelectInput
                         name={name}
                         options={coreGroups.toArray()}
-                        placeholder=''
+                        placeholder=""
                         inputClass="col-xs-12"
                         valueKey="userId"
                         labelKey="displayName"

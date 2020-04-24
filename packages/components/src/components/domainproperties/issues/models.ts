@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Record } from "immutable";
-import { DomainDesign, DomainField } from "../models";
+import { Record } from 'immutable';
+
+import { DomainDesign, DomainField } from '../models';
 
 export class IssuesModel extends Record({
     exception: undefined,
     domain: undefined,
-    entityId : undefined,
-    createdBy : undefined,
-    created : undefined,
-    modifiedBy : undefined,
-    modified : undefined,
-    containerId : undefined,
-    domainId : undefined,
-    name : undefined,
+    entityId: undefined,
+    createdBy: undefined,
+    created: undefined,
+    modifiedBy: undefined,
+    modified: undefined,
+    containerId: undefined,
+    domainId: undefined,
+    name: undefined,
     singularItemName: undefined,
     pluralItemName: undefined,
     commentSortDirection: undefined,
     assignedToGroup: undefined,
     assignedToUser: undefined,
-    domainKindName: undefined
+    domainKindName: undefined,
 }) {
     exception: string;
     domain: DomainDesign;
-    name : string;
+    name: string;
     singularItemName: string;
     pluralItemName: string;
     commentSortDirection: string;
@@ -45,17 +46,17 @@ export class IssuesModel extends Record({
     domainId: number;
     domainKindName: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
-    static create(raw: any, defaultSettings=null): IssuesModel {
+    static create(raw: any, defaultSettings = null): IssuesModel {
         if (defaultSettings) {
-            let domain = DomainDesign.create(undefined);
-            return new IssuesModel({...defaultSettings, domain});
+            const domain = DomainDesign.create(undefined);
+            return new IssuesModel({ ...defaultSettings, domain });
         } else {
-            let domain = DomainDesign.create(raw.domainDesign);
-            return new IssuesModel({...raw.options, domain});
+            const domain = DomainDesign.create(raw.domainDesign);
+            return new IssuesModel({ ...raw.options, domain });
         }
     }
 
@@ -68,11 +69,11 @@ export class IssuesModel extends Record({
     }
 
     hasValidProperties(): boolean {
-        return true; //TODO: when should it be valid or invalid
+        return true; // TODO: when should it be valid or invalid
     }
 
-    getOptions(): Object {
-        let options = this.toJS();
+    getOptions(): Record<string, any> {
+        const options = this.toJS();
         delete options.exception;
         delete options.domain;
         return options;

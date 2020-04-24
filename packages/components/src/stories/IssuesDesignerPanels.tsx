@@ -1,13 +1,16 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
+
 import { DEFAULT_ISSUES_DESIGNER_SETTINGS } from '../test/data/constants';
 import './stories.scss';
-import {IssuesDesignerPanels} from "../components/domainproperties/issues/IssuesDesignerPanels";
-import {IssuesModel} from "../components/domainproperties/issues/models";
-import { getCoreGroups } from "../components/permissions/actions";
-import {List} from "immutable";
-import {Principal, SecurityPolicy} from "..";
+import { IssuesDesignerPanels } from '../components/domainproperties/issues/IssuesDesignerPanels';
+import { IssuesModel } from '../components/domainproperties/issues/models';
+import { getCoreGroups } from '../components/permissions/actions';
+
+import { List } from 'immutable';
+
+import { Principal } from '..';
 
 class Wrapped extends React.Component<any, any> {
     constructor(props) {
@@ -48,7 +51,7 @@ class WrappedNew extends React.Component<any, any> {
         getCoreGroups()
             .then((principals: List<Principal>) => {
                 this.setState(() => ({
-                    coreGroups: principals
+                    coreGroups: principals,
                 }));
             })
             .catch(response => {
@@ -66,14 +69,12 @@ class WrappedNew extends React.Component<any, any> {
     }
 }
 
-
-
 storiesOf('IssuesDesignerPanels', module)
     .addDecorator(withKnobs)
     .add('IssuesDesignerPanels - create', () => {
         return <WrappedNew data={DEFAULT_ISSUES_DESIGNER_SETTINGS} />;
     });
-    // .add('IssuesDesignerPanels - update', () => {
-    //     // return <Wrapped data={getDomainDetailsJSON} />;
-    //     return <Wrapped data={DEFAULT_ISSUES_DESIGNER_SETTINGS} />;
-    // });
+// .add('IssuesDesignerPanels - update', () => {
+//     // return <Wrapped data={getDomainDetailsJSON} />;
+//     return <Wrapped data={DEFAULT_ISSUES_DESIGNER_SETTINGS} />;
+// });

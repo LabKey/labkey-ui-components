@@ -152,7 +152,7 @@ export const DEFAULT_ISSUES_DESIGNER_SETTINGS = {
     commentSortDirection: null,
     assignedToGroup: null,
     assignedToUser: null,
-    domainKindName: null
+    domainKindName: null,
 };
 
 export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';

@@ -1,13 +1,15 @@
 import React from 'react';
 
-import { IssuesModel } from './models';
-import { IssuesPropertiesPanel } from './IssuesPropertiesPanel';
-import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from "../BaseDomainDesigner";
-import { List } from "immutable";
-import { getDomainPanelStatus, saveDomain } from "../actions";
+import { List } from 'immutable';
+
+import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
+import { getDomainPanelStatus, saveDomain } from '../actions';
 import { resolveErrorMessage } from '../../../util/messaging';
-import DomainForm from "../DomainForm";
-import { DomainDesign } from "../models";
+import DomainForm from '../DomainForm';
+import { DomainDesign } from '../models';
+
+import { IssuesPropertiesPanel } from './IssuesPropertiesPanel';
+import { IssuesModel } from './models';
 
 interface Props {
     initModel?: IssuesModel;
@@ -29,7 +31,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
         super(props);
 
         this.state = {
-            model: props.initModel || IssuesModel.create({})
+            model: props.initModel || IssuesModel.create({}),
         };
     }
 
@@ -68,7 +70,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
 
         this.props.onFinish(isValid, this.saveDomain);
 
-        //TODO
+        // TODO
         // if (!isValid) {
         //     const exception = !model.hasValidKeyType()
         //         ? 'You must specify a key field for your list in the fields panel to continue.'
@@ -118,7 +120,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
             validatePanel,
             submitting,
             onTogglePanel,
-            saveBtnText
+            saveBtnText,
         } = this.props;
         const { model } = this.state;
 

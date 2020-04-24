@@ -1,24 +1,27 @@
 import React from 'react';
 
+import { Form } from 'react-bootstrap';
+
+import { Utils } from '@labkey/api';
+
+import { List } from 'immutable';
+
+import { DomainDesign } from '../models';
+
+import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,
 } from '../DomainPropertiesPanelCollapse';
-import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
-import { IssuesModel } from "./models";
-import { Form } from "react-bootstrap";
-import { AssignmentOptions, IssuesBasicPropertiesFields } from "./IssuesPropertiesPanelFormElements";
-import { Utils } from "@labkey/api";
-import { DomainDesign } from "../models";
+import { getCoreGroups } from '../../permissions/actions';
+import { Principal } from '../../..';
 
-import { List } from 'immutable';
-import { getCoreGroups } from "../../permissions/actions";
-import {Principal, SecurityRole} from "../../..";
+import { AssignmentOptions, IssuesBasicPropertiesFields } from './IssuesPropertiesPanelFormElements';
+import { IssuesModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'issues-properties-hdr';
 
-interface OwnProps
-{
+interface OwnProps {
     model: IssuesModel;
     onChange: (model: IssuesModel) => void;
     successBsStyle?: string;
@@ -31,20 +34,23 @@ interface State {
     coreGroups: List<Principal>;
 }
 
-export class IssuesPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
+export class IssuesPropertiesPanelImpl extends React.PureComponent<
+    Props & InjectedDomainPropertiesPanelCollapseProps,
+    State
+> {
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
 
         this.state = {
             isValid: true,
-            coreGroups: List<Principal>()
+            coreGroups: List<Principal>(),
         };
-    };
+    }
 
     componentDidMount() {
         getCoreGroups().then((coreGroupsData: List<Principal>) => {
             this.setState(() => ({
-                coreGroups: coreGroupsData
+                coreGroups: coreGroupsData,
             }));
         });
     }
@@ -111,7 +117,11 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<Props & Injec
             >
                 <Form>
                     <IssuesBasicPropertiesFields model={model} onInputChange={this.onInputChange} />
-                    <AssignmentOptions model={model} coreGroups={coreGroups} onSelect={(selected: Principal) => this.onSelectChange(selected)} />
+                    <AssignmentOptions
+                        model={model}
+                        coreGroups={coreGroups}
+                        onSelect={(selected: Principal) => this.onSelectChange(selected)}
+                    />
                 </Form>
             </BasePropertiesPanel>
         );

@@ -130,11 +130,10 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                 // A date field needs to be checked specially
                 if (column && column.jsonType === 'date') {
                     // Ensure dates have same formatting
-                    // If submitted value is same as existing date, do not update
-                    if (
-                        new Date(values[field]).setUTCHours(0, 0, 0, 0) ===
-                        new Date(queryData.getIn([field, 'value'])).setUTCHours(0, 0, 0, 0)
-                    ) {
+                    // If submitted value is same as existing date down to the minute (issue 40139), do not update
+                    const newDateValue = new Date(values[field]).setUTCSeconds(0, 0);
+                    const origDateValue = new Date(queryData.getIn([field, 'value'])).setUTCSeconds(0, 0);
+                    if (newDateValue === origDateValue) {
                         return false;
                     }
                 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable';
+import { fromJS, List } from 'immutable';
 
 import { getStateQueryGridModel } from '../../models';
 import { initQueryGridState } from '../../global';
@@ -21,7 +21,7 @@ import { ASSAY_DEFINITION_MODEL } from '../../test/data/constants';
 import sampleSet2QueryInfo from '../../test/data/sampleSet2-getQueryDetails.json';
 import { AssayDefinitionModel, QueryInfo, SchemaQuery } from '../../index';
 
-import { getImportItemsForAssayDefinitions } from './actions';
+import { getImportItemsForAssayDefinitions, getRunPropertiesFileName } from './actions';
 
 beforeAll(() => {
     initQueryGridState();
@@ -50,5 +50,17 @@ describe('getImportItemsForAssayDefinitions', () => {
         sampleModel = getStateQueryGridModel('jestTest-2', queryInfo.schemaQuery, { queryInfo });
         items = getImportItemsForAssayDefinitions(assayDefs, sampleModel);
         expect(items.size).toBe(1);
+    });
+});
+
+describe('getRunPropertiesFileName', () => {
+    test('abc', () => {
+        expect(getRunPropertiesFileName(undefined)).toBe(undefined);
+        expect(getRunPropertiesFileName(fromJS({}))).toBe(undefined);
+        expect(getRunPropertiesFileName(fromJS({ DataOutputs: [] }))).toBe(undefined);
+        expect(
+            getRunPropertiesFileName(fromJS({ DataOutputs: [{ displayValue: 'test1' }, { displayValue: 'test2' }] }))
+        ).toBe(undefined);
+        expect(getRunPropertiesFileName(fromJS({ DataOutputs: [{ displayValue: 'test1' }] }))).toBe('test1');
     });
 });

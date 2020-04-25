@@ -118,10 +118,11 @@ export class AssayWizardModel
         }
 
         if (this.isFilesTab(currentStep)) {
-            // using file upload tab
+            // Issue 39328: set assay run to 'undefined' so that the server will fill it in based on the file name
+            // note that in the "file already exists so it will be renamed" case, that renamed file name will be used.
             const file = this.getAttachedFiles().first();
-            if (file) {
-                return file.name;
+            if (file || this.usePreviousRunFile) {
+                return undefined;
             }
         }
 

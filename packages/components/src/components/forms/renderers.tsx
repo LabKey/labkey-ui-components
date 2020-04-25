@@ -85,14 +85,18 @@ function findValue(data: Map<string, any>, lookup?: boolean) {
     return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value');
 }
 
-export function resolveDetailFieldValue(data: any, lookup?: boolean): string | string[] {
+export function resolveDetailFieldValue(
+    data: any,
+    lookup?: boolean,
+    ignoreFormattedValue?: boolean
+): string | string[] {
     let value;
 
     if (data) {
         if (List.isList(data) && data.size) {
             value = data
                 .map(d => {
-                    if (d.has('formattedValue')) {
+                    if (!ignoreFormattedValue && d.has('formattedValue')) {
                         return d.get('formattedValue');
                     }
 
@@ -100,7 +104,7 @@ export function resolveDetailFieldValue(data: any, lookup?: boolean): string | s
                     return o !== null && o !== undefined ? o : undefined;
                 })
                 .toArray();
-        } else if (data.has('formattedValue')) {
+        } else if (!ignoreFormattedValue && data.has('formattedValue')) {
             value = data.get('formattedValue');
         } else {
             const o = findValue(data, lookup);

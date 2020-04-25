@@ -3,9 +3,11 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
 import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
+
+import { SectionHeading } from '../SectionHeading';
+import { DomainFieldLabel } from '../DomainFieldLabel';
+
 import { ListModel } from './models';
-import { SectionHeading } from "../SectionHeading";
-import { DomainFieldLabel } from "../DomainFieldLabel";
 
 interface BasicPropertiesInputsProps {
     model: ListModel;
@@ -15,12 +17,12 @@ interface BasicPropertiesInputsProps {
 export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
     render() {
         const { model, onInputChange } = this.props;
-        const value = (model.name === null) ? "" : model.name;
-        return(
-            <Row className={'margin-top'}>
+        const value = model.name === null ? '' : model.name;
+        return (
+            <Row className="margin-top">
                 <Col xs={3} lg={2}>
                     <DomainFieldLabel
-                        label={'Name'}
+                        label="Name"
                         required={true}
                         helpTipBody={() => 'The name for this list. Note that this can be changed after list creation.'}
                     />
@@ -36,7 +38,7 @@ export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
                     />
                 </Col>
 
-                <Col lg={2}/>
+                <Col lg={2} />
             </Row>
         );
     }
@@ -47,24 +49,22 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
         const { model, onInputChange } = this.props;
         const value = model.description === null ? '' : model.description;
 
-        return(
-            <Row className={'margin-top'}>
+        return (
+            <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel
-                        label={'Description'}
-                    />
+                    <DomainFieldLabel label="Description" />
                 </Col>
 
                 <Col xs={9} lg={8}>
                     <textarea
                         className="form-control textarea-noresize"
-                        id={'description'}
+                        id="description"
                         value={value}
                         onChange={onInputChange}
                     />
                 </Col>
 
-                <Col lg={2}/>
+                <Col lg={2} />
             </Row>
         );
     }
@@ -100,7 +100,7 @@ export class CheckBox extends React.PureComponent<CheckBoxProps> {
         );
 
         return (
-            <span className='list__properties__no-highlight' onClick={onClick}>
+            <span className="list__properties__no-highlight" onClick={onClick}>
                 {checkedOrNot}
             </span>
         );
@@ -119,14 +119,14 @@ export class CheckBoxRow extends React.PureComponent<CheckBoxRowProps> {
         const { checked, onCheckBoxChange, name, text } = this.props;
 
         return (
-            <div className='list__properties__checkbox-row'>
+            <div className="list__properties__checkbox-row">
                 <CheckBox
                     checked={checked}
                     onClick={() => {
                         onCheckBoxChange(name, checked);
                     }}
                 />
-                <span className='list__properties__checkbox-text'>{text}</span>
+                <span className="list__properties__checkbox-text">{text}</span>
             </div>
         );
     }
@@ -142,7 +142,7 @@ class AllowableActionContainer extends React.PureComponent<AllowableActionContai
         const { allowDelete, allowUpload, allowExport } = this.props.model;
 
         return (
-            <div className='list__properties__allowable-actions'>
+            <div className="list__properties__allowable-actions">
                 <CheckBoxRow
                     text="Delete"
                     checked={allowDelete}

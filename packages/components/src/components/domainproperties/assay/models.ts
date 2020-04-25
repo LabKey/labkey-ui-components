@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { List, Record } from 'immutable';
+
+import { Utils } from '@labkey/api';
+
 import { IEntityDetails } from '../entities/models';
-import { List, Record } from "immutable";
-import { SEVERITY_LEVEL_ERROR } from "../constants";
-import { DomainDesign } from "../models";
-import { Utils } from "@labkey/api";
+import { SEVERITY_LEVEL_ERROR } from '../constants';
+import { DomainDesign } from '../models';
 
 export class AssayProtocolModel extends Record({
     allowBackgroundUpload: false,
@@ -49,7 +51,7 @@ export class AssayProtocolModel extends Record({
     selectedDetectionMethod: undefined,
     selectedMetadataInputFormat: undefined,
     selectedPlateTemplate: undefined,
-    qcEnabled: undefined
+    qcEnabled: undefined,
 }) {
     allowBackgroundUpload: boolean;
     allowEditableResults: boolean;
@@ -82,7 +84,7 @@ export class AssayProtocolModel extends Record({
     selectedPlateTemplate: string;
     qcEnabled: boolean;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -90,7 +92,7 @@ export class AssayProtocolModel extends Record({
         let domains = raw.domains || List<DomainDesign>();
         if (raw.domains && Utils.isArray(raw.domains)) {
             domains = List<DomainDesign>(
-                raw.domains.map((domain) => {
+                raw.domains.map(domain => {
                     return DomainDesign.create(domain);
                 })
             );
@@ -107,7 +109,7 @@ export class AssayProtocolModel extends Record({
         const name = !raw.protocolId ? undefined : raw.name;
 
         // Issue 38685: for new assays, pre-select some required assay properties
-        const model = new AssayProtocolModel({...raw, name, domains});
+        const model = new AssayProtocolModel({ ...raw, name, domains });
         if (model.isNew()) {
             if (model.allowDetectionMethodSelection() && model.availableDetectionMethods.length > 0) {
                 raw.selectedDetectionMethod = List<string>(model.availableDetectionMethods).get(0);
@@ -117,16 +119,16 @@ export class AssayProtocolModel extends Record({
             }
         }
 
-        return new AssayProtocolModel({...raw, name, domains});
+        return new AssayProtocolModel({ ...raw, name, domains });
     }
 
     static serialize(model: AssayProtocolModel): any {
         // need to serialize the DomainDesign objects to remove the unrecognized fields
-        const domains = model.domains.map((domain) => {
+        const domains = model.domains.map(domain => {
             return DomainDesign.serialize(domain);
         });
 
-        let json = model.merge({domains}).toJS();
+        const json = model.merge({ domains }).toJS();
 
         // only need to serialize the id and not the autoCopyTargetContainer object
         delete json.autoCopyTargetContainer;
@@ -137,7 +139,7 @@ export class AssayProtocolModel extends Record({
 
     getDomainByNameSuffix(name: string): DomainDesign {
         if (this.domains.size > 0) {
-            return this.domains.find((domain) => {
+            return this.domains.find(domain => {
                 return domain.isNameSuffixMatch(name);
             });
         }
@@ -160,7 +162,11 @@ export class AssayProtocolModel extends Record({
     }
 
     allowMetadataInputFormatSelection(): boolean {
-        return this.availableMetadataInputFormats && Utils.isObject(this.availableMetadataInputFormats) && !Utils.isEmptyObj(this.availableMetadataInputFormats);
+        return (
+            this.availableMetadataInputFormats &&
+            Utils.isObject(this.availableMetadataInputFormats) &&
+            !Utils.isEmptyObj(this.availableMetadataInputFormats)
+        );
     }
 
     validateTransformScripts(): string {
@@ -169,7 +175,9 @@ export class AssayProtocolModel extends Record({
         }
 
         // make sure we don't have any script inputs that are empty strings
-        const hasEmptyScript = this.protocolTransformScripts.some((script, i) => script === undefined || script === null || script.length === 0);
+        const hasEmptyScript = this.protocolTransformScripts.some(
+            (script, i) => script === undefined || script === null || script.length === 0
+        );
         if (hasEmptyScript) {
             return 'Missing required transform script path.';
         }
@@ -178,7 +186,7 @@ export class AssayProtocolModel extends Record({
         if (!this.allowSpacesInPath && this.saveScriptFiles) {
             const hasSpacedScript = this.protocolTransformScripts.some((script, i) => script.indexOf(' ') > -1);
             if (hasSpacedScript) {
-                return 'The path to the transform script should not contain spaces when the \'Save Script Data for Debugging\' check box is selected.'
+                return 'The path to the transform script should not contain spaces when the \'Save Script Data for Debugging\' check box is selected.';
             }
         }
     }
@@ -188,10 +196,14 @@ export class AssayProtocolModel extends Record({
     }
 
     hasValidProperties(): boolean {
-        return (this.name !== undefined && this.name !==null && this.name.trim().length > 0)
-            && (!this.allowMetadataInputFormatSelection() || Utils.isString(this.selectedMetadataInputFormat))
-            && (!this.allowDetectionMethodSelection() || Utils.isString(this.selectedDetectionMethod))
-            && (!this.allowPlateTemplateSelection() || Utils.isString(this.selectedPlateTemplate))
-            && this.validateTransformScripts() === undefined;
+        return (
+            this.name !== undefined &&
+            this.name !== null &&
+            this.name.trim().length > 0 &&
+            (!this.allowMetadataInputFormatSelection() || Utils.isString(this.selectedMetadataInputFormat)) &&
+            (!this.allowDetectionMethodSelection() || Utils.isString(this.selectedDetectionMethod)) &&
+            (!this.allowPlateTemplateSelection() || Utils.isString(this.selectedPlateTemplate)) &&
+            this.validateTransformScripts() === undefined
+        );
     }
 }

@@ -11,17 +11,20 @@ const DATA_CLASSES = {
     INGREDIENTS: SchemaQuery.create('exp.data', 'expressionsystem'),
     MIXTURES: SchemaQuery.create('exp.data', 'mixtures'),
 };
-export const INGREDIENT_TYPE_OPTIONS: Array<Option> = [{
-    label: 'Ingredient',
-    value: 'ingredients'
-},{
-    label: 'Mixture',
-    value: 'mixtures'
-}];
+export const INGREDIENT_TYPE_OPTIONS: Option[] = [
+    {
+        label: 'Ingredient',
+        value: 'ingredients',
+    },
+    {
+        label: 'Mixture',
+        value: 'mixtures',
+    },
+];
 
 interface State {
-    type: string,
-    ingredient: string,
+    type: string;
+    ingredient: string;
 }
 
 class QuerySelectWrapper extends React.PureComponent<any, State> {
@@ -31,10 +34,10 @@ class QuerySelectWrapper extends React.PureComponent<any, State> {
         this.state = {
             type: undefined,
             ingredient: undefined,
-        }
+        };
     }
 
-    filterOptions = (options) => {
+    filterOptions = options => {
         return options;
     };
 
@@ -50,21 +53,21 @@ class QuerySelectWrapper extends React.PureComponent<any, State> {
         const { type } = this.state;
 
         return (
-            <div className={"col-xs-10"}>
+            <div className="col-xs-10">
                 <SelectInput
                     containerClass=""
                     formsy={false}
                     inputClass="col-xs-4 test-loc-ingredient-type"
-                    name={"ingredientType"}
+                    name="ingredientType"
                     onChange={this.onTypeChange}
                     options={INGREDIENT_TYPE_OPTIONS}
-                    placeholder={"Select type ..."}
+                    placeholder="Select type ..."
                     showLabel={false}
                     value={type}
                 />
 
                 <QuerySelect
-                    componentId={type + "_added"}
+                    componentId={type + '_added'}
                     containerClass="row"
                     disabled={type === undefined || type === ''}
                     filterOptions={this.filterOptions}
@@ -81,12 +84,10 @@ class QuerySelectWrapper extends React.PureComponent<any, State> {
                     loadOnChange={false}
                 />
             </div>
-        )
+        );
     }
 }
 
-
-storiesOf('QuerySelect', module)
-    .add('with data', () => {
-        return <QuerySelectWrapper />
-    });
+storiesOf('QuerySelect', module).add('with data', () => {
+    return <QuerySelectWrapper />;
+});

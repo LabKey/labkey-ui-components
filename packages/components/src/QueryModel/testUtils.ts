@@ -1,9 +1,12 @@
 import { Query } from '@labkey/api';
+
 import { Actions, initQueryGridState, QueryInfo, QueryModel } from '..';
-import { LoadingState } from './QueryModel';
+
 import { applyQueryMetadata, handle132Response } from '../query/api';
 import { bindColumnRenderers } from '../renderers';
 import { initMockServerContext } from '../testHelpers';
+
+import { LoadingState } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
 
 /**
@@ -42,7 +45,7 @@ export const makeQueryInfo = (getQueryDetailsResponse): QueryInfo => {
  */
 export const makeTestData = (getQueryResponse): Promise<RowsResponse> => {
     const response = new Query.Response(getQueryResponse);
-    return handle132Response(response).then((resp) => {
+    return handle132Response(response).then(resp => {
         const { messages, models, orderedModels, rowCount } = resp;
         const key = Object.keys(models)[0];
         return {
@@ -65,7 +68,7 @@ export const makeTestData = (getQueryResponse): Promise<RowsResponse> => {
 export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, orderedRows?: any, rowCount?: number) => {
     let model = new QueryModel({
         id: 'model',
-        schemaQuery: schemaQuery,
+        schemaQuery,
     });
 
     if (queryInfo) {
@@ -92,7 +95,7 @@ export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, or
  * between every test, jest.fn() objects track all calls overtime, so you'll want a fresh one for every test.
  */
 export const makeTestActions = (): Actions => {
-    return  {
+    return {
         addModel: jest.fn(),
         loadModel: jest.fn(),
         loadAllModels: jest.fn(),

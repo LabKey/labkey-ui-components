@@ -18,11 +18,13 @@ import Formsy from 'formsy-react';
 import { Textarea } from 'formsy-react-components';
 import { Map } from 'immutable';
 
-import { AssayWizardModel } from './models';
-import { EditableGridPanel } from '../../components/editable/EditableGridPanel';
-import { handleTabKeyOnTextArea } from '../../components/forms/actions';
+import { Button } from 'react-bootstrap';
+
+import { EditableGridPanel } from '../editable/EditableGridPanel';
+
+import { handleTabKeyOnTextArea } from '../forms/actions';
 import { FormStep, FormTabs } from '../forms/FormStep';
-import { getRunPropertiesRow } from './actions';
+
 import { AssayUploadTabs, InferDomainResponse, QueryGridModel } from '../base/models/model';
 import { getServerFilePreview } from '../base/actions';
 import { getActionErrorMessage } from '../../util/messaging';
@@ -32,59 +34,60 @@ import { Alert } from '../base/Alert';
 import { FileSizeLimitProps } from '../files/models';
 import { getEditorModel, helpLinkNode, IMPORT_DATA_FORM_TYPES } from '../..';
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
-import { Button } from 'react-bootstrap';
+
+import { getRunPropertiesFileName, getRunPropertiesRow } from './actions';
+import { AssayWizardModel } from './models';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;
 
 interface Props {
-    currentStep: number
-    wizardModel: AssayWizardModel
-    gridModel: QueryGridModel
-    onFileChange: (attachments: Map<string, File>) => any
-    onFileRemoval: (attachmentName: string) => any
-    onTextChange: (inputName: string, value: any) => any
-    acceptedPreviewFileFormats?: string
-    fullWidth?: boolean
-    allowBulkRemove?: boolean
-    allowBulkInsert?: boolean
-    allowBulkUpdate?: boolean
-    title: string
-    fileSizeLimits?: Map<string, FileSizeLimitProps>
-    maxInsertRows?: number
-    onGridDataChange?: (dirty: boolean, changeType: IMPORT_DATA_FORM_TYPES) => any
+    currentStep: number;
+    wizardModel: AssayWizardModel;
+    gridModel: QueryGridModel;
+    onFileChange: (attachments: Map<string, File>) => any;
+    onFileRemoval: (attachmentName: string) => any;
+    onTextChange: (inputName: string, value: any) => any;
+    acceptedPreviewFileFormats?: string;
+    fullWidth?: boolean;
+    allowBulkRemove?: boolean;
+    allowBulkInsert?: boolean;
+    allowBulkUpdate?: boolean;
+    title: string;
+    fileSizeLimits?: Map<string, FileSizeLimitProps>;
+    maxInsertRows?: number;
+    onGridDataChange?: (dirty: boolean, changeType: IMPORT_DATA_FORM_TYPES) => any;
 }
 
 interface PreviousRunData {
-    isLoading?: boolean
-    isLoaded?: boolean
-    data?: InferDomainResponse
-    fileName?: string
+    isLoading?: boolean;
+    isLoaded?: boolean;
+    data?: InferDomainResponse;
+    fileName?: string;
 }
 
 interface State {
-    attachments?: Map<string, File>
-    message?: React.ReactNode
-    messageStyle?: string
-    previousRunData?: PreviousRunData
+    attachments?: Map<string, File>;
+    message?: React.ReactNode;
+    messageStyle?: string;
+    previousRunData?: PreviousRunData;
 }
 
 export class RunDataPanel extends React.Component<Props, State> {
-
     static defaultProps = {
         fullWidth: true,
         allowBulkRemove: false,
         allowBulkInsert: false,
         allowBulkUpdate: false,
-        title: 'Results'
+        title: 'Results',
     };
 
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            previousRunData : props.wizardModel.usePreviousRunFile ? {isLoaded: false} : undefined
-        }
+            previousRunData: props.wizardModel.usePreviousRunFile ? { isLoaded: false } : undefined,
+        };
     }
 
     isRerun() {
@@ -98,7 +101,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     componentWillReceiveProps(nextProps: Props) {
         if (nextProps.wizardModel.runId != this.props.wizardModel.runId) {
             this.setState(() => ({
-                previousRunData: nextProps.wizardModel.usePreviousRunFile ? {isLoaded: false} : undefined
+                previousRunData: nextProps.wizardModel.usePreviousRunFile ? { isLoaded: false } : undefined,
             }));
         } else {
             this.initPreviewData();
@@ -110,72 +113,85 @@ export class RunDataPanel extends React.Component<Props, State> {
         const { wizardModel } = this.props;
 
         if (!this.isRerun() || !previousRunData || previousRunData.isLoaded || previousRunData.isLoading) {
-           return;
+            return;
         }
 
         if (wizardModel.isInit && wizardModel.usePreviousRunFile) {
             const row = getRunPropertiesRow(wizardModel.assayDef, wizardModel.runId);
-            if (row.has("DataOutputs")) {
+            if (row.has('DataOutputs')) {
                 const outputFiles = row.get('DataOutputs/DataFileUrl');
                 if (outputFiles && outputFiles.size == 1) {
                     const outputs = row.get('DataOutputs');
-                    this.setState(() => ({previousRunData: {isLoading: true, isLoaded: false}}));
+                    this.setState(() => ({ previousRunData: { isLoading: true, isLoaded: false } }));
 
-                    getServerFilePreview(outputs.getIn([0, "value"]), PREVIEW_ROW_COUNT).then((response) => {
-                        this.setState(() => ({
-                            previousRunData: {
-                                isLoaded: true,
-                                data: response,
-                                fileName: outputs.getIn([0, 'displayValue'])
-                            }
-                        }));
-                    }).catch((reason) => {
-                        this.setState(() => ({
-                            message: getActionErrorMessage("There was a problem retrieving the current run's data for previewing. ", "assay run"),
-                            messageStyle: "danger",
-                            previousRunData: {
-                                isLoaded: true
-                            }
-                        }));
-                    });
-                }
-                else {
-                    let message = "No preview data available for the current run.";
+                    getServerFilePreview(outputs.getIn([0, 'value']), PREVIEW_ROW_COUNT)
+                        .then(response => {
+                            this.setState(() => ({
+                                previousRunData: {
+                                    isLoaded: true,
+                                    data: response,
+                                    fileName: getRunPropertiesFileName(row),
+                                },
+                            }));
+                        })
+                        .catch(reason => {
+                            this.setState(() => ({
+                                message: getActionErrorMessage(
+                                    "There was a problem retrieving the current run's data for previewing. ",
+                                    'assay run'
+                                ),
+                                messageStyle: 'danger',
+                                previousRunData: {
+                                    isLoaded: true,
+                                },
+                            }));
+                        });
+                } else {
+                    let message = 'No preview data available for the current run.';
                     if (outputFiles.size > 1) {
-                        message += "  There are " + outputFiles.size + " output files for this run. Preview is not currently supported for multiple files."
+                        message +=
+                            '  There are ' +
+                            outputFiles.size +
+                            ' output files for this run. Preview is not currently supported for multiple files.';
                     }
                     this.setState(() => ({
                         message,
-                        messageStyle: "info",
+                        messageStyle: 'info',
                         previousRunData: {
-                            isLoaded: true
-                        }
-                    }))
+                            isLoaded: true,
+                        },
+                    }));
                 }
             }
         }
     }
 
     resetMessage = () => {
-        this.setState( (state) => ({
+        this.setState(state => ({
             message: undefined,
         }));
     };
 
     onFileChange = (attachments: Map<string, File>) => {
-        this.setState(() => ({
-            message: undefined
-        }), () => {
-            this.props.onFileChange(attachments)
-        });
+        this.setState(
+            () => ({
+                message: undefined,
+            }),
+            () => {
+                this.props.onFileChange(attachments);
+            }
+        );
     };
 
     onFileRemove = (attachmentName: string) => {
-        this.setState( (state) => ({
-            message: undefined,
-            attachments: undefined,
-            previousRunData: undefined
-        }), () => this.props.onFileRemoval(attachmentName));
+        this.setState(
+            state => ({
+                message: undefined,
+                attachments: undefined,
+                previousRunData: undefined,
+            }),
+            () => this.props.onFileRemoval(attachmentName)
+        );
     };
 
     onTabChange = () => {
@@ -191,56 +207,82 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     render() {
-        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert, allowBulkUpdate, title, maxInsertRows } = this.props;
+        const {
+            currentStep,
+            gridModel,
+            wizardModel,
+            onTextChange,
+            acceptedPreviewFileFormats,
+            fullWidth,
+            allowBulkRemove,
+            allowBulkInsert,
+            allowBulkUpdate,
+            title,
+            maxInsertRows,
+        } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
-        let cutPastePlaceholder = "Paste in a tab-separated set of values (including column headers).";
+        let cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
         if (maxInsertRows) {
-            cutPastePlaceholder += "  Maximum number of data rows allowed is " + maxInsertRows + ".";
+            cutPastePlaceholder += '  Maximum number of data rows allowed is ' + maxInsertRows + '.';
         }
         return (
-            <div className={"panel panel-default " + (fullWidth ? "full-width" : "")}>
-                <div className="panel-heading">
-                    {title}
-                </div>
+            <div className={'panel panel-default ' + (fullWidth ? 'full-width' : '')}>
+                <div className="panel-heading">{title}</div>
                 <div className="panel-body">
-                    {isLoading ? <LoadingSpinner/>
-                        : <>
-                            <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
+                    {isLoading ? (
+                        <LoadingSpinner />
+                    ) : (
+                        <>
+                            <FormTabs tabs={TABS} onTabChange={this.onTabChange} />
 
                             <div className="row">
                                 <div className="col-sm-12">
                                     <FormStep stepIndex={AssayUploadTabs.Files}>
-                                        {isLoadingPreview
-                                            ? <LoadingSpinner/>
-                                            : <FileAttachmentForm
+                                        {isLoadingPreview ? (
+                                            <LoadingSpinner />
+                                        ) : (
+                                            <FileAttachmentForm
                                                 allowDirectories={false}
                                                 allowMultiple={false}
                                                 showLabel={false}
-                                                initialFileNames={previousRunData && previousRunData.fileName ? [previousRunData.fileName] : []}
+                                                initialFileNames={
+                                                    previousRunData && previousRunData.fileName
+                                                        ? [previousRunData.fileName]
+                                                        : []
+                                                }
                                                 onFileChange={this.onFileChange}
                                                 onFileRemoval={this.onFileRemove}
                                                 templateUrl={wizardModel.assayDef.templateLink}
-                                                previewGridProps={acceptedPreviewFileFormats && {
-                                                    previewCount: PREVIEW_ROW_COUNT,
-                                                    acceptedFormats: acceptedPreviewFileFormats,
-                                                    initialData: previousRunData ? previousRunData.data : undefined
-                                                }}
+                                                previewGridProps={
+                                                    acceptedPreviewFileFormats && {
+                                                        previewCount: PREVIEW_ROW_COUNT,
+                                                        acceptedFormats: acceptedPreviewFileFormats,
+                                                        initialData: previousRunData ? previousRunData.data : undefined,
+                                                    }
+                                                }
                                                 sizeLimits={this.props.fileSizeLimits}
-                                                sizeLimitsHelpText={<>We recommend dividing your data into smaller files that meet this limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, "help document")} for best practices on data import.</>}
+                                                sizeLimitsHelpText={
+                                                    <>
+                                                        We recommend dividing your data into smaller files that meet
+                                                        this limit. See our{' '}
+                                                        {helpLinkNode(DATA_IMPORT_TOPIC, 'help document')} for best
+                                                        practices on data import.
+                                                    </>
+                                                }
                                             />
-                                        }
+                                        )}
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Copy}>
                                         <Formsy>
                                             <Textarea
                                                 changeDebounceInterval={0}
                                                 cols={-1}
-                                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-12']}
-                                                label=''
-                                                labelClassName={[{'col-sm-3': false}, 'hidden']}
+                                                elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
+                                                label=""
+                                                labelClassName={[{ 'col-sm-3': false }, 'hidden']}
                                                 name="rundata"
                                                 onChange={(field, value) => onTextChange('text', value)}
                                                 onKeyDown={handleTabKeyOnTextArea}
@@ -258,34 +300,33 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             disabled={currentStep !== AssayUploadTabs.Grid}
                                             allowBulkRemove={allowBulkRemove}
                                             allowBulkAdd={allowBulkInsert}
-                                            bulkAddText={'Bulk Insert'}
+                                            bulkAddText="Bulk Insert"
                                             bulkAddProps={{
                                                 title: 'Bulk Insert Assay Rows',
-                                                header: 'Add a batch of assay data rows that will share the properties set below.'
+                                                header:
+                                                    'Add a batch of assay data rows that will share the properties set below.',
                                             }}
                                             allowBulkUpdate={allowBulkUpdate}
                                             bordered={true}
                                             striped={true}
                                             addControlProps={{
                                                 placement: 'top',
-                                                nounPlural: "rows",
-                                                nounSingular: "row"
+                                                nounPlural: 'rows',
+                                                nounSingular: 'row',
                                             }}
                                             initialEmptyRowCount={0}
-                                            emptyGridMsg={'Start by adding the quantity of assay data rows you want to create.'}
+                                            emptyGridMsg="Start by adding the quantity of assay data rows you want to create."
                                             maxTotalRows={this.props.maxInsertRows}
                                             onRowCountChange={this.onRowCountChange}
                                         />
                                     </FormStep>
                                 </div>
                             </div>
-                            <div className={"top-spacing"}>
-                                <Alert bsStyle={messageStyle}>
-                                    {message}
-                                </Alert>
+                            <div className="top-spacing">
+                                <Alert bsStyle={messageStyle}>{message}</Alert>
                             </div>
                         </>
-                    }
+                    )}
                 </div>
             </div>
         );

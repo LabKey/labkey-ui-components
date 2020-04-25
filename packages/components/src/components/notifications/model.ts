@@ -15,9 +15,9 @@
  */
 import React from 'react';
 import { Record } from 'immutable';
+
 import { generateId } from '../../util/utils';
 import { User } from '../base/models/model';
-
 
 export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;
 
@@ -29,26 +29,28 @@ export const enum Persistence {
 // This interface is available so you do not have .create a Model object and so the id can be optionally
 // created for you.
 export interface NotificationItemProps {
-    alertClass?: string
-    data?: any
-    id?: string
-    isDismissible?: boolean
-    isDismissed?: boolean
-    message: string | MessageFunction<NotificationItemProps>
-    onDismiss?: () => any
-    persistence?: Persistence
+    alertClass?: string;
+    data?: any;
+    id?: string;
+    isDismissible?: boolean;
+    isDismissed?: boolean;
+    message: string | MessageFunction<NotificationItemProps>;
+    onDismiss?: () => any;
+    persistence?: Persistence;
 }
 
-export class NotificationItemModel extends Record({
-    alertClass: 'success',
-    data: undefined,
-    id: undefined,
-    isDismissible: true,
-    isDismissed: false,
-    message: undefined,
-    onDismiss: undefined,
-    persistence: Persistence.PAGE_LOAD
-}) implements NotificationItemProps {
+export class NotificationItemModel
+    extends Record({
+        alertClass: 'success',
+        data: undefined,
+        id: undefined,
+        isDismissible: true,
+        isDismissed: false,
+        message: undefined,
+        onDismiss: undefined,
+        persistence: Persistence.PAGE_LOAD,
+    })
+    implements NotificationItemProps {
     alertClass: string;
     data?: any;
     id: string;
@@ -58,13 +60,19 @@ export class NotificationItemModel extends Record({
     onDismiss?: () => any;
     persistence?: Persistence;
 
-    static create(values?: {[key:string]: any}) {
-        return new NotificationItemModel(Object.assign({}, {
-            id: nextNotificationId()
-        }, values));
+    static create(values?: { [key: string]: any }) {
+        return new NotificationItemModel(
+            Object.assign(
+                {},
+                {
+                    id: nextNotificationId(),
+                },
+                values
+            )
+        );
     }
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 }
@@ -72,6 +80,3 @@ export class NotificationItemModel extends Record({
 function nextNotificationId(): string {
     return generateId('notification_');
 }
-
-
-

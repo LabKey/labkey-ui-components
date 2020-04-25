@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props {
-    beforeunload: (event: any) => any
+    beforeunload: (event: any) => any;
 }
 
 /**
@@ -10,13 +10,12 @@ interface Props {
  * route changes instead of on page navigation.
  */
 export class BeforeUnload extends React.PureComponent<Props, any> {
-
     componentDidMount() {
-        window.addEventListener("beforeunload", this.props.beforeunload);
+        window.addEventListener('beforeunload', this.props.beforeunload);
     }
 
     componentWillUnmount() {
-        window.removeEventListener("beforeunload", this.props.beforeunload);
+        window.removeEventListener('beforeunload', this.props.beforeunload);
     }
 
     render() {

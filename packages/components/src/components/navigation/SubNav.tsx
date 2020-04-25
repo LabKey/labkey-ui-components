@@ -19,29 +19,29 @@ import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 import $ from 'jquery';
 
-import { NavItem, ParentNavItem } from './NavItem';
 import { AppURL } from '../../url/AppURL';
 
+import { NavItem, ParentNavItem } from './NavItem';
+
 interface ISubNavProps {
-    params?: any
-    noun?: ITab
-    tabs: List<ITab>
+    params?: any;
+    noun?: ITab;
+    tabs: List<ITab>;
 }
 
 interface SubNavState {
-    isScrollable?: boolean
+    isScrollable?: boolean;
 }
 
 export interface ITab {
-    text: string
-    tooltip?: React.ReactNode
-    url: string | AppURL  // will be used to match router.isActive()
+    text: string;
+    tooltip?: React.ReactNode;
+    url: string | AppURL; // will be used to match router.isActive()
 }
 
 let activateTimer;
 
 export class SubNav extends React.Component<ISubNavProps, SubNavState> {
-
     private scrollable: React.RefObject<HTMLDivElement>;
 
     constructor(props: ISubNavProps) {
@@ -53,10 +53,10 @@ export class SubNav extends React.Component<ISubNavProps, SubNavState> {
         this.scrollRight = this.scrollRight.bind(this);
 
         this.state = {
-            isScrollable: false
+            isScrollable: false,
         };
 
-        this.scrollable = React.createRef()
+        this.scrollable = React.createRef();
     }
 
     componentDidMount() {
@@ -94,23 +94,25 @@ export class SubNav extends React.Component<ISubNavProps, SubNavState> {
         if (hasOverflow) {
             if (!this.state.isScrollable) {
                 this.setState({
-                    isScrollable: true
+                    isScrollable: true,
                 });
             }
-        }
-        else {
+        } else {
             if (this.state.isScrollable) {
                 this.setState({
-                    isScrollable: false
+                    isScrollable: false,
                 });
             }
         }
     }
 
     scroll(scrollLeftDelta: number) {
-        $(this.scrollable.current).animate({
-            scrollLeft: this.scrollable.current.scrollLeft + scrollLeftDelta
-        }, 200);
+        $(this.scrollable.current).animate(
+            {
+                scrollLeft: this.scrollable.current.scrollLeft + scrollLeftDelta,
+            },
+            200
+        );
     }
 
     scrollLeft() {
@@ -135,8 +137,7 @@ export class SubNav extends React.Component<ISubNavProps, SubNavState> {
 
         if (itemLeft < leftEdge) {
             this.scroll(itemLeft - leftEdge);
-        }
-        else if (itemRight > rightEdge) {
+        } else if (itemRight > rightEdge) {
             this.scroll(itemRight - rightEdge);
         }
     }
@@ -155,7 +156,8 @@ export class SubNav extends React.Component<ISubNavProps, SubNavState> {
                                     key={i}
                                     to={tab.url}
                                     onActive={this.state.isScrollable && this.onItemActivate}
-                                    onlyActiveOnIndex={tab.text === "Overview"}>
+                                    onlyActiveOnIndex={tab.text === 'Overview'}
+                                >
                                     {tab.text}
                                 </NavItem>
                             ))}
@@ -164,10 +166,10 @@ export class SubNav extends React.Component<ISubNavProps, SubNavState> {
                     {this.state.isScrollable && (
                         <div className="btn-group scroll-btn-group">
                             <Button onClick={this.scrollLeft}>
-                                <i className="fa fa-chevron-left"/>
+                                <i className="fa fa-chevron-left" />
                             </Button>
                             <Button onClick={this.scrollRight}>
-                                <i className="fa fa-chevron-right"/>
+                                <i className="fa fa-chevron-right" />
                             </Button>
                         </div>
                     )}
@@ -176,4 +178,3 @@ export class SubNav extends React.Component<ISubNavProps, SubNavState> {
         );
     }
 }
-

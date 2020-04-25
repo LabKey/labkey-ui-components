@@ -18,15 +18,15 @@ import { Button, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
 interface Props {
-    show?: boolean
-    title?: string
-    msg: any
-    onConfirm?: (any) => void
-    onCancel?: (any) => void
-    confirmButtonText?: string
-    cancelButtonText?: string
-    confirmVariant?: string
-    submitting?: boolean
+    show?: boolean;
+    title?: string;
+    msg: any;
+    onConfirm?: (any) => void;
+    onCancel?: (any) => void;
+    confirmButtonText?: string;
+    cancelButtonText?: string;
+    confirmVariant?: string;
+    submitting?: boolean;
 }
 
 export class ConfirmModal extends React.PureComponent<Props, any> {
@@ -35,16 +35,24 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
         title: 'Confirm',
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        confirmVariant: 'danger'
+        confirmVariant: 'danger',
     };
 
     render() {
-        const { show, title, msg, onConfirm, onCancel, confirmButtonText, cancelButtonText, confirmVariant, submitting } = this.props;
-        let cancelBtnClass = classNames(
-            'btn btn-default', {
-                'pull-left': onConfirm !== undefined
-            }
-        );
+        const {
+            show,
+            title,
+            msg,
+            onConfirm,
+            onCancel,
+            confirmButtonText,
+            cancelButtonText,
+            confirmVariant,
+            submitting,
+        } = this.props;
+        const cancelBtnClass = classNames('btn btn-default', {
+            'pull-left': onConfirm !== undefined,
+        });
 
         return (
             <Modal show={show} onHide={onCancel}>
@@ -52,23 +60,21 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body>
-                    {msg}
-                </Modal.Body>
+                <Modal.Body>{msg}</Modal.Body>
 
                 <Modal.Footer>
-                    {onCancel &&
+                    {onCancel && (
                         <Button bsClass={cancelBtnClass} onClick={onCancel}>
                             {cancelButtonText}
                         </Button>
-                    }
-                    {onConfirm &&
+                    )}
+                    {onConfirm && (
                         <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm} disabled={submitting}>
                             {confirmButtonText}
                         </Button>
-                    }
+                    )}
                 </Modal.Footer>
             </Modal>
-        )
+        );
     }
 }

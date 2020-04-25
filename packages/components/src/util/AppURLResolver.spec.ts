@@ -15,154 +15,166 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './AppURLResolver';
-import { URLResolver } from './URLResolver';
 import { AppURL } from '../url/AppURL';
+
 import { initMockServerContext } from '../testHelpers';
 
-describe('URL Resolvers', () => {
+import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './AppURLResolver';
+import { URLResolver } from './URLResolver';
 
+describe('URL Resolvers', () => {
     const resolver = new URLResolver();
 
     const selectRowsResult = fromJS({
-        schemaName: [ "Go" ],
-        queryName: "Mariners",
+        schemaName: ['Go'],
+        queryName: 'Mariners',
         metaData: {
-            fields: [{
-                fieldKey: "LookupColumn",
-                lookup: {
-                    schemaName: "BoomSchema",
-                    queryName: "PowQuery"
-                }
-            },{
-                fieldKey: "DataClassLookupColumn",
-                lookup: {
-                    schemaName: "exp",
-                    queryName: "DataClasses"
-                }
-            },{
-                fieldKey: "NonLookupExpShowDataClass"
-            },{
-                fieldKey: "LookupExpShowDataClass",
-                lookup: {
-                    schemaName: "exp.data"
-                }
-            },{
-                fieldKey: "NonLookupExpShowData"
-            },{
-                fieldKey: "LookupExpShowData",
-                lookup: {
-                    schemaName: "exp.data",
-                    queryName: "someDataClass"
-                }
-            },{
-                fieldKey: "LookupIssues",
-                lookup: {
-                    schemaName: "issues",
-                    queryName: "someTracker"
-                }
-            },{
-                fieldKey: "LookupExpRun",
-                lookup: {
-                    schemaName: "exp",
-                    queryName: "runs"
-                }
-            }]
+            fields: [
+                {
+                    fieldKey: 'LookupColumn',
+                    lookup: {
+                        schemaName: 'BoomSchema',
+                        queryName: 'PowQuery',
+                    },
+                },
+                {
+                    fieldKey: 'DataClassLookupColumn',
+                    lookup: {
+                        schemaName: 'exp',
+                        queryName: 'DataClasses',
+                    },
+                },
+                {
+                    fieldKey: 'NonLookupExpShowDataClass',
+                },
+                {
+                    fieldKey: 'LookupExpShowDataClass',
+                    lookup: {
+                        schemaName: 'exp.data',
+                    },
+                },
+                {
+                    fieldKey: 'NonLookupExpShowData',
+                },
+                {
+                    fieldKey: 'LookupExpShowData',
+                    lookup: {
+                        schemaName: 'exp.data',
+                        queryName: 'someDataClass',
+                    },
+                },
+                {
+                    fieldKey: 'LookupIssues',
+                    lookup: {
+                        schemaName: 'issues',
+                        queryName: 'someTracker',
+                    },
+                },
+                {
+                    fieldKey: 'LookupExpRun',
+                    lookup: {
+                        schemaName: 'exp',
+                        queryName: 'runs',
+                    },
+                },
+            ],
         },
-        rows: [{
-            // note: the "data" has been removed here as it would have already been processed by selectRows handler
-            "DataClassLookupColumn": {
-                "displayValue": "MyDataClass",
-                "url": "some/url?blam=19",
-                "value": 19
+        rows: [
+            {
+                // note: the "data" has been removed here as it would have already been processed by selectRows handler
+                DataClassLookupColumn: {
+                    displayValue: 'MyDataClass',
+                    url: 'some/url?blam=19',
+                    value: 19,
+                },
+                LookupColumn: {
+                    url: '/lookup-url/2392',
+                    value: 101,
+                },
+                NonLookupExpShowDataClass: {
+                    url: '/labkey/biologics/experiment-showDataClass.view?rowId=124',
+                    value: 'NoLookupDataClass',
+                },
+                LookupExpShowDataClass: {
+                    displayValue: 'BeepBoop',
+                    url: '/labkey/biologics/experiment-showDataClass.view?rowId=124',
+                    value: 'Has Lookup',
+                },
+                NonLookupExpShowData: {
+                    url: '/labkey/biologics/experiment-showData.view?rowId=124',
+                    value: 'No Lookup',
+                },
+                LookupExpShowData: {
+                    url: '/labkey/biologics/experiment-showData.view?rowId=124',
+                    value: 'Has Lookup',
+                },
+                LookupIssues: {
+                    displayValue: 'My Foo Request',
+                    url: '/labkey/biologics/issues-details.view?issueId=523',
+                    value: 523,
+                },
+                LookupExpRun: {
+                    displayValue: 'An Assay Run',
+                    url: '/labkey/biologics/assay-assayDetailRedirect.view?runId=584',
+                    value: 584,
+                },
             },
-            "LookupColumn": {
-                "url": "/lookup-url/2392",
-                "value": 101
-            },
-            "NonLookupExpShowDataClass": {
-                "url": "/labkey/biologics/experiment-showDataClass.view?rowId=124",
-                "value": 'NoLookupDataClass'
-            },
-            "LookupExpShowDataClass": {
-                "displayValue": "BeepBoop",
-                "url": "/labkey/biologics/experiment-showDataClass.view?rowId=124",
-                "value": "Has Lookup"
-            },
-            "NonLookupExpShowData": {
-                "url": "/labkey/biologics/experiment-showData.view?rowId=124",
-                "value": 'No Lookup'
-            },
-            "LookupExpShowData": {
-                "url": "/labkey/biologics/experiment-showData.view?rowId=124",
-                "value": "Has Lookup"
-            },
-            "LookupIssues": {
-                "displayValue": "My Foo Request",
-                "url": "/labkey/biologics/issues-details.view?issueId=523",
-                "value": 523
-            },
-            "LookupExpRun": {
-                "displayValue": "An Assay Run",
-                "url": "/labkey/biologics/assay-assayDetailRedirect.view?runId=584",
-                "value": 584
-            }
-        }]
+        ],
     });
 
     test('Should remap URLs within SelectRowsResult', () => {
-
         initMockServerContext({
-            contextPath: 'labkeyTest'
+            contextPath: 'labkeyTest',
         });
 
         // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber
         // avoid false positives by defining number of assertions in a test
         expect.assertions(8);
 
-        return resolver.resolveSelectRows(selectRowsResult)
-            .then((result) => {
-                const newResult = fromJS(result);
+        return resolver.resolveSelectRows(selectRowsResult).then(result => {
+            const newResult = fromJS(result);
 
-                // validate ActionMapper('experiment', 'showDataClass') -- no lookup
-                expect(newResult.getIn(['rows', 0, 'NonLookupExpShowDataClass', 'url'])).toBe("#/rd/dataclass/nolookupdataclass");
+            // validate ActionMapper('experiment', 'showDataClass') -- no lookup
+            expect(newResult.getIn(['rows', 0, 'NonLookupExpShowDataClass', 'url'])).toBe(
+                '#/rd/dataclass/nolookupdataclass'
+            );
 
-                // validate ActionMapper('experiment', 'showDataClass') -- with lookup
-                expect(newResult.getIn(['rows', 0, 'LookupExpShowDataClass', 'url'])).toBe("#/rd/dataclass/beepboop");
+            // validate ActionMapper('experiment', 'showDataClass') -- with lookup
+            expect(newResult.getIn(['rows', 0, 'LookupExpShowDataClass', 'url'])).toBe('#/rd/dataclass/beepboop');
 
-                // validate ActionMapper('experiment', 'showData') -- no lookup
-                expect(newResult.getIn(['rows', 0, 'NonLookupExpShowData', 'url'])).toBe("#/rd/expdata/124");
+            // validate ActionMapper('experiment', 'showData') -- no lookup
+            expect(newResult.getIn(['rows', 0, 'NonLookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
 
-                // validate ActionMapper('experiment', 'showData') -- with lookup
-                expect(newResult.getIn(['rows', 0, 'LookupExpShowData', 'url'])).toBe("#/rd/expdata/124");
+            // validate ActionMapper('experiment', 'showData') -- with lookup
+            expect(newResult.getIn(['rows', 0, 'LookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
 
-                // validate LookupMapper('/q/')
-                expect(newResult.getIn(['rows', 0, 'LookupColumn', 'url'])).toBe("#/q/boomschema/powquery/101");
+            // validate LookupMapper('/q/')
+            expect(newResult.getIn(['rows', 0, 'LookupColumn', 'url'])).toBe('#/q/boomschema/powquery/101');
 
-                // validate LookupMapper('exp-dataclasses')
-                expect(newResult.getIn(['rows', 0, 'DataClassLookupColumn', 'url'])).toBe("#/rd/dataclass/mydataclass");
+            // validate LookupMapper('exp-dataclasses')
+            expect(newResult.getIn(['rows', 0, 'DataClassLookupColumn', 'url'])).toBe('#/rd/dataclass/mydataclass');
 
-                // validate LookupMapper('issues')
-                expect(newResult.getIn(['rows', 0, 'LookupIssues', 'url'])).toBe("/labkey/biologics/issues-details.view?issueId=523");
+            // validate LookupMapper('issues')
+            expect(newResult.getIn(['rows', 0, 'LookupIssues', 'url'])).toBe(
+                '/labkey/biologics/issues-details.view?issueId=523'
+            );
 
-                // validate LookupMapper('exp-runs')
-                expect(newResult.getIn(['rows', 0, 'LookupExpRun', 'url'])).toBe("#/rd/assayrun/584");
-            });
+            // validate LookupMapper('exp-runs')
+            expect(newResult.getIn(['rows', 0, 'LookupExpRun', 'url'])).toBe('#/rd/assayrun/584');
+        });
     });
 });
 
 describe('App Route Resolvers', () => {
-
     test('Should resolve /assays routes', () => {
-
-        const routes = Map<number, {name: string, provider: string}>().asMutable();
+        const routes = Map<number, { name: string; provider: string }>().asMutable();
         routes.set(13, {
             provider: 'general',
-            name: 'thirteen'
+            name: 'thirteen',
         });
         routes.set(91, {
             provider: 'specific',
-            name: 'ninety-one'
+            name: 'ninety-one',
         });
         const assayResolver = new AssayResolver(routes.asImmutable());
 
@@ -176,15 +188,15 @@ describe('App Route Resolvers', () => {
 
         return Promise.all([
             assayResolver.fetch(['assays', 'foo']).then((result: boolean) => {
-                expect(result).toBe(true)
+                expect(result).toBe(true);
             }),
             assayResolver.fetch(['assays', '13']).then((url: AppURL) => {
                 expect(url.toString()).toBe('/assays/general/thirteen');
             }),
             assayResolver.fetch(['assays', '91', 'foo bar']).then((url: AppURL) => {
                 expect(url.toString()).toBe('/assays/specific/ninety-one/foo%20bar');
-            })
-        ])
+            }),
+        ]);
     });
 
     test('Should resolve /rd/assayrun routes', () => {
@@ -203,20 +215,19 @@ describe('App Route Resolvers', () => {
         expect(assayRunResolver.matches('/rd/assayrun/91/foo?bar=1')).toBe(true);
 
         return Promise.all([
-            assayRunResolver.fetch(['rd', 'assayrun', 'boom']).then((result) => {
+            assayRunResolver.fetch(['rd', 'assayrun', 'boom']).then(result => {
                 expect(result).toBe(true);
             }),
-            assayRunResolver.fetch(['rd', 'assayrun', '923']).then((result) => {
+            assayRunResolver.fetch(['rd', 'assayrun', '923']).then(result => {
                 expect(result.toString()).toBe('/assays/15/runs/923');
             }),
-            assayRunResolver.fetch(['rd', 'assayrun', '595', 'extra']).then((result) => {
+            assayRunResolver.fetch(['rd', 'assayrun', '595', 'extra']).then(result => {
                 expect(result.toString()).toBe('/assays/13/runs/595/extra');
-            })
+            }),
         ]);
     });
 
     test('Should resolve /q/lists routes', () => {
-
         const routes = Map<number, string>().asMutable();
         routes.set(23, 'Jordan');
         routes.set(8, 'KObE');
@@ -249,7 +260,6 @@ describe('App Route Resolvers', () => {
     });
 
     test('Should resolve /rd/samples/### routes', () => {
-
         const routes = Map<number, List<string>>().asMutable();
         routes.set(7, List(['samples', 'Elway']));
         routes.set(30, List(['samples', 'TD']));

@@ -17,19 +17,24 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { SelectInput, SelectInputProps } from './SelectInput';
 import { ISelectRowsResult, selectRows } from '../../../query/api';
 import { LabelOverlay } from '../LabelOverlay';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { QueryColumn, QueryLookup } from '../../base/models/model';
 import { generateId, naturalSort, resolveKey } from '../../../util/utils';
 
+import { SelectInput, SelectInputProps } from './SelectInput';
+
 interface LookupSelectOption {
-    label: string
-    value: any
+    label: string;
+    value: any;
 }
 
-function formatLookupSelectInputOptions(lookup: QueryLookup, models: Map<string, any>, doSort: boolean=true): Array<LookupSelectOption> {
+function formatLookupSelectInputOptions(
+    lookup: QueryLookup,
+    models: Map<string, any>,
+    doSort = true
+): LookupSelectOption[] {
     if (!models) {
         return [];
     }
@@ -42,31 +47,29 @@ function formatLookupSelectInputOptions(lookup: QueryLookup, models: Map<string,
         }
 
         return {
-            label: model.getIn([fieldKey, 'formattedValue']) ||
-                   model.getIn([fieldKey, 'displayValue']) ||
-                   model.getIn([fieldKey, 'value']),
-            value: model.getIn([lookup.keyColumn, 'value'])
+            label:
+                model.getIn([fieldKey, 'formattedValue']) ||
+                model.getIn([fieldKey, 'displayValue']) ||
+                model.getIn([fieldKey, 'value']),
+            value: model.getIn([lookup.keyColumn, 'value']),
         };
     });
-    if (doSort)
-        return mappedModel.sortBy(model => model.label, naturalSort).toArray();
-    else
-        return mappedModel.toArray();
+    if (doSort) return mappedModel.sortBy(model => model.label, naturalSort).toArray();
+    else return mappedModel.toArray();
 }
 
 interface StateProps {
-    options: Array<LookupSelectOption>
+    options: LookupSelectOption[];
 }
 
 interface OwnProps extends SelectInputProps {
-    queryColumn: QueryColumn
-    filterArray?:  Array<Filter.IFilter>
-    sort?: string
-    selectedRows?: ISelectRowsResult
+    queryColumn: QueryColumn;
+    filterArray?: Filter.IFilter[];
+    sort?: string;
+    selectedRows?: ISelectRowsResult;
 }
 
 export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
-
     _id: string;
 
     constructor(props: OwnProps) {
@@ -76,8 +79,8 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
         this._id = generateId('select-');
 
         this.state = {
-            options: this.getOptionsFromSelectedRows(props, props.selectedRows)
-        }
+            options: this.getOptionsFromSelectedRows(props, props.selectedRows),
+        };
     }
 
     componentWillMount() {
@@ -89,7 +92,7 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
     componentWillReceiveProps(nextProps: OwnProps) {
         if (nextProps.selectedRows) {
             this.setState(() => ({
-               options: this.getOptionsFromSelectedRows(nextProps, nextProps.selectedRows)
+                options: this.getOptionsFromSelectedRows(nextProps, nextProps.selectedRows),
             }));
         }
     }
@@ -97,10 +100,13 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
     getOptionsFromSelectedRows(props: OwnProps, selectedRows: ISelectRowsResult) {
         if (selectedRows) {
             const models = Map<string, any>(fromJS(selectedRows.models));
-            const {schemaName, queryName} = props.queryColumn.lookup;
-            return formatLookupSelectInputOptions(props.queryColumn.lookup, models.get(resolveKey(schemaName, queryName)), props.sort === undefined);
-        }
-        else {
+            const { schemaName, queryName } = props.queryColumn.lookup;
+            return formatLookupSelectInputOptions(
+                props.queryColumn.lookup,
+                models.get(resolveKey(schemaName, queryName)),
+                props.sort === undefined
+            );
+        } else {
             return undefined;
         }
     }
@@ -110,21 +116,22 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
 
         if (!queryColumn || !queryColumn.isLookup()) {
             throw 'querygrid forms/input/<LookupSelectInput> only works with lookup columns.';
-        }
-        else if (queryColumn.displayAsLookup === false) {
-            console.warn('querygrid forms/input/<LookupSelectInput> received lookup column that is explicitly set displayAsLookup = false');
+        } else if (queryColumn.displayAsLookup === false) {
+            console.warn(
+                'querygrid forms/input/<LookupSelectInput> received lookup column that is explicitly set displayAsLookup = false'
+            );
         }
 
         const { schemaName, queryName } = queryColumn.lookup;
-        selectRows({schemaName, queryName, filterArray, sort})
+        selectRows({ schemaName, queryName, filterArray, sort })
             .then(response => {
                 this.setState(() => ({
-                    options: this.getOptionsFromSelectedRows(this.props, response)
-                }))
+                    options: this.getOptionsFromSelectedRows(this.props, response),
+                }));
             })
             .catch(reason => {
                 console.error(reason);
-                this.setState(() => ({options: []}));
+                this.setState(() => ({ options: [] }));
             });
     }
 
@@ -133,7 +140,7 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
         const { options } = this.state;
 
         if (!options) {
-            return <LoadingSpinner/>;
+            return <LoadingSpinner />;
         }
 
         // if multiValued = 'junction', the select should support MultiSelect and the value should be joined as an array of strings
@@ -142,22 +149,26 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
             joinValues = multiple && !queryColumn.isDataInput(),
             id = this._id;
 
-        const inputProps = Object.assign({
-            // properties that can be overridden
-            id,
-            label: <LabelOverlay column={queryColumn} inputId={id} isFormsy={false}/>,
-            multiple,
-            name: queryColumn.name,
-            required: queryColumn.required
-        }, this.props, {
-            // properties that cannot be changed
-            joinValues,
-            options,
-            queryColumn: undefined,
-            // If joinValues is true, and a value is present ensure value is passed in as an Array<string>
-            value: (joinValues && value && !Array.isArray(value)) ? [value] : value
-        });
+        const inputProps = Object.assign(
+            {
+                // properties that can be overridden
+                id,
+                label: <LabelOverlay column={queryColumn} inputId={id} isFormsy={false} />,
+                multiple,
+                name: queryColumn.name,
+                required: queryColumn.required,
+            },
+            this.props,
+            {
+                // properties that cannot be changed
+                joinValues,
+                options,
+                queryColumn: undefined,
+                // If joinValues is true, and a value is present ensure value is passed in as an Array<string>
+                value: joinValues && value && !Array.isArray(value) ? [value] : value,
+            }
+        );
 
-        return <SelectInput {...inputProps} options={options}/>;
+        return <SelectInput {...inputProps} options={options} />;
     }
 }

@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { NotificationItemModel } from './model';
 import React from 'react';
-import { dismissNotifications } from './global';
+
 import { User } from '../base/models/model';
 
+import { NotificationItemModel } from './model';
+import { dismissNotifications } from './global';
+
 interface ItemProps {
-    item: NotificationItemModel
-    user: User
+    item: NotificationItemModel;
+    user: User;
 }
 
 export class NotificationItem extends React.Component<ItemProps, any> {
-
     render() {
         const { user } = this.props;
         const { data, id, message, isDismissible } = this.props.item;
@@ -32,11 +33,14 @@ export class NotificationItem extends React.Component<ItemProps, any> {
         return (
             <div>
                 {typeof message === 'function' ? message(this.props.item, user, data) : message}
-                {isDismissible &&  <i style={{float: "right"}}
-                                      className="fa fa-times-circle pointer"
-                                      onClick={() => dismissNotifications(id)}/>}
+                {isDismissible && (
+                    <i
+                        style={{ float: 'right' }}
+                        className="fa fa-times-circle pointer"
+                        onClick={() => dismissNotifications(id)}
+                    />
+                )}
             </div>
-        )
+        );
     }
 }
-

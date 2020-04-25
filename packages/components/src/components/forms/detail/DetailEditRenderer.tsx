@@ -19,8 +19,8 @@ import { Checkbox, Input, Textarea } from 'formsy-react-components';
 import { LabelOverlay } from '../LabelOverlay';
 import { DateInput } from '../input/DateInput';
 import { DatePickerInput } from '../input/DatePickerInput';
-import { _defaultRenderer } from './Detail';
-import {resolveDetailFieldValue, resolveRenderer} from '../renderers';
+
+import { resolveDetailFieldValue, resolveRenderer } from '../renderers';
 import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
 import { AliasRenderer } from '../../../renderers/AliasRenderer';
 import { AppendUnits } from '../../../renderers/AppendUnits';
@@ -29,28 +29,25 @@ import { LookupSelectInput } from '../input/LookupSelectInput';
 import { QueryColumn } from '../../base/models/model';
 import { getUnFormattedNumber } from '../../../util/Date';
 
+import { _defaultRenderer } from './Detail';
+
 export function titleRenderer(col: QueryColumn): React.ReactNode {
-    //If the column cannot be edited, return the label as is
+    // If the column cannot be edited, return the label as is
     if (!col.isEditable()) {
-        return (
-            <span className='field__un-editable'>{col.caption}</span>
-        );
+        return <span className="field__un-editable">{col.caption}</span>;
     }
 
     return <LabelOverlay column={col} />;
 }
 
 export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boolean): React.ReactNode {
-
-    return (data) => {
+    return data => {
         const editable = col.isEditable();
 
         // If the column cannot be edited, return as soon as possible
         // Render the value with the defaultRenderer and a class that grays it out
         if (!editable) {
-            return (
-                <div className="field__un-editable">{_defaultRenderer(data)}</div>
-            );
+            return <div className="field__un-editable">{_defaultRenderer(data)}</div>;
         }
 
         let value = resolveDetailFieldValue(data, false);
@@ -81,7 +78,8 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                         multiple={multiple}
                         queryColumn={col}
                         value={resolveDetailFieldValue(data, true)}
-                        required={col.required}/>
+                        required={col.required}
+                    />
                 );
             }
         }
@@ -91,49 +89,50 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                 <Textarea
                     changeDebounceInterval={0}
                     cols={4}
-                    elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}
+                    elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
                     name={col.name}
                     required={col.required}
                     rows={4}
                     validatePristine={true}
-                    value={value}/>
+                    value={value}
+                />
             );
         }
 
         switch (col.jsonType) {
             case 'boolean':
+                // boolean checkbox state needs to be based off of the data value (not formattedValue)
+                value = resolveDetailFieldValue(data, false, true);
+
                 return (
                     <Checkbox
                         name={col.name}
                         required={col.required}
                         validatePristine={true}
-                        value={value && value.toString().toLowerCase() === 'true'}/>
+                        value={value && value.toString().toLowerCase() === 'true'}
+                    />
                 );
             case 'date':
                 if (useDatePicker && (!value || typeof value === 'string')) {
                     return (
-                        <DatePickerInput
-                            wrapperClassName={"col-sm-12"}
-                            name={col.name}
-                            queryColumn={col}
-                            value={value}/>)
-                }
-                else if (typeof value === 'string') {
+                        <DatePickerInput wrapperClassName="col-sm-12" name={col.name} queryColumn={col} value={value} />
+                    );
+                } else if (typeof value === 'string') {
                     return (
                         <DateInput
-                            elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}
+                            elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
                             name={col.name}
                             queryColumn={col}
                             validatePristine={true}
-                            value={value}/>
-                    )
-                 }
+                            value={value}
+                        />
+                    );
+                }
             default:
-                let validations,
-                    validationError;
+                let validations, validationError;
 
                 if (col.jsonType === 'int' || col.jsonType === 'float') {
-                    let unformat = getUnFormattedNumber(value);
+                    const unformat = getUnFormattedNumber(value);
                     if (unformat !== undefined && unformat !== null) {
                         value = unformat.toString();
                     }
@@ -151,14 +150,14 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                         validationError={validationError}
                         value={value}
                         required={col.required}
-                        elementWrapperClassName={[{"col-sm-9": false}, "col-sm-12"]}/>
+                        elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
+                    />
                 );
         }
     };
 }
 
 export function resolveDetailRenderer(column: QueryColumn) {
-
     let renderer; // defaults to undefined -- leave it up to the details
 
     if (column && column.detailRenderer) {
@@ -174,16 +173,16 @@ export function resolveDetailRenderer(column: QueryColumn) {
             //     renderer = (d) => <SequenceLoader data={d}/>;
             //     break;
             case 'multivaluedetailrenderer':
-                renderer = (d) => <MultiValueRenderer data={d}/>;
+                renderer = d => <MultiValueRenderer data={d} />;
                 break;
             case 'aliasrenderer':
-                renderer = (d) => <AliasRenderer data={d} view="detail"/>;
+                renderer = d => <AliasRenderer data={d} view="detail" />;
                 break;
             case 'appendunits':
-                renderer = (d) => <AppendUnits data={d} col={column}/>;
+                renderer = d => <AppendUnits data={d} col={column} />;
                 break;
             case 'assayrunreference':
-                renderer = (d) => <AssayRunReferenceRenderer data={d}/>;
+                renderer = d => <AssayRunReferenceRenderer data={d} />;
                 break;
             default:
                 break;

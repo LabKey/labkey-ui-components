@@ -17,6 +17,8 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
+import { Panel } from 'react-bootstrap';
+
 import { getStateQueryGridModel } from '../models';
 import { gridInit } from '../actions';
 import { DetailEditing } from '../components/forms/detail/DetailEditing';
@@ -25,16 +27,15 @@ import './stories.scss';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 import { SCHEMAS } from '../components/base/models/schemas';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
-import { Panel } from 'react-bootstrap';
 
 interface Props {
-    canUpdate: boolean
-    asSubPanel?: boolean
-    withSibling?: boolean
-    title?: string,
-    cancelText?: string,
-    submitText?: string,
-    onEditToggle?: (editing: boolean) => any,
+    canUpdate: boolean;
+    asSubPanel?: boolean;
+    withSibling?: boolean;
+    title?: string;
+    cancelText?: string;
+    submitText?: string;
+    onEditToggle?: (editing: boolean) => any;
 }
 
 function onEditToggle(isEditing) {
@@ -42,7 +43,6 @@ function onEditToggle(isEditing) {
 }
 
 class DetailEditingPage extends React.Component<Props, any> {
-
     componentWillMount() {
         this.initModel();
     }
@@ -53,7 +53,12 @@ class DetailEditingPage extends React.Component<Props, any> {
     }
 
     getQueryGridModel(): QueryGridModel {
-        const model = getStateQueryGridModel('detailediting', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Samples'), {}, 123);
+        const model = getStateQueryGridModel(
+            'detailediting',
+            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Samples'),
+            {},
+            123
+        );
         return getQueryGridModel(model.getId()) || model;
     }
 
@@ -62,10 +67,10 @@ class DetailEditingPage extends React.Component<Props, any> {
     };
 
     render() {
-        const {canUpdate, asSubPanel, title, cancelText, submitText, onEditToggle} = this.props;
+        const { canUpdate, asSubPanel, title, cancelText, submitText, onEditToggle } = this.props;
         const model = this.getQueryGridModel();
         if (!model.isLoaded) {
-            return <LoadingSpinner/>
+            return <LoadingSpinner />;
         }
 
         return (
@@ -88,29 +93,25 @@ class DetailEditingPage extends React.Component<Props, any> {
                     </Panel>
                 )}
             </>
-
-        )
+        );
     }
 }
 
 storiesOf('DetailEditing', module)
     .addDecorator(withKnobs)
-    .add("readonly", () => {
-        return (
-            <DetailEditingPage canUpdate={false}/>
-        )
+    .add('readonly', () => {
+        return <DetailEditingPage canUpdate={false} />;
     })
-    .add("editable", () => {
+    .add('editable', () => {
         return (
             <DetailEditingPage
                 canUpdate={true}
-                asSubPanel={boolean("As sub panel?", true)}
-                onEditToggle={boolean("Use onEditToggle (check console log)?", true) ? onEditToggle : null}
-                title={text("Title", "Details")}
-                submitText={text("Submit Text", "Save")}
-                cancelText={text("Cancel Text", "Cancel")}
-                withSibling={boolean("With sibling", false)}
+                asSubPanel={boolean('As sub panel?', true)}
+                onEditToggle={boolean('Use onEditToggle (check console log)?', true) ? onEditToggle : null}
+                title={text('Title', 'Details')}
+                submitText={text('Submit Text', 'Save')}
+                cancelText={text('Cancel Text', 'Cancel')}
+                withSibling={boolean('With sibling', false)}
             />
-        )
-    })
-;
+        );
+    });

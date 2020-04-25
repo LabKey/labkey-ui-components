@@ -15,10 +15,10 @@
  */
 import { Ajax, Utils } from '@labkey/api';
 
-import { NotificationItemModel, NotificationItemProps } from './model';
 import { buildURL } from '../../url/ActionURL';
-import { addNotification } from './global';
 
+import { NotificationItemModel, NotificationItemProps } from './model';
+import { addNotification } from './global';
 
 export type NotificationCreatable = string | NotificationItemProps | NotificationItemModel;
 
@@ -30,16 +30,12 @@ export type NotificationCreatable = string | NotificationItemProps | Notificatio
 export function createNotification(creatable: NotificationCreatable, notify: (notification: NotificationItemProps) => void = addNotification) {
     let item: NotificationItemModel;
     if (Utils.isString(creatable)) {
-       item = NotificationItemModel.create({
-            message: creatable
+        item = NotificationItemModel.create({
+            message: creatable,
         });
-    }
-    else if (!(creatable instanceof NotificationItemModel)) {
+    } else if (!(creatable instanceof NotificationItemModel)) {
         item = NotificationItemModel.create(creatable as NotificationItemProps);
-    }
-    else
-        item = creatable;
-
+    } else item = creatable;
 
     if (item)
         notify(item)
@@ -48,12 +44,11 @@ export function createNotification(creatable: NotificationCreatable, notify: (no
 /**
  * Used to notify the server that the trial banner has been dismissed
  */
-export function setTrialBannerDismissSessionKey() : Promise<any> {
-
+export function setTrialBannerDismissSessionKey(): Promise<any> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('core', 'dismissWarnings.api'),
-            method: 'POST'
-        })
+            method: 'POST',
+        });
     });
 }

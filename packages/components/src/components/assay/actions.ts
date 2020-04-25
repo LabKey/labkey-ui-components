@@ -16,7 +16,6 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, AssayDOM, Filter, Utils } from '@labkey/api';
 
-import { AssayUploadResultModel, IAssayUploadOptions } from './models';
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
 import { buildURL } from '../../url/ActionURL';
@@ -24,16 +23,20 @@ import { naturalSort } from '../../util/utils';
 import { SCHEMAS } from '../base/models/schemas';
 import { AssayDefinitionModel, AssayUploadTabs, QueryGridModel, SchemaQuery } from '../base/models/model';
 
+import { AssayUploadResultModel, IAssayUploadOptions } from './models';
+
 export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
-        AssayDOM.importRun(Object.assign({}, config, {
-            success: (rawModel: any) => {
-                resolve(new AssayUploadResultModel(rawModel));
-            },
-            failure: (error) => {
-                reject(error);
-            }
-        }));
+        AssayDOM.importRun(
+            Object.assign({}, config, {
+                success: (rawModel: any) => {
+                    resolve(new AssayUploadResultModel(rawModel));
+                },
+                failure: error => {
+                    reject(error);
+                },
+            })
+        );
     });
 }
 
@@ -56,7 +59,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         const fileNameMap = {}; // Maps the file name "fileN" to the run/batch property it belongs to.
 
         // TODO factor this out so the code isn't duplicate below for the runFiles case
-        Object.keys(batchFiles).forEach((columnName) => {
+        Object.keys(batchFiles).forEach(columnName => {
             const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
             const file = batchFiles[columnName];
             fileNameMap[name] = {
@@ -67,7 +70,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
             fileCounter++;
         });
 
-        Object.keys(runFiles).forEach((columnName) => {
+        Object.keys(runFiles).forEach(columnName => {
             const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
             const file = runFiles[columnName];
             fileNameMap[name] = {
@@ -83,7 +86,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
             url: ActionURL.buildURL('assay', 'assayFileUpload.view', LABKEY.container.path),
             method: 'POST',
             form: formData,
-            success: (result) => {
+            success: result => {
                 let response = JSON.parse(result.responseText);
                 const batchPaths = {};
                 const runPaths = {};
@@ -91,21 +94,23 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
                 if (fileCounter === 1) {
                     // Make the single file response look like the multi-file response.
                     response = {
-                        'file': response,
+                        file: response,
                     };
                 }
 
                 // Only process attributes that start with file so we ignore all the other stuff in the response like
                 // the "success" attribute.
-                Object.keys(response).filter(key => key.startsWith('file')).forEach(key => {
-                    const { columnName, origin } = fileNameMap[key];
+                Object.keys(response)
+                    .filter(key => key.startsWith('file'))
+                    .forEach(key => {
+                        const { columnName, origin } = fileNameMap[key];
 
-                    if (origin === 'batch') {
-                        batchPaths[columnName] = response[key].absolutePath;
-                    } else if (origin === 'run') {
-                        runPaths[columnName] = response[key].absolutePath;
-                    }
-                });
+                        if (origin === 'batch') {
+                            batchPaths[columnName] = response[key].absolutePath;
+                        } else if (origin === 'run') {
+                            runPaths[columnName] = response[key].absolutePath;
+                        }
+                    });
 
                 resolve({
                     ...data,
@@ -116,20 +121,19 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
                     properties: {
                         ...data.properties,
                         ...runPaths,
-                    }
-                })
+                    },
+                });
             },
-            failure: Utils.getCallbackWrapper((error) => {
+            failure: Utils.getCallbackWrapper(error => {
                 // As far as I can tell errors returned from assay FileUpload are only ever strings.
                 const message = `Error while uploading files: ${error}`;
-                reject({message});
-            })
+                reject({ message });
+            }),
         });
     });
 }
 
-interface FileMap
-{
+interface FileMap {
     [s: string]: File;
 }
 
@@ -145,29 +149,35 @@ function collectFiles(source): FileMap {
     }, {} as FileMap);
 }
 
-
-export function deleteAssayRuns(selectionKey?: string, rowId?: string, cascadeDeleteReplacedRuns = false) : Promise<any> {
+export function deleteAssayRuns(
+    selectionKey?: string,
+    rowId?: string,
+    cascadeDeleteReplacedRuns = false
+): Promise<any> {
     return new Promise((resolve, reject) => {
-        let params = selectionKey ? {'dataRegionSelectionKey': selectionKey} : {singleObjectRowId: rowId};
+        const params = selectionKey ? { dataRegionSelectionKey: selectionKey } : { singleObjectRowId: rowId };
         params['cascade'] = cascadeDeleteReplacedRuns;
 
         return Ajax.request({
             url: buildURL('experiment', 'deleteRuns.api'),
             method: 'POST',
             params,
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
             }),
         });
     });
 }
 
-export function getImportItemsForAssayDefinitions(assayDefModels: List<AssayDefinitionModel>, sampleModel: QueryGridModel): OrderedMap<AssayDefinitionModel, string> {
+export function getImportItemsForAssayDefinitions(
+    assayDefModels: List<AssayDefinitionModel>,
+    sampleModel: QueryGridModel
+): OrderedMap<AssayDefinitionModel, string> {
     let items = OrderedMap<AssayDefinitionModel, string>();
-    let targetSQ = undefined;
+    let targetSQ;
     const selectionKey = sampleModel.selectionKey;
 
     if (sampleModel && sampleModel.queryInfo) {
@@ -176,23 +186,26 @@ export function getImportItemsForAssayDefinitions(assayDefModels: List<AssayDefi
 
     assayDefModels
         .sortBy(a => a.name, naturalSort)
-        .filter((assay) => !targetSQ || assay.hasLookup(targetSQ))
-        .forEach((assay) => {
-            const href = assay.getImportUrl(selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files, selectionKey, sampleModel.getFilters());
+        .filter(assay => !targetSQ || assay.hasLookup(targetSQ))
+        .forEach(assay => {
+            const href = assay.getImportUrl(
+                selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
+                selectionKey,
+                sampleModel.getFilters()
+            );
             items = items.set(assay, href);
         });
 
     return items;
 }
 
-
 export interface DuplicateFilesResponse {
-    duplicate: boolean
-    newFileNames: List<string>
-    runNamesPerFile: List<string>
+    duplicate: boolean;
+    newFileNames: List<string>;
+    runNamesPerFile: List<string>;
 }
 
-export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<DuplicateFilesResponse> {
+export function checkForDuplicateAssayFiles(fileNames: string[]): Promise<DuplicateFilesResponse> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('assay', 'assayFileDuplicateCheck.api'),
@@ -200,11 +213,11 @@ export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<
             jsonData: {
                 fileNames,
             },
-            success: Utils.getCallbackWrapper((res) => {
+            success: Utils.getCallbackWrapper(res => {
                 resolve(res);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
-                console.error("Problem checking for duplicate files", response);
+            failure: Utils.getCallbackWrapper(response => {
+                console.error('Problem checking for duplicate files', response);
                 reject(response);
             }),
         });
@@ -212,36 +225,58 @@ export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<
 }
 
 export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, runId: string): QueryGridModel {
-    const model = getStateQueryGridModel('assay-run-details', SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'), {
-        allowSelection: false,
-        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId', "ReplacesRun", "ReplacedByRun", "DataOutputs", "DataOutputs/DataFileUrl", "Batch").toList(),
-        // allow for the possibility of viewing runs that have been replaced.
-        baseFilters: List( [Filter.create('Replaced', undefined, Filter.Types.NONBLANK)])
-    }, runId);
+    const model = getStateQueryGridModel(
+        'assay-run-details',
+        SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
+        {
+            allowSelection: false,
+            requiredColumns: SCHEMAS.CBMB.concat(
+                'Name',
+                'RowId',
+                'ReplacesRun',
+                'ReplacedByRun',
+                'DataOutputs',
+                'DataOutputs/DataFileUrl',
+                'Batch'
+            ).toList(),
+            // allow for the possibility of viewing runs that have been replaced.
+            baseFilters: List([Filter.create('Replaced', undefined, Filter.Types.NONBLANK)]),
+        },
+        runId
+    );
 
     return getQueryGridModel(model.getId()) || model;
 }
 
-export function getRunPropertiesRow(assayDefinition: AssayDefinitionModel, runId: string) : Map<string, any> {
+export function getRunPropertiesFileName(row: Map<string, any>): string {
+    const dataOutputs = row?.get('DataOutputs');
+    return dataOutputs && dataOutputs.size === 1 ? dataOutputs.getIn([0, 'displayValue']) : undefined;
+}
+
+export function getRunPropertiesRow(assayDefinition: AssayDefinitionModel, runId: string): Map<string, any> {
     const model = getRunPropertiesModel(assayDefinition, runId);
     return model.isLoaded ? model.getRow() : undefined;
 }
-
 
 export function getBatchPropertiesModel(assayDefinition: AssayDefinitionModel, batchId: string): QueryGridModel {
     if (!batchId) {
         return undefined;
     }
 
-    const model = getStateQueryGridModel('assay-batchdetails', SchemaQuery.create(assayDefinition.protocolSchemaName, 'Batches'), {
-        allowSelection: false,
-        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toList()
-    }, batchId);
+    const model = getStateQueryGridModel(
+        'assay-batchdetails',
+        SchemaQuery.create(assayDefinition.protocolSchemaName, 'Batches'),
+        {
+            allowSelection: false,
+            requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toList(),
+        },
+        batchId
+    );
 
     return getQueryGridModel(model.getId()) || model;
 }
 
-export function getBatchPropertiesRow(assayDefinition: AssayDefinitionModel, batchId: string) : Map<string, any> {
+export function getBatchPropertiesRow(assayDefinition: AssayDefinitionModel, batchId: string): Map<string, any> {
     const model = getBatchPropertiesModel(assayDefinition, batchId);
     return model && model.isLoaded ? model.getRow() : undefined;
 }
@@ -259,7 +294,7 @@ export function flattenQueryGridModelRow(rowData: Map<string, any>): Map<string,
                 valueMap = v.get(v.size - 1);
             }
             if (valueMap && valueMap.has('value') && valueMap.get('value')) {
-                return map.set(k, valueMap.get('value').toString())
+                return map.set(k, valueMap.get('value').toString());
             }
             return map;
         }, Map<string, any>());
@@ -268,19 +303,19 @@ export function flattenQueryGridModelRow(rowData: Map<string, any>): Map<string,
     return Map<string, any>();
 }
 
-export function deleteAssayDesign(rowId: string) : Promise<any> {
+export function deleteAssayDesign(rowId: string): Promise<any> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('experiment', 'deleteProtocolByRowIdsAPI.api'),
             method: 'POST',
             params: {
                 singleObjectRowId: rowId,
-                forceDelete: true
+                forceDelete: true,
             },
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
             }),
         });

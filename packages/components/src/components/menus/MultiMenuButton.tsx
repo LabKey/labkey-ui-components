@@ -18,27 +18,25 @@ import { List } from 'immutable';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 interface MultiMenuButtonProps {
-    bsStyle?: string
-    currentSubMenuKey?: any
-    currentSubMenuChoice?: string
-    id?: string
-    menuKeys: List<string>
-    pullRight?: boolean
-    renderMenuItem: (currentSubMenuKey: string, currentSubMenuChoice?: string) => ReactNode
-    title: string,
+    bsStyle?: string;
+    currentSubMenuKey?: any;
+    currentSubMenuChoice?: string;
+    id?: string;
+    menuKeys: List<string>;
+    pullRight?: boolean;
+    renderMenuItem: (currentSubMenuKey: string, currentSubMenuChoice?: string) => ReactNode;
+    title: string;
 }
-
 
 interface State {
     // flag if the child <DropdownButton/> has ever been opened -- used to optimize render performance
-    opened?: boolean
+    opened?: boolean;
 }
 
 export class MultiMenuButton extends React.Component<MultiMenuButtonProps, State> {
-
     static defaultProps = {
-        bsStyle: "success",
-        id: "multi-menu-dropdown"
+        bsStyle: 'success',
+        id: 'multi-menu-dropdown',
     };
 
     constructor(props: MultiMenuButtonProps) {
@@ -47,7 +45,7 @@ export class MultiMenuButton extends React.Component<MultiMenuButtonProps, State
         this.onToggle = this.onToggle.bind(this);
 
         this.state = {
-            opened: false
+            opened: false,
         };
     }
 
@@ -55,7 +53,7 @@ export class MultiMenuButton extends React.Component<MultiMenuButtonProps, State
         // set it and forget it
         if (!this.state.opened) {
             this.setState({
-                opened: true
+                opened: true,
             });
         }
     }
@@ -63,14 +61,14 @@ export class MultiMenuButton extends React.Component<MultiMenuButtonProps, State
     renderMenuItems() {
         const { currentSubMenuKey, currentSubMenuChoice, menuKeys, renderMenuItem } = this.props;
 
-        let items = [];
+        const items = [];
         if (currentSubMenuKey) {
             items.push(renderMenuItem(currentSubMenuKey, currentSubMenuChoice));
-            items.push(<MenuItem divider key={"d"}/>);
+            items.push(<MenuItem divider key="d" />);
         }
         menuKeys
-            .filter((key) => key != currentSubMenuKey)
-            .forEach((key) => {
+            .filter(key => key != currentSubMenuKey)
+            .forEach(key => {
                 items.push(renderMenuItem(key));
             });
 
@@ -82,15 +80,9 @@ export class MultiMenuButton extends React.Component<MultiMenuButtonProps, State
         const { opened } = this.state;
 
         return (
-            <DropdownButton
-                id={id}
-                bsStyle={bsStyle}
-                onToggle={this.onToggle}
-                pullRight={pullRight}
-                title={title}
-            >
+            <DropdownButton id={id} bsStyle={bsStyle} onToggle={this.onToggle} pullRight={pullRight} title={title}>
                 {opened && this.renderMenuItems()}
             </DropdownButton>
-        )
+        );
     }
 }

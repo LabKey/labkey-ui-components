@@ -15,20 +15,19 @@
  */
 import React from 'reactn';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
+
 import { loadPage } from '../../actions';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
 
-
 interface Props {
-    model: QueryGridModel
-    showCounts?: boolean
+    model: QueryGridModel;
+    showCounts?: boolean;
 }
 
 export class QueryGridPaging extends React.Component<Props, any> {
-
     static defaultProps = {
-        showCounts: true
+        showCounts: true,
     };
 
     shouldComponentUpdate(nextProps: Props) {
@@ -80,11 +79,23 @@ export class QueryGridPaging extends React.Component<Props, any> {
 
         return (
             <>
-                {showCounts && total != 0 ?
-                    <span className={showButtons ? 'paging-counts-with-buttons' : ''}
-                          data-min={min} data-max={max} data-total={total}>
-                        {min === max ? <span>{max}</span> : <span>{max === 0 ? 0 : min}&nbsp;-&nbsp;{max}</span>} of {total}
-                    </span> : null}
+                {showCounts && total != 0 ? (
+                    <span
+                        className={showButtons ? 'paging-counts-with-buttons' : ''}
+                        data-min={min}
+                        data-max={max}
+                        data-total={total}
+                    >
+                        {min === max ? (
+                            <span>{max}</span>
+                        ) : (
+                            <span>
+                                {max === 0 ? 0 : min}&nbsp;-&nbsp;{max}
+                            </span>
+                        )}{' '}
+                        of {total}
+                    </span>
+                ) : null}
                 {showButtons ? (
                     <div className="btn-group">
                         <PagingButton
@@ -95,21 +106,17 @@ export class QueryGridPaging extends React.Component<Props, any> {
                         />
 
                         <Tip caption="Current Page" trigger={['hover']}>
-                            <DropdownButton
-                                id={`current-page-drop-${model.getId()}`}
-                                pullRight
-                                title={currentPage}
-                            >
+                            <DropdownButton id={`current-page-drop-${model.getId()}`} pullRight title={currentPage}>
                                 <MenuItem header>Jump To</MenuItem>
                                 <MenuItem
-                                    key={'first'}
+                                    key="first"
                                     disabled={currentPage === firstPageNumber}
                                     onClick={() => this.goToPage(firstPageNumber)}
                                 >
                                     First Page
                                 </MenuItem>
                                 <MenuItem
-                                    key={'last'}
+                                    key="last"
                                     disabled={currentPage === lastPageNumber}
                                     onClick={() => this.goToPage(lastPageNumber)}
                                 >
@@ -147,7 +154,7 @@ export class PagingButton extends React.PureComponent<PagingButtonProps> {
         return (
             <Tip caption={tooltip}>
                 <Button onClick={onClick} disabled={disabled} className={className}>
-                    <i className={`fa ${iconClass}`}/>
+                    <i className={`fa ${iconClass}`} />
                 </Button>
             </Tip>
         );

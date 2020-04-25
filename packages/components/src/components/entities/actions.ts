@@ -1,6 +1,11 @@
-import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
-import {Ajax, AuditBehaviorTypes, Filter, Utils} from '@labkey/api';
+import { Ajax, AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
+
+import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
+
+import { QueryGridModel } from '../base/models/model';
+import { deleteRows } from '../../query/api';
+
 import {
     DisplayObject,
     EntityDataType,
@@ -11,8 +16,6 @@ import {
     IParentOption,
 } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
-import { QueryGridModel } from '../base/models/model';
-import { deleteRows } from '../../query/api';
 
 export interface DeleteConfirmationData {
     canDelete: any[];
@@ -348,19 +351,28 @@ export function deleteEntityType(deleteActionName: string, rowId: number): Promi
  * @param onFailure? - callback function for failure to delete samples
  * @param auditBehavior? - optional property to indicate the audit behavior for this query
  */
-export function deleteEntityDataRows(model: QueryGridModel, rows: Array<any>, nounSingular: string, nounPlural: string, onComplete: Function, onFailure?: Function, auditBehavior?: AuditBehaviorTypes) {
+export function deleteEntityDataRows(
+    model: QueryGridModel,
+    rows: any[],
+    nounSingular: string,
+    nounPlural: string,
+    onComplete: Function,
+    onFailure?: Function,
+    auditBehavior?: AuditBehaviorTypes
+) {
     const schemaQuery = SchemaQuery.create(model.schema, model.query);
 
     deleteRows({
         schemaQuery,
-        rows: rows,
-        auditBehavior: auditBehavior
-    }).then(() => {
-        onComplete();
-    }).catch(error => {
-        if (onFailure) {
-            onFailure();
-        }
-    });
+        rows,
+        auditBehavior,
+    })
+        .then(() => {
+            onComplete();
+        })
+        .catch(error => {
+            if (onFailure) {
+                onFailure();
+            }
+        });
 }
-

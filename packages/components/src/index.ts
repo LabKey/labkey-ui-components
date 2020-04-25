@@ -101,7 +101,12 @@ import { ConfirmModal } from './components/base/ConfirmModal';
 import { datePlaceholder, formatDate, formatDateTime, getDateFormat, getUnFormattedNumber } from './util/Date';
 import { SVGIcon, Theme } from './components/base/SVGIcon';
 import { CreatedModified } from './components/base/CreatedModified';
-import { MessageFunction, NotificationItemProps, NotificationItemModel, Persistence } from './components/notifications/model';
+import {
+    MessageFunction,
+    NotificationItemProps,
+    NotificationItemModel,
+    Persistence,
+} from './components/notifications/model';
 import { PermissionAllowed, PermissionNotAllowed } from './components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
@@ -541,7 +546,6 @@ export {
     createDeleteSuccessNotification,
     createDeleteErrorNotification,
     deleteEntityDataRows,
-
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,

@@ -42,7 +42,7 @@ export class Notification extends React.Component<NotificationProps, any> {
         dismissNotifications();
     }
 
-    renderTrialServicesNotification(props: NotificationItemProps, user: User, data: any) {
+    renderTrialServicesNotification(props: NotificationItemProps, user: User) {
         if (LABKEY.moduleContext.trialservices.trialEndDate) {
             const endDate = moment(LABKEY.moduleContext.trialservices.trialEndDate, getDateFormat());
             const today = moment();
@@ -52,7 +52,7 @@ export class Notification extends React.Component<NotificationProps, any> {
             if (secondsDiff % 86400 > 0) dayDiff++;
             let message = '';
             if (dayDiff <= 0) message = 'This LabKey trial site has expired.';
-            else message = 'This LabKey trial site will expire in ' + dayDiff + (dayDiff == 1 ? ' day.' : ' days.');
+            else message = 'This LabKey trial site will expire in ' + dayDiff + (dayDiff === 1 ? ' day.' : ' days.');
             if (LABKEY.moduleContext.trialservices.upgradeLink && user && user.isAdmin)
                 return (
                     <span>
@@ -68,7 +68,7 @@ export class Notification extends React.Component<NotificationProps, any> {
         return null;
     }
 
-    createSystemNotification() {
+    createSystemNotification(): void {
         if (
             LABKEY.moduleContext &&
             LABKEY.moduleContext.trialservices &&
@@ -100,12 +100,12 @@ export class Notification extends React.Component<NotificationProps, any> {
         return notifications.map((item, index) => <NotificationItem item={item} key={index} user={user} />);
     }
 
-    getNotifications() {
+    getNotifications(): Map<string, NotificationItemModel> {
         // need to access this.global directly to connect this component to the re-render cycle
         return this.global.Notifications;
     }
 
-    getAlertClassLists() {
+    getAlertClassLists(): Map<string, List<NotificationItemModel>> {
         let listMap = Map<string, List<NotificationItemModel>>();
         const notifications = this.getNotifications();
         if (notifications) {
@@ -124,15 +124,14 @@ export class Notification extends React.Component<NotificationProps, any> {
     render() {
         const { notificationHeader, user } = this.props;
 
-        return (
-            this.getAlertClassLists()
-                .filter(list => list.size > 0)
-                .map((list, alertClass) => (
-                    <div className={'notification-container alert alert-' + alertClass} key={alertClass}>
-                        {notificationHeader}
-                        {this.renderItems(list, user)}
-                    </div>
-                )).toArray()
-        );
+        return this.getAlertClassLists()
+            .filter(list => list.size > 0)
+            .map((list, alertClass) => (
+                <div className={'notification-container alert alert-' + alertClass} key={alertClass}>
+                    {notificationHeader}
+                    {this.renderItems(list, user)}
+                </div>
+            ))
+            .toArray();
     }
 }

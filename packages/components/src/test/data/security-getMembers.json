@@ -1,0 +1,143 @@
+{
+  "schemaName" : [ "core" ],
+  "queryName" : "Members",
+  "metaData" : {
+    "importTemplates" : [ {
+      "label" : "Download Template",
+      "url" : "/labkey/query-exportExcelTemplate.view?schemaName=core&query.queryName=Members&headerType=DisplayFieldKey"
+    } ],
+    "root" : "rows",
+    "totalProperty" : "rowCount",
+    "description" : "Contains rows indicating which users are in which groups in the current project. The data in this table are available only to administrators.",
+    "fields" : [ {
+      "fieldKey" : [ "UserId" ],
+      "description" : "The unique id of the user.",
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "userid",
+      "defaultValue" : null,
+      "scale" : 4,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : true,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : true,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "displayField" : [ "UserId", "DisplayName" ],
+      "displayFieldJsonType" : "string",
+      "inputType" : "text",
+      "cols" : 4,
+      "shortCaption" : "User Id",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "User Id",
+      "lookup" : {
+        "keyColumn" : "UserId",
+        "public" : true,
+        "displayColumn" : "DisplayName",
+        "queryName" : "SiteUsers",
+        "schemaName" : [ "core" ]
+      }
+    }, {
+      "fieldKey" : [ "GroupId" ],
+      "description" : "The unique id of the group the user belongs to.",
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "userid",
+      "defaultValue" : null,
+      "scale" : 4,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : true,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : true,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "displayField" : [ "GroupId", "Name" ],
+      "displayFieldJsonType" : "string",
+      "inputType" : "text",
+      "cols" : 4,
+      "shortCaption" : "Group Id",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Group Id",
+      "lookup" : {
+        "keyColumn" : "UserId",
+        "public" : true,
+        "displayColumn" : "Name",
+        "queryName" : "Groups",
+        "schemaName" : [ "core" ]
+      }
+    } ],
+    "title" : "Members",
+    "importMessage" : null
+  },
+  "rows" : [{
+    "data" : {
+      "UserId" : {
+        "value" : 4970,
+        "displayValue" : "admin4970"
+      },
+      "GroupId" : {
+        "value" : -1,
+        "displayValue" : "Administrators"
+      }
+    }
+  }, {
+      "data" : {
+        "UserId" : {
+          "value" : 10644,
+          "displayValue" : "ehr_finance@labkey.test"
+        },
+        "GroupId" : {
+          "value" : -1,
+          "displayValue" : "Administrators"
+        }
+      }
+    }, {
+    "data" : {
+      "UserId" : {
+        "value" : 11246,
+        "displayValue" : "reader@linkedschema.test"
+      },
+      "GroupId" : {
+        "value" : 11841,
+        "displayValue" : "Reader User Group"
+      }
+    }
+  }],
+  "rowCount" : 3
+}

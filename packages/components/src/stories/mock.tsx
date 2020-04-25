@@ -77,6 +77,7 @@ import userPropsInfo from '../test/data/user-getUserProps.json';
 import getMaxPhiLevelJson from '../test/data/security-GetMaxPhiLevel.json';
 import getRolesJson from '../test/data/security-getRoles.json';
 import getPrincipalsJson from '../test/data/security-getPrincipals.json';
+import getMembersJson from '../test/data/security-getMembers.json';
 import getQueryDetailsPrincipalsJson from '../test/data/security-getQueryDetailsPrincipals.json';
 import inferDomainJson from '../test/data/property-inferDomain.json';
 import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTargets.json';
@@ -115,6 +116,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     core: {
         users: usersQueryInfo,
         core_temp_240: getQueryDetailsPrincipalsJson,
+        members: getMembersJson
     },
     exp: {
         samplesetheatmap: sampleSetHeatMapQueryInfo,
@@ -222,6 +224,9 @@ export function initMocks() {
         let responseBody;
         if (body.indexOf('"core"') > -1 && body.indexOf('FROM Principals') > -1) {
             responseBody = getPrincipalsJson;
+        }
+        else if (body.indexOf('"core"') > -1 && body.indexOf('FROM Members') > -1) {
+            responseBody = getMembersJson;
         }
 
         if (!responseBody) {

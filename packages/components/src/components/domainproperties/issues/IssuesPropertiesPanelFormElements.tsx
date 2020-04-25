@@ -9,15 +9,18 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { Principal, SelectInput } from '../../..';
 
 import { IssuesModel } from './models';
+import {UserGroup} from "../../permissions/models";
 
 interface IssuesBasicPropertiesInputsProps {
     model: IssuesModel;
     onInputChange: (any) => void;
 }
-interface SecurityGroupsProps {
+
+interface SecurityUserGroupProps {
     model: IssuesModel;
     coreGroups?: List<Principal>;
     onSelect?: (selected: Principal) => any;
+    coreUsers?: List<UserGroup>;
 }
 
 export class IssuesBasicPropertiesFields extends React.PureComponent<IssuesBasicPropertiesInputsProps> {
@@ -34,9 +37,9 @@ export class IssuesBasicPropertiesFields extends React.PureComponent<IssuesBasic
     }
 }
 
-export class AssignmentOptions extends React.PureComponent<SecurityGroupsProps> {
+export class AssignmentOptions extends React.PureComponent<SecurityUserGroupProps> {
     render() {
-        const { model, coreGroups, onSelect } = this.props;
+        const { model, coreUsers, coreGroups, onSelect } = this.props;
         return (
             <Col xs={11} md={6}>
                 <SectionHeading title="Assignment Options" />
@@ -45,7 +48,7 @@ export class AssignmentOptions extends React.PureComponent<SecurityGroupsProps> 
                     coreGroups={coreGroups}
                     onSelect={(selected: Principal) => onSelect(selected)}
                 />
-                {/* <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onInputChange={onInputChange} />*/}
+                <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={(selected: Principal) => onSelect(selected)} />
             </Col>
         );
     }
@@ -136,7 +139,7 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesBasi
     }
 }
 
-export class AssignedToGroupInput extends React.PureComponent<SecurityGroupsProps, any> {
+export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupProps, any> {
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         if (selected && this.props.onSelect) {
             this.props.onSelect(selected);
@@ -172,19 +175,25 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityGroupsProp
     }
 }
 
-export class DefaultUserAssignmentInput extends React.PureComponent<SecurityGroupsProps, any> {
+export class DefaultUserAssignmentInput extends React.PureComponent<SecurityUserGroupProps, any> {
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         if (selected && this.props.onSelect) {
             this.props.onSelect(selected);
-
-            // setting the react-select value back to null will clear it but leave it as focused
-            ref.setValue(null);
         }
     };
 
     render() {
-        const { coreGroups } = this.props;
+        const { coreUsers } = this.props;
         const name = 'defaultUserAssignment';
+
+        function getFilteredCoreUsers(groupId : any)
+        {
+            let filteredCoreUser = coreUsers.filter(coreUser => {
+                return coreUser.groupId === groupId;
+            });
+            return filteredCoreUser.toArray().length > 0 ? filteredCoreUser.toArray() : coreUsers.toArray();
+        }
+
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
@@ -193,11 +202,11 @@ export class DefaultUserAssignmentInput extends React.PureComponent<SecurityGrou
                 <Col xs={9} lg={8}>
                     <SelectInput
                         name={name}
-                        options={coreGroups.toArray()}
+                        options={getFilteredCoreUsers(this.props.model.assignedToGroup)}
                         placeholder=""
                         inputClass="col-xs-12"
                         valueKey="userId"
-                        labelKey="displayName"
+                        labelKey="userName"
                         onChange={this.onChange}
                         formsy={false}
                         showLabel={false}

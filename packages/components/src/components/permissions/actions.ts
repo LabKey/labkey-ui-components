@@ -8,7 +8,7 @@ import { Filter, Security } from '@labkey/api';
 
 import { ISelectRowsResult, selectRows } from '../../query/api';
 
-import { Principal, SecurityPolicy, SecurityRole } from './models';
+import {Principal, SecurityPolicy, SecurityRole, UserGroup} from './models';
 
 export function processGetRolesResponse(response: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -74,6 +74,33 @@ export function getCoreGroups(): Promise<List<Principal>> {
                 });
 
                 resolve(principals);
+            })
+            .catch(response => {
+                console.error(response);
+                reject(response.message);
+            });
+    });
+}
+
+export function getCoreUsersInGroups(): Promise<List<UserGroup>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            saveInSession: true, // needed so that we can call getQueryDetails
+            schemaName: 'core',
+            sql: "SELECT m.UserId, m.GroupId, p.Name FROM Members m LEFT JOIN Principals p ON p.UserId = m.UserId",
+            columns: 'UserId,GroupId,Name',
+        })
+            .then((data: ISelectRowsResult) => {
+                const models = fromJS(data.models[data.key]);
+                let usersInGroups = List<UserGroup>();
+
+                data.orderedModels[data.key].forEach(modelKey => {
+                    const row = models.get(modelKey);
+                    const userGroup = UserGroup.createFromSelectRow(row);
+                    usersInGroups = usersInGroups.push(userGroup);
+                });
+
+                resolve(usersInGroups);
             })
             .catch(response => {
                 console.error(response);

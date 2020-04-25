@@ -13,11 +13,12 @@ import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,
 } from '../DomainPropertiesPanelCollapse';
-import { getCoreGroups } from '../../permissions/actions';
+import {getCoreGroups, getCoreUsersInGroups} from '../../permissions/actions';
 import { Principal } from '../../..';
 
 import { AssignmentOptions, IssuesBasicPropertiesFields } from './IssuesPropertiesPanelFormElements';
 import { IssuesModel } from './models';
+import {UserGroup} from "../../permissions/models";
 
 const PROPERTIES_HEADER_ID = 'issues-properties-hdr';
 
@@ -32,6 +33,7 @@ type Props = OwnProps & BasePropertiesPanelProps;
 interface State {
     isValid: boolean;
     coreGroups: List<Principal>;
+    coreUsers: List<UserGroup>;
 }
 
 export class IssuesPropertiesPanelImpl extends React.PureComponent<
@@ -44,6 +46,7 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
         this.state = {
             isValid: true,
             coreGroups: List<Principal>(),
+            coreUsers: List<UserGroup>()
         };
     }
 
@@ -51,6 +54,12 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
         getCoreGroups().then((coreGroupsData: List<Principal>) => {
             this.setState(() => ({
                 coreGroups: coreGroupsData,
+            }));
+        });
+
+        getCoreUsersInGroups().then((coreUsersData: List<UserGroup>) => {
+            this.setState(() => ({
+                coreUsers: coreUsersData,
             }));
         });
     }
@@ -104,7 +113,7 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
 
     render() {
         const { model, successBsStyle } = this.props;
-        const { isValid, coreGroups } = this.state;
+        const { isValid, coreGroups, coreUsers } = this.state;
 
         return (
             <BasePropertiesPanel
@@ -120,6 +129,7 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
                     <AssignmentOptions
                         model={model}
                         coreGroups={coreGroups}
+                        coreUsers={coreUsers}
                         onSelect={(selected: Principal) => this.onSelectChange(selected)}
                     />
                 </Form>

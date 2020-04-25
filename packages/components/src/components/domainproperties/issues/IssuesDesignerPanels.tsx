@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { List } from 'immutable';
+import produce, { Draft } from 'immer';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 import { getDomainPanelStatus, saveDomain } from '../actions';
@@ -88,23 +88,34 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
 
         saveDomain(model.domain, model.domainKindName, model.getOptions(), model.name)
             .then(response => {
-                let updatedModel = model.set('exception', undefined) as IssuesModel;
-                updatedModel = updatedModel.merge({ domain: response }) as IssuesModel;
-                this.setState(() => ({ model: updatedModel }));
 
-                setSubmitting(false, () => {
-                    this.props.onComplete(updatedModel);
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const updatedModel = draft.model;
+                        updatedModel.exception = undefined;
+                        updatedModel.domain = response;
+                    }),
+                    () => {
+                        setSubmitting(false, () => {
+                            const { model } = this.state;
+                            this.props.onComplete(model);
+                    })
                 });
             })
             .catch(response => {
                 const exception = resolveErrorMessage(response);
-                const updatedModel = exception
-                    ? (model.set('exception', exception) as IssuesModel)
-                    : (model.merge({ domain: response, exception: undefined }) as IssuesModel);
 
-                setSubmitting(false, () => {
-                    this.setState(() => ({ model: updatedModel }));
-                });
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const updatedModel = draft.model;
+                        if (exception) {
+                            updatedModel.exception = exception;
+                        } else {
+                            updatedModel.exception = undefined;
+                            updatedModel.domain = Object.assign(updatedModel.domain, response);
+                        }
+                    })
+                )
             });
     };
 

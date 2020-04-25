@@ -12,29 +12,6 @@ import { List } from 'immutable';
 
 import { Principal } from '..';
 
-class Wrapped extends React.Component<any, any> {
-    constructor(props) {
-        super(props);
-
-        const model = IssuesModel.create(this.props.data);
-        this.state = { model };
-    }
-
-    onRadioChange = e => {
-        console.log('onRadioChange', e.target.name, e.target.value);
-    };
-
-    render() {
-        return (
-            <IssuesDesignerPanels
-                initModel={this.state.model}
-                onCancel={() => console.log('cancel')}
-                onComplete={() => console.log('onComplete')}
-            />
-        );
-    }
-}
-
 class WrappedNew extends React.Component<any, any> {
     constructor(props) {
         super(props);
@@ -74,7 +51,3 @@ storiesOf('IssuesDesignerPanels', module)
     .add('IssuesDesignerPanels - create', () => {
         return <WrappedNew data={DEFAULT_ISSUES_DESIGNER_SETTINGS} />;
     });
-// .add('IssuesDesignerPanels - update', () => {
-//     // return <Wrapped data={getDomainDetailsJSON} />;
-//     return <Wrapped data={DEFAULT_ISSUES_DESIGNER_SETTINGS} />;
-// });

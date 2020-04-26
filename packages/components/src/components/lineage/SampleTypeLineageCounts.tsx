@@ -2,23 +2,17 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { FunctionComponent, PureComponent } from 'react';
 import { List } from 'immutable';
 import { Alert, Grid, GridColumn, LoadingSpinner } from '../..';
 
-import { loadSampleStatsIfNeeded } from './actions';
-import { Lineage } from './models';
-
-interface Props {
-    seed: string
-}
+import { InjectedLineage, withLineage } from './withLineage';
 
 interface State {
-    columns: List<GridColumn>
-    lineage: Lineage
+    columns: List<GridColumn>;
 }
 
-export class SampleTypeLineageCounts extends PureComponent<Props, State> {
+class CountsWithLineageImpl extends PureComponent<InjectedLineage, State> {
 
     readonly state: State = {
         columns: List([
@@ -35,39 +29,27 @@ export class SampleTypeLineageCounts extends PureComponent<Props, State> {
                 title: 'Most Recent (Date)'
             })
         ]),
-        lineage: undefined,
     };
 
-    componentDidMount() {
-        this.init(this.props.seed);
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        if (this.props.seed !== nextProps.seed) {
-            this.init(nextProps.seed);
-        }
-    }
-
-    init(seed: string) {
-        loadSampleStatsIfNeeded(seed)
-            .then(lineage => {
-                this.setState(() => ({lineage}));
-            });
-    }
-
     render() {
-        const { columns, lineage } = this.state;
+        const { lineage } = this.props;
+        const { columns } = this.state;
 
-        if (!lineage) {
-            return <LoadingSpinner/>
+        if (!lineage || !lineage.isLoaded()) {
+            return <LoadingSpinner />;
         }
 
         if (lineage.error) {
-            return <Alert>{lineage.error}</Alert>
+            return <Alert>{lineage.error}</Alert>;
         }
 
-        return (
-            <Grid data={lineage.sampleStats} columns={columns}/>
-        )
+        return <Grid columns={columns} data={lineage.sampleStats} />;
     }
 }
+
+const CountsWithLineage = withLineage<{}>(CountsWithLineageImpl, false, true);
+
+// Don't expose props from withLineage in public component
+export const SampleTypeLineageCounts: FunctionComponent<{ seed: string }> = (props)  => {
+    return <CountsWithLineage lsid={props.seed} />;
+};

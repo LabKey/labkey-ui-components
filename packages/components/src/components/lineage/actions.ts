@@ -186,34 +186,21 @@ export function loadLineageIfNeeded(seed: string, distance?: number, options?: L
         });
 }
 
-export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promise<Lineage> {
-    const existing = getLineageResult(seed);
-    if (existing && existing.sampleStats) {
-        return Promise.resolve(existing);
-    }
-
-    return Promise.all([
-        loadLineageIfNeeded(seed, distance),
-        fetchSampleSets()
-    ]).then(values => {
-        const [ lineage, sampleSets ] = values;
-
-        updateLineageResult(seed, produce(lineage, (draft: Draft<Lineage>) => {
-            draft.sampleStats = computeSampleCounts(lineage, sampleSets);
-        }));
-        return getLineageResult(seed);
-    });
+export function loadSampleStats(lineageResult: LineageResult): Promise<any> {
+    return selectRows({
+        schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
+        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
+    }).then(sampleSets => computeSampleCounts(lineageResult, sampleSets));
 }
 
 // TODO add jest test coverage for this function
-function computeSampleCounts(lineage: Lineage, sampleSets: any) {
-
+function computeSampleCounts(lineageResult: LineageResult, sampleSets: any): any {
     const { key, models } = sampleSets;
 
     let rows = [];
     let nodeIds = {};
 
-    lineage.result.nodes.forEach(node => {
+    lineageResult.nodes.forEach(node => {
         if (node.lsid && node.cpasType) {
             const key = node.cpasType;
 
@@ -257,13 +244,6 @@ function computeSampleCounts(lineage: Lineage, sampleSets: any) {
     }
 
     return fromJS(rows);
-}
-
-function fetchSampleSets() {
-    return selectRows({
-        schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
-    });
 }
 
 export function getLocationString(location: Location): string {

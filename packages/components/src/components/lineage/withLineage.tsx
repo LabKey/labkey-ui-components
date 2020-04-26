@@ -1,31 +1,32 @@
 import React, { ComponentType, PureComponent } from 'react';
 import { Draft, produce } from 'immer';
 
-import { fetchLineageNodes, processLineageResult, loadLineageResult } from './actions';
+import { fetchLineageNodes, processLineageResult, loadLineageResult, loadSampleStats } from './actions';
 import { ILineage, Lineage, LineageLoadingState, LineageResult } from './models';
 import { LineageOptions } from './types';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 
 export interface InjectedLineage {
-    lineage: Lineage
+    lineage: Lineage;
 }
 
 export interface LoadLineage {
-    distance?: number
-    prefetchSeed?: boolean
+    distance?: number;
+    prefetchSeed?: boolean;
 }
 
 export interface WithLineageOptions extends LoadLineage, LineageOptions {
-    lsid: string
+    lsid: string;
 }
 
 interface State {
-    lineage: Lineage
+    lineage: Lineage;
 }
 
 export function withLineage<Props>(
     ComponentToWrap: ComponentType<Props & InjectedLineage>,
-    allowSeedPrefetch: boolean = true
+    allowSeedPrefetch: boolean = true,
+    allowLoadSampleStats: boolean = false
 ): ComponentType<Props & WithLineageOptions> {
     class ComponentWithLineage extends PureComponent<Props & WithLineageOptions, State> {
 
@@ -57,9 +58,15 @@ export function withLineage<Props>(
             try {
                 const result = await loadLineageResult(lsid, distance, this.props);
 
+                let sampleStats: any;
+                if (allowLoadSampleStats) {
+                    sampleStats = await loadSampleStats(result);
+                }
+
                 await this.updateLineage({
                     result,
                     resultLoadingState: LineageLoadingState.LOADED,
+                    sampleStats,
                 });
             } catch(e) {
                 console.error(e);

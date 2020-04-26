@@ -246,23 +246,6 @@ function computeSampleCounts(lineageResult: LineageResult, sampleSets: any): any
     return fromJS(rows);
 }
 
-export function getLocationString(location: Location): string {
-    let loc = '';
-
-    if (location) {
-        let sep = '';
-        // all properties on the URL that are respected by LineagePageModel
-        ['distance', 'members', 'p', 'seeds'].forEach((key) => {
-            if (location.query.has(key)) {
-                loc += sep + key + '=' + location.query.get(key);
-                sep = '&';
-            }
-        });
-    }
-
-    return loc;
-}
-
 export function createGridModel(
     lineage: Lineage,
     members: LINEAGE_DIRECTIONS,

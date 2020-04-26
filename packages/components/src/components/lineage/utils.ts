@@ -10,24 +10,13 @@ import { LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
 
 const DEFAULT_ICON_URL = 'default';
+const BACKUP_IMAGE_ROOT = 'https://labkey.org/_images/';
 
 // The default vis-network icon shape to use for nodes in the lineage graph
 const DEFAULT_ICON_SHAPE = 'circularImage';
 
 // A constant set of icons that are better displayed as a normal image (since default is "circularImage")
 const NON_CIRCULAR_IMAGES = ['expressionsystem', 'mixtures', 'rawmaterials', 'run'];
-
-export function getBackupImageFromLineageNode(node: LineageNode, isSeed: boolean, isSelected: boolean): string {
-    let iconURL = DEFAULT_ICON_URL;
-
-    // Use default image specific for cpasType categories
-    if (node && node.cpasType && node.cpasType.includes('SampleSet')) {
-        iconURL = 'samples';
-    }
-
-    // use labkey.org as a backup for images src
-    return 'https://labkey.org/_images/' + getImageNameWithTheme(iconURL, isSeed, isSelected);
-}
 
 function getQueryFromSchema(schemasObject: any, queryName: string): SchemaQuery {
     return Object.keys(schemasObject)
@@ -156,7 +145,7 @@ export function resolveIconAndShapeForNode(
     return {
         iconURL,
         image: imageFromIdentifier(iconURL, isSeed, false),
-        imageBackup: getBackupImageFromLineageNode(node, isSeed, false),
+        imageBackup: `${BACKUP_IMAGE_ROOT}${getImageNameWithTheme(iconURL, isSeed, false)}`,
         imageSelected: imageFromIdentifier(iconURL, isSeed, true),
         imageShape,
     }

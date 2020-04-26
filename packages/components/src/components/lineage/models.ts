@@ -214,6 +214,7 @@ export class LineageNode extends Record ({
         return values ? new LineageNode({
             children:  LineageLink.createList(values.children),
             cpasType: values.cpasType,
+            expType: values.expType,
             id: values.id,
             lsid,
             name:  values.name,

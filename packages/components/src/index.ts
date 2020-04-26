@@ -130,7 +130,6 @@ import {
     getQueryGridModel,
     getQueryGridModelsForGridId,
     initQueryGridState,
-    invalidateLineageResults,
     invalidateUsers,
     removeQueryGridModel
 } from './global';
@@ -247,6 +246,7 @@ import {
     uploadAssayRunFiles,
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
+import { invalidateLineageResults } from './components/lineage/actions';
 import { LineageFilter, LINEAGE_GROUPING_GENERATIONS, LineageURLResolvers } from './components/lineage/types';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';

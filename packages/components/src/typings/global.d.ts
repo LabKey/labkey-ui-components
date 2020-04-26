@@ -17,7 +17,6 @@
 import { List, Map } from 'immutable';
 
 import { LookupStore, EditorModel } from '../models';
-import { Lineage } from '../components/lineage/models';
 import { QueryGridModel } from '../components/base/models/model';
 import { IUser } from '../components/forms/model';
 import { NotificationItemModel } from '../components/notifications/model';
@@ -27,7 +26,6 @@ declare module 'reactn/default' {
     export interface State {
         // src/global.ts
         QueryGrid_editors: Map<string, EditorModel>;
-        QueryGrid_lineageResults: Map<string, Lineage>;
         QueryGrid_lookups: Map<string, LookupStore>;
         QueryGrid_metadata: Map<string, any>;
         QueryGrid_models: Map<string, QueryGridModel>;

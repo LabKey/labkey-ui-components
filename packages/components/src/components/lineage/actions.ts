@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { createContext } from 'react';
-import { Draft, produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
 import { ActionURL, Ajax, Experiment, Filter, Utils } from '@labkey/api';
 import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../..';
@@ -11,12 +10,10 @@ import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows }
 import {
     Lineage,
     LineageGridModel,
-    LineageLoadingState,
     LineageNode,
     LineageNodeMetadata,
     LineageResult,
 } from './models';
-import { getLineageResult, updateLineageResult } from '../../global';
 import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
 import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
@@ -144,7 +141,11 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
     });
 }
 
-const lineageResultCache: { [key:string]: Promise<LineageResult> } = {};
+let lineageResultCache: { [key:string]: Promise<LineageResult> } = {};
+
+export function invalidateLineageResults(): void {
+    lineageResultCache = {};
+}
 
 export function loadLineageResult(seed: string, distance?: number, options?: LineageOptions): Promise<LineageResult> {
     const key = [seed, distance ?? -1].join('|');
@@ -154,36 +155,6 @@ export function loadLineageResult(seed: string, distance?: number, options?: Lin
     }
 
     return lineageResultCache[key];
-}
-
-export function loadLineageIfNeeded(seed: string, distance?: number, options?: LineageOptions): Promise<Lineage> {
-    const existing = getLineageResult(seed);
-    if (existing) {
-        return Promise.resolve(existing);
-    }
-
-    // create the initial lineage model for this seed
-    const lineage = new Lineage({
-        seed,
-        resultLoadingState: LineageLoadingState.LOADING,
-    });
-
-    return loadLineageResult(seed, distance, options)
-        .then(result => {
-            updateLineageResult(seed, produce(lineage, (draft: Draft<Lineage>) => {
-                draft.result = result;
-                draft.resultLoadingState = LineageLoadingState.LOADED;
-            }));
-            return getLineageResult(seed);
-        })
-        .catch(reason => {
-            console.error(reason);
-            updateLineageResult(seed, produce(lineage, (draft: Draft<Lineage>) => {
-                draft.error = reason.message;
-                draft.resultLoadingState = LineageLoadingState.LOADED;
-            }));
-            return getLineageResult(seed);
-        });
 }
 
 export function loadSampleStats(lineageResult: LineageResult): Promise<any> {

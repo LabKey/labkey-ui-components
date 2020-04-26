@@ -18,7 +18,6 @@ import { List, Map } from 'immutable';
 
 import { initBrowserHistoryState } from './util/global';
 import { EditorModel, LookupStore } from './models';
-import { Lineage } from './components/lineage/models';
 import { IUser } from './components/forms/model';
 import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
 import { naturalSort, resolveSchemaQuery } from './util/utils';
@@ -50,7 +49,6 @@ export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?
 export function resetQueryGridState() {
     setGlobal({
         QueryGrid_editors: Map<string, EditorModel>(),
-        QueryGrid_lineageResults: Map<string, Lineage>(),
         QueryGrid_lookups: Map<string, LookupStore>(),
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
@@ -184,34 +182,6 @@ export function getQueryColumnRenderers() {
 export function setQueryColumnRenderers(columnrenderers: Map<string, any>) {
     setGlobal({
         QueryGrid_columnrenderers: columnrenderers,
-    });
-}
-
-/**
- * Get the lineage results from the global state for a given seed / lsid
- * @param seed Key for the lineage results map
- */
-export function getLineageResult(seed: string): Lineage {
-    return getGlobalState('lineageResults').get(seed);
-}
-
-/**
- * Sets the global state lineage results for a given seed / lsid
- * @param seed Key for the lineage results map
- * @param lineage Lineage result object
- */
-export function updateLineageResult(seed: string, lineage: Lineage) {
-    setGlobal({
-        QueryGrid_lineageResults: getGlobalState('lineageResults').set(seed, lineage),
-    });
-}
-
-/**
- * Invalidate the global state lineage results
- */
-export function invalidateLineageResults() {
-    setGlobal({
-        QueryGrid_lineageResults: Map<string, Lineage>(),
     });
 }
 

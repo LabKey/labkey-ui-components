@@ -15,13 +15,14 @@
  */
 import React, { PureComponent } from 'react';
 import { List } from 'immutable';
+
 import { LoadingSpinner, QueryColumn, QueryGridModel } from '../../..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from './DetailDisplay';
 
 interface DetailProps extends DetailDisplaySharedProps {
-    queryModel?: QueryGridModel
-    queryColumns?: List<QueryColumn>
+    queryModel?: QueryGridModel;
+    queryColumns?: List<QueryColumn>;
 }
 
 export class Detail extends PureComponent<DetailProps> {
@@ -38,11 +39,13 @@ export class Detail extends PureComponent<DetailProps> {
                 <DetailDisplay
                     {...this.detailDisplayProps}
                     data={queryModel.getData()}
-                    displayColumns={editingMode ? queryModel.getUpdateDisplayColumns() : queryModel.getDetailsDisplayColumns()}
+                    displayColumns={
+                        editingMode ? queryModel.getUpdateDisplayColumns() : queryModel.getDetailsDisplayColumns()
+                    }
                 />
-            )
+            );
         }
 
-        return <LoadingSpinner/>
+        return <LoadingSpinner />;
     }
 }

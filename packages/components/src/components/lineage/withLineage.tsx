@@ -27,11 +27,10 @@ interface State {
 
 export function withLineage<Props>(
     ComponentToWrap: ComponentType<Props & InjectedLineage>,
-    allowSeedPrefetch: boolean = true,
-    allowLoadSampleStats: boolean = false
+    allowSeedPrefetch = true,
+    allowLoadSampleStats = false
 ): ComponentType<Props & WithLineageOptions> {
     class ComponentWithLineage extends PureComponent<Props & WithLineageOptions, State> {
-
         static defaultProps;
 
         readonly state: State = produce({ lineage: undefined }, () => {});
@@ -47,10 +46,12 @@ export function withLineage<Props>(
             }
 
             // Create the initial lineage model for this seed
-            await this.setLineage(new Lineage({
-                seed: lsid,
-                resultLoadingState: LoadingState.LOADING,
-            }));
+            await this.setLineage(
+                new Lineage({
+                    seed: lsid,
+                    resultLoadingState: LoadingState.LOADING,
+                })
+            );
 
             if (allowSeedPrefetch && prefetchSeed === true) {
                 // Fetch seed node asynchronously to allow for decoupled loading
@@ -70,7 +71,7 @@ export function withLineage<Props>(
                     resultLoadingState: LoadingState.LOADED,
                     sampleStats,
                 });
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
                 await this.updateLineage({
                     error: e.message,
@@ -91,16 +92,19 @@ export function withLineage<Props>(
                     throw new Error('withLineage: Can only process a single seed node.');
                 }
 
-                const seedResult = await processLineageResult(LineageResult.create({
-                    nodes: { [lsid]: seedNodes[0] },
-                    seed: lsid,
-                }), this.props);
+                const seedResult = await processLineageResult(
+                    LineageResult.create({
+                        nodes: { [lsid]: seedNodes[0] },
+                        seed: lsid,
+                    }),
+                    this.props
+                );
 
                 await this.updateLineage({
                     seedResult,
                     seedResultLoadingState: LoadingState.LOADED,
                 });
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
                 await this.updateLineage({
                     seedResultError: 'Error while pre-fetching the lineage seed',
@@ -118,19 +122,24 @@ export function withLineage<Props>(
             if (!this.state.lineage) {
                 throw new Error('withLineage: Called "updateLineage" prior to setting lineage.');
             }
-            return this.setLineage(this.state.lineage.mutate(lineageProps));
+            return await this.setLineage(this.state.lineage.mutate(lineageProps));
         };
 
         /**
          * An asynchronous helper function that sets the lineage on state.
          * @param lineage The lineage object to set to
          */
-        setLineage = async (lineage: Lineage): Promise<void> => {
-            return new Promise((resolve) => {
+        setLineage = (lineage: Lineage): Promise<void> => {
+            return new Promise(resolve => {
                 if (this._mounted) {
-                    this.setState(produce((draft: Draft<State>) => {
-                        draft.lineage = lineage;
-                    }), () => { resolve(); });
+                    this.setState(
+                        produce((draft: Draft<State>) => {
+                            draft.lineage = lineage;
+                        }),
+                        () => {
+                            resolve();
+                        }
+                    );
                 }
             });
         };
@@ -154,7 +163,7 @@ export function withLineage<Props>(
             const { ...props } = this.props;
             const { lineage } = this.state;
 
-            return <ComponentToWrap {...props as Props} lineage={lineage} />;
+            return <ComponentToWrap {...(props as Props)} lineage={lineage} />;
         }
     }
 

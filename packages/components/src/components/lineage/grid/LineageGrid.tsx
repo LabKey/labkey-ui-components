@@ -11,6 +11,7 @@ import { createGridModel } from '../actions';
 import { LineageGridModel } from '../models';
 import { InjectedLineage, withLineage, WithLineageOptions } from '../withLineage';
 import { LINEAGE_DIRECTIONS } from '../types';
+
 import { LineageGridDisplay } from './LineageGridDisplay';
 
 interface LineageGridOwnProps extends WithLineageOptions {
@@ -25,7 +26,6 @@ interface LineageGridState {
 type LineageGridProps = InjectedLineage & LineageGridOwnProps;
 
 class LineageGridImpl extends PureComponent<LineageGridProps, LineageGridState> {
-
     readonly state: LineageGridState = { model: new LineageGridModel() };
 
     static getDerivedStateFromProps(nextProps: LineageGridProps, prevState: LineageGridState): LineageGridState {
@@ -44,7 +44,7 @@ class LineageGridImpl extends PureComponent<LineageGridProps, LineageGridState> 
                 } else {
                     return createGridModel(lineage, members, distance, pageNumber);
                 }
-            })
+            }),
         };
     }
 
@@ -60,7 +60,6 @@ export interface LineageGridFromLocationProps {
 }
 
 export class LineageGridFromLocation extends PureComponent<LineageGridFromLocationProps> {
-
     ensureNumber(value: string): number {
         const numValue = parseInt(value);
         return isNaN(numValue) ? undefined : numValue;

@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent } from 'react';
+
 import { Alert, LoadingSpinner } from '../..';
 
 import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage';
@@ -14,24 +15,23 @@ import { VisGraph } from './vis/VisGraph';
 import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
 
 interface LinageGraphOwnProps {
-    members?: LINEAGE_DIRECTIONS
-    navigate?: (node: VisGraphNode) => any
+    members?: LINEAGE_DIRECTIONS;
+    navigate?: (node: VisGraphNode) => any;
 }
 
 interface LineageGraphDisplayOwnProps {
-    visGraphOptions: VisGraphOptions
+    visGraphOptions: VisGraphOptions;
 }
 
 interface State {
-    hoverNode: string
-    nodeInteractions: WithNodeInteraction
-    selectedNodes: VisGraphNodeType[]
+    hoverNode: string;
+    nodeInteractions: WithNodeInteraction;
+    selectedNodes: VisGraphNodeType[];
 }
 
 type Props = InjectedLineage & LineageGraphDisplayOwnProps & WithLineageOptions & LinageGraphOwnProps & LineageOptions;
 
 class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
-
     private readonly visGraphRef = undefined;
 
     constructor(props: Props) {
@@ -45,7 +45,7 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
                 onNodeMouseOver: this.onSummaryNodeMouseOver,
                 onNodeMouseOut: this.onSummaryNodeMouseOut,
                 onNodeClick: this.onSummaryNodeClick,
-            }
+            },
         };
     }
 
@@ -102,7 +102,7 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
         const { hoverNode, selectedNodes } = this.state;
 
         if (lineage?.error) {
-            return <Alert>{lineage.error}</Alert>
+            return <Alert>{lineage.error}</Alert>;
         }
 
         return (
@@ -120,7 +120,9 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
                                 options={visGraphOptions}
                                 seed={lsid}
                             />
-                        ) : <LoadingSpinner msg="Loading lineage..."/>}
+                        ) : (
+                            <LoadingSpinner msg="Loading lineage..." />
+                        )}
                     </div>
                     <div className="col-md-4 lineage-node-detail-container">
                         <LineageNodeDetailFactory

@@ -5,16 +5,12 @@
 import React, { Component } from 'react';
 import { DataSet, Edge, IdType, Network, Node } from 'vis-network';
 
-import {
-    isCombinedNode,
-    VisGraphCombinedNode,
-    VisGraphNodeType,
-    VisGraphOptions,
-} from './VisGraphGenerator';
 import { LineageNode } from '../models';
+
+import { isCombinedNode, VisGraphCombinedNode, VisGraphNodeType, VisGraphOptions } from './VisGraphGenerator';
 import { VisGraphControls } from './VisGraphControls';
 
-export type HoverNodeCoords = {top: number, left: number, bottom: number, right: number};
+export type HoverNodeCoords = { top: number; left: number; bottom: number; right: number };
 
 // Directly from https://github.com/visjs/vis-network/blob/v6.5.2/lib/network/shapes.ts#L9
 /**
@@ -34,77 +30,76 @@ function drawCircle(ctx: CanvasRenderingContext2D, x: number, y: number, r: numb
 // defined in vis/lib/network/shapes.js
 interface InternalVisNetwork extends Network {
     body: {
-        container: HTMLElement
-        nodes: {[key:string]: InternalVisNode}
-        nodeIndices: Array<IdType>
-    },
+        container: HTMLElement;
+        nodes: { [key: string]: InternalVisNode };
+        nodeIndices: IdType[];
+    };
     layoutEngine: {
-        _centerParent: (node: InternalVisNode) => void
-    }
+        _centerParent: (node: InternalVisNode) => void;
+    };
 }
 
 // defined in vis/lib/network/modules/components/Node.js
 interface InternalVisNode {
-    options: Node
-    id: string
+    options: Node;
+    id: string;
     shape: {
-        top: number
-        left: number
-        width: number
-        height: number
-        radius: number
-    }
-    hover: boolean
-    x: number
-    y: number
+        top: number;
+        left: number;
+        width: number;
+        height: number;
+        radius: number;
+    };
+    hover: boolean;
+    x: number;
+    y: number;
 }
 
 // https://visjs.org/docs/network/#Events
 interface VisPointerEvent {
-    DOM: { x: number, y: number }
-    canvas: { x: number, y: number }
+    DOM: { x: number; y: number };
+    canvas: { x: number; y: number };
 }
 
 interface VisClickEvent {
-    edges: Array<number | string>
-    nodes: Array<number | string>
-    event: MouseEvent
-    pointer: VisPointerEvent
+    edges: Array<number | string>;
+    nodes: Array<number | string>;
+    event: MouseEvent;
+    pointer: VisPointerEvent;
 }
 
 interface VisDeselectEvent extends VisClickEvent {
     previousSelection: {
-        edges: Array<number | string>
-        nodes: Array<number | string>
-    }
+        edges: Array<number | string>;
+        nodes: Array<number | string>;
+    };
 }
 
 interface VisHoverEvent {
-    node: string
-    event: MouseEvent
-    pointer: VisPointerEvent
+    node: string;
+    event: MouseEvent;
+    pointer: VisPointerEvent;
 }
 
 interface VisGraphProps {
-    fitOnResize?: boolean
-    onNodeClick?: (clickedNode: VisGraphNodeType) => void
-    onNodeDoubleClick?: (clickedNode: VisGraphNodeType) => void
-    onNodeSelect?: (selectedNodes: VisGraphNodeType[]) => void
-    onNodeDeselect?: (selectedNodes: VisGraphNodeType[], previousSelectedNodes: VisGraphNodeType[]) => void
-    onNodeHover?: (node: VisGraphNodeType, coords: HoverNodeCoords) => void
-    onNodeBlur?: () => void
-    options: VisGraphOptions
-    seed?: string
+    fitOnResize?: boolean;
+    onNodeClick?: (clickedNode: VisGraphNodeType) => void;
+    onNodeDoubleClick?: (clickedNode: VisGraphNodeType) => void;
+    onNodeSelect?: (selectedNodes: VisGraphNodeType[]) => void;
+    onNodeDeselect?: (selectedNodes: VisGraphNodeType[], previousSelectedNodes: VisGraphNodeType[]) => void;
+    onNodeHover?: (node: VisGraphNodeType, coords: HoverNodeCoords) => void;
+    onNodeBlur?: () => void;
+    options: VisGraphOptions;
+    seed?: string;
 }
 
 interface VisGraphState {
-    selected?: string[]
+    selected?: string[];
 }
 
 export class VisGraph extends Component<VisGraphProps, VisGraphState> {
-
     static defaultProps = {
-        fitOnResize: true
+        fitOnResize: true,
     };
 
     data: {
@@ -115,7 +110,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
     network: InternalVisNetwork;
 
     refs: {
-        visgraph: HTMLElement
+        visgraph: HTMLElement;
     };
 
     readonly state: VisGraphState = { selected: undefined };
@@ -136,7 +131,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         this.generateGraph(this.props);
     }
 
-    public highlightNode = (node: LineageNode, hover: boolean): void => {
+    highlightNode = (node: LineageNode, hover: boolean): void => {
         if (node && this.data) {
             // findNode will return any cluster node ids that the node is within.
             // If the node is in a cluster, highlight it the cluster instead
@@ -145,7 +140,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
                 const topNodeId = clusterIds[0];
                 if (topNodeId) {
                     // reaching into the vis.js internal structure to get the graph's Node object
-                    let internalNode = this.getInternalNode(topNodeId);
+                    const internalNode = this.getInternalNode(topNodeId);
                     internalNode.hover = hover;
 
                     this.moveNodeToTop(topNodeId);
@@ -160,7 +155,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
     // move the node to the end of the list so it is drawn on top of any of it's neighbors
     private moveNodeToTop = (id: IdType): void => {
         const { nodeIndices } = this.network.body;
-        let idx = nodeIndices.indexOf(id);
+        const idx = nodeIndices.indexOf(id);
         nodeIndices.splice(idx, 1);
         nodeIndices.push(id);
     };
@@ -183,22 +178,22 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         return this.network.body.nodes[id];
     };
 
-    public getCombinedNodes = (): VisGraphCombinedNode[] => {
-        return this.data.nodes.get({filter: isCombinedNode});
+    getCombinedNodes = (): VisGraphCombinedNode[] => {
+        return this.data.nodes.get({ filter: isCombinedNode });
     };
 
-    public getNodes = (ids: IdType[]): VisGraphNodeType[] => {
+    getNodes = (ids: IdType[]): VisGraphNodeType[] => {
         return ids.map(id => this.getNode(id)).filter(n => n !== null && n !== undefined);
     };
 
-    public getNode = (id: IdType): VisGraphNodeType => {
+    getNode = (id: IdType): VisGraphNodeType => {
         const node = this.data.nodes.get(id);
         if (node && this.network.isCluster(id)) {
             const nodesInCluster = this.network.getNodesInCluster(id);
             return {
                 kind: 'cluster',
                 id,
-                nodesInCluster: this.getNodes(nodesInCluster)
+                nodesInCluster: this.getNodes(nodesInCluster),
             };
         }
 
@@ -206,7 +201,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
     };
 
     // set a selection on the vis.js graph and fire the select handler as if the user clicked on a node in the graph
-    public selectNodes = (ids: string[]): void => {
+    selectNodes = (ids: string[]): void => {
         const selectedNodes = this.getNodes(ids);
         this.doSelectNode(selectedNodes);
 
@@ -219,17 +214,16 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
 
     private doSelectNode = (selectedNodes: VisGraphNodeType[]): void => {
         // change color of newly selected node
-        let addToSelection = [];
+        const addToSelection = [];
         for (let i = 0; i < selectedNodes.length; i++) {
             const selectedNode = selectedNodes[i];
-            if (!selectedNode)
-                continue;
+            if (!selectedNode) continue;
             addToSelection.push(selectedNode.id);
         }
 
         // add the newly selected node in the state
-        this.setState((prevState) => ({
-            selected: this.unique(prevState.selected, addToSelection)
+        this.setState(prevState => ({
+            selected: this.unique(prevState.selected, addToSelection),
         }));
 
         if (this.props.onNodeSelect) {
@@ -239,11 +233,10 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
 
     // create a new array from the two arrays with any duplicates removed
     private unique = (a: string[], b: string[]): string[] => {
-        let ret = [].concat(a);
+        const ret = [].concat(a);
         for (let i = 0; i < b.length; i++) {
-            let item = b[i];
-            if (ret.indexOf(item) == -1)
-                ret.push(item);
+            const item = b[i];
+            if (ret.indexOf(item) == -1) ret.push(item);
         }
         return ret;
     };
@@ -259,21 +252,19 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
             if (this.props.onNodeClick) {
                 this.props.onNodeClick(clickedNode);
             }
-        }
-        else {
+        } else {
             // it could happen that the graph was reset after an expanded node was selected in which case the selected node might no longer exist
             // the node specified by selected no longer exist so reset selected
-            this.setState((prevState) => {
-                let newSelected = undefined;
+            this.setState(prevState => {
+                let newSelected;
                 if (prevState.selected) {
                     newSelected = [];
                     for (let i = 0; i < prevState.selected.length; i++) {
-                        if (prevState.selected[i] !== id)
-                            newSelected.push(prevState.selected[i]);
+                        if (prevState.selected[i] !== id) newSelected.push(prevState.selected[i]);
                     }
                 }
                 return { selected: newSelected };
-            })
+            });
         }
     };
 
@@ -315,11 +306,11 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
                 // convert the node's canvas box to DOM coordinates
                 const topLeftDOM = this.network.canvasToDOM({
                     x: canvasBox.left,
-                    y: canvasBox.top
+                    y: canvasBox.top,
                 });
                 const bottomRightDOM = this.network.canvasToDOM({
                     x: canvasBox.right,
-                    y: canvasBox.bottom
+                    y: canvasBox.bottom,
                 });
 
                 const rect = this.refs.visgraph.getBoundingClientRect();
@@ -327,7 +318,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
                     top: rect.top + topLeftDOM.y,
                     left: rect.left + topLeftDOM.x,
                     bottom: rect.top + bottomRightDOM.y,
-                    right: rect.left + bottomRightDOM.x
+                    right: rect.left + bottomRightDOM.x,
                 };
                 this.props.onNodeHover(node, coords);
             }
@@ -355,16 +346,14 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
             ctx.clip();
 
             // calculate the size of the font based on the shape size
-            const text = "" + nodeCount;
+            const text = '' + nodeCount;
             let fontSize = 28;
             let textMetrics;
             while (true) {
-                if (fontSize < 8)
-                    break;
+                if (fontSize < 8) break;
                 ctx.font = fontSize + 'px arial';
                 textMetrics = ctx.measureText(text);
-                if (textMetrics.width < shape.width - 8)
-                    break;
+                if (textMetrics.width < shape.width - 8) break;
                 fontSize -= 4;
             }
 
@@ -374,7 +363,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
             ctx.shadowOffsetX = 3;
             ctx.shadowOffsetY = 3;
 
-            ctx.fillText(text, internalNode.x - (textMetrics.width/2), internalNode.y - (fontSize/2));
+            ctx.fillText(text, internalNode.x - textMetrics.width / 2, internalNode.y - fontSize / 2);
 
             // remove clip
             ctx.restore();
@@ -404,7 +393,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
 
         this.data = {
             edges: options.edges,
-            nodes: options.nodes
+            nodes: options.nodes,
         };
 
         this.network = new Network(this.refs.visgraph, this.data, options.options) as InternalVisNetwork;
@@ -443,11 +432,8 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
 
         return (
             <div className="lineage-visgraph-ct">
-                <div ref="visgraph" style={{height: graphHeight}}/>
-                <VisGraphControls
-                    getNetwork={this.getNetwork}
-                    onReset={this.onReset}
-                />
+                <div ref="visgraph" style={{ height: graphHeight }} />
+                <VisGraphControls getNetwork={this.getNetwork} onReset={this.onReset} />
             </div>
         );
     }

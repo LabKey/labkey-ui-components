@@ -9,6 +9,7 @@ import { createLineageNodeCollections, LineageNodeCollectionByType } from '../vi
 import { LineageSummary } from '../LineageSummary';
 import { LineageNode } from '../models';
 import { LineageOptions } from '../types';
+
 import { NodeDetail } from './NodeDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
 import { DetailsListGroup, DetailsListNodes, DetailsListSteps } from './DetailsList';
@@ -57,13 +58,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
         const { stepIdx, tabKey } = this.state;
 
         if (node.isRun && stepIdx !== undefined) {
-            return (
-                <RunStepNodeDetail
-                    node={node}
-                    onBack={() => this.selectStep(undefined)}
-                    stepIdx={stepIdx}
-                />
-            );
+            return <RunStepNodeDetail node={node} onBack={() => this.selectStep(undefined)} stepIdx={stepIdx} />;
         }
 
         const nodeDetails = (
@@ -98,7 +93,9 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
                             </DetailsListGroup>
                         </Tab>
                     </Tabs>
-                ) : nodeDetails}
+                ) : (
+                    nodeDetails
+                )}
             </>
         );
     }
@@ -112,7 +109,6 @@ interface ClusterNodeDetailProps {
 }
 
 export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
-
     render() {
         const { highlightNode, nodes, options } = this.props;
 
@@ -124,8 +120,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
         if (groups.length === 1) {
             title = nodes.length + ' ' + groups[0];
             iconURL = nodes[0].iconURL;
-        }
-        else {
+        } else {
             title = nodes.length + ' items of different types';
             iconURL = 'default';
         }
@@ -133,14 +128,14 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
         return (
             <>
                 <DetailHeader header={title} iconSrc={iconURL} />
-                {groups.map(groupName =>
+                {groups.map(groupName => (
                     <DetailsListNodes
                         key={groupName}
                         title={groupName}
                         nodes={nodesByType[groupName]}
                         highlightNode={highlightNode}
                     />
-                )}
+                ))}
             </>
         );
     }
@@ -159,11 +154,11 @@ class RunStepNodeDetail extends PureComponent<RunStepNodeDetailProps> {
 
         return (
             <>
-                <DetailHeader
-                    header={`Run Step: ${step.name}`}
-                    iconSrc="default"
-                >
-                    <a className="lineage-link" onClick={onBack}>{node.name}</a>&nbsp;>&nbsp;<span>{step.name}</span>
+                <DetailHeader header={`Run Step: ${step.name}`} iconSrc="default">
+                    <a className="lineage-link" onClick={onBack}>
+                        {node.name}
+                    </a>
+                    &nbsp;>&nbsp;<span>{step.name}</span>
                 </DetailHeader>
                 <NodeDetail node={step.protocol} />
             </>

@@ -23,7 +23,7 @@ describe('resolveIconAndShapeForNode', () => {
 
     it('support run type nodes', () => {
         const node = LineageNode.create('test', {
-            expType: 'ExperimentRun'
+            expType: 'ExperimentRun',
         });
         expect(resolveIconAndShapeForNode(node)).toStrictEqual({
             iconURL: 'run',

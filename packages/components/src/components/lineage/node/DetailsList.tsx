@@ -1,4 +1,5 @@
 import React, { Fragment, PureComponent, ReactNode } from 'react';
+
 import { SVGIcon } from '../../..';
 
 import { LineageNode } from '../models';
@@ -6,7 +7,8 @@ import { LineageNodeCollection } from '../vis/VisGraphGenerator';
 import { getLineageNodeTitle } from '../utils';
 import { NodeInteractionConsumer, WithNodeInteraction } from '../actions';
 
-export interface DetailListLink extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
+export interface DetailListLink
+    extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
     text: string;
 }
 
@@ -23,7 +25,6 @@ interface DetailsListState {
 }
 
 export class DetailsList extends PureComponent<DetailsListProps, DetailsListState> {
-
     static defaultProps = {
         collapsedCount: 4,
         open: true,
@@ -46,15 +47,21 @@ export class DetailsList extends PureComponent<DetailsListProps, DetailsListStat
                     <h6 className="no-margin-bottom">
                         {title}
                         {showCount && <span>&nbsp;({React.Children.count(children)})</span>}
-                        {headerLinks && headerLinks.map((link, i) => link && (
-                            <Fragment key={i}>
-                                &nbsp;
-                                <a {...link} className="lineage-data-link--text show-on-hover">{link.text}</a>
-                            </Fragment>
-                        ))}
+                        {headerLinks &&
+                            headerLinks.map(
+                                (link, i) =>
+                                    link && (
+                                        <Fragment key={i}>
+                                            &nbsp;
+                                            <a {...link} className="lineage-data-link--text show-on-hover">
+                                                {link.text}
+                                            </a>
+                                        </Fragment>
+                                    )
+                            )}
                     </h6>
                 </summary>
-                <ul style={{listStyleType: 'none', paddingLeft: '0', marginBottom: '0.5em'}}>
+                <ul style={{ listStyleType: 'none', paddingLeft: '0', marginBottom: '0.5em' }}>
                     {React.Children.map(children, (child, i) => {
                         const showChild = expanded || i < collapsedCount;
 
@@ -65,7 +72,8 @@ export class DetailsList extends PureComponent<DetailsListProps, DetailsListStat
                                         <SVGIcon className="lineage-sm-icon" />
                                         &nbsp;
                                         <a className="lineage-link" onClick={this.toggle}>
-                                            Show {React.Children.count(children) - collapsedCount} {expanded ? 'less' : 'more'}...
+                                            Show {React.Children.count(children) - collapsedCount}{' '}
+                                            {expanded ? 'less' : 'more'}...
                                         </a>
                                     </li>
                                     {showChild ? <li key={i}>{child}</li> : null}
@@ -80,7 +88,6 @@ export class DetailsList extends PureComponent<DetailsListProps, DetailsListStat
         );
     }
 }
-
 
 export class DetailsListGroup extends PureComponent {
     render() {
@@ -105,7 +112,14 @@ export class DetailsListSteps extends PureComponent<DetailsListStepProps> {
             <>
                 {node.steps.map((step, i) => (
                     <DetailsList
-                        headerLinks={[{ text: 'Details', onClick: () => { onSelect(i); } }]}
+                        headerLinks={[
+                            {
+                                text: 'Details',
+                                onClick: () => {
+                                    onSelect(i);
+                                },
+                            },
+                        ]}
                         key={`${node.lsid}.step.${i}`}
                         title={step.name}
                     >
@@ -128,7 +142,6 @@ interface DetailsListNodesProps {
 }
 
 export class DetailsListNodes extends PureComponent<DetailsListNodesProps> {
-
     renderNode = (node: LineageNode): ReactNode => {
         const { highlightNode } = this.props;
 
@@ -140,22 +153,23 @@ export class DetailsListNodes extends PureComponent<DetailsListNodesProps> {
             <div
                 className="lineage-name"
                 key={node.lsid}
-                style={{fontWeight: highlightNode === node.lsid ? 'bold' : 'normal'}}
+                style={{ fontWeight: highlightNode === node.lsid ? 'bold' : 'normal' }}
                 title={title}
             >
-                <SVGIcon
-                    className="lineage-sm-icon"
-                    iconSrc={iconURL}
-                />
+                <SVGIcon className="lineage-sm-icon" iconSrc={iconURL} />
                 &nbsp;
                 <NodeInteractionConsumer>
                     {(context: WithNodeInteraction) => {
                         if (context.isNodeInGraph(node)) {
                             return (
-                                <a className="lineage-link"
-                                   onClick={e => context.onNodeClick(node)}
-                                   onMouseOver={e => context.onNodeMouseOver(node)}
-                                   onMouseOut={e => context.onNodeMouseOut(node)}>{name}</a>
+                                <a
+                                    className="lineage-link"
+                                    onClick={e => context.onNodeClick(node)}
+                                    onMouseOver={e => context.onNodeMouseOver(node)}
+                                    onMouseOut={e => context.onNodeMouseOut(node)}
+                                >
+                                    {name}
+                                </a>
                             );
                         }
 
@@ -163,13 +177,11 @@ export class DetailsListNodes extends PureComponent<DetailsListNodesProps> {
                     }}
                 </NodeInteractionConsumer>
                 &nbsp;
-                <a href={links.overview}
-                   className="show-on-hover lineage-data-link-left">
+                <a href={links.overview} className="show-on-hover lineage-data-link-left">
                     <span className="lineage-data-link--text">Overview</span>
                 </a>
                 {links.lineage !== undefined && (
-                    <a href={links.lineage}
-                       className="show-on-hover lineage-data-link-right">
+                    <a href={links.lineage} className="show-on-hover lineage-data-link-right">
                         <span className="lineage-data-link--text">Lineage</span>
                     </a>
                 )}
@@ -182,10 +194,12 @@ export class DetailsListNodes extends PureComponent<DetailsListNodesProps> {
 
         return (
             <DetailsList
-                headerLinks={[{
-                    href: nodes.listURL,
-                    text: 'View in grid',
-                }]}
+                headerLinks={[
+                    {
+                        href: nodes.listURL,
+                        text: 'View in grid',
+                    },
+                ]}
                 title={title}
             >
                 {nodes.nodes.map(this.renderNode)}

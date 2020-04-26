@@ -4,6 +4,7 @@
  */
 import { List, Map } from 'immutable';
 import { Utils } from '@labkey/api';
+
 import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../..';
 
 import { LineageLink, LineageNode } from './models';
@@ -35,8 +36,7 @@ export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelect
 
     if (isSelected === true) {
         theme = Theme.ORANGE;
-    }
-    else if (isSeed === true) {
+    } else if (isSeed === true) {
         theme = Theme.DEFAULT;
     }
 
@@ -48,11 +48,11 @@ export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelect
 export function getLineageNodeTitle(node: LineageNode, html?: boolean): string {
     // encodeHtml if we are generating html for vis.js to use as the node's tooltip title
     const asHTML = html === true;
-    const h = s => asHTML ? Utils.encodeHtml(s) : s;
+    const h = s => (asHTML ? Utils.encodeHtml(s) : s);
 
     let title = '';
 
-    let meta = node.meta;
+    const meta = node.meta;
     if (meta && meta.displayType) {
         title += h(meta.displayType) + ': ';
     }
@@ -70,28 +70,46 @@ export function getLineageNodeTitle(node: LineageNode, html?: boolean): string {
     return title;
 }
 
-export function getLineageDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LINEAGE_DIRECTIONS, maxDistance: number) : List<LineageNode> {
-    let nodeList = List<LineageNode>().asMutable();
+export function getLineageDepthFirstNodeList(
+    nodes: Map<string, LineageNode>,
+    lsid: string,
+    direction: LINEAGE_DIRECTIONS,
+    maxDistance: number
+): List<LineageNode> {
+    const nodeList = List<LineageNode>().asMutable();
     nodeList.push(nodes.get(lsid).set('distance', 0) as LineageNode);
 
-    let nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
+    const nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
     if (nextNodes) {
-        nextNodes.forEach((next) => {
-            nodeList.push(..._getDepthFirstNodeList(nodes, next.lsid, direction, maxDistance, 1).toArray())
+        nextNodes.forEach(next => {
+            nodeList.push(..._getDepthFirstNodeList(nodes, next.lsid, direction, maxDistance, 1).toArray());
         });
     }
     return nodeList.asImmutable();
 }
 
-
-function _getDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LINEAGE_DIRECTIONS, maxDistance: number, distance: number) : List<LineageNode> {
-    let nodeList = List<LineageNode>().asMutable();
+function _getDepthFirstNodeList(
+    nodes: Map<string, LineageNode>,
+    lsid: string,
+    direction: LINEAGE_DIRECTIONS,
+    maxDistance: number,
+    distance: number
+): List<LineageNode> {
+    const nodeList = List<LineageNode>().asMutable();
     const nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
     if (distance <= maxDistance) {
         nodeList.push(nodes.get(lsid).set('distance', distance) as LineageNode);
         if (nextNodes !== undefined) {
-            nextNodes.forEach((nextNode) => {
-                nodeList.push(..._getDepthFirstNodeList(nodes, nextNode.get('lsid'), direction, maxDistance, distance + 1).toArray());
+            nextNodes.forEach(nextNode => {
+                nodeList.push(
+                    ..._getDepthFirstNodeList(
+                        nodes,
+                        nextNode.get('lsid'),
+                        direction,
+                        maxDistance,
+                        distance + 1
+                    ).toArray()
+                );
             });
         }
     }
@@ -148,5 +166,5 @@ export function resolveIconAndShapeForNode(
         imageBackup: `${BACKUP_IMAGE_ROOT}${getImageNameWithTheme(iconURL, isSeed, false)}`,
         imageSelected: imageFromIdentifier(iconURL, isSeed, true),
         imageShape,
-    }
+    };
 }

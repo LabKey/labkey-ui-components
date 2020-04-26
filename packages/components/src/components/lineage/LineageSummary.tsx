@@ -4,6 +4,7 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
+
 import { LoadingSpinner } from '../..';
 
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
@@ -13,15 +14,11 @@ import { DetailsListNodes } from './node/DetailsList';
 import { InjectedLineage, withLineage } from './withLineage';
 
 interface LineageSummaryOwnProps extends LineageOptions {
-    highlightNode?: string
+    highlightNode?: string;
 }
 
 class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryOwnProps> {
-    renderNodeList = (
-        direction: LINEAGE_DIRECTIONS,
-        lineage: LineageResult,
-        edges: List<LineageLink>,
-    ): ReactNode => {
+    renderNodeList = (direction: LINEAGE_DIRECTIONS, lineage: LineageResult, edges: List<LineageLink>): ReactNode => {
         if (this.empty(edges)) {
             return;
         }
@@ -32,16 +29,16 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         const nodesByType = createLineageNodeCollections(nodes, this.props);
         const groups = Object.keys(nodesByType).sort();
 
-        const title = direction === LINEAGE_DIRECTIONS.Parent ? "Parents" : "Children";
+        const title = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
 
-        return groups.map(groupName =>
+        return groups.map(groupName => (
             <DetailsListNodes
                 key={groupName}
-                title={groupName + " " + title}
+                title={groupName + ' ' + title}
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}
             />
-        );
+        ));
     };
 
     private empty(nodes?: List<LineageLink>): boolean {
@@ -52,7 +49,7 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         const { lineage } = this.props;
 
         if (!lineage || !lineage.isLoaded()) {
-            return <LoadingSpinner msg="Loading lineage..."/>;
+            return <LoadingSpinner msg="Loading lineage..." />;
         } else if (lineage.error) {
             return <div>{lineage.error}</div>;
         }
@@ -75,7 +72,7 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         return (
             <>
                 {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents)}
-                {hasChildren && hasParents && <hr/>}
+                {hasChildren && hasParents && <hr />}
                 {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children)}
             </>
         );

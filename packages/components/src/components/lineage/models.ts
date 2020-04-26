@@ -4,6 +4,7 @@
  */
 import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
+
 import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../..';
 
 import {
@@ -18,20 +19,20 @@ import {
     LineageNodeLinks,
     LineageOptions,
     LineageIconMetadata,
-} from './types'
+} from './types';
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
 
 export function applyLineageOptions(options?: LineageOptions): LineageOptions {
-    let _options = {
+    const _options = {
         ...DEFAULT_LINEAGE_OPTIONS,
         ...options,
         ...{
             grouping: {
                 ...DEFAULT_GROUPING_OPTIONS,
-                ...options?.grouping
-            }
-        }
+                ...options?.grouping,
+            },
+        },
     };
 
     // deep copy "filters"
@@ -40,7 +41,7 @@ export function applyLineageOptions(options?: LineageOptions): LineageOptions {
     return _options;
 }
 
-export class LineageNodeMetadata extends Record ({
+export class LineageNodeMetadata extends Record({
     date: undefined,
     description: undefined,
     aliases: undefined,
@@ -51,11 +52,11 @@ export class LineageNodeMetadata extends Record ({
     aliases?: List<string>;
     displayType?: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
-    static create(selectRowsMetadata: Map<any, any>, queryInfo: QueryInfo) : LineageNodeMetadata {
+    static create(selectRowsMetadata: Map<any, any>, queryInfo: QueryInfo): LineageNodeMetadata {
         let description;
         if (selectRowsMetadata.hasIn(['Description', 'value']))
             description = selectRowsMetadata.getIn(['Description', 'value']);
@@ -75,17 +76,17 @@ export class LineageNodeMetadata extends Record ({
             displayType: queryInfo.queryLabel,
             description,
             date: created,
-            aliases
+            aliases,
         });
     }
 }
 
-export class LineageLink extends Record ({
-    lsid: undefined
+export class LineageLink extends Record({
+    lsid: undefined,
 }) {
     lsid: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -96,22 +97,22 @@ export class LineageLink extends Record ({
 }
 
 export interface LineagePKFilter {
-    fieldKey: string
-    value: any
+    fieldKey: string;
+    value: any;
 }
 
 export interface ILineageRunStep {
-    applicationType: string
-    activityDate: string
-    activitySequence: number
-    created: string
-    createdBy: string
-    id: number
-    lsid: string
-    modified: string
-    modifiedBy: string
-    name: string
-    protocol: LineageNode
+    applicationType: string;
+    activityDate: string;
+    activitySequence: number;
+    created: string;
+    createdBy: string;
+    id: number;
+    lsid: string;
+    modified: string;
+    modifiedBy: string;
+    name: string;
+    protocol: LineageNode;
 }
 
 export class LineageRunStep implements ILineageRunStep {
@@ -133,7 +134,7 @@ export class LineageRunStep implements ILineageRunStep {
         let protocol: LineageNode;
 
         if (values?.protocol?.lsid) {
-            protocol = LineageNode.create(values.protocol.lsid, {...values.protocol});
+            protocol = LineageNode.create(values.protocol.lsid, { ...values.protocol });
         }
 
         Object.assign(this, values, { protocol });
@@ -141,39 +142,41 @@ export class LineageRunStep implements ILineageRunStep {
 }
 
 // commented out attributes are not yet used
-export class LineageNode extends Record ({
-    // absolutePath: undefined,
-    children: undefined,
-    cpasType: undefined,
-    // created: undefined,
-    // createdBy: undefined,
-    // dataFileURL: undefined,
-    expType: undefined,
-    id: undefined,
-    listURL: undefined,
-    lsid: undefined,
-    // modified?: undefined,
-    // modifiedBy?: undefined,
-    name: undefined,
-    parents: undefined,
-    // pipelinePath: undefined,
-    pkFilters: undefined,
-    queryName: undefined,
-    schemaName: undefined,
-    steps: undefined,
-    type: undefined,
-    url: undefined,
+export class LineageNode
+    extends Record({
+        // absolutePath: undefined,
+        children: undefined,
+        cpasType: undefined,
+        // created: undefined,
+        // createdBy: undefined,
+        // dataFileURL: undefined,
+        expType: undefined,
+        id: undefined,
+        listURL: undefined,
+        lsid: undefined,
+        // modified?: undefined,
+        // modifiedBy?: undefined,
+        name: undefined,
+        parents: undefined,
+        // pipelinePath: undefined,
+        pkFilters: undefined,
+        queryName: undefined,
+        schemaName: undefined,
+        steps: undefined,
+        type: undefined,
+        url: undefined,
 
-    // computed properties
-    distance: undefined,
-    iconURL: undefined,
-    image: undefined,
-    imageBackup: undefined,
-    imageSelected: undefined,
-    imageShape: undefined,
-    links: {},
-    meta: undefined,
-}) implements Partial<LineageIconMetadata> {
+        // computed properties
+        distance: undefined,
+        iconURL: undefined,
+        image: undefined,
+        imageBackup: undefined,
+        imageSelected: undefined,
+        imageShape: undefined,
+        links: {},
+        meta: undefined,
+    })
+    implements Partial<LineageIconMetadata> {
     // absolutePath?: string;
     children?: List<LineageLink>;
     cpasType?: string;
@@ -206,27 +209,29 @@ export class LineageNode extends Record ({
     links?: LineageNodeLinks;
     meta?: LineageNodeMetadata;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
-    static create(lsid: string, values?: { [key:string]: any }): LineageNode {
-        return values ? new LineageNode({
-            children:  LineageLink.createList(values.children),
-            cpasType: values.cpasType,
-            expType: values.expType,
-            id: values.id,
-            lsid,
-            name:  values.name,
-            parents: LineageLink.createList(values.parents),
-            pkFilters: List(values.pkFilters),
-            queryName: values.queryName,
-            schemaName: values.schemaName,
-            steps: List(values.steps?.map(stepProps => new LineageRunStep(stepProps))),
-            type: values.type,
-            url: values.url,
-            meta: values.meta
-        }) : new LineageNode({lsid});
+    static create(lsid: string, values?: { [key: string]: any }): LineageNode {
+        return values
+            ? new LineageNode({
+                  children: LineageLink.createList(values.children),
+                  cpasType: values.cpasType,
+                  expType: values.expType,
+                  id: values.id,
+                  lsid,
+                  name: values.name,
+                  parents: LineageLink.createList(values.parents),
+                  pkFilters: List(values.pkFilters),
+                  queryName: values.queryName,
+                  schemaName: values.schemaName,
+                  steps: List(values.steps?.map(stepProps => new LineageRunStep(stepProps))),
+                  type: values.type,
+                  url: values.url,
+                  meta: values.meta,
+              })
+            : new LineageNode({ lsid });
     }
 
     get isRun(): boolean {
@@ -237,43 +242,42 @@ export class LineageNode extends Record ({
 export class LineageResult extends Record({
     mergedIn: undefined,
     nodes: undefined,
-    seed: undefined
+    seed: undefined,
 }) {
     mergedIn: List<string>;
     nodes: Map<string, LineageNode>;
     seed: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
     static create(rawLineageResult: any): LineageResult {
         const seed = rawLineageResult.seed;
 
-        let nodes = {};
-        for (let key in rawLineageResult.nodes) {
-            if (!rawLineageResult.nodes.hasOwnProperty(key))
-                continue;
+        const nodes = {};
+        for (const key in rawLineageResult.nodes) {
+            if (!rawLineageResult.nodes.hasOwnProperty(key)) continue;
 
-            let rawNode = rawLineageResult.nodes[key];
+            const rawNode = rawLineageResult.nodes[key];
             nodes[key] = LineageNode.create(key, rawNode);
         }
 
         // make sure that mergedIn list of all nodes that have their lineage in the model includes the original seed node
-        let mergedIn = seed ? List<string>([seed]) : List();
+        const mergedIn = seed ? List<string>([seed]) : List();
 
         return new LineageResult({
             seed,
             nodes: Map<string, LineageNode>(nodes),
-            mergedIn
+            mergedIn,
         });
     }
 
-    filterIn(field: string, value: undefined | string | Array<string>): LineageResult {
+    filterIn(field: string, value: undefined | string | string[]): LineageResult {
         return LineageResult._filter(this, field, value, true);
     }
 
-    filterOut(field: string, value: undefined | string | Array<string>): LineageResult {
+    filterOut(field: string, value: undefined | string | string[]): LineageResult {
         return LineageResult._filter(this, field, value, false);
     }
 
@@ -284,29 +288,41 @@ export class LineageResult extends Record({
      *
      * Edges to removed nodes will be copied to the source.
      */
-    private static _filter(result: LineageResult, field: string, value: undefined | string | Array<string>, filterIn: boolean): LineageResult {
-        if (field === undefined)
-            throw new Error('field must not be undefined');
+    private static _filter(
+        result: LineageResult,
+        field: string,
+        value: undefined | string | string[],
+        filterIn: boolean
+    ): LineageResult {
+        if (field === undefined) throw new Error('field must not be undefined');
 
-        let oldNodes = result.nodes;
+        const oldNodes = result.nodes;
 
         // filter out nodes that don't match the criteria
-        let newNodes = oldNodes.reduce((m, node) => {
+        const newNodes = oldNodes.reduce((m, node) => {
             const lsid = node.lsid;
-            let matched = this._matches(node, field, value, filterIn);
+            const matched = this._matches(node, field, value, filterIn);
 
             if (matched) {
                 // walk the parents/children edges, adding any matching nodes
-                return m.set(lsid, node.merge({
-                    parents: LineageResult.prune(node, oldNodes, LINEAGE_DIRECTIONS.Parent, field, value, filterIn),
-                    children: LineageResult.prune(node, oldNodes, LINEAGE_DIRECTIONS.Children, field, value, filterIn)
-                }));
-            }
-            else {
+                return m.set(
+                    lsid,
+                    node.merge({
+                        parents: LineageResult.prune(node, oldNodes, LINEAGE_DIRECTIONS.Parent, field, value, filterIn),
+                        children: LineageResult.prune(
+                            node,
+                            oldNodes,
+                            LINEAGE_DIRECTIONS.Children,
+                            field,
+                            value,
+                            filterIn
+                        ),
+                    })
+                );
+            } else {
                 // don't include the current node
                 return m;
             }
-
         }, Map().asMutable());
 
         return result.set('nodes', newNodes) as LineageResult;
@@ -319,38 +335,44 @@ export class LineageResult extends Record({
      * When 'filterIn' is false, returns true if the node[field] is not equal to the value or any of the array item values.
      * When value is undefined, the node must not have contain a value for the field.
      */
-    private static _matches(node: LineageNode, field: string, value: undefined | string | Array<string>, filterIn: boolean): boolean {
+    private static _matches(
+        node: LineageNode,
+        field: string,
+        value: undefined | string | string[],
+        filterIn: boolean
+    ): boolean {
         if (filterIn) {
             if (value === undefined) {
                 // true if the field exists on node
-                return node.has(field)
-            }
-            else if (Array.isArray(value)) {
-                return (value.indexOf(node[field]) > -1)
-            }
-            else {
+                return node.has(field);
+            } else if (Array.isArray(value)) {
+                return value.indexOf(node[field]) > -1;
+            } else {
                 return node[field] === value;
             }
-        }
-        else {
+        } else {
             if (value === undefined) {
                 // true if the field does not exist on node
                 return !node.has(field);
-            }
-            else if (Array.isArray(value)) {
-                return (value.indexOf(node[field]) === -1)
-            }
-            else {
+            } else if (Array.isArray(value)) {
+                return value.indexOf(node[field]) === -1;
+            } else {
                 return node[field] !== value;
             }
         }
     }
 
-    private static prune(node: LineageNode, nodes: Map<string, LineageNode>,
-                         dir: LINEAGE_DIRECTIONS, field: string, value: any, filterIn: boolean): List<{lsid: string, role: string}> {
+    private static prune(
+        node: LineageNode,
+        nodes: Map<string, LineageNode>,
+        dir: LINEAGE_DIRECTIONS,
+        field: string,
+        value: any,
+        filterIn: boolean
+    ): List<{ lsid: string; role: string }> {
         let newTree = [];
         const edges: List<LineageLink> = node.get(dir);
-        let walked: {[key:string]: string} = {};
+        const walked: { [key: string]: string } = {};
 
         edges.forEach(edge => {
             newTree = newTree.concat(LineageResult.pruneEdge(edge, nodes, dir, field, value, filterIn, walked));
@@ -359,16 +381,22 @@ export class LineageResult extends Record({
         return List(newTree);
     }
 
-    private static pruneEdge(edge: LineageLink, nodes: Map<string, LineageNode>,
-                             dir: LINEAGE_DIRECTIONS, field: string, value: any, filterIn: boolean, walked: {[key:string]: string}): Array<{lsid: string, role: string}> {
+    private static pruneEdge(
+        edge: LineageLink,
+        nodes: Map<string, LineageNode>,
+        dir: LINEAGE_DIRECTIONS,
+        field: string,
+        value: any,
+        filterIn: boolean,
+        walked: { [key: string]: string }
+    ): Array<{ lsid: string; role: string }> {
         let heritage = [];
-        let lsid = edge.lsid;
+        const lsid = edge.lsid;
         const toNode = nodes.get(lsid);
         const edges: List<LineageLink> = toNode.get(dir);
 
-        let matched = this._matches(toNode, field, value, filterIn);
+        const matched = this._matches(toNode, field, value, filterIn);
         if (!matched) {
-
             // don't walk the same edge set more than once
             if (walked[lsid]) {
                 return heritage;
@@ -376,13 +404,12 @@ export class LineageResult extends Record({
 
             walked[lsid] = lsid;
             edges.forEach(edge => {
-                let result = LineageResult.pruneEdge(edge, nodes, dir, field, value, filterIn, walked);
+                const result = LineageResult.pruneEdge(edge, nodes, dir, field, value, filterIn, walked);
                 if (result && result.length > 0) {
                     heritage = heritage.concat(result);
                 }
             });
-        }
-        else {
+        } else {
             heritage.push(edge);
         }
 
@@ -391,14 +418,14 @@ export class LineageResult extends Record({
 }
 
 export interface ILineage {
-    error?: string
-    result: LineageResult
-    resultLoadingState?: LoadingState
-    sampleStats: any
-    seed: string
-    seedResult: LineageResult
-    seedResultError?: string
-    seedResultLoadingState?: LoadingState
+    error?: string;
+    result: LineageResult;
+    resultLoadingState?: LoadingState;
+    sampleStats: any;
+    seed: string;
+    seedResult: LineageResult;
+    seedResultError?: string;
+    seedResultLoadingState?: LoadingState;
 }
 
 export class Lineage implements ILineage {
@@ -420,7 +447,9 @@ export class Lineage implements ILineage {
     // Defensive check against calls made when an error is present and provides a more useful error message.
     private checkError(): void {
         if (this.error) {
-            throw new Error('Invalid call on Lineage object. Check errors prior to attempting to interact with Lineage object.');
+            throw new Error(
+                'Invalid call on Lineage object. Check errors prior to attempting to interact with Lineage object.'
+            );
         }
     }
 
@@ -436,20 +465,18 @@ export class Lineage implements ILineage {
             _options.filters.forEach(filter => {
                 if (_options.filterIn === true) {
                     result = result.filterIn(filter.field, filter.value);
-                }
-                else {
+                } else {
                     result = result.filterOut(filter.field, filter.value);
                 }
             });
             nodes = result.nodes;
-        }
-        else {
+        } else {
             nodes = this.result.nodes;
         }
 
-        let mergedIn = this.result.mergedIn;
+        const mergedIn = this.result.mergedIn;
 
-        return new LineageResult({seed, nodes, mergedIn});
+        return new LineageResult({ seed, nodes, mergedIn });
     }
 
     /**
@@ -533,7 +560,7 @@ export class LineageGridModel implements ILineageGridModel {
     }
 
     get maxRowIndex(): number {
-        let max = this.pageNumber > 1 ? this.pageNumber * this.maxRows : this.maxRows;
+        const max = this.pageNumber > 1 ? this.pageNumber * this.maxRows : this.maxRows;
 
         if (max > this.totalRows) {
             return this.totalRows;
@@ -568,4 +595,3 @@ export class LineagePageModel implements ILineagePageModel {
         Object.assign(this, { ...config });
     }
 }
-

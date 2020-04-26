@@ -4,6 +4,7 @@
  */
 import React, { FunctionComponent, PureComponent } from 'react';
 import { List } from 'immutable';
+
 import { Alert, Grid, GridColumn, LoadingSpinner } from '../..';
 
 import { InjectedLineage, withLineage } from './withLineage';
@@ -13,21 +14,20 @@ interface State {
 }
 
 class CountsWithLineageImpl extends PureComponent<InjectedLineage, State> {
-
     readonly state: State = {
         columns: List([
             new GridColumn({
                 index: 'name',
-                title: 'Sample Type'
+                title: 'Sample Type',
             }),
             new GridColumn({
                 index: 'sampleCount',
-                title: 'Number of Samples'
+                title: 'Number of Samples',
             }),
             new GridColumn({
                 index: 'modified',
-                title: 'Most Recent (Date)'
-            })
+                title: 'Most Recent (Date)',
+            }),
         ]),
     };
 
@@ -50,6 +50,6 @@ class CountsWithLineageImpl extends PureComponent<InjectedLineage, State> {
 const CountsWithLineage = withLineage<{}>(CountsWithLineageImpl, false, true);
 
 // Don't expose props from withLineage in public component
-export const SampleTypeLineageCounts: FunctionComponent<{ seed: string }> = (props)  => {
+export const SampleTypeLineageCounts: FunctionComponent<{ seed: string }> = props => {
     return <CountsWithLineage lsid={props.seed} />;
 };

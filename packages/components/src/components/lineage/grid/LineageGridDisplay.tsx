@@ -5,6 +5,7 @@
 import React, { PureComponent } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
+
 import { Alert, AppURL, getLocation, Grid, GridProps } from '../../..';
 
 import { LineageGridModel } from '../models';
@@ -35,7 +36,14 @@ export class LineagePaging extends PureComponent<LineagePagingProps> {
                             data-min={minRowIndex}
                             data-total={totalRows}
                         >
-                            {minRowIndex === maxRowIndex ? <span>{maxRowIndex}</span> : <span>{maxRowIndex === 0 ? 0 : minRowIndex}&nbsp;-&nbsp;{maxRowIndex}</span>} of {totalRows}
+                            {minRowIndex === maxRowIndex ? (
+                                <span>{maxRowIndex}</span>
+                            ) : (
+                                <span>
+                                    {maxRowIndex === 0 ? 0 : minRowIndex}&nbsp;-&nbsp;{maxRowIndex}
+                                </span>
+                            )}{' '}
+                            of {totalRows}
                         </span>
                     )}
                     {showButtons && (
@@ -44,13 +52,13 @@ export class LineagePaging extends PureComponent<LineagePagingProps> {
                                 href={getPageNumberChangeURL(location, seedNode.lsid, pageNumber - 1).toHref()}
                                 disabled={pageNumber <= 1}
                             >
-                                <i className="fa fa-chevron-left"/>
+                                <i className="fa fa-chevron-left" />
                             </Button>
                             <Button
                                 href={getPageNumberChangeURL(location, seedNode.lsid, pageNumber + 1).toHref()}
                                 disabled={maxRowIndex === totalRows}
                             >
-                                <i className="fa fa-chevron-right"/>
+                                <i className="fa fa-chevron-right" />
                             </Button>
                         </div>
                     )}
@@ -70,23 +78,20 @@ class LineageButtons extends PureComponent<LineageGridProps> {
 
         if (seedNode) {
             const disableParents = members === LINEAGE_DIRECTIONS.Parent || seedNode.parents.size === 0;
-            const disableChildren = (
-                members === LINEAGE_DIRECTIONS.Children ||
-                members === undefined ||
-                seedNode.children.size === 0
-            );
+            const disableChildren =
+                members === LINEAGE_DIRECTIONS.Children || members === undefined || seedNode.children.size === 0;
 
             const baseURL = AppURL.create('lineage').addParams({
                 seeds: seedNode.lsid,
-                distance: distance ? distance : DEFAULT_LINEAGE_DISTANCE
+                distance: distance ? distance : DEFAULT_LINEAGE_DISTANCE,
             });
 
             const parentNodesURL = baseURL.addParams({
-                members: LINEAGE_DIRECTIONS.Parent
+                members: LINEAGE_DIRECTIONS.Parent,
             });
 
             const childrenNodesURL = baseURL.addParams({
-                members: LINEAGE_DIRECTIONS.Children
+                members: LINEAGE_DIRECTIONS.Children,
             });
 
             return (
@@ -94,7 +99,7 @@ class LineageButtons extends PureComponent<LineageGridProps> {
                     <Button bsStyle="success" href={parentNodesURL.toHref()} disabled={disableParents}>
                         Show Parents
                     </Button>
-                    <span style={{margin: '0 10px'}}>
+                    <span style={{ margin: '0 10px' }}>
                         <Button bsStyle="success" href={childrenNodesURL.toHref()} disabled={disableChildren}>
                             Show Children
                         </Button>
@@ -133,20 +138,21 @@ export class LineageGridBar extends PureComponent<LineageGridProps> {
 }
 
 export class LineageGridDisplay extends PureComponent<LineageGridProps> {
-
     getDataForPage(): List<Map<string, any>> {
         const { model } = this.props;
 
         return model.data
             .slice(model.offset, model.maxRowIndex)
-            .map(node => node.toMap()
-                .merge({
-                    membersShown: model.members, // added so we can determine which lineage links to disable in the seed rows
-                    lineageDistance: model.distance,  // added so we can create lineage links with the same distance as the current page
-                    duplicateCount: model.nodeCounts.get(node.lsid) - 1
-                })
-                // also merge the row's meta properties up so they can be shown in the grid columns
-                .merge(node.meta)
+            .map(node =>
+                node
+                    .toMap()
+                    .merge({
+                        membersShown: model.members, // added so we can determine which lineage links to disable in the seed rows
+                        lineageDistance: model.distance, // added so we can create lineage links with the same distance as the current page
+                        duplicateCount: model.nodeCounts.get(node.lsid) - 1,
+                    })
+                    // also merge the row's meta properties up so they can be shown in the grid columns
+                    .merge(node.meta)
             )
             .toList();
     }
@@ -155,14 +161,14 @@ export class LineageGridDisplay extends PureComponent<LineageGridProps> {
         const { model } = this.props;
 
         if (model.isError) {
-            return <Alert>{model.message ? model.message : 'Something went wrong.'}</Alert>
+            return <Alert>{model.message ? model.message : 'Something went wrong.'}</Alert>;
         }
 
         const gridProps: GridProps = {
             calcWidths: true,
             columns: model.columns,
             condensed: true,
-            isLoading: model.isLoading
+            isLoading: model.isLoading,
         };
 
         if (!model.isLoading) {
@@ -180,6 +186,6 @@ export class LineageGridDisplay extends PureComponent<LineageGridProps> {
                     </div>
                 </div>
             </>
-        )
+        );
     }
 }

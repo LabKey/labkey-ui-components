@@ -5,6 +5,7 @@ import { LoadingSpinner } from '../../..';
 import { LineageOptions } from '../types';
 import { Lineage } from '../models';
 import { isBasicNode, isClusterNode, isCombinedNode, VisGraphNodeType } from '../vis/VisGraphGenerator';
+
 import { ClusterNodeDetail, LineageNodeDetail } from './LineageNodeDetail';
 
 export interface LineageNodeDetailFactoryProps {

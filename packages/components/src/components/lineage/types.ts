@@ -7,7 +7,7 @@
 
 export enum LINEAGE_DIRECTIONS {
     Children = 'children',
-    Parent = 'parents'
+    Parent = 'parents',
 }
 
 export enum LINEAGE_GROUPING_GENERATIONS {
@@ -18,7 +18,7 @@ export enum LINEAGE_GROUPING_GENERATIONS {
     /** Include only the immediately connected nodes from the seed. */
     Nearest = 'nearest',
     /** Include all nodes from the seed up to the {@link LineageGroupingOptions.parentDepth} or {@link LineageGroupingOptions.childDepth} specified. */
-    Specific = 'specific'
+    Specific = 'specific',
 }
 
 /**
@@ -28,13 +28,13 @@ export enum LINEAGE_GROUPING_GENERATIONS {
  */
 export interface LineageGroupingOptions {
     /** Determines when to stop traversing generations of nodes. */
-    generations?: LINEAGE_GROUPING_GENERATIONS
+    generations?: LINEAGE_GROUPING_GENERATIONS;
     /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the parent axis. */
-    parentDepth?: number
+    parentDepth?: number;
     /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the child axis. */
-    childDepth?: number
+    childDepth?: number;
     /** When the number of parent or children edges is greater than or equal to this threshold, create a combined node. */
-    combineSize?: number
+    combineSize?: number;
 }
 
 export class LineageFilter {
@@ -48,9 +48,9 @@ export class LineageFilter {
 }
 
 export interface LineageNodeLinks {
-    overview: string
-    lineage: string
-    list: string
+    overview: string;
+    lineage: string;
+    list: string;
 }
 
 export enum LineageURLResolvers {
@@ -59,10 +59,10 @@ export enum LineageURLResolvers {
 }
 
 export interface LineageOptions {
-    filterIn?: boolean
-    filters?: LineageFilter[]
-    grouping?: LineageGroupingOptions
-    urlResolver?: LineageURLResolvers
+    filterIn?: boolean;
+    filters?: LineageFilter[];
+    grouping?: LineageGroupingOptions;
+    urlResolver?: LineageURLResolvers;
 }
 
 export interface LineageIconMetadata {

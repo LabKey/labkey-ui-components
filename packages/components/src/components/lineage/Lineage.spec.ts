@@ -6,10 +6,6 @@ import { Edge } from 'vis-network';
 
 import { LoadingState } from '../..';
 
-import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from './types';
-import { Lineage, LineageResult } from './models';
-import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
-
 import {
     collapsedNodesTest1,
     collapsedNodesTest2,
@@ -19,8 +15,11 @@ import {
     lineageSample,
 } from '../../test/data/lineageData';
 
-describe('Lineage Graph', () => {
+import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from './types';
+import { Lineage, LineageResult } from './models';
+import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
 
+describe('Lineage Graph', () => {
     // expression1 -> run1 -> child1
     //             -> run2
     //
@@ -52,27 +51,26 @@ describe('Lineage Graph', () => {
     });
 
     describe('Lineage', () => {
-
         describe('#generateGraph()', () => {
             test('Test generations=All', () => {
                 const visGraphOptions = ESLineage.generateGraph({
-                    grouping: {generations: LINEAGE_GROUPING_GENERATIONS.All},
+                    grouping: { generations: LINEAGE_GROUPING_GENERATIONS.All },
                 });
                 expect(visGraphOptions.nodes.length).toBe(4);
 
                 const ids = visGraphOptions.nodes.getIds();
-                expect(ids).toEqual(expect.arrayContaining(["expression1", "run1", "run2", "child1"]));
+                expect(ids).toEqual(expect.arrayContaining(['expression1', 'run1', 'run2', 'child1']));
             });
 
             test('Test generations=Multi', () => {
                 // generations=Multi will stop iterating at the first branch
                 const visGraphOptions = ESLineage.generateGraph({
-                    grouping: {generations: LINEAGE_GROUPING_GENERATIONS.Multi},
+                    grouping: { generations: LINEAGE_GROUPING_GENERATIONS.Multi },
                 });
                 expect(visGraphOptions.nodes.length).toBe(3);
 
                 const ids = visGraphOptions.nodes.getIds();
-                expect(ids).toEqual(expect.arrayContaining(["expression1", "run1", "run2"]));
+                expect(ids).toEqual(expect.arrayContaining(['expression1', 'run1', 'run2']));
             });
 
             test('Test filtering in only type Data and generations=All', () => {
@@ -83,8 +81,8 @@ describe('Lineage Graph', () => {
                 expect(visGraphOptions.nodes.length).toBe(1);
 
                 const ids = visGraphOptions.nodes.getIds();
-                expect(ids).toEqual(expect.arrayContaining(["expression1"]));
-                expect(ids).toEqual(expect.not.arrayContaining(["run1","run2","child1"]));
+                expect(ids).toEqual(expect.arrayContaining(['expression1']));
+                expect(ids).toEqual(expect.not.arrayContaining(['run1', 'run2', 'child1']));
             });
 
             test('Test filtering out only type Data (including the seed)', () => {
@@ -103,7 +101,7 @@ describe('Lineage Graph', () => {
                 const visGraphOptions = ESLineage.generateGraph({
                     filters: [new LineageFilter('type', ['Sample'])],
                     filterIn: true,
-                    grouping: {generations: LINEAGE_GROUPING_GENERATIONS.Multi},
+                    grouping: { generations: LINEAGE_GROUPING_GENERATIONS.Multi },
                 });
                 // there is only 1 node of type Sample in the ESLineage,
                 // but it will not show because the seed is of type Data and is being filtered out
@@ -114,7 +112,7 @@ describe('Lineage Graph', () => {
                 const visGraphOptions = sampleLineage.generateGraph({
                     filters: [new LineageFilter('type', ['Sample'])],
                     filterIn: true,
-                    grouping: {generations: LINEAGE_GROUPING_GENERATIONS.Multi},
+                    grouping: { generations: LINEAGE_GROUPING_GENERATIONS.Multi },
                 });
                 expect(visGraphOptions.nodes.length).toBe(1);
                 expect(visGraphOptions.nodes.getIds()).toContain('child1');
@@ -127,7 +125,7 @@ describe('Lineage Graph', () => {
                     grouping: {
                         combineSize: 2,
                         generations: LINEAGE_GROUPING_GENERATIONS.Multi,
-                    }
+                    },
                 });
                 expect(visGraphOptions.nodes.length).toBe(2);
             });
@@ -144,8 +142,8 @@ describe('Lineage Graph', () => {
                 expect(visGraphOptions.nodes.length).toBe(2);
 
                 const ids = visGraphOptions.nodes.getIds();
-                expect(ids).toEqual(expect.arrayContaining(["expression1", "child1"]));
-                expect(ids).toEqual(expect.not.arrayContaining(["run1","run2"]));
+                expect(ids).toEqual(expect.arrayContaining(['expression1', 'child1']));
+                expect(ids).toEqual(expect.not.arrayContaining(['run1', 'run2']));
             });
 
             test('Test fullScreenSampleLineage lineage with all generations and clustering', () => {
@@ -161,25 +159,44 @@ describe('Lineage Graph', () => {
                 expect(graph.edges.length).toBe(6);
 
                 const ids = graph.nodes.getIds();
-                expect(ids).toEqual(expect.arrayContaining(["sample0", "sample1", "sample2", "sample4", "sample5"]));
-                expect(ids).toEqual(expect.not.arrayContaining(["sample3", "sample6", "sample7", "sample8", "run1","run2", "run3", "run4", "run42", "run5", "run7", "run8"]));
+                expect(ids).toEqual(expect.arrayContaining(['sample0', 'sample1', 'sample2', 'sample4', 'sample5']));
+                expect(ids).toEqual(
+                    expect.not.arrayContaining([
+                        'sample3',
+                        'sample6',
+                        'sample7',
+                        'sample8',
+                        'run1',
+                        'run2',
+                        'run3',
+                        'run4',
+                        'run42',
+                        'run5',
+                        'run7',
+                        'run8',
+                    ])
+                );
 
-                const fromS4 = graph.edges.get({ filter: e => e.from === "sample4" });
+                const fromS4 = graph.edges.get({ filter: e => e.from === 'sample4' });
                 expect(fromS4.length).toBe(1);
-                expect(fromS4[0].to).toBe("sample5");
+                expect(fromS4[0].to).toBe('sample5');
 
-                const toS4 = graph.edges.get({ filter: e => e.to === "sample4" });
+                const toS4 = graph.edges.get({ filter: e => e.to === 'sample4' });
                 expect(toS4.length).toBe(1);
-                expect(toS4[0].from).toContain("combined:");
+                expect(toS4[0].from).toContain('combined:');
                 const combinedNode1Id = toS4[0].from;
                 const combinedNode1 = graph.nodes.get(combinedNode1Id) as VisGraphCombinedNode;
-                expect(combinedNode1.containedNodes.map(n => n.name)).toEqual(expect.arrayContaining(["sample 3", "sample 6"]));
+                expect(combinedNode1.containedNodes.map(n => n.name)).toEqual(
+                    expect.arrayContaining(['sample 3', 'sample 6'])
+                );
 
                 const combinedNodes = graph.getCombinedNodes();
                 expect(combinedNodes.length).toBe(2);
 
                 const combinedNode2 = combinedNodes[0].id == combinedNode1Id ? combinedNodes[1] : combinedNodes[0];
-                expect(combinedNode2.containedNodes.map(n => n.name)).toEqual(expect.arrayContaining(["sample 7", "sample 8"]))
+                expect(combinedNode2.containedNodes.map(n => n.name)).toEqual(
+                    expect.arrayContaining(['sample 7', 'sample 8'])
+                );
             });
 
             test('Test fullScreenSampleLineage lineage with specific generations and children clustering', () => {
@@ -196,46 +213,64 @@ describe('Lineage Graph', () => {
                 expect(graph.nodes.length).toBe(4);
 
                 const ids = graph.nodes.getIds();
-                expect(ids).toEqual(expect.arrayContaining(["sample2", "sample4", "sample5"]));
-                expect(ids).toEqual(expect.not.arrayContaining(["sample0", "sample1", "sample3", "sample6", "sample7", "sample8", "run1", "run2", "run3", "run4", "run42", "run5", "run7", "run8"]));
+                expect(ids).toEqual(expect.arrayContaining(['sample2', 'sample4', 'sample5']));
+                expect(ids).toEqual(
+                    expect.not.arrayContaining([
+                        'sample0',
+                        'sample1',
+                        'sample3',
+                        'sample6',
+                        'sample7',
+                        'sample8',
+                        'run1',
+                        'run2',
+                        'run3',
+                        'run4',
+                        'run42',
+                        'run5',
+                        'run7',
+                        'run8',
+                    ])
+                );
 
                 const combinedNodes = graph.getCombinedNodes();
                 expect(combinedNodes.length).toBe(1);
-                expect(combinedNodes[0].containedNodes.map(n => n.name)).toEqual(expect.arrayContaining(["sample 3", "sample 6"]))
+                expect(combinedNodes[0].containedNodes.map(n => n.name)).toEqual(
+                    expect.arrayContaining(['sample 3', 'sample 6'])
+                );
             });
         });
     });
 
     describe('collapsed nodes', () => {
-
         function verifyCollapsedNodesTest(graph) {
             expect(graph.nodes.length).toBe(4);
             expect(graph.edges.length).toBe(4);
 
             const ids = graph.nodes.getIds();
-            expect(ids).toEqual(expect.arrayContaining(["S1", "R1", "R2"]));
-            expect(ids).toEqual(expect.not.arrayContaining(["S2", "S3", "S4"]));
+            expect(ids).toEqual(expect.arrayContaining(['S1', 'R1', 'R2']));
+            expect(ids).toEqual(expect.not.arrayContaining(['S2', 'S3', 'S4']));
 
             const combinedNodes = graph.getCombinedNodes();
             expect(combinedNodes.length).toBe(1);
             const combinedNode = combinedNodes[0];
             const containedNodes = combinedNode.containedNodes.map(n => n.name);
-            expect(containedNodes).toEqual(expect.arrayContaining(["S2", "S3", "S4"]));
+            expect(containedNodes).toEqual(expect.arrayContaining(['S2', 'S3', 'S4']));
 
             // verify combined node edges
-            const edgesFromR1 = graph.edges.get({filter: (edge: Edge) => edge.from === "R1"});
+            const edgesFromR1 = graph.edges.get({ filter: (edge: Edge) => edge.from === 'R1' });
             expect(edgesFromR1.length).toBe(1);
             expect(edgesFromR1[0].to).toBe(combinedNode.id);
 
-            const edgesFromR2 = graph.edges.get({filter: (edge: Edge) => edge.from === "R2"});
+            const edgesFromR2 = graph.edges.get({ filter: (edge: Edge) => edge.from === 'R2' });
             expect(edgesFromR2.length).toBe(1);
             expect(edgesFromR2[0].to).toBe(combinedNode.id);
 
-            const edgesToCombined = graph.edges.get({filter: (edge: Edge) => edge.to === combinedNode.id});
+            const edgesToCombined = graph.edges.get({ filter: (edge: Edge) => edge.to === combinedNode.id });
             expect(edgesToCombined.length).toBe(2);
-            expect(edgesToCombined.map(e => e.from)).toEqual(expect.arrayContaining(["R1", "R2"]));
+            expect(edgesToCombined.map(e => e.from)).toEqual(expect.arrayContaining(['R1', 'R2']));
 
-            const edgesFromCombined = graph.edges.get({filter: (edge: Edge) => edge.from === combinedNode.id});
+            const edgesFromCombined = graph.edges.get({ filter: (edge: Edge) => edge.from === combinedNode.id });
             expect(edgesFromCombined.length).toBe(0);
         }
 
@@ -255,13 +290,13 @@ describe('Lineage Graph', () => {
             //      \    /
             //    (S2+S3+S4)
             //
-            const lineageResult = LineageResult.create({nodes: collapsedNodesTest1, seed: 'S1'});
+            const lineageResult = LineageResult.create({ nodes: collapsedNodesTest1, seed: 'S1' });
             const lineage = new Lineage({
                 result: lineageResult,
                 resultLoadingState: LoadingState.LOADED,
             });
             const graph = lineage.generateGraph({
-                grouping: {combineSize: 3},
+                grouping: { combineSize: 3 },
             });
 
             verifyCollapsedNodesTest(graph);
@@ -283,95 +318,97 @@ describe('Lineage Graph', () => {
             //      \    /
             //    (S2+S3+S4)
             //
-            const lineageResult = LineageResult.create({nodes: collapsedNodesTest2, seed: 'S1'});
+            const lineageResult = LineageResult.create({ nodes: collapsedNodesTest2, seed: 'S1' });
             const lineage = new Lineage({
                 result: lineageResult,
                 resultLoadingState: LoadingState.LOADED,
             });
             const graph = lineage.generateGraph({
-                grouping: {combineSize: 3},
+                grouping: { combineSize: 3 },
             });
 
             verifyCollapsedNodesTest(graph);
         });
 
         // covers two scenarios that are not easily separated
-        test('S4 in existing collapsed node (S2+S3+S4) is added to second collapsed node (S4+S5+S6);' +
-            'edge to R3 is linked to the collapsed nodes', () => {
-            // source lineage:
-            //                  S1
-            //                /    \
-            //              R1      R2
-            //            / | \    / | \
-            //           S2 S3  S4  S5 S6
-            //                  |
-            //                  R3
-            //
-            // resulting graph: seed=S1, combineSize=3
-            //
-            //                 *S1*
-            //                /    \
-            //              R1      R2
-            //              |  \  /  |
-            //              |   \/   |
-            //              |  /  \  |
-            //         (S2+S3+S4) (S4+S5+S6)
-            //                 \  /
-            //                  R3
+        test(
+            'S4 in existing collapsed node (S2+S3+S4) is added to second collapsed node (S4+S5+S6);' +
+                'edge to R3 is linked to the collapsed nodes',
+            () => {
+                // source lineage:
+                //                  S1
+                //                /    \
+                //              R1      R2
+                //            / | \    / | \
+                //           S2 S3  S4  S5 S6
+                //                  |
+                //                  R3
+                //
+                // resulting graph: seed=S1, combineSize=3
+                //
+                //                 *S1*
+                //                /    \
+                //              R1      R2
+                //              |  \  /  |
+                //              |   \/   |
+                //              |  /  \  |
+                //         (S2+S3+S4) (S4+S5+S6)
+                //                 \  /
+                //                  R3
 
-            const lineageResult = LineageResult.create({nodes: collapsedNodesTest3, seed: 'S1'});
-            const lineage = new Lineage({
-                result: lineageResult,
-                resultLoadingState: LoadingState.LOADED,
-            });
-            const graph = lineage.generateGraph({
-                grouping: {combineSize: 3},
-            });
-
-            expect(graph.nodes.length).toBe(6);
-            expect(graph.edges.length).toBe(8);
-
-            const ids = graph.nodes.getIds();
-            expect(ids).toEqual(expect.arrayContaining(["S1", "R1", "R2", "R3"]));
-            expect(ids).toEqual(expect.not.arrayContaining(["S2", "S3", "S4", "S5", "S6"]));
-
-            const combinedNodes = graph.getCombinedNodes();
-            expect(combinedNodes.length).toBe(2);
-            const combinedNodeIds = combinedNodes.map(n => n.id);
-
-            // R1 should connect to both combined nodes
-            const edgesFromR1 = graph.edges.get({
-                filter: (edge: Edge) => edge.from === "R1"
-            });
-            expect(edgesFromR1.length).toBe(2);
-            expect(edgesFromR1.map(e => e.to)).toEqual(expect.arrayContaining(combinedNodeIds));
-
-            // R2 should connect to both combined nodes
-            const edgesFromR2 = graph.edges.get({
-                filter: (edge: Edge) => edge.from === "R2"
-            });
-            expect(edgesFromR2.length).toBe(2);
-            expect(edgesFromR2.map(e => e.to)).toEqual(expect.arrayContaining(combinedNodeIds));
-
-            // combined nodes should both have edges to R3
-            combinedNodes.forEach(combinedNode => {
-                const edgesFromCombined = graph.edges.get({
-                    filter: (edge: Edge) => edge.from === combinedNode.id
+                const lineageResult = LineageResult.create({ nodes: collapsedNodesTest3, seed: 'S1' });
+                const lineage = new Lineage({
+                    result: lineageResult,
+                    resultLoadingState: LoadingState.LOADED,
                 });
-                expect(edgesFromCombined.length).toBe(1);
-                expect(edgesFromCombined.map(e => e.to)).toEqual(expect.arrayContaining(["R3"]));
+                const graph = lineage.generateGraph({
+                    grouping: { combineSize: 3 },
+                });
 
-                // verify contents
-                const containedNodes = combinedNode.containedNodes.map(n => n.name);
-                const expectedContents = (containedNodes.indexOf("S2") !== -1) ? ["S2", "S3", "S4"] : ["S4", "S5", "S6"];
-                expect(containedNodes).toEqual(expect.arrayContaining(expectedContents));
-            });
+                expect(graph.nodes.length).toBe(6);
+                expect(graph.edges.length).toBe(8);
 
-        })
+                const ids = graph.nodes.getIds();
+                expect(ids).toEqual(expect.arrayContaining(['S1', 'R1', 'R2', 'R3']));
+                expect(ids).toEqual(expect.not.arrayContaining(['S2', 'S3', 'S4', 'S5', 'S6']));
+
+                const combinedNodes = graph.getCombinedNodes();
+                expect(combinedNodes.length).toBe(2);
+                const combinedNodeIds = combinedNodes.map(n => n.id);
+
+                // R1 should connect to both combined nodes
+                const edgesFromR1 = graph.edges.get({
+                    filter: (edge: Edge) => edge.from === 'R1',
+                });
+                expect(edgesFromR1.length).toBe(2);
+                expect(edgesFromR1.map(e => e.to)).toEqual(expect.arrayContaining(combinedNodeIds));
+
+                // R2 should connect to both combined nodes
+                const edgesFromR2 = graph.edges.get({
+                    filter: (edge: Edge) => edge.from === 'R2',
+                });
+                expect(edgesFromR2.length).toBe(2);
+                expect(edgesFromR2.map(e => e.to)).toEqual(expect.arrayContaining(combinedNodeIds));
+
+                // combined nodes should both have edges to R3
+                combinedNodes.forEach(combinedNode => {
+                    const edgesFromCombined = graph.edges.get({
+                        filter: (edge: Edge) => edge.from === combinedNode.id,
+                    });
+                    expect(edgesFromCombined.length).toBe(1);
+                    expect(edgesFromCombined.map(e => e.to)).toEqual(expect.arrayContaining(['R3']));
+
+                    // verify contents
+                    const containedNodes = combinedNode.containedNodes.map(n => n.name);
+                    const expectedContents =
+                        containedNodes.indexOf('S2') !== -1 ? ['S2', 'S3', 'S4'] : ['S4', 'S5', 'S6'];
+                    expect(containedNodes).toEqual(expect.arrayContaining(expectedContents));
+                });
+            }
+        );
     });
 
     describe('LineageResult', () => {
-
         describe('#filterIn()', () => {
             let result: LineageResult;
 
@@ -419,8 +456,8 @@ describe('Lineage Graph', () => {
                 // seed should maintain "Run" children
                 expect(result.nodes.get(ESLineageResult.seed).children.size).toBe(2);
 
-                let filtered: boolean = true;
-                result.nodes.forEach((node) => {
+                let filtered = true;
+                result.nodes.forEach(node => {
                     if (value.indexOf(node.type) > -1) {
                         return;
                     }
@@ -434,7 +471,6 @@ describe('Lineage Graph', () => {
         });
 
         describe('#filterOut()', () => {
-
             test('Should filter all on undefined field/value', () => {
                 expect(() => {
                     const result = ESLineageResult.filterOut(undefined, undefined);
@@ -455,14 +491,14 @@ describe('Lineage Graph', () => {
                 const result = ESLineageResult.filterOut('type', 'Data');
 
                 expect(result.nodes.size).toBe(3);
-                expect(result.nodes.map(n => n.name).toArray()).toEqual(expect.arrayContaining(["run1", "run2", "Derived sample"]))
+                expect(result.nodes.map(n => n.name).toArray()).toEqual(
+                    expect.arrayContaining(['run1', 'run2', 'Derived sample'])
+                );
             });
-
         });
     });
 
     describe('VisGraphGenerator', () => {
-
         describe('#generate()', () => {
             // test given the ESLineageResult and no Grouping Options.
             // will render standard non hierarchical graph with no options object
@@ -490,8 +526,8 @@ describe('Lineage Graph', () => {
                 expect(visGraphOptions.edges.length).toBe(2);
 
                 const ids = visGraphOptions.nodes.getIds();
-                expect(ids).toEqual(expect.arrayContaining(["expression1","run1","run2"]));
-                expect(ids).toEqual(expect.not.arrayContaining(["child1"]));
+                expect(ids).toEqual(expect.arrayContaining(['expression1', 'run1', 'run2']));
+                expect(ids).toEqual(expect.not.arrayContaining(['child1']));
             });
 
             // test generate using sampleLineageResult and Grouping Options of:
@@ -506,19 +542,19 @@ describe('Lineage Graph', () => {
                 expect(visGraphOptions.edges.length).toBe(1);
 
                 const ids = visGraphOptions.nodes.getIds();
-                expect(ids).toEqual(expect.arrayContaining(["child1","run1"]));
-                expect(ids).toEqual(expect.not.arrayContaining(["run2","expression1"]));
+                expect(ids).toEqual(expect.arrayContaining(['child1', 'run1']));
+                expect(ids).toEqual(expect.not.arrayContaining(['run2', 'expression1']));
             });
 
             // test generate using empty LineageResult and default Grouping Options
             test('Should generate empty graph', () => {
-                const visGraphOptions = generate(LineageResult.create({
-                    nodes: {}
-                }));
+                const visGraphOptions = generate(
+                    LineageResult.create({
+                        nodes: {},
+                    })
+                );
                 expect(visGraphOptions.nodes.length).toBe(0);
             });
         });
     });
 });
-
-

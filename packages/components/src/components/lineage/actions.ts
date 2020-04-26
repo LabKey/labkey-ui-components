@@ -5,15 +5,10 @@
 import { createContext } from 'react';
 import { fromJS, Map, OrderedSet } from 'immutable';
 import { ActionURL, Ajax, Experiment, Filter, Utils } from '@labkey/api';
+
 import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../..';
 
-import {
-    Lineage,
-    LineageGridModel,
-    LineageNode,
-    LineageNodeMetadata,
-    LineageResult,
-} from './models';
+import { Lineage, LineageGridModel, LineageNode, LineageNodeMetadata, LineageResult } from './models';
 import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
 import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
@@ -22,10 +17,10 @@ import { getURLResolver } from './LineageURLResolvers';
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
 export interface WithNodeInteraction {
-    isNodeInGraph?: (node: LineageNode) => boolean
-    onNodeMouseOver?: (node: LineageNode) => void
-    onNodeMouseOut?: (node: LineageNode) => void
-    onNodeClick?: (node: LineageNode) => void
+    isNodeInGraph?: (node: LineageNode) => boolean;
+    onNodeMouseOver?: (node: LineageNode) => void;
+    onNodeMouseOut?: (node: LineageNode) => void;
+    onNodeClick?: (node: LineageNode) => void;
 }
 
 const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);
@@ -34,7 +29,7 @@ export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 
 function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
-        let options: any /* ILineageOptions */ = {};
+        const options: any /* ILineageOptions */ = {};
 
         if (!isNaN(distance)) {
             // The lineage includes a "run" object for each parent as well, so we
@@ -48,9 +43,9 @@ function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
             includeRunSteps: true,
             lsid: seed,
             success: lineage => {
-                resolve(LineageResult.create(lineage))
+                resolve(LineageResult.create(lineage));
             },
-            failure: (error) => {
+            failure: error => {
                 let message = `Failed to fetch lineage for seed "${seed}".`;
 
                 if (error) {
@@ -68,7 +63,7 @@ function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
                     seed,
                     message,
                 });
-            }
+            },
         });
     });
 }
@@ -81,14 +76,18 @@ export function fetchLineageNodes(lsids: string[]): Promise<LineageNode[]> {
             success: Utils.getCallbackWrapper((json: any) => {
                 resolve(json.data.map(n => LineageNode.create(n.lsid, n)));
             }),
-            failure: Utils.getCallbackWrapper((error: any) => {
-                reject(error);
-            }, undefined, true)
+            failure: Utils.getCallbackWrapper(
+                (error: any) => {
+                    reject(error);
+                },
+                undefined,
+                true
+            ),
         });
     });
 }
 
-function fetchNodeMetadata(lineage: LineageResult): Promise<ISelectRowsResult>[] {
+function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsResult>> {
     // Node metadata does not support nodes with multiple primary keys. These could be supported, however,
     // each node would require it's own request for the unique keys combination. Also, nodes without any primary
     // keys cannot be filtered upon and thus are also not supported.
@@ -105,43 +104,46 @@ function fetchNodeMetadata(lineage: LineageResult): Promise<ISelectRowsResult>[]
                 // See LineageNodeMetadata (and it's usages) for why this is currently necessary
                 columns: LINEAGE_METADATA_COLUMNS.add(fieldKey).join(','),
                 filterArray: [
-                    Filter.create(fieldKey, nodes.map(n => n.pkFilters.get(0).value).toArray(), Filter.Types.IN)
-                ]
+                    Filter.create(fieldKey, nodes.map(n => n.pkFilters.get(0).value).toArray(), Filter.Types.IN),
+                ],
             });
         })
         .toArray();
 }
 
 export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageResult> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
         return Promise.all(fetchNodeMetadata(lineage))
             .then(results => {
-                let iconURLByLsid = {};
-                let metadata = {};
+                const iconURLByLsid = {};
+                const metadata = {};
                 results.forEach(result => {
                     const queryInfo = result.queries[result.key];
                     const model = fromJS(result.models[result.key]);
-                    model.forEach((data) => {
+                    model.forEach(data => {
                         const lsid = data.getIn(['LSID', 'value']);
                         iconURLByLsid[lsid] = queryInfo.iconURL;
                         metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
                     });
                 });
 
-                return lineage.set('nodes', lineage.nodes.map(node => (
-                    node.merge({
-                        ...resolveIconAndShapeForNode(node, lineage.seed === node.lsid, iconURLByLsid[node.lsid]),
-                        meta: metadata[node.lsid],
-                    })
-                ))) as LineageResult;
+                return lineage.set(
+                    'nodes',
+                    lineage.nodes.map(node =>
+                        node.merge({
+                            ...resolveIconAndShapeForNode(node, lineage.seed === node.lsid, iconURLByLsid[node.lsid]),
+                            meta: metadata[node.lsid],
+                        })
+                    )
+                ) as LineageResult;
             })
-            .then((result) => {
+            .then(result => {
                 resolve(result);
-            })
+            });
     });
 }
 
-let lineageResultCache: { [key:string]: Promise<LineageResult> } = {};
+let lineageResultCache: { [key: string]: Promise<LineageResult> } = {};
 
 export function invalidateLineageResults(): void {
     lineageResultCache = {};
@@ -160,7 +162,7 @@ export function loadLineageResult(seed: string, distance?: number, options?: Lin
 export function loadSampleStats(lineageResult: LineageResult): Promise<any> {
     return selectRows({
         schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
+        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
     }).then(sampleSets => computeSampleCounts(lineageResult, sampleSets));
 }
 
@@ -168,8 +170,8 @@ export function loadSampleStats(lineageResult: LineageResult): Promise<any> {
 function computeSampleCounts(lineageResult: LineageResult, sampleSets: any): any {
     const { key, models } = sampleSets;
 
-    let rows = [];
-    let nodeIds = {};
+    const rows = [];
+    const nodeIds = {};
 
     lineageResult.nodes.forEach(node => {
         if (node.lsid && node.cpasType) {
@@ -183,33 +185,33 @@ function computeSampleCounts(lineageResult: LineageResult, sampleSets: any): any
         }
     });
 
-    for (let row in models[key]) {
+    for (const row in models[key]) {
         if (models[key].hasOwnProperty(row)) {
             const _row = models[key][row];
 
             let count = 0,
                 filteredURL;
-            let name = _row['Name'].value,
+            const name = _row['Name'].value,
                 ids = nodeIds[_row['LSID'].value];
 
             // if there were related samples, use the array of RowIds as a count and to build an AppURL and filter
             if (ids) {
                 count = ids.length;
 
-                filteredURL = AppURL.create('samples', name).addFilters(
-                    Filter.create('RowId', ids, Filter.Types.IN)
-                ).toHref();
+                filteredURL = AppURL.create('samples', name)
+                    .addFilters(Filter.create('RowId', ids, Filter.Types.IN))
+                    .toHref();
             }
 
             rows.push({
                 name: {
                     value: _row['Name'].value,
-                    url: filteredURL
+                    url: filteredURL,
                 },
                 sampleCount: {
-                    value: count
+                    value: count,
                 },
-                modified: count > 0 ? _row['Modified'] : undefined
+                modified: count > 0 ? _row['Modified'] : undefined,
             });
         }
     }
@@ -224,7 +226,7 @@ export function createGridModel(
     pageNumber: number
 ): LineageGridModel {
     const result = lineage.filterResult({
-        filters: [new LineageFilter('type', ['Sample', 'Data'])]
+        filters: [new LineageFilter('type', ['Sample', 'Data'])],
     });
 
     distance = distance ?? DEFAULT_LINEAGE_DISTANCE;

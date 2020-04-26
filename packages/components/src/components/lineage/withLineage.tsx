@@ -3,8 +3,8 @@ import { Draft, produce } from 'immer';
 
 import { LoadingState } from '../..';
 
-import { fetchLineageNodes, processLineageResult, loadLineageResult, loadSampleStats } from './actions';
-import { ILineage, Lineage, LineageResult } from './models';
+import { loadLineageResult, loadSampleStats, loadSeedResult } from './actions';
+import { ILineage, Lineage } from './models';
 import { LineageOptions } from './types';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 
@@ -86,19 +86,7 @@ export function withLineage<Props>(
             await this.updateLineage({ seedResultLoadingState: LoadingState.LOADING });
 
             try {
-                const seedNodes = await fetchLineageNodes([lsid]);
-
-                if (seedNodes.length !== 1) {
-                    throw new Error('withLineage: Can only process a single seed node.');
-                }
-
-                const seedResult = await processLineageResult(
-                    LineageResult.create({
-                        nodes: { [lsid]: seedNodes[0] },
-                        seed: lsid,
-                    }),
-                    this.props
-                );
+                const seedResult = await loadSeedResult(lsid, this.props);
 
                 await this.updateLineage({
                     seedResult,

@@ -68,7 +68,7 @@ function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
     });
 }
 
-export function fetchLineageNodes(lsids: string[]): Promise<LineageNode[]> {
+function fetchLineageNodes(lsids: string[]): Promise<LineageNode[]> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: ActionURL.buildURL('experiment', 'resolve.api'),
@@ -144,9 +144,11 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
 }
 
 let lineageResultCache: { [key: string]: Promise<LineageResult> } = {};
+let lineageSeedCache: { [key: string]: Promise<LineageResult> } = {};
 
 export function invalidateLineageResults(): void {
     lineageResultCache = {};
+    lineageSeedCache = {};
 }
 
 export function loadLineageResult(seed: string, distance?: number, options?: LineageOptions): Promise<LineageResult> {
@@ -164,6 +166,20 @@ export function loadSampleStats(lineageResult: LineageResult): Promise<any> {
         schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
         queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
     }).then(sampleSets => computeSampleCounts(lineageResult, sampleSets));
+}
+
+export function loadSeedResult(seed: string, options?: LineageOptions): Promise<LineageResult> {
+    if (!lineageSeedCache[seed]) {
+        lineageSeedCache[seed] = fetchLineageNodes([seed])
+            .then(nodes => nodes[0])
+            .then(seedNode => LineageResult.create({
+                nodes: { [seedNode.lsid]: seedNode },
+                seed: seedNode.lsid,
+            }))
+            .then(result => processLineageResult(result, options));
+    }
+
+    return lineageSeedCache[seed];
 }
 
 // TODO add jest test coverage for this function
@@ -276,6 +292,6 @@ export function getPageNumberChangeURL(location: Location, seed: string, pageNum
     return url;
 }
 
-export async function processLineageResult(result: LineageResult, options?: LineageOptions): Promise<LineageResult> {
+function processLineageResult(result: LineageResult, options?: LineageOptions): Promise<LineageResult> {
     return getLineageNodeMetadata(result).then(r => getURLResolver(options).resolveNodes(r));
 }

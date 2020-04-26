@@ -24,7 +24,8 @@ interface State {
 }
 
 export function withLineage<Props>(
-    ComponentToWrap: ComponentType<Props & InjectedLineage>
+    ComponentToWrap: ComponentType<Props & InjectedLineage>,
+    allowSeedPrefetch: boolean = true
 ): ComponentType<Props & WithLineageOptions> {
     class ComponentWithLineage extends PureComponent<Props & WithLineageOptions, State> {
 
@@ -38,7 +39,7 @@ export function withLineage<Props>(
             const { distance, prefetchSeed, lsid } = this.props;
 
             // Lineage is already processed
-            if (this.state.lineage) {
+            if (this.state.lineage && lsid === this.state.lineage.seed) {
                 return;
             }
 
@@ -48,7 +49,7 @@ export function withLineage<Props>(
                 resultLoadingState: LineageLoadingState.LOADING,
             }));
 
-            if (prefetchSeed === true) {
+            if (allowSeedPrefetch && prefetchSeed === true) {
                 // Fetch seed node asynchronously to allow for decoupled loading
                 this.loadSeed();
             }

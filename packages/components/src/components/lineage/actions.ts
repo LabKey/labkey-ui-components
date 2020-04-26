@@ -4,9 +4,9 @@
  */
 import { createContext } from 'react';
 import { Draft, produce } from 'immer';
-import { fromJS, List, Map, OrderedSet } from 'immutable';
+import { fromJS, Map, OrderedSet } from 'immutable';
 import { ActionURL, Ajax, Experiment, Filter, Utils } from '@labkey/api';
-import { AppURL, GridColumn, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../..';
+import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../..';
 
 import {
     Lineage,
@@ -17,6 +17,7 @@ import {
     LineageResult,
 } from './models';
 import { getLineageResult, updateLineageResult } from '../../global';
+import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
 import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
 import { getURLResolver } from './LineageURLResolvers';
@@ -286,38 +287,37 @@ export function createGridModel(
     lineage: Lineage,
     members: LINEAGE_DIRECTIONS,
     distance: number,
-    columns: List<string | GridColumn>,
     pageNumber: number
 ): LineageGridModel {
     const result = lineage.filterResult({
         filters: [new LineageFilter('type', ['Sample', 'Data'])]
     });
 
-    const nodeList = getLineageDepthFirstNodeList(result.nodes, result.seed, members, distance);
-    let nodeCounts = Map<string, number>().asMutable();
-    nodeList.forEach((node) => {
+    distance = distance ?? DEFAULT_LINEAGE_DISTANCE;
+    members = members ?? DEFAULT_LINEAGE_DIRECTION;
+    pageNumber = pageNumber ?? 1;
+
+    const data = getLineageDepthFirstNodeList(result.nodes, result.seed, members, distance);
+    const nodeCounts = data.reduce((map, node) => {
         const { lsid } = node;
-        if (nodeCounts.has(lsid)) {
-            nodeCounts.set(lsid, nodeCounts.get(lsid) + 1);
+        if (map.has(lsid)) {
+            return map.set(lsid, map.get(lsid) + 1);
         }
-        else {
-            nodeCounts.set(lsid, 1);
-        }
-    });
+        return map.set(lsid, 1);
+    }, Map<string, number>());
 
     return new LineageGridModel({
-        columns,
-        data: nodeList,
+        data,
         distance,
         isError: false,
         isLoaded: true,
         isLoading: false,
         members,
         message: undefined,
-        nodeCounts: nodeCounts.asImmutable(),
+        nodeCounts,
         pageNumber,
-        seedNode: nodeList.get(0),
-        totalRows: nodeList.size
+        seedNode: data.get(0),
+        totalRows: data.size,
     });
 }
 

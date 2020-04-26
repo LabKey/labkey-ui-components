@@ -250,7 +250,7 @@ import { ReportItemModal, ReportList, ReportListItem } from './components/report
 import { LineageFilter, LINEAGE_GROUPING_GENERATIONS, LineageURLResolvers } from './components/lineage/types';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
-import { LineageGrid } from './components/lineage/grid/LineageGrid';
+import { LineageGrid, LineageGridFromLocation } from './components/lineage/grid/LineageGrid';
 import { EntityDeleteConfirmModal } from './components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
@@ -522,6 +522,7 @@ export {
     LineageFilter,
     LineageGraph,
     LineageGrid,
+    LineageGridFromLocation,
     LineageURLResolvers,
     SampleTypeLineageCounts,
     VisGraphNode,

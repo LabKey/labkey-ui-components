@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 import React from 'react';
+import { Map } from 'immutable';
 import { Panel } from 'react-bootstrap';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
 import { LineageGraph } from '../components/lineage/LineageGraph';
-import { LineageGrid } from '../components/lineage/grid/LineageGrid';
+import { LineageGrid, LineageGridFromLocation } from '../components/lineage/grid/LineageGrid';
 import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from '../components/lineage/types';
 
 import './stories.scss';
@@ -48,6 +49,21 @@ storiesOf('Lineage', module)
             <Panel>
                 <Panel.Body>
                     <LineageGrid lsid="urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3" />
+                </Panel.Body>
+            </Panel>
+        );
+    })
+    .add('LineageGridFromLocation', () => {
+        const location = {
+            query: Map({
+                seeds: 'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3',
+            }),
+        };
+
+        return (
+            <Panel>
+                <Panel.Body>
+                    <LineageGridFromLocation location={location} />
                 </Panel.Body>
             </Panel>
         );

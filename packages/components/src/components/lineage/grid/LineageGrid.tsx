@@ -4,101 +4,78 @@
  */
 import React, { PureComponent } from 'react';
 import { Draft, produce } from 'immer';
-import { getLocation } from '../../..';
 
-import { createGridModel, getLocationString, loadLineageIfNeeded } from '../actions';
+import { Location } from '../../..';
+
+import { createGridModel } from '../actions';
+import { LineageGridModel } from '../models';
+import { InjectedLineage, withLineage, WithLineageOptions } from '../withLineage';
+import { LINEAGE_DIRECTIONS } from '../types';
 import { LineageGridDisplay } from './LineageGridDisplay';
-import { Lineage, LineagePageModel } from '../models';
-import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from '../constants';
-import { LINEAGE_GRID_COLUMNS } from '../Tag';
 
-interface Props {
-    lsid?: string
+interface LineageGridOwnProps extends WithLineageOptions {
+    members?: LINEAGE_DIRECTIONS;
+    pageNumber?: number;
 }
 
-interface State {
-    model: LineagePageModel
+interface LineageGridState {
+    model: LineageGridModel;
 }
 
-export class LineageGrid extends PureComponent<Props, State> {
+type LineageGridProps = InjectedLineage & LineageGridOwnProps;
 
-    readonly state: State = { model: new LineagePageModel() };
+class LineageGridImpl extends PureComponent<LineageGridProps, LineageGridState> {
 
-    componentDidMount() {
-        this.init();
-    }
+    readonly state: LineageGridState = { model: new LineageGridModel() };
 
-    componentWillReceiveProps(nextProps: Props) {
-        const location = getLocation();
-        if (location && this.state.model.lastLocation !== getLocationString(location) && location.query.get('seeds')) {
-            this.init();
-        }
-    }
+    static getDerivedStateFromProps(nextProps: LineageGridProps, prevState: LineageGridState): LineageGridState {
+        const { distance, lineage, members, pageNumber } = nextProps;
 
-    init() {
-        const location = getLocation();
-        const distance = location.query.has('distance') ? location.query.get('distance') : DEFAULT_LINEAGE_DISTANCE;
-
-        this.setGridLoading();
-        loadLineageIfNeeded(this.getSeed(), distance)
-            .then(lineage => {
-                if (lineage.error) {
-                    this.setGridError(lineage);
+        return {
+            model: produce(prevState.model, (draft: Draft<LineageGridModel>) => {
+                if (lineage?.error) {
+                    draft.isError = true;
+                    draft.isLoaded = false;
+                    draft.isLoading = false;
+                    draft.message = lineage.error;
+                } else if (!lineage || !lineage.isLoaded()) {
+                    draft.isLoaded = false;
+                    draft.isLoading = true;
+                } else {
+                    return createGridModel(lineage, members, distance, pageNumber);
                 }
-                else {
-                    this.setGridSuccess(lineage, distance);
-                }
-            });
-    }
-
-    getSeed(): string {
-        return this.props.lsid ? this.props.lsid : this.getSeedFromParam();
-    }
-
-    getSeedFromParam(): string {
-        // TODO this doesn't handle multiple seeds at the moment
-        const location = getLocation();
-        const seeds = location.query.get('seeds');
-
-        return seeds ? decodeURIComponent(seeds.split(",")[0]) : undefined;
-    }
-
-    setGridLoading(): void {
-        const newLastLocation = getLocationString(getLocation());
-
-        this.setState(produce((draft: Draft<State>) => {
-            draft.model.lastLocation = newLastLocation;
-            let { grid } = draft.model;
-            grid.isLoaded = false;
-            grid.isLoading = true;
-        }));
-    }
-
-    setGridError(lineage: Lineage): void {
-        this.setState(produce((draft: Draft<State>) => {
-            let { grid } = draft.model;
-            grid.isError = true;
-            grid.isLoaded = false;
-            grid.isLoading = false;
-            grid.message = lineage.error;
-        }));
-    }
-
-    setGridSuccess(lineage: Lineage, distance: number) {
-        const { query } = getLocation();
-        const members = query.has('members') ? query.get('members') : DEFAULT_LINEAGE_DIRECTION;
-        const pageNumber = query.has('p') ? parseInt(query.get('p')) : 1;
-
-        this.setState(produce((draft: Draft<State>) => {
-            let { model } = draft;
-            model.distance = distance;
-            model.grid = createGridModel(lineage, members, distance, LINEAGE_GRID_COLUMNS, pageNumber);
-            model.seeds = [this.getSeed()];
-            model.members = members;
-        }));
+            })
+        };
     }
 
     render() {
-        return <LineageGridDisplay model={this.state.model.grid}/>
+        return <LineageGridDisplay model={this.state.model} />;
+    }
+}
+
+export const LineageGrid = withLineage(LineageGridImpl, false);
+
+export interface LineageGridFromLocationProps {
+    location: Location;
+}
+
+export class LineageGridFromLocation extends PureComponent<LineageGridFromLocationProps> {
+
+    ensureNumber(value: string): number {
+        const numValue = parseInt(value);
+        return isNaN(numValue) ? undefined : numValue;
+    }
+
+    render() {
+        const { query } = this.props.location;
+
+        return (
+            <LineageGrid
+                distance={this.ensureNumber(query.get('distance'))}
+                lsid={query.get('seeds') ? decodeURIComponent(query.get('seeds').split(',')[0]) : undefined}
+                members={query.get('members')}
+                pageNumber={this.ensureNumber(query.get('p'))}
+            />
+        );
     }
 }

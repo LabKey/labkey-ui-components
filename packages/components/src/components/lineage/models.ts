@@ -4,7 +4,7 @@
  */
 import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
-import { GridColumn, LineageFilter, QueryInfo } from '../..';
+import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../..';
 
 import {
     DEFAULT_GROUPING_OPTIONS,
@@ -389,24 +389,15 @@ export class LineageResult extends Record({
     }
 }
 
-export enum LineageLoadingState {
-    // The model has been initialized but not loaded
-    INITIALIZED = 'INITIALIZED',
-    // The model is currently loading
-    LOADING = 'LOADING',
-    // The model is loaded
-    LOADED = 'LOADED',
-}
-
 export interface ILineage {
     error?: string
     result: LineageResult
-    resultLoadingState?: LineageLoadingState
+    resultLoadingState?: LoadingState
     sampleStats: any
     seed: string
     seedResult: LineageResult
     seedResultError?: string
-    seedResultLoadingState?: LineageLoadingState
+    seedResultLoadingState?: LoadingState
 }
 
 export class Lineage implements ILineage {
@@ -414,12 +405,12 @@ export class Lineage implements ILineage {
 
     readonly error?: string;
     readonly result: LineageResult;
-    readonly resultLoadingState: LineageLoadingState = LineageLoadingState.INITIALIZED;
+    readonly resultLoadingState: LoadingState = LoadingState.INITIALIZED;
     readonly sampleStats: any;
     readonly seed: string;
     readonly seedResult: LineageResult;
     readonly seedResultError?: string;
-    readonly seedResultLoadingState: LineageLoadingState = LineageLoadingState.INITIALIZED;
+    readonly seedResultLoadingState: LoadingState = LoadingState.INITIALIZED;
 
     constructor(values?: Partial<ILineage>) {
         Object.assign(this, values);
@@ -480,11 +471,11 @@ export class Lineage implements ILineage {
     }
 
     isLoaded(): boolean {
-        return this.resultLoadingState === LineageLoadingState.LOADED;
+        return this.resultLoadingState === LoadingState.LOADED;
     }
 
     isSeedLoaded(): boolean {
-        return !this.seedResultError && this.seedResultLoadingState === LineageLoadingState.LOADED;
+        return !this.seedResultError && this.seedResultLoadingState === LoadingState.LOADED;
     }
 
     /**

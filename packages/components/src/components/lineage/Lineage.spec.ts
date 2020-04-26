@@ -4,8 +4,10 @@
  */
 import { Edge } from 'vis-network';
 
+import { LoadingState } from '../..';
+
 import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from './types';
-import { Lineage, LineageLoadingState, LineageResult } from './models';
+import { Lineage, LineageResult } from './models';
 import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
 
 import {
@@ -26,7 +28,7 @@ describe('Lineage Graph', () => {
     const ESLineageResult = LineageResult.create(lineageExpressionSystem);
     const ESLineage = new Lineage({
         result: ESLineageResult,
-        resultLoadingState: LineageLoadingState.LOADED,
+        resultLoadingState: LoadingState.LOADED,
     });
 
     // expression1 -> run1 -> child1
@@ -36,7 +38,7 @@ describe('Lineage Graph', () => {
     const sampleLineageResult = LineageResult.create(lineageSample);
     const sampleLineage = new Lineage({
         result: sampleLineageResult,
-        resultLoadingState: LineageLoadingState.LOADED,
+        resultLoadingState: LoadingState.LOADED,
     });
 
     // S0 -> R1 -> S1 -> R2 -> S2 -> R3 -> S3 -> R4  -> S4 -> R5 -> S5 -> R7 -> S7
@@ -46,7 +48,7 @@ describe('Lineage Graph', () => {
     const fullScreenSampleLineageResult = LineageResult.create(fullScreenLineageSample);
     const fullScreenSampleLineage = new Lineage({
         result: fullScreenSampleLineageResult,
-        resultLoadingState: LineageLoadingState.LOADED,
+        resultLoadingState: LoadingState.LOADED,
     });
 
     describe('Lineage', () => {
@@ -256,7 +258,7 @@ describe('Lineage Graph', () => {
             const lineageResult = LineageResult.create({nodes: collapsedNodesTest1, seed: 'S1'});
             const lineage = new Lineage({
                 result: lineageResult,
-                resultLoadingState: LineageLoadingState.LOADED,
+                resultLoadingState: LoadingState.LOADED,
             });
             const graph = lineage.generateGraph({
                 grouping: {combineSize: 3},
@@ -284,7 +286,7 @@ describe('Lineage Graph', () => {
             const lineageResult = LineageResult.create({nodes: collapsedNodesTest2, seed: 'S1'});
             const lineage = new Lineage({
                 result: lineageResult,
-                resultLoadingState: LineageLoadingState.LOADED,
+                resultLoadingState: LoadingState.LOADED,
             });
             const graph = lineage.generateGraph({
                 grouping: {combineSize: 3},
@@ -320,7 +322,7 @@ describe('Lineage Graph', () => {
             const lineageResult = LineageResult.create({nodes: collapsedNodesTest3, seed: 'S1'});
             const lineage = new Lineage({
                 result: lineageResult,
-                resultLoadingState: LineageLoadingState.LOADED,
+                resultLoadingState: LoadingState.LOADED,
             });
             const graph = lineage.generateGraph({
                 grouping: {combineSize: 3},

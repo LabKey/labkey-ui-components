@@ -1,8 +1,10 @@
 import React, { ComponentType, PureComponent } from 'react';
 import { Draft, produce } from 'immer';
 
+import { LoadingState } from '../..';
+
 import { fetchLineageNodes, processLineageResult, loadLineageResult, loadSampleStats } from './actions';
-import { ILineage, Lineage, LineageLoadingState, LineageResult } from './models';
+import { ILineage, Lineage, LineageResult } from './models';
 import { LineageOptions } from './types';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 
@@ -47,7 +49,7 @@ export function withLineage<Props>(
             // Create the initial lineage model for this seed
             await this.setLineage(new Lineage({
                 seed: lsid,
-                resultLoadingState: LineageLoadingState.LOADING,
+                resultLoadingState: LoadingState.LOADING,
             }));
 
             if (allowSeedPrefetch && prefetchSeed === true) {
@@ -65,14 +67,14 @@ export function withLineage<Props>(
 
                 await this.updateLineage({
                     result,
-                    resultLoadingState: LineageLoadingState.LOADED,
+                    resultLoadingState: LoadingState.LOADED,
                     sampleStats,
                 });
             } catch(e) {
                 console.error(e);
                 await this.updateLineage({
                     error: e.message,
-                    resultLoadingState: LineageLoadingState.LOADED,
+                    resultLoadingState: LoadingState.LOADED,
                 });
             }
         };
@@ -80,7 +82,7 @@ export function withLineage<Props>(
         loadSeed = async (): Promise<void> => {
             const { lsid } = this.props;
 
-            await this.updateLineage({ seedResultLoadingState: LineageLoadingState.LOADING });
+            await this.updateLineage({ seedResultLoadingState: LoadingState.LOADING });
 
             try {
                 const seedNodes = await fetchLineageNodes([lsid]);
@@ -96,13 +98,13 @@ export function withLineage<Props>(
 
                 await this.updateLineage({
                     seedResult,
-                    seedResultLoadingState: LineageLoadingState.LOADED,
+                    seedResultLoadingState: LoadingState.LOADED,
                 });
             } catch(e) {
                 console.error(e);
                 await this.updateLineage({
                     seedResultError: 'Error while pre-fetching the lineage seed',
-                    seedResultLoadingState: LineageLoadingState.LOADED,
+                    seedResultLoadingState: LoadingState.LOADED,
                 });
             }
         };

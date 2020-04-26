@@ -149,7 +149,13 @@ import {
     updateRows,
 } from './query/api';
 import { loadReports, flattenBrowseDataTreeResponse } from './query/reports';
-import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from './constants';
+import {
+    IMPORT_DATA_FORM_TYPES,
+    MAX_EDITABLE_GRID_ROWS,
+    NO_UPDATES_MESSAGE,
+    DataViewInfoTypes,
+    LoadingState
+} from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
@@ -702,6 +708,7 @@ export {
     helpLinkNode,
     DATA_IMPORT_TOPIC,
     DELETE_SAMPLES_TOPIC,
+    LoadingState,
 
     // url functions
     buildURL,

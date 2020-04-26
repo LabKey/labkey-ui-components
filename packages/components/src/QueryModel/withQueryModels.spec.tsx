@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { Actions, QueryInfo, QueryModel, QueryModelMap, SchemaQuery, withQueryModels } from '..';
+import { Actions, LoadingState, QueryInfo, QueryModel, QueryModelMap, SchemaQuery, withQueryModels } from '..';
 
 import { MockQueryModelLoader } from '../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
@@ -11,7 +11,6 @@ import aminoAcidsQuery from '../test/data/assayAminoAcidsData-getQuery.json';
 
 import { initUnitTests, makeQueryInfo, makeTestData, sleep } from './testUtils';
 import { RowsResponse } from './QueryModelLoader';
-import { LoadingState } from './QueryModel';
 
 const MIXTURES_SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let MIXTURES_QUERY_INFO: QueryInfo;

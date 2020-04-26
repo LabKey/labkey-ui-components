@@ -2,19 +2,10 @@ import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
-import { naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
+import { LoadingState, naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
 import { QuerySort } from '../components/base/models/model';
 
 import { getOrDefault } from './utils';
-
-export enum LoadingState {
-    // The model has been initialized but not loaded
-    INITIALIZED = 'INITIALIZED',
-    // The model is currently loading
-    LOADING = 'LOADING',
-    // The model is loaded
-    LOADED = 'LOADED',
-}
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as

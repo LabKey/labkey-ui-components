@@ -2,11 +2,11 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { Actions, QueryInfo, SchemaQuery } from '..';
+import { Actions, LoadingState, QueryInfo, SchemaQuery } from '..';
 
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
-import { LoadingState, QueryModel } from './QueryModel';
+import { QueryModel } from './QueryModel';
 import { PageSelector, PaginationButtons, PaginationInfo } from './Pagination';
 import { initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
 

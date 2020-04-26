@@ -1,12 +1,11 @@
 import { Query } from '@labkey/api';
 
-import { Actions, initQueryGridState, QueryInfo, QueryModel } from '..';
+import { Actions, initQueryGridState, LoadingState, QueryInfo, QueryModel } from '..';
 
 import { applyQueryMetadata, handle132Response } from '../query/api';
 import { bindColumnRenderers } from '../renderers';
 import { initMockServerContext } from '../testHelpers';
 
-import { LoadingState } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
 
 /**

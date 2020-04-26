@@ -1,9 +1,9 @@
 import React, { ComponentType, PureComponent } from 'react';
 import { Draft, produce } from 'immer';
 
-import { resolveErrorMessage, SchemaQuery } from '..';
+import { LoadingState, resolveErrorMessage, SchemaQuery } from '..';
 
-import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
+import { QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 
 export interface Actions {

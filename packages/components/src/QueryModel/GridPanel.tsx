@@ -1,8 +1,8 @@
-import React, { ComponentType, PureComponent } from 'react';
+import React, { ComponentType, PureComponent, ReactNode } from 'react';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
 
-import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner } from '..';
+import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner, QueryColumn } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { headerCell, headerSelectionCell } from '../renderers';
 
@@ -31,6 +31,65 @@ interface GridPanelProps {
 
 type Props = GridPanelProps & RequiresModelAndActions;
 
+class GridBar extends PureComponent<Props> {
+    render(): ReactNode {
+        const {
+            model,
+            actions,
+            advancedExportOptions,
+            allowSelections,
+            ButtonsComponent,
+            hideEmptyViewSelector,
+            pageSizes,
+            showChartSelector,
+            showExport,
+            showSampleComparisonReports,
+            showViewSelector,
+        } = this.props;
+        const { hasData, isPaged, queryInfo, queryInfoError, rowsError, selectionsError } = model;
+        const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
+        const paginate = isPaged && hasData && !hasError;
+        const canExport = showExport && !hasError;
+        // Don't disable view selection when there is an error because it's possible the error may be caused by the view
+        const canSelectView = showViewSelector && queryInfo !== undefined;
+
+        return (
+            <div className="grid-panel__bar">
+                <div className="grid-panel__bar-left">
+                    <div className="grid-bar__section">
+                        {ButtonsComponent !== undefined && <ButtonsComponent model={model} actions={actions} />}
+
+                        {showChartSelector && (
+                            <ChartMenu
+                                model={model}
+                                actions={actions}
+                                showSampleComparisonReports={showSampleComparisonReports}
+                            />
+                        )}
+                    </div>
+                </div>
+
+                <div className="grid-panel__bar-right">
+                    <div className="grid-bar__section">
+                        {paginate && <PaginationInfo model={model} />}
+                        {paginate && <PaginationButtons model={model} actions={actions} />}
+                        {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
+                        {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} />}
+                        {canSelectView && (
+                            <ViewSelector
+                                model={model}
+                                actions={actions}
+                                allowSelections={allowSelections}
+                                hideEmptyViewSelector={hideEmptyViewSelector}
+                            />
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
 export class GridPanel extends PureComponent<Props> {
     static defaultProps = {
         allowSelections: true,
@@ -49,24 +108,24 @@ export class GridPanel extends PureComponent<Props> {
         actions.loadModel(model.id, allowSelections);
     }
 
-    selectRow = (row, event) => {
+    selectRow = (row, event): void => {
         const { model, actions } = this.props;
         const checked = event.currentTarget.checked === true;
         // Have to call toJS() on the row because <Grid /> converts rows to Immutable objects.
         actions.selectRow(model.id, checked, row.toJS());
     };
 
-    selectPage = event => {
+    selectPage = (event): void => {
         const { model, actions } = this.props;
         const checked = event.currentTarget.checked === true && model.selectedState !== GRID_CHECKBOX_OPTIONS.SOME;
         actions.selectPage(model.id, checked);
     };
 
-    sortColumn = (column, direction) => {
+    sortColumn = (column, direction): void => {
         console.log('sort column', column, direction);
     };
 
-    getGridColumns = () => {
+    getGridColumns = (): List<GridColumn | QueryColumn> => {
         const { allowSelections, model } = this.props;
         const { isLoading, isLoadingSelections } = model;
 
@@ -75,10 +134,12 @@ export class GridPanel extends PureComponent<Props> {
                 index: GRID_SELECTION_INDEX,
                 title: '',
                 showHeader: true,
-                cell: (selected: boolean, row: any) => {
-                    const onChange = event => this.selectRow(row, event);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                cell: (selected: boolean, row: any): ReactNode => {
+                    const onChange = (event): void => this.selectRow(row, event);
                     const disabled = isLoading || isLoadingSelections;
                     return (
+                        // eslint-disable-next-line react/jsx-no-bind
                         <input type="checkbox" disabled={disabled} checked={selected === true} onChange={onChange} />
                     );
                 },
@@ -90,7 +151,7 @@ export class GridPanel extends PureComponent<Props> {
         return List(model.displayColumns);
     };
 
-    headerCell = (column: GridColumn, index: number, columnCount?: number) => {
+    headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
         const { allowSelections, allowSorting, model } = this.props;
         const { isLoading, isLoadingSelections, hasData, rowCount } = model;
         const disabled = isLoadingSelections || isLoading || (hasData && rowCount === 0);
@@ -102,22 +163,8 @@ export class GridPanel extends PureComponent<Props> {
         return headerCell(this.sortColumn, column, index, allowSelections, allowSorting, columnCount);
     };
 
-    render() {
-        const {
-            actions,
-            advancedExportOptions,
-            allowSelections,
-            asPanel,
-            ButtonsComponent,
-            hideEmptyViewSelector,
-            isPaged,
-            pageSizes,
-            model,
-            showChartSelector,
-            showSampleComparisonReports,
-            showExport,
-            showViewSelector,
-        } = this.props;
+    render(): ReactNode {
+        const { actions, allowSelections, asPanel, model } = this.props;
         const {
             hasData,
             id,
@@ -126,22 +173,12 @@ export class GridPanel extends PureComponent<Props> {
             rowsError,
             selectionsError,
             messages,
-            queryInfo,
             queryInfoError,
         } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
-        const paginate = isPaged && hasData && !hasError;
-        const canExport = showExport && !hasError;
-        // Don't disable view selection when there is an error because it's possible the error may be caused by the view
-        const canSelectView = showViewSelector && queryInfo !== undefined;
         const showLoading = isLoading || isLoadingSelections;
         let grid;
         let loadingMessage;
-        let buttons;
-
-        if (ButtonsComponent !== undefined) {
-            buttons = <ButtonsComponent model={model} actions={actions} />;
-        }
 
         if (isLoading) {
             loadingMessage = 'Loading data...';
@@ -168,38 +205,7 @@ export class GridPanel extends PureComponent<Props> {
         return (
             <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
-                    <div className="grid-panel__bar">
-                        <div className="grid-panel__bar-left">
-                            <div className="grid-bar__section">
-                                {buttons}
-
-                                {showChartSelector && (
-                                    <ChartMenu
-                                        model={model}
-                                        actions={actions}
-                                        showSampleComparisonReports={showSampleComparisonReports}
-                                    />
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="grid-panel__bar-right">
-                            <div className="grid-bar__section">
-                                {paginate && <PaginationInfo model={model} />}
-                                {paginate && <PaginationButtons model={model} actions={actions} />}
-                                {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
-                                {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} />}
-                                {canSelectView && (
-                                    <ViewSelector
-                                        model={model}
-                                        actions={actions}
-                                        allowSelections={allowSelections}
-                                        hideEmptyViewSelector={hideEmptyViewSelector}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div>
+                    <GridBar {...this.props} />
 
                     <div className="grid-panel__info">
                         {showLoading && <LoadingSpinner msg={loadingMessage} />}
@@ -214,7 +220,7 @@ export class GridPanel extends PureComponent<Props> {
 }
 
 class GridPanelWithModelImpl extends PureComponent<GridPanelProps & InjectedQueryModels> {
-    render() {
+    render(): ReactNode {
         const { queryModels, actions, ...props } = this.props;
         return <GridPanel actions={actions} model={Object.values(queryModels)[0]} {...props} />;
     }

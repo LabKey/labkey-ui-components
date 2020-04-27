@@ -3,9 +3,7 @@ import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
 
 import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner } from '..';
-
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
-
 import { headerCell, headerSelectionCell } from '../renderers';
 
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
@@ -13,8 +11,8 @@ import { PaginationButtons, PaginationInfo } from './Pagination';
 import { PageSizeSelector } from './PageSizeSelector';
 import { ViewSelector } from './ViewSelector';
 import { ExportMenu } from './ExportMenu';
-
 import { SelectionStatus } from './SelectionStatus';
+import { ChartMenu } from './ChartMenu';
 
 interface GridPanelProps {
     allowSelections?: boolean;
@@ -25,8 +23,10 @@ interface GridPanelProps {
     hideEmptyViewSelector?: boolean;
     isPaged?: boolean;
     pageSizes?: number[];
+    showChartSelector?: boolean;
     showExport?: boolean;
     showViewSelector?: boolean;
+    showSampleComparisonReports?: boolean;
 }
 
 type Props = GridPanelProps & RequiresModelAndActions;
@@ -38,8 +38,10 @@ export class GridPanel extends PureComponent<Props> {
         asPanel: true,
         hideEmptyViewSelector: false,
         isPaged: true,
+        showChartSelector: true,
         showExport: true,
         showViewSelector: true,
+        showSampleComparisonReports: false,
     };
 
     componentDidMount(): void {
@@ -111,6 +113,8 @@ export class GridPanel extends PureComponent<Props> {
             isPaged,
             pageSizes,
             model,
+            showChartSelector,
+            showSampleComparisonReports,
             showExport,
             showViewSelector,
         } = this.props;
@@ -166,7 +170,17 @@ export class GridPanel extends PureComponent<Props> {
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
                     <div className="grid-panel__bar">
                         <div className="grid-panel__bar-left">
-                            <div className="grid-bar__section">{buttons}</div>
+                            <div className="grid-bar__section">
+                                {buttons}
+
+                                {showChartSelector && (
+                                    <ChartMenu
+                                        model={model}
+                                        actions={actions}
+                                        showSampleComparisonReports={showSampleComparisonReports}
+                                    />
+                                )}
+                            </div>
                         </div>
 
                         <div className="grid-panel__bar-right">

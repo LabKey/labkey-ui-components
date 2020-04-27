@@ -24,24 +24,7 @@ import { setReportId } from '../../actions';
 import { DataViewInfoTypes } from '../../constants';
 
 import { ChartModal } from './ChartModal';
-
-interface ChartMenuItemProps {
-    chart: DataViewInfo;
-    showChart: Function;
-}
-
-class ChartMenuItem extends PureComponent<ChartMenuItemProps> {
-    render() {
-        const { chart, showChart } = this.props;
-
-        return (
-            <MenuItem onSelect={() => showChart(chart)}>
-                <i className={`chart-menu-icon ${chart.iconCls}`} />
-                <span className="chart-menu-label">{chart.getLabel()}</span>
-            </MenuItem>
-        );
-    }
-}
+import { ChartMenuItem } from './ChartMenuItem';
 
 interface Props {
     model: QueryGridModel;

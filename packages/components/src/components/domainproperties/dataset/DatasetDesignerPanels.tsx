@@ -111,16 +111,16 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
     onDomainChange = (domain: DomainDesign, dirty: boolean) => {
         const { onChange } = this.props;
-        const { model, keyPropertyIndex, visitDatePropertyIndex } = this.state;
+        const { keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
         this.setState(
             produce((draft: Draft<State>) => {
                 draft.model.domain = domain;
                 if (keyPropertyIndex) {
-                    draft.model.keyPropertyName = model.domain.fields.get(keyPropertyIndex).name;
+                    draft.model.keyPropertyName = domain.fields.get(keyPropertyIndex).name;
                 }
                 if (visitDatePropertyIndex) {
-                    draft.model.visitDatePropertyName = model.domain.fields.get(visitDatePropertyIndex).name;
+                    draft.model.visitDatePropertyName = domain.fields.get(visitDatePropertyIndex).name;
                 }
             }),
             () => {

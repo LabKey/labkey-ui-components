@@ -35,7 +35,7 @@ import { FileSizeLimitProps } from '../files/models';
 import { getEditorModel, helpLinkNode, IMPORT_DATA_FORM_TYPES } from '../..';
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
-import { getRunPropertiesRow } from './actions';
+import { getRunPropertiesFileName, getRunPropertiesRow } from './actions';
 import { AssayWizardModel } from './models';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
@@ -130,7 +130,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                 previousRunData: {
                                     isLoaded: true,
                                     data: response,
-                                    fileName: outputs.getIn([0, 'displayValue']),
+                                    fileName: getRunPropertiesFileName(row),
                                 },
                             }));
                         })

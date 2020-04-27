@@ -321,7 +321,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                 <Button
                     className="test-loc-submit-for-edit-button"
                     bsStyle={onSubmit ? 'default' : 'success'}
-                    disabled={isSubmitting || fieldEnabledCount == 0 || !canSubmitForEdit || !canSubmit || count === 0}
+                    disabled={isSubmitting || !canSubmitForEdit || !canSubmit || count === 0}
                     onClick={this.setSubmittingForEdit}
                     type="submit"
                 >

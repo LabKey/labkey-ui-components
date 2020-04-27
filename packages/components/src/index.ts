@@ -258,7 +258,7 @@ import {
     uploadAssayRunFiles,
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
-import { LineageFilter, LINEAGE_GROUPING_GENERATIONS, LineageURLResolvers } from './components/lineage/types';
+import { LineageFilter, LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS, LineageURLResolvers } from './components/lineage/types';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
@@ -512,6 +512,7 @@ export {
     ReportList,
     // lineage
     LINEAGE_GROUPING_GENERATIONS,
+    LINEAGE_DIRECTIONS,
     LineageFilter,
     LineageGraph,
     LineageGrid,

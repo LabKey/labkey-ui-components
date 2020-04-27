@@ -318,6 +318,10 @@ export class QueryModel implements IQueryModel {
         return this.rows !== undefined;
     }
 
+    get hasCharts(): boolean {
+        return this.charts !== undefined;
+    }
+
     get hasSelections(): boolean {
         return this.selections !== undefined;
     }
@@ -348,6 +352,11 @@ export class QueryModel implements IQueryModel {
             rowsLoadingState === LoadingState.INITIALIZED ||
             rowsLoadingState === LoadingState.LOADING
         );
+    }
+
+    get isLoadingCharts(): boolean {
+        const { chartsLoadingState } = this;
+        return chartsLoadingState === LoadingState.INITIALIZED || chartsLoadingState === LoadingState.LOADING;
     }
 
     get isLoadingSelections(): boolean {

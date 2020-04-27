@@ -16,6 +16,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
+import { Filter } from '@labkey/api';
 
 import { generateId } from '../../util/utils';
 import { QueryGridModel } from '../base/models/model';
@@ -139,7 +140,13 @@ export class ChartMenu extends PureComponent<Props> {
         }
 
         if (selectedChart) {
-            chartModal = <ChartModal selectedChart={selectedChart} model={model} onHide={this.hideChart} />;
+            chartModal = (
+                <ChartModal
+                    selectedChart={selectedChart}
+                    filters={model.getFilters().toArray() as Filter.IFilter[]}
+                    onHide={this.hideChart}
+                />
+            );
         }
 
         return (

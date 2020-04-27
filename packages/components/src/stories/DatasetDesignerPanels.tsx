@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
 import {NEW_DATASET_MODEL_WITH_DATASPACE, NEW_DATASET_MODEL_WITHOUT_DATASPACE} from '../test/data/constants';
 import { DatasetDesignerPanels } from '../components/domainproperties/dataset/DatasetDesignerPanels';
@@ -24,51 +24,53 @@ import { DatasetModel } from '../components/domainproperties/dataset/models';
 import getDatasetDesign from '../test/data/dataset-getDatasetDesign.json';
 import getDatasetDesignSharedStudy from '../test/data/dataset-getDatasetDesignSharedStudy.json';
 
-class NewDatasetDesigner extends React.PureComponent<any, any> {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <DatasetDesignerPanels
-                initModel={DatasetModel.create(this.props.model, undefined)}
-                useTheme={this.props.useTheme}
-                onCancel={() => console.log('cancel')}
-                onComplete={() => console.log('onComplete')}
-            />
-        );
-    }
-}
-
-class EditDatasetDesigner extends React.PureComponent<any, any> {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <DatasetDesignerPanels
-                initModel={DatasetModel.create(null, this.props.model)}
-                useTheme={this.props.useTheme}
-                onCancel={() => console.log('cancel')}
-                onComplete={() => console.log('onComplete')}
-            />
-        );
-    }
-}
-
 storiesOf('DatasetDesigner', module)
     .addDecorator(withKnobs)
     .add('create new dataset without dataspace', () => {
-        return <NewDatasetDesigner model={NEW_DATASET_MODEL_WITHOUT_DATASPACE} useTheme={false} showVisitDate={true} />;
+        return (
+            <DatasetDesignerPanels
+                initModel={DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined)}
+                useTheme={false}
+                saveBtnText={text('saveBtnText', 'Save')}
+                successBsStyle={text('successBsStyle', undefined)}
+                onCancel={() => console.log('cancel')}
+                onComplete={() => console.log('onComplete')}
+            />
+        );
     })
     .add('create new dataset with dataspace', () => {
-        return <NewDatasetDesigner model={NEW_DATASET_MODEL_WITH_DATASPACE} useTheme={false} />;
+        return (
+            <DatasetDesignerPanels
+                initModel={DatasetModel.create(NEW_DATASET_MODEL_WITH_DATASPACE, undefined)}
+                useTheme={false}
+                saveBtnText={text('saveBtnText', 'Save')}
+                successBsStyle={text('successBsStyle', undefined)}
+                onCancel={() => console.log('cancel')}
+                onComplete={() => console.log('onComplete')}
+            />
+        );
     })
     .add('edit dataset without dataspace', () => {
-        return <EditDatasetDesigner model={getDatasetDesign} useTheme={false} />;
+        return (
+            <DatasetDesignerPanels
+                initModel={DatasetModel.create(null, getDatasetDesign)}
+                useTheme={false}
+                saveBtnText={text('saveBtnText', 'Save')}
+                successBsStyle={text('successBsStyle', undefined)}
+                onCancel={() => console.log('cancel')}
+                onComplete={() => console.log('onComplete')}
+            />
+        );
     })
     .add('edit dataset with dataspace', () => {
-        return <EditDatasetDesigner model={getDatasetDesignSharedStudy} useTheme={false} />;
+        return (
+            <DatasetDesignerPanels
+                initModel={DatasetModel.create(null, getDatasetDesignSharedStudy)}
+                useTheme={false}
+                saveBtnText={text('saveBtnText', 'Save')}
+                successBsStyle={text('successBsStyle', undefined)}
+                onCancel={() => console.log('cancel')}
+                onComplete={() => console.log('onComplete')}
+            />
+        );
     });

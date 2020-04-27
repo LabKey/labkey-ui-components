@@ -18,7 +18,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { generateId } from '../../util/utils';
+import { blurActiveElement, generateId } from '../../util/utils';
 import { QueryGridModel } from '../base/models/model';
 import { DataViewInfo } from '../../models';
 import { setReportId } from '../../actions';
@@ -102,6 +102,8 @@ export class ChartMenu extends PureComponent<Props> {
         if (!onReportClicked || (onReportClicked && onReportClicked(chart))) {
             setReportId(this.props.model, chart.reportId);
         }
+
+        blurActiveElement();
     };
 
     hideChart = () => {

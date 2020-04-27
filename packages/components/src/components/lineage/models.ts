@@ -573,25 +573,3 @@ export class LineageGridModel implements ILineageGridModel {
         return this.offset + 1;
     }
 }
-
-export interface ILineagePageModel {
-    distance: number;
-    grid: LineageGridModel;
-    lastLocation: string;
-    seeds: string[];
-    members: LINEAGE_DIRECTIONS;
-}
-
-export class LineagePageModel implements ILineagePageModel {
-    [immerable] = true;
-
-    readonly distance: number = DEFAULT_LINEAGE_DISTANCE;
-    readonly grid: LineageGridModel = new LineageGridModel();
-    readonly lastLocation: string = '';
-    readonly seeds: string[] = [];
-    readonly members: LINEAGE_DIRECTIONS = DEFAULT_LINEAGE_DIRECTION;
-
-    constructor(config?: Partial<ILineagePageModel>) {
-        Object.assign(this, { ...config });
-    }
-}

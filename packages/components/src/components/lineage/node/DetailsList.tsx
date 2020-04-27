@@ -61,7 +61,7 @@ export class DetailsList extends PureComponent<DetailsListProps, DetailsListStat
                             )}
                     </h6>
                 </summary>
-                <ul style={{ listStyleType: 'none', paddingLeft: '0', marginBottom: '0.5em' }}>
+                <ul className="lineage-details-list">
                     {React.Children.map(children, (child, i) => {
                         const showChild = expanded || i < collapsedCount;
 
@@ -151,7 +151,7 @@ export class DetailsListNodes extends PureComponent<DetailsListNodesProps> {
 
         return (
             <div
-                className="lineage-name"
+                className="lineage-item-test lineage-name"
                 key={node.lsid}
                 style={{ fontWeight: highlightNode === node.lsid ? 'bold' : 'normal' }}
                 title={title}

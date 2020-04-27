@@ -17,14 +17,18 @@ import React, { PureComponent } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { LoadingSpinner } from '..';
+import { LoadingSpinner, QueryColumn } from '..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../components/forms/detail/DetailDisplay';
 
 import { QueryModel } from './QueryModel';
 import { InjectedQueryModels, withQueryModels } from './withQueryModels';
 
-class DetailPanelWithModelImpl extends PureComponent<DetailDisplaySharedProps & InjectedQueryModels> {
+interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
+    queryColumns?: List<QueryColumn>;
+}
+
+class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps & InjectedQueryModels> {
     componentDidMount(): void {
         const { actions } = this.props;
         actions.loadModel(this.getModel().id);
@@ -35,8 +39,13 @@ class DetailPanelWithModelImpl extends PureComponent<DetailDisplaySharedProps & 
         return queryModels[Object.keys(queryModels)[0]];
     }
 
+    get detailDisplayProps(): DetailDisplaySharedProps {
+        const { queryColumns, queryModels, ...detailDisplayProps } = this.props;
+        return detailDisplayProps;
+    }
+
     render() {
-        const { editingMode } = this.props;
+        const { editingMode, queryColumns } = this.props;
         const model = this.getModel();
 
         if (model.error !== undefined) {
@@ -47,12 +56,12 @@ class DetailPanelWithModelImpl extends PureComponent<DetailDisplaySharedProps & 
 
         return (
             <DetailDisplay
-                {...this.props}
+                {...this.detailDisplayProps}
                 data={fromJS(model.gridData)}
-                displayColumns={List(editingMode ? model.updateColumns : model.detailColumns)}
+                displayColumns={queryColumns ?? List(editingMode ? model.updateColumns : model.detailColumns)}
             />
         );
     }
 }
 
-export const DetailPanelWithModel = withQueryModels<DetailDisplaySharedProps>(DetailPanelWithModelImpl);
+export const DetailPanelWithModel = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelImpl);

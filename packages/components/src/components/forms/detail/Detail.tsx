@@ -26,22 +26,30 @@ interface DetailProps extends DetailDisplaySharedProps {
 }
 
 export class Detail extends PureComponent<DetailProps> {
-    get detailDisplayProps() {
+    get detailDisplayProps(): DetailDisplaySharedProps {
         const { queryColumns, queryModel, ...detailDisplayProps } = this.props;
         return detailDisplayProps;
     }
 
     render() {
-        const { editingMode, queryModel } = this.props;
+        const { editingMode, queryColumns, queryModel } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
+
+            let displayColumns: List<QueryColumn>;
+            if (queryColumns) {
+                displayColumns = queryColumns;
+            } else if (editingMode) {
+                displayColumns = queryModel.getUpdateDisplayColumns();
+            } else {
+                displayColumns = queryModel.getDetailsDisplayColumns();
+            }
+
             return (
                 <DetailDisplay
                     {...this.detailDisplayProps}
                     data={queryModel.getData()}
-                    displayColumns={
-                        editingMode ? queryModel.getUpdateDisplayColumns() : queryModel.getDetailsDisplayColumns()
-                    }
+                    displayColumns={displayColumns}
                 />
             );
         }

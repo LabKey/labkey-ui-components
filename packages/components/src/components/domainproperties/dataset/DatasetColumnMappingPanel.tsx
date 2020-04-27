@@ -25,6 +25,7 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { DomainField, SelectInput } from '../../..';
 
 import { DatasetModel } from './models';
+import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
 
 interface Props {
     model: DatasetModel;
@@ -63,11 +64,17 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         if (targetColumnName === subjectColumnName) {
             return this.compareNames(targetColumn, inferredFieldName) && inferredField.rangeURI === 'xsd:string';
         } else if (targetColumnName === timepointType && timepointType === 'DATE') {
-            return this.compareNames('visitdate', inferredFieldName) && (inferredField.rangeURI === 'xsd:datetime' || inferredField.rangeURI === 'xsd:dateTime');
+            return (
+                this.compareNames('visitdate', inferredFieldName) &&
+                (inferredField.rangeURI === 'xsd:datetime' || inferredField.rangeURI === 'xsd:dateTime')
+            );
         } else if (targetColumnName === timepointType && timepointType === 'VISIT') {
             return this.compareNames('sequencenum', inferredFieldName) && inferredField.rangeURI === 'xsd:double';
         } else if (targetColumnName === timepointType) {
-            return this.compareNames('date', inferredFieldName) && (inferredField.rangeURI === 'xsd:datetime' || inferredField.rangeURI === 'xsd:dateTime');
+            return (
+                this.compareNames('date', inferredFieldName) &&
+                (inferredField.rangeURI === 'xsd:datetime' || inferredField.rangeURI === 'xsd:dateTime')
+            );
         }
 
         return false;
@@ -100,9 +107,8 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
     render() {
         const { model } = this.props;
         const { closestParticipantIdField, closestTimepointField } = this.state;
-
-        const participantIdTxt = getServerContext().moduleContext.study.subject.nounPlural;
-        const timepointTxt = getServerContext().moduleContext.study.timepointType === 'VISIT' ? 'Visit' : 'Timepoint';
+        const participantIdTxt = getStudySubjectProp('nounPlural');
+        const timepointTxt = getStudyTimepointLabel();
 
         const domain = model.domain;
 

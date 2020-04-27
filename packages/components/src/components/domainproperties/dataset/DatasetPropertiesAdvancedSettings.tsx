@@ -5,7 +5,7 @@ import { getServerContext } from '@labkey/api';
 
 import { Option } from 'react-select';
 
-import { helpLinkNode, initQueryGridState, SelectInput } from '../../..';
+import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInput } from '../../..';
 
 import { DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
 
@@ -14,7 +14,8 @@ import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
-import { fetchCohorts, fetchVisitDateColumns, getHelpTip } from './actions';
+import { fetchCohorts, fetchVisitDateColumns, getHelpTip, getStudySubjectProp } from './actions';
+import { SHOW_IN_OVERVIEW } from './constants';
 
 import '../../../theme/dataset.scss';
 
@@ -238,7 +239,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         const showDataspace = model.definitionIsShared && model.getDataRowSetting() === 0;
         const showDataspaceCls = showDataspace ? 'dataset_data_row_element_show' : 'dataset_data_row_element_hide';
-
+        const showInOverviewLabel = 'Show dataset in overview';
         const visitDateColumns = fetchVisitDateColumns(model.domain).toArray();
         const visitDateProperty = this.getVisitDatePropertyName();
 
@@ -258,7 +259,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                         <div className="margin-top">
                             <Checkbox checked={showByDefault} onChange={this.onInputChange} id="showByDefault">
-                                Show dataset in overview
+                                {showInOverviewLabel}
+                                <LabelHelpTip title={showInOverviewLabel} body={() => SHOW_IN_OVERVIEW} />
                             </Checkbox>
                         </div>
 
@@ -344,7 +346,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                         helpTip={this.getHelpTipElement('dataspace')}
                                         selectOptions={[
                                             { label: 'No', value: 'NONE' },
-                                            { label: 'Share by Participants', value: 'PTID' },
+                                            { label: 'Share by ' + getStudySubjectProp('columnName'), value: 'PTID' },
                                         ]}
                                         selectedValue={dataSharing}
                                         onSelectChange={this.onSelectChange}

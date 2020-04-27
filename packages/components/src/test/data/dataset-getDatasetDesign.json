@@ -1,6 +1,7 @@
 {
   "options" : {
     "datasetId": 1,
+    "entityId" : "E0EA3F70-3420-1035-8057-68FEA9BFB3A0",
     "name": "Dataset1",
     "category": "A",
     "visitDatePropertyName": "date",

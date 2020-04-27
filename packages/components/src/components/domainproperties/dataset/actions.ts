@@ -24,12 +24,10 @@ import { DomainDesign, DomainField, selectRows } from '../../..';
 import { DatasetModel } from './models';
 import {
     COHORT_TIP,
-    DATA_ROW_UNIQUENESS,
     DATASET_CATEGORY_TIP,
     DATASET_ID_TIP,
     DATASET_LABEL_TIP,
     DATASET_NAME_TIP,
-    DATASPACE_TIP,
     TAG_TIP,
     TIME_KEY_FIELD_DISPLAY,
     TIME_KEY_FIELD_KEY,
@@ -146,10 +144,21 @@ export function getHelpTip(fieldName: string): string {
             helpTip = TAG_TIP;
             break;
         case 'dataspace':
-            helpTip = DATASPACE_TIP;
+            helpTip =
+                'For demographics datasets, this setting is used to enable data sharing across studies. ' +
+                "When 'No' is selected (default), each study folder 'owns' its own data rows. If the study has shared " +
+                "visits/timepoints, then 'Share by " +
+                getStudySubjectProp('columnName') +
+                "' means that data rows are shared across the project and " +
+                'studies will only see data rows for ' +
+                getStudySubjectProp('nounPlural').toLowerCase() +
+                ' that are part of that study.';
             break;
         case 'dataRowUniqueness':
-            helpTip = DATA_ROW_UNIQUENESS;
+            helpTip =
+                'Choose criteria for how ' +
+                getStudySubjectProp('nounPlural').toLowerCase() +
+                ' and visits/timepoints are paired with, or without, an additional data column.';
             break;
     }
     return helpTip;
@@ -194,4 +203,12 @@ export function fetchDatasetDesign(datasetId: number): Promise<DatasetModel> {
 
 export function allowAsManagedField(field: DomainField): boolean {
     return field.dataType.isString() || field.dataType.isNumeric() || field.dataType.isLookup();
+}
+
+export function getStudySubjectProp(prop: string): string {
+    return getServerContext().moduleContext.study.subject[prop];
+}
+
+export function getStudyTimepointLabel(): string {
+    return getServerContext().moduleContext.study.timepointType === 'VISIT' ? 'Visits' : 'Timepoints';
 }

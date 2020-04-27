@@ -35,6 +35,7 @@ import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
+import { getStudySubjectProp } from './actions';
 
 interface Props {
     initModel?: DatasetModel;
@@ -149,7 +150,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     <DatasetColumnMappingPanel
                         model={model}
                         onColumnMappingChange={this.onColumnMappingChange}
-                        subjectColumnName={getServerContext().moduleContext.study.subject.columnName}
+                        subjectColumnName={getStudySubjectProp('columnName')}
                         timepointType={getServerContext().moduleContext.study.timepointType}
                     />
                 )}
@@ -299,6 +300,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     useTheme={useTheme}
                     importDataChildRenderer={this.datasetColumnMapping}
                     successBsStyle={successBsStyle}
+                    domainFormDisplayOptions={{
+                        isDragDisabled: model.isFromAssay(),
+                        showAddFieldsButton: !model.isFromAssay(),
+                    }}
                 />
                 <Progress
                     modal={true}

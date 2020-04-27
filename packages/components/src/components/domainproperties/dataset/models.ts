@@ -20,7 +20,9 @@ import { getServerContext } from '@labkey/api';
 
 import { Draft, immerable, produce } from 'immer';
 
-import { DomainDesign } from '../models';
+import { DomainDesign, DomainField } from '../models';
+
+import { DOMAIN_FIELD_FULLY_LOCKED } from '../constants';
 
 import { allowAsManagedField } from './actions';
 
@@ -37,6 +39,7 @@ export interface IDatasetModel {
     domainId: number;
     exception: string;
     datasetId?: number;
+    entityId?: string;
     name: string;
     category?: string;
     visitDatePropertyName?: string;
@@ -62,6 +65,7 @@ export class DatasetModel implements IDatasetModel {
     readonly domainId: number;
     readonly exception: string;
     readonly datasetId?: number;
+    readonly entityId?: string;
     readonly name: string;
     readonly category?: string;
     readonly visitDatePropertyName?: string;
@@ -89,30 +93,42 @@ export class DatasetModel implements IDatasetModel {
             return new DatasetModel({ ...newDataset, domain });
         } else {
             const domain = DomainDesign.create(raw.domainDesign);
-            return new DatasetModel({ ...raw.options, domain });
+            let model = new DatasetModel({ ...raw.options, domain });
+
+            // if the dataset is from an assay source, disable/lock the fields
+            if (model.isFromAssay()) {
+                const newDomain = domain.merge({
+                    fields: domain.fields
+                        .map((field: DomainField) => {
+                            return field.set('lockType', DOMAIN_FIELD_FULLY_LOCKED);
+                        })
+                        .toList(),
+                }) as DomainDesign;
+
+                model = produce(model, (draft: Draft<DatasetModel>) => {
+                    draft.domain = newDomain;
+                });
+            }
+
+            return model;
         }
     }
 
     hasValidProperties(): boolean {
-        let isValidKeySetting = true;
+        const isValidName = this.name !== undefined && this.name !== null && this.name.trim().length > 0;
+        const isValidLabel =
+            this.isNew() || (this.label !== undefined && this.label !== null && this.label.trim().length > 0);
 
+        let isValidKeySetting = true;
         if (this.getDataRowSetting() === 2) {
             isValidKeySetting = this.keyPropertyName !== undefined && this.keyPropertyName !== '';
         }
 
-        return (
-            this.name !== undefined &&
-            this.name !== null &&
-            this.name.trim().length > 0 &&
-            this.label !== undefined &&
-            this.label !== null &&
-            this.label.trim().length > 0 &&
-            isValidKeySetting
-        );
+        return isValidName && isValidLabel && isValidKeySetting;
     }
 
     isNew(): boolean {
-        return !this.datasetId;
+        return !this.entityId;
     }
 
     getDataRowSetting(): number {

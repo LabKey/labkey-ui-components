@@ -70,10 +70,12 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         let keyPropertyIndex;
         let visitDatePropertyIndex;
 
+        const keyPropertyName = model.keyPropertyName;
+
         // setting initial indexes if these properties are already present and there are changes to them in
         // the domain form
         model.domain.fields.map((field, index) => {
-            if (model.keyPropertyName && field.name === model.keyPropertyName) {
+            if (keyPropertyName && field.name === model.keyPropertyName) {
                 keyPropertyIndex = index;
             }
             if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
@@ -81,10 +83,35 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             }
         });
 
-        this.setState(() => ({
-            keyPropertyIndex,
-            visitDatePropertyIndex,
-        }));
+        // disabling the phi level for initially selected additional key field
+        if (keyPropertyName) {
+            const updatedDomain = model.domain.merge({
+                fields: model.domain.fields
+                    .map((field, index) => {
+                        if (field.name === keyPropertyName) {
+                            return field.set('disablePhiLevel', true);
+                        } else {
+                            return field.set('disablePhiLevel', false);
+                        }
+                    })
+                    .toList(),
+            }) as DomainDesign;
+
+            const updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
+                draft.domain = updatedDomain;
+            });
+
+            this.setState(() => ({
+                keyPropertyIndex,
+                visitDatePropertyIndex,
+                model: updatedModel,
+            }));
+        } else {
+            this.setState(() => ({
+                keyPropertyIndex,
+                visitDatePropertyIndex,
+            }));
+        }
     }
 
     onPropertiesChange = (model: DatasetModel) => {

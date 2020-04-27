@@ -2522,7 +2522,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
-                "disablePhiLevel": false,
+                "disablePhiLevel": true,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -3683,7 +3683,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
-                  "disablePhiLevel": false,
+                  "disablePhiLevel": true,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -4854,7 +4854,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
-                    "disablePhiLevel": false,
+                    "disablePhiLevel": true,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -6027,7 +6027,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
-                      "disablePhiLevel": false,
+                      "disablePhiLevel": true,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -7455,7 +7455,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
                                                   "wrappedColumnName": undefined,
-                                                  "disablePhiLevel": false,
+                                                  "disablePhiLevel": true,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": null,
@@ -9041,7 +9041,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                     "isPrimaryKey": false,
                                                     "lockType": "NotLocked",
                                                     "wrappedColumnName": undefined,
-                                                    "disablePhiLevel": false,
+                                                    "disablePhiLevel": true,
                                                   },
                                                   Immutable.Record {
                                                     "conceptURI": null,
@@ -10616,7 +10616,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
                                                   "wrappedColumnName": undefined,
-                                                  "disablePhiLevel": false,
+                                                  "disablePhiLevel": true,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": null,
@@ -12697,7 +12697,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                   "isPrimaryKey": false,
                                                   "lockType": "NotLocked",
                                                   "wrappedColumnName": undefined,
-                                                  "disablePhiLevel": false,
+                                                  "disablePhiLevel": true,
                                                 },
                                                 Immutable.Record {
                                                   "conceptURI": null,
@@ -13941,7 +13941,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
-                "disablePhiLevel": false,
+                "disablePhiLevel": true,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -15105,7 +15105,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
-                    "disablePhiLevel": false,
+                    "disablePhiLevel": true,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -18761,7 +18761,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
-                                                          "disablePhiLevel": false,
+                                                          "disablePhiLevel": true,
                                                         }
                                                       }
                                                       helpNoun="dataset"
@@ -18946,7 +18946,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
-                                                                      "disablePhiLevel": false,
+                                                                      "disablePhiLevel": true,
                                                                     }
                                                                   }
                                                                   helpNoun="dataset"
@@ -19476,7 +19476,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
-                                                                        "disablePhiLevel": false,
+                                                                        "disablePhiLevel": true,
                                                                       }
                                                                     }
                                                                     index={1}
@@ -19602,7 +19602,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
-                                                                                  "disablePhiLevel": false,
+                                                                                  "disablePhiLevel": true,
                                                                                 }
                                                                               }
                                                                               index={1}
@@ -20145,7 +20145,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
-                                                                                  "disablePhiLevel": false,
+                                                                                  "disablePhiLevel": true,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}

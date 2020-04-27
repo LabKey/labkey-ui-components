@@ -50,6 +50,8 @@ interface Props {
 interface State {
     model: DatasetModel;
     fileImportData: File;
+    keyPropertyIndex?: number;
+    visitDatePropertyIndex?: number;
 }
 
 export class DatasetDesignerPanelImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -60,6 +62,28 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             model: props.initModel || DatasetModel.create(null, {}),
             fileImportData: undefined,
         };
+    }
+
+    componentDidMount(): void {
+        const { model } = this.state;
+        let keyPropertyIndex;
+        let visitDatePropertyIndex;
+
+        // setting initial indexes if these properties are already present and there are changes to them in
+        // the domain form
+        model.domain.fields.map((field, index) => {
+            if (model.keyPropertyName && field.name === model.keyPropertyName) {
+                keyPropertyIndex = index;
+            }
+            if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
+                visitDatePropertyIndex = index;
+            }
+        });
+
+        this.setState(() => ({
+            keyPropertyIndex,
+            visitDatePropertyIndex,
+        }));
     }
 
     onPropertiesChange = (model: DatasetModel) => {
@@ -75,6 +99,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
+    onIndexChange = (keyPropertyIndex?: number, visitDatePropertyIndex?: number) => {
+        this.setState(() => ({ keyPropertyIndex, visitDatePropertyIndex }));
+    };
+
     onFinish = () => {
         const { model } = this.state;
 
@@ -83,10 +111,17 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
     onDomainChange = (domain: DomainDesign, dirty: boolean) => {
         const { onChange } = this.props;
+        const { model, keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
         this.setState(
             produce((draft: Draft<State>) => {
                 draft.model.domain = domain;
+                if (keyPropertyIndex) {
+                    draft.model.keyPropertyName = model.domain.fields.get(keyPropertyIndex).name;
+                }
+                if (visitDatePropertyIndex) {
+                    draft.model.visitDatePropertyName = model.domain.fields.get(visitDatePropertyIndex).name;
+                }
             }),
             () => {
                 // Issue 39918: use the dirty property that DomainForm onChange passes
@@ -181,7 +216,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                                 updatedModel.exception = exception;
                             } else {
                                 updatedModel.exception = undefined;
-                                updatedModel.domain = Object.assign(updatedModel.domain, response);
+                                updatedModel.domain = response;
                             }
                         })
                     );
@@ -204,7 +239,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             saveBtnText,
         } = this.props;
 
-        const { model, fileImportData } = this.state;
+        const { model, fileImportData, keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -222,6 +257,9 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 <DatasetPropertiesPanel
                     initCollapsed={currentPanelIndex !== 0}
                     model={model}
+                    keyPropertyIndex={keyPropertyIndex}
+                    visitDatePropertyIndex={visitDatePropertyIndex}
+                    onIndexChange={this.onIndexChange}
                     controlledCollapse={true}
                     useTheme={useTheme}
                     panelStatus={

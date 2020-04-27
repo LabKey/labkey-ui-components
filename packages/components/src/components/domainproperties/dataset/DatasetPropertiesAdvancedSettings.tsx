@@ -130,6 +130,7 @@ interface AdvancedSettingsProps {
     model: DatasetModel;
     title: string;
     applyAdvancedProperties: (datasetAdvancedSettingsForm: DatasetAdvancedSettingsForm) => void;
+    visitDatePropertyIndex?: number;
 }
 
 interface AdvancedSettingsState extends DatasetAdvancedSettingsForm {
@@ -153,17 +154,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     }
 
     componentDidMount() {
-        const model = this.props.model;
-
         fetchCohorts().then(data => {
             this.setState(() => ({
                 availableCohorts: data.toArray(),
             }));
         });
-
-        this.setState(() => ({
-            visitDateColumns: fetchVisitDateColumns(model.domain).toArray(),
-        }));
     }
 
     getInitialState = () => {
@@ -174,10 +169,17 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             tag: model.tag,
             showByDefault: model.showByDefault,
             cohortId: model.cohortId,
-            visitDatePropertyName: model.visitDatePropertyName,
             dataSharing: model.dataSharing,
+            visitDatePropertyName: this.getVisitDatePropertyName(),
         };
     };
+
+    getVisitDatePropertyName(): string {
+        const { model, visitDatePropertyIndex } = this.props;
+        return visitDatePropertyIndex !== undefined
+            ? model.domain.fields.get(visitDatePropertyIndex).name
+            : model.visitDatePropertyName;
+    }
 
     toggleModal = (isModalOpen: boolean): void => {
         this.setState({ modalOpen: isModalOpen });
@@ -230,22 +232,15 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     render() {
-        const {
-            modalOpen,
-            datasetId,
-            cohortId,
-            tag,
-            showByDefault,
-            visitDatePropertyName,
-            visitDateColumns,
-            dataSharing,
-            availableCohorts,
-        } = this.state;
+        const { modalOpen, datasetId, cohortId, tag, showByDefault, dataSharing, availableCohorts } = this.state;
 
         const { model, title } = this.props;
 
         const showDataspace = model.definitionIsShared && model.getDataRowSetting() === 0;
         const showDataspaceCls = showDataspace ? 'dataset_data_row_element_show' : 'dataset_data_row_element_hide';
+
+        const visitDateColumns = fetchVisitDateColumns(model.domain).toArray();
+        const visitDateProperty = this.getVisitDatePropertyName();
 
         return (
             <>
@@ -284,7 +279,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 label="Visit Date Column"
                                 helpTip={this.getHelpTipElement('visitDateColumn')}
                                 selectOptions={visitDateColumns}
-                                selectedValue={visitDatePropertyName}
+                                selectedValue={visitDateProperty}
                                 onSelectChange={this.onSelectChange}
                             />
                         )}

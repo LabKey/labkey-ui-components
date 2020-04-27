@@ -39,13 +39,15 @@ interface OwnProps {
     model: DatasetModel;
     onChange: (model: DatasetModel) => void;
     successBsStyle?: string;
+    keyPropertyIndex?: number;
+    visitDatePropertyIndex?: number;
+    onIndexChange?: (keyPropertyIndex?: number, visitDatePropertyIndex?: number) => void;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
     isValid?: boolean;
-    keyPropertyIndex?: number;
 }
 
 export class DatasetPropertiesPanelImpl extends React.PureComponent<
@@ -135,7 +137,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     };
 
     onAdditionalKeyFieldChange = (name, formValue, selected): void => {
-        const { model } = this.props;
+        const { model, onIndexChange, visitDatePropertyIndex } = this.props;
 
         let keyPropIndex;
         const updatedDomain = model.domain.merge({
@@ -162,30 +164,32 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
             }
         });
 
-        this.setState(
-            () => ({ keyPropertyIndex: keyPropIndex }),
-            () => this.updateValidStatus(newModel)
-        );
+        onIndexChange(keyPropIndex, visitDatePropertyIndex);
+        this.updateValidStatus(newModel);
     };
 
     applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm) => {
-        const { model } = this.props;
+        const { model, onIndexChange, keyPropertyIndex } = this.props;
 
-        this.updateValidStatus(
-            produce(model, (draft: Draft<DatasetModel>) => {
-                draft.cohortId = advancedSettingsForm.cohortId;
-                draft.visitDatePropertyName = advancedSettingsForm.visitDatePropertyName;
-                draft.datasetId = advancedSettingsForm.datasetId;
-                draft.showByDefault = advancedSettingsForm.showByDefault;
-                draft.tag = advancedSettingsForm.tag;
-            })
-        );
+        let visitDatePropIndex;
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            Object.assign(draft, model, advancedSettingsForm);
+        });
+
+        newModel.domain.fields.map((field, index) => {
+            if (field.name === newModel.visitDatePropertyName) {
+                visitDatePropIndex = index;
+            }
+        });
+
+        onIndexChange(keyPropertyIndex, visitDatePropIndex);
+        this.updateValidStatus(newModel);
     };
 
     render() {
-        const { model } = this.props;
+        const { model, keyPropertyIndex, visitDatePropertyIndex } = this.props;
 
-        const { isValid, keyPropertyIndex } = this.state;
+        const { isValid } = this.state;
 
         return (
             <BasePropertiesPanel
@@ -225,6 +229,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                             title="Advanced Settings"
                             model={model}
                             applyAdvancedProperties={this.applyAdvancedProperties}
+                            visitDatePropertyIndex={visitDatePropertyIndex}
                         />
                     </Col>
                 </Row>

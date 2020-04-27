@@ -238,7 +238,10 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
         const dataRowSetting = model.getDataRowSetting();
         const showAdditionalKeyField = dataRowSetting === 2 || model.isFromAssay();
 
-        const validKeyField = model.validManagedKeyField();
+        const keyPropertyName =
+            keyPropertyIndex !== undefined ? model.domain.fields.get(keyPropertyIndex).name : model.keyPropertyName;
+
+        const validKeyField = model.validManagedKeyField(keyPropertyName);
 
         const showAdditionalKeyFieldCls = showAdditionalKeyField
             ? 'dataset_data_row_element_show margin-top'
@@ -248,8 +251,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                 ? 'dataset_data_row_element_show margin-top'
                 : 'dataset_data_row_element_hide margin-top';
 
-        const keyPropertyName =
-            keyPropertyIndex !== undefined ? model.domain.fields.get(keyPropertyIndex).name : model.keyPropertyName;
+        const managedKeyDisabled = !showAdditionalKeyField || !validKeyField || model.isFromAssay();
 
         return (
             <>
@@ -281,10 +283,10 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
 
                 <div className={keyPropertyManagedCls}>
                     <Checkbox
-                        checked={model.keyPropertyManaged}
+                        checked={model.keyPropertyManaged && !managedKeyDisabled}
                         onChange={onCheckBoxChange}
                         id="keyPropertyManaged"
-                        disabled={!showAdditionalKeyField || !validKeyField || model.isFromAssay()}
+                        disabled={managedKeyDisabled}
                     >
                         Let server manage fields to make entries unique
                     </Checkbox>

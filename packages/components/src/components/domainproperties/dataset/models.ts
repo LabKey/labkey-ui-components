@@ -134,8 +134,8 @@ export class DatasetModel implements IDatasetModel {
         return dataRowSetting;
     }
 
-    validManagedKeyField(): boolean {
-        if (this.keyPropertyName) {
+    validManagedKeyField(editedName?: string): boolean {
+        if (this.keyPropertyName || editedName) {
             const domainFields = this.domain.fields;
 
             const allowedFieldTypes = domainFields
@@ -145,7 +145,7 @@ export class DatasetModel implements IDatasetModel {
                 })
                 .toList();
 
-            return allowedFieldTypes.contains(this.keyPropertyName);
+            return allowedFieldTypes.contains(this.keyPropertyName) || allowedFieldTypes.contains(editedName);
         } else {
             return false;
         }
@@ -162,10 +162,8 @@ export class DatasetModel implements IDatasetModel {
 
     getOptions(): Record<string, any> {
         return produce(this, (draft: Draft<IDatasetModel>) => {
-            const model = draft;
-
-            delete model.exception;
-            delete model.domain;
+            delete draft.exception;
+            delete draft.domain;
         });
     }
 

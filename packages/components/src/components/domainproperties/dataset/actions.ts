@@ -70,7 +70,7 @@ export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
     visitDateColumns = visitDateColumns.push({ value: 'date', label: 'date' });
 
     domain.fields.map(field => {
-        if (field.rangeURI.endsWith('dateTime')) {
+        if (field && field.rangeURI && field.rangeURI.endsWith('dateTime')) {
             visitDateColumns = visitDateColumns.push({ value: field.name, label: field.name });
         }
     });

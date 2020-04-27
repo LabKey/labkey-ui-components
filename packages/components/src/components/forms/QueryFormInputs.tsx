@@ -67,6 +67,7 @@ interface QueryFormInputsProps {
     onChange?: Function;
     renderFileInputs?: boolean;
     allowFieldDisable?: boolean;
+    onFieldsEnabledChange?: (numEnabled: number) => void;
     initiallyDisableFields?: boolean;
     useDatePicker?: boolean;
     disabledFields?: List<string>;
@@ -86,6 +87,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         initiallyDisableFields: false,
         disabledFields: List<string>(),
     };
+
+    private _fieldEnabledCount: number = 0;
 
     constructor(props: QueryFormInputsProps) {
         super(props);
@@ -140,6 +143,18 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         }
     }
 
+    onToggleDisable = (disabled: boolean) => {
+        if (disabled) {
+            this._fieldEnabledCount--;
+        }
+        else {
+            this._fieldEnabledCount++;
+        }
+        if (this.props.onFieldsEnabledChange) {
+            this.props.onFieldsEnabledChange(this._fieldEnabledCount);
+        }
+    }
+
     renderLabelField(col: QueryColumn) {
         const { includeLabelField } = this.props;
 
@@ -182,7 +197,9 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                 .map((col: QueryColumn, i: number) => {
                     const shouldDisableField =
                         initiallyDisableFields || disabledFields.contains(col.name.toLowerCase());
-
+                    if (!shouldDisableField) {
+                        this._fieldEnabledCount++;
+                    }
                     let showAsteriskSymbol = false;
                     if (!checkRequiredFields && col.required) {
                         col = col.set('required', false) as QueryColumn;
@@ -224,6 +241,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     {this.renderLabelField(col)}
                                     <QuerySelect
                                         allowDisable={allowFieldDisable}
+                                        onToggleDisable={this.onToggleDisable}
                                         initiallyDisabled={shouldDisableField}
                                         componentId={id}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
@@ -258,6 +276,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 value={value}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}
+                                onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
                             />
                         );
@@ -270,6 +289,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 onChange={onChange}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}
+                                onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
                             />
                         );
@@ -283,6 +303,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     value={value}
                                     allowDisable={allowFieldDisable}
                                     initiallyDisabled={shouldDisableField}
+                                    onToggleDisable={this.onToggleDisable}
                                     addLabelAsterisk={showAsteriskSymbol}
                                 />
                             ) : (
@@ -292,6 +313,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     value={value}
                                     allowDisable={allowFieldDisable}
                                     initiallyDisabled={shouldDisableField}
+                                    onToggleDisable={this.onToggleDisable}
                                     addLabelAsterisk={showAsteriskSymbol}
                                 />
                             );
@@ -303,6 +325,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     value={value}
                                     allowDisable={allowFieldDisable}
                                     initiallyDisabled={shouldDisableField}
+                                    onToggleDisable={this.onToggleDisable}
                                     addLabelAsterisk={showAsteriskSymbol}
                                 />
                             );
@@ -314,6 +337,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     value={value ? String(value) : value}
                                     allowDisable={allowFieldDisable}
                                     initiallyDisabled={shouldDisableField}
+                                    onToggleDisable={this.onToggleDisable}
                                     addLabelAsterisk={showAsteriskSymbol}
                                 />
                             );

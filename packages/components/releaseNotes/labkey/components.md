@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 38052: When all fields in a QueryInfoForm are disabled, the submit button should also be disabled
+
 ### version 0.52.2
 *Released*: 24 April 2020
 * Misc 20.5 issue fixes for Sample Manager

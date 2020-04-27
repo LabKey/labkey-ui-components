@@ -76,6 +76,10 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                 isDisabled: !state.isDisabled,
                 checked: state.isDisabled ? checked : value === true || value === 'true',
             };
+        }, () => {
+            if (this.props.onToggleDisable) {
+                this.props.onToggleDisable(this.state.isDisabled);
+            }
         });
     };
 

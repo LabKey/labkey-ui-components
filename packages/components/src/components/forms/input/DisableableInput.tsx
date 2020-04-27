@@ -4,6 +4,7 @@ export interface DisableableInputProps {
     allowDisable?: boolean;
     initiallyDisabled?: boolean;
     value?: any;
+    onToggleDisable?: (disabled: boolean) => void;
 }
 
 export interface DisableableInputState {
@@ -35,6 +36,10 @@ export class DisableableInput<P extends DisableableInputProps, S extends Disable
                 isDisabled: !state.isDisabled,
                 inputValue: state.isDisabled ? inputValue : value,
             };
+        }, () => {
+            if (this.props.onToggleDisable) {
+                this.props.onToggleDisable(this.state.isDisabled);
+            }
         });
     };
 }

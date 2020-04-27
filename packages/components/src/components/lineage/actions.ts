@@ -39,7 +39,7 @@ function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
 
         Experiment.lineage({
             ...options,
-            includeExpType: true,
+            includeInputsAndOutputs: true,
             includeRunSteps: true,
             lsid: seed,
             success: lineage => {
@@ -92,10 +92,10 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
     // each node would require it's own request for the unique keys combination. Also, nodes without any primary
     // keys cannot be filtered upon and thus are also not supported.
     return lineage.nodes
-        .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.size === 1)
+        .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.length === 1)
         .groupBy(n => SchemaQuery.create(n.schemaName, n.queryName))
         .map((nodes, schemaQuery) => {
-            const { fieldKey } = nodes.first().pkFilters.get(0);
+            const { fieldKey } = nodes.first().pkFilters[0];
 
             return selectRows({
                 schemaName: schemaQuery.schemaName,
@@ -104,7 +104,7 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
                 // See LineageNodeMetadata (and it's usages) for why this is currently necessary
                 columns: LINEAGE_METADATA_COLUMNS.add(fieldKey).join(','),
                 filterArray: [
-                    Filter.create(fieldKey, nodes.map(n => n.pkFilters.get(0).value).toArray(), Filter.Types.IN),
+                    Filter.create(fieldKey, nodes.map(n => n.pkFilters[0].value).toArray(), Filter.Types.IN),
                 ],
             });
         })

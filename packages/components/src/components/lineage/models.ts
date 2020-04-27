@@ -4,6 +4,7 @@
  */
 import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
+import { Utils } from '@labkey/api';
 
 import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../..';
 
@@ -90,7 +91,7 @@ export class LineageLink extends Record({
         super(values);
     }
 
-    static createList(values?: Array<{ [key: string]: any }>): List<LineageLink> {
+    static createList(values?: any): List<LineageLink> {
         const result = values ? values.map(v => new LineageLink(v)) : [];
         return List(result);
     }
@@ -101,21 +102,35 @@ export interface LineagePKFilter {
     value: any;
 }
 
-export interface ILineageRunStep {
-    applicationType: string;
-    activityDate: string;
-    activitySequence: number;
+export interface LineageBaseConfig {
     created: string;
     createdBy: string;
+    expType: string;
     id: number;
     lsid: string;
     modified: string;
     modifiedBy: string;
     name: string;
-    protocol: LineageNode;
+    pkFilters: LineagePKFilter[];
+    queryName: string;
+    schemaName: string;
 }
 
-export class LineageRunStep implements ILineageRunStep {
+export interface LineageIOConfig {
+    dataInputs: LineageIO[];
+    dataOutputs: LineageIO[];
+    materialInputs: LineageIO[];
+    materialOutputs: LineageIO[];
+}
+
+export interface LineageRunStepConfig extends LineageBaseConfig, LineageIOConfig {
+    applicationType: string;
+    activityDate: string;
+    activitySequence: number;
+    protocol: LineageBaseConfig;
+}
+
+export class LineageRunStep implements LineageRunStepConfig {
     [immerable] = true;
 
     readonly applicationType: string;
@@ -123,42 +138,103 @@ export class LineageRunStep implements ILineageRunStep {
     readonly activitySequence: number;
     readonly created: string;
     readonly createdBy: string;
+    readonly dataInputs: LineageIO[];
+    readonly dataOutputs: LineageIO[];
+    readonly expType: string;
+    readonly id: number;
+    readonly lsid: string;
+    readonly materialInputs: LineageIO[];
+    readonly materialOutputs: LineageIO[];
+    readonly modified: string;
+    readonly modifiedBy: string;
+    readonly name: string;
+    readonly pkFilters: LineagePKFilter[];
+    readonly protocol: LineageBaseConfig;
+    readonly queryName: string;
+    readonly schemaName: string;
+
+    constructor(values?: LineageRunStepConfig) {
+        Object.assign(this, values, {
+            ...LineageIO.applyConfig(values)
+        });
+    }
+}
+
+export class LineageIO implements LineageBaseConfig {
+    [immerable] = true;
+
+    readonly created: string;
+    readonly createdBy: string;
+    readonly expType: string;
     readonly id: number;
     readonly lsid: string;
     readonly modified: string;
     readonly modifiedBy: string;
     readonly name: string;
-    readonly protocol: LineageNode;
+    readonly pkFilters: LineagePKFilter[];
+    readonly queryName: string;
+    readonly schemaName: string;
 
-    constructor(values?: Partial<ILineageRunStep>) {
-        let protocol: LineageNode;
+    constructor(values?: Partial<LineageIO>) {
+        Object.assign(this, values);
+    }
 
-        if (values?.protocol?.lsid) {
-            protocol = LineageNode.create(values.protocol.lsid, { ...values.protocol });
+    static applyConfig(values?: LineageIOConfig): LineageIOConfig {
+        return {
+            dataInputs: LineageIO.fromArray(values?.dataInputs),
+            dataOutputs: LineageIO.fromArray(values?.dataOutputs),
+            materialInputs: LineageIO.fromArray(values?.materialInputs),
+            materialOutputs: LineageIO.fromArray(values?.materialOutputs),
+        };
+    }
+
+    static fromArray(values?: any[]): LineageIO[] {
+        if (Utils.isArray(values)) {
+            return (values as any[]).map(io => new LineageIO(io));
         }
 
-        Object.assign(this, values, { protocol });
+        return [];
     }
 }
 
-// commented out attributes are not yet used
+interface LineageNodeConfig extends LineageBaseConfig, LineageIOConfig, LineageIconMetadata {
+    absolutePath: string;
+    children: List<LineageLink>;
+    cpasType: string;
+    dataFileURL: string;
+    parents: List<LineageLink>;
+    pipelinePath: string;
+    steps: List<LineageRunStep>;
+    type: string;
+    url: string;
+
+    // computed properties
+    distance: number;
+    links: LineageNodeLinks;
+    listURL: string;
+    meta: LineageNodeMetadata;
+}
+
 export class LineageNode
     extends Record({
-        // absolutePath: undefined,
+        absolutePath: undefined,
         children: undefined,
         cpasType: undefined,
-        // created: undefined,
-        // createdBy: undefined,
-        // dataFileURL: undefined,
+        created: undefined,
+        createdBy: undefined,
+        dataFileURL: undefined,
+        dataInputs: undefined,
+        dataOutputs: undefined,
         expType: undefined,
         id: undefined,
-        listURL: undefined,
         lsid: undefined,
-        // modified?: undefined,
-        // modifiedBy?: undefined,
+        materialInputs: undefined,
+        materialOutputs: undefined,
+        modified: undefined,
+        modifiedBy: undefined,
         name: undefined,
         parents: undefined,
-        // pipelinePath: undefined,
+        pipelinePath: undefined,
         pkFilters: undefined,
         queryName: undefined,
         schemaName: undefined,
@@ -174,64 +250,69 @@ export class LineageNode
         imageSelected: undefined,
         imageShape: undefined,
         links: {},
+        listURL: undefined,
         meta: undefined,
     })
-    implements Partial<LineageIconMetadata> {
-    // absolutePath?: string;
-    children?: List<LineageLink>;
-    cpasType?: string;
-    // created?: string;
-    // createdBy?: string;
-    // dataFileURL?: string;
-    expType?: string;
-    id?: number;
-    listURL?: string;
-    lsid?: string;
-    // modified?: string;
-    // modifiedBy?: string;
-    name?: string;
-    parents?: List<LineageLink>;
-    // pipelinePath?: string;
-    pkFilters?: List<LineagePKFilter>;
-    queryName?: string;
-    schemaName?: string;
-    steps?: List<LineageRunStep>;
-    type?: string;
-    url?: string;
+    implements LineageNodeConfig {
+    absolutePath: string;
+    children: List<LineageLink>;
+    cpasType: string;
+    created: string;
+    createdBy: string;
+    dataFileURL: string;
+    dataInputs: LineageIO[];
+    dataOutputs: LineageIO[];
+    expType: string;
+    id: number;
+    lsid: string;
+    materialInputs: LineageIO[];
+    materialOutputs: LineageIO[];
+    modified: string;
+    modifiedBy: string;
+    name: string;
+    parents: List<LineageLink>;
+    pipelinePath: string;
+    pkFilters: LineagePKFilter[];
+    queryName: string;
+    schemaName: string;
+    steps: List<LineageRunStep>;
+    type: string;
+    url: string;
 
     // computed properties
-    distance?: number;
-    iconURL?: string;
-    image?: string;
-    imageBackup?: string;
-    imageSelected?: string;
-    imageShape?: string;
-    links?: LineageNodeLinks;
-    meta?: LineageNodeMetadata;
+    distance: number;
+    iconURL: string;
+    image: string;
+    imageBackup: string;
+    imageSelected: string;
+    imageShape: string;
+    links: LineageNodeLinks;
+    listURL: string;
+    meta: LineageNodeMetadata;
 
     constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
-    static create(lsid: string, values?: { [key: string]: any }): LineageNode {
-        return values
-            ? new LineageNode({
-                  children: LineageLink.createList(values.children),
-                  cpasType: values.cpasType,
-                  expType: values.expType,
-                  id: values.id,
-                  lsid,
-                  name: values.name,
-                  parents: LineageLink.createList(values.parents),
-                  pkFilters: List(values.pkFilters),
-                  queryName: values.queryName,
-                  schemaName: values.schemaName,
-                  steps: List(values.steps?.map(stepProps => new LineageRunStep(stepProps))),
-                  type: values.type,
-                  url: values.url,
-                  meta: values.meta,
-              })
-            : new LineageNode({ lsid });
+    static create(lsid: string, values?: Partial<LineageNodeConfig>): LineageNode {
+        let config: any;
+
+        if (values && values instanceof LineageNode) {
+            config = values;
+        } else {
+            config = {
+                ...values,
+                ...LineageIO.applyConfig(values as LineageNodeConfig),
+                ...{
+                    children: LineageLink.createList(values.children),
+                    lsid,
+                    parents: LineageLink.createList(values.parents),
+                    steps: List(values.steps?.map(stepProps => new LineageRunStep(stepProps))),
+                }
+            };
+        }
+
+        return new LineageNode(config);
     }
 
     get isRun(): boolean {

@@ -10,7 +10,7 @@ import { LineageSummary } from '../LineageSummary';
 import { LineageNode } from '../models';
 import { LineageOptions } from '../types';
 
-import { NodeDetail } from './NodeDetail';
+import { LineageDetail } from './LineageDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
 import { DetailsListGroup, DetailsListNodes, DetailsListSteps } from './DetailsList';
 
@@ -63,7 +63,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
 
         const nodeDetails = (
             <>
-                <NodeDetail node={node} />
+                <LineageDetail item={node} />
                 <LineageSummary
                     {...lineageOptions}
                     highlightNode={highlightNode}
@@ -160,7 +160,7 @@ class RunStepNodeDetail extends PureComponent<RunStepNodeDetailProps> {
                     </a>
                     &nbsp;>&nbsp;<span>{step.name}</span>
                 </DetailHeader>
-                <NodeDetail node={step.protocol} />
+                <LineageDetail item={step} />
             </>
         );
     }

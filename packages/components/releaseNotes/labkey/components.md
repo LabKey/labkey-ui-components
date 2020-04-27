@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 7138: DatasetDesignerPanels and related components, models, actions
     - new dataset related components DatasetDesignerPanels.tsx and DatasetPropertiesPanel.tsx
     - DomainForm changes to support Column mapping option
+* Issue 40285: Domain designer screen width expands as the file preview grid table width gets very large
 
 ### version 0.52.1
 *Released*: 20 April 2020

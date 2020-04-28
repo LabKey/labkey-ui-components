@@ -56,6 +56,7 @@ import {
     flattenQueryGridModelRow,
     getBatchPropertiesModel,
     getBatchPropertiesRow,
+    getRunPropertiesFileName,
     getRunPropertiesModel,
     getRunPropertiesRow,
     importAssayRun,
@@ -153,9 +154,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         return getRunPropertiesModel(props.assayDefinition, props.runId);
     }
 
-    getRunPropertiesRow(props: Props): Map<string, any> {
+    getRunPropertiesRow(props: Props, flatten = true): Map<string, any> {
         const runData = getRunPropertiesRow(props.assayDefinition, props.runId);
-        return flattenQueryGridModelRow(runData);
+        return flatten ? flattenQueryGridModelRow(runData) : runData;
     }
 
     getBatchId(props: Props): string {
@@ -307,14 +308,17 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     onInitModelComplete() {
-        const runPropsData = this.getRunPropertiesRow(this.props);
+        const runPropsData = this.getRunPropertiesRow(this.props, false);
+        const isReimport = this.isReimport(this.props);
+        const fileName = getRunPropertiesFileName(runPropsData);
+        const runName = runPropsData ? runPropsData.getIn(['Name', 'value']) : undefined;
 
         // Issue 38237: set the runName and comments for the re-import case
         this.setState(
             state => ({
                 model: state.model.merge({
-                    runName: runPropsData ? runPropsData.get('Name') : undefined,
-                    comment: runPropsData ? runPropsData.get('Comments') : '',
+                    runName: isReimport && runName === fileName ? undefined : runName, // Issue 39328
+                    comment: runPropsData ? runPropsData.getIn(['Comments', 'value']) : '',
                 }) as AssayWizardModel,
             }),
             () => {

@@ -248,6 +248,11 @@ export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, run
     return getQueryGridModel(model.getId()) || model;
 }
 
+export function getRunPropertiesFileName(row: Map<string, any>): string {
+    const dataOutputs = row?.get('DataOutputs');
+    return dataOutputs && dataOutputs.size === 1 ? dataOutputs.getIn([0, 'displayValue']) : undefined;
+}
+
 export function getRunPropertiesRow(assayDefinition: AssayDefinitionModel, runId: string): Map<string, any> {
     const model = getRunPropertiesModel(assayDefinition, runId);
     return model.isLoaded ? model.getRow() : undefined;

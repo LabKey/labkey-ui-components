@@ -101,6 +101,9 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
 
         switch (col.jsonType) {
             case 'boolean':
+                // boolean checkbox state needs to be based off of the data value (not formattedValue)
+                value = resolveDetailFieldValue(data, false, true);
+
                 return (
                     <Checkbox
                         name={col.name}

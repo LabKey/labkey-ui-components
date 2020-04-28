@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { ASSAY_WIZARD_MODEL } from '../../test/data/constants';
@@ -54,13 +54,22 @@ describe('AssayWizardModel', () => {
     test('getRunName', () => {
         let model = ASSAY_WIZARD_MODEL;
 
-        // if runName is not set, use the generateNameWithTimestamp function
-        const runName = model.getRunName(AssayUploadTabs.Files);
-        expect(runName.indexOf(model.assayDef.name) === 0).toBeTruthy();
+        // if runName is not set and no file selected, use the generateNameWithTimestamp function
+        expect(model.getRunName(AssayUploadTabs.Files).indexOf(model.assayDef.name) === 0).toBeTruthy();
+        expect(model.getRunName(AssayUploadTabs.Copy).indexOf(model.assayDef.name) === 0).toBeTruthy();
+        expect(model.getRunName(AssayUploadTabs.Grid).indexOf(model.assayDef.name) === 0).toBeTruthy();
+
+        // if runName is not set but we have a file selected, the value should be undefined (which means the server will set it)
+        model = model.set('attachedFiles', fromJS({ file1: new File([], 'file1') })) as AssayWizardModel;
+        expect(model.getRunName(AssayUploadTabs.Files)).toBe(undefined);
+        expect(model.getRunName(AssayUploadTabs.Copy).indexOf(model.assayDef.name) === 0).toBeTruthy();
+        expect(model.getRunName(AssayUploadTabs.Grid).indexOf(model.assayDef.name) === 0).toBeTruthy();
 
         // if runName is set, use that
         model = model.set('runName', 'testing') as AssayWizardModel;
         expect(model.getRunName(AssayUploadTabs.Files)).toBe('testing');
+        expect(model.getRunName(AssayUploadTabs.Copy)).toBe('testing');
+        expect(model.getRunName(AssayUploadTabs.Grid)).toBe('testing');
     });
 
     test('prepareFormData Files tab', () => {

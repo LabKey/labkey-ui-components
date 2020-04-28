@@ -8,6 +8,23 @@ Components, models, actions, and utility functions for LabKey applications and p
     - DomainForm changes to support Column mapping option
 * Issue 40285: Domain designer screen width expands as the file preview grid table width gets very large
 
+### version 0.53.0
+*Released*: 28 April 2020
+* [Issue 34627: Lookup column is sorting by raw value and not display column](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=34627)
+    * This fix changes the behavior of the sort action on the OmniBox, columns are now sorted by displayValue
+* [Issue 36486: omnibox only shows options on drop-down for current page](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=36486)
+    * This fix changes the behavior of the Filter dropdown on the Omnibox, we now show distinct values for a column.
+* [Issue 40195: Omnibox filter value invalid if user enters multiple words](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=40195)
+* [Issue 39543: Omnibox dropdown does not allow other open menus to close](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=39543)
+
+### version 0.52.2
+*Released*: 24 April 2020
+* Misc 20.5 issue fixes for Sample Manager
+    - Issue 40139: DetailEditing panel editing - updating time but not date does not recognize change
+    - Issue 39328: Assay run should use renamed file name as its Assay Id when the same data file is being imported (for both re-import case and new import case)
+    - Issue 40233: EntityInsertPanel columns for Sources should not include "Parents" in column name caption
+    - DetailEditing panel (i.e. QueryForm usage) boolean field checked state doesn't initialize correctly when formattedValue exists
+
 ### version 0.52.1
 *Released*: 20 April 2020
 * `@labkey/api` dependency update.

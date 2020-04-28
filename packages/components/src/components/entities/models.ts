@@ -103,6 +103,9 @@ export class EntityParentType extends Record({
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
         const parentColName = [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
+        // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use
+        // the "Parents" suffix in the editable grid header
+        const captionSuffix = this.schema !== SCHEMAS.DATA_CLASSES.SCHEMA ? ' Parents' : '';
 
         // 32671: Sample import and edit grid key ingredients on scientific name
         if (
@@ -115,7 +118,7 @@ export class EntityParentType extends Record({
         }
 
         return QueryColumn.create({
-            caption: formattedQueryName + ' Parents',
+            caption: formattedQueryName + captionSuffix,
             description: 'Contains optional parent entity for this ' + formattedQueryName,
             fieldKeyArray: [parentColName],
             fieldKey: parentColName,

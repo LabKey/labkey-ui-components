@@ -168,12 +168,9 @@ export class DatasetModel implements IDatasetModel {
     }
 
     getDomainKind(): string {
-        if (getServerContext().moduleContext.study.timepointType === 'DATE') {
-            return 'StudyDatasetDate';
-        } else if (getServerContext().moduleContext.study.timepointType === 'VISIT') {
-            return 'StudyDatasetVisit';
-        }
-        return undefined;
+        return getServerContext().moduleContext.study.timepointType === 'VISIT'
+            ? 'StudyDatasetVisit'
+            : 'StudyDatasetDate';
     }
 
     getOptions(): Record<string, any> {

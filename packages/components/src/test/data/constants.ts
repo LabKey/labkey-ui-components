@@ -144,7 +144,7 @@ export const NEW_DATASET_MODEL_WITHOUT_DATASPACE = {
     sourceAssayName: null,
     sourceAssayURL: null,
     dataSharing: null,
-    definitionIsShared: false
+    definitionIsShared: false,
 };
 
 export const NEW_DATASET_MODEL_WITH_DATASPACE = {
@@ -163,7 +163,7 @@ export const NEW_DATASET_MODEL_WITH_DATASPACE = {
     sourceAssayName: null,
     sourceAssayURL: null,
     dataSharing: null,
-    definitionIsShared: true
+    definitionIsShared: true,
 };
 
 export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';

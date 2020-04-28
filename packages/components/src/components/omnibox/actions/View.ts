@@ -26,84 +26,72 @@ export class ViewAction implements Action {
     keyword = ViewAction.NAME;
     oneWordLabel = ViewAction.NAME;
     optionalLabel = 'name';
-    resolveColumns: () => Promise<List<QueryColumn>>;
-    resolveModel: () => Promise<QueryGridModel>;
+    getModel: () => QueryGridModel;
     singleton = true;
     urlPrefix: string;
 
-    constructor(
-        resolveColumns: () => Promise<List<QueryColumn>>,
-        urlPrefix: string,
-        resolveModel: () => Promise<QueryGridModel>
-    ) {
-        this.resolveColumns = resolveColumns;
-        this.resolveModel = resolveModel;
+    constructor(urlPrefix: string, getModel: () => QueryGridModel) {
+        this.getModel = getModel;
         this.urlPrefix = urlPrefix;
     }
 
     completeAction(tokens: string[]): Promise<Value> {
         return new Promise(resolve => {
-            return this.resolveModel().then(model => {
-                const { queryInfo } = model;
-                let found = false;
-                const name = tokens.join(' ').toLowerCase();
+            const { queryInfo } = this.getModel();
+            let found = false;
+            const name = tokens.join(' ').toLowerCase();
 
-                queryInfo.views
-                    .filter(
-                        view => !view.isDefault && view.name.indexOf('~~') !== 0 && view.name.toLowerCase() === name
-                    )
-                    .forEach(view => {
-                        found = true;
-                        resolve({
-                            param: this.getParamPrefix() + '=' + view.name,
-                            value: view.name,
-                        });
-                    });
-
-                if (!found) {
+            queryInfo.views
+                .filter(view => !view.isDefault && view.name.indexOf('~~') !== 0 && view.name.toLowerCase() === name)
+                .forEach(view => {
+                    found = true;
                     resolve({
-                        isValid: false,
-                        value: name,
+                        param: this.getParamPrefix() + '=' + view.name,
+                        value: view.name,
                     });
-                }
-            });
+                });
+
+            if (!found) {
+                resolve({
+                    isValid: false,
+                    value: name,
+                });
+            }
         });
     }
 
     fetchOptions(tokens: string[]): Promise<ActionOption[]> {
         return new Promise(resolve => {
-            return this.resolveModel().then(model => {
-                const { queryInfo } = model;
-                const name = tokens.join(' ').toLowerCase();
+            const { queryInfo } = this.getModel();
+            const name = tokens.join(' ').toLowerCase();
 
-                let views = queryInfo.views.filter(view => !view.isDefault && view.name.indexOf('~~') !== 0);
+            let views = queryInfo.views.filter(view => !view.isDefault && view.name.indexOf('~~') !== 0);
 
-                if (name) {
-                    views = views.filter(view => view.label.toLowerCase().indexOf(name) >= 0);
-                }
+            if (name) {
+                views = views.filter(view => view.label.toLowerCase().indexOf(name) >= 0);
+            }
 
-                const results: ActionOption[] = views.reduce((arr, view) => {
-                    arr.push({
-                        appendValue: false,
-                        isComplete: true,
-                        label: view.label,
-                        selectable: true,
-                        value: view.name,
-                    });
-                    return arr;
-                }, []);
+            const results: ActionOption[] = views.reduce((arr, view) => {
+                arr.push({
+                    appendValue: false,
+                    isComplete: true,
+                    label: view.label,
+                    selectable: true,
+                    value: view.name,
+                });
+                return arr;
+            }, []);
 
-                if (results.length === 0) {
-                    results.push({
-                        label: '',
-                        nextLabel: 'no views available',
-                        selectable: false,
-                        value: undefined,
-                    });
-                }
+            if (results.length === 0) {
+                results.push({
+                    label: '',
+                    nextLabel: 'no views available',
+                    selectable: false,
+                    value: undefined,
+                });
+            }
 
-                resolve(results);
-            });
+            resolve(results);
         });
     }
 

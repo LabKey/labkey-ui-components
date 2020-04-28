@@ -424,6 +424,18 @@ export class QueryColumn extends Record({
             this.fieldKeyArray.length === 1
         );
     }
+
+    resolveFieldKey(): string {
+        let fieldKey: string;
+
+        if (this.isLookup()) {
+            fieldKey = [this.name, this.lookup.displayColumn.replace(/\//g, '$S')].join('/');
+        } else {
+            fieldKey = this.name;
+        }
+
+        return fieldKey;
+    }
 }
 
 // MATERIALS_SQ defined here to prevent compiler error "Class 'SchemaQuery' used before its declaration"
@@ -481,6 +493,7 @@ export interface IQueryGridModel {
     loader?: IGridLoader;
     maxRows?: number;
     message?: string;
+    messages?: List<Map<string, string>>;
     offset?: number;
     omittedColumns?: List<string>;
     pageNumber?: number;

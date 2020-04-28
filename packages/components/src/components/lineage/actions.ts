@@ -3,24 +3,36 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { createContext } from 'react';
+import { Draft, produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
 import { ActionURL, Ajax, Experiment, Filter, Utils } from '@labkey/api';
 
 import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../..';
 
-import { Lineage, LineageGridModel, LineageNode, LineageNodeMetadata, LineageResult } from './models';
+import {
+    Lineage,
+    LineageGridModel,
+    LineageBaseConfig,
+    LineageNode,
+    LineageNodeMetadata,
+    LineageResult,
+    LineageRunStep,
+    LineageIOConfig,
+    LineageIO,
+    LineageLinkable
+} from './models';
 import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
 import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
-import { getURLResolver } from './LineageURLResolvers';
+import { getURLResolver, LineageURLResolver } from './LineageURLResolvers';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
 export interface WithNodeInteraction {
-    isNodeInGraph?: (node: LineageNode) => boolean;
-    onNodeMouseOver?: (node: LineageNode) => void;
-    onNodeMouseOut?: (node: LineageNode) => void;
-    onNodeClick?: (node: LineageNode) => void;
+    isNodeInGraph?: (node: LineageBaseConfig) => boolean;
+    onNodeMouseOver?: (node: LineageBaseConfig) => void;
+    onNodeMouseOut?: (node: LineageBaseConfig) => void;
+    onNodeClick?: (node: LineageBaseConfig) => void;
 }
 
 const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);
@@ -111,7 +123,69 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
         .toArray();
 }
 
-export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageResult> {
+type SupportsMetadata = LineageBaseConfig & LineageIOConfig & LineageLinkable;
+
+function applyLineageMetadata(
+    lineage: LineageResult,
+    metadata: { [lsid:string]: LineageNodeMetadata },
+    iconURLByLsid: { [lsid:string]: string },
+    options?: LineageOptions
+): LineageResult {
+    const urlResolver = getURLResolver(options);
+
+    const nodes = lineage.nodes.map(node => {
+        const config = {
+            ...applyItemMetadata(node, iconURLByLsid, urlResolver, lineage.seed === node.lsid),
+            steps: node.steps.map(produce((draft: Draft<LineageRunStep>) => {
+                Object.assign(draft, applyItemMetadata(draft, iconURLByLsid, urlResolver));
+            })),
+            meta: metadata[node.lsid],
+        };
+
+        // Unfortunately, Immutable.merge converts all types to Immutable types (e.g. {} -> Map) which
+        // is not acceptable. Doing a manual merge...
+        Object.keys(config).forEach(prop => {
+            node = node.set(prop, config[prop]) as LineageNode;
+        });
+
+        return node;
+    });
+
+    return lineage.set('nodes', nodes) as LineageResult;
+}
+
+function applyItemMetadata(
+    item: SupportsMetadata,
+    iconURLByLsid: { [lsid:string]: string },
+    urlResolver: LineageURLResolver,
+    isSeed: boolean = false
+) {
+    return {
+        ...applyLineageIOMetadata(item, iconURLByLsid, urlResolver),
+        ...{ iconProps: resolveIconAndShapeForNode(item, iconURLByLsid[item.lsid], isSeed) },
+        ...{ links: urlResolver.resolveItem(item) ?? {} }
+    };
+}
+
+function applyLineageIOMetadata(
+    item: SupportsMetadata,
+    iconURLByLsid: { [lsid:string]: string },
+    urlResolver: LineageURLResolver
+): LineageIOConfig {
+    const _applyItem = produce((draft: Draft<LineageIO>) => {
+        draft.iconProps = resolveIconAndShapeForNode(draft, iconURLByLsid[draft.lsid]);
+        draft.links = urlResolver.resolveItem(draft);
+    });
+
+    return {
+        dataInputs: item.dataInputs.map(_applyItem),
+        dataOutputs: item.dataOutputs.map(_applyItem),
+        materialInputs: item.materialInputs.map(_applyItem),
+        materialOutputs: item.materialOutputs.map(_applyItem),
+    }
+}
+
+export function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
     return new Promise(resolve => {
         return Promise.all(fetchNodeMetadata(lineage))
             .then(results => {
@@ -127,15 +201,7 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
                     });
                 });
 
-                return lineage.set(
-                    'nodes',
-                    lineage.nodes.map(node =>
-                        node.merge({
-                            ...resolveIconAndShapeForNode(node, lineage.seed === node.lsid, iconURLByLsid[node.lsid]),
-                            meta: metadata[node.lsid],
-                        })
-                    )
-                ) as LineageResult;
+                return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
             })
             .then(result => {
                 resolve(result);
@@ -290,8 +356,4 @@ export function getPageNumberChangeURL(location: Location, seed: string, pageNum
     }
 
     return url;
-}
-
-function processLineageResult(result: LineageResult, options?: LineageOptions): Promise<LineageResult> {
-    return getLineageNodeMetadata(result).then(r => getURLResolver(options).resolveNodes(r));
 }

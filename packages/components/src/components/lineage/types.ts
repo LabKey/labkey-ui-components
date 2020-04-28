@@ -47,12 +47,6 @@ export class LineageFilter {
     }
 }
 
-export interface LineageNodeLinks {
-    overview: string;
-    lineage: string;
-    list: string;
-}
-
 export enum LineageURLResolvers {
     App = 'App',
     Server = 'Server',
@@ -71,4 +65,10 @@ export interface LineageIconMetadata {
     imageBackup: string;
     imageSelected: string;
     imageShape: string;
+}
+
+export interface LineageLinkMetadata {
+    lineage: string;
+    list: string;
+    overview: string;
 }

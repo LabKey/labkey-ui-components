@@ -2,34 +2,19 @@ import { Filter } from '@labkey/api';
 
 import { URLResolver } from '../..';
 
-import { LineageOptions, LineageURLResolvers } from './types';
-import { LineageNode, LineageResult } from './models';
+import { LineageLinkMetadata, LineageOptions, LineageURLResolvers } from './types';
+import { LineageBaseConfig, LineageNode } from './models';
 
-interface LineageURLResolver {
-    resolveNodes: (result: LineageResult, acceptedTypes?: string[]) => LineageResult;
+export interface LineageURLResolver {
+    resolveItem: (item: LineageBaseConfig) => LineageLinkMetadata;
     resolveGroupedNodes: (nodes: LineageNode[]) => string;
 }
 
 export class AppLineageURLResolver implements LineageURLResolver {
     private static resolver = new URLResolver();
 
-    resolveNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
-        const updated = AppLineageURLResolver.resolver.resolveLineageNodes(result, acceptedTypes);
-
-        return AppLineageURLResolver.resolver.resolveLineageNodes(result, acceptedTypes).set(
-            'nodes',
-            updated.nodes.map(node => {
-                if (node && acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
-                    return node.set('links', {
-                        overview: node.url,
-                        lineage: node.url + '/lineage',
-                        list: node.listURL,
-                    });
-                }
-
-                return node;
-            })
-        ) as LineageResult;
+    resolveItem = (item: LineageBaseConfig): LineageLinkMetadata => {
+        return AppLineageURLResolver.resolver.resolveLineageItem(item);
     };
 
     resolveGroupedNodes = (nodes: LineageNode[]): string => {
@@ -37,7 +22,7 @@ export class AppLineageURLResolver implements LineageURLResolver {
 
         if (nodes && nodes.length) {
             // arbitrarily choose the first node as the baseURL
-            const baseURL = nodes[0].listURL;
+            const baseURL = nodes[0].links.list;
 
             const filter = Filter.create(
                 'RowId',
@@ -54,18 +39,13 @@ export class AppLineageURLResolver implements LineageURLResolver {
 }
 
 export class ServerLineageURLResolver implements LineageURLResolver {
-    resolveNodes = (result: LineageResult): LineageResult => {
-        return result.set(
-            'nodes',
-            result.nodes.map(node =>
-                node.set('links', {
-                    overview: node.url,
-                    // does not currently have a corollary view in LKS
-                    lineage: undefined,
-                    list: undefined,
-                })
-            )
-        ) as LineageResult;
+    resolveItem = (item: LineageBaseConfig): LineageLinkMetadata => {
+        return {
+            // does not currently have a corollary view in LKS
+            lineage: undefined,
+            list: undefined,
+            overview: item.url,
+        };
     };
 
     resolveGroupedNodes = (nodes: LineageNode[]): string => {

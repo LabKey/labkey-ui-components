@@ -17,7 +17,7 @@ import {
 import {
     LineageGroupingOptions,
     LINEAGE_DIRECTIONS,
-    LineageNodeLinks,
+    LineageLinkMetadata,
     LineageOptions,
     LineageIconMetadata,
 } from './types';
@@ -103,6 +103,7 @@ export interface LineagePKFilter {
 }
 
 export interface LineageBaseConfig {
+    cpasType?: string;
     created: string;
     createdBy: string;
     expType: string;
@@ -114,6 +115,8 @@ export interface LineageBaseConfig {
     pkFilters: LineagePKFilter[];
     queryName: string;
     schemaName: string;
+    type?: string;
+    url?: string;
 }
 
 export interface LineageIOConfig {
@@ -123,7 +126,17 @@ export interface LineageIOConfig {
     materialOutputs: LineageIO[];
 }
 
-export interface LineageRunStepConfig extends LineageBaseConfig, LineageIOConfig {
+export interface LineageIconProps {
+    iconProps: LineageIconMetadata;
+}
+
+export interface LineageLinkable {
+    links: LineageLinkMetadata;
+}
+
+export interface LineageItemWithMetadata extends LineageBaseConfig, LineageIconProps, LineageLinkable {}
+
+export interface LineageRunStepConfig extends LineageItemWithMetadata, LineageIOConfig {
     applicationType: string;
     activityDate: string;
     activitySequence: number;
@@ -141,7 +154,9 @@ export class LineageRunStep implements LineageRunStepConfig {
     readonly dataInputs: LineageIO[];
     readonly dataOutputs: LineageIO[];
     readonly expType: string;
+    readonly iconProps: LineageIconMetadata;
     readonly id: number;
+    readonly links: LineageLinkMetadata;
     readonly lsid: string;
     readonly materialInputs: LineageIO[];
     readonly materialOutputs: LineageIO[];
@@ -160,14 +175,16 @@ export class LineageRunStep implements LineageRunStepConfig {
     }
 }
 
-export class LineageIO implements LineageBaseConfig {
+export class LineageIO implements LineageItemWithMetadata {
     [immerable] = true;
 
     readonly created: string;
     readonly createdBy: string;
     readonly expType: string;
+    readonly iconProps: LineageIconMetadata;
     readonly id: number;
     readonly lsid: string;
+    readonly links: LineageLinkMetadata;
     readonly modified: string;
     readonly modifiedBy: string;
     readonly name: string;
@@ -197,7 +214,7 @@ export class LineageIO implements LineageBaseConfig {
     }
 }
 
-interface LineageNodeConfig extends LineageBaseConfig, LineageIOConfig, LineageIconMetadata {
+interface LineageNodeConfig extends LineageItemWithMetadata, LineageIOConfig {
     absolutePath: string;
     children: List<LineageLink>;
     cpasType: string;
@@ -206,11 +223,9 @@ interface LineageNodeConfig extends LineageBaseConfig, LineageIOConfig, LineageI
     pipelinePath: string;
     steps: List<LineageRunStep>;
     type: string;
-    url: string;
 
     // computed properties
     distance: number;
-    links: LineageNodeLinks;
     listURL: string;
     meta: LineageNodeMetadata;
 }
@@ -244,11 +259,7 @@ export class LineageNode
 
         // computed properties
         distance: undefined,
-        iconURL: undefined,
-        image: undefined,
-        imageBackup: undefined,
-        imageSelected: undefined,
-        imageShape: undefined,
+        iconProps: {},
         links: {},
         listURL: undefined,
         meta: undefined,
@@ -281,12 +292,8 @@ export class LineageNode
 
     // computed properties
     distance: number;
-    iconURL: string;
-    image: string;
-    imageBackup: string;
-    imageSelected: string;
-    imageShape: string;
-    links: LineageNodeLinks;
+    iconProps: LineageIconMetadata;
+    links: LineageLinkMetadata;
     listURL: string;
     meta: LineageNodeMetadata;
 

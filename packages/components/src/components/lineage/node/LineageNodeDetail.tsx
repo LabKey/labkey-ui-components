@@ -12,7 +12,7 @@ import { LineageOptions } from '../types';
 
 import { LineageDetail } from './LineageDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
-import { DetailsListGroup, DetailsListNodes, DetailsListSteps } from './DetailsList';
+import { DetailsListLineageIO, DetailsListNodes, DetailsListSteps } from './DetailsList';
 
 interface LineageNodeDetailProps {
     highlightNode?: string;
@@ -88,9 +88,8 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
                             {nodeDetails}
                         </Tab>
                         <Tab eventKey={2} title="Run Properties">
-                            <DetailsListGroup>
-                                <DetailsListSteps node={node} onSelect={this.selectStep} />
-                            </DetailsListGroup>
+                            <DetailsListSteps node={node} onSelect={this.selectStep} />
+                            <DetailsListLineageIO item={node} />
                         </Tab>
                     </Tabs>
                 ) : (
@@ -119,7 +118,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
         let title;
         if (groups.length === 1) {
             title = nodes.length + ' ' + groups[0];
-            iconURL = nodes[0].iconURL;
+            iconURL = nodes[0].iconProps.iconURL;
         } else {
             title = nodes.length + ' items of different types';
             iconURL = 'default';
@@ -161,6 +160,7 @@ class RunStepNodeDetail extends PureComponent<RunStepNodeDetailProps> {
                     &nbsp;>&nbsp;<span>{step.name}</span>
                 </DetailHeader>
                 <LineageDetail item={step} />
+                <DetailsListLineageIO item={step} />
             </>
         );
     }

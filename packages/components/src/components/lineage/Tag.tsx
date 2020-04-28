@@ -32,6 +32,7 @@ export const LINEAGE_GRID_COLUMNS = List([
             const dupeCount = node.get('duplicateCount');
             const isParents = node.get('membersShown') === LINEAGE_DIRECTIONS.Parent;
             const nodeDistance = node.get('distance');
+            const links = node.get('links');
 
             return (
                 <div
@@ -39,7 +40,7 @@ export const LINEAGE_GRID_COLUMNS = List([
                     style={{ textIndent: indent + 'px' }}
                     title={dupeCount > 0 ? dupeCount + ' duplicates' : ''}
                 >
-                    {node.get('url') ? <a href={node.get('url')}>{name}</a> : name}
+                    {links.overview ? <a href={links.overview}>{name}</a> : name}
                     {nodeDistance === 0 && <Tag bsStyle="success">Seed</Tag>}
                     {nodeDistance === 1 && <Tag bsStyle="info">1st {isParents ? 'parent' : 'child'}</Tag>}
                     {nodeDistance === 2 && <Tag bsStyle="primary">2nd {isParents ? 'parent' : 'child'}</Tag>}

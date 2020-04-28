@@ -598,7 +598,7 @@ export function findConnectedNodes(visEdges: Edge[], id: string, dir?: 'from' | 
 
 function createVisNode(node: LineageNode, id: string, isSeed: boolean): VisGraphNode {
     // show the alternate icon image color if this node is the seed or has been selected
-    const { image, imageBackup, imageSelected, imageShape } = node;
+    const { image, imageBackup, imageSelected, imageShape } = node.iconProps;
 
     return {
         kind: 'node',
@@ -682,7 +682,7 @@ function createCombinedVisNode(
     };
 
     if (commonNode) {
-        const { image, imageBackup, imageSelected, imageShape } = commonNode;
+        const { image, imageBackup, imageSelected, imageShape } = commonNode.iconProps;
 
         clusterOptions.shape = imageShape;
         clusterOptions.image = {

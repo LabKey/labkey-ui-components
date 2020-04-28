@@ -9,7 +9,7 @@ import { Alert, LoadingSpinner } from '../..';
 import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage';
 import { NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { LineageNode } from './models';
+import { LineageBaseConfig } from './models';
 import { isBasicNode, VisGraphOptions, VisGraphNode, VisGraphNodeType } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
 import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
@@ -54,27 +54,27 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
     };
 
     // if the node is in the graph, it is clickable in the summary panel
-    isNodeInGraph = (node: LineageNode): boolean => {
-        return this.visGraphRef.current?.getNetwork().findNode(node.lsid).length > 0;
+    isNodeInGraph = (item: LineageBaseConfig): boolean => {
+        return this.visGraphRef.current?.getNetwork().findNode(item.lsid).length > 0;
     };
 
-    onSummaryNodeClick = (node: LineageNode): void => {
-        this.onSummaryNodeMouseOut(node);
-        this.visGraphRef.current?.selectNodes([node.lsid]);
+    onSummaryNodeClick = (item: LineageBaseConfig): void => {
+        this.onSummaryNodeMouseOut(item);
+        this.visGraphRef.current?.selectNodes([item.lsid]);
     };
 
-    onSummaryNodeMouseEvent = (node: LineageNode, hover: boolean): void => {
+    onSummaryNodeMouseEvent = (item: LineageBaseConfig, hover: boolean): void => {
         // clear the hoverNode so the popover will hide
         this.clearHover();
-        this.visGraphRef.current?.highlightNode(node, hover);
+        this.visGraphRef.current?.highlightNode(item, hover);
     };
 
-    onSummaryNodeMouseOut = (node: LineageNode): void => {
-        this.onSummaryNodeMouseEvent(node, false);
+    onSummaryNodeMouseOut = (item: LineageBaseConfig): void => {
+        this.onSummaryNodeMouseEvent(item, false);
     };
 
-    onSummaryNodeMouseOver = (node: LineageNode): void => {
-        this.onSummaryNodeMouseEvent(node, true);
+    onSummaryNodeMouseOver = (item: LineageBaseConfig): void => {
+        this.onSummaryNodeMouseEvent(item, true);
     };
 
     onVisGraphNodeDoubleClick = (visNode: VisGraphNode): void => {

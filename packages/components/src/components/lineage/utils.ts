@@ -7,7 +7,7 @@ import { Utils } from '@labkey/api';
 
 import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../..';
 
-import { LineageLink, LineageNode } from './models';
+import { LineageBaseConfig, LineageItemWithMetadata, LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
 
 const DEFAULT_ICON_URL = 'default';
@@ -45,26 +45,30 @@ export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelect
     return [iconURL, suffix, '.svg'].join('').toLowerCase();
 }
 
-export function getLineageNodeTitle(node: LineageNode, html?: boolean): string {
+export function getLineageNodeTitle(node: LineageItemWithMetadata, html?: boolean): string {
     // encodeHtml if we are generating html for vis.js to use as the node's tooltip title
     const asHTML = html === true;
     const h = s => (asHTML ? Utils.encodeHtml(s) : s);
 
     let title = '';
 
-    const meta = node.meta;
-    if (meta && meta.displayType) {
-        title += h(meta.displayType) + ': ';
-    }
+    if (node instanceof LineageNode) {
+        const { meta } = node;
+        if (meta && meta.displayType) {
+            title += h(meta.displayType) + ': ';
+        }
 
-    title += node.name;
+        title += node.name;
 
-    if (meta && meta.aliases && meta.aliases.size) {
-        title += ' (' + meta.aliases.map(h).join(', ') + ')';
-    }
+        if (meta && meta.aliases && meta.aliases.size) {
+            title += ' (' + meta.aliases.map(h).join(', ') + ')';
+        }
 
-    if (meta && meta.description) {
-        title += (asHTML ? '<br>' : '\n') + h(meta.description);
+        if (meta && meta.description) {
+            title += (asHTML ? '<br>' : '\n') + h(meta.description);
+        }
+    } else {
+        title = node.name;
     }
 
     return title;
@@ -118,18 +122,18 @@ function _getDepthFirstNodeList(
 
 // TODO: The iconURL should be resolved by the server.
 export function resolveIconAndShapeForNode(
-    node?: LineageNode,
+    item?: LineageBaseConfig,
+    queryInfoIconURL?: string,
     isSeed?: boolean,
-    queryInfoIconURL?: string
 ): LineageIconMetadata {
     let iconURL = DEFAULT_ICON_URL;
     let imageShape = DEFAULT_ICON_SHAPE;
 
     if (queryInfoIconURL && queryInfoIconURL !== DEFAULT_ICON_URL) {
         iconURL = queryInfoIconURL.toLowerCase();
-    } else if (node) {
-        const schemaName = node.schemaName?.toLowerCase() ?? '';
-        const queryName = node.queryName?.toLowerCase() ?? '';
+    } else if (item) {
+        const schemaName = item.schemaName?.toLowerCase() ?? '';
+        const queryName = item.queryName?.toLowerCase() ?? '';
 
         if (schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase()) {
             // Samples
@@ -151,7 +155,7 @@ export function resolveIconAndShapeForNode(
         } else if (schemaName === 'exp.materials') {
             // Materials
             iconURL = 'samples';
-        } else if (node.isRun) {
+        } else if (item.expType === 'ExperimentRun') {
             iconURL = 'run';
         }
     }

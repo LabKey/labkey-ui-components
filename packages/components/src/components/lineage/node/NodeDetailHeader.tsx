@@ -62,7 +62,7 @@ export class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
         );
 
         return (
-            <DetailHeader header={header} iconSrc={node.iconURL}>
+            <DetailHeader header={header} iconSrc={node.iconProps.iconURL}>
                 {displayType && <div>{displayType}</div>}
                 {aliases && <div>{aliases.join(', ')}</div>}
                 {description && <div title={description}>{description}</div>}

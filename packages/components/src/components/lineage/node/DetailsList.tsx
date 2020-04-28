@@ -1,8 +1,8 @@
-import React, { Fragment, PureComponent, ReactNode } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 
 import { SVGIcon } from '../../..';
 
-import { LineageNode } from '../models';
+import { LineageItemWithMetadata, LineageIOConfig, LineageNode } from '../models';
 import { LineageNodeCollection } from '../vis/VisGraphGenerator';
 import { getLineageNodeTitle } from '../utils';
 import { NodeInteractionConsumer, WithNodeInteraction } from '../actions';
@@ -89,9 +89,22 @@ export class DetailsList extends PureComponent<DetailsListProps, DetailsListStat
     }
 }
 
-export class DetailsListGroup extends PureComponent {
+export interface DetailsListLineageIOProps {
+    item: LineageIOConfig;
+}
+
+export class DetailsListLineageIO extends PureComponent<DetailsListLineageIOProps> {
     render() {
-        return this.props.children;
+        const { item } = this.props;
+
+        return (
+            <>
+                <DetailsListLineageItems items={item.dataInputs} title="Data Inputs" />
+                <DetailsListLineageItems items={item.dataOutputs} title="Data Outputs" />
+                <DetailsListLineageItems items={item.materialInputs} title="Material Inputs" />
+                <DetailsListLineageItems items={item.materialOutputs} title="Material Inputs" />
+            </>
+        );
     }
 }
 
@@ -109,100 +122,110 @@ export class DetailsListSteps extends PureComponent<DetailsListStepProps> {
         }
 
         return (
-            <>
+            <DetailsList title="Run steps">
                 {node.steps.map((step, i) => (
-                    <DetailsList
-                        headerLinks={[
-                            {
-                                text: 'Details',
-                                onClick: () => {
-                                    onSelect(i);
-                                },
-                            },
-                        ]}
-                        key={`${node.lsid}.step.${i}`}
-                        title={step.name}
-                    >
-                        <>
-                            <SVGIcon className="lineage-sm-icon" />
-                            {step.protocol.name}
-                        </>
-                    </DetailsList>
+                    <div className="lineage-name" key={`${node.lsid}.step.${i}`}>
+                        <SVGIcon
+                            className="lineage-sm-icon"
+                            iconSrc={step.iconProps.iconURL}
+                        />
+                        <span>{step.name}</span>
+                        &nbsp;
+                        <a
+                            className="show-on-hover lineage-data-link-left"
+                            onClick={() => { onSelect(i); }}
+                        >
+                            <span className="lineage-data-link--text">Details</span>
+                        </a>
+                    </div>
                 ))}
-            </>
+            </DetailsList>
         );
     }
 }
 
 interface DetailsListNodesProps {
     highlightNode?: string;
-    listURL?: string;
     nodes: LineageNodeCollection;
     title: string;
 }
 
 export class DetailsListNodes extends PureComponent<DetailsListNodesProps> {
-    renderNode = (node: LineageNode): ReactNode => {
-        const { highlightNode } = this.props;
-
-        const title = getLineageNodeTitle(node);
-
-        const { iconURL, links, name } = node;
-
-        return (
-            <div
-                className="lineage-item-test lineage-name"
-                key={node.lsid}
-                style={{ fontWeight: highlightNode === node.lsid ? 'bold' : 'normal' }}
-                title={title}
-            >
-                <SVGIcon className="lineage-sm-icon" iconSrc={iconURL} />
-                &nbsp;
-                <NodeInteractionConsumer>
-                    {(context: WithNodeInteraction) => {
-                        if (context.isNodeInGraph(node)) {
-                            return (
-                                <a
-                                    className="lineage-link"
-                                    onClick={e => context.onNodeClick(node)}
-                                    onMouseOver={e => context.onNodeMouseOver(node)}
-                                    onMouseOut={e => context.onNodeMouseOut(node)}
-                                >
-                                    {name}
-                                </a>
-                            );
-                        }
-
-                        return <span>{name}</span>;
-                    }}
-                </NodeInteractionConsumer>
-                &nbsp;
-                <a href={links.overview} className="show-on-hover lineage-data-link-left">
-                    <span className="lineage-data-link--text">Overview</span>
-                </a>
-                {links.lineage !== undefined && (
-                    <a href={links.lineage} className="show-on-hover lineage-data-link-right">
-                        <span className="lineage-data-link--text">Lineage</span>
-                    </a>
-                )}
-            </div>
-        );
-    };
-
     render() {
-        const { title, nodes } = this.props;
+        const { highlightNode, nodes, title } = this.props;
 
         return (
-            <DetailsList
+            <DetailsListLineageItems
                 headerLinks={[
                     {
                         href: nodes.listURL,
                         text: 'View in grid',
                     },
                 ]}
+                highlightNode={highlightNode}
+                items={nodes.nodes}
                 title={title}
-            >
-                {nodes.nodes.map(this.renderNode)}
+            />
+        );
+    }
+}
+
+export interface DetailsListLineageItemsProps extends DetailsListProps {
+    highlightNode?: string;
+    items: LineageItemWithMetadata[];
+}
+
+export class DetailsListLineageItems extends PureComponent<DetailsListLineageItemsProps> {
+    render() {
+        const { highlightNode, items } = this.props;
+
+        if (!items || items.length === 0) {
+            return null;
+        }
+
+        return (
+            <DetailsList {...this.props}>
+                {items.map(item => (
+                    <div
+                        className="lineage-item-test lineage-name"
+                        key={item.lsid}
+                        style={{ fontWeight: highlightNode === item.lsid ? 'bold' : 'normal' }}
+                        title={getLineageNodeTitle(item as LineageNode)}
+                    >
+                        <SVGIcon
+                            className="lineage-sm-icon"
+                            iconSrc={item.iconProps.iconURL}
+                        />
+                        &nbsp;
+                        <NodeInteractionConsumer>
+                            {(context: WithNodeInteraction) => {
+                                if (context.isNodeInGraph(item)) {
+                                    return (
+                                        <a
+                                            className="lineage-link"
+                                            onClick={e => context.onNodeClick(item)}
+                                            onMouseOver={e => context.onNodeMouseOver(item)}
+                                            onMouseOut={e => context.onNodeMouseOut(item)}
+                                        >
+                                            {item.name}
+                                        </a>
+                                    );
+                                }
+
+                                return <span>{item.name}</span>;
+                            }}
+                        </NodeInteractionConsumer>
+                        &nbsp;
+                        <a href={item.links.overview} className="show-on-hover lineage-data-link-left">
+                            <span className="lineage-data-link--text">Overview</span>
+                        </a>
+                        {item.links.lineage !== undefined && (
+                            <a href={item.links.lineage} className="show-on-hover lineage-data-link-right">
+                                <span className="lineage-data-link--text">Lineage</span>
+                            </a>
+                        )}
+                    </div>
+                ))}
             </DetailsList>
         );
     }

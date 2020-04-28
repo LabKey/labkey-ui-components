@@ -144,11 +144,19 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         this.setState(
             produce((draft: Draft<State>) => {
                 draft.model.domain = domain;
-                if (keyPropertyIndex) {
+                if (keyPropertyIndex && domain.fields.get(keyPropertyIndex)) {
                     draft.model.keyPropertyName = domain.fields.get(keyPropertyIndex).name;
+                } else {
+                    // field not present i.e. got removed
+                    draft.model.keyPropertyName = undefined;
+                    draft.keyPropertyIndex = undefined;
                 }
-                if (visitDatePropertyIndex) {
+                if (visitDatePropertyIndex && domain.fields.get(visitDatePropertyIndex)) {
                     draft.model.visitDatePropertyName = domain.fields.get(visitDatePropertyIndex).name;
+                } else {
+                    // field not present i.e. got removed
+                    draft.model.keyPropertyName = undefined;
+                    draft.visitDatePropertyIndex = undefined;
                 }
             }),
             () => {

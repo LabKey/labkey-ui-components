@@ -24,7 +24,7 @@ import produce, { Draft } from 'immer';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { DomainDesign } from '../models';
+import { DomainDesign, DomainFieldIndexChange } from '../models';
 
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
@@ -67,15 +67,13 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
     componentDidMount(): void {
         const { model } = this.state;
-        let keyPropertyIndex;
-        let visitDatePropertyIndex;
-
-        const keyPropertyName = model.keyPropertyName;
 
         // setting initial indexes if these properties are already present and there are changes to them in
         // the domain form
+        let keyPropertyIndex;
+        let visitDatePropertyIndex;
         model.domain.fields.map((field, index) => {
-            if (keyPropertyName && field.name === model.keyPropertyName) {
+            if (model.keyPropertyName && field.name === model.keyPropertyName) {
                 keyPropertyIndex = index;
             }
             if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
@@ -84,15 +82,11 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         });
 
         // disabling the phi level for initially selected additional key field
-        if (keyPropertyName) {
+        if (model.keyPropertyName) {
             const updatedDomain = model.domain.merge({
                 fields: model.domain.fields
                     .map((field, index) => {
-                        if (field.name === keyPropertyName) {
-                            return field.set('disablePhiLevel', true);
-                        } else {
-                            return field.set('disablePhiLevel', false);
-                        }
+                        return field.set('disablePhiLevel', field.name === model.keyPropertyName);
                     })
                     .toList(),
             }) as DomainDesign;
@@ -137,26 +131,44 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         this.props.onFinish(model.isValid(), this.saveDomain);
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean) => {
+    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChange: DomainFieldIndexChange) => {
         const { onChange } = this.props;
         const { keyPropertyIndex, visitDatePropertyIndex } = this.state;
+
+        // TODO: this rowIndexChange handles if the selected keyPropertyIndex or visitDatePropertyIndex field is moved but not if another field moves up above it
 
         this.setState(
             produce((draft: Draft<State>) => {
                 draft.model.domain = domain;
-                if (keyPropertyIndex && domain.fields.get(keyPropertyIndex)) {
-                    draft.model.keyPropertyName = domain.fields.get(keyPropertyIndex).name;
-                } else {
-                    // field not present i.e. got removed
-                    draft.model.keyPropertyName = undefined;
-                    draft.keyPropertyIndex = undefined;
+
+                if (keyPropertyIndex !== undefined) {
+                    // if the row was removed or reordered, update the keyPropertyIndex
+                    if (rowIndexChange && rowIndexChange.originalIndex === keyPropertyIndex) {
+                        draft.keyPropertyIndex = rowIndexChange.newIndex;
+                    }
+
+                    // if row was removed, reset key property name
+                    if (draft.keyPropertyIndex === undefined) {
+                        draft.model.keyPropertyName = '';
+                    } else {
+                        // pick up any name changes to the selected field
+                        draft.model.keyPropertyName = domain.fields.get(draft.keyPropertyIndex).name;
+                    }
                 }
-                if (visitDatePropertyIndex && domain.fields.get(visitDatePropertyIndex)) {
-                    draft.model.visitDatePropertyName = domain.fields.get(visitDatePropertyIndex).name;
-                } else {
-                    // field not present i.e. got removed
-                    draft.model.keyPropertyName = undefined;
-                    draft.visitDatePropertyIndex = undefined;
+
+                if (visitDatePropertyIndex !== undefined) {
+                    // if the row was removed or reordered, update the visitDatePropertyIndex
+                    if (rowIndexChange && rowIndexChange.originalIndex === visitDatePropertyIndex) {
+                        draft.visitDatePropertyIndex = rowIndexChange.newIndex;
+                    }
+
+                    // if row was removed, reset visit date property name
+                    if (draft.visitDatePropertyIndex === undefined) {
+                        draft.model.visitDatePropertyName = undefined;
+                    } else {
+                        // pick up any name changes to the selected field
+                        draft.model.visitDatePropertyName = domain.fields.get(draft.visitDatePropertyIndex).name;
+                    }
                 }
             }),
             () => {

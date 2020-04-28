@@ -7,7 +7,7 @@
     "visitDatePropertyName": "date",
     "keyPropertyName": "Name",
     "keyPropertyManaged": false,
-    "demographicData": true,
+    "demographicData": false,
     "label": "Dataset One",
     "cohortId": 1,
     "tag": "T1",
@@ -17,7 +17,8 @@
     "dataSharing": "PTID",
     "definitionIsShared": false,
     "sourceAssayName": null,
-    "sourceAssayUrl": null
+    "sourceAssayUrl": null,
+    "useTimeKeyField": false
   },
   "domainDesign" : {
     "domainId" : 2280,

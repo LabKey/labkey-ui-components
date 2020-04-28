@@ -19,6 +19,8 @@ import { Col, Row } from 'react-bootstrap';
 
 import produce, { Draft } from 'immer';
 
+import { List } from 'immutable';
+
 import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,
@@ -27,7 +29,9 @@ import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BaseProperties
 import { HelpTopicURL } from '../HelpTopicURL';
 import { DEFINE_DATASET_TOPIC } from '../../../util/helpLinks';
 
-import { DomainDesign } from '../models';
+import { DomainDesign, DomainField } from '../models';
+
+import { PHILEVEL_NOT_PHI } from '../constants';
 
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { AdvancedSettings } from './DatasetPropertiesAdvancedSettings';
@@ -113,50 +117,64 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     };
 
     onDataRowRadioChange = e => {
-        const { model } = this.props;
-
+        const { model, onIndexChange, visitDatePropertyIndex } = this.props;
         const value = e.target.value;
+
+        // set all of the field's disablePhiLevel back to false, since there isn't a selected additional key anymore
+        const updatedDomain = model.domain.merge({
+            fields: this.getUpdatedFieldsWithoutDisablePhi(),
+        }) as DomainDesign;
+
         const newModel = produce(model, (draft: Draft<DatasetModel>) => {
-            if (value == 0) {
-                draft.keyPropertyName = undefined;
-                draft.demographicData = true;
-                draft.keyPropertyManaged = false;
-            } else if (value == 1) {
-                draft.keyPropertyName = undefined;
-                draft.demographicData = false;
-                draft.keyPropertyManaged = false;
-                draft.dataSharing = 'NONE';
-            } else {
-                draft.keyPropertyName = ''; // resetting key property name
-                draft.demographicData = false;
-                draft.keyPropertyManaged = false;
-                draft.dataSharing = 'NONE';
-            }
+            draft.domain = updatedDomain;
+            draft.useTimeKeyField = false;
+            draft.keyPropertyManaged = false;
+            draft.dataSharing = 'NONE';
+            draft.demographicData = value == 0;
+            draft.keyPropertyName = value != 2 ? undefined : ''; // resetting key property name
         });
+
+        onIndexChange(undefined, visitDatePropertyIndex);
         this.updateValidStatus(newModel);
     };
+
+    getUpdatedFieldsWithoutDisablePhi(): List<DomainField> {
+        return this.props.model.domain.fields
+            .map((field: DomainField) => {
+                return field.set('disablePhiLevel', false) as DomainField;
+            })
+            .toList();
+    }
 
     onAdditionalKeyFieldChange = (name, formValue, selected): void => {
         const { model, onIndexChange, visitDatePropertyIndex } = this.props;
 
+        // first set all of the field's disablePhiLevel back to false
+        const updatedFields = this.getUpdatedFieldsWithoutDisablePhi();
+
         let keyPropIndex;
         const updatedDomain = model.domain.merge({
-            fields: model.domain.fields
-                .map((field, index) => {
+            fields: updatedFields
+                .map((field: DomainField, index) => {
                     if (field.name === formValue) {
                         keyPropIndex = index;
-                        return field.set('disablePhiLevel', true);
-                    } else {
-                        return field.set('disablePhiLevel', false);
+
+                        // for the selected field, set its PHI level back to none and disable it
+                        return field.merge({
+                            disablePhiLevel: true,
+                            PHI: PHILEVEL_NOT_PHI,
+                        });
                     }
+
+                    return field;
                 })
                 .toList(),
         }) as DomainDesign;
 
         const newModel = produce(model, (draft: Draft<DatasetModel>) => {
-            draft.useTimeKeyField = formValue === TIME_KEY_FIELD_KEY;
             draft.domain = updatedDomain;
-            draft[name] = formValue;
+            draft.useTimeKeyField = formValue === TIME_KEY_FIELD_KEY;
+            draft.keyPropertyName = formValue;
 
             // if we are switching to a field type that is not allowed to be managed, set keyPropertyManaged as false
             if (!allowAsManagedField(draft.domain.fields.get(keyPropIndex))) {

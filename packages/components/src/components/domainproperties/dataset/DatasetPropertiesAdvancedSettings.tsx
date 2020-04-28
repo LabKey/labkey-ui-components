@@ -14,7 +14,7 @@ import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
-import { fetchCohorts, fetchVisitDateColumns, getHelpTip, getStudySubjectProp } from './actions';
+import { fetchCohorts, getVisitDateColumns, getHelpTip, getStudySubjectProp } from './actions';
 import { SHOW_IN_OVERVIEW } from './constants';
 
 import '../../../theme/dataset.scss';
@@ -240,7 +240,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const showDataspace = model.definitionIsShared && model.getDataRowSetting() === 0;
         const showDataspaceCls = showDataspace ? 'dataset_data_row_element_show' : 'dataset_data_row_element_hide';
         const showInOverviewLabel = 'Show dataset in overview';
-        const visitDateColumns = fetchVisitDateColumns(model.domain).toArray();
+        const visitDateColumns = getVisitDateColumns(model.domain).toArray();
         const visitDateProperty = this.getVisitDatePropertyName();
 
         return (

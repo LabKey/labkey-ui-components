@@ -121,7 +121,8 @@ export class DatasetModel implements IDatasetModel {
 
         let isValidKeySetting = true;
         if (this.getDataRowSetting() === 2) {
-            isValidKeySetting = this.keyPropertyName !== undefined && this.keyPropertyName !== '';
+            isValidKeySetting =
+                (this.keyPropertyName !== undefined && this.keyPropertyName !== '') || this.useTimeKeyField;
         }
 
         return isValidName && isValidLabel && isValidKeySetting;
@@ -132,22 +133,19 @@ export class DatasetModel implements IDatasetModel {
     }
 
     getDataRowSetting(): number {
-        let dataRowSetting;
+        const noKeyPropName = this.keyPropertyName === undefined || this.keyPropertyName === null;
 
         // participant id
-        if ((this.keyPropertyName === undefined || this.keyPropertyName === null) && this.demographicData) {
-            dataRowSetting = 0;
+        if (noKeyPropName && this.demographicData) {
+            return 0;
         }
         // participant id and timepoint
-        else if (this.keyPropertyName === undefined || this.keyPropertyName === null) {
-            dataRowSetting = 1;
-        }
-        // participant id, timepoint and additional key field
-        else {
-            dataRowSetting = 2;
+        else if (noKeyPropName && !this.useTimeKeyField) {
+            return 1;
         }
 
-        return dataRowSetting;
+        // participant id, timepoint and additional key field
+        return 2;
     }
 
     validManagedKeyField(editedName?: string): boolean {

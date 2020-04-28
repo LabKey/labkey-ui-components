@@ -25,7 +25,7 @@ import { SectionHeading } from '../SectionHeading';
 
 import { DatasetModel } from './models';
 import {
-    fetchAdditionalKeyFields,
+    getAdditionalKeyFields,
     fetchCategories,
     getHelpTip,
     getStudySubjectProp,
@@ -34,6 +34,7 @@ import {
 import { DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 
 import '../../../theme/dataset.scss';
+import { TIME_KEY_FIELD_KEY } from './constants';
 
 interface BasicPropertiesInputsProps {
     model: DatasetModel;
@@ -243,13 +244,16 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
     render() {
         const { model, onRadioChange, onCheckBoxChange, onSelectChange, keyPropertyIndex } = this.props;
         const domain = model.domain;
-        const additionalKeyFields = fetchAdditionalKeyFields(domain);
-
+        const additionalKeyFields = getAdditionalKeyFields(domain);
         const dataRowSetting = model.getDataRowSetting();
         const showAdditionalKeyField = dataRowSetting === 2 || model.isFromAssay();
 
-        const keyPropertyName =
-            keyPropertyIndex !== undefined ? model.domain.fields.get(keyPropertyIndex).name : model.keyPropertyName;
+        let keyPropertyName = model.keyPropertyName;
+        if (model.useTimeKeyField) {
+            keyPropertyName = TIME_KEY_FIELD_KEY;
+        } else if (keyPropertyIndex !== undefined) {
+            keyPropertyName = model.domain.fields.get(keyPropertyIndex).name;
+        }
 
         const validKeyField = model.validManagedKeyField(keyPropertyName);
 

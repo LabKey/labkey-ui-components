@@ -10,7 +10,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
       "dataSharing": "PTID",
       "datasetId": 1,
       "definitionIsShared": false,
-      "demographicData": true,
+      "demographicData": false,
       "description": "This is the first dataset",
       "domain": Immutable.Record {
         "name": "Locations",
@@ -1158,6 +1158,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
       "sourceAssayName": null,
       "sourceAssayUrl": null,
       "tag": "T1",
+      "useTimeKeyField": false,
       "visitDatePropertyName": "date",
       Symbol(immer-draftable): true,
     }
@@ -1177,7 +1178,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
         "dataSharing": "PTID",
         "datasetId": 1,
         "definitionIsShared": false,
-        "demographicData": true,
+        "demographicData": false,
         "description": "This is the first dataset",
         "domain": Immutable.Record {
           "name": "Locations",
@@ -2325,6 +2326,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
         "sourceAssayName": null,
         "sourceAssayUrl": null,
         "tag": "T1",
+        "useTimeKeyField": false,
         "visitDatePropertyName": "date",
         Symbol(immer-draftable): true,
       }
@@ -3500,7 +3502,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
             "dataSharing": "PTID",
             "datasetId": 1,
             "definitionIsShared": false,
-            "demographicData": true,
+            "demographicData": false,
             "description": "This is the first dataset",
             "domain": Immutable.Record {
               "name": "Locations",
@@ -4648,6 +4650,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
             "sourceAssayName": null,
             "sourceAssayUrl": null,
             "tag": "T1",
+            "useTimeKeyField": false,
             "visitDatePropertyName": "date",
             Symbol(immer-draftable): true,
           }
@@ -4671,7 +4674,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
               "dataSharing": "PTID",
               "datasetId": 1,
               "definitionIsShared": false,
-              "demographicData": true,
+              "demographicData": false,
               "description": "This is the first dataset",
               "domain": Immutable.Record {
                 "name": "Locations",
@@ -5819,6 +5822,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
               "sourceAssayName": null,
               "sourceAssayUrl": null,
               "tag": "T1",
+              "useTimeKeyField": false,
               "visitDatePropertyName": "date",
               Symbol(immer-draftable): true,
             }
@@ -5844,7 +5848,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                 "dataSharing": "PTID",
                 "datasetId": 1,
                 "definitionIsShared": false,
-                "demographicData": true,
+                "demographicData": false,
                 "description": "This is the first dataset",
                 "domain": Immutable.Record {
                   "name": "Locations",
@@ -6992,6 +6996,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                 "sourceAssayName": null,
                 "sourceAssayUrl": null,
                 "tag": "T1",
+                "useTimeKeyField": false,
                 "visitDatePropertyName": "date",
                 Symbol(immer-draftable): true,
               }
@@ -7272,7 +7277,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                             "dataSharing": "PTID",
                                             "datasetId": 1,
                                             "definitionIsShared": false,
-                                            "demographicData": true,
+                                            "demographicData": false,
                                             "description": "This is the first dataset",
                                             "domain": Immutable.Record {
                                               "name": "Locations",
@@ -8420,6 +8425,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                             "sourceAssayName": null,
                                             "sourceAssayUrl": null,
                                             "tag": "T1",
+                                            "useTimeKeyField": false,
                                             "visitDatePropertyName": "date",
                                             Symbol(immer-draftable): true,
                                           }
@@ -8858,7 +8864,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                               "dataSharing": "PTID",
                                               "datasetId": 1,
                                               "definitionIsShared": false,
-                                              "demographicData": true,
+                                              "demographicData": false,
                                               "description": "This is the first dataset",
                                               "domain": Immutable.Record {
                                                 "name": "Locations",
@@ -10006,6 +10012,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                               "sourceAssayName": null,
                                               "sourceAssayUrl": null,
                                               "tag": "T1",
+                                              "useTimeKeyField": false,
                                               "visitDatePropertyName": "date",
                                               Symbol(immer-draftable): true,
                                             }
@@ -10433,7 +10440,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                             "dataSharing": "PTID",
                                             "datasetId": 1,
                                             "definitionIsShared": false,
-                                            "demographicData": true,
+                                            "demographicData": false,
                                             "description": "This is the first dataset",
                                             "domain": Immutable.Record {
                                               "name": "Locations",
@@ -11581,6 +11588,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                             "sourceAssayName": null,
                                             "sourceAssayUrl": null,
                                             "tag": "T1",
+                                            "useTimeKeyField": false,
                                             "visitDatePropertyName": "date",
                                             Symbol(immer-draftable): true,
                                           }
@@ -12514,7 +12522,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                             "dataSharing": "PTID",
                                             "datasetId": 1,
                                             "definitionIsShared": false,
-                                            "demographicData": true,
+                                            "demographicData": false,
                                             "description": "This is the first dataset",
                                             "domain": Immutable.Record {
                                               "name": "Locations",
@@ -13662,6 +13670,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                             "sourceAssayName": null,
                                             "sourceAssayUrl": null,
                                             "tag": "T1",
+                                            "useTimeKeyField": false,
                                             "visitDatePropertyName": "date",
                                             Symbol(immer-draftable): true,
                                           }

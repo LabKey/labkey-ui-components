@@ -61,7 +61,7 @@ export function fetchCategories(): Promise<List<Option>> {
     });
 }
 
-export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
+export function getVisitDateColumns(domain: DomainDesign): List<Option> {
     let visitDateColumns = List<Option>();
 
     // date field is a built in field for a dataset for a date based study
@@ -76,7 +76,7 @@ export function fetchVisitDateColumns(domain: DomainDesign): List<Option> {
     return visitDateColumns;
 }
 
-export function fetchAdditionalKeyFields(domain: DomainDesign): List<Option> {
+export function getAdditionalKeyFields(domain: DomainDesign): List<Option> {
     let additionalKeyFields = List<Option>();
 
     // In a date-based or continuous study, an additional third key option is to use the Time (from Date/Time) portion of a datestamp field
@@ -202,7 +202,11 @@ export function fetchDatasetDesign(datasetId: number): Promise<DatasetModel> {
 }
 
 export function allowAsManagedField(field: DomainField): boolean {
-    return field.dataType.isString() || field.dataType.isNumeric() || field.dataType.isLookup();
+    return (
+        field &&
+        field.dataType &&
+        (field.dataType.isString() || field.dataType.isNumeric() || field.dataType.isLookup())
+    );
 }
 
 export function getStudySubjectProp(prop: string): string {

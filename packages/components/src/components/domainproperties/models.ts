@@ -1638,3 +1638,8 @@ export class DomainDetails extends Record({
         super(values);
     }
 }
+
+export interface DomainFieldIndexChange {
+    originalIndex: number;
+    newIndex: number;
+}

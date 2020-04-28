@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.52.1-fb-datasetDesigner.15",
+  "version": "0.53.0-fb-datasetDesigner.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

@@ -9,6 +9,7 @@ using that link again from the starting page will not work.
 * Issue 38002: Set isSubmitting to false after updateRows in EditableGridPanelForUpdate in case you stay on the page after updating
 * Update resolveErrorMessage to strip off java.lang.IllegalArgumentException prefixes and detect "Bad SQL grammar" exceptions.
 * Issue 40008: Add optional property to LineageSummary to allow customization of the lineage group headings in the summary panel
+* in SingleParentEntityPanel, use paged query model for better performance
 
 ### version 0.52.2
 *Released*: 24 April 2020

@@ -86,6 +86,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
             getParentGridPrefix(parentDataType),
             SchemaQuery.create(parentDataType.instanceSchemaName, chosenType),
             {
+                isPaged: true,
                 bindURL: false,
                 allowSelection: false,
                 baseFilters,

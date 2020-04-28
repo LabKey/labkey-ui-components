@@ -124,7 +124,7 @@ function _getDepthFirstNodeList(
 export function resolveIconAndShapeForNode(
     item?: LineageBaseConfig,
     queryInfoIconURL?: string,
-    isSeed?: boolean,
+    isSeed?: boolean
 ): LineageIconMetadata {
     let iconURL = DEFAULT_ICON_URL;
     let imageShape = DEFAULT_ICON_SHAPE;

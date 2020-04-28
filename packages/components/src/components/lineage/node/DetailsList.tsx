@@ -125,15 +125,14 @@ export class DetailsListSteps extends PureComponent<DetailsListStepProps> {
             <DetailsList title="Run steps">
                 {node.steps.map((step, i) => (
                     <div className="lineage-name" key={`${node.lsid}.step.${i}`}>
-                        <SVGIcon
-                            className="lineage-sm-icon"
-                            iconSrc={step.iconProps.iconURL}
-                        />
+                        <SVGIcon className="lineage-sm-icon" iconSrc={step.iconProps.iconURL} />
                         <span>{step.name}</span>
                         &nbsp;
                         <a
                             className="show-on-hover lineage-data-link-left"
-                            onClick={() => { onSelect(i); }}
+                            onClick={() => {
+                                onSelect(i);
+                            }}
                         >
                             <span className="lineage-data-link--text">Details</span>
                         </a>
@@ -192,10 +191,7 @@ export class DetailsListLineageItems extends PureComponent<DetailsListLineageIte
                         style={{ fontWeight: highlightNode === item.lsid ? 'bold' : 'normal' }}
                         title={getLineageNodeTitle(item as LineageNode)}
                     >
-                        <SVGIcon
-                            className="lineage-sm-icon"
-                            iconSrc={item.iconProps.iconURL}
-                        />
+                        <SVGIcon className="lineage-sm-icon" iconSrc={item.iconProps.iconURL} />
                         &nbsp;
                         <NodeInteractionConsumer>
                             {(context: WithNodeInteraction) => {

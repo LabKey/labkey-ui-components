@@ -35,7 +35,6 @@ export class Detail extends PureComponent<DetailProps> {
         const { editingMode, queryColumns, queryModel } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
-
             let displayColumns: List<QueryColumn>;
             if (queryColumns) {
                 displayColumns = queryColumns;

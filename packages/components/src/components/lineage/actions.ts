@@ -19,7 +19,7 @@ import {
     LineageRunStep,
     LineageIOConfig,
     LineageIO,
-    LineageLinkable
+    LineageLinkable,
 } from './models';
 import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
@@ -115,9 +115,7 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
                 // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?
                 // See LineageNodeMetadata (and it's usages) for why this is currently necessary
                 columns: LINEAGE_METADATA_COLUMNS.add(fieldKey).join(','),
-                filterArray: [
-                    Filter.create(fieldKey, nodes.map(n => n.pkFilters[0].value).toArray(), Filter.Types.IN),
-                ],
+                filterArray: [Filter.create(fieldKey, nodes.map(n => n.pkFilters[0].value).toArray(), Filter.Types.IN)],
             });
         })
         .toArray();
@@ -127,8 +125,8 @@ type SupportsMetadata = LineageBaseConfig & LineageIOConfig & LineageLinkable;
 
 function applyLineageMetadata(
     lineage: LineageResult,
-    metadata: { [lsid:string]: LineageNodeMetadata },
-    iconURLByLsid: { [lsid:string]: string },
+    metadata: { [lsid: string]: LineageNodeMetadata },
+    iconURLByLsid: { [lsid: string]: string },
     options?: LineageOptions
 ): LineageResult {
     const urlResolver = getURLResolver(options);
@@ -136,9 +134,11 @@ function applyLineageMetadata(
     const nodes = lineage.nodes.map(node => {
         const config = {
             ...applyItemMetadata(node, iconURLByLsid, urlResolver, lineage.seed === node.lsid),
-            steps: node.steps.map(produce((draft: Draft<LineageRunStep>) => {
-                Object.assign(draft, applyItemMetadata(draft, iconURLByLsid, urlResolver));
-            })),
+            steps: node.steps.map(
+                produce((draft: Draft<LineageRunStep>) => {
+                    Object.assign(draft, applyItemMetadata(draft, iconURLByLsid, urlResolver));
+                })
+            ),
             meta: metadata[node.lsid],
         };
 
@@ -156,20 +156,20 @@ function applyLineageMetadata(
 
 function applyItemMetadata(
     item: SupportsMetadata,
-    iconURLByLsid: { [lsid:string]: string },
+    iconURLByLsid: { [lsid: string]: string },
     urlResolver: LineageURLResolver,
-    isSeed: boolean = false
+    isSeed = false
 ) {
     return {
         ...applyLineageIOMetadata(item, iconURLByLsid, urlResolver),
         ...{ iconProps: resolveIconAndShapeForNode(item, iconURLByLsid[item.lsid], isSeed) },
-        ...{ links: urlResolver.resolveItem(item) ?? {} }
+        ...{ links: urlResolver.resolveItem(item) ?? {} },
     };
 }
 
 function applyLineageIOMetadata(
     item: SupportsMetadata,
-    iconURLByLsid: { [lsid:string]: string },
+    iconURLByLsid: { [lsid: string]: string },
     urlResolver: LineageURLResolver
 ): LineageIOConfig {
     const _applyItem = produce((draft: Draft<LineageIO>) => {
@@ -182,7 +182,7 @@ function applyLineageIOMetadata(
         dataOutputs: item.dataOutputs.map(_applyItem),
         materialInputs: item.materialInputs.map(_applyItem),
         materialOutputs: item.materialOutputs.map(_applyItem),
-    }
+    };
 }
 
 export function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
@@ -238,10 +238,12 @@ export function loadSeedResult(seed: string, options?: LineageOptions): Promise<
     if (!lineageSeedCache[seed]) {
         lineageSeedCache[seed] = fetchLineageNodes([seed])
             .then(nodes => nodes[0])
-            .then(seedNode => LineageResult.create({
-                nodes: { [seedNode.lsid]: seedNode },
-                seed: seedNode.lsid,
-            }))
+            .then(seedNode =>
+                LineageResult.create({
+                    nodes: { [seedNode.lsid]: seedNode },
+                    seed: seedNode.lsid,
+                })
+            )
             .then(result => processLineageResult(result, options));
     }
 

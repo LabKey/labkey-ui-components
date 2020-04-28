@@ -170,7 +170,7 @@ export class LineageRunStep implements LineageRunStepConfig {
 
     constructor(values?: LineageRunStepConfig) {
         Object.assign(this, values, {
-            ...LineageIO.applyConfig(values)
+            ...LineageIO.applyConfig(values),
         });
     }
 }
@@ -315,7 +315,7 @@ export class LineageNode
                     lsid,
                     parents: LineageLink.createList(values.parents),
                     steps: List(values.steps?.map(stepProps => new LineageRunStep(stepProps))),
-                }
+                },
             };
         }
 

@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { Fragment, PureComponent, ReactNode } from 'react';
 
 import { SVGIcon } from '../../..';
 
@@ -6,16 +6,12 @@ import { LineageItemWithMetadata, LineageIOConfig, LineageNode } from '../models
 import { LineageNodeCollection } from '../vis/VisGraphGenerator';
 import { getLineageNodeTitle } from '../utils';
 import { NodeInteractionConsumer, WithNodeInteraction } from '../actions';
-
-export interface DetailListLink
-    extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
-    text: string;
-}
+import { LineageDataLink } from '../LineageDataLink';
 
 export interface DetailsListProps {
     collapsedCount?: number;
     open?: boolean;
-    headerLinks?: DetailListLink[];
+    headerLinks?: ReactNode[];
     title: string;
     showCount?: boolean;
 }
@@ -47,18 +43,7 @@ export class DetailsList extends PureComponent<DetailsListProps, DetailsListStat
                     <h6 className="no-margin-bottom">
                         {title}
                         {showCount && <span>&nbsp;({React.Children.count(children)})</span>}
-                        {headerLinks &&
-                            headerLinks.map(
-                                (link, i) =>
-                                    link && (
-                                        <Fragment key={i}>
-                                            &nbsp;
-                                            <a {...link} className="lineage-data-link--text show-on-hover">
-                                                {link.text}
-                                            </a>
-                                        </Fragment>
-                                    )
-                            )}
+                        {headerLinks && headerLinks.map((link, i) => link && <Fragment key={i}>&nbsp;{link}</Fragment>)}
                     </h6>
                 </summary>
                 <ul className="lineage-details-list">
@@ -128,14 +113,13 @@ export class DetailsListSteps extends PureComponent<DetailsListStepProps> {
                         <SVGIcon className="lineage-sm-icon" iconSrc={step.iconProps.iconURL} />
                         <span>{step.name}</span>
                         &nbsp;
-                        <a
-                            className="show-on-hover lineage-data-link-left"
+                        <LineageDataLink
                             onClick={() => {
                                 onSelect(i);
                             }}
                         >
-                            <span className="lineage-data-link--text">Details</span>
-                        </a>
+                            Details
+                        </LineageDataLink>
                     </div>
                 ))}
             </DetailsList>
@@ -153,19 +137,13 @@ export class DetailsListNodes extends PureComponent<DetailsListNodesProps> {
     render() {
         const { highlightNode, nodes, title } = this.props;
 
-        // only display "View in grid" when link is available
-        const headerLinks = nodes.listURL
-            ? [
-                  {
-                      href: nodes.listURL,
-                      text: 'View in grid',
-                  },
-              ]
-            : undefined;
-
         return (
             <DetailsListLineageItems
-                headerLinks={headerLinks}
+                headerLinks={[
+                    <LineageDataLink key="grid" href={nodes.listURL}>
+                        View in grid
+                    </LineageDataLink>,
+                ]}
                 highlightNode={highlightNode}
                 items={nodes.nodes}
                 title={title}
@@ -217,14 +195,8 @@ export class DetailsListLineageItems extends PureComponent<DetailsListLineageIte
                             }}
                         </NodeInteractionConsumer>
                         &nbsp;
-                        <a href={item.links.overview} className="show-on-hover lineage-data-link-left">
-                            <span className="lineage-data-link--text">Overview</span>
-                        </a>
-                        {item.links.lineage !== undefined && (
-                            <a href={item.links.lineage} className="show-on-hover lineage-data-link-right">
-                                <span className="lineage-data-link--text">Lineage</span>
-                            </a>
-                        )}
+                        <LineageDataLink href={item.links.overview}>Overview</LineageDataLink>
+                        <LineageDataLink href={item.links.lineage}>Lineage</LineageDataLink>
                     </div>
                 ))}
             </DetailsList>

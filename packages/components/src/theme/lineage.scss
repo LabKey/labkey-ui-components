@@ -36,8 +36,8 @@
     display: inline;
 }
 
-.lineage-data-link-left {
-  padding: 0 1px;
+.lineage-data-link {
+  padding: 0 0 0 4px;
 }
 
 .lineage-data-link--text {
@@ -50,10 +50,6 @@
     &:hover, &:focus {
         color: $gray-dark;
     }
-}
-
-.lineage-data-link-right {
-  padding: 0 5px;
 }
 
 .lineage-seed-info {

@@ -3,6 +3,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { SVGIcon, Theme } from '../../..';
 
 import { LineageNode } from '../models';
+import { LineageDataLink } from '../LineageDataLink';
 
 export interface DetailHeaderProps {
     header: ReactNode;
@@ -49,14 +50,8 @@ export class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
             <>
                 {(lineageUrl && !isSeed && <a href={lineageUrl}>{name}</a>) || name}
                 <div className="pull-right">
-                    <a className="lineage-data-link-left" href={node.links.overview}>
-                        <span className="lineage-data-link--text">Overview</span>
-                    </a>
-                    {lineageUrl !== undefined && (
-                        <a className="lineage-data-link-right" href={lineageUrl}>
-                            <span className="lineage-data-link--text">Lineage</span>
-                        </a>
-                    )}
+                    <LineageDataLink href={node.links.overview}>Overview</LineageDataLink>
+                    <LineageDataLink href={lineageUrl}>Lineage</LineageDataLink>
                 </div>
             </>
         );

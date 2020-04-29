@@ -622,23 +622,23 @@ describe('getUpdatedData', () => {
         expect(updatedData[0]).toStrictEqual({
             RowId: 445,
             Value: null,
-            AndAgain: undefined,
+            AndAgain: null,
             Other: 'not another',
         });
         expect(updatedData[1]).toStrictEqual({
             RowId: 446,
             Value: null,
-            AndAgain: undefined,
+            AndAgain: null,
             Other: 'not another',
         });
         expect(updatedData[2]).toStrictEqual({
             RowId: 447,
-            AndAgain: undefined,
+            AndAgain: null,
             Other: 'not another',
         });
         expect(updatedData[3]).toStrictEqual({
             RowId: 448,
-            AndAgain: undefined,
+            AndAgain: null,
             Other: 'not another',
         });
     });

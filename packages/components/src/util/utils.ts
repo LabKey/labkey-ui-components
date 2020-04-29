@@ -435,7 +435,7 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                 if (primaryKeys.indexOf(key) > -1) {
                     return m.set(key, fieldValueMap.get('value'));
                 } else if (updateValuesMap.has(key) && !isSameWithStringCompare(updateValuesMap.get(key), fieldValueMap.get('value'))) {
-                    return m.set(key, updateValuesMap.get(key));
+                    return m.set(key, updateValuesMap.get(key) == undefined ? null : updateValuesMap.get(key));
                 } else {
                     return m;
                 }

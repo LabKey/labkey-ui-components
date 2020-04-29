@@ -7,6 +7,8 @@ import { createNewDomainField } from '../actions';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
+
 import { ListModel } from './models';
 
 const AUTO_INC_KEY_OPTION_TEXT = 'Auto integer key';
@@ -17,7 +19,7 @@ const AUTO_INC_FIELD_CONFIG = {
     dataType: AUTOINT_TYPE,
     rangeURI: AUTOINT_TYPE.rangeURI,
     isPrimaryKey: true,
-    lockType: 'PKLocked',
+    lockType: DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
 } as Partial<IDomainField>;
 
 interface Props extends IAppDomainHeader {
@@ -52,9 +54,11 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
             updatedFields = updatedFields.insert(0, newKeyField);
             keyType = 'AutoIncrementInteger';
         } else {
-            newKeyField = updatedFields
-                .get(selectedRowIndex)
-                .merge({ isPrimaryKey: true, required: true, lockType: 'PKLocked' }) as DomainField;
+            newKeyField = updatedFields.get(selectedRowIndex).merge({
+                isPrimaryKey: true,
+                required: true,
+                lockType: DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
+            }) as DomainField;
             updatedFields = updatedFields.set(selectedRowIndex, newKeyField);
             keyType = newKeyField.dataType.name === 'int' ? 'Integer' : 'Varchar';
 

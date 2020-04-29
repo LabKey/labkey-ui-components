@@ -61,13 +61,16 @@ import {
     IFieldChange,
     PROP_DESC_TYPES,
     PropDescType,
+    DomainFieldIndexChange,
 } from './models';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
+import { SectionHeading } from './SectionHeading';
+import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface IDomainFormInput {
     domain: DomainDesign;
-    onChange: (newDomain: DomainDesign, dirty: boolean) => any;
+    onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange) => any;
     onToggle?: (collapsed: boolean, callback?: () => any) => any;
     helpTopic?: string;
     helpNoun?: string;
@@ -92,6 +95,7 @@ interface IDomainFormInput {
     successBsStyle?: string;
     setFileImportData?: (file: File) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    importDataChildRenderer?: () => any;
 }
 
 interface IDomainFormState {
@@ -191,7 +195,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>, nextContext: any): void {
-        const { controlledCollapse, initCollapsed, domain, validate, onChange } = this.props;
+        const { controlledCollapse, initCollapsed, validate, onChange } = this.props;
 
         // if controlled collapsible, allow the prop change to update the collapsed state
         if (controlledCollapse && nextProps.initCollapsed !== initCollapsed) {
@@ -304,7 +308,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         expandedRowIndex === index ? this.collapseRow() : this.expandRow(index);
     };
 
-    onDomainChange(updatedDomain: DomainDesign, dirty?: boolean) {
+    onDomainChange(updatedDomain: DomainDesign, dirty?: boolean, rowIndexChange?: DomainFieldIndexChange) {
         const { onChange, controlledCollapse } = this.props;
 
         // Check for cleared errors
@@ -318,17 +322,18 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         if (onChange) {
-            onChange(updatedDomain, dirty !== undefined ? dirty : true);
+            onChange(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChange);
         }
     }
 
     onDeleteConfirm(index: number) {
         let fieldCount = this.props.domain.fields.size;
         if (index !== undefined) {
+            const rowIndexChange = { originalIndex: index, newIndex: undefined } as DomainFieldIndexChange;
             const updatedDomain = removeField(this.props.domain, index);
             fieldCount = updatedDomain.fields.size;
 
-            this.onDomainChange(updatedDomain);
+            this.onDomainChange(updatedDomain, true, rowIndexChange);
         }
 
         this.setState(state => ({
@@ -485,7 +490,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainException: domainExceptionWithMovedErrors,
         }) as DomainDesign;
 
-        this.onDomainChange(newDomain);
+        const rowIndexChange = { originalIndex: srcIndex, newIndex: destIndex } as DomainFieldIndexChange;
+
+        this.onDomainChange(newDomain, true, rowIndexChange);
 
         this.fastExpand(expanded);
     };
@@ -866,6 +873,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             useTheme,
             helpNoun,
             setFileImportData,
+            importDataChildRenderer,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -908,7 +916,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 filePreviewData={filePreviewData}
                                 setFileImportData={setFileImportData}
                                 file={file}
-                            />
+                            >
+                                {importDataChildRenderer && importDataChildRenderer()}
+                            </ImportDataFilePreview>
                         )}
                     </Panel.Body>
                 </Panel>

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.54.0-fb-rungraph-deets.1",
+  "version": "0.54.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -149,7 +149,18 @@
         "user": {
           "id": 1004
         },
-        "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name="
+        "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name=",
+        "moduleContext": {
+          "study": {
+            "subject": {
+              "nounPlural": "Participants",
+              "tableName": "Participant",
+              "nounSingular": "Participant",
+              "columnName": "ParticipantId"
+            },
+            "timepointType": "VISIT"
+          }
+        }
       }
     },
     "moduleFileExtensions": [

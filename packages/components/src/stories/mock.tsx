@@ -326,7 +326,7 @@ export function initMocks() {
 
     mock.post(/.*\/visualization\/?.*\/getVisualization.*/, jsonResponse(visualizationConfig));
 
-    mock.post(/.*\/property\/inferDomain.*/, jsonResponse(inferDomainJson));
+    mock.post(/.*\/property\/?.*\/inferDomain.*/, jsonResponse(inferDomainJson));
 
     mock.get(/.*\/security\/GetMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
 

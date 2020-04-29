@@ -115,6 +115,16 @@ export class PropDescType
         return rangeURI === INT_RANGE_URI || rangeURI === USER_RANGE_URI;
     }
 
+    static isNumeric(rangeURI: string): boolean {
+        return (
+            this.isInteger(rangeURI) ||
+            rangeURI === DECIMAL_RANGE_URI ||
+            rangeURI === DOUBLE_RANGE_URI ||
+            rangeURI === FLOAT_RANGE_URI ||
+            rangeURI === LONG_RANGE_URI
+        );
+    }
+
     static isString(rangeURI: string): boolean {
         return rangeURI === STRING_RANGE_URI || rangeURI === MULTILINE_RANGE_URI;
     }
@@ -169,6 +179,10 @@ export class PropDescType
 
     isInteger(): boolean {
         return PropDescType.isInteger(this.rangeURI);
+    }
+
+    isNumeric(): boolean {
+        return PropDescType.isNumeric(this.rangeURI);
     }
 
     isString(): boolean {
@@ -321,8 +335,8 @@ export class DomainDesign
         description: undefined,
         domainURI: undefined,
         domainId: null,
-        allowFileLinkProperties: true,
-        allowAttachmentProperties: true,
+        allowFileLinkProperties: false,
+        allowAttachmentProperties: false,
         allowFlagProperties: true,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
@@ -686,6 +700,7 @@ export interface IDomainField {
     updatedField: boolean;
     isPrimaryKey: boolean;
     lockType: string;
+    disablePhiLevel?: boolean;
 }
 
 export class DomainField
@@ -734,6 +749,7 @@ export class DomainField
         isPrimaryKey: false,
         lockType: DOMAIN_FIELD_NOT_LOCKED,
         wrappedColumnName: undefined,
+        disablePhiLevel: false,
     })
     implements IDomainField {
     conceptURI?: string;
@@ -780,6 +796,7 @@ export class DomainField
     isPrimaryKey: boolean;
     lockType: string;
     wrappedColumnName?: string;
+    disablePhiLevel?: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         const baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -1620,4 +1637,9 @@ export class DomainDetails extends Record({
     constructor(values?: { [key: string]: any }) {
         super(values);
     }
+}
+
+export interface DomainFieldIndexChange {
+    originalIndex: number;
+    newIndex: number;
 }

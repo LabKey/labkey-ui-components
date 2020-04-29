@@ -48,7 +48,7 @@ export const EXP_TABLES = {
 const CORE_SCHEMA = 'core';
 export const CORE_TABLES = {
     SCHEMA: CORE_SCHEMA,
-    USERS: SchemaQuery.create('core', 'Users'),
+    USERS: SchemaQuery.create(CORE_SCHEMA, 'Users'),
 };
 
 // DATA CLASSES
@@ -80,6 +80,13 @@ export const SAMPLE_SETS = {
     SAMPLES: SchemaQuery.create(SAMPLE_SET_SCHEMA, 'Samples'),
 };
 
+// STUDY
+const STUDY_SCHEMA = 'study';
+export const STUDY_TABLES = {
+    SCHEMA: STUDY_SCHEMA,
+    COHORT: SchemaQuery.create(STUDY_SCHEMA, 'Cohort'),
+};
+
 export const SCHEMAS = {
     ASSAY_TABLES,
     EXP_TABLES,
@@ -87,6 +94,7 @@ export const SCHEMAS = {
     SAMPLE_SETS,
     DATA_CLASSES,
     CBMB,
+    STUDY_TABLES,
 };
 
 export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {

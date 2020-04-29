@@ -14,49 +14,109 @@
  * limitations under the License.
  */
 
+import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
+
+import { fromJS, List } from 'immutable';
+import { Option } from 'react-select';
+
+import { DomainDesign, DomainField, selectRows } from '../../..';
+
+import { DatasetModel } from './models';
 import {
     COHORT_TIP,
-    DATA_ROW_UNIQUENESS,
     DATASET_CATEGORY_TIP,
     DATASET_ID_TIP,
     DATASET_LABEL_TIP,
     DATASET_NAME_TIP,
-    DATASPACE_TIP,
     TAG_TIP,
+    TIME_KEY_FIELD_DISPLAY,
+    TIME_KEY_FIELD_KEY,
     VISIT_DATE_TIP,
 } from './constants';
 
-export const fetchCategories = async () => {
-    // TODO: Replace this with server side call
-    return {
-        categories: [
-            { label: 'A', value: 20 },
-            { label: 'B', value: 21 },
-            { label: 'C', value: 22 },
-        ],
-    };
-};
+export function fetchCategories(): Promise<List<Option>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            saveInSession: true,
+            schemaName: 'study',
+            sql: 'SELECT DISTINCT CategoryId.Label, CategoryId.RowId FROM DataSets',
+        })
+            .then(data => {
+                const models = fromJS(data.models[data.key]);
+                let categories = List<Option>();
 
-export const fetchCohorts = async () => {
-    // TODO: Replace this with server side call
-    return {
-        cohorts: [
-            { label: 'Cohort1', value: 1 },
-            { label: 'Cohort2', value: 2 },
-            { label: 'Cohort3', value: 3 },
-        ],
-    };
-};
+                data.orderedModels[data.key].forEach(modelKey => {
+                    const row = models.get(modelKey);
+                    const value = row.getIn(['Label', 'value']);
+                    const label = row.getIn(['Label', 'value']);
 
-export const fetchVisitDateColumns = async () => {
-    // TODO: Keeping this action until next story in which visitDateColumns will be pulled from state change (for date fields) in the Domain Form.
-    return {
-        visitDateColumns: [
-            { label: 'Date', value: 'date' },
-            { label: 'Arrival Date', value: 'arrivalDate' },
-        ],
-    };
-};
+                    categories = categories.push({ value, label });
+                });
+
+                resolve(categories);
+            })
+            .catch(response => {
+                reject(response.message);
+            });
+    });
+}
+
+export function getVisitDateColumns(domain: DomainDesign): List<Option> {
+    let visitDateColumns = List<Option>();
+
+    // date field is a built in field for a dataset for a date based study
+    visitDateColumns = visitDateColumns.push({ value: 'date', label: 'date' });
+
+    domain.fields.map(field => {
+        if (field && field.rangeURI && field.rangeURI.endsWith('dateTime')) {
+            visitDateColumns = visitDateColumns.push({ value: field.name, label: field.name });
+        }
+    });
+
+    return visitDateColumns;
+}
+
+export function getAdditionalKeyFields(domain: DomainDesign): List<Option> {
+    let additionalKeyFields = List<Option>();
+
+    // In a date-based or continuous study, an additional third key option is to use the Time (from Date/Time) portion of a datestamp field
+    // where multiple measurements happen on a given day or visit (tracking primate weight for example), the time portion of the date field can be used as an additional key
+    if (getServerContext().moduleContext.study.timepointType !== 'VISIT') {
+        additionalKeyFields = additionalKeyFields.push({ value: TIME_KEY_FIELD_KEY, label: TIME_KEY_FIELD_DISPLAY });
+    }
+
+    domain.fields.map(field => {
+        additionalKeyFields = additionalKeyFields.push({ value: field.name, label: field.name });
+    });
+
+    return additionalKeyFields;
+}
+
+export function fetchCohorts(): Promise<List<Option>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: 'study',
+            queryName: 'Cohort',
+        })
+            .then(data => {
+                const models = fromJS(data.models[data.key]);
+                let cohorts = List<Option>();
+
+                data.orderedModels[data.key].forEach(modelKey => {
+                    const row = models.get(modelKey);
+                    const value = row.getIn(['rowid', 'value']);
+                    const label = row.getIn(['label', 'value']);
+
+                    cohorts = cohorts.push({ value, label });
+                });
+
+                resolve(cohorts);
+            })
+            .catch(response => {
+                reject(response.message);
+            });
+    });
+}
 
 export function getHelpTip(fieldName: string): string {
     let helpTip = '';
@@ -84,11 +144,75 @@ export function getHelpTip(fieldName: string): string {
             helpTip = TAG_TIP;
             break;
         case 'dataspace':
-            helpTip = DATASPACE_TIP;
+            helpTip =
+                'For demographics datasets, this setting is used to enable data sharing across studies. ' +
+                "When 'No' is selected (default), each study folder 'owns' its own data rows. If the study has shared " +
+                "visits/timepoints, then 'Share by " +
+                getStudySubjectProp('columnName') +
+                "' means that data rows are shared across the project and " +
+                'studies will only see data rows for ' +
+                getStudySubjectProp('nounPlural').toLowerCase() +
+                ' that are part of that study.';
             break;
         case 'dataRowUniqueness':
-            helpTip = DATA_ROW_UNIQUENESS;
+            helpTip =
+                'Choose criteria for how ' +
+                getStudySubjectProp('nounPlural').toLowerCase() +
+                ' and visits/timepoints are paired with, or without, an additional data column.';
             break;
     }
     return helpTip;
+}
+
+export function getDatasetProperties(datasetId?: number) {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('study', 'GetDataset'),
+            method: 'GET',
+            params: { datasetId },
+            success: Utils.getCallbackWrapper(data => {
+                resolve(DatasetModel.create(data, undefined));
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                reject(error);
+            }),
+        });
+    });
+}
+
+export function fetchDatasetDesign(datasetId: number): Promise<DatasetModel> {
+    return new Promise((resolve, reject) => {
+        getDatasetProperties(datasetId)
+            .then((model: DatasetModel) => {
+                Domain.getDomainDetails({
+                    containerPath: LABKEY.container.path,
+                    domainId: model.domainId,
+                    success: data => {
+                        resolve(DatasetModel.create(undefined, data));
+                    },
+                    failure: error => {
+                        reject(error);
+                    },
+                });
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+export function allowAsManagedField(field: DomainField): boolean {
+    return (
+        field &&
+        field.dataType &&
+        (field.dataType.isString() || field.dataType.isNumeric() || field.dataType.isLookup())
+    );
+}
+
+export function getStudySubjectProp(prop: string): string {
+    return getServerContext().moduleContext.study.subject[prop];
+}
+
+export function getStudyTimepointLabel(): string {
+    return getServerContext().moduleContext.study.timepointType === 'VISIT' ? 'Visits' : 'Timepoints';
 }

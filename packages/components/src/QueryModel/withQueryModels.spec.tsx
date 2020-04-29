@@ -3,13 +3,13 @@ import { mount } from 'enzyme';
 
 import { Actions, QueryInfo, QueryModel, QueryModelMap, SchemaQuery, withQueryModels } from '..';
 
+import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../testHelpers';
 import { MockQueryModelLoader } from '../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
 import aminoAcidsQueryInfo from '../test/data/assayAminoAcidsData-getQueryDetails.json';
 import aminoAcidsQuery from '../test/data/assayAminoAcidsData-getQuery.json';
 
-import { initUnitTests, makeQueryInfo, makeTestData, sleep } from './testUtils';
 import { RowsResponse } from './QueryModelLoader';
 import { LoadingState } from './QueryModel';
 

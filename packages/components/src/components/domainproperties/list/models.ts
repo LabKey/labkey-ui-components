@@ -16,6 +16,7 @@
 import { Record } from 'immutable';
 
 import { DomainDesign, DomainField } from '../models';
+import { DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
 
 export interface AdvancedSettingsForm {
     titleColumn?: string;
@@ -108,7 +109,9 @@ export class ListModel extends Record({
             const fields = domain.fields;
             const pkField = fields.findIndex(i => i.isPrimaryKey);
             if (pkField > -1) {
-                const pkFieldLocked = fields.get(pkField).merge({ lockType: 'PKLocked' }) as DomainField;
+                const pkFieldLocked = fields
+                    .get(pkField)
+                    .merge({ lockType: DOMAIN_FIELD_PRIMARY_KEY_LOCKED }) as DomainField;
                 const updatedFields = fields.set(pkField, pkFieldLocked);
                 domain = domain.set('fields', updatedFields) as DomainDesign;
             }

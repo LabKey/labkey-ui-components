@@ -149,7 +149,18 @@
         "user": {
           "id": 1004
         },
-        "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name="
+        "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name=",
+        "moduleContext": {
+          "study": {
+            "subject": {
+              "nounPlural": "Participants",
+              "tableName": "Participant",
+              "nounSingular": "Participant",
+              "columnName": "ParticipantId"
+            },
+            "timepointType": "VISIT"
+          }
+        }
       }
     },
     "moduleFileExtensions": [

@@ -4,11 +4,13 @@ import { mount, render } from 'enzyme';
 
 import { Actions, QueryInfo, SchemaQuery } from '..';
 
+import { initUnitTests, makeQueryInfo } from '../testHelpers';
+
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
 import { LoadingState, QueryModel } from './QueryModel';
 import { PageSizeSelector } from './PageSizeSelector';
-import { initUnitTests, makeQueryInfo, makeTestActions } from './testUtils';
+import { makeTestActions } from './testUtils';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;

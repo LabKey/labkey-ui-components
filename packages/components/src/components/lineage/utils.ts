@@ -17,7 +17,7 @@ const BACKUP_IMAGE_ROOT = 'https://labkey.org/_images/';
 const DEFAULT_ICON_SHAPE = 'circularImage';
 
 // A constant set of icons that are better displayed as a normal image (since default is "circularImage")
-const NON_CIRCULAR_IMAGES = ['expressionsystem', 'mixtures', 'rawmaterials', 'run'];
+const NON_CIRCULAR_IMAGES = ['datafile', 'file', 'expressionsystem', 'mixtures', 'rawmaterials', 'run'];
 
 function getQueryFromSchema(schemasObject: any, queryName: string): SchemaQuery {
     return Object.keys(schemasObject)
@@ -157,6 +157,8 @@ export function resolveIconAndShapeForNode(
             iconURL = 'samples';
         } else if (item.expType === 'ExperimentRun') {
             iconURL = 'run';
+        } else if (item.expType === 'Data') {
+            iconURL = 'datafile';
         }
     }
 

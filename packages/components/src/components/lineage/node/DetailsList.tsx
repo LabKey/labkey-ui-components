@@ -100,9 +100,9 @@ export class DetailsListLineageIO extends PureComponent<DetailsListLineageIOProp
         return (
             <>
                 <DetailsListLineageItems items={item.dataInputs} title="Data Inputs" />
-                <DetailsListLineageItems items={item.dataOutputs} title="Data Outputs" />
                 <DetailsListLineageItems items={item.materialInputs} title="Material Inputs" />
-                <DetailsListLineageItems items={item.materialOutputs} title="Material Inputs" />
+                <DetailsListLineageItems items={item.dataOutputs} title="Data Outputs" />
+                <DetailsListLineageItems items={item.materialOutputs} title="Material Outputs" />
             </>
         );
     }

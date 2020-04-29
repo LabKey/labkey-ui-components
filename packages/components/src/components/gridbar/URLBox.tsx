@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 
 import { getLocation, Location, replaceParameters } from '../../util/URL';
 import { OmniBox } from '../omnibox/OmniBox';
@@ -23,9 +23,7 @@ import { FilterAction } from '../omnibox/actions/Filter';
 import { SearchAction } from '../omnibox/actions/Search';
 import { SortAction } from '../omnibox/actions/Sort';
 import { ViewAction } from '../omnibox/actions/View';
-import { QueryColumn, QueryGridModel } from '../base/models/model';
-
-const emptyList = List<QueryColumn>();
+import { QueryGridModel } from '../base/models/model';
 
 /**
  * This is a mapping of actions with their associated URL param. It is keyed by the name of action
@@ -38,8 +36,14 @@ const urlActions = {
     view: ViewAction,
 };
 
-function isLocationEqual(locationA: Location, locationB: Location): boolean {
-    return locationA && locationB && locationA.pathname === locationB.pathname && locationA.search === locationB.search;
+export function isLocationEqual(locationA: Location, locationB: Location): boolean {
+    return (
+        locationA &&
+        locationB &&
+        locationA.pathname === locationB.pathname &&
+        locationA.search === locationB.search &&
+        locationA.query.equals(locationB.query)
+    );
 }
 
 interface URLBoxProps {
@@ -63,10 +67,6 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
-        this.onOmniBoxChange = this.onOmniBoxChange.bind(this);
-        this.requestColumns = this.requestColumns.bind(this);
-        this.requestModel = this.requestModel.bind(this);
-
         this.state = {
             changeLock: false,
             location: getLocation(),
@@ -74,23 +74,10 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     }
 
     shouldComponentUpdate(nextProps: URLBoxProps, nextState: URLBoxState): boolean {
-        return !nextState.changeLock && !isLocationEqual(this.state.location, nextState.location);
+        return !nextState.changeLock && !isLocationEqual(this.state.location, getLocation());
     }
 
-    private getColumns(allColumns?: boolean): List<QueryColumn> {
-        const queryModel = this.getQueryModel();
-        if (!queryModel) {
-            return emptyList;
-        }
-
-        if (allColumns) {
-            return queryModel.getAllColumns();
-        }
-
-        return queryModel.getDisplayColumns();
-    }
-
-    onOmniBoxChange(actionValueCollection: ActionValueCollection[], boxActions: Action[]) {
+    onOmniBoxChange = (actionValueCollection: ActionValueCollection[], boxActions: Action[]) => {
         const queryModel = this.getQueryModel();
         const location = getLocation();
 
@@ -138,9 +125,9 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
             changeLock: false,
             location: getLocation(),
         });
-    }
+    };
 
-    mapParamsToActionValues(): { actions: Action[]; values: ActionValue[] } {
+    mapParamsToActionValues = (): { actions: Action[]; values: ActionValue[] } => {
         const queryModel = this.getQueryModel();
         const location = getLocation();
         const urlPrefix = queryModel ? queryModel.urlPrefix : undefined;
@@ -164,7 +151,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
                 }
 
                 const urlAction = urlActions[actionName];
-                actions.push(new urlAction(this.requestColumns, urlPrefix, this.requestModel));
+                actions.push(new urlAction(urlPrefix, this.getQueryModel));
             }
         }
 
@@ -183,7 +170,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
                     for (let p = 0; p < paramValues.length; p++) {
                         const decodedParamVals = decodeURIComponent(paramValues[p]);
                         if (actions[a].matchParam(key, decodedParamVals)) {
-                            const values = actions[a].parseParam(key, decodedParamVals, this.getColumns(true));
+                            const values = actions[a].parseParam(key, decodedParamVals, queryModel.getAllColumns());
 
                             for (let v = 0; v < values.length; v++) {
                                 if (typeof values[v] === 'string') {
@@ -209,22 +196,14 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
             actions,
             values: actionValues,
         };
-    }
+    };
 
-    requestColumns(allColumns?: boolean): Promise<List<QueryColumn>> {
-        return Promise.resolve(this.getColumns(allColumns));
-    }
-
-    requestModel(): Promise<QueryGridModel> {
-        return Promise.resolve(this.getQueryModel());
-    }
-
-    getQueryModel(): QueryGridModel {
+    getQueryModel = (): QueryGridModel => {
         const { queryModel } = this.props;
 
         // need to access this.global directly to connect this component to the re-render cycle
         return queryModel ? this.global.QueryGrid_models.get(queryModel.getId()) : undefined;
-    }
+    };
 
     render() {
         const queryModel = this.getQueryModel();
@@ -232,6 +211,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
         return (
             <OmniBox
+                getModel={this.getQueryModel}
                 actions={actions}
                 onChange={this.onOmniBoxChange}
                 values={values}

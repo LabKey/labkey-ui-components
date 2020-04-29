@@ -408,14 +408,14 @@ export function getCommonDataValues(data: Map<any, any>): any {
 }
 
 function isSameWithStringCompare(value1: any, value2: any): boolean {
-    if (value1 === value2)
+    if ((value1 === value2) || (valueIsEmpty(value1) && valueIsEmpty(value2)))
         return true;
     if (value1 && value2) {
         const strVal1 = value1.toString();
         const strVal2 = value2.toString();
         return strVal1 === strVal2;
     }
-    return !value1 && !value2; // neither value should be truthy.
+    return false; // one value is empty and the other is not.
 }
 
 /**

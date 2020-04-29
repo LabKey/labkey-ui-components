@@ -11,6 +11,15 @@ using that link again from the starting page will not work.
 * Issue 40008: Add optional property to LineageSummary to allow customization of the lineage group headings in the summary panel
 * in SingleParentEntityPanel, use paged query model for better performance
 
+### version 0.53.0
+*Released*: 28 April 2020
+* [Issue 34627: Lookup column is sorting by raw value and not display column](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=34627)
+    * This fix changes the behavior of the sort action on the OmniBox, columns are now sorted by displayValue
+* [Issue 36486: omnibox only shows options on drop-down for current page](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=36486)
+    * This fix changes the behavior of the Filter dropdown on the Omnibox, we now show distinct values for a column.
+* [Issue 40195: Omnibox filter value invalid if user enters multiple words](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=40195)
+* [Issue 39543: Omnibox dropdown does not allow other open menus to close](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=39543)
+
 ### version 0.52.2
 *Released*: 24 April 2020
 * Misc 20.5 issue fixes for Sample Manager

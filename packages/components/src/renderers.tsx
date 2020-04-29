@@ -26,7 +26,7 @@ import { QueryColumn } from './components/base/models/model';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 
 export function headerCell(
-    handleSort: any,
+    handleSort: (column: QueryColumn, dir: string) => any,
     column: GridColumn,
     i: number,
     selectable?: boolean,
@@ -64,14 +64,26 @@ export function headerCell(
                         <Dropdown.Menu>
                             <MenuItem
                                 disabled={isSortAsc}
-                                onClick={!isSortAsc ? handleSort.bind(this, column, '+') : undefined}
+                                onClick={
+                                    !isSortAsc
+                                        ? () => {
+                                              handleSort(col, '+');
+                                          }
+                                        : undefined
+                                }
                             >
                                 <span className="fa fa-sort-amount-asc" />
                                 &nbsp; Sort ascending
                             </MenuItem>
                             <MenuItem
                                 disabled={isSortDesc}
-                                onClick={!isSortDesc ? handleSort.bind(this, column, '-') : undefined}
+                                onClick={
+                                    !isSortDesc
+                                        ? () => {
+                                              handleSort(col, '-');
+                                          }
+                                        : undefined
+                                }
                             >
                                 <span className="fa fa-sort-amount-desc" />
                                 &nbsp; Sort descending

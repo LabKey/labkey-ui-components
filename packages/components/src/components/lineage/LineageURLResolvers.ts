@@ -1,4 +1,4 @@
-import { Filter } from '@labkey/api';
+import { ActionURL, Filter } from '@labkey/api';
 
 import { URLResolver } from '../..';
 
@@ -21,17 +21,19 @@ export class AppLineageURLResolver implements LineageURLResolver {
         let listURL: string;
 
         if (nodes && nodes.length) {
-            // arbitrarily choose the first node as the baseURL
-            const baseURL = nodes[0].links.list;
+            // all nodes are expected to share the same type/configuration
+            const { links } = nodes[0];
 
-            const filter = Filter.create(
-                'RowId',
-                nodes.map(n => n.id),
-                Filter.Types.IN
-            );
-            const suffix = '?' + filter.getURLParameterName() + '=' + filter.getURLParameterValue();
+            if (links.list) {
+                const filter = createQueryFilterFromNodes(nodes);
 
-            listURL = baseURL + suffix;
+                if (filter) {
+                    // TODO: This is not how we should compose app URLs.
+                    // This should use something like AppURL.fromString() (DNE). Imagine...
+                    // listURL = AppURL.fromString(links.list).addFilters([filter]).toHref();
+                    listURL = `${links.list}?${filter.getURLParameterName()}=${filter.getURLParameterValue()}`;
+                }
+            }
         }
 
         return listURL;
@@ -49,8 +51,24 @@ export class ServerLineageURLResolver implements LineageURLResolver {
     };
 
     resolveGroupedNodes = (nodes: LineageNode[]): string => {
-        // NYI
-        return undefined;
+        let listURL: string;
+
+        if (nodes && nodes.length) {
+            // all nodes are expected to share the same type/configuration
+            const { queryName, schemaName } = nodes[0];
+
+            const filter = createQueryFilterFromNodes(nodes);
+
+            if (filter) {
+                listURL = ActionURL.buildURL('query', 'executeQuery.view', undefined, {
+                    schemaName,
+                    'query.queryName': queryName,
+                    [filter.getURLParameterName()]: filter.getURLParameterValue(),
+                });
+            }
+        }
+
+        return listURL;
     };
 }
 
@@ -63,4 +81,33 @@ export function getURLResolver(options?: LineageOptions): LineageURLResolver {
     }
 
     return appResolver;
+}
+
+function createQueryFilterFromNodes(nodes: LineageNode[]): Filter.IFilter {
+    if (nodes && nodes.length) {
+        const { queryName, schemaName } = nodes[0];
+
+        // ensure query configuration is consistent in the set
+        if (nodes.every(n => n.schemaName === schemaName && n.queryName === queryName && n.pkFilters.length === 1)) {
+            const { pkFilters } = nodes[0];
+
+            if (pkFilters && pkFilters.length === 1) {
+                const { fieldKey } = pkFilters[0];
+                let filterType: Filter.IFilterType;
+                let value: any;
+
+                if (nodes.length === 1) {
+                    filterType = Filter.Types.EQ;
+                    value = pkFilters[0].value;
+                } else {
+                    filterType = Filter.Types.IN;
+                    value = nodes.map(n => n.pkFilters[0].value);
+                }
+
+                return Filter.create(fieldKey, value, filterType);
+            }
+        }
+    }
+
+    return undefined;
 }

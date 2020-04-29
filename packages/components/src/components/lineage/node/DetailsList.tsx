@@ -34,7 +34,7 @@ export class DetailsList extends PureComponent<DetailsListProps, DetailsListStat
     readonly state: DetailsListState = { expanded: false };
 
     toggle = (): void => {
-        this.setState({ expanded: !this.state.expanded });
+        this.setState(state => ({ expanded: !state.expanded }));
     };
 
     render() {
@@ -153,14 +153,19 @@ export class DetailsListNodes extends PureComponent<DetailsListNodesProps> {
     render() {
         const { highlightNode, nodes, title } = this.props;
 
+        // only display "View in grid" when link is available
+        const headerLinks = nodes.listURL
+            ? [
+                  {
+                      href: nodes.listURL,
+                      text: 'View in grid',
+                  },
+              ]
+            : undefined;
+
         return (
             <DetailsListLineageItems
-                headerLinks={[
-                    {
-                        href: nodes.listURL,
-                        text: 'View in grid',
-                    },
-                ]}
+                headerLinks={headerLinks}
                 highlightNode={highlightNode}
                 items={nodes.nodes}
                 title={title}

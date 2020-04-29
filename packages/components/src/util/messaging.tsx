@@ -44,7 +44,7 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
         } else if (lcMessage.indexOf('bad sql grammar') >= 0) {
             return `There was a problem ${verb || 'creating'} your ${noun}.  Check that the format of the data matches the expected type for each field.`;
         } else if (lcMessage.indexOf('existing row was not found') >= 0) {
-            return `We could not find the ${noun} + ${verb ? ' to ' + verb : ''}. Try refreshing your page to see if it has been deleted.`;
+            return `We could not find the ${noun} ${verb ? 'to ' + verb : ''}.  Try refreshing your page to see if it has been deleted.`;
         } else if (
             lcMessage.indexOf('communication failure') >= 0 ||
             lcMessage.match(/query.*in schema.*doesn't exist/) !== null ||
@@ -55,7 +55,7 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
             return `There was a problem retrieving or updating your ${noun || 'data'}.  The request did not contain the proper identifiers.  Make sure the ${noun || 'data'} are still valid.`;
         } else if (lcMessage.indexOf(IllegalArgumentMessage) >= 0) {
             const startIndex = lcMessage.indexOf(IllegalArgumentMessage);
-            return errorMsg.substring(startIndex + IllegalArgumentMessage.length);
+            return errorMsg.substring(startIndex + IllegalArgumentMessage.length).trim();
         }
     }
     return errorMsg;

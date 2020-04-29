@@ -642,6 +642,54 @@ describe('getUpdatedData', () => {
             Other: 'not another',
         });
     });
+
+    test('same int value with string', () => {
+        const originalData = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                IntValue: {
+                    value: 123,
+                }
+            }
+        });
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                IntValue: "123",
+            },
+            List<string>(['RowId'])
+        );
+        expect(updatedData).toHaveLength(0);
+    });
+
+    test('different int value with string', () => {
+        const originalData = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                IntValue: {
+                    value: 123,
+                }
+            }
+        });
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                IntValue: "234",
+            },
+            List<string>(['RowId'])
+        );
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 448,
+            IntValue: "234",
+        });
+    })
 });
 
 describe('getUpdatedDataFromGrid', () => {

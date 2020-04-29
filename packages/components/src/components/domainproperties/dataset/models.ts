@@ -16,61 +16,75 @@
 
 import { Record } from 'immutable';
 
-import match from 'react-router/lib/match';
-import { Option } from 'react-select';
+import { getServerContext } from '@labkey/api';
 
-import { DomainDesign } from '../models';
+import { Draft, immerable, produce } from 'immer';
+
+import { DomainDesign, DomainField } from '../models';
+
+import { DOMAIN_FIELD_FULLY_LOCKED } from '../constants';
+
+import { allowAsManagedField } from './actions';
 
 export interface DatasetAdvancedSettingsForm {
     datasetId?: number;
     cohortId?: number;
     tag?: string;
-    showInOverview?: boolean;
+    showByDefault?: boolean;
     visitDatePropertyName?: string;
 }
 
-export class DatasetModel extends Record({
-    domain: undefined,
-    entityId: undefined,
-    createdBy: undefined,
-    created: undefined,
-    modifiedBy: undefined,
-    modified: undefined,
-    containerId: undefined,
-    datasetId: undefined,
-    name: undefined,
-    category: undefined,
-    categoryId: undefined,
-    visitDatePropertyName: undefined,
-    keyPropertyId: undefined,
-    keyPropertyManaged: undefined,
-    isDemographicData: undefined,
-    label: undefined,
-    cohortId: undefined,
-    tag: undefined,
-    showInOverview: undefined,
-    description: undefined,
-    dataSharing: undefined,
-}) {
+export interface IDatasetModel {
     domain: DomainDesign;
+    domainId: number;
+    exception: string;
     datasetId?: number;
-    entityId: string;
+    entityId?: string;
     name: string;
     category?: string;
-    categoryId?: number;
     visitDatePropertyName?: string;
-    keyPropertyId?: number;
+    keyPropertyName?: string;
     keyPropertyManaged: boolean;
-    isDemographicData: boolean;
+    demographicData: boolean;
     label?: string;
     cohortId?: number;
     tag?: string;
-    showInOverview: boolean;
+    showByDefault: boolean;
     description?: string;
     dataSharing?: string;
+    definitionIsShared?: boolean;
+    sourceAssayName?: string;
+    sourceAssayUrl?: string;
+    useTimeKeyField?: boolean;
+}
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
+export class DatasetModel implements IDatasetModel {
+    [immerable] = true;
+
+    readonly domain: DomainDesign;
+    readonly domainId: number;
+    readonly exception: string;
+    readonly datasetId?: number;
+    readonly entityId?: string;
+    readonly name: string;
+    readonly category?: string;
+    readonly visitDatePropertyName?: string;
+    readonly keyPropertyName?: string;
+    readonly keyPropertyManaged: boolean;
+    readonly demographicData: boolean;
+    readonly label?: string;
+    readonly cohortId?: number;
+    readonly tag?: string;
+    readonly showByDefault: boolean;
+    readonly description?: string;
+    readonly dataSharing?: string;
+    readonly definitionIsShared?: boolean;
+    readonly sourceAssayName?: string;
+    readonly sourceAssayUrl?: string;
+    readonly useTimeKeyField?: boolean;
+
+    constructor(datasetModel: IDatasetModel) {
+        Object.assign(this, datasetModel);
     }
 
     static create(newDataset = null, raw: any): DatasetModel {
@@ -79,18 +93,39 @@ export class DatasetModel extends Record({
             return new DatasetModel({ ...newDataset, domain });
         } else {
             const domain = DomainDesign.create(raw.domainDesign);
-            return new DatasetModel({ ...raw.datasetDesign, domain });
+            let model = new DatasetModel({ ...raw.options, domain });
+
+            // if the dataset is from an assay source, disable/lock the fields
+            if (model.isFromAssay()) {
+                const newDomain = domain.merge({
+                    fields: domain.fields
+                        .map((field: DomainField) => {
+                            return field.set('lockType', DOMAIN_FIELD_FULLY_LOCKED);
+                        })
+                        .toList(),
+                }) as DomainDesign;
+
+                model = produce(model, (draft: Draft<DatasetModel>) => {
+                    draft.domain = newDomain;
+                });
+            }
+
+            return model;
         }
     }
 
     hasValidProperties(): boolean {
-        let isValidKeySetting = true;
+        const isValidName = this.name !== undefined && this.name !== null && this.name.trim().length > 0;
+        const isValidLabel =
+            this.isNew() || (this.label !== undefined && this.label !== null && this.label.trim().length > 0);
 
+        let isValidKeySetting = true;
         if (this.getDataRowSetting() === 2) {
-            isValidKeySetting = this.keyPropertyId !== undefined && this.keyPropertyId !== 0;
+            isValidKeySetting =
+                (this.keyPropertyName !== undefined && this.keyPropertyName !== '') || this.useTimeKeyField;
         }
 
-        return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && isValidKeySetting;
+        return isValidName && isValidLabel && isValidKeySetting;
     }
 
     isNew(): boolean {
@@ -98,40 +133,56 @@ export class DatasetModel extends Record({
     }
 
     getDataRowSetting(): number {
-        let dataRowSetting;
+        const noKeyPropName = this.keyPropertyName === undefined || this.keyPropertyName === null;
 
         // participant id
-        if ((this.keyPropertyId === undefined || this.keyPropertyId === null) && this.isDemographicData) {
-            dataRowSetting = 0;
+        if (noKeyPropName && this.demographicData) {
+            return 0;
         }
         // participant id and timepoint
-        else if (this.keyPropertyId === undefined || this.keyPropertyId === null) {
-            dataRowSetting = 1;
-        }
-        // participant id, timepoint and additional key field
-        else {
-            dataRowSetting = 2;
+        else if (noKeyPropName && !this.useTimeKeyField) {
+            return 1;
         }
 
-        return dataRowSetting;
+        // participant id, timepoint and additional key field
+        return 2;
     }
 
-    validManagedKeyField(): boolean {
-        if (this.keyPropertyId) {
+    validManagedKeyField(editedName?: string): boolean {
+        if (this.keyPropertyName || editedName) {
             const domainFields = this.domain.fields;
 
             const allowedFieldTypes = domainFields
-                .filter(field => {
-                    return field.dataType.isString() || field.dataType.isInteger();
-                })
+                .filter(field => allowAsManagedField(field))
                 .map(field => {
-                    return field.propertyId;
+                    return field.name;
                 })
                 .toList();
 
-            return allowedFieldTypes.contains(this.keyPropertyId);
+            return allowedFieldTypes.contains(this.keyPropertyName) || allowedFieldTypes.contains(editedName);
         } else {
             return false;
         }
+    }
+
+    getDomainKind(): string {
+        return getServerContext().moduleContext.study.timepointType === 'VISIT'
+            ? 'StudyDatasetVisit'
+            : 'StudyDatasetDate';
+    }
+
+    getOptions(): Record<string, any> {
+        return produce(this, (draft: Draft<IDatasetModel>) => {
+            delete draft.exception;
+            delete draft.domain;
+        });
+    }
+
+    isValid(): boolean {
+        return this.hasValidProperties();
+    }
+
+    isFromAssay(): boolean {
+        return this.sourceAssayName !== undefined && this.sourceAssayName !== null;
     }
 }

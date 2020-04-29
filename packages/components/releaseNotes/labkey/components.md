@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.54.0
+*Released*: 29 April 2020
+* Item 7138: DatasetDesignerPanels and related components, models, actions
+    - new dataset related components DatasetDesignerPanels.tsx and DatasetPropertiesPanel.tsx
+    - DomainForm changes to support Column mapping option
+* Issue 40285: Domain designer screen width expands as the file preview grid table width gets very large
+
 ### version 0.53.0
 *Released*: 28 April 2020
 * [Issue 34627: Lookup column is sorting by raw value and not display column](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=34627)

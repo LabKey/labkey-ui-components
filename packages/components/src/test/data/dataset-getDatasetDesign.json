@@ -1,24 +1,24 @@
 {
-  "datasetDesign" : {
+  "options" : {
     "datasetId": 1,
+    "entityId" : "E0EA3F70-3420-1035-8057-68FEA9BFB3A0",
     "name": "Dataset1",
-    "typeURI": "urn:lsid:labkey.com:StudyDataset.Folder-21:Dataset1-11622cd2-4b98-1038-bd0a-6fdd083ae070",
     "category": "A",
-    "categoryId": 20,
     "visitDatePropertyName": "date",
-    "keyPropertyId": 26831,
+    "keyPropertyName": "Name",
     "keyPropertyManaged": false,
-    "isDemographicData": true,
+    "demographicData": false,
     "label": "Dataset One",
     "cohortId": 1,
     "tag": "T1",
-    "showInOverview": true,
+    "showByDefault": true,
     "description": "This is the first dataset",
-    "containerId": "1162245F-4B98-1038-BD0A-6FDD083AE070",
-    "entityId": "11622CD2-4B98-1038-BD0A-6FDD083AE070",
-    "keyManagementType": "GUID",
     "dataRowSetting" : 1,
-    "dataSharing": "PTID"
+    "dataSharing": "PTID",
+    "definitionIsShared": false,
+    "sourceAssayName": null,
+    "sourceAssayUrl": null,
+    "useTimeKeyField": false
   },
   "domainDesign" : {
     "domainId" : 2280,

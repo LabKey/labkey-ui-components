@@ -1133,6 +1133,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "isPrimaryKey": false,
             "lockType": "NotLocked",
             "wrappedColumnName": undefined,
+            "disablePhiLevel": false,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1210,6 +1211,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "isPrimaryKey": false,
             "lockType": "NotLocked",
             "wrappedColumnName": undefined,
+            "disablePhiLevel": false,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1287,6 +1289,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "isPrimaryKey": false,
             "lockType": "NotLocked",
             "wrappedColumnName": undefined,
+            "disablePhiLevel": false,
           },
         ],
         "indices": Immutable.List [],
@@ -1416,6 +1419,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1493,6 +1497,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1570,6 +1575,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "isPrimaryKey": false,
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
+              "disablePhiLevel": false,
             },
           ],
           "indices": Immutable.List [],
@@ -1697,6 +1703,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -1774,6 +1781,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -1851,6 +1859,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -1985,6 +1994,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2062,6 +2072,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2139,6 +2150,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "isPrimaryKey": false,
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
+                  "disablePhiLevel": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -2274,6 +2286,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2351,6 +2364,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2428,6 +2442,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -2567,6 +2582,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -2644,6 +2660,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -2721,6 +2738,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "isPrimaryKey": false,
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
+                      "disablePhiLevel": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -3099,6 +3117,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
                                           "wrappedColumnName": undefined,
+                                          "disablePhiLevel": false,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -3176,6 +3195,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
                                           "wrappedColumnName": undefined,
+                                          "disablePhiLevel": false,
                                         },
                                         Immutable.Record {
                                           "conceptURI": null,
@@ -3253,6 +3273,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                           "isPrimaryKey": false,
                                           "lockType": "NotLocked",
                                           "wrappedColumnName": undefined,
+                                          "disablePhiLevel": false,
                                         },
                                       ],
                                       "indices": Immutable.List [],
@@ -4449,6 +4470,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -4526,6 +4548,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -4603,6 +4626,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "isPrimaryKey": false,
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
+                "disablePhiLevel": false,
               },
             ],
             "indices": Immutable.List [],
@@ -4732,6 +4756,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -4809,6 +4834,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -4886,6 +4912,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "isPrimaryKey": false,
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
+                    "disablePhiLevel": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -5587,6 +5614,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -5771,6 +5799,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -6333,6 +6362,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={0}
@@ -6764,6 +6794,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={0}
@@ -7310,6 +7341,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}
@@ -7940,6 +7972,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -8113,6 +8146,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -8658,6 +8692,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={1}
@@ -9063,6 +9098,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={1}
@@ -9598,6 +9634,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}
@@ -10228,6 +10265,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "isPrimaryKey": false,
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
+                                                          "disablePhiLevel": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -10401,6 +10439,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "isPrimaryKey": false,
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
+                                                                      "disablePhiLevel": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -10928,6 +10967,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "isPrimaryKey": false,
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
+                                                                        "disablePhiLevel": false,
                                                                       }
                                                                     }
                                                                     index={2}
@@ -11295,6 +11335,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               index={2}
@@ -11830,6 +11871,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "isPrimaryKey": false,
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
+                                                                                  "disablePhiLevel": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}

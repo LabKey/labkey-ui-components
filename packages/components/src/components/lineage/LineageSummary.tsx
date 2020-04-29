@@ -65,7 +65,7 @@ export class LineageSummary extends ReactN.Component<Props> {
         return groups.map(groupName => (
             <LineageNodeList
                 key={groupName}
-                title={groupName + ' ' + (suffixes.has(groupName) ? suffixes.get(groupName) : defaultTitleSuffix)}
+                title={groupName + ' ' + (suffixes.has(groupName.toLowerCase()) ? suffixes.get(groupName.toLowerCase()) : defaultTitleSuffix)}
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}
             />

@@ -33,7 +33,7 @@ storiesOf('Lineage', module)
                 lsid="urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3"
                 grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
                 filters={[new LineageFilter('type', ['Sample', 'Data'])]}
-                groupTitles={fromJS({[LINEAGE_DIRECTIONS.Parent]: {Hemoglobin: text('Hemoglobin parent suffix', 'Parents')}})}
+                groupTitles={fromJS({[LINEAGE_DIRECTIONS.Parent]: {hemoglobin: text('Hemoglobin parent suffix', 'Parents')}})}
             />
         );
     })

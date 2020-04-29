@@ -4,7 +4,7 @@
  */
 import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
-import { SchemaKey, Utils } from '@labkey/api';
+import { Utils } from '@labkey/api';
 
 import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../..';
 
@@ -40,17 +40,6 @@ export function applyLineageOptions(options?: LineageOptions): LineageOptions {
     _options.filters = _options.filters.map(filter => new LineageFilter(filter.field, filter.value));
 
     return _options;
-}
-
-/**
- * The experiment-lineage.api response SchemaKey encodes all "schemaName" properties.
- * This helper method decodes the schemaName property if available.
- * @param schemaName The schemaName to decode
- */
-function decodeSchema(schemaName?: string): { schemaName: string } {
-    return {
-        schemaName: (schemaName ? SchemaKey.fromString(schemaName).name : undefined)
-    };
 }
 
 export class LineageNodeMetadata extends Record({
@@ -182,7 +171,6 @@ export class LineageRunStep implements LineageRunStepConfig {
     constructor(values?: LineageRunStepConfig) {
         Object.assign(this, values, {
             ...LineageIO.applyConfig(values),
-            ...decodeSchema(values?.schemaName),
         });
     }
 }
@@ -205,7 +193,7 @@ export class LineageIO implements LineageItemWithMetadata {
     readonly schemaName: string;
 
     constructor(values?: Partial<LineageIO>) {
-        Object.assign(this, values, decodeSchema(values?.schemaName));
+        Object.assign(this, values);
     }
 
     static applyConfig(values?: LineageIOConfig): LineageIOConfig {
@@ -322,7 +310,6 @@ export class LineageNode
             config = {
                 ...values,
                 ...LineageIO.applyConfig(values as LineageNodeConfig),
-                ...decodeSchema(values?.schemaName),
                 ...{
                     children: LineageLink.createList(values.children),
                     lsid,

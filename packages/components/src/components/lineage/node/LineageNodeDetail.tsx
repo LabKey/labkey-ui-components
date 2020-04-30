@@ -107,7 +107,7 @@ interface ClusterNodeDetailProps {
 }
 
 export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
-    render() {
+    render(): ReactNode {
         const { highlightNode, nodes, options } = this.props;
 
         const nodesByType = this.props.nodesByType ?? createLineageNodeCollections(nodes, options);
@@ -153,10 +153,10 @@ class RunStepNodeDetail extends PureComponent<RunStepNodeDetailProps> {
         return (
             <div className="run-step-node-detail">
                 <DetailHeader header={`Run Step: ${step.name}`} iconSrc="default">
-                    <a className="lineage-link spacer-right" onClick={onBack}>
+                    <a className="lineage-link" onClick={onBack}>
                         {node.name}
                     </a>
-                    &gt;
+                    <span className="spacer-left">&gt;</span>
                     <span className="spacer-left">{step.name}</span>
                 </DetailHeader>
                 <LineageDetail item={step} />

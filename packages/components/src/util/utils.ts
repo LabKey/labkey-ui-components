@@ -407,6 +407,17 @@ export function getCommonDataValues(data: Map<any, any>): any {
     return valueMap.toObject();
 }
 
+function isSameWithStringCompare(value1: any, value2: any): boolean {
+    if ((value1 === value2) || (valueIsEmpty(value1) && valueIsEmpty(value2)))
+        return true;
+    if (value1 && value2) {
+        const strVal1 = value1.toString();
+        const strVal2 = value2.toString();
+        return strVal1 === strVal2;
+    }
+    return false; // one value is empty and the other is not.
+}
+
 /**
  * Constructs an array of objects (suitable for the rows parameter of updateRows) where each object contains the
  * values that are different from the ones in originalData object as well as the primary key values for that row.
@@ -423,8 +434,8 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
             if (fieldValueMap && fieldValueMap.has('value')) {
                 if (primaryKeys.indexOf(key) > -1) {
                     return m.set(key, fieldValueMap.get('value'));
-                } else if (updateValuesMap.has(key) && updateValuesMap.get(key) !== fieldValueMap.get('value')) {
-                    return m.set(key, updateValuesMap.get(key));
+                } else if (updateValuesMap.has(key) && !isSameWithStringCompare(updateValuesMap.get(key), fieldValueMap.get('value'))) {
+                    return m.set(key, updateValuesMap.get(key) == undefined ? null : updateValuesMap.get(key));
                 } else {
                     return m;
                 }

@@ -622,26 +622,74 @@ describe('getUpdatedData', () => {
         expect(updatedData[0]).toStrictEqual({
             RowId: 445,
             Value: null,
-            AndAgain: undefined,
+            AndAgain: null,
             Other: 'not another',
         });
         expect(updatedData[1]).toStrictEqual({
             RowId: 446,
             Value: null,
-            AndAgain: undefined,
+            AndAgain: null,
             Other: 'not another',
         });
         expect(updatedData[2]).toStrictEqual({
             RowId: 447,
-            AndAgain: undefined,
+            AndAgain: null,
             Other: 'not another',
         });
         expect(updatedData[3]).toStrictEqual({
             RowId: 448,
-            AndAgain: undefined,
+            AndAgain: null,
             Other: 'not another',
         });
     });
+
+    test('same int value with string', () => {
+        const originalData = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                IntValue: {
+                    value: 123,
+                }
+            }
+        });
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                IntValue: "123",
+            },
+            List<string>(['RowId'])
+        );
+        expect(updatedData).toHaveLength(0);
+    });
+
+    test('different int value with string', () => {
+        const originalData = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                IntValue: {
+                    value: 123,
+                }
+            }
+        });
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                IntValue: "234",
+            },
+            List<string>(['RowId'])
+        );
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 448,
+            IntValue: "234",
+        });
+    })
 });
 
 describe('getUpdatedDataFromGrid', () => {

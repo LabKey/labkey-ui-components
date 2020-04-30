@@ -60,6 +60,7 @@ export class LineageSummary extends ReactN.Component<Props> {
         const groups = Object.keys(nodesByType).sort();
 
         const defaultTitleSuffix = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
+        // Issue 40008:  TBD This isn't a full fix here because of differences in treatment of the text of the queryName that identifies the groups
         const suffixes = this.props.options?.groupTitles?.get(direction) || Map<string, string>();
 
         return groups.map(groupName => (

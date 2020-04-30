@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version XXX
 *Released*: XXX
-* Allow filtering firstGenerationOnly for createQueryGridModelFilteredBySample
+*  `@labkey/api` dependency update.
 
 ### version 0.54.0
 *Released*: 29 April 2020

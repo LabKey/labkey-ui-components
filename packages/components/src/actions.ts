@@ -2759,14 +2759,13 @@ export function createQueryGridModelFilteredBySample(
     singleFilter: Filter.IFilterType,
     whereClausePart: (fieldKey, value) => string,
     useLsid?: boolean,
-    omitSampleCols?: boolean,
-    firstGenerationOnly?: boolean
+    omitSampleCols?: boolean
 ): QueryGridModel {
     const schemaQuery = SchemaQuery.create(model.protocolSchemaName, 'Data');
     const sampleColumns = model.getSampleColumnFieldKeys();
 
     if (sampleColumns && !sampleColumns.isEmpty()) {
-        const filter = model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid, firstGenerationOnly);
+        const filter = model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid);
         return getStateQueryGridModel(gridId, schemaQuery, () => ({
             baseFilters: List([filter]),
             isPaged: true,

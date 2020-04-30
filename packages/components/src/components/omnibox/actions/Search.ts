@@ -39,6 +39,7 @@ export class SearchAction implements Action {
         return Promise.resolve({
             value: token,
             param: token,
+            isValid: token !== '',
         });
     }
 

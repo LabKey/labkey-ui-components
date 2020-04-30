@@ -2,6 +2,7 @@
  * Copyright (c) 2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { Map } from 'immutable';
 import { Experiment } from '@labkey/api';
 
 export enum LINEAGE_DIRECTIONS {
@@ -55,6 +56,7 @@ export interface LineageOptions {
     filterIn?: boolean;
     filters?: LineageFilter[];
     grouping?: LineageGroupingOptions;
+    groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
     request?: Experiment.ExperimentJSONConverterOptions;
     urlResolver?: LineageURLResolvers;
 }

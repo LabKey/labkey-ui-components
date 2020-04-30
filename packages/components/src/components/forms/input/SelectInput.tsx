@@ -231,6 +231,10 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                 isDisabled: !state.isDisabled,
                 selectedOptions: state.isDisabled ? selectedOptions : state.originalOptions,
             };
+        }, () => {
+            if (this.props.onToggleDisable) {
+                this.props.onToggleDisable(this.state.isDisabled);
+            }
         });
     };
 

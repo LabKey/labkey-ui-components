@@ -114,6 +114,7 @@ interface InheritedSelectInputProps {
     addLabelText?: string;
     allowCreate?: boolean;
     allowDisable?: boolean;
+    onToggleDisable?: (disabled: boolean) => void;
     backspaceRemoves?: boolean;
     clearCacheOnChange?: boolean;
     clearable?: boolean;
@@ -300,6 +301,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
     render() {
         const {
             allowDisable,
+            onToggleDisable,
             description,
             filterOptions,
             initiallyDisabled,
@@ -313,6 +315,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
         if (error) {
             const inputProps = {
                 allowDisable,
+                onToggleDisable,
                 description,
                 initiallyDisabled,
                 disabled: true,
@@ -366,6 +369,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 labelClass: this.props.labelClass,
                 description,
                 initiallyDisabled,
+                onToggleDisable,
                 disabled: true,
                 formsy: this.props.formsy,
                 label,

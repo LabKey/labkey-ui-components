@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { LoadingSpinner } from '../..';
 
@@ -22,19 +22,21 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         if (this.empty(edges)) {
             return null;
         }
-        const { highlightNode } = this.props;
+        const { groupTitles, highlightNode } = this.props;
 
         const nodes = edges.map(edge => lineage.nodes.get(edge.lsid)).toArray();
 
         const nodesByType = createLineageNodeCollections(nodes, this.props);
         const groups = Object.keys(nodesByType).sort();
 
-        const title = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
+        const defaultTitleSuffix = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
+        // Issue 40008:  TBD This isn't a full fix here because of differences in treatment of the text of the queryName that identifies the groups
+        const suffixes = groupTitles?.get(direction) || Map<string, string>();
 
         return groups.map(groupName => (
             <DetailsListNodes
                 key={groupName}
-                title={groupName + ' ' + title}
+                title={groupName + ' ' + (suffixes.has(groupName.toLowerCase()) ? suffixes.get(groupName.toLowerCase()) : defaultTitleSuffix)}
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}
             />

@@ -16,13 +16,14 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { LineageGraph } from '../components/lineage/LineageGraph';
 import { LineageGrid } from '../components/lineage/LineageGrid';
-import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from '../components/lineage/types';
+import { LineageFilter, LINEAGE_GROUPING_GENERATIONS, LINEAGE_DIRECTIONS } from '../components/lineage/types';
 
 import './stories.scss';
+import { fromJS } from 'immutable';
 
 storiesOf('Lineage', module)
     .addDecorator(withKnobs)
@@ -32,6 +33,7 @@ storiesOf('Lineage', module)
                 lsid="urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3"
                 grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
                 filters={[new LineageFilter('type', ['Sample', 'Data'])]}
+                groupTitles={fromJS({[LINEAGE_DIRECTIONS.Parent]: {hemoglobin: text('Hemoglobin parent suffix', 'Parents')}})}
             />
         );
     })

@@ -4,7 +4,7 @@
  */
 import React, { ReactNode } from 'react';
 import ReactN from 'reactn';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { LoadingSpinner } from '../..';
 
@@ -59,12 +59,14 @@ export class LineageSummary extends ReactN.Component<Props> {
         const nodesByType = createLineageNodeCollections(nodes, this.props.options);
         const groups = Object.keys(nodesByType).sort();
 
-        const title = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
+        const defaultTitleSuffix = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
+        // Issue 40008:  TBD This isn't a full fix here because of differences in treatment of the text of the queryName that identifies the groups
+        const suffixes = this.props.options?.groupTitles?.get(direction) || Map<string, string>();
 
         return groups.map(groupName => (
             <LineageNodeList
                 key={groupName}
-                title={groupName + ' ' + title}
+                title={groupName + ' ' + (suffixes.has(groupName.toLowerCase()) ? suffixes.get(groupName.toLowerCase()) : defaultTitleSuffix)}
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}
             />

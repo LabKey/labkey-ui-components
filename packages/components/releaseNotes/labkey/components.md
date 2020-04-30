@@ -5,6 +5,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 *  `@labkey/api` dependency update.
 
+## version 0.55.0
+*Released*: 30 April 2020
+* Issue 39633: Choosing to cancel navigating away from a page when using react-router's setRouteLeaveHook will leave
+you on the page but the URL will have been updated to the page where you had originally intended to go, which means
+using that link again from the starting page will not work.
+* Issue 38002: Set isSubmitting to false after updateRows in EditableGridPanelForUpdate in case you stay on the page after updating
+* Update resolveErrorMessage to strip off java.lang.IllegalArgumentException prefixes and detect "Bad SQL grammar" exceptions.
+* Partial fix for Issue 40008: Add optional property to LineageSummary to allow customization of the lineage group headings in the summary panel
+* in SingleParentEntityPanel, use paged query model for better performance
+
+### version 0.54.1
+*Released*: 29 April 2020
+* Issue 38052: When all fields in a QueryInfoForm are disabled, the submit button should also be disabled
+
 ### version 0.54.0
 *Released*: 29 April 2020
 * Item 7138: DatasetDesignerPanels and related components, models, actions
@@ -33,13 +47,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 20 April 2020
 * `@labkey/api` dependency update.
 
-### version 0.52.0
+## version 0.52.0
 *Released*: 18 April 2020
 * Item 7178: Prettier/ESLint bulk update
     - Initial Prettier/ESLint bulk update across packages/components/src directory.
     - yarn run lint-fix ./src/\*\*/\*
 
-### version 0.51.0
+## version 0.51.0
 *Released*: 17 April 2020
 * Item 6961: DataClassDesigner updates for LKS
     - update fetchDataClass function to work for either a data class name or rowId

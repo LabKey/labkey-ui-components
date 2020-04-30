@@ -237,7 +237,7 @@ export class QueryInfo extends Record({
     getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
         return this.columns
             .filter(column => {
-                return column?.isUpdateColumn || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
+                return column.isUpdateColumn || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
             })
             .map(column => {
                 if (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1) {

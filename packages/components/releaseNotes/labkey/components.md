@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version TBD
+*Released*: TBD
+* Convert DataClassModel to use immer and Data Class components to use produce
+
 ## version 0.55.0
 *Released*: 30 April 2020
 * Issue 39633: Choosing to cancel navigating away from a page when using react-router's setRouteLeaveHook will leave

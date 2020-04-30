@@ -258,7 +258,7 @@ import {
     uploadAssayRunFiles,
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
-import { LineageFilter, LINEAGE_GROUPING_GENERATIONS, LineageURLResolvers } from './components/lineage/types';
+import { LineageFilter, LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS, LineageURLResolvers } from './components/lineage/types';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
@@ -273,6 +273,7 @@ import { ITab, SubNav } from './components/navigation/SubNav';
 import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './components/navigation/model';
+import { confirmLeaveWhenDirty } from './components/navigation/utils';
 import { UserSelectInput } from './components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
@@ -519,6 +520,7 @@ export {
     ReportList,
     // lineage
     LINEAGE_GROUPING_GENERATIONS,
+    LINEAGE_DIRECTIONS,
     LineageFilter,
     LineageGraph,
     LineageGrid,
@@ -555,6 +557,7 @@ export {
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
+    confirmLeaveWhenDirty,
     // DomainProperties
     DomainForm,
     DomainFieldsDisplay,

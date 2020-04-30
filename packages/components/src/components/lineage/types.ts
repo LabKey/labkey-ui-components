@@ -4,6 +4,7 @@
  */
 // DO NOT IMPORT ANYTHING IN HERE! ONLY MEANT FOR TOP-LEVEL LINEAGE TYPES
 // Can cause circular dependency
+import { Map } from 'immutable';
 
 export enum LINEAGE_DIRECTIONS {
     Children = 'children',
@@ -63,4 +64,5 @@ export interface LineageOptions {
     filters?: LineageFilter[];
     grouping?: LineageGroupingOptions;
     urlResolver?: LineageURLResolvers;
+    groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
 }

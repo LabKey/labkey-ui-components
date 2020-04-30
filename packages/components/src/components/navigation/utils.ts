@@ -21,7 +21,7 @@ export function confirmLeaveWhenDirty(currentLocation: Location) : boolean {
     } else {
         // navigation canceled, pushing the previous path
         if (currentLocation) {
-            let appURL = AppURL.create(...decodeURI(currentLocation.pathname).substring(1).split("/"));
+            let appURL = AppURL.create(...currentLocation.pathname.substring(1).split("/").map((part) => (decodeURIComponent(part))));
             window.history.replaceState(null, null,  appURL.toHref() + currentLocation.search);
         }
 

@@ -68,6 +68,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
                     key={node.lsid}
                     lsid={node.lsid}
                     prefetchSeed={false}
+                    seedContainer={node.container}
                 />
             </>
         );

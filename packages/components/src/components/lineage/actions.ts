@@ -5,7 +5,7 @@
 import { createContext } from 'react';
 import { Draft, produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
-import { ActionURL, Ajax, Experiment, Filter, Utils } from '@labkey/api';
+import { Experiment, Filter, getServerContext } from '@labkey/api';
 
 import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../..';
 
@@ -70,21 +70,17 @@ function fetchLineage(options: Omit<Experiment.LineageOptions, 'lsids'>): Promis
     });
 }
 
-function fetchLineageNodes(lsids: string[]): Promise<LineageNode[]> {
+function fetchLineageNodes(lsids: string[], containerPath?: string): Promise<LineageNode[]> {
     return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: ActionURL.buildURL('experiment', 'resolve.api'),
-            params: { lsids },
-            success: Utils.getCallbackWrapper((json: any) => {
+        return Experiment.resolve({
+            containerPath,
+            lsids,
+            success: json => {
                 resolve(json.data.map(n => LineageNode.create(n.lsid, n)));
-            }),
-            failure: Utils.getCallbackWrapper(
-                (error: any) => {
-                    reject(error);
-                },
-                undefined,
-                true
-            ),
+            },
+            failure: error => {
+                reject(error);
+            },
         });
     });
 }
@@ -205,11 +201,22 @@ export function invalidateLineageResults(): void {
     lineageSeedCache = {};
 }
 
-export function loadLineageResult(seed: string, distance?: number, options?: LineageOptions): Promise<LineageResult> {
+export function loadLineageResult(
+    seed: string,
+    container?: string,
+    distance?: number,
+    options?: LineageOptions
+): Promise<LineageResult> {
     const fetchOptions: Experiment.LineageOptions = {
         ...options?.request,
         lsid: seed,
     };
+
+    // Lineage API currently responds with the container's entity ID.
+    // Only apply container if it doesn't match the current container.
+    if (container !== getServerContext().container.id) {
+        fetchOptions.containerPath = container;
+    }
 
     if (!isNaN(distance)) {
         // The lineage includes a "run" object for each parent as well, so we
@@ -219,6 +226,7 @@ export function loadLineageResult(seed: string, distance?: number, options?: Lin
 
     const key = [
         seed,
+        container ?? '',
         distance ?? -1,
         fetchOptions.includeInputsAndOutputs === true,
         fetchOptions.includeRunSteps === true,
@@ -239,9 +247,11 @@ export function loadSampleStats(lineageResult: LineageResult): Promise<any> {
     }).then(sampleSets => computeSampleCounts(lineageResult, sampleSets));
 }
 
-export function loadSeedResult(seed: string, options?: LineageOptions): Promise<LineageResult> {
-    if (!lineageSeedCache[seed]) {
-        lineageSeedCache[seed] = fetchLineageNodes([seed])
+export function loadSeedResult(seed: string, container?: string, options?: LineageOptions): Promise<LineageResult> {
+    const key = [seed, container ?? ''].join('|');
+
+    if (!lineageSeedCache[key]) {
+        lineageSeedCache[key] = fetchLineageNodes([seed], container)
             .then(nodes => nodes[0])
             .then(seedNode =>
                 LineageResult.create({
@@ -252,7 +262,7 @@ export function loadSeedResult(seed: string, options?: LineageOptions): Promise<
             .then(result => processLineageResult(result, options));
     }
 
-    return lineageSeedCache[seed];
+    return lineageSeedCache[key];
 }
 
 // TODO add jest test coverage for this function

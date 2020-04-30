@@ -1,12 +1,10 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Filter } from '@labkey/api';
+import { Experiment, Filter } from '@labkey/api';
 
 import { DetailPanelWithModel, QueryConfigMap, SchemaQuery } from '../../..';
 
-import { LineageBaseConfig } from '../models';
-
 export interface LineageDetailProps {
-    item: LineageBaseConfig;
+    item: Experiment.LineageItemBase;
 }
 
 export class LineageDetail extends PureComponent<LineageDetailProps> {

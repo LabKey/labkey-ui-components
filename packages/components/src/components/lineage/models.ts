@@ -4,7 +4,7 @@
  */
 import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
-import { Utils } from '@labkey/api';
+import { Experiment, Utils } from '@labkey/api';
 
 import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../..';
 
@@ -97,51 +97,21 @@ export class LineageLink extends Record({
     }
 }
 
-export interface LineagePKFilter {
-    fieldKey: string;
-    value: any;
-}
-
-export interface LineageBaseConfig {
-    cpasType?: string;
-    created: string;
-    createdBy: string;
-    expType: string;
-    id: number;
-    lsid: string;
-    modified: string;
-    modifiedBy: string;
-    name: string;
-    pkFilters: LineagePKFilter[];
-    queryName: string;
-    schemaName: string;
-    type?: string;
-    url?: string;
-}
-
-export interface LineageIOConfig {
-    dataInputs: LineageIO[];
-    dataOutputs: LineageIO[];
-    materialInputs: LineageIO[];
-    materialOutputs: LineageIO[];
-}
-
-export interface LineageIconProps {
+export interface LineageItemWithMetadata extends Experiment.LineageItemBase {
     iconProps: LineageIconMetadata;
-}
-
-export interface LineageLinkable {
     links: LineageLinkMetadata;
 }
 
-export interface LineageItemWithMetadata extends LineageBaseConfig, LineageIconProps, LineageLinkable {}
-
-export interface LineageRunStepConfig extends LineageItemWithMetadata, LineageIOConfig {
-    applicationType: string;
-    activityDate: string;
-    activitySequence: number;
-    protocol: LineageBaseConfig;
+export interface LineageIOWithMetadata extends Experiment.LineageIOConfig {
+    dataInputs?: LineageItemWithMetadata[];
+    dataOutputs?: LineageItemWithMetadata[];
+    materialInputs?: LineageItemWithMetadata[];
+    materialOutputs?: LineageItemWithMetadata[];
 }
+
+export interface LineageItemWithIOMetadata extends LineageItemWithMetadata, LineageIOWithMetadata {}
+
+export interface LineageRunStepConfig extends Experiment.LineageRunStepBase, LineageItemWithIOMetadata {}
 
 export class LineageRunStep implements LineageRunStepConfig {
     [immerable] = true;
@@ -149,6 +119,7 @@ export class LineageRunStep implements LineageRunStepConfig {
     readonly applicationType: string;
     readonly activityDate: string;
     readonly activitySequence: number;
+    readonly container: string;
     readonly created: string;
     readonly createdBy: string;
     readonly dataInputs: LineageIO[];
@@ -163,8 +134,8 @@ export class LineageRunStep implements LineageRunStepConfig {
     readonly modified: string;
     readonly modifiedBy: string;
     readonly name: string;
-    readonly pkFilters: LineagePKFilter[];
-    readonly protocol: LineageBaseConfig;
+    readonly pkFilters: Experiment.LineagePKFilter[];
+    readonly protocol: Experiment.LineageItemBase;
     readonly queryName: string;
     readonly schemaName: string;
 
@@ -178,6 +149,7 @@ export class LineageRunStep implements LineageRunStepConfig {
 export class LineageIO implements LineageItemWithMetadata {
     [immerable] = true;
 
+    readonly container: string;
     readonly created: string;
     readonly createdBy: string;
     readonly expType: string;
@@ -188,7 +160,7 @@ export class LineageIO implements LineageItemWithMetadata {
     readonly modified: string;
     readonly modifiedBy: string;
     readonly name: string;
-    readonly pkFilters: LineagePKFilter[];
+    readonly pkFilters: Experiment.LineagePKFilter[];
     readonly queryName: string;
     readonly schemaName: string;
 
@@ -196,7 +168,7 @@ export class LineageIO implements LineageItemWithMetadata {
         Object.assign(this, values);
     }
 
-    static applyConfig(values?: LineageIOConfig): LineageIOConfig {
+    static applyConfig(values?: Experiment.LineageIOConfig): Experiment.LineageIOConfig {
         return {
             dataInputs: LineageIO.fromArray(values?.dataInputs),
             dataOutputs: LineageIO.fromArray(values?.dataOutputs),
@@ -214,15 +186,12 @@ export class LineageIO implements LineageItemWithMetadata {
     }
 }
 
-interface LineageNodeConfig extends LineageItemWithMetadata, LineageIOConfig {
-    absolutePath: string;
+interface LineageNodeConfig
+    extends Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'>,
+        LineageItemWithIOMetadata {
     children: List<LineageLink>;
-    cpasType: string;
-    dataFileURL: string;
     parents: List<LineageLink>;
-    pipelinePath: string;
     steps: List<LineageRunStep>;
-    type: string;
 
     // computed properties
     distance: number;
@@ -234,6 +203,7 @@ export class LineageNode
     extends Record({
         absolutePath: undefined,
         children: undefined,
+        container: undefined,
         cpasType: undefined,
         created: undefined,
         createdBy: undefined,
@@ -251,6 +221,7 @@ export class LineageNode
         parents: undefined,
         pipelinePath: undefined,
         pkFilters: undefined,
+        properties: undefined,
         queryName: undefined,
         schemaName: undefined,
         steps: undefined,
@@ -267,6 +238,7 @@ export class LineageNode
     implements LineageNodeConfig {
     absolutePath: string;
     children: List<LineageLink>;
+    container: string;
     cpasType: string;
     created: string;
     createdBy: string;
@@ -283,7 +255,8 @@ export class LineageNode
     name: string;
     parents: List<LineageLink>;
     pipelinePath: string;
-    pkFilters: LineagePKFilter[];
+    pkFilters: Experiment.LineagePKFilter[];
+    properties: any;
     queryName: string;
     schemaName: string;
     steps: List<LineageRunStep>;

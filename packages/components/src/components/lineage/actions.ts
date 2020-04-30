@@ -12,34 +12,33 @@ import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows }
 import {
     Lineage,
     LineageGridModel,
-    LineageBaseConfig,
+    LineageItemWithIOMetadata,
+    LineageItemWithMetadata,
+    LineageIOWithMetadata,
     LineageNode,
     LineageNodeMetadata,
     LineageResult,
     LineageRunStep,
-    LineageIOConfig,
-    LineageIO,
-    LineageLinkable,
 } from './models';
 import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
-import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
+import { LINEAGE_DIRECTIONS, LineageFilter, LineageLinkMetadata, LineageOptions } from './types';
 import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
 import { getURLResolver, LineageURLResolver } from './LineageURLResolvers';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
 export interface WithNodeInteraction {
-    isNodeInGraph?: (node: LineageBaseConfig) => boolean;
-    onNodeMouseOver?: (node: LineageBaseConfig) => void;
-    onNodeMouseOut?: (node: LineageBaseConfig) => void;
-    onNodeClick?: (node: LineageBaseConfig) => void;
+    isNodeInGraph?: (node: Experiment.LineageItemBase) => boolean;
+    onNodeMouseOver?: (node: Experiment.LineageItemBase) => void;
+    onNodeMouseOut?: (node: Experiment.LineageItemBase) => void;
+    onNodeClick?: (node: Experiment.LineageItemBase) => void;
 }
 
 const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);
 export const NodeInteractionProvider = NodeInteractionContext.Provider;
 export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 
-function fetchLineage(options: Omit<Experiment.ILineageOptions, 'lsids'>): Promise<LineageResult> {
+function fetchLineage(options: Omit<Experiment.LineageOptions, 'lsids'>): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
         const seed = options.lsid;
 
@@ -112,8 +111,6 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
         .toArray();
 }
 
-type SupportsMetadata = LineageBaseConfig & LineageIOConfig & LineageLinkable;
-
 function applyLineageMetadata(
     lineage: LineageResult,
     metadata: { [lsid: string]: LineageNodeMetadata },
@@ -146,24 +143,24 @@ function applyLineageMetadata(
 }
 
 function applyItemMetadata(
-    item: SupportsMetadata,
+    item: LineageItemWithIOMetadata,
     iconURLByLsid: { [lsid: string]: string },
     urlResolver: LineageURLResolver,
     isSeed = false
-) {
+): Partial<LineageItemWithIOMetadata> {
     return {
         ...applyLineageIOMetadata(item, iconURLByLsid, urlResolver),
         ...{ iconProps: resolveIconAndShapeForNode(item, iconURLByLsid[item.lsid], isSeed) },
-        ...{ links: urlResolver.resolveItem(item) ?? {} },
+        ...{ links: urlResolver.resolveItem(item) ?? ({} as LineageLinkMetadata) },
     };
 }
 
 function applyLineageIOMetadata(
-    item: SupportsMetadata,
+    item: LineageIOWithMetadata,
     iconURLByLsid: { [lsid: string]: string },
     urlResolver: LineageURLResolver
-): LineageIOConfig {
-    const _applyItem = produce((draft: Draft<LineageIO>) => {
+): LineageIOWithMetadata {
+    const _applyItem = produce((draft: Draft<LineageItemWithMetadata>) => {
         draft.iconProps = resolveIconAndShapeForNode(draft, iconURLByLsid[draft.lsid]);
         draft.links = urlResolver.resolveItem(draft);
     });
@@ -209,7 +206,7 @@ export function invalidateLineageResults(): void {
 }
 
 export function loadLineageResult(seed: string, distance?: number, options?: LineageOptions): Promise<LineageResult> {
-    const fetchOptions: Experiment.ILineageOptions = {
+    const fetchOptions: Experiment.LineageOptions = {
         ...options?.request,
         lsid: seed,
     };
@@ -225,7 +222,7 @@ export function loadLineageResult(seed: string, distance?: number, options?: Lin
         distance ?? -1,
         fetchOptions.includeInputsAndOutputs === true,
         fetchOptions.includeRunSteps === true,
-        fetchOptions.includeProperties === true
+        fetchOptions.includeProperties === true,
     ].join('|');
 
     if (!lineageResultCache[key]) {

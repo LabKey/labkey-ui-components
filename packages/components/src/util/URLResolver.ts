@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 import { fromJS, List, Map } from 'immutable';
-import { ActionURL, Filter } from '@labkey/api';
+import { ActionURL, Experiment, Filter } from '@labkey/api';
 
 import { AppURL } from '../url/AppURL';
-import { LineageBaseConfig, LineageResult } from '../components/lineage/models';
 import { LineageLinkMetadata } from '../components/lineage/types';
 
 interface MapURLOptions {
@@ -355,8 +354,11 @@ export class URLResolver {
         return mapper.url;
     };
 
-    resolveLineageItem = (item: LineageBaseConfig, acceptedTypes: string[] = ['Sample', 'Data']): LineageLinkMetadata => {
-        let metadata: LineageLinkMetadata = {
+    resolveLineageItem = (
+        item: Experiment.LineageItemBase,
+        acceptedTypes: string[] = ['Sample', 'Data']
+    ): LineageLinkMetadata => {
+        const metadata: LineageLinkMetadata = {
             lineage: undefined,
             list: undefined,
             overview: item.url,

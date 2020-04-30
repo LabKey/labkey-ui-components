@@ -2,7 +2,7 @@ import React, { Fragment, PureComponent, ReactNode } from 'react';
 
 import { SVGIcon } from '../../..';
 
-import { LineageItemWithMetadata, LineageIOConfig, LineageNode } from '../models';
+import { LineageItemWithMetadata, LineageIOWithMetadata, LineageNode } from '../models';
 import { LineageNodeCollection } from '../vis/VisGraphGenerator';
 import { getLineageNodeTitle } from '../utils';
 import { NodeInteractionConsumer, WithNodeInteraction } from '../actions';
@@ -82,7 +82,7 @@ export class DetailsList extends PureComponent<DetailsListProps, DetailsListStat
 }
 
 export interface DetailsListLineageIOProps {
-    item: LineageIOConfig;
+    item: LineageIOWithMetadata;
 }
 
 export class DetailsListLineageIO extends PureComponent<DetailsListLineageIOProps> {

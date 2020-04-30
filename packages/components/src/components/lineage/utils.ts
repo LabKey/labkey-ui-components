@@ -3,11 +3,11 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map } from 'immutable';
-import { Utils } from '@labkey/api';
+import { Experiment, Utils } from '@labkey/api';
 
 import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../..';
 
-import { LineageBaseConfig, LineageItemWithMetadata, LineageLink, LineageNode } from './models';
+import { LineageItemWithMetadata, LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
 
 const DEFAULT_ICON_URL = 'default';
@@ -121,7 +121,7 @@ function _getDepthFirstNodeList(
 
 // TODO: The iconURL should be resolved by the server.
 export function resolveIconAndShapeForNode(
-    item?: LineageBaseConfig,
+    item?: Experiment.LineageItemBase,
     queryInfoIconURL?: string,
     isSeed?: boolean
 ): LineageIconMetadata {

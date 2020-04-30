@@ -3,13 +3,13 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent } from 'react';
+import { Experiment } from '@labkey/api';
 
 import { Alert, LoadingSpinner } from '../..';
 
 import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage';
 import { NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { LineageBaseConfig } from './models';
 import { isBasicNode, VisGraphOptions, VisGraphNode, VisGraphNodeType } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
 import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
@@ -52,26 +52,26 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
     };
 
     // if the node is in the graph, it is clickable in the summary panel
-    isNodeInGraph = (item: LineageBaseConfig): boolean => {
+    isNodeInGraph = (item: Experiment.LineageItemBase): boolean => {
         return this.visGraphRef.current?.getNetwork().findNode(item.lsid).length > 0;
     };
 
-    onSummaryNodeClick = (item: LineageBaseConfig): void => {
+    onSummaryNodeClick = (item: Experiment.LineageItemBase): void => {
         this.onSummaryNodeMouseOut(item);
         this.visGraphRef.current?.selectNodes([item.lsid]);
     };
 
-    onSummaryNodeMouseEvent = (item: LineageBaseConfig, hover: boolean): void => {
+    onSummaryNodeMouseEvent = (item: Experiment.LineageItemBase, hover: boolean): void => {
         // clear the hoverNode so the popover will hide
         this.clearHover();
         this.visGraphRef.current?.highlightNode(item.lsid, hover);
     };
 
-    onSummaryNodeMouseOut = (item: LineageBaseConfig): void => {
+    onSummaryNodeMouseOut = (item: Experiment.LineageItemBase): void => {
         this.onSummaryNodeMouseEvent(item, false);
     };
 
-    onSummaryNodeMouseOver = (item: LineageBaseConfig): void => {
+    onSummaryNodeMouseOver = (item: Experiment.LineageItemBase): void => {
         this.onSummaryNodeMouseEvent(item, true);
     };
 

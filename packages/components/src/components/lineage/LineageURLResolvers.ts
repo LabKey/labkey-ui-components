@@ -1,19 +1,19 @@
-import { ActionURL, Filter } from '@labkey/api';
+import { ActionURL, Experiment, Filter } from '@labkey/api';
 
 import { URLResolver } from '../..';
 
 import { LineageLinkMetadata, LineageOptions, LineageURLResolvers } from './types';
-import { LineageBaseConfig, LineageNode } from './models';
+import { LineageNode } from './models';
 
 export interface LineageURLResolver {
-    resolveItem: (item: LineageBaseConfig) => LineageLinkMetadata;
+    resolveItem: (item: Experiment.LineageItemBase) => LineageLinkMetadata;
     resolveGroupedNodes: (nodes: LineageNode[]) => string;
 }
 
 export class AppLineageURLResolver implements LineageURLResolver {
     private static resolver = new URLResolver();
 
-    resolveItem = (item: LineageBaseConfig): LineageLinkMetadata => {
+    resolveItem = (item: Experiment.LineageItemBase): LineageLinkMetadata => {
         return AppLineageURLResolver.resolver.resolveLineageItem(item);
     };
 
@@ -41,7 +41,7 @@ export class AppLineageURLResolver implements LineageURLResolver {
 }
 
 export class ServerLineageURLResolver implements LineageURLResolver {
-    resolveItem = (item: LineageBaseConfig): LineageLinkMetadata => {
+    resolveItem = (item: Experiment.LineageItemBase): LineageLinkMetadata => {
         return {
             // does not currently have a corollary view in LKS
             lineage: undefined,

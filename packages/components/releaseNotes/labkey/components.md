@@ -11,6 +11,10 @@ using that link again from the starting page will not work.
 * Issue 40008: Add optional property to LineageSummary to allow customization of the lineage group headings in the summary panel
 * in SingleParentEntityPanel, use paged query model for better performance
 
+### version 0.54.1
+*Released*: 29 April 2020
+* Issue 38052: When all fields in a QueryInfoForm are disabled, the submit button should also be disabled
+
 ### version 0.54.0
 *Released*: 29 April 2020
 * Item 7138: DatasetDesignerPanels and related components, models, actions

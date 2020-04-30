@@ -92,14 +92,11 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
         const {
             cols,
             elementWrapperClassName,
-            label,
             labelClassName,
             name,
             queryColumn,
             rowClassName,
             rows,
-            showLabel,
-            value,
         } = this.props;
 
         return (

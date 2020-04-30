@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 
 import { Location } from '../../..';
@@ -48,7 +48,7 @@ class LineageGridImpl extends PureComponent<LineageGridProps, LineageGridState> 
         };
     }
 
-    render() {
+    render(): ReactNode {
         return <LineageGridDisplay model={this.state.model} />;
     }
 }
@@ -65,7 +65,7 @@ export class LineageGridFromLocation extends PureComponent<LineageGridFromLocati
         return isNaN(numValue) ? undefined : numValue;
     }
 
-    render() {
+    render(): ReactNode {
         const { query } = this.props.location;
 
         return (

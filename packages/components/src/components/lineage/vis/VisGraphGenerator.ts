@@ -162,7 +162,7 @@ export class VisGraphOptions implements IVisGraphOptions {
     readonly options: { [key: string]: any };
 
     constructor(config?: Partial<IVisGraphOptions>) {
-        Object.assign(this, { ...config });
+        Object.assign(this, config);
     }
 
     getCombinedNodes(): VisGraphCombinedNode[] {

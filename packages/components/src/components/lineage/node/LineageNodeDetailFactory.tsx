@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { LoadingSpinner } from '../../..';
 
@@ -16,7 +16,7 @@ export interface LineageNodeDetailFactoryProps {
 }
 
 export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFactoryProps> {
-    render() {
+    render(): ReactNode {
         const { highlightNode, lineage, lineageOptions, selectedNodes } = this.props;
 
         if (!lineage || lineage.error) {

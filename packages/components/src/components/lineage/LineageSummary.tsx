@@ -20,7 +20,7 @@ interface LineageSummaryOwnProps extends LineageOptions {
 class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryOwnProps> {
     renderNodeList = (direction: LINEAGE_DIRECTIONS, lineage: LineageResult, edges: List<LineageLink>): ReactNode => {
         if (this.empty(edges)) {
-            return;
+            return null;
         }
         const { highlightNode } = this.props;
 
@@ -45,7 +45,7 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         return !nodes || nodes.size === 0;
     }
 
-    render() {
+    render(): ReactNode {
         const { lineage } = this.props;
 
         if (!lineage || !lineage.isLoaded()) {

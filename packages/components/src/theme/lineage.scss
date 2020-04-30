@@ -28,6 +28,19 @@
     }
 }
 
+.spacer-left {
+    padding-left: 4px;
+}
+
+.spacer-right {
+    padding-right: 4px;
+}
+
+.spacer-horizontal {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
 .lineage-link {
     cursor: pointer;
 }
@@ -114,7 +127,7 @@
     }
 }
 
-.lineage-node-detail {
+.lineage-detail-header {
     display: inline-block;
     width: 100%;
 }

@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 
@@ -18,7 +18,7 @@ interface LineagePagingProps {
 }
 
 export class LineagePaging extends PureComponent<LineagePagingProps> {
-    render() {
+    render(): ReactNode {
         const { maxRowIndex, minRowIndex, pageNumber, seedNode, totalRows } = this.props.model;
         // TODO: This component should not reference "getLocation()" but rather be handed an action to update the page
         const location = getLocation();
@@ -73,7 +73,7 @@ interface LineageGridProps {
 }
 
 class LineageButtons extends PureComponent<LineageGridProps> {
-    render() {
+    render(): ReactNode {
         const { distance, members, seedNode } = this.props.model;
 
         if (seedNode) {
@@ -113,7 +113,7 @@ class LineageButtons extends PureComponent<LineageGridProps> {
 }
 
 export class LineageGridBar extends PureComponent<LineageGridProps> {
-    render() {
+    render(): ReactNode {
         const { model } = this.props;
 
         if (model.seedNode) {
@@ -157,7 +157,7 @@ export class LineageGridDisplay extends PureComponent<LineageGridProps> {
             .toList();
     }
 
-    render() {
+    render(): ReactNode {
         const { model } = this.props;
 
         if (model.isError) {
@@ -176,7 +176,7 @@ export class LineageGridDisplay extends PureComponent<LineageGridProps> {
         }
 
         return (
-            <>
+            <div className="lineage-grid-display">
                 <LineageGridBar model={model} />
 
                 {/* Grid row */}
@@ -185,7 +185,7 @@ export class LineageGridDisplay extends PureComponent<LineageGridProps> {
                         <Grid {...gridProps} />
                     </div>
                 </div>
-            </>
+            </div>
         );
     }
 }

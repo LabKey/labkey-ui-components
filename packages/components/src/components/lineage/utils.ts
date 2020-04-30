@@ -45,10 +45,9 @@ export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelect
     return [iconURL, suffix, '.svg'].join('').toLowerCase();
 }
 
-export function getLineageNodeTitle(node: LineageItemWithMetadata, html?: boolean): string {
+export function getLineageNodeTitle(node: LineageItemWithMetadata, asHTML = false): string {
     // encodeHtml if we are generating html for vis.js to use as the node's tooltip title
-    const asHTML = html === true;
-    const h = s => (asHTML ? Utils.encodeHtml(s) : s);
+    const h = (s: string): string => (asHTML ? Utils.encodeHtml(s) : s);
 
     let title = '';
 

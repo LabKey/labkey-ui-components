@@ -154,6 +154,12 @@ export class QueryInfo extends Record({
         return column ? column.required : false;
     }
 
+    getDetailDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
+        return this.getDisplayColumns(view, omittedColumns)
+            .filter(col => col.isDetailColumn)
+            .toList();
+    }
+
     getDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
         if (!view) {
             view = ViewInfo.DEFAULT_NAME;
@@ -240,6 +246,12 @@ export class QueryInfo extends Record({
                     return column;
                 }
             })
+            .toList();
+    }
+
+    getUpdateDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
+        return this.getDisplayColumns(view, omittedColumns)
+            .filter(col => col.isUpdateColumn)
             .toList();
     }
 

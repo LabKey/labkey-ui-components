@@ -701,12 +701,7 @@ export class QueryGridModel
      * @returns {List<QueryColumn>}
      */
     getDetailsDisplayColumns(): List<QueryColumn> {
-        return (
-            this.queryInfo
-                ?.getDisplayColumns(ViewInfo.DETAIL_NAME, this.omittedColumns)
-                .filter(col => col.isDetailColumn)
-                .toList() || emptyColumns
-        );
+        return this.queryInfo?.getDetailDisplayColumns(ViewInfo.DETAIL_NAME, this.omittedColumns) || emptyColumns;
     }
 
     /**
@@ -714,12 +709,7 @@ export class QueryGridModel
      * @returns {List<QueryColumn>}
      */
     getUpdateDisplayColumns(): List<QueryColumn> {
-        return (
-            this.queryInfo
-                ?.getDisplayColumns(ViewInfo.UPDATE_NAME, this.omittedColumns)
-                .filter(col => col.isUpdateColumn)
-                .toList() || emptyColumns
-        );
+        return this.queryInfo?.getUpdateDisplayColumns(ViewInfo.UPDATE_NAME, this.omittedColumns) || emptyColumns;
     }
 
     getColumnIndex(fieldKey: string): number {

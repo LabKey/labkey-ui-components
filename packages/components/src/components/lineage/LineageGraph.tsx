@@ -32,12 +32,10 @@ interface State {
 type Props = InjectedLineage & LineageGraphDisplayOwnProps & WithLineageOptions & LinageGraphOwnProps & LineageOptions;
 
 class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
-    private readonly visGraphRef = undefined;
+    private readonly visGraphRef = React.createRef<VisGraph>();
 
     constructor(props: Props) {
         super(props);
-
-        this.visGraphRef = React.createRef();
 
         this.state = {
             nodeInteractions: {
@@ -66,7 +64,7 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
     onSummaryNodeMouseEvent = (item: LineageBaseConfig, hover: boolean): void => {
         // clear the hoverNode so the popover will hide
         this.clearHover();
-        this.visGraphRef.current?.highlightNode(item, hover);
+        this.visGraphRef.current?.highlightNode(item.lsid, hover);
     };
 
     onSummaryNodeMouseOut = (item: LineageBaseConfig): void => {

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 
 import { DetailPanelWithModel, QueryConfigMap, SchemaQuery } from '../../..';
@@ -10,7 +10,7 @@ export interface LineageDetailProps {
 }
 
 export class LineageDetail extends PureComponent<LineageDetailProps> {
-    render() {
+    render(): ReactNode {
         const { item } = this.props;
         const queryConfigs: QueryConfigMap = {
             [item.lsid]: {

@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 
 import { createLineageNodeCollections, LineageNodeCollectionByType } from '../vis/VisGraphGenerator';
@@ -34,7 +34,16 @@ const initialState: LineageNodeDetailState = {
 export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, LineageNodeDetailState> {
     readonly state: LineageNodeDetailState = initialState;
 
-    changeTab = (tabKey: number) => {
+    componentDidUpdate(prevProps: Readonly<LineageNodeDetailProps>): void {
+        const prevNode = prevProps.node;
+        const { node } = this.props;
+
+        if ((prevNode.isRun || node.isRun) && prevNode.lsid !== node.lsid) {
+            this.setState(initialState);
+        }
+    }
+
+    changeTab = (tabKey: number): void => {
         this.setState({ tabKey });
     };
 
@@ -42,18 +51,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
         this.setState({ stepIdx });
     };
 
-    componentDidUpdate(prevProps: Readonly<LineageNodeDetailProps>): void {
-        const prevNode = prevProps.node;
-        const { node } = this.props;
-
-        if (prevNode.isRun || node.isRun) {
-            if (prevNode.lsid !== node.lsid) {
-                this.setState(initialState);
-            }
-        }
-    }
-
-    render() {
+    render(): ReactNode {
         const { seed, node, highlightNode, lineageOptions } = this.props;
         const { stepIdx, tabKey } = this.state;
 
@@ -75,7 +73,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
         );
 
         return (
-            <>
+            <div className="lineage-node-detail">
                 <NodeDetailHeader node={node} seed={seed} />
                 {node.isRun ? (
                     <Tabs
@@ -95,7 +93,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
                 ) : (
                     nodeDetails
                 )}
-            </>
+            </div>
         );
     }
 }
@@ -125,7 +123,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
         }
 
         return (
-            <>
+            <div className="cluster-node-detail">
                 <DetailHeader header={title} iconSrc={iconURL} />
                 {groups.map(groupName => (
                     <DetailsListNodes
@@ -135,33 +133,34 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
                         highlightNode={highlightNode}
                     />
                 ))}
-            </>
+            </div>
         );
     }
 }
 
 interface RunStepNodeDetailProps {
     node: LineageNode;
-    onBack: () => any;
+    onBack: () => void;
     stepIdx: number;
 }
 
 class RunStepNodeDetail extends PureComponent<RunStepNodeDetailProps> {
-    render() {
+    render(): ReactNode {
         const { node, onBack, stepIdx } = this.props;
         const step = node.steps.get(stepIdx);
 
         return (
-            <>
+            <div className="run-step-node-detail">
                 <DetailHeader header={`Run Step: ${step.name}`} iconSrc="default">
-                    <a className="lineage-link" onClick={onBack}>
+                    <a className="lineage-link spacer-right" onClick={onBack}>
                         {node.name}
                     </a>
-                    &nbsp;>&nbsp;<span>{step.name}</span>
+                    &gt;
+                    <span className="spacer-left">{step.name}</span>
                 </DetailHeader>
                 <LineageDetail item={step} />
                 <DetailsListLineageIO item={step} />
-            </>
+            </div>
         );
     }
 }

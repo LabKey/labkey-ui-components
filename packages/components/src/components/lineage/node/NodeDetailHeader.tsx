@@ -11,11 +11,11 @@ export interface DetailHeaderProps {
 }
 
 export class DetailHeader extends PureComponent<DetailHeaderProps> {
-    render() {
+    render(): ReactNode {
         const { children, header, iconSrc } = this.props;
 
         return (
-            <div className="margin-bottom lineage-node-detail">
+            <div className="lineage-detail-header margin-bottom">
                 <i className="component-detail--child--img">
                     <SVGIcon theme={Theme.ORANGE} iconSrc={iconSrc} height="50px" width="50px" />
                 </i>
@@ -36,7 +36,7 @@ export interface NodeDetailHeaderProps {
 }
 
 export class NodeDetailHeader extends PureComponent<NodeDetailHeaderProps> {
-    render() {
+    render(): ReactNode {
         const { node, seed } = this.props;
         const { links, meta, name } = node;
         const lineageUrl = links.lineage;

@@ -5,8 +5,6 @@
 import React, { Component } from 'react';
 import { DataSet, Edge, IdType, Network, Node } from 'vis-network';
 
-import { LineageNode } from '../models';
-
 import { isCombinedNode, VisGraphCombinedNode, VisGraphNodeType, VisGraphOptions } from './VisGraphGenerator';
 import { VisGraphControls } from './VisGraphControls';
 
@@ -115,27 +113,27 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
 
     readonly state: VisGraphState = { selected: undefined };
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.generateGraph(this.props);
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this.destroyGraph();
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps): boolean {
         return this.props.seed !== nextProps.seed;
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(): void {
         this.generateGraph(this.props);
     }
 
-    highlightNode = (node: LineageNode, hover: boolean): void => {
-        if (node && this.data) {
+    highlightNode = (id: string, hover: boolean): void => {
+        if (id && this.data) {
             // findNode will return any cluster node ids that the node is within.
             // If the node is in a cluster, highlight it the cluster instead
-            const clusterIds = this.network.findNode(node.lsid);
+            const clusterIds = this.network.findNode(id);
             if (clusterIds && clusterIds.length) {
                 const topNodeId = clusterIds[0];
                 if (topNodeId) {

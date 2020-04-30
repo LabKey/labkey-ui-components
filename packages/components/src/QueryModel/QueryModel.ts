@@ -141,10 +141,7 @@ export class QueryModel implements IQueryModel {
     }
 
     get detailColumns(): QueryColumn[] {
-        return this.queryInfo
-            ?.getDisplayColumns(ViewInfo.DETAIL_NAME, List(this.omittedColumns))
-            .filter(col => col.isUpdateColumn)
-            .toArray();
+        return this.queryInfo?.getDetailDisplayColumns(ViewInfo.DETAIL_NAME, List(this.omittedColumns)).toArray();
     }
 
     get displayColumns(): QueryColumn[] {
@@ -156,10 +153,7 @@ export class QueryModel implements IQueryModel {
     }
 
     get updateColumns(): QueryColumn[] {
-        return this.queryInfo
-            ?.getDisplayColumns(ViewInfo.UPDATE_NAME, List(this.omittedColumns))
-            .filter(col => col?.isUpdateColumn)
-            .toArray();
+        return this.queryInfo?.getUpdateDisplayColumns(ViewInfo.UPDATE_NAME, List(this.omittedColumns)).toArray();
     }
 
     get keyColumns(): QueryColumn[] {

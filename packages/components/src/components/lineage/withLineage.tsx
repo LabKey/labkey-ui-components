@@ -1,4 +1,4 @@
-import React, { ComponentType, PureComponent } from 'react';
+import React, { ComponentType, PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 
 import { LoadingState } from '../..';
@@ -147,7 +147,7 @@ export function withLineage<Props>(
             this._mounted = false;
         }
 
-        render() {
+        render(): ReactNode {
             const { ...props } = this.props;
             const { lineage } = this.state;
 

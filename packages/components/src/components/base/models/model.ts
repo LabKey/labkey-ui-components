@@ -1470,13 +1470,15 @@ export class AssayDefinitionModel extends Record({
         value,
         singleFilter: Filter.IFilterType,
         whereClausePart: (fieldKey, value) => string,
-        useLsid?: boolean
+        useLsid?: boolean,
+        firstGenerationOnly?: boolean
     ) {
         const keyCol = useLsid ? '/LSID' : '/RowId';
         if (sampleColumns.size == 1) {
             // generate simple equals filter
             const sampleColumn = sampleColumns.get(0);
-            return Filter.create(sampleColumn + keyCol, value, singleFilter);
+            const filterVal = firstGenerationOnly ? [value, 1] : value;
+            return Filter.create(sampleColumn + keyCol, filterVal, singleFilter);
         } else {
             // generate an OR filter to include all sample columns
             const whereClause =

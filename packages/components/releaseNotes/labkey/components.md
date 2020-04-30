@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Allow filtering firstGenerationOnly for createQueryGridModelFilteredBySample
+
 ### version 0.54.0
 *Released*: 29 April 2020
 * Item 7138: DatasetDesignerPanels and related components, models, actions

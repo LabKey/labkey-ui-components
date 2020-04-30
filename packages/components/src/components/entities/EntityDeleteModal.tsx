@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
 import { capitalizeFirstChar } from '../../util/utils';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { EntityDataType } from "./models";
-import { EntityDeleteConfirmModal } from "./EntityDeleteConfirmModal";
+
 import { Progress } from '../base/Progress';
-import { QueryGridModel } from '../base/models/model';
+import {QueryGridModel, SchemaQuery} from '../base/models/model';
 import { createDeleteErrorNotification, createDeleteSuccessNotification } from '../notifications/messaging';
-import { deleteEntityDataRows } from "./actions";
-import { NotificationItemProps } from '../..';
+
+import {deleteRows, NotificationItemProps} from '../..';
+
+import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
+import { EntityDataType } from './models';
 
 interface Props {
     model: QueryGridModel;
@@ -24,7 +26,7 @@ interface Props {
     notify?: (notification: NotificationItemProps) => void;
 }
 
-export function EntityDeleteModal(props: Props) {
+export const EntityDeleteModal: React.FC<Props> = (props) => {
     const {
         auditBehavior,
         model,
@@ -53,7 +55,7 @@ export function EntityDeleteModal(props: Props) {
         numSelected = 1;
     }
 
-    function getNoun(quantity: number) {
+    function getNoun(quantity: number): string {
         return quantity === 1 ? nounSingular : nounPlural;
     }
 
@@ -64,21 +66,20 @@ export function EntityDeleteModal(props: Props) {
         beforeDelete();
         const noun = ' ' + getNoun(rowsToDelete.length);
 
-        deleteEntityDataRows(
-            model,
-            rowsToDelete,
-            nounSingular,
-            nounPlural,
-            () => {
+        const schemaQuery = SchemaQuery.create(model.schema, model.query);
+
+        deleteRows({
+            schemaQuery,
+            rows: rowsToDelete,
+            auditBehavior,
+        }).then(() => {
                 afterDelete(rowsToKeep);
                 createDeleteSuccessNotification(noun, rowsToDelete.length, undefined, notify);
-            },
-            () => {
+            })
+            .catch(error => {
                 setShowProgress(false);
                 createDeleteErrorNotification(noun, notify);
-            },
-            auditBehavior
-        );
+            });
     }
 
     if (useSelected && maxSelected && numSelected > maxSelected) {

@@ -324,7 +324,6 @@ import {
     getDataDeleteConfirmationData,
     getSampleDeleteConfirmationData,
     extractEntityTypeOptionFromRow,
-    deleteEntityDataRows,
 } from './components/entities/actions';
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
 import { SampleTypeModel } from './components/domainproperties/samples/models';
@@ -553,7 +552,7 @@ export {
     GenerateEntityResponse,
     createDeleteSuccessNotification,
     createDeleteErrorNotification,
-    deleteEntityDataRows,
+
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,

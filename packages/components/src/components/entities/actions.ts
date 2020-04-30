@@ -340,39 +340,3 @@ export function deleteEntityType(deleteActionName: string, rowId: number): Promi
         });
     });
 }
-
-/**
- * Delete a sample or selection of samples from a given sample type (based on the QueryGridModel).
- * @param model - QueryGridModel with row data for the sample type schema/query
- * @param rows - the rows that are to be deleted.  Each element of the array contains, minimally,  RowId: <value>
- * @param nounSingular - singular noun for the type being deleted
- * @param nounPlural - plural noun for the type being deleted
- * @param onComplete - callback function for after the deleteRows command finishes
- * @param onFailure? - callback function for failure to delete samples
- * @param auditBehavior? - optional property to indicate the audit behavior for this query
- */
-export function deleteEntityDataRows(
-    model: QueryGridModel,
-    rows: any[],
-    nounSingular: string,
-    nounPlural: string,
-    onComplete: Function,
-    onFailure?: Function,
-    auditBehavior?: AuditBehaviorTypes
-) {
-    const schemaQuery = SchemaQuery.create(model.schema, model.query);
-
-    deleteRows({
-        schemaQuery,
-        rows,
-        auditBehavior,
-    })
-        .then(() => {
-            onComplete();
-        })
-        .catch(error => {
-            if (onFailure) {
-                onFailure();
-            }
-        });
-}

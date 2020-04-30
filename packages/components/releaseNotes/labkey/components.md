@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.5X.0
+*Released*: XX April 2020
+* Item 7178: Factored EntityDeleteModal (and associated functions) out of Sample Manager into labkey-ui-components for use in Biologics.
+
 ### version 0.54.0
 *Released*: 29 April 2020
 * Item 7138: DatasetDesignerPanels and related components, models, actions

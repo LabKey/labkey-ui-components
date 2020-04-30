@@ -3,10 +3,6 @@ import React, { AnchorHTMLAttributes, DetailedHTMLProps, PureComponent, ReactNod
 export class LineageDataLink extends PureComponent<
     DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>
 > {
-    static defaultProps = {
-        className: 'show-on-hover lineage-data-link',
-    };
-
     render(): ReactNode {
         const { children, href, onClick } = this.props;
 
@@ -15,8 +11,8 @@ export class LineageDataLink extends PureComponent<
         }
 
         return (
-            <a {...this.props}>
-                <span className="lineage-data-link--text">{children}</span>
+            <a {...this.props} className="show-on-hover lineage-data-link lineage-data-link--text">
+                {children}
             </a>
         );
     }

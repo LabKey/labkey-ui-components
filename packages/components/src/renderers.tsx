@@ -25,8 +25,14 @@ import { CustomToggle } from './components/base/CustomToggle';
 import { QueryColumn } from './components/base/models/model';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 
-export function headerCell(handleSort: any, column: GridColumn, i: number, selectable?: boolean, sortable: boolean = true, columnCount?: number) {
-
+export function headerCell(
+    handleSort: (column: QueryColumn, dir: string) => any,
+    column: GridColumn,
+    i: number,
+    selectable?: boolean,
+    sortable = true,
+    columnCount?: number
+) {
     const col: QueryColumn = column.raw;
 
     if (!col) {
@@ -35,37 +41,62 @@ export function headerCell(handleSort: any, column: GridColumn, i: number, selec
 
     const isSortAsc = col.sorts === '+';
     const isSortDesc = col.sorts === '-';
-    const isOnlyColumn = columnCount !== undefined && ((selectable && columnCount === 2) || (!selectable && columnCount === 1));
+    const isOnlyColumn =
+        columnCount !== undefined && ((selectable && columnCount === 2) || (!selectable && columnCount === 1));
 
     return (
         <span>
             {col.caption === '&nbsp;' ? '' : col.caption}
             {sortable && col.sortable && (
-                <span className={classNames({'pull-right': i === 0 && !selectable || selectable && i === 1})}>
-                <Dropdown id={`grid-menu-${i}`} className={classNames('hidden-xs hidden-sm', {'pull-right': isOnlyColumn || i > 0 && !selectable || i > 1})}>
-                    <CustomToggle bsRole="toggle">
-                        <span className="fa fa-chevron-circle-down" style={{color: 'lightgray', fontSize: '12px'}}/>
-                    </CustomToggle>
-                    <Dropdown.Menu>
-                        <MenuItem disabled={isSortAsc} onClick={!isSortAsc ? handleSort.bind(this, column, '+') : undefined}>
-                            <span className="fa fa-sort-amount-asc"/>&nbsp;
-                            Sort ascending
-                        </MenuItem>
-                        <MenuItem disabled={isSortDesc} onClick={!isSortDesc ? handleSort.bind(this, column, '-') : undefined}>
-                            <span className="fa fa-sort-amount-desc"/>&nbsp;
-                            Sort descending
-                        </MenuItem>
-                    </Dropdown.Menu>
-                 </Dropdown>
-            </span>
+                <span className={classNames({ 'pull-right': (i === 0 && !selectable) || (selectable && i === 1) })}>
+                    <Dropdown
+                        id={`grid-menu-${i}`}
+                        className={classNames('hidden-xs hidden-sm', {
+                            'pull-right': isOnlyColumn || (i > 0 && !selectable) || i > 1,
+                        })}
+                    >
+                        <CustomToggle bsRole="toggle">
+                            <span
+                                className="fa fa-chevron-circle-down"
+                                style={{ color: 'lightgray', fontSize: '12px' }}
+                            />
+                        </CustomToggle>
+                        <Dropdown.Menu>
+                            <MenuItem
+                                disabled={isSortAsc}
+                                onClick={
+                                    !isSortAsc
+                                        ? () => {
+                                              handleSort(col, '+');
+                                          }
+                                        : undefined
+                                }
+                            >
+                                <span className="fa fa-sort-amount-asc" />
+                                &nbsp; Sort ascending
+                            </MenuItem>
+                            <MenuItem
+                                disabled={isSortDesc}
+                                onClick={
+                                    !isSortDesc
+                                        ? () => {
+                                              handleSort(col, '-');
+                                          }
+                                        : undefined
+                                }
+                            >
+                                <span className="fa fa-sort-amount-desc" />
+                                &nbsp; Sort descending
+                            </MenuItem>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </span>
             )}
         </span>
     );
 }
 
-
 export function headerSelectionCell(handleSelection: any, selectedState: GRID_CHECKBOX_OPTIONS, disabled: boolean) {
-
     const isChecked = selectedState === GRID_CHECKBOX_OPTIONS.ALL;
     const isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME;
 
@@ -77,8 +108,9 @@ export function headerSelectionCell(handleSelection: any, selectedState: GRID_CH
             disabled={disabled}
             onChange={handleSelection}
             ref={elem => elem && (elem.indeterminate = isIndeterminate)}
-            type="checkbox"/>
-    )
+            type="checkbox"
+        />
+    );
 }
 
 export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
@@ -92,7 +124,7 @@ export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): O
             }
 
             // TODO: Just generate one function per type
-            return col.set('cell', (data) => {
+            return col.set('cell', data => {
                 return React.createElement(node, { data, col });
             });
         }) as OrderedMap<string, QueryColumn>;

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { fromJS } from 'immutable';
+
 // Tested components
 import { QuerySelectModel } from './model';
 import { parseSelectedQuery } from './actions';
@@ -28,29 +29,29 @@ describe('form actions', () => {
     const searchResults2 = fromJS({
         '789': {
             DATA: {
-                value: 'C-1'
-            }
-        }
+                value: 'C-1',
+            },
+        },
     });
 
     const searchResults3 = fromJS({
         '123': {
             DATA: {
-                value: 'A-1'
+                value: 'A-1',
             },
             NAME: {
-                value: 'Ron Swanson'
-            }
+                value: 'Ron Swanson',
+            },
         },
 
         '456': {
             DATA: {
-                value: 'B-1'
+                value: 'B-1',
             },
             NAME: {
-                value: 'Swan Ronson'
-            }
-        }
+                value: 'Swan Ronson',
+            },
+        },
     });
 
     test('Should parse a selected query', () => {
@@ -58,7 +59,7 @@ describe('form actions', () => {
 
         const parsedSelectionModel = new QuerySelectModel({
             displayColumn: 'NAME',
-            delimiter: ';'
+            delimiter: ';',
         });
 
         const parsed2 = parseSelectedQuery(parsedSelectionModel, searchResults3);

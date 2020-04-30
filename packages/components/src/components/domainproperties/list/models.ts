@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Record } from "immutable";
-import {DomainDesign, DomainField} from "../models";
+import { Record } from 'immutable';
+
+import { DomainDesign, DomainField } from '../models';
+import { DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
 
 export interface AdvancedSettingsForm {
     titleColumn?: string;
@@ -34,94 +36,95 @@ export interface AdvancedSettingsForm {
 export class ListModel extends Record({
     exception: undefined,
     domain: undefined,
-    entityId : undefined,
-    createdBy : undefined,
-    created : undefined,
-    modifiedBy : undefined,
-    modified : undefined,
-    containerId : undefined,
-    name : undefined,
-    description : undefined,
-    lastIndexed : undefined,
-    keyName : undefined,
-    titleColumn : undefined,
-    domainId : undefined,
-    keyType : undefined,
-    discussionSetting : undefined,
-    allowDelete : undefined,
-    allowUpload : undefined,
-    allowExport : undefined,
-    entireListIndex : undefined,
-    entireListIndexSetting : undefined,
-    entireListTitleTemplate : undefined,
-    entireListBodySetting : undefined,
-    entireListBodyTemplate : undefined,
-    eachItemIndex : undefined,
-    eachItemTitleTemplate : undefined,
-    eachItemBodySetting : undefined,
-    eachItemBodyTemplate : undefined,
-    fileAttachmentIndex : undefined,
-    listId : undefined,
-    discussionSettingEnum : undefined,
-    containerPath : undefined,
+    entityId: undefined,
+    createdBy: undefined,
+    created: undefined,
+    modifiedBy: undefined,
+    modified: undefined,
+    containerId: undefined,
+    name: undefined,
+    description: undefined,
+    lastIndexed: undefined,
+    keyName: undefined,
+    titleColumn: undefined,
+    domainId: undefined,
+    keyType: undefined,
+    discussionSetting: undefined,
+    allowDelete: undefined,
+    allowUpload: undefined,
+    allowExport: undefined,
+    entireListIndex: undefined,
+    entireListIndexSetting: undefined,
+    entireListTitleTemplate: undefined,
+    entireListBodySetting: undefined,
+    entireListBodyTemplate: undefined,
+    eachItemIndex: undefined,
+    eachItemTitleTemplate: undefined,
+    eachItemBodySetting: undefined,
+    eachItemBodyTemplate: undefined,
+    fileAttachmentIndex: undefined,
+    listId: undefined,
+    discussionSettingEnum: undefined,
+    containerPath: undefined,
 }) {
     exception: string;
     domain: DomainDesign;
-    name : string;
-    description : string;
-    lastIndexed : any;
-    keyName : string;
-    titleColumn : null;
-    domainId : number;
-    keyType : string;
-    discussionSetting : number;
-    allowDelete : true;
-    allowUpload : true;
-    allowExport : true;
-    entireListIndex : true;
-    entireListIndexSetting : number;
-    entireListTitleTemplate : string;
-    entireListBodySetting : number;
-    entireListBodyTemplate : string;
-    eachItemIndex : false;
-    eachItemTitleTemplate : string;
-    eachItemBodySetting : number;
-    eachItemBodyTemplate : string;
-    fileAttachmentIndex : false;
-    listId : number;
-    discussionSettingEnum : string;
-    containerPath : string;
+    name: string;
+    description: string;
+    lastIndexed: any;
+    keyName: string;
+    titleColumn: null;
+    domainId: number;
+    keyType: string;
+    discussionSetting: number;
+    allowDelete: true;
+    allowUpload: true;
+    allowExport: true;
+    entireListIndex: true;
+    entireListIndexSetting: number;
+    entireListTitleTemplate: string;
+    entireListBodySetting: number;
+    entireListBodyTemplate: string;
+    eachItemIndex: false;
+    eachItemTitleTemplate: string;
+    eachItemBodySetting: number;
+    eachItemBodyTemplate: string;
+    fileAttachmentIndex: false;
+    listId: number;
+    discussionSettingEnum: string;
+    containerPath: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
-    static create(raw: any, defaultSettings=null): ListModel {
+    static create(raw: any, defaultSettings = null): ListModel {
         if (defaultSettings) {
-            let domain = DomainDesign.create(undefined);
-            return new ListModel({...defaultSettings, domain});
+            const domain = DomainDesign.create(undefined);
+            return new ListModel({ ...defaultSettings, domain });
         } else {
             let domain = DomainDesign.create(raw.domainDesign);
 
             // Issue39818: Set the key field of an existing list to be PKLocked.
             const fields = domain.fields;
-            const pkField = fields.findIndex(i => (i.isPrimaryKey));
+            const pkField = fields.findIndex(i => i.isPrimaryKey);
             if (pkField > -1) {
-                const pkFieldLocked = fields.get(pkField).merge({ lockType:"PKLocked" }) as DomainField;
+                const pkFieldLocked = fields
+                    .get(pkField)
+                    .merge({ lockType: DOMAIN_FIELD_PRIMARY_KEY_LOCKED }) as DomainField;
                 const updatedFields = fields.set(pkField, pkFieldLocked);
                 domain = domain.set('fields', updatedFields) as DomainDesign;
             }
 
-            return new ListModel({...raw.options, domain});
+            return new ListModel({ ...raw.options, domain });
         }
     }
 
     getDomainKind(): string {
-        if (this.keyType === "Varchar") {
-            return "VarList"
-        }
-        else if (this.keyType === "Integer" || this.keyType === "AutoIncrementInteger") {
-            return "IntList"
+        if (this.keyType === 'Varchar') {
+            return 'VarList';
+        } else if (this.keyType === 'Integer' || this.keyType === 'AutoIncrementInteger') {
+            return 'IntList';
         }
 
         return undefined;
@@ -143,12 +146,12 @@ export class ListModel extends Record({
         return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
     }
 
-    getOptions(): Object {
-        let options = this.toJS();
+    getOptions(): Record<string, any> {
+        const options = this.toJS();
 
         // Note: keyName is primarily set using <SetKeyFieldNamePanel/>'s onSelectionChange()
         // Setting keyName here covers the use-case where a user sets a Key Field, and then changes its name
-        const keyField = this.domain.fields.find((field) => field.isPrimaryKey);
+        const keyField = this.domain.fields.find(field => field.isPrimaryKey);
         if (keyField && this.keyName !== keyField.name) {
             options.keyName = keyField.name;
         }

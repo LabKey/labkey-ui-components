@@ -16,83 +16,85 @@ import { MultiMenuButton } from '../components/menus/MultiMenuButton';
 // here to make interaction easier.  The key is what is compared to the current choice.
 const breakfastOptions = [
     {
-        name: "Eggs",
-        key: "Eggs"
+        name: 'Eggs',
+        key: 'Eggs',
     },
     {
-        name: "Waffles",
-        key: "Waffles"
+        name: 'Waffles',
+        key: 'Waffles',
     },
     {
-        name: "Muffins",
-        key: "Muffins"
-    }
+        name: 'Muffins',
+        key: 'Muffins',
+    },
 ];
-
 
 const lunchOptions = List<MenuOption>([
     {
-        name: "Sandwich",
-        key: "Sandwich"
+        name: 'Sandwich',
+        key: 'Sandwich',
     },
     {
-        name: "Soup",
-        key: "Soup"
+        name: 'Soup',
+        key: 'Soup',
     },
     {
-        name: "Salad",
-        key: "Salad"
-    }
+        name: 'Salad',
+        key: 'Salad',
+    },
 ]);
 
 const dinnerOptions = List<MenuOption>([
     {
-        name: "Roast beast",
-        key: "Roast beast"
+        name: 'Roast beast',
+        key: 'Roast beast',
     },
     {
-        name: "Curry",
-        key: "Curry"
+        name: 'Curry',
+        key: 'Curry',
     },
     {
-        name: "Pasta",
-        key: "Pasta"
-    }
+        name: 'Pasta',
+        key: 'Pasta',
+    },
 ]);
 
 const snackOptions = List<MenuOption>([
     {
-        name: "Trail Mix",
-        key: "Trail Mix"
+        name: 'Trail Mix',
+        key: 'Trail Mix',
     },
     {
-        name: "Fruit",
-        key: "Fruit"
-    }
+        name: 'Fruit',
+        key: 'Fruit',
+    },
 ]);
 
-
 const menuMap = Map<string, List<MenuOption>>({
-    "Breakfast": breakfastOptions,
-    "Lunch": lunchOptions,
-    "Dinner": dinnerOptions,
-    "Snack": snackOptions,
+    Breakfast: breakfastOptions,
+    Lunch: lunchOptions,
+    Dinner: dinnerOptions,
+    Snack: snackOptions,
 });
 
 function renderMenuItem(key: string, currentMenuChoice: string) {
-    return <SubMenu currentMenuChoice={currentMenuChoice} key={key} options={menuMap.get(key)} text={key} />
+    return <SubMenu currentMenuChoice={currentMenuChoice} key={key} options={menuMap.get(key)} text={key} />;
 }
 
-storiesOf("MultiMenuButton", module)
+storiesOf('MultiMenuButton', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
-        let contextOptions = menuMap.keySeq().toArray();
-        contextOptions.unshift("");
-        const currentMenuChoice = text("Current sub-menu choice", undefined);
-        const context = select("Current sub-menu", contextOptions, undefined);
-        return <MultiMenuButton currentSubMenuKey={context}
-                                currentSubMenuChoice={currentMenuChoice}
-                                title={text("Button title", "Prepare")}
-                                menuKeys={List(menuMap.keySeq().toArray())}
-                                renderMenuItem={renderMenuItem}/>
+    .add('with knobs', () => {
+        const contextOptions = menuMap.keySeq().toArray();
+        contextOptions.unshift('');
+        const currentMenuChoice = text('Current sub-menu choice', undefined);
+        const context = select('Current sub-menu', contextOptions, undefined);
+        return (
+            <MultiMenuButton
+                currentSubMenuKey={context}
+                currentSubMenuChoice={currentMenuChoice}
+                title={text('Button title', 'Prepare')}
+                menuKeys={List(menuMap.keySeq().toArray())}
+                renderMenuItem={renderMenuItem}
+            />
+        );
     });

@@ -15,8 +15,9 @@
  */
 import { List } from 'immutable';
 
-import { Action, ActionOption, ActionValue, Value } from './Action';
 import { QueryColumn } from '../../base/models/model';
+
+import { Action, ActionOption, ActionValue, Value } from './Action';
 
 export class SearchAction implements Action {
     isDefaultAction = true;
@@ -26,54 +27,56 @@ export class SearchAction implements Action {
     oneWordLabel = 'search';
     optionalLabel = 'keywords';
 
-    constructor(resolveColumns, urlPrefix: string) {
+    constructor(urlPrefix: string) {
         if (urlPrefix !== undefined) {
             this.param = [urlPrefix, this.param].join('.');
         }
     }
 
-    completeAction(tokens: Array<string>): Promise<Value> {
+    completeAction(tokens: string[]): Promise<Value> {
         const token = tokens.join(' ');
         // @ts-ignore
         return Promise.resolve({
             value: token,
-            param: token
+            param: token,
         });
     }
 
-    fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
+    fetchOptions(tokens: string[]): Promise<ActionOption[]> {
         const token = tokens.join(' ');
         const option: ActionOption = {
             label: `search for "${token}"`,
             value: token,
             appendValue: false,
             selectable: token !== '',
-            isComplete: token !== ''
+            isComplete: token !== '',
         };
 
         return Promise.resolve([option]);
     }
 
-    buildParams(actionValues: Array<ActionValue>): Array<{paramKey: string; paramValue: string}> {
+    buildParams(actionValues: ActionValue[]): Array<{ paramKey: string; paramValue: string }> {
         let paramValue = '',
             sep = '';
 
-        actionValues.forEach((actionValue) => {
+        actionValues.forEach(actionValue => {
             paramValue += sep + actionValue.value;
             sep = ';';
         });
 
-        return [{
-            paramKey: this.param,
-            paramValue
-        }];
+        return [
+            {
+                paramKey: this.param,
+                paramValue,
+            },
+        ];
     }
 
     matchParam(paramKey: string, paramValue: any): boolean {
         return paramKey && paramKey.toLowerCase() === this.param.toLowerCase();
     }
 
-    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): Array<string> | Array<Value> {
+    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): string[] | Value[] {
         return paramValue.split(';');
     }
 }

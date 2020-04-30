@@ -1,9 +1,10 @@
-import { QueryModel, GridMessage } from './QueryModel';
 import { getQueryDetails, QueryInfo, selectRows } from '..';
 import { bindColumnRenderers } from '../renderers';
 
+import { QueryModel, GridMessage } from './QueryModel';
+
 export interface RowsResponse {
-    messages: GridMessage[],
+    messages: GridMessage[];
     rows: { [key: string]: any };
     orderedRows: string[];
     rowCount: number;

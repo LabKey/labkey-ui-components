@@ -1,7 +1,55 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.51.0
+## version 0.55.0
+*Released*: 30 April 2020
+* Issue 39633: Choosing to cancel navigating away from a page when using react-router's setRouteLeaveHook will leave
+you on the page but the URL will have been updated to the page where you had originally intended to go, which means
+using that link again from the starting page will not work.
+* Issue 38002: Set isSubmitting to false after updateRows in EditableGridPanelForUpdate in case you stay on the page after updating
+* Update resolveErrorMessage to strip off java.lang.IllegalArgumentException prefixes and detect "Bad SQL grammar" exceptions.
+* Partial fix for Issue 40008: Add optional property to LineageSummary to allow customization of the lineage group headings in the summary panel
+* in SingleParentEntityPanel, use paged query model for better performance
+
+### version 0.54.1
+*Released*: 29 April 2020
+* Issue 38052: When all fields in a QueryInfoForm are disabled, the submit button should also be disabled
+
+### version 0.54.0
+*Released*: 29 April 2020
+* Item 7138: DatasetDesignerPanels and related components, models, actions
+    - new dataset related components DatasetDesignerPanels.tsx and DatasetPropertiesPanel.tsx
+    - DomainForm changes to support Column mapping option
+* Issue 40285: Domain designer screen width expands as the file preview grid table width gets very large
+
+### version 0.53.0
+*Released*: 28 April 2020
+* [Issue 34627: Lookup column is sorting by raw value and not display column](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=34627)
+    * This fix changes the behavior of the sort action on the OmniBox, columns are now sorted by displayValue
+* [Issue 36486: omnibox only shows options on drop-down for current page](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=36486)
+    * This fix changes the behavior of the Filter dropdown on the Omnibox, we now show distinct values for a column.
+* [Issue 40195: Omnibox filter value invalid if user enters multiple words](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=40195)
+* [Issue 39543: Omnibox dropdown does not allow other open menus to close](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=39543)
+
+### version 0.52.2
+*Released*: 24 April 2020
+* Misc 20.5 issue fixes for Sample Manager
+    - Issue 40139: DetailEditing panel editing - updating time but not date does not recognize change
+    - Issue 39328: Assay run should use renamed file name as its Assay Id when the same data file is being imported (for both re-import case and new import case)
+    - Issue 40233: EntityInsertPanel columns for Sources should not include "Parents" in column name caption
+    - DetailEditing panel (i.e. QueryForm usage) boolean field checked state doesn't initialize correctly when formattedValue exists
+
+### version 0.52.1
+*Released*: 20 April 2020
+* `@labkey/api` dependency update.
+
+## version 0.52.0
+*Released*: 18 April 2020
+* Item 7178: Prettier/ESLint bulk update
+    - Initial Prettier/ESLint bulk update across packages/components/src directory.
+    - yarn run lint-fix ./src/\*\*/\*
+
+## version 0.51.0
 *Released*: 17 April 2020
 * Item 6961: DataClassDesigner updates for LKS
     - update fetchDataClass function to work for either a data class name or rowId

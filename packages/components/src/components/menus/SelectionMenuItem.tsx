@@ -15,24 +15,24 @@
  */
 import React from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+
 import { QueryGridModel } from '../base/models/model';
 
 interface Props {
-    id: string
-    model: QueryGridModel
-    text: string
-    onClick: () => any
-    disabledMsg: string
-    maxSelection?: number
-    maxSelectionDisabledMsg? : string
-    nounPlural: string
+    id: string;
+    model: QueryGridModel;
+    text: string;
+    onClick: () => any;
+    disabledMsg: string;
+    maxSelection?: number;
+    maxSelectionDisabledMsg?: string;
+    nounPlural: string;
 }
 
 export class SelectionMenuItem extends React.Component<Props, any> {
-
     static defaultProps = {
         disabledMsg: 'Select one or more',
-        nounPlural: 'items'
+        nounPlural: 'items',
     };
 
     render() {
@@ -40,17 +40,23 @@ export class SelectionMenuItem extends React.Component<Props, any> {
         const tooManySelected = model && maxSelection && model.selectedIds.size > maxSelection;
         const tooFewSelected = model && model.selectedIds.size === 0;
         const disabled = !model || model.totalRows === 0 || tooFewSelected || tooManySelected;
-        const item = <MenuItem onClick={onClick} disabled={disabled}>{text}</MenuItem>;
+        const item = (
+            <MenuItem onClick={onClick} disabled={disabled}>
+                {text}
+            </MenuItem>
+        );
 
-        let message = tooFewSelected ? disabledMsg + ' ' + nounPlural + '.' : (maxSelectionDisabledMsg || "At most " + maxSelection + " " + nounPlural + " can be selected.");
+        const message = tooFewSelected
+            ? disabledMsg + ' ' + nounPlural + '.'
+            : maxSelectionDisabledMsg || 'At most ' + maxSelection + ' ' + nounPlural + ' can be selected.';
         if (disabled) {
-            const overlay = <Popover id={id + "-disabled-warning"}>{message}</Popover>;
+            const overlay = <Popover id={id + '-disabled-warning'}>{message}</Popover>;
 
             return (
                 <OverlayTrigger overlay={overlay} placement="right">
                     {item}
                 </OverlayTrigger>
-            )
+            );
         }
 
         return item;

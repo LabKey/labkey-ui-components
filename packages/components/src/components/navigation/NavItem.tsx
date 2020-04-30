@@ -16,27 +16,27 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { InjectedRouter, Link } from 'react-router';
+
 import { AppURL } from '../../url/AppURL';
 
 interface NavItemProps {
-    onlyActiveOnIndex?: boolean
-    onActive?: Function
-    to: string | AppURL
+    onlyActiveOnIndex?: boolean;
+    onActive?: Function;
+    to: string | AppURL;
 }
 
 export class NavItem extends React.Component<NavItemProps, any> {
-
     // required for react-router to display active links properly
     static contextTypes = {
-        router: PropTypes.object.isRequired
+        router: PropTypes.object.isRequired,
     };
 
     static defaultProps = {
-        onlyActiveOnIndex: false
+        onlyActiveOnIndex: false,
     };
 
     context: {
-        router: InjectedRouter
+        router: InjectedRouter;
     };
 
     private item: React.RefObject<HTMLLIElement>;
@@ -68,17 +68,14 @@ export class NavItem extends React.Component<NavItemProps, any> {
         const { to } = this.props;
 
         return (
-            <li className={this.isActive(this.props) ? "active" : null} ref={this.item}>
-                <Link to={to.toString()}>
-                    {this.props.children}
-                </Link>
+            <li className={this.isActive(this.props) ? 'active' : null} ref={this.item}>
+                <Link to={to.toString()}>{this.props.children}</Link>
             </li>
-        )
+        );
     }
 }
 
 export class ParentNavItem extends React.Component<NavItemProps, any> {
-
     render() {
         const { to } = this.props;
 
@@ -87,12 +84,13 @@ export class ParentNavItem extends React.Component<NavItemProps, any> {
                 <ul className="nav navbar-nav">
                     <li>
                         <Link to={to.toString()}>
-                            <i className="fa fa-chevron-left"/>&nbsp;
+                            <i className="fa fa-chevron-left" />
+                            &nbsp;
                             {this.props.children}
                         </Link>
                     </li>
                 </ul>
             </div>
-        )
+        );
     }
 }

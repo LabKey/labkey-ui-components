@@ -15,21 +15,22 @@
  */
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
+
 import { IEntityTypeDetails } from '../entities/models';
-import { deleteEntityType } from "../entities/actions";
+import { deleteEntityType } from '../entities/actions';
 import { getSelection } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';
 import { selectRows } from '../../query/api';
-import { DomainDetails } from "../domainproperties/models";
+import { DomainDetails } from '../domainproperties/models';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
-    let promises = [];
+    const promises = [];
 
-    //Get Sample Types
+    // Get Sample Types
     promises.push(
-            selectRows({
+        selectRows({
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
             columns: 'LSID, Name, RowId, Folder',
@@ -37,7 +38,7 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
         })
     );
 
-    //Get Data Classes
+    // Get Data Classes
     if (includeDataClasses) {
         promises.push(
             selectRows({
@@ -50,11 +51,13 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
     }
 
     return new Promise<any[]>((resolve, reject) => {
-        return Promise.all(promises).then((responses) => {
-            resolve(responses);
-        }).catch((errorResponse) => {
-            reject(errorResponse);
-        });
+        return Promise.all(promises)
+            .then(responses => {
+                resolve(responses);
+            })
+            .catch(errorResponse => {
+                reject(errorResponse);
+            });
     });
 }
 
@@ -64,10 +67,10 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
             url: buildURL('experiment', 'getSampleSetApi.api'),
             method: 'GET',
             params: config,
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(Map(response));
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
             }),
         });
@@ -81,12 +84,12 @@ export function getSampleTypeDetails(query?: SchemaQuery, domainId?: number): Pr
             containerPath: ActionURL.getContainer(),
             queryName: query ? query.getQuery() : undefined,
             schemaName: query ? query.getSchema() : undefined,
-            success: (response) => {
+            success: response => {
                 resolve(DomainDetails.create(Map(response)));
             },
-            failure: (response) => {
+            failure: response => {
                 reject(response);
-            }
+            },
         });
     });
 }
@@ -102,7 +105,11 @@ export function deleteSampleSet(rowId: number): Promise<any> {
  * @param sampleColumn A QueryColumn used to map fieldKey, displayColumn, and keyColumn data
  * @param filterArray A collection of filters used when requesting rows
  */
-export function fetchSamples(schemaQuery: SchemaQuery, sampleColumn: QueryColumn, filterArray: Array<Filter.IFilter>): Promise<OrderedMap<any, any>> {
+export function fetchSamples(
+    schemaQuery: SchemaQuery,
+    sampleColumn: QueryColumn,
+    filterArray: Filter.IFilter[]
+): Promise<OrderedMap<any, any>> {
     return selectRows({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
@@ -112,11 +119,16 @@ export function fetchSamples(schemaQuery: SchemaQuery, sampleColumn: QueryColumn
         const rows = fromJS(models[key]);
         let data = OrderedMap<any, any>();
 
-        orderedModels[key].forEach((id) => {
-            data = data.setIn([id, sampleColumn.fieldKey], List([{
-                displayValue: rows.getIn([id, sampleColumn.lookup.displayColumn, 'value']),
-                value: rows.getIn([id, sampleColumn.lookup.keyColumn, 'value']),
-            }]));
+        orderedModels[key].forEach(id => {
+            data = data.setIn(
+                [id, sampleColumn.fieldKey],
+                List([
+                    {
+                        displayValue: rows.getIn([id, sampleColumn.lookup.displayColumn, 'value']),
+                        value: rows.getIn([id, sampleColumn.lookup.keyColumn, 'value']),
+                    },
+                ])
+            );
         });
 
         return data;
@@ -130,10 +142,10 @@ export function fetchSamples(schemaQuery: SchemaQuery, sampleColumn: QueryColumn
  * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
  */
 export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
-    return getSelection(location).then((selection) => {
+    return getSelection(location).then(selection => {
         if (selection.resolved && selection.schemaQuery && selection.selected.length) {
             return fetchSamples(selection.schemaQuery, sampleColumn, [
-                Filter.create('RowId', selection.selected, Filter.Types.IN)
+                Filter.create('RowId', selection.selected, Filter.Types.IN),
             ]);
         }
     });

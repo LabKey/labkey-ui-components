@@ -16,79 +16,76 @@
 import React from 'react';
 import { withFormsy } from 'formsy-react';
 import { Utils } from '@labkey/api';
+
 import { FieldLabel } from '../FieldLabel';
-import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+
 import { QueryColumn } from '../../base/models/model';
 
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+
 interface CheckboxInputProps extends DisableableInputProps {
-    formsy?: boolean
-    label?: any
-    name?: string
-    queryColumn: QueryColumn
-    rowClassName?: Array<any> | string
-    showLabel?: boolean
-    value?: any
-    addLabelAsterisk?: boolean
+    formsy?: boolean;
+    label?: any;
+    name?: string;
+    queryColumn: QueryColumn;
+    rowClassName?: any[] | string;
+    showLabel?: boolean;
+    value?: any;
+    addLabelAsterisk?: boolean;
 
     // from formsy-react
-    getErrorMessage?: Function
-    getValue?: Function
-    setValue?: Function
-    showRequired?: Function
-    validations?: any
+    getErrorMessage?: Function;
+    getValue?: Function;
+    setValue?: Function;
+    showRequired?: Function;
+    validations?: any;
 }
 
 interface CheckboxInputState extends DisableableInputState {
-    checked: boolean
+    checked: boolean;
 }
 
 class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInputState> {
-
-    static defaultProps = {...DisableableInput.defaultProps, showLabel: true};
+    static defaultProps = { ...DisableableInput.defaultProps, showLabel: true };
 
     constructor(props: CheckboxInputProps) {
         super(props);
 
         this.state = {
-            checked: props.value === true || props.value === "true",
-            isDisabled: props.initiallyDisabled
-        }
+            checked: props.value === true || props.value === 'true',
+            isDisabled: props.initiallyDisabled,
+        };
     }
 
-    onChange = (e) => {
+    onChange = e => {
         const checked = e.target.checked;
         this.setState(() => {
             return {
-                checked
-            }
+                checked,
+            };
         });
-        if (this.props.formsy && Utils.isFunction(this.props.setValue))
-            this.props.setValue(checked);
+        if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(checked);
     };
 
     toggleDisabled = () => {
         const { value } = this.props;
         const { checked } = this.state;
 
-        this.setState((state) => {
+        this.setState(state => {
             return {
                 isDisabled: !state.isDisabled,
-                checked: state.isDisabled ? checked : (value === true || value === "true"),
+                checked: state.isDisabled ? checked : value === true || value === 'true',
+            };
+        }, () => {
+            if (this.props.onToggleDisable) {
+                this.props.onToggleDisable(this.state.isDisabled);
             }
         });
     };
 
     render() {
-        const {
-            allowDisable,
-            label,
-            name,
-            queryColumn,
-            showLabel,
-            addLabelAsterisk
-        } = this.props;
+        const { allowDisable, label, name, queryColumn, showLabel, addLabelAsterisk } = this.props;
         const { isDisabled } = this.state;
-
 
         // N.B.  We do not use the Checkbox component from Formsy because it does not support
         // React.Nodes as labels.  Using a label that is anything but a string when using Checkbox
@@ -97,21 +94,25 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
             <div className="form-group row">
                 <FieldLabel
                     label={label}
-                    labelOverlayProps={{isFormsy: false, inputId: queryColumn.name, addLabelAsterisk: addLabelAsterisk}}
+                    labelOverlayProps={{
+                        isFormsy: false,
+                        inputId: queryColumn.name,
+                        addLabelAsterisk,
+                    }}
                     showLabel={showLabel}
                     showToggle={allowDisable}
                     column={queryColumn}
-                    isDisabled = {isDisabled}
-                    toggleProps = {{
+                    isDisabled={isDisabled}
+                    toggleProps={{
                         onClick: this.toggleDisabled,
-                    }}/>
-                <div className={"col-sm-9 col-xs-12"}>
+                    }}
+                />
+                <div className="col-sm-9 col-xs-12">
                     <input
                         disabled={this.state.isDisabled}
-
                         name={name ? name : queryColumn.name}
                         required={queryColumn.required}
-                        type={"checkbox"}
+                        type="checkbox"
                         value={this.props.formsy ? this.props.getValue() : this.state.checked}
                         checked={this.state.checked}
                         onChange={this.onChange}
@@ -129,9 +130,8 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
 const CheckboxInputFormsy = withFormsy(CheckboxInputImpl);
 
 export class CheckboxInput extends React.Component<CheckboxInputProps, any> {
-
     static defaultProps = {
-        formsy: true
+        formsy: true,
     };
 
     constructor(props: CheckboxInputProps) {
@@ -140,8 +140,13 @@ export class CheckboxInput extends React.Component<CheckboxInputProps, any> {
 
     render() {
         if (this.props.formsy) {
-            return <CheckboxInputFormsy name={this.props.name ? this.props.name : this.props.queryColumn.name} {...this.props}/>
+            return (
+                <CheckboxInputFormsy
+                    name={this.props.name ? this.props.name : this.props.queryColumn.name}
+                    {...this.props}
+                />
+            );
         }
-        return <CheckboxInputImpl {...this.props} />
+        return <CheckboxInputImpl {...this.props} />;
     }
 }

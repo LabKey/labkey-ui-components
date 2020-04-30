@@ -8,13 +8,13 @@ class WhereFilterType implements Filter.IFilterType {
         return null;
     }
     getDisplayText(): string {
-        return "Where";
+        return 'Where';
     }
     getLongDisplayText(): string {
         return this.getDisplayText();
     }
     getURLSuffix(): string {
-        return "where"
+        return 'where';
     }
     isDataValueRequired(): boolean {
         return true;
@@ -49,8 +49,7 @@ class WhereFilterType implements Filter.IFilterType {
     getURLParameterValue(value: any) {
         return value;
     }
-    validate(value: any, jsonType: string, columnName: string) {
-    }
+    validate(value: any, jsonType: string, columnName: string) {}
 }
 
 export const WHERE_FILTER_TYPE = new WhereFilterType();

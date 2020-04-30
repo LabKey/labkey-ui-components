@@ -18,7 +18,6 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS } from 'immutable';
 
-import { DetailEditing } from './DetailEditing';
 import { getStateQueryGridModel } from '../../../models';
 import { getQueryGridModel } from '../../../global';
 
@@ -28,18 +27,22 @@ import { SCHEMAS } from '../../base/models/schemas';
 import { gridInit } from '../../../actions';
 import { SchemaQuery } from '../../base/models/model';
 
+import { DetailEditing } from './DetailEditing';
+
 let MODEL_ID;
 
 beforeAll(() => {
-    initUnitTestMocks(fromJS({
-        schema: {
-            [SCHEMAS.SAMPLE_SETS.SCHEMA]: {
-                queryDefaults: {
-                    appEditableTable: true
-                }
-            }
-        }
-    }));
+    initUnitTestMocks(
+        fromJS({
+            schema: {
+                [SCHEMAS.SAMPLE_SETS.SCHEMA]: {
+                    queryDefaults: {
+                        appEditableTable: true,
+                    },
+                },
+            },
+        })
+    );
 
     const schemaQuery = SchemaQuery.create('samples', 'Samples');
     const model = getStateQueryGridModel('jest-querygridmodel', schemaQuery, {
@@ -48,14 +51,14 @@ beforeAll(() => {
             fetch: () => {
                 const data = fromJS(sampleDetailsQuery.rows[0]);
 
-                return new Promise((resolve) => {
+                return new Promise(resolve => {
                     resolve({
-                        data: data,
+                        data,
                         dataIds: data.keySeq().toList(),
                     });
                 });
-            }
-        }
+            },
+        },
     });
     gridInit(model);
 
@@ -65,19 +68,19 @@ beforeAll(() => {
 const editBtnSelector = '.detail__edit-button';
 const headingSelector = '.detail__edit--heading';
 
-describe("<DetailEditing/>", () => {
-    test("loading", () => {
+describe('<DetailEditing/>', () => {
+    test('loading', () => {
         const model = getStateQueryGridModel('jest-querygridmodel-loading', SchemaQuery.create('samples', 'Samples'));
-        const component = <DetailEditing queryModel={model} canUpdate={true}/>;
+        const component = <DetailEditing queryModel={model} canUpdate={true} />;
         const tree = renderer.create(component).toJSON();
 
         expect(tree).toMatchSnapshot();
     });
 
-    test("canUpdate false", (done) => {
+    test('canUpdate false', done => {
         setTimeout(() => {
             const model = getQueryGridModel(MODEL_ID);
-            const component = <DetailEditing queryModel={model} canUpdate={false}/>;
+            const component = <DetailEditing queryModel={model} canUpdate={false} />;
             const tree = renderer.create(component).toJSON();
 
             expect(tree).toMatchSnapshot();
@@ -88,10 +91,10 @@ describe("<DetailEditing/>", () => {
         }, 0);
     });
 
-    test("canUpdate true", (done) => {
+    test('canUpdate true', done => {
         setTimeout(() => {
             const model = getQueryGridModel(MODEL_ID);
-            const component = <DetailEditing queryModel={model} canUpdate={true}/>;
+            const component = <DetailEditing queryModel={model} canUpdate={true} />;
             const tree = renderer.create(component).toJSON();
 
             expect(tree).toMatchSnapshot();
@@ -118,7 +121,7 @@ describe("<DetailEditing/>", () => {
         }, 0);
     });
 
-    test("useEditIcon false", (done) => {
+    test('useEditIcon false', done => {
         setTimeout(() => {
             const model = getQueryGridModel(MODEL_ID);
             const component = <DetailEditing queryModel={model} canUpdate={true} useEditIcon={false} />;
@@ -131,7 +134,7 @@ describe("<DetailEditing/>", () => {
         }, 0);
     });
 
-    test("custom title and buttons", (done) => {
+    test('custom title and buttons', done => {
         setTimeout(() => {
             const model = getQueryGridModel(MODEL_ID);
             const panelTitleText = 'Override Title';

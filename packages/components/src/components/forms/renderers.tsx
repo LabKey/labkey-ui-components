@@ -17,37 +17,60 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { Input } from 'formsy-react-components';
 
-import { LabelOverlay } from './LabelOverlay';
 import { QueryColumn } from '../base/models/model';
+
+import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
 
 export function resolveRenderer(column: QueryColumn) {
-
     let inputRenderer;
 
     if (column && column.inputRenderer) {
         switch (column.inputRenderer.toLowerCase()) {
             case 'experimentalias':
-                inputRenderer = (col: QueryColumn, key: any, value?: string, editing?: boolean, allowFieldDisable: boolean = false) => {
-                    return <AliasInput col={col} editing={editing} key={key} value={value} allowDisable={allowFieldDisable}/>;
+                inputRenderer = (
+                    col: QueryColumn,
+                    key: any,
+                    value?: string,
+                    editing?: boolean,
+                    allowFieldDisable = false
+                ) => {
+                    return (
+                        <AliasInput
+                            col={col}
+                            editing={editing}
+                            key={key}
+                            value={value}
+                            allowDisable={allowFieldDisable}
+                        />
+                    );
                 };
                 break;
             case 'appendunitsinput':
-                inputRenderer = (col: QueryColumn, key: any, val?: string, editing?: boolean, allowFieldDisable: boolean = false) => {
-                    return <Input
-                                allowDisable={allowFieldDisable}
-                                addonAfter={<span>{col.units}</span>}
-                                changeDebounceInterval={0}
-                                elementWrapperClassName={editing ? [{"col-sm-9": false}, "col-sm-12"] : undefined}
-                                id={col.name}
-                                key={key}
-                                label={<LabelOverlay column={col} inputId={col.name}/>}
-                                labelClassName="control-label text-left"
-                                name={col.name}
-                                required={col.required}
-                                type="text"
-                                value={val}
-                                validations='isNumericWithError'/>;
+                inputRenderer = (
+                    col: QueryColumn,
+                    key: any,
+                    val?: string,
+                    editing?: boolean,
+                    allowFieldDisable = false
+                ) => {
+                    return (
+                        <Input
+                            allowDisable={allowFieldDisable}
+                            addonAfter={<span>{col.units}</span>}
+                            changeDebounceInterval={0}
+                            elementWrapperClassName={editing ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}
+                            id={col.name}
+                            key={key}
+                            label={<LabelOverlay column={col} inputId={col.name} />}
+                            labelClassName="control-label text-left"
+                            name={col.name}
+                            required={col.required}
+                            type="text"
+                            value={val}
+                            validations="isNumericWithError"
+                        />
+                    );
                 };
                 break;
             default:
@@ -59,28 +82,32 @@ export function resolveRenderer(column: QueryColumn) {
 }
 
 function findValue(data: Map<string, any>, lookup?: boolean) {
-    return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')
+    return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value');
 }
 
-export function resolveDetailFieldValue(data: any, lookup?: boolean): string | Array<string> {
+export function resolveDetailFieldValue(
+    data: any,
+    lookup?: boolean,
+    ignoreFormattedValue?: boolean
+): string | string[] {
     let value;
 
     if (data) {
         if (List.isList(data) && data.size) {
-            value = data.map(d => {
-                if (d.has('formattedValue')) {
-                    return d.get('formattedValue');
-                }
+            value = data
+                .map(d => {
+                    if (!ignoreFormattedValue && d.has('formattedValue')) {
+                        return d.get('formattedValue');
+                    }
 
-                let o = findValue(d, lookup);
-                return o !== null && o !== undefined ? o : undefined;
-            }).toArray();
-        }
-        else if (data.has('formattedValue')) {
+                    const o = findValue(d, lookup);
+                    return o !== null && o !== undefined ? o : undefined;
+                })
+                .toArray();
+        } else if (!ignoreFormattedValue && data.has('formattedValue')) {
             value = data.get('formattedValue');
-        }
-        else {
-            let o = findValue(data, lookup);
+        } else {
+            const o = findValue(data, lookup);
             value = o !== null && o !== undefined ? o : undefined;
         }
     }

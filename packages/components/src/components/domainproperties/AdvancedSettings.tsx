@@ -3,7 +3,25 @@ import { List } from 'immutable';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
-import { DATETIME_TYPE, DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DomainField, IDomainFormDisplayOptions, IFieldChange, PropDescType  } from './models';
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
+import {
+    ADVANCED_FIELD_EDITOR_TOPIC,
+    ADVANCED_PROPERTY_FIELDS_TOPIC,
+    CHART_MEASURES_AND_DIMENSIONS_TOPIC,
+    PROPERTY_FIELDS_PHI_TOPIC,
+    helpLinkNode,
+    MISSING_VALUES_TOPIC,
+} from '../../util/helpLinks';
+
+import {
+    DATETIME_TYPE,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    DomainField,
+    IDomainFormDisplayOptions,
+    IFieldChange,
+    PropDescType,
+} from './models';
 import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
 import {
     DOMAIN_DEFAULT_TYPES,
@@ -21,55 +39,46 @@ import {
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
     DOMAIN_PHI_LEVELS,
 } from './constants';
-import { LabelHelpTip } from '../base/LabelHelpTip';
-import {
-    ADVANCED_FIELD_EDITOR_TOPIC,
-    ADVANCED_PROPERTY_FIELDS_TOPIC,
-    CHART_MEASURES_AND_DIMENSIONS_TOPIC,
-    PROPERTY_FIELDS_PHI_TOPIC,
-    helpLinkNode,
-    MISSING_VALUES_TOPIC
-} from '../../util/helpLinks';
-import { DomainFieldLabel } from "./DomainFieldLabel";
+
+import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface AdvancedSettingsProps {
-    domainId?: number
-    helpNoun: string
-    defaultDefaultValueType: string
-    defaultValueOptions: List<string>
-    label: string
-    index: number
-    show: boolean
-    maxPhiLevel: string
-    field: DomainField
-    onHide: () => any
-    onApply: (any) => any
-    showDefaultValueSettings: boolean
-    domainIndex: number
-    successBsStyle?: string
-    domainFormDisplayOptions?: IDomainFormDisplayOptions
+    domainId?: number;
+    helpNoun: string;
+    defaultDefaultValueType: string;
+    defaultValueOptions: List<string>;
+    label: string;
+    index: number;
+    show: boolean;
+    maxPhiLevel: string;
+    field: DomainField;
+    onHide: () => any;
+    onApply: (any) => any;
+    showDefaultValueSettings: boolean;
+    domainIndex: number;
+    successBsStyle?: string;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
 }
 
 interface AdvancedSettingsState {
-    hidden?: boolean
-    shownInDetailsView?: boolean
-    shownInInsertView?: boolean
-    shownInUpdateView?: boolean
-    defaultValueType?: string
-    defaultDisplayValue?: string
-    dimension?: boolean
-    measure?: boolean
-    mvEnabled?: boolean
-    recommendedVariable?: boolean
-    PHI?: string
-    phiLevels?: List<any>
-    excludeFromShifting?: boolean
+    hidden?: boolean;
+    shownInDetailsView?: boolean;
+    shownInInsertView?: boolean;
+    shownInUpdateView?: boolean;
+    defaultValueType?: string;
+    defaultDisplayValue?: string;
+    dimension?: boolean;
+    measure?: boolean;
+    mvEnabled?: boolean;
+    recommendedVariable?: boolean;
+    PHI?: string;
+    phiLevels?: List<any>;
+    excludeFromShifting?: boolean;
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
-
     static defaultProps = {
-        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     };
 
     constructor(props) {
@@ -87,16 +96,20 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         // Filter phi levels available
         const phiIndex = this.getPhiLevelIndex(maxPhiLevel);
-        const phiLevels = DOMAIN_PHI_LEVELS.filter( (value, index) => {
+        const phiLevels = DOMAIN_PHI_LEVELS.filter((value, index) => {
             return index <= phiIndex;
         }) as List<any>;
 
-        return ({
+        return {
             hidden: field.hidden,
             shownInDetailsView: field.shownInDetailsView,
             shownInInsertView: field.shownInInsertView,
             shownInUpdateView: field.shownInUpdateView,
-            defaultValueType: field.defaultValueType ? field.defaultValueType : (defaultDefaultValueType ? defaultDefaultValueType : DOMAIN_EDITABLE_DEFAULT),
+            defaultValueType: field.defaultValueType
+                ? field.defaultValueType
+                : defaultDefaultValueType
+                ? defaultDefaultValueType
+                : DOMAIN_EDITABLE_DEFAULT,
             defaultDisplayValue: field.defaultDisplayValue || '[none]',
             dimension: field.dimension,
             measure: field.measure,
@@ -104,8 +117,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             recommendedVariable: field.recommendedVariable,
             excludeFromShifting: field.excludeFromShifting,
             PHI: field.PHI,
-            phiLevels: phiLevels
-        })
+            phiLevels,
+        };
     };
 
     handleClose = () => {
@@ -118,13 +131,15 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const { index, onApply, onHide, domainIndex } = this.props;
 
         if (onApply) {
-
-            let changes = List<IFieldChange>().asMutable();
+            const changes = List<IFieldChange>().asMutable();
 
             // Iterate over state values and put into list of changes
             Object.keys(this.state).forEach(function (key, i) {
                 if (key !== 'phiLevels') {
-                    changes.push({id: createFormInputId(key, domainIndex, index), value: this.state[key]} as IFieldChange)
+                    changes.push({
+                        id: createFormInputId(key, domainIndex, index),
+                        value: this.state[key],
+                    } as IFieldChange);
                 }
             }, this);
 
@@ -136,9 +151,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         }
     };
 
-    handleCheckbox = (evt) => {
+    handleCheckbox = evt => {
         let value = getCheckedValue(evt);
-        let fieldName = getNameFromId(evt.target.id);
+        const fieldName = getNameFromId(evt.target.id);
 
         // Show in default view
         if (fieldName === DOMAIN_FIELD_HIDDEN) {
@@ -146,16 +161,16 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         }
 
         this.setState({
-            [fieldName]: value
-        })
+            [fieldName]: value,
+        });
     };
 
-    handleChange = (evt) => {
-        let fieldName = getNameFromId(evt.target.id);
+    handleChange = evt => {
+        const fieldName = getNameFromId(evt.target.id);
 
         this.setState({
-            [fieldName]: evt.target.value
-        })
+            [fieldName]: evt.target.value,
+        });
     };
 
     hasValidDomainId(): boolean {
@@ -163,15 +178,14 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return !(domainId === undefined || domainId === null || domainId === 0);
     }
 
-    handleSetDefaultValues = (evt) => {
+    handleSetDefaultValues = evt => {
         const { domainId, helpNoun } = this.props;
 
         if (!this.hasValidDomainId()) {
-            alert("Must save " + helpNoun + " before you can set default values.")
-        }
-        else {
-            let params = {
-                domainId: domainId,
+            alert('Must save ' + helpNoun + ' before you can set default values.');
+        } else {
+            const params = {
+                domainId,
                 returnUrl: window.location,
             };
 
@@ -188,68 +202,85 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     getMeasureHelpText = () => {
-        return(
+        return (
             <div>
-                <p>Indicates fields that contain data subject to charting and other analysis. These are typically numeric results.</p>
-                <p>Learn more about using {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, "Measures and Dimensions")} for analysis.</p>
+                <p>
+                    Indicates fields that contain data subject to charting and other analysis. These are typically
+                    numeric results.
+                </p>
+                <p>
+                    Learn more about using{' '}
+                    {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, 'Measures and Dimensions')} for analysis.
+                </p>
             </div>
-        )
+        );
     };
 
     getDimensionHelpText = () => {
-        return(
+        return (
             <div>
-                <p>Indicates a field of non-numerical categories that can be included in a chart. Dimensions define logical groupings of measures.</p>
-                <p>Learn more about using {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, "Measures and Dimensions")} for analysis.</p>
+                <p>
+                    Indicates a field of non-numerical categories that can be included in a chart. Dimensions define
+                    logical groupings of measures.
+                </p>
+                <p>
+                    Learn more about using{' '}
+                    {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, 'Measures and Dimensions')} for analysis.
+                </p>
             </div>
-        )
+        );
     };
 
     getMissingValueHelpText = () => {
-        return(
+        return (
             <div>
-                <p>Fields using this can hold special values to indicate data that has failed review or was originally missing. Administrators can set custom Missing Value indicators at the site and folder levels.</p>
-                <p>Learn more about using {helpLinkNode(MISSING_VALUES_TOPIC, "Missing Value Indicators")}.</p>
+                <p>
+                    Fields using this can hold special values to indicate data that has failed review or was originally
+                    missing. Administrators can set custom Missing Value indicators at the site and folder levels.
+                </p>
+                <p>Learn more about using {helpLinkNode(MISSING_VALUES_TOPIC, 'Missing Value Indicators')}.</p>
             </div>
-        )
+        );
     };
 
     getRecommendedVariableHelpText = () => {
-        return(
+        return (
             <div>
-                Indicates that this is an important variable. These variables will be displayed as recommended when creating new charts or reports.
+                Indicates that this is an important variable. These variables will be displayed as recommended when
+                creating new charts or reports.
             </div>
-        )
+        );
     };
 
     getPhiHelpText = () => {
-        return(
+        return (
             <div>
                 <p>Sets Protected Health Information (PHI) level for this field. This is a premium LabKey feature.</p>
-                <p>Learn more about {helpLinkNode(PROPERTY_FIELDS_PHI_TOPIC, "PHI Compliance")} in LabKey.</p>
+                <p>Learn more about {helpLinkNode(PROPERTY_FIELDS_PHI_TOPIC, 'PHI Compliance')} in LabKey.</p>
             </div>
-        )
+        );
     };
 
     getDefaultTypeHelpText = () => {
-        return(
+        return (
             <div>
                 <p>Editable default: Provides the same default value for every user, which allows editing.</p>
                 <p>Fixed value: Provides fixed data with each inserted data row that cannot be edited.</p>
-                <p>Last entered: An editable default value is provided on first use. The last value entered will be provided on later imports.</p>
-                <p>Learn more about using {helpLinkNode(ADVANCED_PROPERTY_FIELDS_TOPIC, "Default Type")} settings.</p>
+                <p>
+                    Last entered: An editable default value is provided on first use. The last value entered will be
+                    provided on later imports.
+                </p>
+                <p>Learn more about using {helpLinkNode(ADVANCED_PROPERTY_FIELDS_TOPIC, 'Default Type')} settings.</p>
             </div>
-        )
+        );
     };
 
     getExcludeFromDateShiftingText = () => {
-        return (
-            'Participant date fields with this property checked will not be shifted on export/publication when the "Shift Participant Dates" option is selected.'
-        )
+        return 'Participant date fields with this property checked will not be shifted on export/publication when the "Shift Participant Dates" option is selected.';
     };
 
     getPhiLevelIndex = (phi: string): number => {
-        return DOMAIN_PHI_LEVELS.findIndex((level) => {
+        return DOMAIN_PHI_LEVELS.findIndex(level => {
             return level.value === phi;
         });
     };
@@ -258,12 +289,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const { field, showDefaultValueSettings } = this.props;
 
         // some domains just don't support default values
-        if (!showDefaultValueSettings)
-            return false;
+        if (!showDefaultValueSettings) return false;
 
         // Not shown for file types
-        if (field.dataType.isFileType())
-            return false;
+        if (field.dataType.isFileType()) return false;
 
         return !this.props.defaultValueOptions.isEmpty();
     };
@@ -274,30 +303,42 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         return (
             <>
-                <div className='domain-adv-display-options'>Display Options</div>
+                <div className="domain-adv-display-options">Display Options</div>
                 <div>These options configure how and in which views this field will be visible.</div>
-                <Checkbox checked={hidden === false} onChange={this.handleCheckbox}
-                          name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
-                          id={createFormInputId(DOMAIN_FIELD_HIDDEN, domainIndex, index)}>
+                <Checkbox
+                    checked={hidden === false}
+                    onChange={this.handleCheckbox}
+                    name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
+                    id={createFormInputId(DOMAIN_FIELD_HIDDEN, domainIndex, index)}
+                >
                     Show field on default view of the grid
                 </Checkbox>
-                <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox}
-                          name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, domainIndex, index)}>
+                <Checkbox
+                    checked={shownInUpdateView === true}
+                    onChange={this.handleCheckbox}
+                    name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
+                    id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, domainIndex, index)}
+                >
                     Show on update form when updating a single row of data
                 </Checkbox>
-                <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox}
-                          name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, domainIndex, index)}>
+                <Checkbox
+                    checked={shownInInsertView === true}
+                    onChange={this.handleCheckbox}
+                    name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
+                    id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, domainIndex, index)}
+                >
                     Show on insert form when updating a single row of data
                 </Checkbox>
-                <Checkbox checked={shownInDetailsView === true} onChange={this.handleCheckbox}
-                          name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, domainIndex, index)}>
+                <Checkbox
+                    checked={shownInDetailsView === true}
+                    onChange={this.handleCheckbox}
+                    name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
+                    id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, domainIndex, index)}
+                >
                     Show on details page for a single row
                 </Checkbox>
             </>
-        )
+        );
     };
 
     renderDefaultValues = () => {
@@ -306,13 +347,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         return (
             <>
-                <div className='domain-adv-misc-options'>Default Value Options</div>
-                <Row className='domain-adv-thick-row'>
+                <div className="domain-adv-misc-options">Default Value Options</div>
+                <Row className="domain-adv-thick-row">
                     <Col xs={3}>
-                        <DomainFieldLabel
-                            label={'Default Type'}
-                            helpTipBody={this.getDefaultTypeHelpText}
-                        />
+                        <DomainFieldLabel label="Default Type" helpTipBody={this.getDefaultTypeHelpText} />
                     </Col>
                     <Col xs={6}>
                         <FormControl
@@ -322,27 +360,36 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             onChange={this.handleChange}
                             value={defaultValueType}
                         >
-                            {
-                                defaultValueOptions.map((level, i) => (
-                                    <option key={i} value={level}>{DOMAIN_DEFAULT_TYPES[level]}</option>
-                                ))
-                            }
+                            {defaultValueOptions.map((level, i) => (
+                                <option key={i} value={level}>
+                                    {DOMAIN_DEFAULT_TYPES[level]}
+                                </option>
+                            ))}
                         </FormControl>
                     </Col>
-                    <Col xs={3}/>
+                    <Col xs={3} />
                 </Row>
                 <Row>
                     <Col xs={3}>
                         <span>Default Value</span>
                     </Col>
                     <Col xs={9}>
-                        <span>{defaultDisplayValue !== undefined && defaultDisplayValue !== null ? defaultDisplayValue : ''}</span>
-                        <a style={{marginLeft: '20px'}} onClick={this.handleSetDefaultValues} className='domain-adv-link'>Set Default Values</a>
+                        <span>
+                            {defaultDisplayValue !== undefined && defaultDisplayValue !== null
+                                ? defaultDisplayValue
+                                : ''}
+                        </span>
+                        <a
+                            style={{ marginLeft: '20px' }}
+                            onClick={this.handleSetDefaultValues}
+                            className="domain-adv-link"
+                        >
+                            Set Default Values
+                        </a>
                     </Col>
                 </Row>
             </>
-        )
-
+        );
     };
 
     renderMiscOptions = () => {
@@ -351,13 +398,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         return (
             <>
-                <div className='domain-adv-misc-options'>Miscellaneous Options</div>
+                <div className="domain-adv-misc-options">Miscellaneous Options</div>
                 <Row>
                     <Col xs={3}>
-                        <DomainFieldLabel
-                            label={'PHI Level'}
-                            helpTipBody={this.getPhiHelpText}
-                        />
+                        <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText} />
                     </Col>
                     <Col xs={6}>
                         <FormControl
@@ -366,50 +410,50 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
                             onChange={this.handleChange}
                             value={PHI}
-                            disabled={domainFormDisplayOptions.phiLevelDisabled}
+                            disabled={domainFormDisplayOptions.phiLevelDisabled || field.disablePhiLevel}
                         >
-                            {
-                                phiLevels.map((level, i) => (
-                                    <option key={i} value={level.value}>{level.label}</option>
-                                ))
-                            }
+                            {phiLevels.map((level, i) => (
+                                <option key={i} value={level.value}>
+                                    {level.label}
+                                </option>
+                            ))}
                         </FormControl>
                     </Col>
-                    <Col xs={3}/>
+                    <Col xs={3} />
                 </Row>
-                {field.dataType === DATETIME_TYPE &&
+                {field.dataType === DATETIME_TYPE && (
                     <Checkbox
-                            checked={excludeFromShifting}
-                            onChange={this.handleCheckbox}
-                            name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
-                            id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, domainIndex, index)}
+                        checked={excludeFromShifting}
+                        onChange={this.handleCheckbox}
+                        name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
+                        id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, domainIndex, index)}
                     >
                         Exclude from "Participant Date Shifting" on export/publication
-                        <LabelHelpTip title='Exclude from Date Shifting' body={this.getExcludeFromDateShiftingText}/>
+                        <LabelHelpTip title="Exclude from Date Shifting" body={this.getExcludeFromDateShiftingText} />
                     </Checkbox>
-                }
-                {PropDescType.isMeasure(field.dataType.rangeURI) &&
+                )}
+                {PropDescType.isMeasure(field.dataType.rangeURI) && (
                     <Checkbox
-                            checked={measure}
-                            onChange={this.handleCheckbox}
-                            name={createFormInputName(DOMAIN_FIELD_MEASURE)}
-                            id={createFormInputId(DOMAIN_FIELD_MEASURE, domainIndex, index)}
+                        checked={measure}
+                        onChange={this.handleCheckbox}
+                        name={createFormInputName(DOMAIN_FIELD_MEASURE)}
+                        id={createFormInputId(DOMAIN_FIELD_MEASURE, domainIndex, index)}
                     >
                         Make this field available as a measure
-                        <LabelHelpTip title='Measure' body={this.getMeasureHelpText}/>
+                        <LabelHelpTip title="Measure" body={this.getMeasureHelpText} />
                     </Checkbox>
-                }
-                {PropDescType.isDimension(field.dataType.rangeURI) &&
+                )}
+                {PropDescType.isDimension(field.dataType.rangeURI) && (
                     <Checkbox
-                            checked={dimension}
-                            onChange={this.handleCheckbox}
-                            name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
-                            id={createFormInputId(DOMAIN_FIELD_DIMENSION, domainIndex, index)}
+                        checked={dimension}
+                        onChange={this.handleCheckbox}
+                        name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
+                        id={createFormInputId(DOMAIN_FIELD_DIMENSION, domainIndex, index)}
                     >
                         Make this field available as a dimension
-                        <LabelHelpTip title='Data Dimension' body={this.getDimensionHelpText}/>
+                        <LabelHelpTip title="Data Dimension" body={this.getDimensionHelpText} />
                     </Checkbox>
-                }
+                )}
                 <Checkbox
                     checked={recommendedVariable}
                     onChange={this.handleCheckbox}
@@ -417,52 +461,57 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, domainIndex, index)}
                 >
                     Make this field a recommended variable
-                    <LabelHelpTip title='Recommended Variable' body={this.getRecommendedVariableHelpText}/>
+                    <LabelHelpTip title="Recommended Variable" body={this.getRecommendedVariableHelpText} />
                 </Checkbox>
 
-                {PropDescType.isMvEnableable(field.dataType.rangeURI) &&
+                {PropDescType.isMvEnableable(field.dataType.rangeURI) && (
                     <Checkbox
-                            checked={mvEnabled}
-                            onChange={this.handleCheckbox}
-                            name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
-                            id={createFormInputId(DOMAIN_FIELD_MVENABLED, domainIndex, index)}
+                        checked={mvEnabled}
+                        onChange={this.handleCheckbox}
+                        name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
+                        id={createFormInputId(DOMAIN_FIELD_MVENABLED, domainIndex, index)}
                     >
                         Track reason for missing data values
-                        <LabelHelpTip title='Missing Value Indicators' body={this.getMissingValueHelpText}/>
+                        <LabelHelpTip title="Missing Value Indicators" body={this.getMissingValueHelpText} />
                     </Checkbox>
-                }
+                )}
             </>
-        )
+        );
     };
 
     render() {
         const { show, label, successBsStyle } = this.props;
 
         return (
-            <Modal show={show}
-                   onHide={this.handleClose}
-                   onEnter={this.initializeState}
-            >
+            <Modal show={show} onHide={this.handleClose} onEnter={this.initializeState}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{'Advanced Settings and Properties' + (label ? (' for ' + label) : '')}</Modal.Title>
+                    <Modal.Title>{'Advanced Settings and Properties' + (label ? ' for ' + label : '')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className='domain-modal'>
+                    <div className="domain-modal">
                         {this.renderDisplayOptions()}
                         {this.showDefaultValues() && this.renderDefaultValues()}
                         {this.renderMiscOptions()}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.handleClose} className='domain-adv-footer domain-adv-cancel-btn'>
+                    <Button onClick={this.handleClose} className="domain-adv-footer domain-adv-cancel-btn">
                         Cancel
                     </Button>
-                    {helpLinkNode(ADVANCED_FIELD_EDITOR_TOPIC, "Get help with field designer settings", 'domain-adv-footer domain-adv-link')}
-                    <Button onClick={this.handleApply} bsStyle={successBsStyle || 'success'} className='domain-adv-footer domain-adv-apply-btn'>
+                    {helpLinkNode(
+                        ADVANCED_FIELD_EDITOR_TOPIC,
+                        'Get help with field designer settings',
+                        'domain-adv-footer domain-adv-link'
+                    )}
+                    <Button
+                        onClick={this.handleApply}
+                        bsStyle={successBsStyle || 'success'}
+                        className="domain-adv-footer domain-adv-apply-btn"
+                    >
                         Apply
                     </Button>
                 </Modal.Footer>
             </Modal>
-        )
+        );
     }
 }

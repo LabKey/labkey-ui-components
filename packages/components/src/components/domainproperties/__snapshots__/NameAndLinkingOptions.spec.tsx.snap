@@ -80,6 +80,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "isPrimaryKey": false,
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
+      "disablePhiLevel": false,
     }
   }
   index={1}

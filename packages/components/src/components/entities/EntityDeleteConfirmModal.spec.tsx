@@ -17,17 +17,17 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { ConfirmModal } from '../base/ConfirmModal';
+
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { SampleTypeDataType } from './constants';
 
-describe("<EntityDeleteConfirmModal/>", () => {
-
-    test("Error display", () => {
-        const errorMsg = "There was an error";
+describe('<EntityDeleteConfirmModal/>', () => {
+    test('Error display', () => {
+        const errorMsg = 'There was an error';
         const component = (
             <EntityDeleteConfirmModal
-                selectionKey={"nonesuch"}
+                selectionKey="nonesuch"
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
@@ -40,12 +40,12 @@ describe("<EntityDeleteConfirmModal/>", () => {
         });
         const confirmModal = wrapper.find(ConfirmModal);
         expect(confirmModal.find('Alert').first().text()).toBe(errorMsg);
-        expect(confirmModal.props().cancelButtonText).toBe("Dismiss");
+        expect(confirmModal.props().cancelButtonText).toBe('Dismiss');
     });
-    test("Have confirmation data", () => {
+    test('Have confirmation data', () => {
         const component = (
             <EntityDeleteConfirmModal
-                selectionKey={"nonesuch"}
+                selectionKey="nonesuch"
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
@@ -55,13 +55,15 @@ describe("<EntityDeleteConfirmModal/>", () => {
         wrapper.setState({
             isLoading: false,
             confirmationData: {
-                "canDelete" : [ {
-                    "Name" : "D-2.3.1",
-                    "RowId" : 351
-                } ],
-                "cannotDelete" : [  ]
-            }
+                canDelete: [
+                    {
+                        Name: 'D-2.3.1',
+                        RowId: 351,
+                    },
+                ],
+                cannotDelete: [],
+            },
         });
         expect(wrapper.find(EntityDeleteConfirmModalDisplay)).toHaveLength(1);
-    })
+    });
 });

@@ -16,7 +16,6 @@
 import React from 'react';
 import { Map } from 'immutable';
 
-import { AssayWizardModel } from './models';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -25,8 +24,9 @@ import {
     QueryGridModel,
 } from '../base/models/model';
 
-export class AssayUploadGridLoader implements IGridLoader {
+import { AssayWizardModel } from './models';
 
+export class AssayUploadGridLoader implements IGridLoader {
     model: AssayWizardModel;
     assayDefinition: AssayDefinitionModel;
 
@@ -36,7 +36,7 @@ export class AssayUploadGridLoader implements IGridLoader {
     }
 
     fetch(gridModel: QueryGridModel): Promise<IGridResponse> {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             const sampleColumnData = this.assayDefinition.getSampleColumn();
             const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;
             const hasSamples = sampleColInResults && this.model.selectedSamples;

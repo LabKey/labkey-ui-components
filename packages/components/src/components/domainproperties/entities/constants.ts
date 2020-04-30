@@ -19,5 +19,5 @@ export const ENTITY_FORM_ID_PREFIX = 'entity-';
 export const ENTITY_FORM_IDS = {
     NAME: ENTITY_FORM_ID_PREFIX + 'name',
     NAME_EXPRESSION: ENTITY_FORM_ID_PREFIX + 'nameExpression',
-    DESCRIPTION: ENTITY_FORM_ID_PREFIX + 'description'
+    DESCRIPTION: ENTITY_FORM_ID_PREFIX + 'description',
 };

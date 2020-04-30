@@ -15,75 +15,81 @@
  */
 import React from 'react';
 
-import { FieldEditTrigger, FieldEditTriggerProps } from './FieldEditTrigger';
 import { hasAllPermissions } from '../../util/utils';
 import { User } from '../base/models/model';
 import { PermissionTypes } from '../base/models/constants';
 import { SVGIcon } from '../base/SVGIcon';
 
+import { FieldEditTrigger, FieldEditTriggerProps } from './FieldEditTrigger';
+
 interface Props {
-    user: User
-    content?: Array<any>
-    description?: React.ReactNode
-    fieldTriggerProps?: FieldEditTriggerProps
-    iconAltText?: string
-    iconDir?: string
-    iconSrc?: string
-    iconUrl?: string
-    leftColumns?: number
-    subTitle?: any
-    title: any
+    user: User;
+    content?: any[];
+    description?: React.ReactNode;
+    fieldTriggerProps?: FieldEditTriggerProps;
+    iconAltText?: string;
+    iconDir?: string;
+    iconSrc?: string;
+    iconUrl?: string;
+    leftColumns?: number;
+    subTitle?: any;
+    title: any;
 }
 
 export class PageDetailHeader extends React.Component<Props, any> {
-
     static defaultProps = {
-        leftColumns: 6
+        leftColumns: 6,
     };
 
     render() {
-        const { children, description, fieldTriggerProps, iconUrl, iconDir, iconSrc, leftColumns, subTitle, title, user, iconAltText } = this.props;
+        const {
+            children,
+            description,
+            fieldTriggerProps,
+            iconUrl,
+            iconDir,
+            iconSrc,
+            leftColumns,
+            subTitle,
+            title,
+            user,
+            iconAltText,
+        } = this.props;
 
         return (
             <div className="page-header">
                 <div className={`col-md-${leftColumns} detail__header--container`}>
-                    {(iconUrl || iconSrc) && <div className="detail__header--image-container">
-                        {iconUrl ? <img
-                                src={iconUrl}
-                                className="detail__header-icon"
-                            />
-                            : <SVGIcon
-                                iconDir={iconDir}
-                                iconSrc={iconSrc ? iconSrc : ''}
-                                className="detail__header-icon"
-                                alt={iconAltText ? iconAltText : ''}
-                            />
-                        }
-                    </div>}
+                    {(iconUrl || iconSrc) && (
+                        <div className="detail__header--image-container">
+                            {iconUrl ? (
+                                <img src={iconUrl} className="detail__header-icon" />
+                            ) : (
+                                <SVGIcon
+                                    iconDir={iconDir}
+                                    iconSrc={iconSrc ? iconSrc : ''}
+                                    className="detail__header-icon"
+                                    alt={iconAltText ? iconAltText : ''}
+                                />
+                            )}
+                        </div>
+                    )}
                     <h2 className="no-margin-top detail__header--name">{title}</h2>
-                    {subTitle && (
-                        <h4 className="test-loc-detail-subtitle">{subTitle}</h4>
-                    )}
-                    {description && (
-                        <span className="detail__header--desc">{description}</span>
-                    )}
+                    {subTitle && <h4 className="test-loc-detail-subtitle">{subTitle}</h4>}
+                    {description && <span className="detail__header--desc">{description}</span>}
                     {fieldTriggerProps && (
                         <div className="text__truncate">
-                            <FieldEditTrigger {...fieldTriggerProps}
+                            <FieldEditTrigger
+                                {...fieldTriggerProps}
                                 canUpdate={hasAllPermissions(user, [PermissionTypes.Update])}
                             />
                         </div>
                     )}
                 </div>
 
-                {children && (
-                    <div className="pull-right">
-                        {children}
-                    </div>
-                )}
+                {children && <div className="pull-right">{children}</div>}
 
-                <div className="clearfix"/>
+                <div className="clearfix" />
             </div>
-        )
+        );
     }
 }

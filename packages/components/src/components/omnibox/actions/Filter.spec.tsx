@@ -14,16 +14,38 @@
  * limitations under the License.
  */
 import React from 'react';
-import { List, Map } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { ActionOption, Value } from './Action';
+import { JsonType } from '@labkey/api/dist/labkey/filter/Types';
+
+import { QueryColumn, QueryGridModel } from '../../base/models/model';
+
+import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
+import mixturesQuery from '../../../test/data/mixtures-getQuery.json';
+import { initUnitTests, makeQueryInfo, makeTestData } from '../../../testHelpers';
+import { QueryInfo } from '../../..';
+
 import { FilterAction, getURLSuffix } from './Filter';
+import { ActionOption, Value } from './Action';
 
-import { createMockActionContext } from '../../../test/OmniboxMock';
-import { QueryColumn } from '../../base/models/model';
+let queryInfo: QueryInfo;
+let getModel: () => QueryGridModel;
 
-const { columns, columnsByName, resolveColumns, resolveModel } = createMockActionContext('toyStory');
+beforeAll(() => {
+    initUnitTests();
+    queryInfo = makeQueryInfo(mixturesQueryInfo);
+    return makeTestData(mixturesQuery).then(mockData => {
+        const model = new QueryGridModel({
+            queryInfo,
+            messages: fromJS(mockData.messages),
+            data: fromJS(mockData.rows),
+            dataIds: fromJS(mockData.orderedRows),
+            totalRows: mockData.rowCount,
+        });
+        getModel = () => model;
+    });
+});
 
 const testColumns = List([
     QueryColumn.create({
@@ -34,29 +56,28 @@ const testColumns = List([
             queryName: 'x',
             displayColumn: 'LookupX',
             keyColumn: 'LookupX',
-            isPublic: true
+            isPublic: true,
         },
-        shortCaption: 'A lookup'
+        shortCaption: 'A lookup',
     }),
     QueryColumn.create({
         name: 'columnAA',
         jsonType: 'string',
-        shortCaption: 'A non-lookup'
+        shortCaption: 'A non-lookup',
     }),
     QueryColumn.create({
         name: 'columnB',
         jsonType: 'int',
-        shortCaption: 'Column B'
-    })
+        shortCaption: 'Column B',
+    }),
 ]);
 
-const testColumnsByName = testColumns
-    .reduce((map, col) => {
-        if (map.has(col.name)) {
-            throw 'Invalid test data! All column name\'s must be unique'
-        }
-        return map.set(col.name, col);
-    }, Map<string, QueryColumn>());
+const testColumnsByName = testColumns.reduce((map, col) => {
+    if (map.has(col.name)) {
+        throw 'Invalid test data! All column name\'s must be unique';
+    }
+    return map.set(col.name, col);
+}, Map<string, QueryColumn>());
 
 const expectFilter = (expectedFilter: Filter.IFilter, urlParam: string, urlPrefix?: string) => {
     const filters = Filter.getFiltersFromUrl(urlParam, urlPrefix);
@@ -73,135 +94,144 @@ const expectSameFilterType = (a: Filter.IFilterType, b: Filter.IFilterType) => {
 };
 
 describe('FilterAction::completeAction', () => {
-
+    let action;
     const urlPrefix = undefined;
-    const action = new FilterAction(resolveColumns, urlPrefix, resolveModel);
-
-    const completeAction = (tokens: Array<string>, testHandle: (value: Value) => any) => {
+    const completeAction = (tokens: string[], testHandle: (value: Value) => any) => {
         return action.completeAction(tokens).then(testHandle);
     };
+
+    beforeEach(() => {
+        // needs to be in beforeEach so it gets instantiated after beforeAll
+        action = new FilterAction(urlPrefix, getModel);
+    });
 
     test('invalid tokens', () => {
         return Promise.all([
             // empty tokens
-            completeAction([], (value) => {
+            completeAction([], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
             }),
 
             // only contains column
-            completeAction(['phrase'], (value) => {
+            completeAction(['phrase'], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
             }),
 
             // only contains column and filter that requires values
-            completeAction(['phrase', '='], (value) => {
+            completeAction(['phrase', '='], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
             }),
 
             // contains invalid filter type
-            completeAction(['height', '==', '78'], (value) => {
+            completeAction(['height', '==', '78'], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
             }),
 
             // contains incomplete filter type
-            completeAction(['height', 'isblan'], (value) => {
+            completeAction(['height', 'isblan'], value => {
                 expect(value.displayValue).toBeUndefined();
                 expect(value.isValid).toBe(false);
-            })
+            }),
         ]);
     });
 
     test('valid tokens', () => {
         return Promise.all([
             // valid symbol tokens
-            completeAction(['height', '=<', '10'], (value) => {
-                const expectedFilter = Filter.create('height', '10', Filter.Types.LESS_THAN_OR_EQUAL);
+            completeAction(['Expiration Time', '=<', '10'], value => {
+                const expectedFilter = Filter.create('expirationTime', '10', Filter.Types.LESS_THAN_OR_EQUAL);
 
-                expect(value.displayValue).toEqual('Height =< 10');
+                expect(value.displayValue).toEqual('Expiration Time =< 10');
                 expectFilter(expectedFilter, value.param);
             }),
 
             // valid urlsuffix tokens
-            completeAction(['phrase', 'isnonblank'], (value) => {
-                const expectedFilter = Filter.create('phrase', '', Filter.Types.NONBLANK);
+            completeAction(['Extra Test Column', 'isnonblank'], value => {
+                const expectedFilter = Filter.create('extraTestColumn', '', Filter.Types.NONBLANK);
 
-                expect(value.displayValue).toEqual('Phrase Is Not Blank');
+                expect(value.displayValue).toEqual('Extra Test Column Is Not Blank');
                 expectFilter(expectedFilter, value.param);
             }),
 
             // valid displayText tokens
-            completeAction(['height', 'is blank', 'foo'], (value) => {
-                const expectedFilter = Filter.create('height', '', Filter.Types.ISBLANK);
+            completeAction(['Extra Test Column', 'is blank', 'foo'], value => {
+                const expectedFilter = Filter.create('extraTestColumn', '', Filter.Types.ISBLANK);
 
-                expect(value.displayValue).toEqual('Height Is Blank'); // sans 'foo'
+                expect(value.displayValue).toEqual('Extra Test Column Is Blank'); // sans 'foo'
                 expectFilter(expectedFilter, value.param);
-            })
+            }),
         ]);
     });
 });
 
 describe('FilterAction::fetchOptions', () => {
-
+    let action;
     const urlPrefix = undefined;
-    const action = new FilterAction(resolveColumns, urlPrefix, resolveModel);
-
-    const fetchOptions = (tokens: Array<string>, testHandle: (options: Array<ActionOption>) => any) => {
-        return action.fetchOptions(tokens).then(testHandle);
+    const fetchOptions = (tokens: string[], uniqueValues: List<any>, testHandle: (options: ActionOption[]) => any) => {
+        return action.fetchOptions(tokens, uniqueValues).then(testHandle);
     };
+
+    beforeEach(() => {
+        // needs to be in beforeEach so it gets instantiated after beforeAll
+        action = new FilterAction(urlPrefix, getModel);
+    });
 
     test('column options', () => {
         return Promise.all([
             // nothing entered -- should display all available columns
-            fetchOptions([], (options) => {
-                expect(options.length).toEqual(columns.size);
+            fetchOptions([], undefined, options => {
+                expect(options.length).toEqual(getModel().getDisplayColumns().size);
 
                 // none should complete the action
-                expect(options.map(o => o.isComplete)).toEqual(columns.map(c => false).toArray());
+                expect(options.map(o => o.isComplete)).toEqual(
+                    getModel()
+                        .getDisplayColumns()
+                        .map(c => false)
+                        .toArray()
+                );
             }),
 
             // no matches -- should display nothing
-            fetchOptions(['qwerty'], (options) => {
+            fetchOptions(['qwerty'], undefined, options => {
                 expect(options.length).toEqual(0);
-            })
+            }),
         ]);
     });
 
     test('filter options', () => {
-        const getExpectedFilterTypes = (columnType: string): Array<Filter.IFilterType> => {
-            return Filter.getFilterTypesForType(columnType as any /* jsonType */)
-                .filter(ft => !ft.isMultiValued() && (ft.getDisplaySymbol() || getURLSuffix(ft)))
+        const getExpectedFilterTypes = (columnType: string): Filter.IFilterType[] => {
+            return Filter.getFilterTypesForType(columnType as JsonType).filter(
+                ft => !ft.isMultiValued() && (ft.getDisplaySymbol() || getURLSuffix(ft))
+            );
         };
 
         return Promise.all([
             // should display all available non-multivalue filter types
-            fetchOptions(['Phrase', ''], (options) => {
-                const columnType = columnsByName.getIn(['phrase', 'jsonType']);
-                const expectedFilters = getExpectedFilterTypes(columnType);
-
+            fetchOptions(['Name', ''], undefined, options => {
+                const expectedFilters = getExpectedFilterTypes('string');
                 expect(options.length).toEqual(expectedFilters.length);
             }),
 
             // match against symbol
-            fetchOptions(['Phrase', '='], (options) => {
-                expect(options.length).toEqual(2);
+            fetchOptions(['Name', '='], List(['1', '2', '3']), options => {
+                expect(options.length).toEqual(3);
             }),
 
             // match against displayText
-            fetchOptions(['Phrase', 'is '], (options) => {
+            fetchOptions(['Name', 'is '], undefined, options => {
                 expect(options.length).toEqual(2);
                 expect(options[0].value).toEqual(`"${Filter.Types.ISBLANK.getDisplayText().toLowerCase()}"`);
                 expect(options[1].value).toEqual(`"${Filter.Types.NONBLANK.getDisplayText().toLowerCase()}"`);
-            })
+            }),
         ]);
     });
 });
 
 describe('FilterAction::parseTokens', () => {
-
     test('empty tokens', () => {
         expect(FilterAction.parseTokens(undefined, testColumns).columnName).toBeUndefined();
         expect(FilterAction.parseTokens(null, testColumns).columnName).toBeUndefined();
@@ -243,7 +273,7 @@ describe('FilterAction::parseTokens', () => {
         const actual = context.filterTypes;
 
         expect(actual.length).toEqual(expected.length);
-        for (let i=0; i < expected.length; i++) {
+        for (let i = 0; i < expected.length; i++) {
             expectSameFilterType(actual[i], expected[i]);
         }
         expectSameFilterType(context.activeFilterType, Filter.Types.EQUAL);

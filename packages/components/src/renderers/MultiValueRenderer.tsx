@@ -17,11 +17,10 @@ import React from 'react';
 import { Map } from 'immutable';
 
 interface MultiValueRendererProps {
-    data: Map<any, any>
+    data: Map<any, any>;
 }
 
 export class MultiValueRenderer extends React.Component<MultiValueRendererProps, any> {
-
     render() {
         const { data } = this.props;
 
@@ -33,25 +32,20 @@ export class MultiValueRenderer extends React.Component<MultiValueRendererProps,
                         let text;
                         if (item.has('formattedValue')) {
                             text = item.get('formattedValue');
-                        }
-                        else {
+                        } else {
                             const o = item.has('displayValue') ? item.get('displayValue') : item.get('value');
                             text = o !== null && o !== undefined ? o.toString() : null;
                         }
 
                         return (
                             <span key={i}>
-                                {item.get('url') ? (
-                                    <a href={item.get('url')}>{text}</a>
-                                ) : (
-                                    text
-                                )}
-                                {(i + 1) < len ? ', ' : ''}
+                                {item.get('url') ? <a href={item.get('url')}>{text}</a> : text}
+                                {i + 1 < len ? ', ' : ''}
                             </span>
-                        )
+                        );
                     })}
                 </div>
-            )
+            );
         }
 
         return null;

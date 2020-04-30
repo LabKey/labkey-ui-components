@@ -34,7 +34,7 @@ import {
 import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED } from './constants';
 
 describe('PropDescType', () => {
-    test("isInteger", () => {
+    test('isInteger', () => {
         expect(PropDescType.isInteger(TEXT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(LOOKUP_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(MULTILINE_TYPE.rangeURI)).toBeFalsy();
@@ -50,7 +50,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isInteger(PARTICIPANT_TYPE.rangeURI)).toBeFalsy();
     });
 
-    test("isString", () => {
+    test('isString', () => {
         expect(PropDescType.isString(TEXT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isString(LOOKUP_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(MULTILINE_TYPE.rangeURI)).toBeTruthy();
@@ -66,7 +66,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isString(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 
-    test("isMeasure", () => {
+    test('isMeasure', () => {
         expect(PropDescType.isMeasure(TEXT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(LOOKUP_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(MULTILINE_TYPE.rangeURI)).toBeTruthy();
@@ -82,7 +82,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isMeasure(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 
-    test("isDimension", () => {
+    test('isDimension', () => {
         expect(PropDescType.isDimension(TEXT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(LOOKUP_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isDimension(MULTILINE_TYPE.rangeURI)).toBeFalsy();
@@ -98,7 +98,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isDimension(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 
-    test("isMvEnableable", () => {
+    test('isMvEnableable', () => {
         expect(PropDescType.isMvEnableable(TEXT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(LOOKUP_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(MULTILINE_TYPE.rangeURI)).toBeFalsy();
@@ -116,75 +116,75 @@ describe('PropDescType', () => {
 });
 
 describe('DomainDesign', () => {
-    test("isNameSuffixMatch", () => {
-        const d = DomainDesign.create({name: 'Foo Fields'});
+    test('isNameSuffixMatch', () => {
+        const d = DomainDesign.create({ name: 'Foo Fields' });
         expect(d.isNameSuffixMatch('Foo')).toBeTruthy();
         expect(d.isNameSuffixMatch('foo')).toBeFalsy();
         expect(d.isNameSuffixMatch('Bar')).toBeFalsy();
         expect(d.isNameSuffixMatch('bar')).toBeFalsy();
     });
 
-    test("mandatoryFieldNames", () => {
-        const base = {name: 'Test Fields', fields: [{name: 'abc'},{name: 'def'}]};
+    test('mandatoryFieldNames', () => {
+        const base = { name: 'Test Fields', fields: [{ name: 'abc' }, { name: 'def' }] };
 
-        let domain = DomainDesign.create({...base, mandatoryFieldNames: undefined});
+        let domain = DomainDesign.create({ ...base, mandatoryFieldNames: undefined });
         expect(domain.fields.size).toBe(2);
         expect(domain.fields.get(0).lockType).toBe(DOMAIN_FIELD_NOT_LOCKED);
         expect(domain.fields.get(1).lockType).toBe(DOMAIN_FIELD_NOT_LOCKED);
 
-        domain = DomainDesign.create({...base, mandatoryFieldNames: ['abc', 'DEF']});
+        domain = DomainDesign.create({ ...base, mandatoryFieldNames: ['abc', 'DEF'] });
         expect(domain.fields.size).toBe(2);
         expect(domain.fields.get(0).lockType).toBe(DOMAIN_FIELD_PARTIALLY_LOCKED);
         expect(domain.fields.get(1).lockType).toBe(DOMAIN_FIELD_PARTIALLY_LOCKED);
     });
 
-    test("hasInvalidNameField", () => {
-        const domain = DomainDesign.create({name: 'Test Fields', fields: [{name: 'abc'},{name: 'def'}]});
+    test('hasInvalidNameField', () => {
+        const domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: 'abc' }, { name: 'def' }] });
 
         expect(domain.hasInvalidNameField()).toBeFalsy();
         expect(domain.hasInvalidNameField({})).toBeFalsy();
-        expect(domain.hasInvalidNameField({name: undefined})).toBeFalsy();
-        expect(domain.hasInvalidNameField({name: null})).toBeFalsy();
-        expect(domain.hasInvalidNameField({name: ''})).toBeFalsy();
-        expect(domain.hasInvalidNameField({name: 'abc test'})).toBeFalsy();
-        expect(domain.hasInvalidNameField({name: 'abc'})).toBeTruthy();
-        expect(domain.hasInvalidNameField({name: 'ABC'})).toBeTruthy();
+        expect(domain.hasInvalidNameField({ name: undefined })).toBeFalsy();
+        expect(domain.hasInvalidNameField({ name: null })).toBeFalsy();
+        expect(domain.hasInvalidNameField({ name: '' })).toBeFalsy();
+        expect(domain.hasInvalidNameField({ name: 'abc test' })).toBeFalsy();
+        expect(domain.hasInvalidNameField({ name: 'abc' })).toBeTruthy();
+        expect(domain.hasInvalidNameField({ name: 'ABC' })).toBeTruthy();
     });
 });
 
 describe('DomainField', () => {
-    test("isNew", () => {
-        const f1 = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI});
+    test('isNew', () => {
+        const f1 = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI });
         expect(f1.isNew()).toBeTruthy();
-        const f2 = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 0});
+        const f2 = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 0 });
         expect(f2.isNew()).toBeFalsy();
     });
 
-    test("isSaved", () => {
-        const f1 = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI});
+    test('isSaved', () => {
+        const f1 = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI });
         expect(f1.isSaved()).toBeFalsy();
-        const f2 = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 0});
+        const f2 = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 0 });
         expect(f2.isSaved()).toBeFalsy();
-        const f3 = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 1});
+        const f3 = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 1 });
         expect(f3.isSaved()).toBeTruthy();
     });
 
-    test("updateDefaultValues", () => {
-        const textField = DomainField.create({name: 'foo', rangeURI: TEXT_TYPE.rangeURI});
+    test('updateDefaultValues', () => {
+        const textField = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI });
         expect(textField.measure).toBeFalsy();
         expect(textField.dimension).toBeFalsy();
         const updatedTextField = DomainField.updateDefaultValues(textField);
         expect(updatedTextField.measure).toBeFalsy();
         expect(updatedTextField.dimension).toBeFalsy();
 
-        const intField = DomainField.create({name: 'foo', rangeURI: INTEGER_TYPE.rangeURI});
+        const intField = DomainField.create({ name: 'foo', rangeURI: INTEGER_TYPE.rangeURI });
         expect(intField.measure).toBeFalsy();
         expect(intField.dimension).toBeFalsy();
         const updatedIntField = DomainField.updateDefaultValues(intField);
         expect(updatedIntField.measure).toBeTruthy();
         expect(updatedIntField.dimension).toBeFalsy();
 
-        const dblField = DomainField.create({name: 'foo', rangeURI: INTEGER_TYPE.rangeURI});
+        const dblField = DomainField.create({ name: 'foo', rangeURI: INTEGER_TYPE.rangeURI });
         expect(dblField.measure).toBeFalsy();
         expect(dblField.dimension).toBeFalsy();
         const updatedDblField = DomainField.updateDefaultValues(dblField);

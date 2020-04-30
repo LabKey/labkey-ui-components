@@ -21,12 +21,14 @@ import { Input } from 'formsy-react-components';
 import { Utils } from '@labkey/api';
 
 import { selectRows } from '../../query/api';
-import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
+
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { Tip } from '../base/Tip';
+
+import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
 
 addValidationRule('isPositiveLt', (vs, v, smax) => {
     if (v === '' || v === undefined || isNaN(v)) {
@@ -36,85 +38,82 @@ addValidationRule('isPositiveLt', (vs, v, smax) => {
     const max = parseInt(smax);
     const i = parseInt(v);
 
-    if (!isNaN(i) && i >= 1 && i <= max)
-        return true;
+    if (!isNaN(i) && i >= 1 && i <= max) return true;
     return max == 1 ? 'Only 1 allowed' : `Value must be between 1 and ${max}.`;
 });
 
 export interface QueryInfoFormProps {
-    asModal?: boolean
-    isLoading?: boolean
-    allowFieldDisable?: boolean
-    useDatePicker?: boolean
-    initiallyDisableFields?: boolean
-    disabledFields?: List<string>
-    cancelText?: string
+    asModal?: boolean;
+    isLoading?: boolean;
+    allowFieldDisable?: boolean;
+    useDatePicker?: boolean;
+    initiallyDisableFields?: boolean;
+    disabledFields?: List<string>;
+    cancelText?: string;
     // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
-    checkRequiredFields?: boolean
+    checkRequiredFields?: boolean;
     // if checkRequiredFields is false, showLabelAsterisk to show * for fields that are originally required
-    showLabelAsterisk?: boolean
-    errorCallback?: (error: any) => any
-    errorMessagePrefix?: string
-    fieldValues?: any
-    includeCountField?: boolean
-    countText?: string
-    maxCount?: number
-    onCancel?: () => any
-    onHide?: () => any
-    onFormChange?: () => any
-    canSubmitNotDirty?: boolean
-    canSubmitForEdit?: boolean
-    disableSubmitForEditMsg?: string
-    onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>
-    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>
-    onSuccess?: (data: any, submitForEdit: boolean) => any
-    columnFilter?: (col?: QueryColumn) => boolean
-    queryInfo: QueryInfo
-    renderFileInputs?: boolean
-    schemaQuery: SchemaQuery
-    isSubmittedText?: string
-    isSubmittingText?: string
-    submitForEditText?: string
-    submitText?: string
-    title?: string
-    header?: ReactNode
-    footer?: ReactNode
-    singularNoun?: string
-    pluralNoun?: string
-    showErrorsAtBottom?: boolean
+    showLabelAsterisk?: boolean;
+    errorCallback?: (error: any) => any;
+    errorMessagePrefix?: string;
+    fieldValues?: any;
+    includeCountField?: boolean;
+    countText?: string;
+    maxCount?: number;
+    onCancel?: () => any;
+    onHide?: () => any;
+    onFormChange?: () => any;
+    canSubmitNotDirty?: boolean;
+    canSubmitForEdit?: boolean;
+    disableSubmitForEditMsg?: string;
+    onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
+    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
+    onSuccess?: (data: any, submitForEdit: boolean) => any;
+    columnFilter?: (col?: QueryColumn) => boolean;
+    queryInfo: QueryInfo;
+    renderFileInputs?: boolean;
+    schemaQuery: SchemaQuery;
+    isSubmittedText?: string;
+    isSubmittingText?: string;
+    submitForEditText?: string;
+    submitText?: string;
+    title?: string;
+    header?: ReactNode;
+    footer?: ReactNode;
+    singularNoun?: string;
+    pluralNoun?: string;
+    showErrorsAtBottom?: boolean;
 }
 
-
 interface State {
-    show: boolean
-    canSubmit: boolean
-    submitForEdit: boolean
-    isSubmitted: boolean
-    isSubmitting: boolean
-    isDirty: boolean
-    errorMsg: string
-    count: number
+    show: boolean;
+    canSubmit: boolean;
+    submitForEdit: boolean;
+    isSubmitted: boolean;
+    isSubmitting: boolean;
+    isDirty: boolean;
+    errorMsg: string;
+    count: number;
+    fieldEnabledCount: number;
 }
 
 export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
-
-    static defaultProps : Partial<QueryInfoFormProps> = {
+    static defaultProps: Partial<QueryInfoFormProps> = {
         canSubmitForEdit: true,
         canSubmitNotDirty: true,
         includeCountField: true,
         checkRequiredFields: true,
-        countText: "Quantity",
-        cancelText: "Cancel",
-        submitForEditText: "Edit with Grid",
-        submitText: "Submit",
-        isSubmittedText: "Submitted",
-        isSubmittingText: "Submitting...",
+        countText: 'Quantity',
+        cancelText: 'Cancel',
+        submitForEditText: 'Edit with Grid',
+        submitText: 'Submit',
+        isSubmittedText: 'Submitted',
+        isSubmittingText: 'Submitting...',
         maxCount: MAX_EDITABLE_GRID_ROWS,
         allowFieldDisable: false,
-        useDatePicker: true
+        useDatePicker: true,
     };
-
 
     constructor(props: QueryInfoFormProps) {
         super(props);
@@ -132,6 +131,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
         this.state = {
             show: true,
+            fieldEnabledCount: (!props.allowFieldDisable || !props.initiallyDisableFields ? 1 : 0), // initial value of 1 is really just a boolean at this point
             canSubmit: !props.includeCountField && !props.checkRequiredFields,
             isSubmitted: false,
             isSubmitting: false,
@@ -143,20 +143,21 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     componentWillMount() {
-        const {  schemaQuery } = this.props;
+        const { schemaQuery } = this.props;
         selectRows({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
-            maxRows: 0
+            maxRows: 0,
         });
     }
 
     enableSubmitButton() {
-        this.setState({canSubmit: true});
+        if (this.state.fieldEnabledCount > 0)
+            this.setState({ canSubmit: true });
     }
 
     disableSubmitButton() {
-        this.setState({canSubmit: false});
+        this.setState({ canSubmit: false });
     }
 
     handleCancel() {
@@ -175,8 +176,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         if (!this.state.isDirty)
             this.setState(() => {
                 return {
-                    isDirty: true
-                }
+                    isDirty: true,
+                };
             });
     }
 
@@ -184,21 +185,21 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         console.error(error);
         const errorMsg = error ? error.exception : 'Your session may have expired or the form may no longer be valid.';
         this.setState({
-            errorMsg: "There was an error submitting the data. " + errorMsg, // TODO add some actionable text here
-            isSubmitting: false
+            errorMsg: 'There was an error submitting the data. ' + errorMsg, // TODO add some actionable text here
+            isSubmitting: false,
         });
     }
 
-    filterDisabledFields(data: any, requiredFields?: Array<string>): OrderedMap<string, any> {
-        const fieldsToUpdate = this.props.queryInfo.columns.filter((column) => {
+    filterDisabledFields(data: any, requiredFields?: string[]): OrderedMap<string, any> {
+        const fieldsToUpdate = this.props.queryInfo.columns.filter(column => {
             const enabledKey = getFieldEnabledFieldName(column);
             return data[enabledKey] === undefined || data[enabledKey] === 'true';
         });
 
         let filteredData = OrderedMap<string, any>();
-        for (let key in data) {
-            if (data.hasOwnProperty(key) ) {
-                if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1 ) {
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1) {
                     filteredData = filteredData.set(key, data[key]);
                 }
             }
@@ -213,33 +214,36 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
         this.setState({
             errorMsg: undefined,
-            isSubmitting: true
+            isSubmitting: true,
         });
         const updatedRow = this.filterDisabledFields(row, ['numItems']);
         const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
-        submitFn(updatedRow).then((data) => {
-            this.setState({
-                errorMsg: undefined,
-                isSubmitted: true,
-                isSubmitting: false,
-                isDirty: false
-            });
-            if (Utils.isFunction(onSuccess)) {
-                return onSuccess(data, submitForEdit);
+        submitFn(updatedRow).then(
+            data => {
+                this.setState({
+                    errorMsg: undefined,
+                    isSubmitted: true,
+                    isSubmitting: false,
+                    isDirty: false,
+                });
+                if (Utils.isFunction(onSuccess)) {
+                    return onSuccess(data, submitForEdit);
+                }
+            },
+            error => {
+                this.handleSubmitError(error);
+                if (Utils.isFunction(errorCallback)) {
+                    return errorCallback(error);
+                }
             }
-        }, (error) => {
-            this.handleSubmitError(error);
-            if (Utils.isFunction(errorCallback)) {
-                return errorCallback(error);
-            }
-        });
+        );
     }
 
     isValid(count: number): boolean {
         const { maxCount } = this.props;
 
-        return !maxCount || count !== undefined && count > 0 && count <= maxCount;
+        return !maxCount || (count !== undefined && count > 0 && count <= maxCount);
     }
 
     renderError() {
@@ -266,8 +270,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     setSubmitting(submitForEdit: boolean) {
         this.setState(() => {
             return {
-                submitForEdit
-            }
+                submitForEdit,
+            };
         });
     }
 
@@ -278,54 +282,59 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             onHide();
         }
 
-        this.setState(() => {
-            return {
-                show: false
-            }
-        });
+        this.setState(() => ({show: false,}));
     }
 
-    onCountChange(field,value) {
-        this.setState(() => {
-            return {
-                count: value
-            }
-        });
+    onCountChange(field, value) {
+        this.setState(() => ({count: value}));
     }
 
+    onFieldsEnabledChange = (fieldEnabledCount: number) => {
+        this.setState(() => ({fieldEnabledCount}));
+    }
 
     renderButtons() {
+        const {
+            cancelText,
+            canSubmitNotDirty,
+            canSubmitForEdit,
+            disableSubmitForEditMsg,
+            submitForEditText,
+            submitText,
+            isSubmittedText,
+            isSubmittingText,
+            onSubmit,
+            onSubmitForEdit,
+            pluralNoun,
+            singularNoun,
+        } = this.props;
 
-        const { cancelText, canSubmitNotDirty, canSubmitForEdit, disableSubmitForEditMsg, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
+        const { count, canSubmit, fieldEnabledCount, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
 
-        const { count, canSubmit, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
-
-        const inProgressText = isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : undefined);
-        const suffix = (count > 1) ? pluralNoun : singularNoun;
+        const inProgressText = isSubmitted ? isSubmittedText : isSubmitting ? isSubmittingText : undefined;
+        const suffix = count > 1 ? pluralNoun : singularNoun;
 
         let submitForEditBtn;
 
         if (onSubmitForEdit && submitForEditText) {
             const btnContent = (
                 <Button
-                    className={"test-loc-submit-for-edit-button"}
-                    bsStyle={onSubmit ? "default" : "success"}
+                    className="test-loc-submit-for-edit-button"
+                    bsStyle={onSubmit ? 'default' : 'success'}
                     disabled={isSubmitting || !canSubmitForEdit || !canSubmit || count === 0}
                     onClick={this.setSubmittingForEdit}
-                    type="submit">
+                    type="submit"
+                >
                     {submitForEdit && inProgressText ? inProgressText : submitForEditText}
                 </Button>
             );
             if (!canSubmitForEdit && disableSubmitForEditMsg) {
                 submitForEditBtn = (
                     <Tip caption={disableSubmitForEditMsg}>
-                        <div className={'disabled-button-with-tooltip'}>
-                            {btnContent}
-                        </div>
+                        <div className="disabled-button-with-tooltip">{btnContent}</div>
                     </Tip>
                 );
-            }
-            else {
+            } else {
                 submitForEditBtn = btnContent;
             }
         }
@@ -334,20 +343,24 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             <div className="form-group no-margin-bottom">
                 <div className="col-sm-12">
                     <div className="pull-left">
-                        <Button className={"test-loc-cancel-button"} onClick={this.onHide}>{cancelText}</Button>
+                        <Button className="test-loc-cancel-button" onClick={this.onHide}>
+                            {cancelText}
+                        </Button>
                     </div>
                     <div className="btn-group pull-right">
                         {submitForEditBtn}
-                        {submitText && onSubmit &&
-                        <Button
-                            className={"test-loc-submit-button"}
-                            bsStyle="success"
-                            disabled={isSubmitting || !canSubmit || count === 0 || !(canSubmitNotDirty || isDirty)}
-                            onClick={this.setSubmittingForSave}
-                            type="submit">
-                            {!submitForEdit && inProgressText ? inProgressText: submitText}{suffix ? ' ' + suffix : null}
-                        </Button>
-                        }
+                        {submitText && onSubmit && (
+                            <Button
+                                className="test-loc-submit-button"
+                                bsStyle="success"
+                                disabled={isSubmitting || fieldEnabledCount == 0 || !canSubmit || count === 0 || !(canSubmitNotDirty || isDirty)}
+                                onClick={this.setSubmittingForSave}
+                                type="submit"
+                            >
+                                {!submitForEdit && inProgressText ? inProgressText : submitText}
+                                {suffix ? ' ' + suffix : null}
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -356,12 +369,27 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     render() {
         const {
-            includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, showLabelAsterisk,
-            maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields,
-            disabledFields, columnFilter, showErrorsAtBottom, useDatePicker
+            includeCountField,
+            asModal,
+            countText,
+            footer,
+            header,
+            isLoading,
+            checkRequiredFields,
+            showLabelAsterisk,
+            maxCount,
+            renderFileInputs,
+            queryInfo,
+            fieldValues,
+            title,
+            allowFieldDisable,
+            initiallyDisableFields,
+            disabledFields,
+            columnFilter,
+            showErrorsAtBottom,
+            useDatePicker,
         } = this.props;
         const { count } = this.state;
-
 
         if (!queryInfo || queryInfo.isLoading) {
             return null;
@@ -369,9 +397,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         let content;
 
         if (isLoading) {
-            content = <LoadingSpinner/>;
-        }
-        else {
+            content = <LoadingSpinner />;
+        } else {
             content = (
                 <div>
                     {header}
@@ -381,41 +408,43 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         onValidSubmit={this.handleValidSubmit}
                         onValid={this.enableSubmitButton}
                         onChange={this.handleChange}
-                        onInvalid={this.disableSubmitButton}>
+                        onInvalid={this.disableSubmitButton}
+                    >
                         {includeCountField && (
                             <Input
                                 id="numItems"
                                 label={countText}
-                                labelClassName={'control-label text-left'}
-                                name={"numItems"}
+                                labelClassName="control-label text-left"
+                                name="numItems"
                                 max={maxCount}
                                 min={1}
                                 onChange={this.onCountChange}
                                 required={true}
-                                step={"1"}
-                                style={{width: '125px'}}
-                                type={"number"}
+                                step="1"
+                                style={{ width: '125px' }}
+                                type="number"
                                 validations={`isPositiveLt:${maxCount}`}
                                 value={count ? count.toString() : 1}
                             />
                         )}
-                        {(header || includeCountField) && <hr/>}
+                        {(header || includeCountField) && <hr />}
                         <QueryFormInputs
                             renderFileInputs={renderFileInputs}
                             allowFieldDisable={allowFieldDisable}
                             useDatePicker={useDatePicker}
                             initiallyDisableFields={initiallyDisableFields}
+                            onFieldsEnabledChange={this.onFieldsEnabledChange}
                             disabledFields={disabledFields}
                             checkRequiredFields={checkRequiredFields}
                             showLabelAsterisk={showLabelAsterisk}
                             queryInfo={queryInfo}
                             columnFilter={columnFilter}
-                            fieldValues={fieldValues}/>
+                            fieldValues={fieldValues}
+                        />
                         {footer}
                         {showErrorsAtBottom && this.renderError()}
                         {this.renderButtons()}
                     </Formsy>
-
                 </div>
             );
         }
@@ -428,15 +457,11 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             <Modal.Title>{title}</Modal.Title>
                         </Modal.Header>
                     )}
-                    <Modal.Body>
-                        {content}
-                    </Modal.Body>
+                    <Modal.Body>{content}</Modal.Body>
                 </Modal>
-            )
-        }
-        else {
+            );
+        } else {
             return content;
         }
-
     }
 }

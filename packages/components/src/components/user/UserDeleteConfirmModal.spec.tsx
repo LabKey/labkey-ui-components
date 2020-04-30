@@ -15,18 +15,14 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import { List } from "immutable";
+import { List } from 'immutable';
+
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 
-describe("<UserDeleteConfirmModal/>", () => {
-
-    test("single user selected", () => {
+describe('<UserDeleteConfirmModal/>', () => {
+    test('single user selected', () => {
         const component = (
-            <UserDeleteConfirmModal
-                userIds={List<number>([1])}
-                onCancel={jest.fn()}
-                onComplete={jest.fn()}
-            />
+            <UserDeleteConfirmModal userIds={List<number>([1])} onCancel={jest.fn()} onComplete={jest.fn()} />
         );
 
         const wrapper = mount(component);
@@ -40,13 +36,9 @@ describe("<UserDeleteConfirmModal/>", () => {
         wrapper.unmount();
     });
 
-    test("multiple users selected", () => {
+    test('multiple users selected', () => {
         const component = (
-            <UserDeleteConfirmModal
-                userIds={List<number>([1, 2, 3])}
-                onCancel={jest.fn()}
-                onComplete={jest.fn()}
-            />
+            <UserDeleteConfirmModal userIds={List<number>([1, 2, 3])} onCancel={jest.fn()} onComplete={jest.fn()} />
         );
 
         const wrapper = mount(component);
@@ -60,17 +52,13 @@ describe("<UserDeleteConfirmModal/>", () => {
         wrapper.unmount();
     });
 
-    test("with state", () => {
+    test('with state', () => {
         const component = (
-            <UserDeleteConfirmModal
-                userIds={List<number>([1, 2, 3])}
-                onCancel={jest.fn()}
-                onComplete={jest.fn()}
-            />
+            <UserDeleteConfirmModal userIds={List<number>([1, 2, 3])} onCancel={jest.fn()} onComplete={jest.fn()} />
         );
 
         const wrapper = mount(component);
-        wrapper.setState({submitting: true, error: 'Test Error'});
+        wrapper.setState({ submitting: true, error: 'Test Error' });
 
         expect(wrapper.find('Alert')).toHaveLength(2);
         expect(wrapper.find('.modal-title').text()).toBe('Delete 3 Users?');
@@ -81,5 +69,4 @@ describe("<UserDeleteConfirmModal/>", () => {
         expect(wrapper.find('.btn-danger').props().disabled).toBe(true);
         wrapper.unmount();
     });
-
 });

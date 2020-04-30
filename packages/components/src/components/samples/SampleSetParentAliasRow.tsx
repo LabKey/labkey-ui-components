@@ -1,37 +1,38 @@
 import React from 'react';
-import * as ReactDOM from 'react-dom'
-import { IParentOption } from "../entities/models";
-import { IParentAlias } from '../domainproperties/samples/models';
+import * as ReactDOM from 'react-dom';
+
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
+
+import classNames from 'classnames';
+
+import { IParentOption } from '../entities/models';
+import { IParentAlias } from '../domainproperties/samples/models';
 
 import { SelectInput } from '../forms/input/SelectInput';
 
-import classNames from 'classnames';
 import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
-import { DomainFieldLabel } from "../domainproperties/DomainFieldLabel";
-
+import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 
 interface IParentAliasRow {
-    id: string
-    parentAlias: IParentAlias
-    aliasCaption: string,
-    parentTypeCaption: string,
-    helpMsg: string
-    parentOptions?: Array<IParentOption>
-    onAliasChange: (id:string, alias:string, newValue: any) => void
-    onRemove: (index: string) => void
-    updateDupeParentAliases?: (id:string) => void
+    id: string;
+    parentAlias: IParentAlias;
+    aliasCaption: string;
+    parentTypeCaption: string;
+    helpMsg: string;
+    parentOptions?: IParentOption[];
+    onAliasChange: (id: string, alias: string, newValue: any) => void;
+    onRemove: (index: string) => void;
+    updateDupeParentAliases?: (id: string) => void;
 }
 
 export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
-
     private nameInput: React.RefObject<FormControl>;
 
     static defaultProps = {
         aliasCaption: 'Parent Alias',
         parentTypeCaption: 'parent type',
-        helpMsg: PARENT_ALIAS_HELPER_TEXT
+        helpMsg: PARENT_ALIAS_HELPER_TEXT,
     };
 
     constructor(props) {
@@ -40,9 +41,8 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
     }
 
     componentDidMount(): void {
-        const {parentAlias} = this.props;
-        if (!(parentAlias && parentAlias.alias))
-            this.focusNameInput();
+        const { parentAlias } = this.props;
+        if (!(parentAlias && parentAlias.alias)) this.focusNameInput();
     }
 
     focusNameInput = () => {
@@ -62,7 +62,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
     };
 
     removeParentAlias = (): void => {
-        const {id} = this.props;
+        const { id } = this.props;
         this.props.onRemove(id);
     };
 
@@ -76,26 +76,21 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
 
     render() {
         const { id, parentAlias, parentOptions, aliasCaption, parentTypeCaption, helpMsg } = this.props;
-        if (!parentOptions)
-            return null;
+        if (!parentOptions) return null;
 
-        const {alias, parentValue, ignoreAliasError, ignoreSelectError, isDupe} = parentAlias;
+        const { alias, parentValue, ignoreAliasError, ignoreSelectError, isDupe } = parentAlias;
 
         const aliasBlank = !alias || alias.trim().length === 0;
 
         return (
-            <Row key={id} >
+            <Row key={id}>
                 <Col xs={2}>
-                    <DomainFieldLabel
-                        label={aliasCaption}
-                        required={true}
-                        helpTipBody={() => helpMsg}
-                    />
+                    <DomainFieldLabel label={aliasCaption} required={true} helpTipBody={() => helpMsg} />
                 </Col>
-                <Col xs={3} className={classNames({'has-error': !ignoreAliasError && (aliasBlank || isDupe)})}>
+                <Col xs={3} className={classNames({ 'has-error': !ignoreAliasError && (aliasBlank || isDupe) })}>
                     <FormControl
-                        ref = {this.nameInput}
-                        name={"alias"}
+                        ref={this.nameInput}
+                        name="alias"
                         type="text"
                         placeholder={`Enter a ${aliasCaption.toLowerCase()} for import`}
                         value={alias}
@@ -103,22 +98,20 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         onBlur={this.onAliasBlur}
                     />
                 </Col>
-                <Col xs={5} className={classNames({'has-error': !ignoreSelectError && !parentValue})}>
+                <Col xs={5} className={classNames({ 'has-error': !ignoreSelectError && !parentValue })}>
                     <SelectInput
                         formsy={false}
-                        inputClass={"sampleset-insert--parent-select"}
-                        name={"parentValue"}
+                        inputClass="sampleset-insert--parent-select"
+                        name="parentValue"
                         onChange={this.onSelectChange}
                         options={parentOptions}
                         placeholder={`Select a ${parentTypeCaption.toLowerCase()}...`}
-                        value={parentValue ? parentValue.value : undefined }
+                        value={parentValue ? parentValue.value : undefined}
                         onBlur={this.onSelectBlur}
                     />
                 </Col>
                 <Col>
-                    <RemoveEntityButton
-                        labelClass={'entity-insert--remove-parent'}
-                        onClick={this.removeParentAlias}/>
+                    <RemoveEntityButton labelClass="entity-insert--remove-parent" onClick={this.removeParentAlias} />
                 </Col>
             </Row>
         );

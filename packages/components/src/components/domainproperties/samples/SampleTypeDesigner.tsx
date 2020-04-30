@@ -1,8 +1,7 @@
 import React from 'react';
-import {fromJS, List, Map, OrderedMap} from "immutable";
-import {Domain} from "@labkey/api";
-import { SampleTypeModel } from './models';
-import { SampleTypePropertiesPanel } from "./SampleTypePropertiesPanel";
+import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { Domain } from '@labkey/api';
+
 import {
     Alert,
     DomainDesign,
@@ -14,15 +13,18 @@ import {
     resolveErrorMessage,
     SAMPLE_TYPE,
     saveDomain,
-    SCHEMAS
-} from "../../..";
-import DomainForm from "../DomainForm";
-import {IParentOption} from "../../entities/models";
-import {IParentAlias} from "./models";
-import { addDomainField, getDomainPanelStatus } from "../actions";
-import {initSampleSetSelects,} from "../../samples/actions";
-import {SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT} from "../../../constants";
-import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from "../BaseDomainDesigner";
+    SCHEMAS,
+} from '../../..';
+import DomainForm from '../DomainForm';
+import { IParentOption } from '../../entities/models';
+
+import { addDomainField, getDomainPanelStatus } from '../actions';
+import { initSampleSetSelects } from '../../samples/actions';
+import { SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT } from '../../../constants';
+import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
+
+import { IParentAlias, SampleTypeModel } from './models';
+import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -31,63 +33,62 @@ const DEFAULT_SAMPLE_FIELD_CONFIG = {
     rangeURI: SAMPLE_TYPE.rangeURI,
     lookupSchema: 'exp',
     lookupQuery: 'Materials',
-    lookupType: {...SAMPLE_TYPE},
+    lookupType: { ...SAMPLE_TYPE },
     name: 'SampleId',
 } as Partial<IDomainField>;
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
-    value: "{{this_sample_set}}",
-    schema: SCHEMAS.SAMPLE_SETS.SCHEMA
+    value: '{{this_sample_set}}',
+    schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
 } as IParentOption;
 
-const PROPERTIES_PANEL_INDEX: number = 0;
-const DOMAIN_PANEL_INDEX: number = 1;
+const PROPERTIES_PANEL_INDEX = 0;
+const DOMAIN_PANEL_INDEX = 1;
 
-export const SAMPLE_SET_IMPORT_PREFIX :string = 'materialInputs/';
-export const DATA_CLASS_IMPORT_PREFIX :string = 'dataInputs/';
-const DATA_CLASS_SCHEMA_KEY:string = 'exp/dataclasses';
+export const SAMPLE_SET_IMPORT_PREFIX = 'materialInputs/';
+export const DATA_CLASS_IMPORT_PREFIX = 'dataInputs/';
+const DATA_CLASS_SCHEMA_KEY = 'exp/dataclasses';
 
 interface Props {
-    onChange?: (model: SampleTypeModel) => void
-    onCancel: () => void
-    onComplete: (response: DomainDesign) => void
-    beforeFinish?: (model: SampleTypeModel) => void
-    initModel: DomainDetails
-    defaultSampleFieldConfig?: Partial<IDomainField>
-    includeDataClasses?: boolean
-    headerText?: string
-    helpTopic?: string
-    useSeparateDataClassesAliasMenu?: boolean
-    sampleAliasCaption?: string
-    sampleTypeCaption?: string
-    dataClassAliasCaption?: string
-    dataClassTypeCaption?: string
-    dataClassParentageLabel?: string
-    isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean
+    onChange?: (model: SampleTypeModel) => void;
+    onCancel: () => void;
+    onComplete: (response: DomainDesign) => void;
+    beforeFinish?: (model: SampleTypeModel) => void;
+    initModel: DomainDetails;
+    defaultSampleFieldConfig?: Partial<IDomainField>;
+    includeDataClasses?: boolean;
+    headerText?: string;
+    helpTopic?: string;
+    useSeparateDataClassesAliasMenu?: boolean;
+    sampleAliasCaption?: string;
+    sampleTypeCaption?: string;
+    dataClassAliasCaption?: string;
+    dataClassTypeCaption?: string;
+    dataClassParentageLabel?: string;
+    isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
 
-    //EntityDetailsForm props
-    nounSingular?: string
-    nounPlural?: string
-    nameExpressionInfoUrl?: string
-    nameExpressionPlaceholder?: string
+    // EntityDetailsForm props
+    nounSingular?: string;
+    nounPlural?: string;
+    nameExpressionInfoUrl?: string;
+    nameExpressionPlaceholder?: string;
 
-    //DomainDesigner props
-    containerTop?: number, // This sets the height of the sticky header, default is 60
-    useTheme?: boolean,
-    appPropertiesOnly?: boolean,
-    successBsStyle?: string
-    saveBtnText?: string
+    // DomainDesigner props
+    containerTop?: number; // This sets the height of the sticky header, default is 60
+    useTheme?: boolean;
+    appPropertiesOnly?: boolean;
+    successBsStyle?: string;
+    saveBtnText?: string;
 }
 
 interface State {
-    model: SampleTypeModel
-    parentOptions: Array<IParentOption>
-    error: React.ReactNode
+    model: SampleTypeModel;
+    parentOptions: IParentOption[];
+    error: React.ReactNode;
 }
 
 class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
-
     static defaultProps = {
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         includeDataClasses: false,
@@ -103,66 +104,69 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         initQueryGridState();
         const domainDetails = this.props.initModel || DomainDetails.create();
-        const model = SampleTypeModel.create(domainDetails, domainDetails.domainDesign ? domainDetails.domainDesign.name : undefined);
+        const model = SampleTypeModel.create(
+            domainDetails,
+            domainDetails.domainDesign ? domainDetails.domainDesign.name : undefined
+        );
 
         this.state = {
             model,
             parentOptions: undefined,
-            error: undefined
+            error: undefined,
         };
     }
 
     componentDidMount = (): void => {
         const { includeDataClasses, setSubmitting } = this.props;
-        const {model} = this.state;
+        const { model } = this.state;
 
         initSampleSetSelects(!model.isNew(), model.name, includeDataClasses)
-            .then((results) => {
+            .then(results => {
                 this.initParentOptions(model, results);
             })
-            .catch((error) => {
+            .catch(error => {
                 setSubmitting(false, () => {
-                    this.setState(() => ({error: resolveErrorMessage(error)}));
+                    this.setState(() => ({ error: resolveErrorMessage(error) }));
                 });
             });
     };
 
-    formatLabel = (name:string, prefix: string, containerPath?: string): string => {
-        const {includeDataClasses, useSeparateDataClassesAliasMenu} = this.props;
-        return includeDataClasses && !useSeparateDataClassesAliasMenu ?
-            `${prefix}: ${name} (${containerPath})`:
-            name;
+    formatLabel = (name: string, prefix: string, containerPath?: string): string => {
+        const { includeDataClasses, useSeparateDataClassesAliasMenu } = this.props;
+        return includeDataClasses && !useSeparateDataClassesAliasMenu ? `${prefix}: ${name} (${containerPath})` : name;
     };
 
     initParentOptions = (model: SampleTypeModel, responses: any[]) => {
         const { isValidParentOptionFn } = this.props;
         let sets = List<IParentOption>();
-        responses.forEach((results) => {
+        responses.forEach(results => {
             const domain = fromJS(results.models[results.key]);
 
             const isDataClass = results.key === DATA_CLASS_SCHEMA_KEY;
 
-            const prefix =  isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
-            const labelPrefix = isDataClass ? "Data Class" : "Sample Set";
+            const prefix = isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
+            const labelPrefix = isDataClass ? 'Data Class' : 'Sample Set';
 
             domain.forEach(row => {
                 if (isValidParentOptionFn) {
-                    if (!isValidParentOptionFn(row, isDataClass))
-                        return;
+                    if (!isValidParentOptionFn(row, isDataClass)) return;
                 }
                 const name = row.getIn(['Name', 'value']);
                 const containerPath = row.getIn(['Folder', 'displayValue']);
-                let label = (name === model.name && !isDataClass) ? NEW_SAMPLE_SET_OPTION.label : this.formatLabel(name, labelPrefix, containerPath);
+                const label =
+                    name === model.name && !isDataClass
+                        ? NEW_SAMPLE_SET_OPTION.label
+                        : this.formatLabel(name, labelPrefix, containerPath);
                 sets = sets.push({
                     value: prefix + name,
-                    label: label,
+                    label,
                     schema: isDataClass ? SCHEMAS.DATA_CLASSES.SCHEMA : SCHEMAS.SAMPLE_SETS.SCHEMA,
                     query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
                 });
             });
         });
 
-        if(model.isNew()) {
+        if (model.isNew()) {
             sets = sets.push(NEW_SAMPLE_SET_OPTION);
         }
 
@@ -174,40 +178,40 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         let parentAliases = Map<string, IParentAlias>();
 
-        if (model && model.importAliases)
-        {
-            let initialAlias = Map<string,string>(model.importAliases);
+        if (model && model.importAliases) {
+            const initialAlias = Map<string, string>(model.importAliases);
             initialAlias.forEach((val, key) => {
-                const newId = generateId("sampleset-parent-import-alias-");
+                const newId = generateId('sampleset-parent-import-alias-');
                 const parentValue = options.find(opt => opt.value === val);
-                if (!parentValue) // parent option might have been filtered out by isValidParentOptionFn
+                if (!parentValue)
+                    // parent option might have been filtered out by isValidParentOptionFn
                     return;
 
                 parentAliases = parentAliases.set(newId, {
                     id: newId,
                     alias: key,
-                    parentValue: parentValue,
+                    parentValue,
                     ignoreAliasError: false,
-                    ignoreSelectError: false
+                    ignoreSelectError: false,
                 } as IParentAlias);
             });
         }
 
         this.setState(() => ({
             parentOptions: options,
-            model: model.merge({parentAliases}) as SampleTypeModel
+            model: model.merge({ parentAliases }) as SampleTypeModel,
         }));
     };
 
-    getImportAliasesAsMap(model: SampleTypeModel): Map<string,string> {
-        const {name, parentAliases } = model;
-        let aliases = {};
+    getImportAliasesAsMap(model: SampleTypeModel): Map<string, string> {
+        const { name, parentAliases } = model;
+        const aliases = {};
 
         if (parentAliases) {
             parentAliases.map((alias: IParentAlias) => {
-                const {parentValue} = alias;
+                const { parentValue } = alias;
 
-                let value = parentValue && parentValue.value ? parentValue.value as string : '';
+                let value = parentValue && parentValue.value ? (parentValue.value as string) : '';
                 if (parentValue === NEW_SAMPLE_SET_OPTION) {
                     value = SAMPLE_SET_IMPORT_PREFIX + name;
                 }
@@ -216,46 +220,49 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             });
         }
 
-        return Map<string,string>(aliases);
-    };
+        return Map<string, string>(aliases);
+    }
 
     onFieldChange = (model: SampleTypeModel) => {
         const { onChange } = this.props;
 
-        this.setState(() => ({model}), () => {
-            if (onChange) {
-                onChange(model);
+        this.setState(
+            () => ({ model }),
+            () => {
+                if (onChange) {
+                    onChange(model);
+                }
             }
-        });
+        );
     };
 
-    updateAliasValue = (id:string, field: string, newValue: any): IParentAlias => {
-        const {model} = this.state;
-        const {parentAliases} = model;
+    updateAliasValue = (id: string, field: string, newValue: any): IParentAlias => {
+        const { model } = this.state;
+        const { parentAliases } = model;
         return {
             ...parentAliases.get(id),
-            isDupe: false, //Clear error because of change
+            isDupe: false, // Clear error because of change
             [field]: newValue,
         } as IParentAlias;
     };
 
-    parentAliasChange = (id:string, field: string, newValue: any) => {
-        const {model} = this.state;
-        const {parentAliases} = model;
+    parentAliasChange = (id: string, field: string, newValue: any) => {
+        const { model } = this.state;
+        const { parentAliases } = model;
         const changedAlias = this.updateAliasValue(id, field, newValue);
 
         const newAliases = parentAliases.set(id, changedAlias);
-        const newModel = model.merge({parentAliases: newAliases}) as SampleTypeModel;
-        this.setState(() => ({model: newModel}));
+        const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
+        this.setState(() => ({ model: newModel }));
     };
 
-    updateDupes = (id: string):void => {
-        const {model} = this.state;
+    updateDupes = (id: string): void => {
+        const { model } = this.state;
         if (!model) {
             return;
         }
 
-        const {parentAliases} = model;
+        const { parentAliases } = model;
         const dupes = model.getDuplicateAlias();
         let newAliases = OrderedMap<string, IParentAlias>();
         parentAliases.forEach((alias: IParentAlias) => {
@@ -268,44 +275,47 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             if (alias.id === id) {
                 changedAlias = {
                     ...changedAlias,
-                    ignoreAliasError: false
+                    ignoreAliasError: false,
                 };
             }
 
             newAliases = newAliases.set(alias.id, changedAlias);
         });
 
-        const newModel = model.merge({parentAliases: newAliases}) as SampleTypeModel;
-        this.setState(() => ({model: newModel}));
+        const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
+        this.setState(() => ({ model: newModel }));
     };
 
-    addParentAlias = (id:string, newAlias: IParentAlias): void => {
-        const {model} = this.state;
-        let {parentAliases} = model;
-        const newModel = model.merge({parentAliases:parentAliases.set(id, newAlias)}) as SampleTypeModel;
-        this.setState(() => ({model: newModel}));
+    addParentAlias = (id: string, newAlias: IParentAlias): void => {
+        const { model } = this.state;
+        const { parentAliases } = model;
+        const newModel = model.merge({ parentAliases: parentAliases.set(id, newAlias) }) as SampleTypeModel;
+        this.setState(() => ({ model: newModel }));
     };
 
-    removeParentAlias = (id:string) => {
-        const {model} = this.state;
-        let {parentAliases} = model;
+    removeParentAlias = (id: string) => {
+        const { model } = this.state;
+        const { parentAliases } = model;
         const aliases = parentAliases.delete(id);
         const newModel = model.set('parentAliases', aliases) as SampleTypeModel;
-        this.setState(() => ({model: newModel}));
+        this.setState(() => ({ model: newModel }));
     };
 
     domainChangeHandler = (domain: DomainDesign, dirty: boolean) => {
         const { onChange } = this.props;
-        const {model} = this.state;
+        const { model } = this.state;
 
-        this.setState(() => ({
-            model: model.merge({domain}) as SampleTypeModel
-        }), () => {
-            // Issue 39918: use the dirty property that DomainForm onChange passes
-            if (onChange && dirty) {
-                onChange(model);
+        this.setState(
+            () => ({
+                model: model.merge({ domain }) as SampleTypeModel,
+            }),
+            () => {
+                // Issue 39918: use the dirty property that DomainForm onChange passes
+                if (onChange && dirty) {
+                    onChange(model);
+                }
             }
-        });
+        );
     };
 
     onFinish = (): void => {
@@ -319,15 +329,17 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             let exception;
 
             if (model.hasInvalidNameField(defaultSampleFieldConfig)) {
-                exception = 'The ' + defaultSampleFieldConfig.name + ' field name is reserved for imported or generated sample ids.'
-            }
-            else if (model.getDuplicateAlias(true).size > 0) {
+                exception =
+                    'The ' +
+                    defaultSampleFieldConfig.name +
+                    ' field name is reserved for imported or generated sample ids.';
+            } else if (model.getDuplicateAlias(true).size > 0) {
                 exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
             }
 
             const updatedModel = model.set('exception', exception) as SampleTypeModel;
             setSubmitting(false, () => {
-                this.setState(() => ({model: updatedModel}));
+                this.setState(() => ({ model: updatedModel }));
             });
         }
     };
@@ -335,15 +347,15 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     saveDomain = () => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
-        const {name, domain, description, nameExpression } = model;
+        const { name, domain, description, nameExpression } = model;
 
         if (beforeFinish) {
             beforeFinish(model);
         }
 
         let domainDesign = domain.merge({
-            name: name, //This will be the Sample Type Name
-            description: description,
+            name, // This will be the Sample Type Name
+            description,
         }) as DomainDesign;
 
         const details = {
@@ -352,11 +364,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             importAliases: this.getImportAliasesAsMap(model).toJS(),
         };
 
-        if (model.isNew())
-        {
-            //Initialize a sampleId column, this is not displayed as part of the designer.
+        if (model.isNew()) {
+            // Initialize a sampleId column, this is not displayed as part of the designer.
             const nameCol = {
-                name: 'Name'
+                name: 'Name',
             };
 
             domainDesign = addDomainField(domainDesign, nameCol);
@@ -368,28 +379,49 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     this.props.onComplete(response);
                 });
             })
-            .catch((response) => {
+            .catch(response => {
                 const exception = resolveErrorMessage(response);
                 const updatedModel = exception
-                    ? model.set('exception', exception) as SampleTypeModel
-                    : model.merge({
-                        // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
-                        domain: domain.merge({domainException: response.domainException}) as DomainDesign,
-                        exception: undefined
-                    }) as SampleTypeModel;
+                    ? (model.set('exception', exception) as SampleTypeModel)
+                    : (model.merge({
+                          // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
+                          domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
+                          exception: undefined,
+                      }) as SampleTypeModel);
 
                 setSubmitting(false, () => {
-                    this.setState(() => ({model: updatedModel}));
+                    this.setState(() => ({ model: updatedModel }));
                 });
             });
     };
 
     render() {
         const {
-            containerTop, useTheme, appPropertiesOnly, successBsStyle, currentPanelIndex, visitedPanels, firstState,
-            validatePanel, onTogglePanel, submitting, onCancel, nameExpressionPlaceholder, nameExpressionInfoUrl,
-            nounSingular, nounPlural, headerText, saveBtnText, helpTopic, includeDataClasses, useSeparateDataClassesAliasMenu,
-            sampleAliasCaption, sampleTypeCaption, dataClassAliasCaption, dataClassTypeCaption, dataClassParentageLabel
+            containerTop,
+            useTheme,
+            appPropertiesOnly,
+            successBsStyle,
+            currentPanelIndex,
+            visitedPanels,
+            firstState,
+            validatePanel,
+            onTogglePanel,
+            submitting,
+            onCancel,
+            nameExpressionPlaceholder,
+            nameExpressionInfoUrl,
+            nounSingular,
+            nounPlural,
+            headerText,
+            saveBtnText,
+            helpTopic,
+            includeDataClasses,
+            useSeparateDataClassesAliasMenu,
+            sampleAliasCaption,
+            sampleTypeCaption,
+            dataClassAliasCaption,
+            dataClassTypeCaption,
+            dataClassParentageLabel,
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -429,7 +461,11 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     updateModel={this.onFieldChange}
                     controlledCollapse={true}
                     initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
-                    panelStatus={model.isNew() ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
+                    panelStatus={
+                        model.isNew()
+                            ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState)
+                            : 'COMPLETE'
+                    }
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     onToggle={(collapsed, callback) => onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
                     useTheme={useTheme}
@@ -438,12 +474,16 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     key={model.domain.domainId || 0}
                     domainIndex={0}
                     domain={model.domain}
-                    headerTitle={'Fields'}
+                    headerTitle="Fields"
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     controlledCollapse={true}
                     initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
                     validate={validatePanel === DOMAIN_PANEL_INDEX}
-                    panelStatus={model.isNew() ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'}
+                    panelStatus={
+                        model.isNew()
+                            ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
+                            : 'COMPLETE'
+                    }
                     showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.domainChangeHandler}
@@ -452,11 +492,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                 />
-                {error &&
-                    <div className="domain-form-panel">
-                        {error && <Alert bsStyle="danger">{error}</Alert>}
-                    </div>
-                }
+                {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
             </BaseDomainDesigner>
         );
     }

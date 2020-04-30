@@ -28,160 +28,164 @@ import { EditableColumnMetadata } from '../components/editable/EditableGrid';
 import { SchemaQuery } from '../components/base/models/model';
 import { PlacementType } from '../components/editable/Controls';
 
-const CONTROLS_GROUP = "Grid controls";
-const PANEL_GROUP = "Grid";
+const CONTROLS_GROUP = 'Grid controls';
+const PANEL_GROUP = 'Grid';
 
 storiesOf('EditableGridPanel', module)
     .addDecorator(withKnobs)
-    .add("default properties", () => {
-        const modelId = "editableDefaultProps";
+    .add('default properties', () => {
+        const modelId = 'editableDefaultProps';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery, {
-            editable: true
+            editable: true,
         });
-        return <EditableGridPanel
-            model={model}
-        />;
-
+        return <EditableGridPanel model={model} />;
     })
-    .add("with column tooltips", () => {
+    .add('with column tooltips', () => {
         const modelId = 'editableWithTooltips';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: 'mixtures'
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery, {
-            editable: true
+            editable: true,
         });
         let columnMetadata = Map<string, EditableColumnMetadata>();
-        columnMetadata = columnMetadata.set("Name", {toolTip: "Name tips"});
-        columnMetadata = columnMetadata.set('mixtureTypeId', {toolTip: <b>We require this value</b>});
-        columnMetadata = columnMetadata.set("Remove", {toolTip: <span>We allow you to remove things here.  I <b>hope</b> that's what you expect.</span>});
+        columnMetadata = columnMetadata.set('Name', { toolTip: 'Name tips' });
+        columnMetadata = columnMetadata.set('mixtureTypeId', { toolTip: <b>We require this value</b> });
+        columnMetadata = columnMetadata.set('Remove', {
+            toolTip: (
+                <span>
+                    We allow you to remove things here. I <b>hope</b> that's what you expect.
+                </span>
+            ),
+        });
         return (
             <EditableGridPanel
                 model={model}
                 allowRemove={true}
-                removeColumnTitle={"Remove"}
+                removeColumnTitle="Remove"
                 columnMetadata={columnMetadata}
             />
         );
     })
-    .add("without data", () => {
-        const modelId = "editableWithoutData";
+    .add('without data', () => {
+        const modelId = 'editableWithoutData';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery, {
-            editable: true
+            editable: true,
         });
 
         const addRowsControl = {
-            minCount: number("Minimum count", 1, {}, CONTROLS_GROUP),
-            maxCount: number("Maximum count", 100, {}, CONTROLS_GROUP),
-            nounPlural: text("Plural noun", "rows", CONTROLS_GROUP),
-            nounSingular: text("Singular noun", "row", CONTROLS_GROUP),
-            placement: select("Placement", ['top', 'bottom', 'both'], "bottom", CONTROLS_GROUP)
+            minCount: number('Minimum count', 1, {}, CONTROLS_GROUP),
+            maxCount: number('Maximum count', 100, {}, CONTROLS_GROUP),
+            nounPlural: text('Plural noun', 'rows', CONTROLS_GROUP),
+            nounSingular: text('Singular noun', 'row', CONTROLS_GROUP),
+            placement: select('Placement', ['top', 'bottom', 'both'], 'bottom', CONTROLS_GROUP),
         };
 
-        const onRowCountChange = (count: number ) => { console.log("Row count has changed to " + count); };
+        const onRowCountChange = (count: number) => {
+            console.log('Row count has changed to ' + count);
+        };
 
         return (
             <EditableGridPanel
                 addControlProps={addRowsControl}
-                allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
-                allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
-                allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
-                disabled={boolean("Disabled?", false, PANEL_GROUP)}
-                initialEmptyRowCount={number("Initial empty rows", 1, {}, PANEL_GROUP)}
-                isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
-                title={text("Title", "Grid title", PANEL_GROUP)}
+                allowAdd={boolean('Allow rows to be added?', true, PANEL_GROUP)}
+                allowBulkRemove={boolean('Allow bulk delete?', true, PANEL_GROUP)}
+                allowRemove={boolean('Allow rows to be removed?', true, PANEL_GROUP)}
+                disabled={boolean('Disabled?', false, PANEL_GROUP)}
+                initialEmptyRowCount={number('Initial empty rows', 1, {}, PANEL_GROUP)}
+                isSubmitting={boolean('Is submitting?', false, PANEL_GROUP)}
+                title={text('Title', 'Grid title', PANEL_GROUP)}
                 onRowCountChange={onRowCountChange}
                 model={model}
-                striped={boolean("Striped?", false, PANEL_GROUP)}
-                bsStyle={text("bsStyle", undefined, PANEL_GROUP)}
-                bordered={boolean("Bordered?", false, PANEL_GROUP)}
-                condensed={boolean("Condensed?", true, PANEL_GROUP)}
-                emptyGridMsg={text("Empty grid message", "Add rows to start", PANEL_GROUP)}
-                maxTotalRows={number("Max rows", undefined, {}, PANEL_GROUP)}
+                striped={boolean('Striped?', false, PANEL_GROUP)}
+                bsStyle={text('bsStyle', undefined, PANEL_GROUP)}
+                bordered={boolean('Bordered?', false, PANEL_GROUP)}
+                condensed={boolean('Condensed?', true, PANEL_GROUP)}
+                emptyGridMsg={text('Empty grid message', 'Add rows to start', PANEL_GROUP)}
+                maxTotalRows={number('Max rows', undefined, {}, PANEL_GROUP)}
             />
         );
-
     })
-    .add("with data", () => {
-        const modelId = "editableWithData";
+    .add('with data', () => {
+        const modelId = 'editableWithData';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
 
         const model = getStateQueryGridModel(modelId, schemaQuery, {
             editable: true,
             loader: {
                 fetch: () => {
-                    return new Promise((resolve) => {
+                    return new Promise(resolve => {
                         resolve({
                             data: constants.GRID_DATA,
                             dataIds: constants.GRID_DATA.keySeq().toList(),
                         });
                     });
-                }
-            }
+                },
+            },
         });
 
         gridInit(model, true);
 
         const addRowsControl = {
-            minCount: number("Minimum to be added", 1, {}, CONTROLS_GROUP),
-            maxCount: number("Maximum to be added", 100, {}, CONTROLS_GROUP),
-            nounPlural: text("Plural noun", "rows", CONTROLS_GROUP),
-            nounSingular: text("Singular noun", "row", CONTROLS_GROUP),
-            placement: select("Placement", ['top', 'bottom', 'both'], "bottom", CONTROLS_GROUP)
+            minCount: number('Minimum to be added', 1, {}, CONTROLS_GROUP),
+            maxCount: number('Maximum to be added', 100, {}, CONTROLS_GROUP),
+            nounPlural: text('Plural noun', 'rows', CONTROLS_GROUP),
+            nounSingular: text('Singular noun', 'row', CONTROLS_GROUP),
+            placement: select('Placement', ['top', 'bottom', 'both'], 'bottom', CONTROLS_GROUP),
         };
 
         return (
             <EditableGridPanel
                 addControlProps={addRowsControl}
-                allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
-                bordered={boolean("Bordered?", false, PANEL_GROUP)}
-                allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
-                allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
-                disabled={boolean("Disabled?", false, PANEL_GROUP)}
-                isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
-                title={text("Title", "Editable grid with data", PANEL_GROUP)}
-                maxTotalRows={number("Max Rows Total", undefined, {}, CONTROLS_GROUP)}
+                allowAdd={boolean('Allow rows to be added?', true, PANEL_GROUP)}
+                bordered={boolean('Bordered?', false, PANEL_GROUP)}
+                allowBulkRemove={boolean('Allow bulk delete?', true, PANEL_GROUP)}
+                allowRemove={boolean('Allow rows to be removed?', true, PANEL_GROUP)}
+                disabled={boolean('Disabled?', false, PANEL_GROUP)}
+                isSubmitting={boolean('Is submitting?', false, PANEL_GROUP)}
+                title={text('Title', 'Editable grid with data', PANEL_GROUP)}
+                maxTotalRows={number('Max Rows Total', undefined, {}, CONTROLS_GROUP)}
                 model={model}
             />
         );
     })
-    .add("with data and limited deletion", () => {
-        const modelId = "editableWithDataAndLimitedDeletion";
+    .add('with data and limited deletion', () => {
+        const modelId = 'editableWithDataAndLimitedDeletion';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
 
         const model = getStateQueryGridModel(modelId, schemaQuery, {
             editable: true,
             loader: {
                 fetch: () => {
-                    return new Promise((resolve) => {
+                    return new Promise(resolve => {
                         resolve({
                             data: constants.GRID_DATA,
                             dataIds: constants.GRID_DATA.keySeq().toList(),
                         });
                     });
-                }
-            }
+                },
+            },
         });
 
         gridInit(model, true);
 
         let columnMetadata = Map<string, EditableColumnMetadata>();
-        columnMetadata = columnMetadata.set("Delete", {toolTip: <span>Items in use cannot be deleted.</span>});
+        columnMetadata = columnMetadata.set('Delete', { toolTip: <span>Items in use cannot be deleted.</span> });
 
         return (
             <EditableGridPanel
@@ -195,39 +199,38 @@ storiesOf('EditableGridPanel', module)
             />
         );
     })
-    .add("with read-only columns and placeholders", () => {
-        const modelId = "editableWitReadOnlyAndPlaceHolders";
+    .add('with read-only columns and placeholders', () => {
+        const modelId = 'editableWitReadOnlyAndPlaceHolders';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
 
         const model = getStateQueryGridModel(modelId, schemaQuery, {
             editable: true,
             loader: {
                 fetch: () => {
-                    return new Promise((resolve) => {
+                    return new Promise(resolve => {
                         resolve({
                             data: constants.GRID_DATA,
                             dataIds: constants.GRID_DATA.keySeq().toList(),
                         });
                     });
-                }
-            }
+                },
+            },
         });
         gridInit(model, true);
 
-
         const columnMetadata = Map<string, EditableColumnMetadata>({
-            "Name": {
-                readOnly: boolean("Name field read-only?", true)
+            Name: {
+                readOnly: boolean('Name field read-only?', true),
             },
-            "mixtureTypeId": {
-                placeholder : text("Mixture Type placeholder text", "Select a type...")
+            mixtureTypeId: {
+                placeholder: text('Mixture Type placeholder text', 'Select a type...'),
             },
-            "extraTestColumn": {
-                placeholder : text("Extra Test Column placeholder text", "Enter text here")
-            }
+            extraTestColumn: {
+                placeholder: text('Extra Test Column placeholder text', 'Enter text here'),
+            },
         });
 
         return (
@@ -239,99 +242,103 @@ storiesOf('EditableGridPanel', module)
                 disabled={false}
                 model={model}
                 isSubmitting={false}
-                title={"Editable grid with read-only data"}
+                title="Editable grid with read-only data"
             />
         );
     })
-    .add("with bulk edit", () => {
-        const modelId = "editableWithBulkEdit";
+    .add('with bulk edit', () => {
+        const modelId = 'editableWithBulkEdit';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
 
         const model = getStateQueryGridModel(modelId, schemaQuery, {
             editable: true,
             loader: {
                 fetch: () => {
-                    return new Promise((resolve) => {
+                    return new Promise(resolve => {
                         resolve({
                             data: constants.GRID_DATA,
                             dataIds: constants.GRID_DATA.keySeq().toList(),
                         });
                     });
-                }
-            }
+                },
+            },
         });
         gridInit(model, true);
 
         const bulkAddProps = {
-            header: text("Header for bulk insert", "Create some mixture data here."),
-            title: text("Title for bulk import", "Bulk creation of mixture data")
+            header: text('Header for bulk insert', 'Create some mixture data here.'),
+            title: text('Title for bulk import', 'Bulk creation of mixture data'),
         };
 
         return (
             <EditableGridPanel
                 allowAdd={true}
-                addControlProps={{placement: text('Add control placement', 'bottom') as PlacementType}}
-                allowBulkRemove={boolean("Allow bulk remove?", true)}
-                bulkRemoveText={text("Bulk remove text", "Delete Rows")}
-                allowBulkAdd={boolean("Allow bulk add?", true)}
-                bulkAddText={text("Bulk add text", "Bulk Add")}
-                allowBulkUpdate={boolean("Allow bulk update?", true)}
-                bulkUpdateText={text("Bulk update text", "Bulk Update")}
+                addControlProps={{ placement: text('Add control placement', 'bottom') as PlacementType }}
+                allowBulkRemove={boolean('Allow bulk remove?', true)}
+                bulkRemoveText={text('Bulk remove text', 'Delete Rows')}
+                allowBulkAdd={boolean('Allow bulk add?', true)}
+                bulkAddText={text('Bulk add text', 'Bulk Add')}
+                allowBulkUpdate={boolean('Allow bulk update?', true)}
+                bulkUpdateText={text('Bulk update text', 'Bulk Update')}
                 model={model}
                 isSubmitting={false}
                 bulkAddProps={bulkAddProps}
-                title={"Editable grid with bulk insert capabilities"}
+                title="Editable grid with bulk insert capabilities"
             />
         );
     })
-    .add("with quick add action", () => {
-        const modelId = "editableWithQuickAdd";
+    .add('with quick add action', () => {
+        const modelId = 'editableWithQuickAdd';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery, {
-            editable: true
+            editable: true,
         });
 
         const addRowsControl = {
-            minCount:  1,
-            maxCount:  1000,
-            nounPlural: "samples",
-            nounSingular: "sample",
+            minCount: 1,
+            maxCount: 1000,
+            nounPlural: 'samples',
+            nounSingular: 'sample',
             placement: 'top' as PlacementType,
-            quickAddText: text("Quick add text", "Add Ids and Finish" ),
-            onQuickAdd: (count: number) => { window.alert("Adding " + count + (count === 1 ? " sample." : " samples.")) }
+            quickAddText: text('Quick add text', 'Add Ids and Finish'),
+            onQuickAdd: (count: number) => {
+                window.alert('Adding ' + count + (count === 1 ? ' sample.' : ' samples.'));
+            },
         };
 
-        const onRowCountChange = (count: number ) => { console.log("Row count has changed to " + count); };
+        const onRowCountChange = (count: number) => {
+            console.log('Row count has changed to ' + count);
+        };
 
         return (
             <EditableGridPanel
                 addControlProps={addRowsControl}
-                allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
-                allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
-                allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
-                disabled={boolean("Disabled?", false, PANEL_GROUP)}
-                initialEmptyRowCount={number("Initial empty rows", 4, {}, PANEL_GROUP)}
-                isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
-                title={text("Title", "Grid title", PANEL_GROUP)}
+                allowAdd={boolean('Allow rows to be added?', true, PANEL_GROUP)}
+                allowBulkRemove={boolean('Allow bulk delete?', true, PANEL_GROUP)}
+                allowRemove={boolean('Allow rows to be removed?', true, PANEL_GROUP)}
+                disabled={boolean('Disabled?', false, PANEL_GROUP)}
+                initialEmptyRowCount={number('Initial empty rows', 4, {}, PANEL_GROUP)}
+                isSubmitting={boolean('Is submitting?', false, PANEL_GROUP)}
+                title={text('Title', 'Grid title', PANEL_GROUP)}
                 onRowCountChange={onRowCountChange}
                 model={model}
             />
         );
     })
-    .add("for update", () => {
-        const modelId = "editableForUpdate";
+    .add('for update', () => {
+        const modelId = 'editableForUpdate';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery, {
-            editable: true
+            editable: true,
         });
 
         return (
@@ -340,10 +347,9 @@ storiesOf('EditableGridPanel', module)
                 allowBulkRemove={false}
                 allowRemove={true}
                 forUpdate={true}
-                readOnlyColumns={List<string>(["Name"])}
-                title={text("Title", "Grid title", PANEL_GROUP)}
+                readOnlyColumns={List<string>(['Name'])}
+                title={text('Title', 'Grid title', PANEL_GROUP)}
                 model={model}
             />
         );
-    })
-;
+    });

@@ -17,38 +17,43 @@ import React from 'react';
 import { Input } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
-import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+
 import { QueryColumn } from '../../base/models/model';
 
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+
 export interface TextInputProps extends DisableableInputProps {
-    changeDebounceInterval?: number
-    elementWrapperClassName?: Array<any> | string
-    label?: any
-    labelClassName?: Array<any> | string
-    name?: string
-    onChange?: any
-    placeholder?: string
-    queryColumn: QueryColumn
-    rowClassName?: Array<any> | string
-    showLabel?: boolean
-    startFocused?: boolean
-    validatePristine?: boolean
-    value?: string
-    addLabelAsterisk?: boolean
+    changeDebounceInterval?: number;
+    elementWrapperClassName?: any[] | string;
+    label?: any;
+    labelClassName?: any[] | string;
+    name?: string;
+    onChange?: any;
+    placeholder?: string;
+    queryColumn: QueryColumn;
+    rowClassName?: any[] | string;
+    showLabel?: boolean;
+    startFocused?: boolean;
+    validatePristine?: boolean;
+    value?: string;
+    addLabelAsterisk?: boolean;
 }
 
 interface TextInputState extends DisableableInputState {
-    didFocus?: boolean
+    didFocus?: boolean;
 }
 
 export class TextInput extends DisableableInput<TextInputProps, TextInputState> {
-    static defaultProps = {...DisableableInput.defaultProps, ...{
-        changeDebounceInterval: 0,
-        elementWrapperClassName: 'col-md-9 col-xs-12',
-        labelClassName: 'control-label text-left col-xs-12',
-        showLabel: true,
-        startFocused: false,
-    }};
+    static defaultProps = {
+        ...DisableableInput.defaultProps,
+        ...{
+            changeDebounceInterval: 0,
+            elementWrapperClassName: 'col-md-9 col-xs-12',
+            labelClassName: 'control-label text-left col-xs-12',
+            showLabel: true,
+            startFocused: false,
+        },
+    };
 
     textInput: Input;
 
@@ -59,8 +64,8 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
         this.state = {
             didFocus: false,
-            isDisabled: props.initiallyDisabled
-        }
+            isDisabled: props.initiallyDisabled,
+        };
     }
 
     componentDidMount() {
@@ -70,7 +75,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         if (startFocused && !didFocus && queryColumn && queryColumn.name) {
             // https://github.com/twisty/formsy-react-components/blob/master/docs/refs.md
             this.textInput.element.focus();
-            this.setState({didFocus: true});
+            this.setState({ didFocus: true });
         }
     }
 
@@ -82,27 +87,27 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk } = this.props;
         const { isDisabled } = this.state;
 
-        return <FieldLabel
-            label={label}
-            showLabel={showLabel}
-            labelOverlayProps={{isFormsy: true, addLabelAsterisk: addLabelAsterisk}}
-            showToggle={allowDisable}
-            column={queryColumn}
-            isDisabled = {isDisabled}
-            toggleProps = {{
-                onClick: this.toggleDisabled
-            }}
-        />
+        return (
+            <FieldLabel
+                label={label}
+                showLabel={showLabel}
+                labelOverlayProps={{ isFormsy: true, addLabelAsterisk }}
+                showToggle={allowDisable}
+                column={queryColumn}
+                isDisabled={isDisabled}
+                toggleProps={{
+                    onClick: this.toggleDisabled,
+                }}
+            />
+        );
     }
 
     onChange = (name, value) => {
         const { onChange } = this.props;
 
-        if (this.props.allowDisable)
-            this.setState({inputValue: value});
+        if (this.props.allowDisable) this.setState({ inputValue: value });
 
-        if (onChange)
-            onChange(value);
+        if (onChange) onChange(value);
     };
 
     render() {
@@ -116,7 +121,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             queryColumn,
             rowClassName,
             validatePristine,
-            value
+            value,
         } = this.props;
 
         let type = 'text',
@@ -125,12 +130,11 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
         if (queryColumn) {
             if (queryColumn.jsonType === 'int') {
-                step = "1";
+                step = '1';
                 type = 'number';
                 validations = 'isInt';
-            }
-            else if (queryColumn.jsonType === 'float') {
-                step = "any";
+            } else if (queryColumn.jsonType === 'float') {
+                step = 'any';
                 type = 'number';
                 validations = 'isFloat';
             }
@@ -154,10 +158,8 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 validatePristine={validatePristine}
                 validations={validations}
                 value={this.getInputValue()}
-                componentRef={node => this.textInput = node}
+                componentRef={node => (this.textInput = node)}
             />
         );
     }
-
 }
-

@@ -15,34 +15,30 @@
  */
 import React from 'react';
 import { List } from 'immutable';
+
 import { MultiValueRenderer } from './MultiValueRenderer';
 
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.
  */
 export class DefaultRenderer extends React.Component<any, any> {
-
     render() {
         const { data } = this.props;
 
         let display = null;
         if (data) {
-            if (typeof(data) === 'string') {
+            if (typeof data === 'string') {
                 display = data;
-            }
-            else if (typeof(data) === 'boolean') {
+            } else if (typeof data === 'boolean') {
                 display = data ? 'true' : 'false';
-            }
-            else if (List.isList(data)) {
+            } else if (List.isList(data)) {
                 // defensively return a MultiValueRenderer, this column likely wasn't declared properly as "multiValue"
                 return <MultiValueRenderer data={data} />;
-            }
-            else {
+            } else {
                 if (data.has('formattedValue')) {
                     display = data.get('formattedValue');
-                }
-                else {
-                    let o = data.has('displayValue') ? data.get('displayValue') : data.get('value');
+                } else {
+                    const o = data.has('displayValue') ? data.get('displayValue') : data.get('value');
                     display = o !== null && o !== undefined ? o.toString() : null;
                 }
 

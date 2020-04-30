@@ -18,34 +18,34 @@ import classNames from 'classnames';
 import { Map } from 'immutable';
 import moment from 'moment';
 import { Query } from '@labkey/api';
-import { LoadingSpinner } from "./LoadingSpinner";
+
+import { LoadingSpinner } from './LoadingSpinner';
 
 interface IRowConfig {
-    createdBy: string
-    createdTS: any
-    display: boolean
-    hasCreated: boolean
-    hasModified: boolean
-    modifiedBy: string
-    modifiedTS: any
-    useCreated: boolean
+    createdBy: string;
+    createdTS: any;
+    display: boolean;
+    hasCreated: boolean;
+    hasModified: boolean;
+    modifiedBy: string;
+    modifiedTS: any;
+    useCreated: boolean;
 }
 
 interface CreatedModifiedProps {
-    className?: string
-    row: Map<string, any>
-    useServerDate?: boolean
+    className?: string;
+    row: Map<string, any>;
+    useServerDate?: boolean;
 }
 
 interface State {
-    serverDate: Date
-    loading: boolean
+    serverDate: Date;
+    loading: boolean;
 }
 
 export class CreatedModified extends React.Component<CreatedModifiedProps, State> {
-
     static defaultProps = {
-        useServerDate: true
+        useServerDate: true,
     };
 
     constructor(props) {
@@ -53,21 +53,21 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
 
         this.state = {
             serverDate: undefined,
-            loading: props.useServerDate
+            loading: props.useServerDate,
         };
     }
 
     componentWillMount() {
         if (this.props.useServerDate) {
             Query.getServerDate({
-                success: (serverDate) => this.setState(() => ({serverDate, loading: false})),
-                failure: (error) => this.setState(() => ({loading: false}))
+                success: serverDate => this.setState(() => ({ serverDate, loading: false })),
+                failure: error => this.setState(() => ({ loading: false })),
             });
         }
     }
 
     formatTitle(config: IRowConfig): string {
-        let title = [];
+        const title = [];
 
         if (config.display) {
             if (config.hasCreated) {
@@ -115,8 +115,8 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
                 hasModified,
                 modifiedBy,
                 modifiedTS: hasModified ? modifiedTS : undefined,
-                useCreated: !hasModified || (createdTS === modifiedTS)
-            }
+                useCreated: !hasModified || createdTS === modifiedTS,
+            };
         }
 
         return {
@@ -127,8 +127,8 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
             hasModified: false,
             modifiedBy: undefined,
             modifiedTS: undefined,
-            useCreated: false
-        }
+            useCreated: false,
+        };
     }
 
     render() {
@@ -136,7 +136,7 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
         const { serverDate, loading } = this.state;
 
         if (loading) {
-            return <LoadingSpinner/>
+            return <LoadingSpinner />;
         }
 
         const config = this.processRow();
@@ -146,11 +146,10 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
             const displayTxt = serverDate ? moment(timestamp).from(serverDate) : moment(timestamp).fromNow();
 
             return (
-                <span title={this.formatTitle(config)}
-                      className={classNames('createdmodified', className)}>
+                <span title={this.formatTitle(config)} className={classNames('createdmodified', className)}>
                     {config.useCreated ? 'Created' : 'Modified'} {displayTxt}
                 </span>
-            )
+            );
         }
 
         return null;

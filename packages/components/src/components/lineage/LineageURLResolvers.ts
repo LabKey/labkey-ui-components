@@ -1,7 +1,8 @@
 import { Filter } from '@labkey/api';
+
 import { URLResolver } from '../..';
 
-import { LineageOptions, LineageURLResolvers } from './types'
+import { LineageOptions, LineageURLResolvers } from './types';
 import { LineageNode, LineageResult } from './models';
 
 interface LineageURLResolver {
@@ -10,15 +11,14 @@ interface LineageURLResolver {
 }
 
 export class AppLineageURLResolver implements LineageURLResolver {
-
     private static resolver = new URLResolver();
 
-    public resolveNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
-        let updated = AppLineageURLResolver.resolver.resolveLineageNodes(result, acceptedTypes);
+    resolveNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
+        const updated = AppLineageURLResolver.resolver.resolveLineageNodes(result, acceptedTypes);
 
-        return AppLineageURLResolver.resolver
-            .resolveLineageNodes(result, acceptedTypes)
-            .set('nodes', updated.nodes.map(node => {
+        return AppLineageURLResolver.resolver.resolveLineageNodes(result, acceptedTypes).set(
+            'nodes',
+            updated.nodes.map(node => {
                 if (node && acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
                     return node.set('links', {
                         overview: node.url,
@@ -28,17 +28,22 @@ export class AppLineageURLResolver implements LineageURLResolver {
                 }
 
                 return node;
-            })) as LineageResult;
+            })
+        ) as LineageResult;
     };
 
-    public resolveGroupedNodes = (nodes: LineageNode[]): string => {
+    resolveGroupedNodes = (nodes: LineageNode[]): string => {
         let listURL: string;
 
         if (nodes && nodes.length) {
             // arbitrarily choose the first node as the baseURL
             const baseURL = nodes[0].listURL;
 
-            const filter = Filter.create('RowId', nodes.map(n => n.id), Filter.Types.IN);
+            const filter = Filter.create(
+                'RowId',
+                nodes.map(n => n.id),
+                Filter.Types.IN
+            );
             const suffix = '?' + filter.getURLParameterName() + '=' + filter.getURLParameterValue();
 
             listURL = baseURL + suffix;
@@ -49,19 +54,21 @@ export class AppLineageURLResolver implements LineageURLResolver {
 }
 
 export class ServerLineageURLResolver implements LineageURLResolver {
-
-    public resolveNodes = (result: LineageResult): LineageResult => {
-        return result.set('nodes', result.nodes.map(node => (
-            node.set('links', {
-                overview: node.url,
-                // does not currently have a corollary view in LKS
-                lineage: undefined,
-                list: undefined,
-            })
-        ))) as LineageResult;
+    resolveNodes = (result: LineageResult): LineageResult => {
+        return result.set(
+            'nodes',
+            result.nodes.map(node =>
+                node.set('links', {
+                    overview: node.url,
+                    // does not currently have a corollary view in LKS
+                    lineage: undefined,
+                    list: undefined,
+                })
+            )
+        ) as LineageResult;
     };
 
-    public resolveGroupedNodes = (nodes: LineageNode[]): string => {
+    resolveGroupedNodes = (nodes: LineageNode[]): string => {
         // NYI
         return undefined;
     };

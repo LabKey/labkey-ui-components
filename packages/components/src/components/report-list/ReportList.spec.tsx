@@ -17,18 +17,20 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { createMemoryHistory, Route, Router } from 'react-router';
 import { mount } from 'enzyme';
-import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
-import { flattenBrowseDataTreeResponse } from '../../';
+
+import { flattenBrowseDataTreeResponse } from '../..';
 import exampleData from '../../test/data/example_browse_data_tree_api.json';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AppURL } from '../../url/AppURL';
+
+import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
 
 const history = createMemoryHistory();
 
 const noop = () => {};
 const messageSelector = '.report-list__message';
 const createdBySelector = '.report-list-item__person';
-const urlMapper = (report) => {
+const urlMapper = report => {
     const { schemaName, queryName, viewName } = report;
 
     if (report.type === 'Sample Comparison') {
@@ -54,7 +56,7 @@ describe('<ReportList />', () => {
     });
 
     test('Render with no data', () => {
-        const component = <ReportList loading={false} reports={[]} onReportClicked={noop}/>;
+        const component = <ReportList loading={false} reports={[]} onReportClicked={noop} />;
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
         const wrapper = mount(component);
@@ -63,7 +65,7 @@ describe('<ReportList />', () => {
     });
 
     test('Render loading', () => {
-        const component = <ReportList loading={true} reports={[]} onReportClicked={noop}/>;
+        const component = <ReportList loading={true} reports={[]} onReportClicked={noop} />;
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
         const wrapper = mount(component);
@@ -72,7 +74,7 @@ describe('<ReportList />', () => {
 
     test('Render with data', () => {
         const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper);
-        const component = <ReportList loading={false} reports={reports} onReportClicked={noop}/>;
+        const component = <ReportList loading={false} reports={reports} onReportClicked={noop} />;
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
         const wrapper = mount(component);
@@ -83,7 +85,7 @@ describe('<ReportList />', () => {
     test('onReportClicked should execute on click', () => {
         const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper).slice(0, 1);
         const onReportClicked = jest.fn();
-        const component = <ReportList loading={false} reports={reports} onReportClicked={onReportClicked}/>;
+        const component = <ReportList loading={false} reports={reports} onReportClicked={onReportClicked} />;
         const wrapper = mount(component);
         wrapper.find(ReportListItem).simulate('click');
         expect(onReportClicked).toHaveBeenCalledTimes(1);
@@ -96,7 +98,7 @@ describe('<ReportListItem />', () => {
         const onClick = jest.fn();
         const component = (
             <Router history={history}>
-                <Route path="/"  component={() => (<ReportListItem report={report} onClick={onClick}/>)}/>
+                <Route path="/" component={() => <ReportListItem report={report} onClick={onClick} />} />
             </Router>
         );
         const tree = renderer.create(component);
@@ -114,7 +116,7 @@ describe('<ReportListItem />', () => {
         const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper);
         const report = reports[1];
         report.createdBy = undefined;
-        const component = <ReportListItem report={report} onClick={noop}/>;
+        const component = <ReportListItem report={report} onClick={noop} />;
         const wrapper = mount(component);
         expect(wrapper.find(createdBySelector)).toHaveLength(0);
     });
@@ -122,7 +124,7 @@ describe('<ReportListItem />', () => {
     test('ReportListItem calls onClick when clicked', () => {
         const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[0];
         const onClick = jest.fn();
-        const component = <ReportListItem report={report} onClick={onClick}/>;
+        const component = <ReportListItem report={report} onClick={onClick} />;
         const wrapper = mount(component);
         wrapper.simulate('click');
         expect(onClick).toHaveBeenCalledTimes(1);

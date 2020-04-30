@@ -1,16 +1,16 @@
-import {mount} from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 import toJson from 'enzyme-to-json';
-import {ConditionalFormattingAndValidation} from './ConditionalFormattingAndValidation';
-import {BOOLEAN_TYPE, DATETIME_TYPE, DomainField, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE} from './models';
+
 import propertyValidatorRange from '../../test/data/propertyValidator-range.json';
 import propertyValidatorRegex from '../../test/data/propertyValidator-regex.json';
 import conditionalFormat1 from '../../test/data/conditionalFormat1.json';
 import conditionalFormat2 from '../../test/data/conditionalFormat2.json';
 
+import { BOOLEAN_TYPE, DATETIME_TYPE, DomainField, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from './models';
+import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 
 describe('ConditionalFormattingAndValidation', () => {
-
     test('No validators or formats', () => {
         const expectedValidators = 'None Set';
         const decimalPropertyType = DOUBLE_TYPE;
@@ -24,56 +24,54 @@ describe('ConditionalFormattingAndValidation', () => {
             field: DomainField.create({}),
             setDragDisabled: jest.fn(),
             onChange: jest.fn(),
-            showingModal: jest.fn()
+            showingModal: jest.fn(),
         };
 
-        const cfv  = mount(<ConditionalFormattingAndValidation
-            {...props}
-        />);
+        const cfv = mount(<ConditionalFormattingAndValidation {...props} />);
 
         // Verify label
-        const sectionLabel = cfv.find({className: 'domain-field-section-heading domain-field-section-hdr'});
+        const sectionLabel = cfv.find({ className: 'domain-field-section-heading domain-field-section-hdr' });
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual('Conditional Formatting and Validation Options');
 
         // Verify buttons. Range validator only shows for numeric data types
-        let buttons = cfv.find({className: 'domain-validation-button btn btn-default'});
+        let buttons = cfv.find({ className: 'domain-validation-button btn btn-default' });
         expect(buttons.length).toEqual(2); // Only Conditional Format and Regex if not selected as numeric type
 
-        let validatorStrings = cfv.find({className: 'domain-text-label'});
+        let validatorStrings = cfv.find({ className: 'domain-text-label' });
         expect(validatorStrings.length).toEqual(2);
 
-        cfv.setProps({...props, field: DomainField.create({rangeURI: decimalPropertyType.rangeURI})});
+        cfv.setProps({ ...props, field: DomainField.create({ rangeURI: decimalPropertyType.rangeURI }) });
 
-        buttons = cfv.find({className: 'domain-validation-button btn btn-default'});
+        buttons = cfv.find({ className: 'domain-validation-button btn btn-default' });
         // Two should be available now: Conditional Format Criteria and Range Expression Validator
         expect(buttons.length).toEqual(2);
 
-        validatorStrings = cfv.find({className: 'domain-text-label'});
+        validatorStrings = cfv.find({ className: 'domain-text-label' });
         expect(validatorStrings.length).toEqual(2);
 
-        cfv.setProps({...props, field: DomainField.create({rangeURI: booleanPropertyType.rangeURI})});
+        cfv.setProps({ ...props, field: DomainField.create({ rangeURI: booleanPropertyType.rangeURI }) });
 
-        buttons = cfv.find({className: 'domain-validation-button btn btn-default'});
+        buttons = cfv.find({ className: 'domain-validation-button btn btn-default' });
         expect(buttons.length).toEqual(1);
 
-        validatorStrings = cfv.find({className: 'domain-text-label'});
+        validatorStrings = cfv.find({ className: 'domain-text-label' });
         expect(validatorStrings.length).toEqual(1);
 
-        cfv.setProps({...props, field: DomainField.create({rangeURI: datePropertyType.rangeURI})});
+        cfv.setProps({ ...props, field: DomainField.create({ rangeURI: datePropertyType.rangeURI }) });
 
-        buttons = cfv.find({className: 'domain-validation-button btn btn-default'});
+        buttons = cfv.find({ className: 'domain-validation-button btn btn-default' });
         expect(buttons.length).toEqual(2);
 
-        validatorStrings = cfv.find({className: 'domain-text-label'});
+        validatorStrings = cfv.find({ className: 'domain-text-label' });
         expect(validatorStrings.length).toEqual(2);
 
-        cfv.setProps({...props, field: DomainField.create({rangeURI: stringPropertyType.rangeURI})});
+        cfv.setProps({ ...props, field: DomainField.create({ rangeURI: stringPropertyType.rangeURI }) });
 
-        buttons = cfv.find({className: 'domain-validation-button btn btn-default'});
+        buttons = cfv.find({ className: 'domain-validation-button btn btn-default' });
         expect(buttons.length).toEqual(2);
 
-        validatorStrings = cfv.find({className: 'domain-text-label'});
+        validatorStrings = cfv.find({ className: 'domain-text-label' });
         expect(validatorStrings.length).toEqual(2);
 
         // Validator strings should all be None Set
@@ -93,29 +91,35 @@ describe('ConditionalFormattingAndValidation', () => {
         const props = {
             index: 1,
             domainIndex: 1,
-            field: DomainField.create({propertyValidators: [propertyValidatorRange, propertyValidatorRegex], rangeURI: integerPropertyType.rangeURI}),
+            field: DomainField.create({
+                propertyValidators: [propertyValidatorRange, propertyValidatorRegex],
+                rangeURI: integerPropertyType.rangeURI,
+            }),
             setDragDisabled: jest.fn(),
             onChange: jest.fn(),
-            showingModal: jest.fn()
+            showingModal: jest.fn(),
         };
 
-        const cfv  = mount(<ConditionalFormattingAndValidation
-            {...props}
-        />);
+        const cfv = mount(<ConditionalFormattingAndValidation {...props} />);
 
-        let validatorStrings = cfv.find({className: 'domain-text-label'});
+        let validatorStrings = cfv.find({ className: 'domain-text-label' });
         expect(validatorStrings.length).toEqual(1);
 
-        validatorStrings = cfv.find({className: 'domain-validator-link'});
+        validatorStrings = cfv.find({ className: 'domain-validator-link' });
         expect(validatorStrings.length).toEqual(1);
         expect(validatorStrings.at(0).text()).toEqual(validatorString);
 
-        cfv.setProps({field: DomainField.create({conditionalFormats: [conditionalFormat1, conditionalFormat2], rangeURI: textPropertyType.rangeURI})});
+        cfv.setProps({
+            field: DomainField.create({
+                conditionalFormats: [conditionalFormat1, conditionalFormat2],
+                rangeURI: textPropertyType.rangeURI,
+            }),
+        });
 
-        validatorStrings = cfv.find({className: 'domain-text-label'});
+        validatorStrings = cfv.find({ className: 'domain-text-label' });
         expect(validatorStrings.length).toEqual(1);
 
-        validatorStrings = cfv.find({className: 'domain-validator-link'});
+        validatorStrings = cfv.find({ className: 'domain-validator-link' });
         expect(validatorStrings.length).toEqual(1);
         expect(validatorStrings.at(0).text()).toEqual(formatsString);
 
@@ -127,24 +131,22 @@ describe('ConditionalFormattingAndValidation', () => {
         const props = {
             index: 1,
             domainIndex: 1,
-            field: DomainField.create({rangeURI: TEXT_TYPE.rangeURI}),
+            field: DomainField.create({ rangeURI: TEXT_TYPE.rangeURI }),
             setDragDisabled: jest.fn(),
             onChange: jest.fn(),
             showingModal: jest.fn(),
-            domainFormDisplayOptions:{
+            domainFormDisplayOptions: {
                 showRequired: true,
                 showValidators: false,
                 isDragDisabled: false,
                 showTextOptions: true,
                 phiLevelDisabled: false,
-            }
+            },
         };
 
-        const cfv  = mount(<ConditionalFormattingAndValidation
-            {...props}
-        />);
+        const cfv = mount(<ConditionalFormattingAndValidation {...props} />);
 
-        let validatorStrings = cfv.find({className: 'domain-validator-link'});
+        const validatorStrings = cfv.find({ className: 'domain-validator-link' });
         expect(validatorStrings.length).toEqual(0);
 
         expect(toJson(cfv)).toMatchSnapshot();

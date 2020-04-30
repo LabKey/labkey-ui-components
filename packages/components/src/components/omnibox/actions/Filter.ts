@@ -16,9 +16,12 @@
 import { List, Map, Set } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { Action, ActionOption, ActionValue, Value } from './Action';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 import { naturalSort } from '../../../util/utils';
+
+import { parseColumns, resolveFieldKey } from '../utils';
+
+import { Action, ActionOption, ActionValue, Value } from './Action';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
@@ -31,7 +34,7 @@ let SUFFIX_MAP = Map<string /* suffix */, Filter.IFilterType>().asMutable();
 let TEXT_MAP = Map<string /* displayText */, Filter.IFilterType>().asMutable();
 
 let TYPE_SET = Set<string>().asMutable();
-let TYPE_MAP = Map<string, Filter.IFilterType>(Filter.Types);
+const TYPE_MAP = Map<string, Filter.IFilterType>(Filter.Types);
 TYPE_MAP.valueSeq().forEach((type: Filter.IFilterType) => {
     // there are duplicates of the same filter in the type map (e.g. NEQ and NOT_EQUAL)
     const suffix = getURLSuffix(type);
@@ -42,7 +45,6 @@ TYPE_MAP.valueSeq().forEach((type: Filter.IFilterType) => {
 
         SUFFIX_MAP.set(suffix, type);
         if (symbol !== null) {
-
             if (!SYMBOL_MAP.has(symbol)) {
                 SYMBOL_MAP.set(symbol, Map<string, Filter.IFilterType>().asMutable());
             }
@@ -50,7 +52,7 @@ TYPE_MAP.valueSeq().forEach((type: Filter.IFilterType) => {
             SYMBOL_MAP.get(symbol).set(suffix, type);
         }
 
-        let text = type.getDisplayText();
+        const text = type.getDisplayText();
         if (text) {
             TEXT_MAP.set(text.toLowerCase(), type);
         }
@@ -71,73 +73,14 @@ export function getURLSuffix(type: Filter.IFilterType): string {
     return suffix;
 }
 
-/**
- * From the supplied columnName this method will determine which columns in the "columns" list
- * match based on name. If none match, then the columnName will attempt to resolve against each
- * column's shortCaption (see QueryColumn).
- * @param columns
- * @param columnName
- * @returns {List<QueryColumn>}
- */
-export function parseColumns(columns: List<QueryColumn>, columnName: string): List<QueryColumn> {
-    const _columnName = columnName ? columnName.toLowerCase() : '';
-
-    // First, attempt to match by column name/lookup
-    let nameMatches = columns.filter(c => {
-        if (_columnName.indexOf('/') > -1) {
-            if (c.isLookup()) {
-                const name = _columnName.split('/')[0];
-                return c.name.toLowerCase() === name;
-            }
-
-            return false;
-        }
-
-        return c.name.toLowerCase() === _columnName;
-    }).toList();
-
-    // Second, if there are no matches by column name/lookup, attempt to match by column shortCaption
-    if (nameMatches.size === 0) {
-        return columns.filter(c => c.shortCaption.toLowerCase() === _columnName).toList();
-    }
-
-    return nameMatches;
-}
-
-/**
- * Determines what the field key should be from a supplied columnName.
- * If a column (QueryColumn) is supplied it will override the columnName for either
- * the column's lookup column or the column's name.
- * @param columnName
- * @param column
- * @returns {any}
- */
-function resolveFieldKey(columnName: string, column?: QueryColumn): string {
-    let fieldKey: string;
-
-    if (column) {
-        if (column.isLookup()) {
-            fieldKey = [column.name, column.lookup.displayColumn.replace(/\//g, '$S')].join('/');
-        }
-        else {
-            fieldKey = column.name;
-        }
-    }
-    else {
-        fieldKey = columnName;
-    }
-
-    return fieldKey;
-}
-
-function matchingFilterTypes(filterTypes: Array<Filter.IFilterType>, token: string): Array<Filter.IFilterType> {
+function matchingFilterTypes(filterTypes: Filter.IFilterType[], token: string): Filter.IFilterType[] {
     if (!token) {
         return filterTypes;
     }
 
     token = token.toLowerCase();
 
-    return filterTypes.filter((type) => resolveSymbol(type).toLowerCase().indexOf(token) === 0);
+    return filterTypes.filter(type => resolveSymbol(type).toLowerCase().indexOf(token) === 0);
 }
 
 /**
@@ -153,22 +96,23 @@ function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterTy
     }
 
     if (SYMBOL_MAP.has(token)) {
-        let symbolTypes = SYMBOL_MAP.get(token);
-        let types = Filter.getFilterTypesForType(column.get('jsonType'));
+        const symbolTypes = SYMBOL_MAP.get(token);
+        const types = Filter.getFilterTypesForType(column.get('jsonType'));
 
         let value: Filter.IFilterType;
         let match = false;
 
-        for (let i=0; i < types.length; i++) {
-            let suffix = getURLSuffix(types[i]);
+        for (let i = 0; i < types.length; i++) {
+            const suffix = getURLSuffix(types[i]);
             if (symbolTypes.has(suffix)) {
                 if (match) {
-                    console.warn(`Column of type \"${column.get('jsonType')}\" has multiple filter for symbol \"${token}\".`);
+                    console.warn(
+                        `Column of type \"${column.get('jsonType')}\" has multiple filter for symbol \"${token}\".`
+                    );
                     match = false;
                     value = undefined;
                     break; // stop the loop, ambiguous
-                }
-                else {
+                } else {
                     match = true;
                     value = symbolTypes.get(suffix);
                 }
@@ -208,30 +152,28 @@ function resolveSymbol(filterType: Filter.IFilterType): string {
 }
 
 export interface IFilterContext {
-    activeFilterType?: Filter.IFilterType
-    columnName?: string
-    column?: QueryColumn
-    filterTypes?: Array<Filter.IFilterType>
-    rawValue?: any
+    activeFilterType?: Filter.IFilterType;
+    columnName?: string;
+    column?: QueryColumn;
+    filterTypes?: Filter.IFilterType[];
+    rawValue?: any;
 }
 
 export class FilterAction implements Action {
     iconCls = 'filter';
     keyword = 'filter';
     optionalLabel = 'columns';
-    resolveColumns: (allColumns?: boolean) => Promise<List<QueryColumn>> = undefined;
-    resolveModel: () => Promise<QueryGridModel>;
+    getModel: () => QueryGridModel;
     urlPrefix: string;
 
-    constructor(resolveColumns: () => Promise<List<QueryColumn>>, urlPrefix: string, resolveModel: () => Promise<QueryGridModel>) {
-        this.resolveColumns = resolveColumns;
-        this.resolveModel = resolveModel;
+    constructor(urlPrefix: string, getModel: () => QueryGridModel) {
+        this.getModel = getModel;
         this.urlPrefix = urlPrefix;
     }
 
-    static parseTokens(tokens: Array<string>, columns: List<QueryColumn>, isComplete?: boolean): IFilterContext {
-        let options: IFilterContext = {
-            filterTypes: []
+    static parseTokens(tokens: string[], columns: List<QueryColumn>, isComplete?: boolean): IFilterContext {
+        const options: IFilterContext = {
+            filterTypes: [],
         };
 
         if (tokens && tokens.length > 0) {
@@ -248,15 +190,13 @@ export class FilterAction implements Action {
 
                     if (options.activeFilterType && tokens.length > 2) {
                         options.rawValue = tokens.slice(2).join(' ');
-                    }
-                    else {
+                    } else {
                         const part = tokens.slice(1).join(' ');
                         const matchingTypes = matchingFilterTypes(options.filterTypes, part);
 
                         if (isComplete && matchingTypes.length === 1) {
                             options.activeFilterType = matchingTypes[0];
-                        }
-                        else {
+                        } else {
                             options.filterTypes = matchingTypes;
                         }
                     }
@@ -267,109 +207,101 @@ export class FilterAction implements Action {
         return options;
     }
 
-    completeAction(tokens: Array<string>): Promise<Value> {
-        return new Promise((resolve) => {
-            return this.resolveColumns(true).then((columns: List<QueryColumn>) => {
-                const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns, true);
+    completeAction(tokens: string[]): Promise<Value> {
+        return new Promise(resolve => {
+            const columns = this.getModel().getAllColumns();
+            const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns, true);
 
-                if (column && activeFilterType &&
-                    (rawValue !== undefined || !activeFilterType.isDataValueRequired())) {
-                    const operator = resolveSymbol(activeFilterType);
-                    const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
-                    const display = this.getDisplayValue(column.shortCaption, activeFilterType, rawValue);
-
-                    resolve({
-                        displayValue: display.displayValue,
-                        isReadOnly: display.isReadOnly,
-                        param: filter.getURLParameterName(this.urlPrefix) + '=' + filter.getURLParameterValue(),
-                        value: [`"${column.shortCaption}"`, operator, rawValue].join(' ')
-                    });
-                }
-                else {
-                    resolve({
-                        value: tokens.join(' '),
-                        isValid: false
-                    });
-                }
-            });
+            if (column && activeFilterType && (rawValue !== undefined || !activeFilterType.isDataValueRequired())) {
+                const operator = resolveSymbol(activeFilterType);
+                const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
+                const display = this.getDisplayValue(column.shortCaption, activeFilterType, rawValue);
+                resolve({
+                    displayValue: display.displayValue,
+                    isReadOnly: display.isReadOnly,
+                    param: filter.getURLParameterName(this.urlPrefix) + '=' + filter.getURLParameterValue(),
+                    value: [`"${column.shortCaption}"`, operator, rawValue].join(' '),
+                });
+            } else {
+                resolve({
+                    value: tokens.join(' '),
+                    isValid: false,
+                });
+            }
         });
     }
 
-    fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
-        return new Promise((resolve) => {
-            return this.resolveColumns().then((columns) => {
+    fetchOptions(tokens: string[], uniqueValues?: List<any>): Promise<ActionOption[]> {
+        return new Promise(resolve => {
+            const columns = this.getModel().getDisplayColumns();
+            let actionOptions: ActionOption[] = [];
+            const { activeFilterType, column, columnName, rawValue, filterTypes } = FilterAction.parseTokens(
+                tokens,
+                columns
+            );
 
-                let actionOptions: Array<ActionOption> = [];
-                const { activeFilterType, column, columnName, rawValue, filterTypes } = FilterAction.parseTokens(tokens, columns);
+            if (column) {
+                if (activeFilterType) {
+                    // Show the user the possible values
+                    resolve(this.getFilterValues(column, activeFilterType, rawValue, uniqueValues));
+                } else if (filterTypes.length > 0) {
+                    // Show the user the available filter types
+                    const noSymbolActionOptions: ActionOption[] = [];
 
-                if (column) {
+                    for (let i = 0; i < filterTypes.length; i++) {
+                        const type = filterTypes[i];
 
-                    if (activeFilterType) {
-                        return this.resolveValues(column, activeFilterType, rawValue).then(valueResults => {
-                            resolve(actionOptions.concat(valueResults));
-                        });
+                        // Do not currently support building multi-value filters
+                        if (type.isMultiValued()) {
+                            continue;
+                        }
+
+                        const symbol = type.getDisplaySymbol();
+                        const suffix = getURLSuffix(type);
+                        const isComplete = !type.isDataValueRequired();
+                        const nextLabel = isComplete ? undefined : ' value';
+
+                        if (symbol != null) {
+                            actionOptions.push({
+                                isComplete,
+                                label: `"${column.shortCaption}" ${symbol}`,
+                                nextLabel,
+                                value: symbol,
+                            });
+                        } else if (suffix) {
+                            const text = type.getDisplayText() ? type.getDisplayText() : suffix;
+                            noSymbolActionOptions.push({
+                                isComplete,
+                                label: `"${column.shortCaption}" "${text.toLowerCase()}"`,
+                                nextLabel,
+                                value: `"${text.toLowerCase()}"`,
+                            });
+                        }
                     }
-                    else if (filterTypes.length > 0) {
 
-                        let noSymbolActionOptions: Array<ActionOption> = [];
-
-                        for (let i=0; i < filterTypes.length; i++) {
-
-                            const type = filterTypes[i];
-
-                            // Do not currently support building multi-value filters
-                            if (type.isMultiValued()) {
-                                continue;
-                            }
-
-                            const symbol = type.getDisplaySymbol();
-                            const suffix = getURLSuffix(type);
-                            const isComplete = !type.isDataValueRequired();
-                            const nextLabel = isComplete ? undefined : ' value';
-
-                            if (symbol != null) {
-                                actionOptions.push({
-                                    isComplete,
-                                    label: `"${column.shortCaption}" ${symbol}`,
-                                    nextLabel,
-                                    value: symbol
-                                });
-                            }
-                            else if (suffix) {
-                                const text = type.getDisplayText() ? type.getDisplayText() : suffix;
-                                noSymbolActionOptions.push({
-                                    isComplete,
-                                    label: `"${column.shortCaption}" "${text.toLowerCase()}"`,
-                                    nextLabel,
-                                    value: `"${text.toLowerCase()}"`
-                                });
-                            }
-                        }
-
-                        if (noSymbolActionOptions.length > 0) {
-                            actionOptions = actionOptions.concat(noSymbolActionOptions);
-                        }
+                    if (noSymbolActionOptions.length > 0) {
+                        actionOptions = actionOptions.concat(noSymbolActionOptions);
                     }
                 }
-                else if (columns.size > 0) {
-                    let columnSet = columns;
-                    if (columnName) {
-                        columnSet = columns
-                            .filter(c => c.name.toLowerCase().indexOf(columnName.toLowerCase()) === 0)
-                            .toList();
-                    }
+            } else if (columns.size > 0) {
+                // Show the user the columns to filter on
+                let columnSet = columns;
+                if (columnName) {
+                    columnSet = columns
+                        .filter(c => c.name.toLowerCase().indexOf(columnName.toLowerCase()) === 0)
+                        .toList();
+                }
 
-                    columnSet.forEach(c => {
-                        actionOptions.push({
-                            label: `"${c.shortCaption}" ...`,
-                            value: `"${c.shortCaption}"`,
-                            isComplete: false
-                        });
+                columnSet.forEach(c => {
+                    actionOptions.push({
+                        label: `"${c.shortCaption}" ...`,
+                        value: `"${c.shortCaption}"`,
+                        isComplete: false,
                     });
-                }
+                });
+            }
 
-                resolve(actionOptions);
-            });
+            resolve(actionOptions);
         });
     }
 
@@ -377,13 +309,13 @@ export class FilterAction implements Action {
         return false;
     }
 
-    buildParams(actionValues: Array<ActionValue>) {
+    buildParams(actionValues: ActionValue[]) {
         return actionValues.map((actionValue: ActionValue) => {
-            const [ paramKey, paramValue ] = actionValue.param.split('=');
+            const [paramKey, paramValue] = actionValue.param.split('=');
 
             return {
                 paramKey,
-                paramValue
+                paramValue,
             };
         });
     }
@@ -392,8 +324,8 @@ export class FilterAction implements Action {
         return this.getFilterParameters(paramKey, paramValue).filters.length > 0;
     }
 
-    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): Array<string> | Array<Value> {
-        let results: Array<Value> = [];
+    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): string[] | Value[] {
+        const results: Value[] = [];
         const { param, filters } = this.getFilterParameters(paramKey, paramValue);
 
         if (filters.length > 0) {
@@ -411,7 +343,7 @@ export class FilterAction implements Action {
                     displayValue: display.displayValue,
                     isReadOnly: display.isReadOnly,
                     param,
-                    value: [columnName, operator, rawValue].join(' ')
+                    value: [columnName, operator, rawValue].join(' '),
                 });
             }
         }
@@ -419,84 +351,103 @@ export class FilterAction implements Action {
         return results;
     }
 
-    resolveValues(col: QueryColumn, activeFilterType: Filter.IFilterType, rawValue: any): Promise<Array<ActionOption>> {
-        return new Promise(resolve => {
-            return this.resolveModel().then(model => {
-                let results: Array<ActionOption> = [];
-                const safeValue = rawValue ? rawValue.toString().toLowerCase() : '';
-                const operator = resolveSymbol(activeFilterType);
+    getFilterValues = (
+        col: QueryColumn,
+        activeFilterType: Filter.IFilterType,
+        rawValue: any,
+        uniqueValues: List<any>
+    ): ActionOption[] => {
+        if (uniqueValues === undefined) {
+            return [
+                {
+                    label: 'Loading...',
+                    appendValue: false,
+                    isComplete: false,
+                    selectable: false,
+                },
+            ];
+        }
 
-                model.data
-                    .reduce((prev, v) => {
-                        if (prev.size > 15) {
-                            return prev;
-                        }
+        const strValues: string[] = [];
+        const safeValue = rawValue ? rawValue.toString().toLowerCase() : '';
+        const operator = resolveSymbol(activeFilterType);
 
-                        const found = List([
-                            v.getIn([col.name, 'displayValue']),
-                            v.getIn([col.name, 'formattedValue']),
-                            v.getIn([col.name, 'value'])
-                        ]).find(va => {
-                            return va !== undefined && va !== null && (
-                                !safeValue ||
-                                va.toString().toLowerCase().indexOf(safeValue) > -1
-                            )
-                        });
+        uniqueValues.forEach(value => {
+            if (value === null) {
+                return;
+            }
 
-                        if (found !== undefined) {
-                            prev.add(found.toString());
-                        }
+            const strValue = value.toString();
 
-                        return prev;
-                    }, Set<string>().asMutable())
-                    .sort(naturalSort)
-                    .forEach(value => {
-                        results.push({
-                            label: `"${col.shortCaption}" ${operator} ${value}`,
-                            value,
-                            isComplete: true
-                        });
-                    });
+            if (strValue.toLowerCase().indexOf(safeValue) > -1) {
+                strValues.push(strValue);
+            }
 
-                if (results.length === 0) {
-                    if (rawValue !== undefined) {
-                        results.push({
-                            label: `"${col.shortCaption}" ${operator} ${rawValue}`,
-                            appendValue: false,
-                            isComplete: true
-                        });
-                    }
-                    else {
-                        results.push({
-                            label: `"${col.shortCaption}" ${operator}`,
-                            nextLabel: ' value',
-                            selectable: false
-                        });
-                    }
-                }
-
-                resolve(results);
-            });
+            if (strValues.length === 16) {
+                // exit forEach early if we have 16 results.
+                return false;
+            }
         });
-    }
 
-    private getDisplayValue(columnName: string, filterType: Filter.IFilterType, rawValue: string | Array<string>): {displayValue: string, isReadOnly: boolean} {
+        if (strValues.length === 0) {
+            if (rawValue === undefined) {
+                return [
+                    {
+                        label: `"${col.shortCaption}" ${operator}`,
+                        nextLabel: ' value',
+                        selectable: false,
+                    },
+                ];
+            }
+
+            return [
+                {
+                    label: `"${col.shortCaption}" ${operator} ${rawValue}`,
+                    appendValue: false,
+                    isComplete: true,
+                },
+            ];
+        }
+
+        return strValues.map(strValue => {
+            const value = `"${col.shortCaption}" ${operator} ${strValue}`;
+            return {
+                // label and value are the same, and appendValue is false, because we want to ignore all user input when
+                // they select an option. This is a workaround because of how Omnibox.resolveInputValue works. See
+                // Issue 40195.
+                value,
+                label: value,
+                appendValue: false,
+                isComplete: true,
+            };
+        });
+    };
+
+    private getDisplayValue(
+        columnName: string,
+        filterType: Filter.IFilterType,
+        rawValue: string | string[]
+    ): { displayValue: string; isReadOnly: boolean } {
         let isReadOnly = false;
 
         let value: string;
-        let displayParts = [columnName, resolveSymbol(filterType)];
+        const displayParts = [columnName, resolveSymbol(filterType)];
 
         if (!filterType.isDataValueRequired()) {
             // intentionally do not modify "display" -- this filter type does not support a value (e.g. isblank)
-        }
-        else if (filterType.isMultiValued()) {
+        } else if (filterType.isMultiValued()) {
             if (Utils.isString(rawValue)) {
                 // TODO: port the IFilterType.parseValue to labkey-api-js
                 rawValue = rawValue.split(filterType.getMultiValueSeparator());
             }
 
             if (!Utils.isArray(rawValue)) {
-                throw new Error("Expected '" + filterType.getMultiValueSeparator() + "' string or an Array of values, got: " + rawValue);
+                throw new Error(
+                    "Expected '" +
+                        filterType.getMultiValueSeparator() +
+                        "' string or an Array of values, got: " +
+                        rawValue
+                );
             }
 
             // TODO: This is just a stopgap to prevent rendering crazy long IN clauses. Pretty much any solution besides
@@ -504,12 +455,10 @@ export class FilterAction implements Action {
             if (rawValue.length > 3) {
                 value = `(${rawValue.length} values)`;
                 isReadOnly = true;
-            }
-            else {
+            } else {
                 value = rawValue.join(', ');
             }
-        }
-        else {
+        } else {
             value = '' + rawValue;
         }
 
@@ -519,11 +468,11 @@ export class FilterAction implements Action {
 
         return {
             displayValue: displayParts.join(' '),
-            isReadOnly
+            isReadOnly,
         };
     }
 
-    private getFilterParameters(paramKey: string, paramValue: any): {param: string, filters: Array<Filter.IFilter>} {
+    private getFilterParameters(paramKey: string, paramValue: any): { param: string; filters: Filter.IFilter[] } {
         // Need to re-encode paramValue because it has already been decoded, and getFiltersFromUrl assumes that the
         // strings passed in are URL encoded. See Issue #34630 for more details.
         const param = `${paramKey}=${paramValue}`;
@@ -531,7 +480,7 @@ export class FilterAction implements Action {
 
         return {
             filters: Filter.getFiltersFromUrl(encodedParam, this.urlPrefix),
-            param
+            param,
         };
     }
 }

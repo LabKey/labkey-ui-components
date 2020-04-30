@@ -1,14 +1,17 @@
 import React from 'react';
 import { mount } from 'enzyme';
+
 import { Actions, QueryInfo, QueryModel, QueryModelMap, SchemaQuery, withQueryModels } from '..';
-import { LoadingState } from './QueryModel';
-import { RowsResponse } from './QueryModelLoader';
-import { initUnitTests, makeQueryInfo, makeTestData, sleep } from './testUtils';
+
+import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../testHelpers';
 import { MockQueryModelLoader } from '../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
 import aminoAcidsQueryInfo from '../test/data/assayAminoAcidsData-getQueryDetails.json';
 import aminoAcidsQuery from '../test/data/assayAminoAcidsData-getQuery.json';
+
+import { RowsResponse } from './QueryModelLoader';
+import { LoadingState } from './QueryModel';
 
 const MIXTURES_SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let MIXTURES_QUERY_INFO: QueryInfo;
@@ -23,12 +26,12 @@ beforeAll(async () => {
     AMINO_ACIDS_QUERY_INFO = makeQueryInfo(aminoAcidsQueryInfo);
     AMINO_ACIDS_DATA = await makeTestData(aminoAcidsQuery);
     // Return so tests don't start till after the promise resolves, so we can guarantee MIXTURES_DATA is initialized in tests.
-    return MIXTURES_DATA = await makeTestData(mixturesQuery);
+    return (MIXTURES_DATA = await makeTestData(mixturesQuery));
 });
 
 describe('withQueryModels', () => {
-    test('actions', async (done) => {
-        let modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
+    test('actions', async done => {
+        const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
         let injectedModels: QueryModelMap;
         let injectedModel: QueryModel;
         let injectedActions: Actions;

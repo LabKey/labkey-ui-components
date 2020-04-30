@@ -1,10 +1,12 @@
-import React from "react";
-import { List } from "immutable";
-import { mount  } from "enzyme";
-import { BaseDomainDesigner } from "./BaseDomainDesigner";
-import { DomainDesign } from "./models";
-import { Alert } from "../base/Alert";
-import { SEVERITY_LEVEL_ERROR } from "./constants";
+import React from 'react';
+import { List } from 'immutable';
+import { mount } from 'enzyme';
+
+import { Alert } from '../base/Alert';
+
+import { BaseDomainDesigner } from './BaseDomainDesigner';
+import { DomainDesign } from './models';
+import { SEVERITY_LEVEL_ERROR } from './constants';
 
 const BASE_PROPS = {
     hasValidProperties: true,
@@ -14,11 +16,10 @@ const BASE_PROPS = {
     submitting: false,
     visitedPanels: List.of(0),
     onCancel: jest.fn(),
-    onFinish: jest.fn()
+    onFinish: jest.fn(),
 };
 
 describe('BaseDomainDesigner', () => {
-
     function buttonValidation(component, saveBtnText: string, saveCls: string, saveDisabled: boolean) {
         expect(component.find('.btn-default')).toHaveLength(1);
         expect(component.find('.btn-' + saveCls)).toHaveLength(1);
@@ -27,11 +28,7 @@ describe('BaseDomainDesigner', () => {
     }
 
     test('without error', () => {
-        const component = mount(
-            <BaseDomainDesigner
-                {...BASE_PROPS}
-            />
-        );
+        const component = mount(<BaseDomainDesigner {...BASE_PROPS} />);
 
         expect(component.find(Alert)).toHaveLength(0);
         expect(component.find('.domain-designer-buttons').hostNodes()).toHaveLength(1);
@@ -41,12 +38,7 @@ describe('BaseDomainDesigner', () => {
     });
 
     test('hasValidProperties', () => {
-        const component = mount(
-            <BaseDomainDesigner
-                {...BASE_PROPS}
-                hasValidProperties={false}
-            />
-        );
+        const component = mount(<BaseDomainDesigner {...BASE_PROPS} hasValidProperties={false} />);
 
         expect(component.find(Alert)).toHaveLength(1);
         expect(component.find(Alert).text()).toBe('Please correct errors in the properties panel before saving.');
@@ -57,12 +49,7 @@ describe('BaseDomainDesigner', () => {
     });
 
     test('exception', () => {
-        const component = mount(
-            <BaseDomainDesigner
-                {...BASE_PROPS}
-                exception={'Test exception text'}
-            />
-        );
+        const component = mount(<BaseDomainDesigner {...BASE_PROPS} exception="Test exception text" />);
 
         expect(component.find(Alert)).toHaveLength(1);
         expect(component.find(Alert).text()).toBe('Test exception text');
@@ -77,7 +64,10 @@ describe('BaseDomainDesigner', () => {
             <BaseDomainDesigner
                 {...BASE_PROPS}
                 domains={List.of(
-                    DomainDesign.create({name: BASE_PROPS.name}, {exception: 'test1', severity: SEVERITY_LEVEL_ERROR})
+                    DomainDesign.create(
+                        { name: BASE_PROPS.name },
+                        { exception: 'test1', severity: SEVERITY_LEVEL_ERROR }
+                    )
                 )}
             />
         );
@@ -92,12 +82,7 @@ describe('BaseDomainDesigner', () => {
 
     test('submitting, successBsStyle, saveBtnText', () => {
         const component = mount(
-            <BaseDomainDesigner
-                {...BASE_PROPS}
-                submitting={true}
-                successBsStyle={'primary'}
-                saveBtnText={'Finish'}
-            />
+            <BaseDomainDesigner {...BASE_PROPS} submitting={true} successBsStyle="primary" saveBtnText="Finish" />
         );
 
         expect(component.find(Alert)).toHaveLength(0);
@@ -106,5 +91,4 @@ describe('BaseDomainDesigner', () => {
 
         component.unmount();
     });
-
 });

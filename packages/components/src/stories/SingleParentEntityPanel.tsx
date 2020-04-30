@@ -16,66 +16,69 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
+
 import './stories.scss';
+import { fromJS, List } from 'immutable';
+
 import { DataClassDataType } from '..';
 import { SingleParentEntityPanel } from '../components/entities/SingleParentEntityPanel';
-import { fromJS, List } from 'immutable';
 import { IEntityTypeOption } from '../components/entities/models';
 
 const parentTypeOptions = List<IEntityTypeOption>([
     {
-        label: "Second Source",
-        lsid: "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+        label: 'Second Source',
+        lsid: 'urn:lsid:labkey.com:DataClass.Folder-252:Second+Source',
         rowId: 322,
-        value: "second source",
-        query: "Second Source",
-        schema: "exp.data",
+        value: 'second source',
+        query: 'Second Source',
+        schema: 'exp.data',
     },
     {
-        label: "Source 1",
-        lsid: "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+        label: 'Source 1',
+        lsid: 'urn:lsid:labkey.com:DataClass.Folder-252:Source+1',
         rowId: 321,
-        value: "source 1",
-        query: "Source 1",
-        schema: "exp.data",
+        value: 'source 1',
+        query: 'Source 1',
+        schema: 'exp.data',
     },
     {
-        label: "Vendor 3",
-        lsid: "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+        label: 'Vendor 3',
+        lsid: 'urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3',
         rowId: 323,
-        value: "vendor 3",
-        query: "Vendor 3",
-        schema: "exp.data",
-    }
+        value: 'vendor 3',
+        query: 'Vendor 3',
+        schema: 'exp.data',
+    },
 ]);
 
 storiesOf('SingleParentEntityPanel', module)
     .addDecorator(withKnobs)
-    .add("No parents", () => {
+    .add('No parents', () => {
         return (
             <SingleParentEntityPanel
-                childNounSingular={"Sample"}
+                childNounSingular="Sample"
                 parentDataType={DataClassDataType}
                 parentLSIDs={undefined}
                 parentTypeOptions={parentTypeOptions}
                 parentTypeQueryName={undefined}
                 index={0}
-                editing={boolean("Editing? ", false)}
-             />
-        )
+                editing={boolean('Editing? ', false)}
+            />
+        );
     })
-    .add("single parent", () => {
+    .add('single parent', () => {
         return (
             <SingleParentEntityPanel
-                childNounSingular={"Sample"}
-                parentDataType={{...DataClassDataType, appUrlPrefixParts: ['sources']}}
-                parentTypeQueryName={"Second Source"}
-                parentLSIDs={["url:lsid:blah"]}
+                childNounSingular="Sample"
+                parentDataType={{ ...DataClassDataType, appUrlPrefixParts: ['sources'] }}
+                parentTypeQueryName="Second Source"
+                parentLSIDs={['url:lsid:blah']}
                 parentTypeOptions={parentTypeOptions}
                 index={0}
-                editing={boolean("Editing? ", false)}
-                onRemoveParentType={() => {console.log("No really removing anything.")}}
+                editing={boolean('Editing? ', false)}
+                onRemoveParentType={() => {
+                    console.log('No really removing anything.');
+                }}
             />
-        )
-    })
-;
+        );
+    });

@@ -11,21 +11,20 @@ import { ToggleButtons } from '../components/buttons/ToggleButtons';
 import './stories.scss';
 
 interface State {
-    selected: string
+    selected: string;
 }
 
-class WrappedToggleButtons extends React.Component<any, State>
-{
+class WrappedToggleButtons extends React.Component<any, State> {
     constructor(props: any) {
         super(props);
 
         this.state = {
-            selected: undefined
-        }
+            selected: undefined,
+        };
     }
 
     onClick = (selected: string) => {
-        this.setState(() => ({selected}));
+        this.setState(() => ({ selected }));
     };
 
     render() {
@@ -40,8 +39,8 @@ class WrappedToggleButtons extends React.Component<any, State>
     }
 }
 
-storiesOf("ToggleButtons", module)
+storiesOf('ToggleButtons', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
-        return <WrappedToggleButtons/>
+    .add('with knobs', () => {
+        return <WrappedToggleButtons />;
     });

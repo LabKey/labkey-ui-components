@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.51.0",
+  "version": "0.55.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -24,8 +24,10 @@
     "deploy:docs": "npm run build:docs && gh-pages -t -d ../../docs",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
-    "lint-diff": "node lint.diff.js",
-    "lint-diff-fix": "node lint.diff.js --fix"
+    "lint-precommit": "node lint.diff.js",
+    "lint-precommit-fix": "node lint.diff.js --fix",
+    "lint-branch": "node lint.diff.js --currentBranch",
+    "lint-branch-fix": "node lint.diff.js --currentBranch --fix"
   },
   "repository": {
     "type": "git",
@@ -46,7 +48,7 @@
     "@fortawesome/free-regular-svg-icons": "5.11.2",
     "@fortawesome/free-solid-svg-icons": "5.9.0",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "@labkey/api": "0.2.0",
+    "@labkey/api": "0.2.2",
     "bootstrap": "3.4.1",
     "classnames": "2.2.6",
     "font-awesome": "4.7.0",
@@ -147,7 +149,18 @@
         "user": {
           "id": 1004
         },
-        "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name="
+        "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name=",
+        "moduleContext": {
+          "study": {
+            "subject": {
+              "nounPlural": "Participants",
+              "tableName": "Participant",
+              "nounSingular": "Participant",
+              "columnName": "ParticipantId"
+            },
+            "timepointType": "VISIT"
+          }
+        }
       }
     },
     "moduleFileExtensions": [

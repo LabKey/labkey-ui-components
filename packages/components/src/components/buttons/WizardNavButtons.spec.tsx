@@ -5,21 +5,21 @@ import { Button } from 'react-bootstrap';
 
 import { WizardNavButtons } from './WizardNavButtons';
 
-describe("<WizardNavButtons/>", () => {
-
-    test("default props", () => {
+describe('<WizardNavButtons/>', () => {
+    test('default props', () => {
         const cancelFn = jest.fn();
-        const component = (<WizardNavButtons cancel={cancelFn}/>);
+        const component = <WizardNavButtons cancel={cancelFn} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("finish props", () => {
+    test('finish props', () => {
         const cancelFn = jest.fn();
         const component = (
-            <WizardNavButtons cancel={cancelFn}
-                finishText={'Custom Finish'}
-                finishStyle={'info'}
+            <WizardNavButtons
+                cancel={cancelFn}
+                finishText="Custom Finish"
+                finishStyle="info"
                 finish={true}
                 canFinish={false}
             />
@@ -29,7 +29,7 @@ describe("<WizardNavButtons/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("with children", () => {
+    test('with children', () => {
         const cancelFn = jest.fn();
         const component = (
             <WizardNavButtons cancel={cancelFn} includeNext={false}>
@@ -42,17 +42,11 @@ describe("<WizardNavButtons/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("onClick handlers", () => {
+    test('onClick handlers', () => {
         const cancelFn = jest.fn();
         const prevFn = jest.fn();
         const nextFn = jest.fn();
-        const component = (
-            <WizardNavButtons
-                cancel={cancelFn}
-                previousStep={prevFn}
-                nextStep={nextFn}
-            />
-        );
+        const component = <WizardNavButtons cancel={cancelFn} previousStep={prevFn} nextStep={nextFn} />;
 
         const wrapper = mount(component);
         expect(cancelFn).toHaveBeenCalledTimes(0);
@@ -75,5 +69,4 @@ describe("<WizardNavButtons/>", () => {
         expect(nextFn).toHaveBeenCalledTimes(1);
         wrapper.unmount();
     });
-
 });

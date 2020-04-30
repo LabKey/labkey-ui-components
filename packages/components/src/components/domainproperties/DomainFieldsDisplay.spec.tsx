@@ -20,34 +20,25 @@ import renderer from 'react-test-renderer';
 import { DomainFieldsDisplay } from './DomainFieldsDisplay';
 import { DomainDesign } from './models';
 
-const testDomain = new DomainDesign({name: 'test domain name'});
+const testDomain = new DomainDesign({ name: 'test domain name' });
 
 describe('DomainFieldsDisplay', () => {
-
     test('with empty domain design', () => {
         const domain = new DomainDesign();
-        const tree  = renderer.create(<DomainFieldsDisplay
-            domain={domain}
-        />).toJSON();
+        const tree = renderer.create(<DomainFieldsDisplay domain={domain} />).toJSON();
 
         expect(tree).toMatchSnapshot();
     });
 
     test('without title', () => {
-        const tree  = renderer.create(<DomainFieldsDisplay
-            domain={testDomain}
-        />).toJSON();
+        const tree = renderer.create(<DomainFieldsDisplay domain={testDomain} />).toJSON();
 
         expect(tree).toMatchSnapshot();
     });
 
     test('with title', () => {
-        const tree  = renderer.create(<DomainFieldsDisplay
-            domain={testDomain}
-            title={'test domain title'}
-        />).toJSON();
+        const tree = renderer.create(<DomainFieldsDisplay domain={testDomain} title="test domain title" />).toJSON();
 
         expect(tree).toMatchSnapshot();
     });
-
 });

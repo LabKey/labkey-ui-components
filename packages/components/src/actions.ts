@@ -74,7 +74,7 @@ import { resolveErrorMessage } from './util/messaging';
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
 
-export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, connectedComponent?: React.Component) {
+export function gridInit(model: QueryGridModel, shouldLoadData = true, connectedComponent?: React.Component) {
     // return quickly if we don't have a model or if it is already loading
     if (!model || model.isLoading) {
         return;
@@ -85,182 +85,235 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
 
     if (!newModel.isLoaded) {
         if (newModel.bindURL) {
-            newModel = updateQueryGridModel(newModel, {
-                isLoading: true,
-                ...bindURLProps(newModel)
-            }, connectedComponent);
+            newModel = updateQueryGridModel(
+                newModel,
+                {
+                    isLoading: true,
+                    ...bindURLProps(newModel),
+                },
+                connectedComponent
+            );
+        } else {
+            newModel = updateQueryGridModel(newModel, { isLoading: true }, connectedComponent);
         }
-        else {
-            newModel = updateQueryGridModel(newModel, {isLoading: true}, connectedComponent);
-        }
 
-        fetchQueryInfo(newModel).then(queryInfo => {
-            newModel = updateQueryGridModel(newModel, {
-                queryInfo: bindQueryInfo(queryInfo)
-            }, connectedComponent);
-
-            if (newModel.editable) {
-                initEditorModel(newModel);
-            }
-
-            if (shouldLoadData) {
-                gridLoad(newModel, connectedComponent);
-            }
-            else {
-                newModel = updateQueryGridModel(newModel, {
-                    isError: false,
-                    isLoading: false,
-                    isLoaded: true,
-                    message: undefined
-                }, connectedComponent);
+        fetchQueryInfo(newModel)
+            .then(queryInfo => {
+                newModel = updateQueryGridModel(
+                    newModel,
+                    {
+                        queryInfo: bindQueryInfo(queryInfo),
+                    },
+                    connectedComponent
+                );
 
                 if (newModel.editable) {
-                    loadDataForEditor(newModel);
+                    initEditorModel(newModel);
                 }
-            }
-        }).catch(reason => {
-            setError(newModel, resolveErrorMessage(reason, "data"), connectedComponent);
-        });
-    }
-    else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
-        newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, ...bindURLProps(newModel)}, connectedComponent);
+
+                if (shouldLoadData) {
+                    gridLoad(newModel, connectedComponent);
+                } else {
+                    newModel = updateQueryGridModel(
+                        newModel,
+                        {
+                            isError: false,
+                            isLoading: false,
+                            isLoaded: true,
+                            message: undefined,
+                        },
+                        connectedComponent
+                    );
+
+                    if (newModel.editable) {
+                        loadDataForEditor(newModel);
+                    }
+                }
+            })
+            .catch(reason => {
+                setError(newModel, resolveErrorMessage(reason, 'data'), connectedComponent);
+            });
+    } else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
+        newModel = updateQueryGridModel(
+            newModel,
+            { selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, ...bindURLProps(newModel) },
+            connectedComponent
+        );
         gridLoad(newModel, connectedComponent);
     }
 }
 
-export function gridClearAll(model: QueryGridModel, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
+export function gridClearAll(
+    model: QueryGridModel,
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+) {
     clearSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath)
         .then(() => {
-           const updatedModel = updateQueryGridModel(model, QueryGridModel.EMPTY_SELECTION);
+            const updatedModel = updateQueryGridModel(model, QueryGridModel.EMPTY_SELECTION);
 
             if (onSelectionChange) {
                 onSelectionChange(updatedModel, undefined, false);
             }
-        }).catch(err => {
-            const error = err ? err : {message: 'Something went wrong when clearing the selection from the grid.'};
+        })
+        .catch(err => {
+            const error = err ? err : { message: 'Something went wrong when clearing the selection from the grid.' };
             gridShowError(model, error);
         });
 }
 
-export function selectAll(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>, containerPath?: string): Promise<ISelectResponse> {
+export function selectAll(
+    key: string,
+    schemaName: string,
+    queryName: string,
+    filterList: List<Filter.IFilter>,
+    containerPath?: string
+): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'selectAll.api', undefined, {
-                container: containerPath
+                container: containerPath,
             }),
             method: 'POST',
             params: getQueryParams(key, schemaName, queryName, filterList),
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
-                console.error("Problem in selecting all items in the grid", key, schemaName, queryName, response)
+            failure: Utils.getCallbackWrapper(response => {
+                console.error('Problem in selecting all items in the grid', key, schemaName, queryName, response);
                 reject(response);
             }),
         });
     });
 }
 
-
-export function gridSelectAll(model: QueryGridModel, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
+export function gridSelectAll(
+    model: QueryGridModel,
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+) {
     const id = model.getId();
 
-    selectAll(id, model.schema, model.query, model.getFilters(), model.containerPath)
-        .then(data => {
-            if (data && data.count > 0) {
-                return getSelected(id, model.schema, model.query, model.getFilters(), model.containerPath).then(response => {
-                    const updatedModel = updateSelections(model, {selectedIds: List(response.selected)});
+    selectAll(id, model.schema, model.query, model.getFilters(), model.containerPath).then(data => {
+        if (data && data.count > 0) {
+            return getSelected(id, model.schema, model.query, model.getFilters(), model.containerPath)
+                .then(response => {
+                    const updatedModel = updateSelections(model, { selectedIds: List(response.selected) });
 
                     if (onSelectionChange) {
                         onSelectionChange(updatedModel, undefined, true);
                     }
-                }).catch(err => {
-                    const error = err ? err : {message: 'Something went wrong in selecting all items for this grid'};
+                })
+                .catch(err => {
+                    const error = err ? err : { message: 'Something went wrong in selecting all items for this grid' };
                     gridShowError(model, error);
                 });
-            }
-        });
+        }
+    });
 }
 
-export function sort(model: QueryGridModel, columnIndex: string, dir: string) {
+export function sort(model: QueryGridModel, column: QueryColumn, dir: string): void {
+    const fieldKey = encodeURIComponent(column.resolveFieldKey());
+
     if (model.bindURL) {
-        const urlDir = dir == '+' ? '' : '-';
-        replaceParameters(getLocation(), Map<string, any>({
-            [model.createParam('sort')]: `${urlDir}${columnIndex}`
-        }));
-    }
-    else {
-        let newModel = updateQueryGridModel(model, {
-            sorts: dir + columnIndex // TODO: Support multiple sorts
+        const urlDir = dir === '+' ? '' : '-';
+        replaceParameters(
+            getLocation(),
+            Map<string, any>({
+                [model.createParam('sort')]: `${urlDir}${fieldKey}`,
+            })
+        );
+    } else {
+        const newModel = updateQueryGridModel(model, {
+            sorts: dir + fieldKey, // TODO: Support multiple sorts
         });
 
-        gridLoad(newModel)
+        gridLoad(newModel);
     }
 }
 
 // Handle single row select/deselect from the QueryGrid checkbox column
-export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, any>, checked: boolean, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
+export function toggleGridRowSelection(
+    model: QueryGridModel,
+    row: Map<string, any>,
+    checked: boolean,
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+) {
     let pkValue;
-    let pkCols: List<QueryColumn> = model.queryInfo.getPkCols();
+    const pkCols: List<QueryColumn> = model.queryInfo.getPkCols();
 
     if (pkCols.size === 1) {
-        let pkCol: QueryColumn = pkCols.first();
+        const pkCol: QueryColumn = pkCols.first();
         pkValue = row.getIn([pkCol.name, 'value']);
 
-        setSelected(model.getId(), checked, pkValue, model.containerPath).then(response => {
-            const stringKey = pkValue !== undefined ? pkValue.toString(): pkValue;
-            const selected: List<string> = model.selectedIds;
-            let selectedState: GRID_CHECKBOX_OPTIONS;
+        setSelected(model.getId(), checked, pkValue, model.containerPath)
+            .then(response => {
+                const stringKey = pkValue !== undefined ? pkValue.toString() : pkValue;
+                const selected: List<string> = model.selectedIds;
+                let selectedState: GRID_CHECKBOX_OPTIONS;
 
-            if (checked) {
-                // if one is checked, value cannot be 'NONE'
-                const allSelected: boolean = model.data.every(d => {
-                    // compare if item is already 'checked' or will be 'checked' by this action
-                    let keyVal = d.getIn([pkCol.name, 'value']) !== undefined ? d.getIn([pkCol.name, 'value']).toString() : undefined;
+                if (checked) {
+                    // if one is checked, value cannot be 'NONE'
+                    const allSelected: boolean = model.data.every(d => {
+                        // compare if item is already 'checked' or will be 'checked' by this action
+                        const keyVal =
+                            d.getIn([pkCol.name, 'value']) !== undefined
+                                ? d.getIn([pkCol.name, 'value']).toString()
+                                : undefined;
 
-                    return keyVal === stringKey || selected.indexOf(keyVal) !== -1;
+                        return keyVal === stringKey || selected.indexOf(keyVal) !== -1;
+                    });
+
+                    selectedState = allSelected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.SOME;
+                } else {
+                    // if unchecking, value cannot be 'ALL'
+                    const someSelected: boolean = model.data.some(d => {
+                        // compare if item is already 'checked' or will be 'unchecked' by this action
+                        const keyVal =
+                            d.getIn([pkCol.name, 'value']) !== undefined
+                                ? d.getIn([pkCol.name, 'value']).toString()
+                                : undefined;
+                        return keyVal !== stringKey && selected.indexOf(keyVal) !== -1;
+                    });
+
+                    selectedState = someSelected ? GRID_CHECKBOX_OPTIONS.SOME : GRID_CHECKBOX_OPTIONS.NONE;
+                }
+
+                const selectedIds = checked
+                    ? model.selectedIds.push(stringKey)
+                    : model.selectedIds.delete(model.selectedIds.findIndex(item => item === stringKey));
+
+                const updatedModel = updateQueryGridModel(model, {
+                    selectedState,
+                    selectedQuantity: selectedIds.size,
+                    selectedIds,
                 });
 
-                selectedState = allSelected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.SOME;
-            }
-            else {
-                // if unchecking, value cannot be 'ALL'
-                const someSelected: boolean = model.data.some(d => {
-                    // compare if item is already 'checked' or will be 'unchecked' by this action
-                    let keyVal = d.getIn([pkCol.name, 'value']) !== undefined ? d.getIn([pkCol.name, 'value']).toString() : undefined;
-                    return keyVal !== stringKey && selected.indexOf(keyVal) !== -1;
-                });
-
-                selectedState = someSelected ? GRID_CHECKBOX_OPTIONS.SOME : GRID_CHECKBOX_OPTIONS.NONE;
-            }
-
-            const selectedIds = checked ? model.selectedIds.push(stringKey) : model.selectedIds.delete(model.selectedIds.findIndex(item => item === stringKey));
-
-            const updatedModel = updateQueryGridModel(model, {
-                selectedState: selectedState,
-                selectedQuantity: selectedIds.size,
-                selectedIds: selectedIds
+                if (onSelectionChange) {
+                    onSelectionChange(updatedModel, row, checked);
+                }
+            })
+            .catch(reason => {
+                console.error(reason);
+                const error = reason
+                    ? reason
+                    : { message: 'There was a problem updating the selection for this grid.' };
+                gridShowError(model, error);
             });
-
-            if (onSelectionChange) {
-                onSelectionChange(updatedModel, row, checked);
-            }
-        }).catch(reason => {
-            console.error(reason);
-            const error = reason ? reason : {message: 'There was a problem updating the selection for this grid.'};
-            gridShowError(model, error);
-        });
-    }
-    else {
-        console.warn('Selection requires only one key be available. Unable to toggle selection for specific keyValue. Keys:', pkCols.toJS());
+    } else {
+        console.warn(
+            'Selection requires only one key be available. Unable to toggle selection for specific keyValue. Keys:',
+            pkCols.toJS()
+        );
     }
 }
 
-export function toggleGridSelected(model: QueryGridModel, checked: boolean, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
+export function toggleGridSelected(
+    model: QueryGridModel,
+    checked: boolean,
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+) {
     if (checked) {
         setGridSelected(model, checked, onSelectionChange);
-    }
-    else {
+    } else {
         setGridUnselected(model, onSelectionChange);
     }
 }
@@ -269,34 +322,31 @@ export function clearError(model: QueryGridModel) {
     if (model.isError) {
         updateQueryGridModel(model, {
             isError: false,
-            message: undefined
+            message: undefined,
         });
     }
 }
 
-export function schemaGridInvalidate(schemaName: string, remove: boolean = false) {
-    getQueryGridModelsForSchema(schemaName).map((model) => gridClearSelectionAndInvalidate(model, remove));
+export function schemaGridInvalidate(schemaName: string, remove = false) {
+    getQueryGridModelsForSchema(schemaName).map(model => gridClearSelectionAndInvalidate(model, remove));
 }
 
-export function queryGridInvalidate(schemaQuery: SchemaQuery, remove: boolean = false) {
-    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridClearSelectionAndInvalidate(model, remove));
+export function queryGridInvalidate(schemaQuery: SchemaQuery, remove = false) {
+    getQueryGridModelsForSchemaQuery(schemaQuery).map(model => gridClearSelectionAndInvalidate(model, remove));
 }
 
-export function gridIdInvalidate(gridIdPrefix: string, remove: boolean = false) {
-    getQueryGridModelsForGridId(gridIdPrefix).map((model) => gridClearSelectionAndInvalidate(model, remove));
+export function gridIdInvalidate(gridIdPrefix: string, remove = false) {
+    getQueryGridModelsForGridId(gridIdPrefix).map(model => gridClearSelectionAndInvalidate(model, remove));
 }
 
 function gridClearSelectionAndInvalidate(model: QueryGridModel, remove: boolean) {
     if (model.allowSelection) {
-        clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath)
-            .then(() => {
-                gridRemoveOrInvalidate(model, remove);
-            });
-    }
-    else {
+        clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath).then(() => {
+            gridRemoveOrInvalidate(model, remove);
+        });
+    } else {
         gridRemoveOrInvalidate(model, remove);
     }
-
 }
 
 function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
@@ -307,24 +357,32 @@ function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
     }
 }
 
-export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {
+export function gridInvalidate(
+    model: QueryGridModel,
+    shouldInit = false,
+    connectedComponent?: React.Component
+): QueryGridModel {
     // if the model doesn't exist in the global state, no need to invalidate it
     if (!getQueryGridModel(model.getId())) {
         return;
     }
 
-    const newModel = updateQueryGridModel(model, {
-        data: Map<any, List<any>>(),
-        dataIds: List<any>(),
-        selectedIds: List<string>(),
-        selectedQuantity: 0,
-        selectedState: GRID_CHECKBOX_OPTIONS.NONE,
-        selectedLoaded: false,
-        isError: false,
-        isLoaded: false,
-        isLoading: false,
-        message: undefined
-    }, connectedComponent);
+    const newModel = updateQueryGridModel(
+        model,
+        {
+            data: Map<any, List<any>>(),
+            dataIds: List<any>(),
+            selectedIds: List<string>(),
+            selectedQuantity: 0,
+            selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+            selectedLoaded: false,
+            isError: false,
+            isLoaded: false,
+            isLoading: false,
+            message: undefined,
+        },
+        connectedComponent
+    );
 
     if (shouldInit) {
         gridInit(newModel, true, connectedComponent);
@@ -336,12 +394,14 @@ export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = fals
 export function loadPage(model: QueryGridModel, pageNumber: number) {
     if (pageNumber !== model.pageNumber) {
         if (model.bindURL) {
-            replaceParameters(getLocation(), Map<string, any>({
-                [model.createParam('p')]: pageNumber > 1 ? pageNumber : undefined
-            }));
-        }
-        else {
-            const newModel = updateQueryGridModel(model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
+            replaceParameters(
+                getLocation(),
+                Map<string, any>({
+                    [model.createParam('p')]: pageNumber > 1 ? pageNumber : undefined,
+                })
+            );
+        } else {
+            const newModel = updateQueryGridModel(model, { pageNumber: pageNumber > 1 ? pageNumber : 1 });
             gridLoad(newModel);
         }
     }
@@ -351,13 +411,15 @@ export function setMaxRows(model: QueryGridModel, maxRows: number) {
     if (maxRows !== model.maxRows) {
         // also make sure to reset page number to force grid back to first page
         if (model.bindURL) {
-            replaceParameters(getLocation(), Map<string, any>({
-                [model.createParam('p')]: undefined,
-                [model.createParam('pageCount')]: maxRows
-            }));
-        }
-        else {
-            const newModel = updateQueryGridModel(model, {pageNumber: 1, maxRows});
+            replaceParameters(
+                getLocation(),
+                Map<string, any>({
+                    [model.createParam('p')]: undefined,
+                    [model.createParam('pageCount')]: maxRows,
+                })
+            );
+        } else {
+            const newModel = updateQueryGridModel(model, { pageNumber: 1, maxRows });
             gridLoad(newModel);
         }
     }
@@ -365,9 +427,12 @@ export function setMaxRows(model: QueryGridModel, maxRows: number) {
 
 export function setReportId(model: QueryGridModel, reportId: string) {
     if (model.bindURL) {
-        replaceParameters(getLocation(), Map<string, any>({
-            [model.createParam('reportId')]: reportId,
-        }));
+        replaceParameters(
+            getLocation(),
+            Map<string, any>({
+                [model.createParam('reportId')]: reportId,
+            })
+        );
     }
 }
 
@@ -386,7 +451,7 @@ export function reloadQueryGridModel(model: QueryGridModel) {
         isLoading: true,
         selectedLoaded: false,
         ...QueryGridModel.EMPTY_SELECTION,
-        ...bindURLProps(model)
+        ...bindURLProps(model),
     });
     gridLoad(newModel);
 }
@@ -394,27 +459,33 @@ export function reloadQueryGridModel(model: QueryGridModel) {
 // Takes a List<Filter.IFilter> and remove each filter from the grid model
 // Alternately, the 'all' flag can be set to true to remove all filters. This
 // setting takes precedence over the filters list.
-export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilter>, all: boolean = false) {
+export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilter>, all = false) {
     if (model.bindURL) {
         replaceParameters(getLocation(), getFilterParameters(filters, true));
-    }
-    else {
+    } else {
         let newModel = model;
         if (model.filterArray.count()) {
             if (all) {
-                newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, filterArray: List<any>()});
-            }
-            else if (filters && filters.count()) {
-                let urls = filters.reduce((urls, filter: any) => {
+                newModel = updateQueryGridModel(newModel, {
+                    selectedLoaded: false,
+                    ...QueryGridModel.EMPTY_SELECTION,
+                    filterArray: List<any>(),
+                });
+            } else if (filters && filters.count()) {
+                const urls = filters.reduce((urls, filter: any) => {
                     return urls.add(filter.getURLParameterName() + filter.getURLParameterValue());
                 }, Set());
 
-                let filtered = model.filterArray.filter((f: any) => {
+                const filtered = model.filterArray.filter((f: any) => {
                     return !urls.has(f.getURLParameterName() + f.getURLParameterValue());
                 });
 
                 if (filtered.count() < model.filterArray.count()) {
-                    newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, filterArray: filtered});
+                    newModel = updateQueryGridModel(newModel, {
+                        selectedLoaded: false,
+                        ...QueryGridModel.EMPTY_SELECTION,
+                        filterArray: filtered,
+                    });
                 }
             }
         }
@@ -426,10 +497,13 @@ export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilt
 export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>) {
     if (model.bindURL) {
         replaceParameters(getLocation(), getFilterParameters(filters));
-    }
-    else {
+    } else {
         if (filters.count()) {
-            let newModel = updateQueryGridModel(model, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, filterArray: model.filterArray.merge(filters)});
+            const newModel = updateQueryGridModel(model, {
+                selectedLoaded: false,
+                ...QueryGridModel.EMPTY_SELECTION,
+                filterArray: model.filterArray.merge(filters),
+            });
             gridLoad(newModel);
         }
     }
@@ -440,28 +514,34 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
     const ids = response ? response.dataIds : List();
     const columns = model.getInsertColumns();
     const getLookup = (col: QueryColumn) => getLookupStore(col);
-    let cellValues = Map<string, List<ValueDescriptor>>().asMutable();
+    const cellValues = Map<string, List<ValueDescriptor>>().asMutable();
 
     // data is initialized in column order
     columns.forEach((col, cn) => {
         let rn = 0; // restart index, cannot use index from "rows"
-        ids.forEach((id) => {
+        ids.forEach(id => {
             const row = rows.get(id);
             const cellKey = genCellKey(cn, rn);
             const value = row.get(col.fieldKey);
 
             if (List.isList(value)) {
                 // assume to be list of {displayValue, value} objects
-                cellValues.set(cellKey, value.reduce((list, v) => list.push({
-                    display: v.displayValue,
-                    raw: v.value
-                }), List<ValueDescriptor>()));
-            }
-            else {
+                cellValues.set(
+                    cellKey,
+                    value.reduce(
+                        (list, v) =>
+                            list.push({
+                                display: v.displayValue,
+                                raw: v.value,
+                            }),
+                        List<ValueDescriptor>()
+                    )
+                );
+            } else {
                 // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
-                let valueDescriptor = {display: value, raw: value};
+                let valueDescriptor = { display: value, raw: value };
                 if (col.isLookup() && Utils.isNumber(value)) {
-                    valueDescriptor = getLookupDisplayValue(col, getLookup(col), value).valueDescriptor
+                    valueDescriptor = getLookupDisplayValue(col, getLookup(col), value).valueDescriptor;
                 }
 
                 cellValues.set(cellKey, List([valueDescriptor]));
@@ -474,7 +554,7 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
     updateEditorModel(editorModel, {
         colCount: columns.size,
         cellValues: cellValues.asImmutable(),
-        deletedIds: Set<any>(),  // when initially loaded, nothing has been deleted; need to clear out any ids possibly set from the last edit.
+        deletedIds: Set<any>(), // when initially loaded, nothing has been deleted; need to clear out any ids possibly set from the last edit.
         rowCount: rows.size > 0 ? rows.size : editorModel.rowCount,
     });
 }
@@ -486,55 +566,66 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
         return;
     }
 
-    let newModel = updateQueryGridModel(model, {isLoading: true}, connectedComponent);
+    let newModel = updateQueryGridModel(model, { isLoading: true }, connectedComponent);
 
-    newModel.loader.fetch(newModel).then(response => {
-        if (newModel.editable) {
-            loadDataForEditor(newModel, response);
+    newModel.loader.fetch(newModel).then(
+        response => {
+            if (newModel.editable) {
+                loadDataForEditor(newModel, response);
+            }
+
+            // data we have here is the filtered data, so totalRows is the number of items in the filtered grid.
+            // model.selectedIds, however, is the selection from the previous (likely unfiltered) grid.  We need to
+            // trigger a load of the selectedIds with the filter applied.
+            const { data, dataIds, totalRows, messages } = response;
+
+            // if filtered, find the selected ids that are in the set of (filtered) dataIds returned
+            const filteredIds = model.isFiltered() ? intersect(dataIds, model.selectedIds) : List<string>();
+
+            newModel = updateQueryGridModel(
+                newModel,
+                {
+                    isError: false,
+                    isLoading: false,
+                    isLoaded: true,
+                    message: undefined,
+                    messages,
+                    selectedState: getSelectedState(
+                        dataIds,
+                        model.isFiltered() ? filteredIds : model.selectedIds,
+                        model.maxRows,
+                        totalRows
+                    ),
+                    totalRows,
+                    data,
+                    dataIds,
+                },
+                connectedComponent
+            );
+
+            if (newModel.allowSelection) {
+                fetchSelectedIfNeeded(newModel, connectedComponent);
+            }
+        },
+        payload => {
+            if (payload.model) {
+                gridShowError(payload.model, payload.error, connectedComponent);
+            } else {
+                console.error('No model available for loading.', payload.error || payload);
+                setError(model, resolveErrorMessage(payload.error, 'data'));
+            }
         }
-
-        // data we have here is the filtered data, so totalRows is the number of items in the filtered grid.
-        // model.selectedIds, however, is the selection from the previous (likely unfiltered) grid.  We need to
-        // trigger a load of the selectedIds with the filter applied.
-        const { data, dataIds, totalRows, messages } = response;
-
-        // if filtered, find the selected ids that are in the set of (filtered) dataIds returned
-        const filteredIds = model.isFiltered() ? intersect(dataIds, model.selectedIds) : List<string>();
-
-        newModel = updateQueryGridModel(newModel, {
-            isError: false,
-            isLoading: false,
-            isLoaded: true,
-            message: undefined,
-            messages,
-            selectedState: getSelectedState(dataIds, model.isFiltered() ? filteredIds : model.selectedIds, model.maxRows, totalRows),
-            totalRows,
-            data,
-            dataIds
-        }, connectedComponent);
-
-        if (newModel.allowSelection) {
-            fetchSelectedIfNeeded(newModel, connectedComponent);
-        }
-    }, payload => {
-        if (payload.model) {
-            gridShowError(payload.model, payload.error, connectedComponent);
-        }
-        else {
-            console.error("No model available for loading.", payload.error || payload);
-            setError(model, resolveErrorMessage(payload.error, "data"));
-        }
-    });
+    );
 }
 
 function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
-    let props = {
+    const props = {
         filterArray: List<Filter.IFilter>(),
         pageNumber: 1,
         maxRows: model.maxRows,
         sorts: model.sorts || undefined,
         urlParamValues: Map<string, any>(),
-        view: undefined
+        view: undefined,
     };
 
     const location = getLocation();
@@ -551,7 +642,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     props.view = view ? decodeURIComponent(view) : undefined;
 
     if (model.isPaged) {
-        let pageNumber = parseInt(p);
+        const pageNumber = parseInt(p);
         if (!isNaN(pageNumber)) {
             props.pageNumber = pageNumber;
         }
@@ -569,7 +660,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
 
     // pick up other parameters as indicated by the model
     if (model.urlParams) {
-        model.urlParams.forEach((paramName) => {
+        model.urlParams.forEach(paramName => {
             const value = location.query.get(model.createParam(paramName));
             if (value !== undefined) {
                 props.urlParamValues = props.urlParamValues.set(paramName, decodeURIComponent(value));
@@ -581,10 +672,10 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
 }
 
 function bindSearch(searchTerm: string): List<Filter.IFilter> {
-    let searchFilters = List<Filter.IFilter>().asMutable();
+    const searchFilters = List<Filter.IFilter>().asMutable();
 
     if (searchTerm) {
-        searchTerm.split(';').forEach((term) => {
+        searchTerm.split(';').forEach(term => {
             if (term) {
                 searchFilters.push(Filter.create('*', decodeURIComponent(term), Filter.Types.Q));
             }
@@ -595,31 +686,34 @@ function bindSearch(searchTerm: string): List<Filter.IFilter> {
 }
 
 interface IExportOptions {
-    columns?: string
-    filters?: List<Filter.IFilter>
-    sorts?: string
-    showRows?: 'ALL' | 'SELECTED' | 'UNSELECTED'
-    selectionKey?: string
+    columns?: string;
+    filters?: List<Filter.IFilter>;
+    sorts?: string;
+    showRows?: 'ALL' | 'SELECTED' | 'UNSELECTED';
+    selectionKey?: string;
 }
 
-export function exportRows(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options?: IExportOptions, advancedOptions?: Object): void {
-
+export function exportRows(
+    type: EXPORT_TYPES,
+    schemaQuery: SchemaQuery,
+    options?: IExportOptions,
+    advancedOptions?: Record<string, any>
+): void {
     let params: any = {
         schemaName: schemaQuery.schemaName,
-        ['query.queryName']: schemaQuery.queryName,
-        ['query.showRows']: options.showRows ? [options.showRows] : ['ALL'],
-        ['query.selectionKey']: options.selectionKey ? options.selectionKey : undefined,
+        'query.queryName': schemaQuery.queryName,
+        'query.showRows': options.showRows ? [options.showRows] : ['ALL'],
+        'query.selectionKey': options.selectionKey ? options.selectionKey : undefined,
     };
 
-    if (advancedOptions)
-        params = {...params, ...advancedOptions};
+    if (advancedOptions) params = { ...params, ...advancedOptions };
 
     if (schemaQuery.viewName) {
         params['query.viewName'] = schemaQuery.viewName;
     }
 
     // 32052: Apply default headers (CRSF, etc)
-    for (let i in LABKEY.defaultHeaders) {
+    for (const i in LABKEY.defaultHeaders) {
         if (LABKEY.defaultHeaders.hasOwnProperty(i)) {
             params[i] = LABKEY.defaultHeaders[i];
         }
@@ -635,11 +729,11 @@ export function exportRows(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options
         }
 
         if (options.filters) {
-            options.filters.forEach((f) => {
+            options.filters.forEach(f => {
                 if (f) {
                     params[f.getURLParameterName()] = [f.getURLParameterValue()];
                 }
-            })
+            });
         }
 
         if (options.sorts) {
@@ -651,46 +745,47 @@ export function exportRows(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options
     if (type === EXPORT_TYPES.CSV || type === EXPORT_TYPES.TSV) {
         controller = 'query';
         action = 'exportRowsTsv.post';
-    }
-    else if (type === EXPORT_TYPES.EXCEL) {
+    } else if (type === EXPORT_TYPES.EXCEL) {
         controller = 'query';
         action = 'exportRowsXLSX.post';
-    }
-    else if (type === EXPORT_TYPES.FASTA) {
+    } else if (type === EXPORT_TYPES.FASTA) {
         controller = FASTA_EXPORT_CONTROLLER;
         action = 'export.post';
         params['format'] = 'FASTA';
-    }
-    else if (type === EXPORT_TYPES.GENBANK) {
+    } else if (type === EXPORT_TYPES.GENBANK) {
         controller = GENBANK_EXPORT_CONTROLLER;
         action = 'export.post';
         params['format'] = 'GENBANK';
-    }
-    else {
-        throw new Error("Unknown export type: " + type);
+    } else {
+        throw new Error('Unknown export type: ' + type);
     }
     const url = buildURL(controller, action, undefined, { returnURL: false });
 
     // POST a form
-    let form = $(`<form method="POST" action="${url}">`);
-    $.each(params, function(k, v) {
+    const form = $(`<form method="POST" action="${url}">`);
+    $.each(params, function (k, v) {
         form.append($(`<input type="hidden" name="${k.toString()}" value="${v}">`));
     });
     $('body').append(form);
-    form.trigger( "submit" );
+    form.trigger('submit');
 }
 
-export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Object) {
+export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>) {
     const { allowSelection, selectedState } = model;
     const showRows = allowSelection && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
 
-    exportRows(type, SchemaQuery.create(model.schema, model.query, model.view), {
-        filters: model.getFilters(),
-        columns: model.getExportColumnsString(),
-        sorts: model.getSorts(),
-        showRows,
-        selectionKey: model.getId()
-    }, advancedOptions);
+    exportRows(
+        type,
+        SchemaQuery.create(model.schema, model.query, model.view),
+        {
+            filters: model.getFilters(),
+            columns: model.getExportColumnsString(),
+            sorts: model.getSorts(),
+            showRows,
+            selectionKey: model.getId(),
+        },
+        advancedOptions
+    );
 }
 
 export function gridSelectView(model: QueryGridModel, view: ViewInfo) {
@@ -707,15 +802,12 @@ function hasURLChange(model: QueryGridModel): boolean {
     const nextProps = bindURLProps(model);
 
     // filterArray and sorts are set specially so we check those specially.
-    if (!isEqual(nextProps.filterArray, model.filterArray))
-        return true;
-    else if (nextProps.view !== model.view)
-        return true;
-    else if (nextProps.sorts !== model.sorts)
-        return true;
+    if (!isEqual(nextProps.filterArray, model.filterArray)) return true;
+    else if (nextProps.view !== model.view) return true;
+    else if (nextProps.sorts !== model.sorts) return true;
 
-    const mismatchIndex = model.urlParams.findIndex((name) => {
-        return nextProps.urlParamValues.get(name) !== model.urlParamValues.get(name)
+    const mismatchIndex = model.urlParams.findIndex(name => {
+        return nextProps.urlParamValues.get(name) !== model.urlParamValues.get(name);
     });
 
     return mismatchIndex >= 0;
@@ -729,33 +821,36 @@ function fetchQueryInfo(model: QueryGridModel): Promise<QueryInfo> {
     return getQueryDetails({
         containerPath: model.containerPath,
         schemaName: model.schema,
-        queryName: model.query
-    })
+        queryName: model.query,
+    });
 }
 
 function bindQueryInfo(queryInfo: QueryInfo): QueryInfo {
     if (queryInfo) {
         return queryInfo.merge({
-            columns: bindColumnRenderers(queryInfo.columns)
+            columns: bindColumnRenderers(queryInfo.columns),
         }) as QueryInfo;
     }
 
     return queryInfo;
 }
 
-function getSelectedState(dataIds: List<string>, selected: List<string>, maxRows: number, totalRows: number): GRID_CHECKBOX_OPTIONS {
-
-    const selectedOnPage: number = dataIds.filter((id) => selected.indexOf(id) !== -1).size,
+function getSelectedState(
+    dataIds: List<string>,
+    selected: List<string>,
+    maxRows: number,
+    totalRows: number
+): GRID_CHECKBOX_OPTIONS {
+    const selectedOnPage: number = dataIds.filter(id => selected.indexOf(id) !== -1).size,
         totalSelected: number = selected.size; // This needs to be the number selected in the current view
 
     if (
         maxRows === selectedOnPage ||
-        totalRows === totalSelected && totalRows !== 0 ||
-        selectedOnPage === dataIds.size && selectedOnPage > 0
+        (totalRows === totalSelected && totalRows !== 0) ||
+        (selectedOnPage === dataIds.size && selectedOnPage > 0)
     ) {
         return GRID_CHECKBOX_OPTIONS.ALL;
-    }
-    else if (selectedOnPage > 0) {
+    } else if (selectedOnPage > 0) {
         // if model has any selected on the page show checkbox as indeterminate
         return GRID_CHECKBOX_OPTIONS.SOME;
     }
@@ -767,60 +862,74 @@ function fetchSelectedIfNeeded(model: QueryGridModel, connectedComponent: React.
     const { allowSelection, isLoaded, loader, selectedLoaded } = model;
 
     if (allowSelection && isLoaded && !selectedLoaded && loader.fetchSelection) {
-        loader.fetchSelection(model).then(response => {
-            const selectedIds = response.selectedIds;
+        loader.fetchSelection(model).then(
+            response => {
+                const selectedIds = response.selectedIds;
 
-            if (selectedIds !== undefined && selectedIds.size) {
-                const { dataIds, maxRows, totalRows } = model;
-                const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
+                if (selectedIds !== undefined && selectedIds.size) {
+                    const { dataIds, maxRows, totalRows } = model;
+                    const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
 
-                updateQueryGridModel(model, {
-                    selectedLoaded: true,
-                    selectedQuantity: selectedIds.size,
-                    selectedIds,
-                    selectedState,
-                }, connectedComponent);
+                    updateQueryGridModel(
+                        model,
+                        {
+                            selectedLoaded: true,
+                            selectedQuantity: selectedIds.size,
+                            selectedIds,
+                            selectedState,
+                        },
+                        connectedComponent
+                    );
+                } else {
+                    updateQueryGridModel(
+                        model,
+                        {
+                            selectedLoaded: true,
+                            selectedQuantity: 0,
+                            selectedIds,
+                        },
+                        connectedComponent
+                    );
+                }
+            },
+            payload => {
+                gridShowError(payload.model, payload.error, connectedComponent);
             }
-            else {
-                updateQueryGridModel(model, {
-                    selectedLoaded: true,
-                    selectedQuantity: 0,
-                    selectedIds
-                }, connectedComponent);
-            }
-        }, payload => {
-            gridShowError(payload.model, payload.error, connectedComponent);
-        });
+        );
     }
 }
 
 interface IGetSelectedResponse {
-    selected: Array<any>
+    selected: any[];
 }
 
-function getFilteredQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+function getFilteredQueryParams(
+    key: string,
+    schemaName: string,
+    queryName: string,
+    filterList: List<Filter.IFilter>
+): any {
     if (schemaName && queryName && filterList && !filterList.isEmpty()) {
         return getQueryParams(key, schemaName, queryName, filterList);
-    }
-    else {
+    } else {
         return {
-            key
-        }
+            key,
+        };
     }
 }
 
-function getQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+function getQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>): any {
     const filters = filterList.reduce((prev, next) => {
-        return Object.assign(prev, {[next.getURLParameterName()]: next.getURLParameterValue()});
+        return Object.assign(prev, { [next.getURLParameterName()]: next.getURLParameterValue() });
     }, {});
 
     return {
         ...{
             schemaName,
             queryName,
-            'query.selectionKey': key
+            'query.selectionKey': key,
         },
-        ...filters
+        ...filters,
     };
 }
 
@@ -832,43 +941,55 @@ function getQueryParams(key: string, schemaName: string, queryName: string, filt
  * @param filterList list of filters to use
  * @param containerPath the container path to use for this API call
  */
-export function getSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>, containerPath?: string): Promise<IGetSelectedResponse> {
+export function getSelected(
+    key: string,
+    schemaName?: string,
+    queryName?: string,
+    filterList?: List<Filter.IFilter>,
+    containerPath?: string
+): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'getSelected.api', undefined, {
-                container: containerPath
+                container: containerPath,
             }),
-            method: "POST",
+            method: 'POST',
             jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList),
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
-            })
+            }),
         });
     });
 }
 
 interface ISelectResponse {
-    count: number
+    count: number;
 }
 
-function clearSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>, containerPath?: string): Promise<ISelectResponse> {
+function clearSelected(
+    key: string,
+    schemaName?: string,
+    queryName?: string,
+    filterList?: List<Filter.IFilter>,
+    containerPath?: string
+): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'clearSelected.api', undefined, {
-                container: containerPath
+                container: containerPath,
             }),
             method: 'POST',
             jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList),
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
-                console.error("Problem clearing the selection ", key, schemaName, queryName, response);
+            failure: Utils.getCallbackWrapper(response => {
+                console.error('Problem clearing the selection ', key, schemaName, queryName, response);
                 reject(response);
-            })
+            }),
         });
     });
 }
@@ -879,31 +1000,41 @@ function clearSelected(key: string, schemaName?: string, queryName?: string, fil
  * @param checked whether to set selected or unselected
  * @param ids ids to change selection for
  */
-export function setSelected(key: string, checked: boolean, ids: Array<string> | string, containerPath?: string): Promise<ISelectResponse> {
+export function setSelected(
+    key: string,
+    checked: boolean,
+    ids: string[] | string,
+    containerPath?: string
+): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'setSelected.api', {
-                key,
-                checked
-            }, {
-                container: containerPath
-            }),
+            url: buildURL(
+                'query',
+                'setSelected.api',
+                {
+                    key,
+                    checked,
+                },
+                {
+                    container: containerPath,
+                }
+            ),
             method: 'POST',
             params: {
-                id: ids
+                id: ids,
             },
-            success: Utils.getCallbackWrapper((response) => {
+            success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper((response) => {
+            failure: Utils.getCallbackWrapper(response => {
                 reject(response);
             }),
         });
-    })
+    });
 }
 
-function removeAll(selected: List<string>, toDelete: List<string>) : List<string> {
-    toDelete.forEach((id) => {
+function removeAll(selected: List<string>, toDelete: List<string>): List<string> {
+    toDelete.forEach(id => {
         const idx = selected.indexOf(id);
         if (idx >= 0) {
             selected = selected.delete(idx);
@@ -915,11 +1046,15 @@ function removeAll(selected: List<string>, toDelete: List<string>) : List<string
 /**
  * Selects all the items on the current page of the grid.
  */
-function setGridSelected(model: QueryGridModel, checked: boolean, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
+function setGridSelected(
+    model: QueryGridModel,
+    checked: boolean,
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+) {
     const { dataIds } = model;
     const modelId = model.getId();
 
-    let ids: Array<string>;
+    let ids: string[];
     if (dataIds && dataIds.size) {
         ids = dataIds.toArray();
     }
@@ -929,20 +1064,19 @@ function setGridSelected(model: QueryGridModel, checked: boolean, onSelectionCha
         let selected = model.selectedIds;
 
         if (checked) {
-            dataIds.forEach((id) => {
+            dataIds.forEach(id => {
                 if (selected.indexOf(id) < 0) {
                     selected = selected.push(id);
                 }
             });
-        }
-        else {
+        } else {
             selected = removeAll(selected, dataIds);
         }
 
         const updatedModel = updateQueryGridModel(model, {
             selectedIds: selected,
             selectedQuantity: selected.size,
-            selectedState: checked ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE
+            selectedState: checked ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
         });
 
         if (onSelectionChange) {
@@ -951,7 +1085,10 @@ function setGridSelected(model: QueryGridModel, checked: boolean, onSelectionCha
     });
 }
 
-function setGridUnselected(model: QueryGridModel, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
+function setGridUnselected(
+    model: QueryGridModel,
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
+) {
     setGridSelected(model, false, onSelectionChange);
 }
 
@@ -961,24 +1098,24 @@ export function unselectAll(model: QueryGridModel) {
             updateQueryGridModel(model, {
                 selectedIds: List<string>(),
                 selectedQuantity: 0,
-                selectedState: GRID_CHECKBOX_OPTIONS.NONE
+                selectedState: GRID_CHECKBOX_OPTIONS.NONE,
             });
-        }).catch(err => {
-            const error = err ? err : {message: 'Something went wrong'};
+        })
+        .catch(err => {
+            const error = err ? err : { message: 'Something went wrong' };
             gridShowError(model, error);
         });
 }
 
 interface ISelectionResponse {
-    resolved: boolean
-    schemaQuery?: SchemaQuery
-    selected: Array<any>
+    resolved: boolean;
+    schemaQuery?: SchemaQuery;
+    selected: any[];
 }
 
-export function getFilterListFromQuery(location: Location) : List<Filter.IFilter> {
+export function getFilterListFromQuery(location: Location): List<Filter.IFilter> {
     const filters = Filter.getFiltersFromParameters(Object.assign({}, location.query));
-    if (filters.length > 0)
-        return List<Filter.IFilter>(filters);
+    if (filters.length > 0) return List<Filter.IFilter>(filters);
     return undefined;
 }
 
@@ -993,15 +1130,20 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
                 return resolve({
                     resolved: true,
                     schemaQuery,
-                    selected: keys.split(';')
+                    selected: keys.split(';'),
                 });
             }
 
-            return getSelected(key, schemaQuery.schemaName, schemaQuery.queryName, getFilterListFromQuery(location)).then((response) => {
+            return getSelected(
+                key,
+                schemaQuery.schemaName,
+                schemaQuery.queryName,
+                getFilterListFromQuery(location)
+            ).then(response => {
                 resolve({
                     resolved: true,
                     schemaQuery,
-                    selected: response.selected
+                    selected: response.selected,
                 });
             });
         });
@@ -1009,43 +1151,45 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
 
     return Promise.resolve({
         resolved: false,
-        selected: []
+        selected: [],
     });
 }
 
-export function getSelectedData(model: QueryGridModel) : Promise<IGridResponse> {
+export function getSelectedData(model: QueryGridModel): Promise<IGridResponse> {
     let filters = model.getFilters();
     filters = filters.push(Filter.create('RowId', model.selectedIds.toArray(), Filter.Types.IN));
 
-    return new Promise((resolve, reject) => selectRows({
-        schemaName: model.schema,
-        queryName: model.query,
-        filterArray: filters.toJS(),
-        sort: model.getSorts() || "-RowId",
-        columns: model.getRequestColumnsString(),
-        offset: 0
-    }).then(response => {
-        const {models, orderedModels, totalRows} = response;
-        resolve( {
-            data: fromJS(models[model.getModelName()]),
-            dataIds: List(orderedModels[model.getModelName()]),
-            totalRows
-        });
-    }).catch( reason => {
-        console.error(reason);
-        reject(resolveErrorMessage(reason));
-    }));
+    return new Promise((resolve, reject) =>
+        selectRows({
+            schemaName: model.schema,
+            queryName: model.query,
+            filterArray: filters.toJS(),
+            sort: model.getSorts() || '-RowId',
+            columns: model.getRequestColumnsString(),
+            offset: 0,
+        })
+            .then(response => {
+                const { models, orderedModels, totalRows } = response;
+                resolve({
+                    data: fromJS(models[model.getModelName()]),
+                    dataIds: List(orderedModels[model.getModelName()]),
+                    totalRows,
+                });
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            })
+    );
 }
 
-function getFilterParameters(filters: List<any>, remove: boolean = false): Map<string, string> {
-
+function getFilterParameters(filters: List<any>, remove = false): Map<string, string> {
     const params = {};
 
-    filters.map((filter) => {
+    filters.map(filter => {
         if (remove) {
             params[filter.getURLParameterName()] = undefined;
-        }
-        else {
+        } else {
             params[filter.getURLParameterName()] = filter.getURLParameterValue();
         }
     });
@@ -1060,10 +1204,10 @@ export function getVisualizationConfig(reportId: string): Promise<VisualizationC
             name: undefined,
             schemaName: undefined,
             queryName: undefined,
-            success: (response) => {
+            success: response => {
                 resolve(VisualizationConfigModel.create(response.visualizationConfig));
             },
-            failure: reject
+            failure: reject,
         });
     });
 }
@@ -1071,61 +1215,82 @@ export function getVisualizationConfig(reportId: string): Promise<VisualizationC
 export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<List<DataViewInfo>> {
     return new Promise((resolve, reject) => {
         // if we know we don't have the study module, no need to make the API call
-        if (LABKEY.getModuleContext && LABKEY.getModuleContext('samplemanagement') && !LABKEY.getModuleContext('samplemanagement').hasStudyModule) {
+        if (
+            LABKEY.getModuleContext &&
+            LABKEY.getModuleContext('samplemanagement') &&
+            !LABKEY.getModuleContext('samplemanagement').hasStudyModule
+        ) {
             resolve(List<DataViewInfo>());
             return;
         }
 
         Ajax.request({
-            url: buildURL('study-reports', 'getReportInfos.api', {
-                schemaName: schemaQuery.getSchema(),
-                queryName: schemaQuery.getQuery()
-            }, {
-                container: containerPath
-            }),
+            url: buildURL(
+                'study-reports',
+                'getReportInfos.api',
+                {
+                    schemaName: schemaQuery.getSchema(),
+                    queryName: schemaQuery.getQuery(),
+                },
+                {
+                    container: containerPath,
+                }
+            ),
             success: Utils.getCallbackWrapper((response: any) => {
                 if (response && response.success) {
-                    let result = response.reports.reduce((list, rawDataViewInfo) => list.push(new DataViewInfo(rawDataViewInfo)), List<DataViewInfo>());
+                    const result = response.reports.reduce(
+                        (list, rawDataViewInfo) => list.push(new DataViewInfo(rawDataViewInfo)),
+                        List<DataViewInfo>()
+                    );
                     resolve(result);
-                }
-                else {
+                } else {
                     reject({
-                        error: 'study-report-getReportInfos.api responded to success without success'
+                        error: 'study-report-getReportInfos.api responded to success without success',
                     });
                 }
             }),
-            failure: Utils.getCallbackWrapper((error) => {
+            failure: Utils.getCallbackWrapper(error => {
                 reject(error);
             }),
-        })
+        });
     });
 }
 
 function setError(model: QueryGridModel, message: string, connectedComponent?: React.Component) {
-    updateQueryGridModel(model, {
-        isLoading: false,
-        isLoaded: true,
-        isError: true,
-        message
-    }, connectedComponent)
+    updateQueryGridModel(
+        model,
+        {
+            isLoading: false,
+            isLoaded: true,
+            isError: true,
+            message,
+        },
+        connectedComponent
+    );
 }
 
 // TODO update this to not show the status and use resolveErrorMessage
 export function gridShowError(model: QueryGridModel, error: any, connectedComponent?: React.Component) {
-    setError(model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error', connectedComponent);
+    setError(
+        model,
+        error
+            ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception)
+            : 'Query error',
+        connectedComponent
+    );
 }
 
 export function genCellKey(colIdx: number, rowIdx: number): string {
     return [colIdx, rowIdx].join('-');
 }
 
-function parseCellKey(cellKey: string): {colIdx: number, rowIdx: number} {
-    let [colIdx, rowIdx] = cellKey.split('-');
+function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number } {
+    const [colIdx, rowIdx] = cellKey.split('-');
 
     return {
         colIdx: parseInt(colIdx),
-        rowIdx: parseInt(rowIdx)
-    }
+        rowIdx: parseInt(rowIdx),
+    };
 }
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
@@ -1133,22 +1298,22 @@ function isCellEmpty(values: List<ValueDescriptor>): boolean {
 }
 
 function moveDown(colIdx: number, rowIdx: number) {
-    return {colIdx, rowIdx: rowIdx + 1};
+    return { colIdx, rowIdx: rowIdx + 1 };
 }
 
 function moveLeft(colIdx: number, rowIdx: number) {
-    return {colIdx: colIdx - 1, rowIdx};
+    return { colIdx: colIdx - 1, rowIdx };
 }
 
 function moveRight(colIdx: number, rowIdx: number) {
-    return {colIdx: colIdx + 1, rowIdx};
+    return { colIdx: colIdx + 1, rowIdx };
 }
 
 function moveUp(colIdx: number, rowIdx: number) {
-    return {colIdx, rowIdx: rowIdx - 1};
+    return { colIdx, rowIdx: rowIdx - 1 };
 }
 
-let dragLock = Map<string, boolean>().asMutable();
+const dragLock = Map<string, boolean>().asMutable();
 
 export function beginDrag(modelId: string, event: any) {
     return handleDrag(modelId, event, () => dragLock.set(modelId, true));
@@ -1171,7 +1336,7 @@ export function inDrag(modelId: string): boolean {
 }
 
 function initEditorModel(model: QueryGridModel) {
-    const newModel = new EditorModel({id: model.getId()});
+    const newModel = new EditorModel({ id: model.getId() });
     updateEditorModel(newModel, {}, false);
 }
 
@@ -1184,7 +1349,7 @@ export function clearSelection(modelId: string) {
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: Set<string>()
+            selectionCells: Set<string>(),
         });
     }
 }
@@ -1194,10 +1359,7 @@ export function copyEvent(modelId: string, event: any) {
 
     if (editorModel && !editorModel.hasFocus() && editorModel.hasSelection()) {
         cancelEvent(event);
-        setCopyValue(event, getCopyValue(
-            editorModel,
-            getQueryGridModel(modelId)
-        ));
+        setCopyValue(event, getCopyValue(editorModel, getQueryGridModel(modelId)));
     }
 }
 
@@ -1207,7 +1369,7 @@ function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
     if (valueDescriptors && valueDescriptors.size > 0) {
         let sep = '';
         value = valueDescriptors.reduce((agg, vd) => {
-            agg += sep + ((vd.display !== undefined) ? vd.display.toString().trim() : '');
+            agg += sep + (vd.display !== undefined ? vd.display.toString().trim() : '');
             sep = ', ';
             return agg;
         }, value);
@@ -1218,7 +1380,7 @@ function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
 
 function getCopyValue(model: EditorModel, queryModel: QueryGridModel): string {
     let copyValue = '';
-    let EOL = '\n';
+    const EOL = '\n';
 
     if (model && queryModel && model.hasSelection() && !model.hasFocus()) {
         const selectionCells = model.selectionCells.add(genCellKey(model.selectedColIdx, model.selectedRowIdx));
@@ -1254,13 +1416,13 @@ export function focusCell(modelId: string, colIdx: number, rowIdx: number, clear
     const cellKey = genCellKey(colIdx, rowIdx);
     const model = getEditorModel(modelId);
 
-    let props: Partial<EditorModelProps> = {
+    const props: Partial<EditorModelProps> = {
         cellMessages: model.cellMessages.remove(cellKey),
         focusColIdx: colIdx,
         focusRowIdx: rowIdx,
         focusValue: model.getIn(['cellValues', cellKey]),
         selectedColIdx: colIdx,
-        selectedRowIdx: rowIdx
+        selectedRowIdx: rowIdx,
     };
 
     if (clearValue) {
@@ -1270,22 +1432,27 @@ export function focusCell(modelId: string, colIdx: number, rowIdx: number, clear
     updateEditorModel(model, props);
 }
 
-export function selectCell(modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) {
+export function selectCell(
+    modelId: string,
+    colIdx: number,
+    rowIdx: number,
+    selection?: SELECTION_TYPES,
+    resetValue?: boolean
+) {
     const model = getEditorModel(modelId);
 
     // check bounds
     if (model && colIdx >= 0 && rowIdx >= 0 && colIdx < model.colCount) {
-
         // 33855: select last row
         if (rowIdx === model.rowCount) {
             rowIdx = rowIdx - 1;
         }
 
         if (rowIdx < model.rowCount) {
-            let props: Partial<EditorModelProps> = {
+            const props: Partial<EditorModelProps> = {
                 focusColIdx: -1,
                 focusRowIdx: -1,
-                ...applySelection(model as EditorModel, colIdx, rowIdx, selection)
+                ...applySelection(model as EditorModel, colIdx, rowIdx, selection),
             };
 
             if (resetValue) {
@@ -1301,17 +1468,23 @@ export function selectCell(modelId: string, colIdx: number, rowIdx: number, sele
 export function unfocusCellSelection(modelId: string) {
     updateEditorModel(getEditorModel(modelId), {
         selectedColIdx: -1,
-        selectedRowIdx: -1
+        selectedRowIdx: -1,
     });
 }
 
 function updateCellValues(model: EditorModel, cellKey: string, values: List<ValueDescriptor>) {
     updateEditorModel(model, {
-        cellValues: model.cellValues.set(cellKey, values)
+        cellValues: model.cellValues.set(cellKey, values),
     });
 }
 
-export function modifyCell(modelId: string, colIdx: number, rowIdx: number, newValue: ValueDescriptor, mod: MODIFICATION_TYPES) {
+export function modifyCell(
+    modelId: string,
+    colIdx: number,
+    rowIdx: number,
+    newValue: ValueDescriptor,
+    mod: MODIFICATION_TYPES
+) {
     const cellKey = genCellKey(colIdx, rowIdx);
     const keyPath = ['cellValues', cellKey];
     const VD = List<ValueDescriptor>();
@@ -1322,27 +1495,21 @@ export function modifyCell(modelId: string, colIdx: number, rowIdx: number, newV
         return;
     }
 
-    model = updateEditorModel(model, {cellMessages: model.cellMessages.delete(cellKey)});
+    model = updateEditorModel(model, { cellMessages: model.cellMessages.delete(cellKey) });
 
     if (mod === MODIFICATION_TYPES.ADD) {
-        let values: List<ValueDescriptor> = model.getIn(keyPath);
+        const values: List<ValueDescriptor> = model.getIn(keyPath);
         if (values !== undefined) {
             updateCellValues(model, cellKey, values.push(newValue));
-        }
-        else {
+        } else {
             updateCellValues(model, cellKey, VD.push(newValue));
         }
-    }
-    else if (mod === MODIFICATION_TYPES.REPLACE) {
+    } else if (mod === MODIFICATION_TYPES.REPLACE) {
         updateCellValues(model, cellKey, VD.push(newValue));
-    }
-    else if (mod === MODIFICATION_TYPES.REMOVE) {
+    } else if (mod === MODIFICATION_TYPES.REMOVE) {
         let values: List<ValueDescriptor> = model.getIn(keyPath);
 
-        const idx = values.findIndex((vd) => (
-            vd.display === newValue.display &&
-            vd.raw === vd.raw
-        ));
+        const idx = values.findIndex(vd => vd.display === newValue.display && vd.raw === vd.raw);
 
         if (idx > -1) {
             values = values.remove(idx);
@@ -1350,12 +1517,10 @@ export function modifyCell(modelId: string, colIdx: number, rowIdx: number, newV
 
         if (values.size) {
             updateCellValues(model, cellKey, values);
-        }
-        else {
+        } else {
             updateCellValues(model, cellKey, VD);
         }
-    }
-    else if (mod == MODIFICATION_TYPES.REMOVE_ALL) {
+    } else if (mod == MODIFICATION_TYPES.REMOVE_ALL) {
         if (model.selectionCells.size > 0) {
             updateEditorModel(model, {
                 cellValues: model.cellValues.reduce((map, vd, cellKey) => {
@@ -1369,16 +1534,20 @@ export function modifyCell(modelId: string, colIdx: number, rowIdx: number, newV
                         return map.remove(cellKey);
                     }
                     return map.set(cellKey, msg);
-                }, Map<string, CellMessage>())
-            })
-        }
-        else {
+                }, Map<string, CellMessage>()),
+            });
+        } else {
             updateCellValues(model, cellKey, VD);
         }
     }
 }
 
-function applySelection(model: EditorModel, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES): Partial<EditorModelProps> {
+function applySelection(
+    model: EditorModel,
+    colIdx: number,
+    rowIdx: number,
+    selection?: SELECTION_TYPES
+): Partial<EditorModelProps> {
     let selectionCells = Set<string>().asMutable();
     const hasSelection = model.hasSelection();
 
@@ -1398,15 +1567,9 @@ function applySelection(model: EditorModel, colIdx: number, rowIdx: number, sele
             selectedRowIdx = model.selectedRowIdx;
 
             if (hasSelection) {
-                const upperLeft = [
-                    Math.min(model.selectedColIdx, colIdx),
-                    Math.min(model.selectedRowIdx, rowIdx)
-                ];
+                const upperLeft = [Math.min(model.selectedColIdx, colIdx), Math.min(model.selectedRowIdx, rowIdx)];
 
-                const bottomRight = [
-                    Math.max(model.selectedColIdx, colIdx),
-                    Math.max(model.selectedRowIdx, rowIdx)
-                ];
+                const bottomRight = [Math.max(model.selectedColIdx, colIdx), Math.max(model.selectedRowIdx, rowIdx)];
 
                 const maxColumn = Math.min(bottomRight[0], model.colCount - 1);
                 const maxRow = Math.min(bottomRight[1], model.rowCount - 1);
@@ -1434,7 +1597,7 @@ function applySelection(model: EditorModel, colIdx: number, rowIdx: number, sele
     return {
         selectedColIdx,
         selectedRowIdx,
-        selectionCells: selectionCells.asImmutable()
+        selectionCells: selectionCells.asImmutable(),
     };
 }
 
@@ -1443,7 +1606,7 @@ export function initLookup(column: QueryColumn, maxRows: number, values?: List<s
         const store = new LookupStore({
             key: LookupStore.key(column),
             isLoaded: false,
-            isLoading: true
+            isLoading: true,
         });
         updateLookupStore(store, {}, false);
 
@@ -1462,18 +1625,16 @@ function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
 
     if (!lookup) {
         return true;
-    }
-    else if (!lookup.isLoading && !lookup.isLoaded) {
+    } else if (!lookup.isLoading && !lookup.isLoaded) {
         return true;
-    }
-    else if (values && !lookup.containsAll(values)) {
+    } else if (values && !lookup.containsAll(values)) {
         return true;
     }
 
     return false;
 }
 
-export function searchLookup(column: QueryColumn, maxRows: number, token?: string,  values?: List<string>) {
+export function searchLookup(column: QueryColumn, maxRows: number, token?: string, values?: List<string>) {
     let store = getLookupStore(column);
 
     // prevent redundant search
@@ -1482,71 +1643,79 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
             isLoaded: false,
             isLoading: true,
             lastToken: token,
-            loadCount: store.loadCount + 1
+            loadCount: store.loadCount + 1,
         });
 
         const lookup = column.lookup;
 
-        let selectRowOptions: any = {
+        const selectRowOptions: any = {
             schemaName: lookup.schemaName,
             queryName: lookup.queryName,
-            columns: [lookup.displayColumn,lookup.keyColumn].join(','),
+            columns: [lookup.displayColumn, lookup.keyColumn].join(','),
             maxRows,
-            includeTotalCount: 'f'
+            includeTotalCount: 'f',
         };
 
         if (values) {
             selectRowOptions.filterArray = [
-                Filter.create(column.lookup.displayColumn, values.toArray(), Filter.Types.IN)
+                Filter.create(column.lookup.displayColumn, values.toArray(), Filter.Types.IN),
             ];
         }
 
-        return searchRows(selectRowOptions, token, lookup.displayColumn).then((result) => {
-            const {displayColumn, keyColumn} = column.lookup;
-            const {key, models, totalRows} = result;
+        return searchRows(selectRowOptions, token, lookup.displayColumn)
+            .then(result => {
+                const { displayColumn, keyColumn } = column.lookup;
+                const { key, models, totalRows } = result;
 
-            if (models[key]) {
-                let descriptors = fromJS(models[key])
-                    .reduce((list, row) => {
-                        const key = row.getIn([keyColumn, 'value']);
+                if (models[key]) {
+                    const descriptors = fromJS(models[key])
+                        .reduce((list, row) => {
+                            const key = row.getIn([keyColumn, 'value']);
 
-                        if (key !== undefined && key !== null) {
-                            return list.push({
-                                display: row.getIn([displayColumn, 'displayValue']) || row.getIn([displayColumn, 'value']),
-                                raw: key
-                            });
-                        }
-                    }, List<ValueDescriptor>()).sortBy(vd => vd.display, naturalSort)
-                    .reduce((map, vd) => map.set(vd.raw, vd), OrderedMap<any, ValueDescriptor>());
+                            if (key !== undefined && key !== null) {
+                                return list.push({
+                                    display:
+                                        row.getIn([displayColumn, 'displayValue']) ||
+                                        row.getIn([displayColumn, 'value']),
+                                    raw: key,
+                                });
+                            }
+                        }, List<ValueDescriptor>())
+                        .sortBy(vd => vd.display, naturalSort)
+                        .reduce((map, vd) => map.set(vd.raw, vd), OrderedMap<any, ValueDescriptor>());
 
+                    updateLookupStore(store, {
+                        isLoaded: true,
+                        isLoading: false,
+                        matchCount: totalRows,
+                        descriptors,
+                    });
+                }
+            })
+            .catch(reason => {
+                console.error(reason);
                 updateLookupStore(store, {
                     isLoaded: true,
                     isLoading: false,
-                    matchCount: totalRows,
-                    descriptors
                 });
-            }
-        }).catch(reason => {
-            console.error(reason);
-            updateLookupStore(store, {
-                isLoaded: true,
-                isLoading: false
             });
-        });
     }
 }
 
-function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: any) : {
-    message?: CellMessage,
-    valueDescriptor: ValueDescriptor
+function getLookupDisplayValue(
+    column: QueryColumn,
+    lookup: LookupStore,
+    value: any
+): {
+    message?: CellMessage;
+    valueDescriptor: ValueDescriptor;
 } {
-
-    if (value === undefined || value === null || typeof(value) === 'string') {
+    if (value === undefined || value === null || typeof value === 'string') {
         return {
             valueDescriptor: {
                 display: value,
-                raw: value
-            }
+                raw: value,
+            },
         };
     }
 
@@ -1555,14 +1724,14 @@ function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: 
     const valueDescriptor = lookup.descriptors.find(d => d.raw && d.raw === value);
     if (!valueDescriptor) {
         message = {
-            message: 'Could not find data for ' + value
-        }
+            message: 'Could not find data for ' + value,
+        };
     }
 
     return {
         message,
-        valueDescriptor
-    }
+        valueDescriptor,
+    };
 }
 
 /**
@@ -1573,7 +1742,13 @@ function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: 
  * @param rowMin the starting row for the new rows
  * @param colMin the starting column
  */
-export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, rowCount: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
+export function updateEditorData(
+    gridModel: QueryGridModel,
+    rowData: List<any>,
+    rowCount: number,
+    rowMin = 0,
+    colMin = 0
+): EditorModel {
     const editorModel = getEditorModel(gridModel.getId());
 
     let cellMessages = editorModel.cellMessages;
@@ -1585,7 +1760,6 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
 
     for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
         rowData.forEach((value, cn) => {
-
             const colIdx = colMin + cn;
             const cellKey = genCellKey(colIdx, rowIdx);
 
@@ -1599,11 +1773,11 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
         cellValues,
         cellMessages,
         selectionCells,
-        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount)
+        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount),
     });
 }
 
-function prepareInsertRowDataFromBulkForm(gridModel: QueryGridModel, rowData: List<any>, colMin: number = 0) {
+function prepareInsertRowDataFromBulkForm(gridModel: QueryGridModel, rowData: List<any>, colMin = 0) {
     const columns = gridModel.getInsertColumns();
 
     const getLookup = (col: QueryColumn) => getLookupStore(col);
@@ -1615,27 +1789,32 @@ function prepareInsertRowDataFromBulkForm(gridModel: QueryGridModel, rowData: Li
         const colIdx = colMin + cn;
         const col = columns.get(colIdx);
 
-        let cv : List<ValueDescriptor>;
+        let cv: List<ValueDescriptor>;
 
         if (data && col && col.isLookup()) {
-            cv =  List<ValueDescriptor>();
+            cv = List<ValueDescriptor>();
             // value had better be the rowId here, but it may be several in a comma-separated list.
             // If it's the display value, which happens to be a number, much confusion will arise.
-            const values = data.toString().split(",");
-            values.forEach((val) => {
+            const values = data.toString().split(',');
+            values.forEach(val => {
                 const intVal = parseInt(val);
-                const {message, valueDescriptor} = getLookupDisplayValue(col, getLookup(col), isNaN(intVal) ? val : intVal);
+                const { message, valueDescriptor } = getLookupDisplayValue(
+                    col,
+                    getLookup(col),
+                    isNaN(intVal) ? val : intVal
+                );
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.push(message);
                 }
             });
-
         } else {
-            cv = List([{
-                display: data,
-                raw: data
-            }]);
+            cv = List([
+                {
+                    display: data,
+                    raw: data,
+                },
+            ]);
         }
 
         values = values.push(cv);
@@ -1643,22 +1822,43 @@ function prepareInsertRowDataFromBulkForm(gridModel: QueryGridModel, rowData: Li
 
     return {
         values,
-        messages
-    }
+        messages,
+    };
 }
 
-
-export function pasteEvent(modelId: string, event: any, onBefore?: any, onComplete?: any, columnMetadata?: Map<string, EditableColumnMetadata>) {
+export function pasteEvent(
+    modelId: string,
+    event: any,
+    onBefore?: any,
+    onComplete?: any,
+    columnMetadata?: Map<string, EditableColumnMetadata>
+) {
     const model = getEditorModel(modelId);
 
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
     if (model && model.hasSelection() && !model.hasFocus()) {
         cancelEvent(event);
-        pasteCell(modelId, model.selectedColIdx, model.selectedRowIdx, getPasteValue(event), onBefore, onComplete, columnMetadata);
+        pasteCell(
+            modelId,
+            model.selectedColIdx,
+            model.selectedRowIdx,
+            getPasteValue(event),
+            onBefore,
+            onComplete,
+            columnMetadata
+        );
     }
 }
 
-function pasteCell(modelId: string, colIdx: number, rowIdx: number, value: any, onBefore?: any, onComplete?: any, columnMetadata?: Map<string, EditableColumnMetadata>) {
+function pasteCell(
+    modelId: string,
+    colIdx: number,
+    rowIdx: number,
+    value: any,
+    onBefore?: any,
+    onComplete?: any,
+    columnMetadata?: Map<string, EditableColumnMetadata>
+) {
     const gridModel = getQueryGridModel(modelId);
     let model = getEditorModel(modelId);
 
@@ -1677,37 +1877,44 @@ function pasteCell(modelId: string, colIdx: number, rowIdx: number, value: any, 
 
             const byColumnValues = getPasteValuesByColumn(paste);
             // prior to load, ensure lookup column stores are loaded
-            const columnLoaders: Array<any> = gridModel.getInsertColumns().reduce((arr, column, index) => {
-                if (index >= paste.coordinates.colMin && index <= paste.coordinates.colMax && byColumnValues.get(index - paste.coordinates.colMin).size > 0)
+            const columnLoaders: any[] = gridModel.getInsertColumns().reduce((arr, column, index) => {
+                if (
+                    index >= paste.coordinates.colMin &&
+                    index <= paste.coordinates.colMax &&
+                    byColumnValues.get(index - paste.coordinates.colMin).size > 0
+                )
                     arr.push(initLookup(column, undefined, byColumnValues.get(index - paste.coordinates.colMin)));
-                else
-                    arr.push(initLookup(column, LOOKUP_DEFAULT_SIZE));
+                else arr.push(initLookup(column, LOOKUP_DEFAULT_SIZE));
                 return arr;
             }, []);
 
             Promise.all(columnLoaders)
                 .then(() => {
-                    return pasteCellLoad(model, gridModel, paste, (col: QueryColumn) => getLookupStore(col), columnMetadata)
-                        .then((payload) => {
-                            model = updateEditorModel(model, {
-                                cellMessages: payload.cellMessages,
-                                cellValues: payload.cellValues,
-                                selectionCells: payload.selectionCells
-                            });
-
-                            model = endPaste(model);
+                    return pasteCellLoad(
+                        model,
+                        gridModel,
+                        paste,
+                        (col: QueryColumn) => getLookupStore(col),
+                        columnMetadata
+                    ).then(payload => {
+                        model = updateEditorModel(model, {
+                            cellMessages: payload.cellMessages,
+                            cellValues: payload.cellValues,
+                            selectionCells: payload.selectionCells,
                         });
+
+                        model = endPaste(model);
+                    });
                 })
                 .then(() => {
                     if (onComplete) {
                         onComplete();
                     }
                 });
-        }
-        else {
+        } else {
             const cellKey = genCellKey(colIdx, rowIdx);
             model = updateEditorModel(model, {
-                cellMessages: model.cellMessages.set(cellKey, {message: paste.message} as CellMessage)
+                cellMessages: model.cellMessages.set(cellKey, { message: paste.message } as CellMessage),
             });
         }
     }
@@ -1716,7 +1923,7 @@ function pasteCell(modelId: string, colIdx: number, rowIdx: number, value: any, 
 function endPaste(model: EditorModel): EditorModel {
     return updateEditorModel(model, {
         isPasting: false,
-        numPastedRows: 0
+        numPastedRows: 0,
     });
 }
 
@@ -1728,28 +1935,29 @@ function validatePaste(model: EditorModel, colMin: number, rowMin: number, value
         colMax: colMin + payload.numCols - 1,
         colMin,
         rowMax: rowMin + payload.numRows - 1,
-        rowMin
+        rowMin,
     };
 
-    let paste: IPasteModel = {
+    const paste: IPasteModel = {
         coordinates,
         payload,
-        rowsToAdd: Math.max(0, (coordinates.rowMin + payload.numRows) - model.rowCount),
-        success: true
+        rowsToAdd: Math.max(0, coordinates.rowMin + payload.numRows - model.rowCount),
+        success: true,
     };
 
     // If P = 1 then target can be 1 or M
     // If P = M(x,y) then target can be 1 or exact M(x,y)
 
-    if ((coordinates.colMin !== coordinates.colMax || coordinates.rowMin !== coordinates.rowMax) && model.hasMultipleSelection()) {
+    if (
+        (coordinates.colMin !== coordinates.colMax || coordinates.rowMin !== coordinates.rowMax) &&
+        model.hasMultipleSelection()
+    ) {
         paste.success = false;
         paste.message = 'Unable to paste. Paste is not supported against multiple selections.';
-    }
-    else if (coordinates.colMax >= model.colCount) {
+    } else if (coordinates.colMax >= model.colCount) {
         paste.success = false;
         paste.message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
-    }
-    else if ((coordinates.rowMax - coordinates.rowMin) > maxRowPaste) {
+    } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {
         paste.success = false;
         paste.message = 'Unable to paste. Cannot paste more than ' + maxRowPaste + ' rows.';
     }
@@ -1758,41 +1966,40 @@ function validatePaste(model: EditorModel, colMin: number, rowMin: number, value
 }
 
 type IParsePastePayload = {
-    data: List<List<string>>
-    numCols: number
-    numRows: number
-}
+    data: List<List<string>>;
+    numCols: number;
+    numRows: number;
+};
 
 type IPasteModel = {
-    message?: string
+    message?: string;
     coordinates: {
-        colMax: number
-        colMin: number
-        rowMax: number
-        rowMin: number
-    }
-    payload: IParsePastePayload
-    rowsToAdd: number
-    success: boolean
-}
+        colMax: number;
+        colMin: number;
+        rowMax: number;
+        rowMin: number;
+    };
+    payload: IParsePastePayload;
+    rowsToAdd: number;
+    success: boolean;
+};
 
 function parsePaste(value: string): IParsePastePayload {
     let numCols = 0;
     let rows = List<List<string>>().asMutable();
 
-    if (value === undefined || value === null || typeof(value) !== 'string') {
+    if (value === undefined || value === null || typeof value !== 'string') {
         return {
             data: rows.asImmutable(),
             numCols,
-            numRows: rows.size
-        }
+            numRows: rows.size,
+        };
     }
 
     // remove trailing newline from pasted data to avoid creating an empty row of cells
-    if (value.endsWith('\n'))
-        value = value.substring(0, value.length-1);
+    if (value.endsWith('\n')) value = value.substring(0, value.length - 1);
 
-    value.split('\n').forEach((rv) => {
+    value.split('\n').forEach(rv => {
         const columns = List(rv.split('\t'));
         if (numCols < columns.size) {
             numCols = columns.size;
@@ -1800,39 +2007,44 @@ function parsePaste(value: string): IParsePastePayload {
         rows.push(columns);
     });
 
-    rows = rows.map((columns) => {
-        if (columns.size < numCols) {
-            let remainder = [];
-            for (let i = columns.size; i < numCols; i++) {
-                remainder.push('');
+    rows = rows
+        .map(columns => {
+            if (columns.size < numCols) {
+                const remainder = [];
+                for (let i = columns.size; i < numCols; i++) {
+                    remainder.push('');
+                }
+                return columns.push(...remainder);
             }
-            return columns.push(...remainder);
-        }
-        return columns;
-    }).toList();
+            return columns;
+        })
+        .toList();
 
     return {
         data: rows.asImmutable(),
         numCols,
-        numRows: rows.size
-    }
+        numRows: rows.size,
+    };
 }
 
-export function changeColumn(model: QueryGridModel, existingFieldKey: string, newQueryColumn: QueryColumn) : EditorModel {
+export function changeColumn(
+    model: QueryGridModel,
+    existingFieldKey: string,
+    newQueryColumn: QueryColumn
+): EditorModel {
     let editorModel = getEditorModel(model.getId());
 
-    const colIndex =  model.queryInfo.getInsertColumns().findIndex((column) => column.fieldKey === existingFieldKey);
+    const colIndex = model.queryInfo.getInsertColumns().findIndex(column => column.fieldKey === existingFieldKey);
 
     // nothing to do if there is no such column
-    if (colIndex === -1)
-        return editorModel;
+    if (colIndex === -1) return editorModel;
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
 
     // get rid of existing messages and values at the designated index.
     newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-        const [oldColIdx] = cellKey.split('-').map((v) => parseInt(v));
+        const [oldColIdx] = cellKey.split('-').map(v => parseInt(v));
         if (oldColIdx !== colIndex) {
             return newCellMessages.set(cellKey, message);
         }
@@ -1841,7 +2053,7 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
     }, Map<string, CellMessage>());
 
     newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
 
         if (oldColIdx !== colIndex) {
             return newCellValues.set(cellKey, value);
@@ -1850,7 +2062,6 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
         return newCellValues;
     }, Map<string, List<ValueDescriptor>>());
 
-
     editorModel = updateEditorModel(editorModel, {
         focusColIdx: -1,
         focusRowIdx: -1,
@@ -1858,37 +2069,36 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
         selectedRowIdx: -1,
         selectionCells: Set<string>(),
         cellMessages: newCellMessages,
-        cellValues: newCellValues
+        cellValues: newCellValues,
     });
-
 
     const currentCol = model.queryInfo.getColumn(existingFieldKey);
 
     // remove existing column and set new column in data
     let data = model.data;
-    data = data.map((rowData) => {
-        rowData = rowData.remove(currentCol.fieldKey);
-        return rowData.set(newQueryColumn.fieldKey, undefined)
-    }).toMap();
+    data = data
+        .map(rowData => {
+            rowData = rowData.remove(currentCol.fieldKey);
+            return rowData.set(newQueryColumn.fieldKey, undefined);
+        })
+        .toMap();
 
     let columns = OrderedMap<string, QueryColumn>();
     model.queryInfo.columns.forEach((column, key) => {
         if (column.fieldKey === currentCol.fieldKey) {
             columns = columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
-        }
-        else {
+        } else {
             columns = columns.set(key, column);
         }
     });
 
     updateQueryGridModel(model, {
         data,
-        queryInfo: model.queryInfo.merge({columns}) as QueryInfo
+        queryInfo: model.queryInfo.merge({ columns }) as QueryInfo,
     });
 
     return editorModel;
 }
-
 
 /**
  * Adds columns to the editor model and the underlying QueryGridModel
@@ -1897,28 +2107,30 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
  * @param fieldKey the fieldKey of the existing column after which the new columns should be inserted.  If undefined
  * or the column is not found, columns will be added at the beginning.
  */
-export function addColumns(model: QueryGridModel, queryColumns: OrderedMap<string, QueryColumn>, fieldKey?: string ) : EditorModel {
+export function addColumns(
+    model: QueryGridModel,
+    queryColumns: OrderedMap<string, QueryColumn>,
+    fieldKey?: string
+): EditorModel {
     let editorModel = getEditorModel(model.getId());
 
-    if (queryColumns.size === 0)
-        return editorModel;
+    if (queryColumns.size === 0) return editorModel;
 
     let editorColIndex;
     let queryColIndex;
 
     // add one to these because we insert after the given field (or at the
     // beginning if there is no such field)
-    editorColIndex =  model.getInsertColumnIndex(fieldKey) + 1;
+    editorColIndex = model.getInsertColumnIndex(fieldKey) + 1;
     queryColIndex = model.getColumnIndex(fieldKey) + 1;
 
-    if (editorColIndex < 0 || editorColIndex > model.queryInfo.columns.size)
-        return editorModel;
+    if (editorColIndex < 0 || editorColIndex > model.queryInfo.columns.size) return editorModel;
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
 
     newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
         if (oldColIdx >= editorColIndex) {
             return newCellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
         } else if (oldColIdx < editorColIndex) {
@@ -1929,7 +2141,7 @@ export function addColumns(model: QueryGridModel, queryColumns: OrderedMap<strin
     }, Map<string, CellMessage>());
 
     newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
 
         if (oldColIdx >= editorColIndex) {
             return newCellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
@@ -1953,41 +2165,41 @@ export function addColumns(model: QueryGridModel, queryColumns: OrderedMap<strin
         selectedRowIdx: -1,
         selectionCells: Set<string>(),
         cellMessages: newCellMessages,
-        cellValues: newCellValues
+        cellValues: newCellValues,
     });
 
-
     let data = model.data;
-    data = data.map((rowData) => {
-        queryColumns.forEach(column => {
-            rowData = rowData.set(column.fieldKey, undefined)
-        });
-        return rowData;
-    }).toMap();
+    data = data
+        .map(rowData => {
+            queryColumns.forEach(column => {
+                rowData = rowData.set(column.fieldKey, undefined);
+            });
+            return rowData;
+        })
+        .toMap();
 
-    let columns = model.queryInfo.insertColumns(queryColIndex, queryColumns);
+    const columns = model.queryInfo.insertColumns(queryColIndex, queryColumns);
 
     updateQueryGridModel(model, {
         data,
-        queryInfo: model.queryInfo.merge({columns}) as QueryInfo
+        queryInfo: model.queryInfo.merge({ columns }) as QueryInfo,
     });
 
     return editorModel;
 }
 
-export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorModel {
+export function removeColumn(model: QueryGridModel, fieldKey: string): EditorModel {
     let editorModel = getEditorModel(model.getId());
 
-    let deleteIndex = model.getInsertColumnIndex(fieldKey);
+    const deleteIndex = model.getInsertColumnIndex(fieldKey);
     // nothing to do if there is no such column
-    if (deleteIndex === -1)
-        return editorModel;
+    if (deleteIndex === -1) return editorModel;
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
 
     newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
         if (oldColIdx > deleteIndex) {
             return newCellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
         } else if (oldColIdx < deleteIndex) {
@@ -1998,7 +2210,7 @@ export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorMo
     }, Map<string, CellMessage>());
 
     newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
 
         if (oldColIdx > deleteIndex) {
             return newCellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
@@ -2017,31 +2229,31 @@ export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorMo
         selectedRowIdx: -1,
         selectionCells: Set<string>(),
         cellMessages: newCellMessages,
-        cellValues: newCellValues
+        cellValues: newCellValues,
     });
-
 
     // remove column from all rows in queryGridModel.data
     let data = model.data;
-    data = data.map((rowData) => {
-        return rowData.remove(fieldKey);
-    }).toMap();
+    data = data
+        .map(rowData => {
+            return rowData.remove(fieldKey);
+        })
+        .toMap();
 
     const columns = model.queryInfo.columns.remove(fieldKey.toLowerCase());
 
     updateQueryGridModel(model, {
         data,
-        queryInfo: model.queryInfo.merge({columns}) as QueryInfo
+        queryInfo: model.queryInfo.merge({ columns }) as QueryInfo,
     });
 
     return editorModel;
-
 }
 
 function beginPaste(model: EditorModel, numRows: number): EditorModel {
     return updateEditorModel(model, {
         isPasting: true,
-        numPastedRows: numRows
+        numPastedRows: numRows,
     });
 }
 
@@ -2051,10 +2263,9 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
         if (model.editable) {
             if (rowData) {
                 editorModel = updateEditorData(model, rowData.toList(), count, model.getData().size);
-            }
-            else {
+            } else {
                 editorModel = updateEditorModel(editorModel, {
-                    rowCount: editorModel.rowCount + count
+                    rowCount: editorModel.rowCount + count,
                 });
             }
         }
@@ -2064,7 +2275,7 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
 
         for (let i = 0; i < count; i++) {
             // ensure we don't step on another ID
-            let id = GRID_EDIT_INDEX + ID_COUNTER++;
+            const id = GRID_EDIT_INDEX + ID_COUNTER++;
 
             data = data.set(id, rowData || EMPTY_ROW);
             dataIds = dataIds.push(id);
@@ -2074,7 +2285,7 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
             data,
             dataIds,
             isError: false,
-            message: undefined
+            message: undefined,
         });
     }
 
@@ -2085,18 +2296,17 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
 // pasted if there were empty cells within the paste block.
 function getPasteValuesByColumn(paste: IPasteModel): List<List<string>> {
     const { data } = paste.payload;
-    let valuesByColumn =  List<List<string>>().asMutable();
+    const valuesByColumn = List<List<string>>().asMutable();
 
-    for (let i=0; i< data.get(0).size; i++) {
-        valuesByColumn.push(List<string>().asMutable())
+    for (let i = 0; i < data.get(0).size; i++) {
+        valuesByColumn.push(List<string>().asMutable());
     }
-    data.forEach((row) => {
-        row.forEach( (value, index) => {
-            value.split(",").forEach(v => {
-                if (v.trim().length > 0)
-                    valuesByColumn.get(index).push(v.trim())
+    data.forEach(row => {
+        row.forEach((value, index) => {
+            value.split(',').forEach(v => {
+                if (v.trim().length > 0) valuesByColumn.get(index).push(v.trim());
             });
-        })
+        });
     });
     return valuesByColumn.asImmutable();
 }
@@ -2106,22 +2316,28 @@ function isReadOnly(column: QueryColumn, columnMetadata: Map<string, EditableCol
     return (column && column.readOnly) || (metadata && metadata.readOnly);
 }
 
-function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPasteModel, getLookup: (col: QueryColumn) => LookupStore, columnMetadata: Map<string, EditableColumnMetadata>): Promise<{ cellMessages: CellMessages; cellValues: CellValues; selectionCells: Set<string> }> {
-    return new Promise((resolve) => {
+function pasteCellLoad(
+    model: EditorModel,
+    gridModel: QueryGridModel,
+    paste: IPasteModel,
+    getLookup: (col: QueryColumn) => LookupStore,
+    columnMetadata: Map<string, EditableColumnMetadata>
+): Promise<{ cellMessages: CellMessages; cellValues: CellValues; selectionCells: Set<string> }> {
+    return new Promise(resolve => {
         const { data } = paste.payload;
         const columns = gridModel.getInsertColumns();
 
-        let cellMessages = model.cellMessages.asMutable();
-        let cellValues = model.cellValues.asMutable();
-        let selectionCells = Set<string>().asMutable();
+        const cellMessages = model.cellMessages.asMutable();
+        const cellValues = model.cellValues.asMutable();
+        const selectionCells = Set<string>().asMutable();
 
         if (model.hasMultipleSelection()) {
-            model.selectionCells.forEach((cellKey) => {
+            model.selectionCells.forEach(cellKey => {
                 const { colIdx } = parseCellKey(cellKey);
                 const col = columns.get(colIdx);
 
-                data.forEach((row) => {
-                    row.forEach((value) => {
+                data.forEach(row => {
+                    row.forEach(value => {
                         let cv: List<ValueDescriptor>;
                         let msg: CellMessage;
 
@@ -2132,12 +2348,13 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                             if (message) {
                                 msg = message;
                             }
-                        }
-                        else {
-                            cv = List([{
-                                display: value,
-                                raw: value
-                            }]);
+                        } else {
+                            cv = List([
+                                {
+                                    display: value,
+                                    raw: value,
+                                },
+                            ]);
                         }
 
                         if (!isReadOnly(col, columnMetadata)) {
@@ -2150,12 +2367,10 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                         }
 
                         selectionCells.add(cellKey);
-
                     });
                 });
             });
-        }
-        else {
+        } else {
             const { colMin, rowMin } = paste.coordinates;
 
             data.forEach((row, rn) => {
@@ -2169,17 +2384,19 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                     let msg: CellMessage;
 
                     if (col && col.isPublicLookup()) {
-                        const {message, values} = parsePasteCellLookup(col, getLookup(col), value);
+                        const { message, values } = parsePasteCellLookup(col, getLookup(col), value);
                         cv = values;
 
                         if (message) {
                             msg = message;
                         }
                     } else {
-                        cv = List([{
-                            display: value,
-                            raw: value
-                        }]);
+                        cv = List([
+                            {
+                                display: value,
+                                raw: value,
+                            },
+                        ]);
                     }
 
                     if (!isReadOnly(col, columnMetadata)) {
@@ -2192,7 +2409,6 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                     }
 
                     selectionCells.add(cellKey);
-
                 });
             });
         }
@@ -2200,28 +2416,30 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
         resolve({
             cellMessages: cellMessages.asImmutable(),
             cellValues: cellValues.asImmutable(),
-            selectionCells: selectionCells.asImmutable()
+            selectionCells: selectionCells.asImmutable(),
         });
     });
 }
 
 interface IParseLookupPayload {
-    message?: CellMessage
-    values: List<ValueDescriptor>
+    message?: CellMessage;
+    values: List<ValueDescriptor>;
 }
 
 function parsePasteCellLookup(column: QueryColumn, lookup: LookupStore, value: string): IParseLookupPayload {
-    if (value === undefined || value === null || typeof(value) !== 'string') {
+    if (value === undefined || value === null || typeof value !== 'string') {
         return {
-            values: List([{
-                display: value,
-                raw: value
-            }])
+            values: List([
+                {
+                    display: value,
+                    raw: value,
+                },
+            ]),
         };
     }
 
     let message: CellMessage;
-    let unmatched: Array<string> = [];
+    const unmatched: string[] = [];
 
     const values = value
         .split(',')
@@ -2232,9 +2450,8 @@ function parsePasteCellLookup(column: QueryColumn, lookup: LookupStore, value: s
                 const vd = lookup.descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
                 if (!vd) {
                     unmatched.push(vt);
-                    return {display: vt, raw: vt};
-                }
-                else {
+                    return { display: vt, raw: vt };
+                } else {
                     return vd;
                 }
             }
@@ -2244,39 +2461,42 @@ function parsePasteCellLookup(column: QueryColumn, lookup: LookupStore, value: s
 
     if (unmatched.length) {
         message = {
-            message: 'Could not find data for ' + unmatched.slice(0, 4).map(u => '"' + u + '"').join(', ')
+            message:
+                'Could not find data for ' +
+                unmatched
+                    .slice(0, 4)
+                    .map(u => '"' + u + '"')
+                    .join(', '),
         };
     }
 
     return {
         message,
-        values
-    }
+        values,
+    };
 }
 
 export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>) {
     const editModel = getEditorModel(modelId);
 
     if (editModel && !editModel.hasFocus()) {
-        let colIdx = editModel.selectedColIdx;
-        let rowIdx = editModel.selectedRowIdx;
+        const colIdx = editModel.selectedColIdx;
+        const rowIdx = editModel.selectedRowIdx;
 
         let nextCol, nextRow;
 
         switch (event.keyCode) {
             case KEYS.LeftArrow:
                 if (event.ctrlKey) {
-                    let found = editModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveLeft);
+                    const found = editModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveLeft);
                     if (found) {
                         nextCol = found.colIdx;
                         nextRow = found.rowIdx;
-                    }
-                    else {
+                    } else {
                         nextCol = 0;
                         nextRow = rowIdx;
                     }
-                }
-                else {
+                } else {
                     nextCol = colIdx - 1;
                     nextRow = rowIdx;
                 }
@@ -2284,17 +2504,15 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
 
             case KEYS.UpArrow:
                 if (event.ctrlKey) {
-                    let found = editModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveUp);
+                    const found = editModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveUp);
                     if (found) {
                         nextCol = found.colIdx;
                         nextRow = found.rowIdx;
-                    }
-                    else {
+                    } else {
                         nextCol = colIdx;
                         nextRow = 0;
                     }
-                }
-                else {
+                } else {
                     nextCol = colIdx;
                     nextRow = rowIdx - 1;
                 }
@@ -2302,17 +2520,15 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
 
             case KEYS.RightArrow:
                 if (event.ctrlKey) {
-                    let found = editModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveRight);
+                    const found = editModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveRight);
                     if (found) {
                         nextCol = found.colIdx;
                         nextRow = found.rowIdx;
-                    }
-                    else {
+                    } else {
                         nextCol = editModel.colCount - 1;
                         nextRow = rowIdx;
                     }
-                }
-                else {
+                } else {
                     nextCol = colIdx + 1;
                     nextRow = rowIdx;
                 }
@@ -2320,17 +2536,15 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
 
             case KEYS.DownArrow:
                 if (event.ctrlKey) {
-                    let found = editModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveDown);
+                    const found = editModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveDown);
                     if (found) {
                         nextCol = found.colIdx;
                         nextRow = found.rowIdx;
-                    }
-                    else {
+                    } else {
                         nextCol = colIdx;
                         nextRow = editModel.rowCount - 1;
                     }
-                }
-                else {
+                } else {
                     nextCol = colIdx;
                     nextRow = rowIdx + 1;
                 }
@@ -2354,7 +2568,7 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
     }
 }
 
-export function removeAllRows(model: QueryGridModel) : QueryGridModel {
+export function removeAllRows(model: QueryGridModel): QueryGridModel {
     const editorModel = getEditorModel(model.getId());
 
     updateEditorModel(editorModel, {
@@ -2365,18 +2579,22 @@ export function removeAllRows(model: QueryGridModel) : QueryGridModel {
         selectedRowIdx: -1,
         selectionCells: Set<string>(),
         cellMessages: Map<string, CellMessage>(),
-        cellValues: Map<string, CellValues>()
+        cellValues: Map<string, CellValues>(),
     });
 
     return updateQueryGridModel(model, {
         data: Map<any, Map<string, any>>(),
         dataIds: List<any>(),
         isError: false,
-        message: undefined
+        message: undefined,
     });
 }
 
-export function updateGridFromBulkForm(gridModel: QueryGridModel, rowData: OrderedMap<string, any>, dataRowIndexes: List<number>) : EditorModel {
+export function updateGridFromBulkForm(
+    gridModel: QueryGridModel,
+    rowData: OrderedMap<string, any>,
+    dataRowIndexes: List<number>
+): EditorModel {
     const editorModel = getEditorModel(gridModel.getId());
 
     let cellMessages = editorModel.cellMessages;
@@ -2385,7 +2603,7 @@ export function updateGridFromBulkForm(gridModel: QueryGridModel, rowData: Order
     const preparedData = prepareUpdateRowDataFromBulkForm(gridModel, rowData);
     const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 
-    dataRowIndexes.forEach((rowIdx) => {
+    dataRowIndexes.forEach(rowIdx => {
         values.forEach((value, colIdx) => {
             const cellKey = genCellKey(colIdx, rowIdx);
             cellMessages = cellMessages.set(cellKey, messages.get(colIdx));
@@ -2395,7 +2613,7 @@ export function updateGridFromBulkForm(gridModel: QueryGridModel, rowData: Order
 
     return updateEditorModel(editorModel, {
         cellValues,
-        cellMessages
+        cellMessages,
     });
 }
 
@@ -2412,33 +2630,37 @@ function prepareUpdateRowDataFromBulkForm(gridModel: QueryGridModel, rowData: Or
         columns.forEach((col, ind) => {
             if (col.fieldKey === colKey) {
                 colIdx = ind;
-                return;
             }
         });
 
         const col = columns.get(colIdx);
 
-        let cv : List<ValueDescriptor>;
+        let cv: List<ValueDescriptor>;
 
         if (data && col && col.isLookup()) {
-            cv =  List<ValueDescriptor>();
+            cv = List<ValueDescriptor>();
             // value had better be the rowId here, but it may be several in a comma-separated list.
             // If it's the display value, which happens to be a number, much confusion will arise.
-            const values = data.toString().split(",");
-            values.forEach((val) => {
+            const values = data.toString().split(',');
+            values.forEach(val => {
                 const intVal = parseInt(val);
-                const {message, valueDescriptor} = getLookupDisplayValue(col, getLookup(col), isNaN(intVal) ? val : intVal);
+                const { message, valueDescriptor } = getLookupDisplayValue(
+                    col,
+                    getLookup(col),
+                    isNaN(intVal) ? val : intVal
+                );
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.set(colIdx, message);
                 }
             });
-
         } else {
-            cv = List([{
-                display: data,
-                raw: data
-            }]);
+            cv = List([
+                {
+                    display: data,
+                    raw: data,
+                },
+            ]);
         }
 
         values = values.set(colIdx, cv);
@@ -2446,10 +2668,9 @@ function prepareUpdateRowDataFromBulkForm(gridModel: QueryGridModel, rowData: Or
 
     return {
         values,
-        messages
-    }
+        messages,
+    };
 }
-
 
 export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
     const editorModel = getEditorModel(model.getId());
@@ -2460,7 +2681,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
     let data = model.data;
     let dataIds = model.dataIds;
     let deletedIds = Set<any>();
-    sortedIdIndexes.forEach((dataIdIndex) => {
+    sortedIdIndexes.forEach(dataIdIndex => {
         const dataId = dataIds.get(dataIdIndex);
         deletedIds = deletedIds.add(dataId);
         data = data.remove(dataId);
@@ -2471,9 +2692,9 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
         let newCellMessages = editorModel.cellMessages;
         let newCellValues = editorModel.cellValues;
 
-        sortedIdIndexes.forEach((rowIdx) => {
+        sortedIdIndexes.forEach(rowIdx => {
             newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-                const [colIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+                const [colIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
                 if (oldRowIdx > rowIdx) {
                     return newCellMessages.set([colIdx, oldRowIdx - 1].join('-'), message);
                 } else if (oldRowIdx < rowIdx) {
@@ -2484,7 +2705,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
             }, Map<string, CellMessage>());
 
             newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-                const [colIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+                const [colIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
 
                 if (oldRowIdx > rowIdx) {
                     return newCellValues.set([colIdx, oldRowIdx - 1].join('-'), value);
@@ -2493,7 +2714,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
                 }
 
                 return newCellValues;
-            }, Map<string, List<ValueDescriptor>>())
+            }, Map<string, List<ValueDescriptor>>());
         });
 
         updateEditorModel(editorModel, {
@@ -2505,7 +2726,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
             selectedRowIdx: -1,
             selectionCells: Set<string>(),
             cellMessages: newCellMessages,
-            cellValues: newCellValues
+            cellValues: newCellValues,
         });
     }
 
@@ -2513,12 +2734,15 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
         data,
         dataIds,
         isError: false,
-        message: undefined
+        message: undefined,
     });
 }
 
 export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
-    removeRows(model, List<number>([rowIdx]));
+    removeRows(
+        model,
+        List<number>([rowIdx])
+    );
 }
 
 /**
@@ -2528,18 +2752,26 @@ export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
  * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
  * provide a filter for the sample column or columns defined in the assay design.
  */
-export function createQueryGridModelFilteredBySample(model: AssayDefinitionModel, gridId: string, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string, useLsid?: boolean, omitSampleCols?: boolean): QueryGridModel {
+export function createQueryGridModelFilteredBySample(
+    model: AssayDefinitionModel,
+    gridId: string,
+    value,
+    singleFilter: Filter.IFilterType,
+    whereClausePart: (fieldKey, value) => string,
+    useLsid?: boolean,
+    omitSampleCols?: boolean
+): QueryGridModel {
     const schemaQuery = SchemaQuery.create(model.protocolSchemaName, 'Data');
     const sampleColumns = model.getSampleColumnFieldKeys();
 
     if (sampleColumns && !sampleColumns.isEmpty()) {
-        let filter = model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid);
+        const filter = model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid);
         return getStateQueryGridModel(gridId, schemaQuery, () => ({
             baseFilters: List([filter]),
             isPaged: true,
             title: model.name,
             urlPrefix: model.name,
-            omittedColumns: omitSampleCols ? sampleColumns : List<string>()
+            omittedColumns: omitSampleCols ? sampleColumns : List<string>(),
         }));
     }
 }

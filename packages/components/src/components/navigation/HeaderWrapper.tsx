@@ -21,7 +21,6 @@ interface Props {
 }
 
 export class HeaderWrapper extends React.Component<Props, any> {
-
     private headerWrapper: React.RefObject<HTMLDivElement>;
     private lastScrollY: number;
 
@@ -54,16 +53,13 @@ export class HeaderWrapper extends React.Component<Props, any> {
 
                 if (scrollY === 0) {
                     wrapperEl.removeClass('scrolled');
-                }
-                else if (scrollY > headerHeight) {
+                } else if (scrollY > headerHeight) {
                     wrapperEl.addClass('scrolled');
                 }
 
-
                 if (scrollY < this.lastScrollY) {
                     wrapperEl.addClass('show-sub-nav');
-                }
-                else {
+                } else {
                     wrapperEl.removeClass('show-sub-nav');
                 }
             }
@@ -73,11 +69,10 @@ export class HeaderWrapper extends React.Component<Props, any> {
     }
 
     render() {
-
         return (
             <div ref={this.headerWrapper} className="app-header-wrapper">
                 {this.props.children}
             </div>
-        )
+        );
     }
 }

@@ -19,17 +19,16 @@ import { PageHeader } from './PageHeader';
 import { NotFound } from './NotFound';
 
 export interface PageProps {
-    notFound?: boolean
-    hasHeader?: boolean
-    title?: string
-    productName?: string
+    notFound?: boolean;
+    hasHeader?: boolean;
+    title?: string;
+    productName?: string;
 }
 
 export class Page extends React.Component<PageProps, any> {
-
     static defaultProps = {
         notFound: false,
-        hasHeader: false
+        hasHeader: false,
     };
 
     componentDidMount() {
@@ -42,9 +41,9 @@ export class Page extends React.Component<PageProps, any> {
 
     static getDocumentTitle(props: PageProps) {
         const { productName, title } = props;
-        let fullTitle = (title && title.length > 0) ? title : '';
+        let fullTitle = title && title.length > 0 ? title : '';
         if (productName && productName.length > 0)
-            fullTitle = fullTitle + ((fullTitle.length > 0) ? ' - ' : '') + productName;
+            fullTitle = fullTitle + (fullTitle.length > 0 ? ' - ' : '') + productName;
         return fullTitle;
     }
 
@@ -56,16 +55,16 @@ export class Page extends React.Component<PageProps, any> {
         }
     }
 
-    isHeader(child) : boolean {
+    isHeader(child): boolean {
         // Dev/Prod builds require slightly different requirements for this check
-        return child.type === PageHeader || child.type.name === 'PageHeader'
+        return child.type === PageHeader || child.type.name === 'PageHeader';
     }
 
     render() {
         const { children, notFound } = this.props;
 
         if (notFound) {
-            return <NotFound/>
+            return <NotFound />;
         }
 
         if (children) {
@@ -82,12 +81,12 @@ export class Page extends React.Component<PageProps, any> {
 
             return (
                 <>
-                    {!hasHeader && <PageHeader/>}
+                    {!hasHeader && <PageHeader />}
                     {children}
                 </>
             );
         }
 
-        return <PageHeader/>
+        return <PageHeader />;
     }
 }

@@ -3,7 +3,7 @@ import { DEFAULT_LINEAGE_OPTIONS } from './constants';
 import { LineageFilter } from './types';
 
 describe('applyLineageOptions', () => {
-    it ('use default options', () => {
+    it('use default options', () => {
         expect(applyLineageOptions()).toStrictEqual(DEFAULT_LINEAGE_OPTIONS);
     });
 
@@ -18,7 +18,6 @@ describe('applyLineageOptions', () => {
     });
 
     it('apply grouping options', () => {
-        expect(applyLineageOptions({ grouping: { childDepth: 99 }}))
-            .toHaveProperty(['grouping', 'childDepth'], 99);
+        expect(applyLineageOptions({ grouping: { childDepth: 99 } })).toHaveProperty(['grouping', 'childDepth'], 99);
     });
 });

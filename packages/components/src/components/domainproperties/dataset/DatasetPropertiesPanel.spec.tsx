@@ -14,79 +14,85 @@
  * limitations under the License.
  */
 
-import {DatasetModel} from "./models";
-import {NEW_DATASET_MODEL} from "../../../test/data/constants";
-import getDatasetDesign from "../../../test/data/dataset-getDatasetDesign.json";
-import React from "react";
-import {DatasetPropertiesPanel, DatasetPropertiesPanelImpl} from "./DatasetPropertiesPanel";
-import renderer from "react-test-renderer";
-import {mount} from "enzyme";
-import {DatasetDesignerPanelImpl} from "./DatasetDesignerPanels";
-import {DomainPanelStatus} from "../models";
-import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
-import {BasicPropertiesFields} from "./DatasetPropertiesPanelFormElements";
-import {Radio} from "react-bootstrap";
+import React from 'react';
 
-describe("Dataset Properties Panel", () => {
+import renderer from 'react-test-renderer';
 
+import { mount } from 'enzyme';
+
+import { Radio } from 'react-bootstrap';
+
+import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../test/data/constants';
+
+import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
+
+import { DomainPanelStatus } from '../models';
+
+import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
+
+import { DatasetModel } from './models';
+
+import { DatasetPropertiesPanel, DatasetPropertiesPanelImpl } from './DatasetPropertiesPanel';
+
+import { DatasetDesignerPanelImpl } from './DatasetDesignerPanels';
+
+import { BasicPropertiesFields } from './DatasetPropertiesPanelFormElements';
+
+describe('Dataset Properties Panel', () => {
     const BASE_PROPS = {
         panelStatus: 'NONE' as DomainPanelStatus,
         validate: false,
         useTheme: false,
         controlledCollapse: false,
         initCollapsed: false,
-        collapsed: false
+        collapsed: false,
     };
 
-    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
+    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
-    test("New dataset", () => {
-        const propertiesPanel =
+    test('New dataset', () => {
+        const propertiesPanel = (
             <DatasetPropertiesPanel
                 initCollapsed={false}
                 model={newDatasetModel}
                 controlledCollapse={true}
                 useTheme={true}
-                panelStatus={'COMPLETE'}
+                panelStatus="COMPLETE"
                 validate={false}
                 onToggle={(collapsed, callback) => {}}
                 onChange={jest.fn()}
-                showVisitDate={true}
-                showDataspace={true}
-            />;
+            />
+        );
 
         const dom = renderer.create(propertiesPanel).toJSON();
         expect(dom).toMatchSnapshot();
     });
 
-    test("Edit existing dataset", () => {
-        const propertiesPanel =
+    test('Edit existing dataset', () => {
+        const propertiesPanel = (
             <DatasetPropertiesPanel
                 initCollapsed={false}
                 model={populatedDatasetModel}
                 controlledCollapse={true}
                 useTheme={true}
-                panelStatus={'COMPLETE'}
+                panelStatus="COMPLETE"
                 validate={false}
                 onToggle={(collapsed, callback) => {}}
-                showDataspace={true}
-                showVisitDate={true}
                 onChange={jest.fn()}
-            />;
+            />
+        );
 
         const dom = renderer.create(propertiesPanel).toJSON();
         expect(dom).toMatchSnapshot();
     });
 
-    test("set state for isValid", () => {
+    test('set state for isValid', () => {
         const propertiesPanel = mount(
             <DatasetPropertiesPanelImpl
                 {...BASE_PROPS}
                 model={populatedDatasetModel}
                 togglePanel={jest.fn()}
-                showDataspace={true}
-                showVisitDate={true}
                 onChange={jest.fn()}
             />
         );
@@ -96,7 +102,7 @@ describe("Dataset Properties Panel", () => {
         expect(propertiesPanel.find(Radio)).toHaveLength(3);
 
         expect(propertiesPanel.state()).toHaveProperty('isValid', true);
-        propertiesPanel.setState({isValid: false});
+        propertiesPanel.setState({ isValid: false });
         expect(propertiesPanel.state()).toHaveProperty('isValid', false);
 
         expect(propertiesPanel.find(CollapsiblePanelHeader)).toHaveLength(1);
@@ -105,5 +111,4 @@ describe("Dataset Properties Panel", () => {
 
         propertiesPanel.unmount();
     });
-
 });

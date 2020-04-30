@@ -18,23 +18,23 @@ import renderer from 'react-test-renderer';
 
 import { Section } from './Section';
 
-describe("<Section />", () => {
-
-    test("default properties", () => {
-       const tree = renderer.create(<Section />).toJSON();
-       expect(tree).toMatchSnapshot();
+describe('<Section />', () => {
+    test('default properties', () => {
+        const tree = renderer.create(<Section />).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
-    test("custom properties", () => {
-       const tree = renderer.create(
-           <Section
-                caption={<p>Testing Caption</p>}
-                context={<div>Testing Context</div>}
-                title={'Testing Title'}
-                panelClassName={'testing-class-name'}
-           />
-       ).toJSON();
-       expect(tree).toMatchSnapshot();
+    test('custom properties', () => {
+        const tree = renderer
+            .create(
+                <Section
+                    caption={<p>Testing Caption</p>}
+                    context={<div>Testing Context</div>}
+                    title="Testing Title"
+                    panelClassName="testing-class-name"
+                />
+            )
+            .toJSON();
+        expect(tree).toMatchSnapshot();
     });
-
 });

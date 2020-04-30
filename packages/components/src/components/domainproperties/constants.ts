@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
+
+import { Domain } from '@labkey/api';
+
 import { GridColumn } from '../base/Grid';
-import {Domain} from "@labkey/api";
 
 export const DOMAIN_FIELD_PREFIX = 'domainpropertiesrow';
 export const DOMAIN_FIELD_NAME = 'name';
@@ -80,7 +82,6 @@ export const DOMAIN_CONDITIONAL_FORMAT_PREFIX = 'format.column';
 export const DOMAIN_CONDITION_FORMAT_TEXT_COLOR = 'textColor';
 export const DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR = 'backgroundColor';
 
-
 export const DOMAIN_FIRST_FILTER_TYPE = 'firstFilterType';
 export const DOMAIN_FIRST_FILTER_VALUE = 'firstFilterValue';
 export const DOMAIN_SECOND_FILTER_TYPE = 'secondFilterType';
@@ -88,13 +89,13 @@ export const DOMAIN_SECOND_FILTER_VALUE = 'secondFilterValue';
 
 export const DOMAIN_FILTER_HASANYVALUE = 'HAS_ANY_VALUE';
 
-export const DOMAIN_FIELD_NOT_LOCKED = "NotLocked"; // not locked, can change all properties
-export const DOMAIN_FIELD_PARTIALLY_LOCKED = "PartiallyLocked"; // can't change name and type, for example, but can change other properties
-export const DOMAIN_FIELD_FULLY_LOCKED = "FullyLocked"; // can't change any properties
-export const DOMAIN_FIELD_PRIMARY_KEY_LOCKED = "PKLocked"; // can't change data type or required properties
+export const DOMAIN_FIELD_NOT_LOCKED = 'NotLocked'; // not locked, can change all properties
+export const DOMAIN_FIELD_PARTIALLY_LOCKED = 'PartiallyLocked'; // can't change name and type, for example, but can change other properties
+export const DOMAIN_FIELD_FULLY_LOCKED = 'FullyLocked'; // can't change any properties
+export const DOMAIN_FIELD_PRIMARY_KEY_LOCKED = 'PKLocked'; // can't change data type or required properties
 
-export const SEVERITY_LEVEL_ERROR = "Error";
-export const SEVERITY_LEVEL_WARN = "Warning";
+export const SEVERITY_LEVEL_ERROR = 'Error';
+export const SEVERITY_LEVEL_WARN = 'Warning';
 
 // Default scale types
 export const DEFAULT_SCALE_LINEAR = 'LINEAR';
@@ -135,65 +136,65 @@ export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
 export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 
-export const UNLIMITED_TEXT_LENGTH = 2147483647; //Integer.MAX_VALUE
+export const UNLIMITED_TEXT_LENGTH = 2147483647; // Integer.MAX_VALUE
 export const MAX_TEXT_LENGTH = 4000;
 
-export const PHILEVEL_NOT_PHI = "NotPHI";
-export const PHILEVEL_LIMITED_PHI = "Limited";
-export const PHILEVEL_FULL_PHI = "PHI";
-export const PHILEVEL_RESTRICTED_PHI = "Restricted";
+export const PHILEVEL_NOT_PHI = 'NotPHI';
+export const PHILEVEL_LIMITED_PHI = 'Limited';
+export const PHILEVEL_FULL_PHI = 'PHI';
+export const PHILEVEL_RESTRICTED_PHI = 'Restricted';
 
 export const ALL_SAMPLES_DISPLAY_TEXT = 'All Samples';
 
 export const DOMAIN_PHI_LEVELS = List([
-    {label: 'Not PHI', value: PHILEVEL_NOT_PHI},
-    {label: 'Limited PHI', value: PHILEVEL_LIMITED_PHI},
-    {label: 'Full PHI', value: PHILEVEL_FULL_PHI},
-    {label: 'Restricted PHI', value: PHILEVEL_RESTRICTED_PHI}
+    { label: 'Not PHI', value: PHILEVEL_NOT_PHI },
+    { label: 'Limited PHI', value: PHILEVEL_LIMITED_PHI },
+    { label: 'Full PHI', value: PHILEVEL_FULL_PHI },
+    { label: 'Restricted PHI', value: PHILEVEL_RESTRICTED_PHI },
 ]);
 
-export const DOMAIN_EDITABLE_DEFAULT = "FIXED_EDITABLE";
-export const DOMAIN_NON_EDITABLE_DEFAULT = "FIXED_NON_EDITABLE";
-export const DOMAIN_LAST_ENTERED_DEFAULT = "LAST_ENTERED";
+export const DOMAIN_EDITABLE_DEFAULT = 'FIXED_EDITABLE';
+export const DOMAIN_NON_EDITABLE_DEFAULT = 'FIXED_NON_EDITABLE';
+export const DOMAIN_LAST_ENTERED_DEFAULT = 'LAST_ENTERED';
 
 export const DOMAIN_DEFAULT_TYPES = {
     [DOMAIN_EDITABLE_DEFAULT]: 'Editable default',
     [DOMAIN_NON_EDITABLE_DEFAULT]: 'Fixed value',
-    [DOMAIN_LAST_ENTERED_DEFAULT]: 'Last entered'
-
+    [DOMAIN_LAST_ENTERED_DEFAULT]: 'Last entered',
 };
 
 export const DOMAIN_FIELD_COLS = List([
     new GridColumn({
         index: 'name',
-        title: 'Name'
+        title: 'Name',
     }),
     new GridColumn({
         index: 'label',
-        title: 'Label'
+        title: 'Label',
     }),
     new GridColumn({
         index: 'rangeURI',
-        title: 'Range URI'
+        title: 'Range URI',
     }),
     new GridColumn({
         index: 'conceptURI',
-        title: 'Concept URI'
+        title: 'Concept URI',
     }),
     new GridColumn({
         index: 'required',
-        title: 'Required'
+        title: 'Required',
     }),
     new GridColumn({
         index: 'scale',
-        title: 'Scale'
-    })
+        title: 'Scale',
+    }),
 ]);
 
 export const FIELD_NAME_CHAR_WARNING_MSG = 'Field name contains special characters.';
-export const FIELD_NAME_CHAR_WARNING_INFO = 'SQL queries, R scripts, and other code are easiest to write when field '
-    + 'names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. '
-    + 'Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, '
-    + 'SPSS, and MATLAB.';
+export const FIELD_NAME_CHAR_WARNING_INFO =
+    'SQL queries, R scripts, and other code are easiest to write when field ' +
+    'names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. ' +
+    'Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, ' +
+    'SPSS, and MATLAB.';
 
 export const PROPERTIES_PANEL_ERROR_MSG = 'Contains errors or is missing required values.';

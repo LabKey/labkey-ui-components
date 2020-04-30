@@ -27,22 +27,21 @@ import { QueryColumn } from '../base/models/model';
 const emptyList = List<ValueDescriptor>();
 
 export interface LookupCellProps {
-    col: QueryColumn
-    colIdx: number
-    disabled?: boolean
-    modelId: string
-    rowIdx: number
-    select: (modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any
-    values: List<ValueDescriptor>
+    col: QueryColumn;
+    colIdx: number;
+    disabled?: boolean;
+    modelId: string;
+    rowIdx: number;
+    select: (modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any;
+    values: List<ValueDescriptor>;
 }
 
 interface LookupCellState {
-    activeOptionIdx?: number
-    token?: string
+    activeOptionIdx?: number;
+    token?: string;
 }
 
 export class LookupCell extends React.Component<LookupCellProps, LookupCellState> {
-
     private blurTO: number;
     private changeTO: number;
     private inputEl: React.RefObject<any>;
@@ -63,7 +62,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
 
         this.state = {
             activeOptionIdx: -1,
-            token: undefined
+            token: undefined,
         };
     }
 
@@ -75,7 +74,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
     componentWillReceiveProps(nextProps: LookupCellProps) {
         if (this.state.token && this.getOptions(nextProps).size === 1) {
             this.setState({
-                activeOptionIdx: 0
+                activeOptionIdx: 0,
             });
         }
     }
@@ -93,7 +92,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
 
         this.setState({
             activeOptionIdx: -1,
-            token: undefined
+            token: undefined,
         });
     }
 
@@ -112,7 +111,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
     highlight(index: number) {
         if (index >= -1 && index < this.getOptions(this.props).size) {
             this.setState({
-                activeOptionIdx: index
+                activeOptionIdx: index,
             });
         }
     }
@@ -142,7 +141,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
 
             this.setState({
                 activeOptionIdx: -1,
-                token
+                token,
             });
         }, 350);
     }
@@ -161,8 +160,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
             case KEYS.Enter:
                 if (this.state.activeOptionIdx > -1) {
                     this.onItemClick(options.get(activeOptionIdx));
-                }
-                else {
+                } else {
                     this.clearInput();
                     this.props.select(modelId, colIdx, rowIdx + 1);
                 }
@@ -185,7 +183,13 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
     onItemClick(vd: ValueDescriptor) {
         const { col, colIdx, modelId, rowIdx } = this.props;
 
-        modifyCell(modelId, colIdx, rowIdx, vd, col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE);
+        modifyCell(
+            modelId,
+            colIdx,
+            rowIdx,
+            vd,
+            col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE
+        );
         this.clearInput();
 
         if (!this.isMultiValue()) {
@@ -211,13 +215,31 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
 
         const options = this.getOptions(this.props);
 
-        return options.slice(0, 10).reduce((list, vd, idx) => list.push(
-            <a className={classNames('list-group-item', { active: this.state.activeOptionIdx === idx})} key={idx} onClick={this.onItemClick.bind(this, vd)}>
-                {vd.display}
-            </a>
-        ), List<React.ReactNode>()).push(
-            <a className="disabled list-group-item" key="resultmatcher"><i>{!store.isLoaded ? 'Loading...' : (store.matchCount - (store.descriptors.size - options.size)) + ' matching results'}</i></a>
-        ).toArray();
+        return options
+            .slice(0, 10)
+            .reduce(
+                (list, vd, idx) =>
+                    list.push(
+                        <a
+                            className={classNames('list-group-item', { active: this.state.activeOptionIdx === idx })}
+                            key={idx}
+                            onClick={this.onItemClick.bind(this, vd)}
+                        >
+                            {vd.display}
+                        </a>
+                    ),
+                List<React.ReactNode>()
+            )
+            .push(
+                <a className="disabled list-group-item" key="resultmatcher">
+                    <i>
+                        {!store.isLoaded
+                            ? 'Loading...'
+                            : store.matchCount - (store.descriptors.size - options.size) + ' matching results'}
+                    </i>
+                </a>
+            )
+            .toArray();
     }
 
     renderValue(): React.ReactNode {
@@ -225,17 +247,23 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
 
         return (
             <div>
-                {values.filter((vd) => vd.raw !== undefined).map((vd, i) => (
-                    <span className="btn btn-primary btn-sm"
-                          key={i}
-                          onClick={this.onItemRemove.bind(this, vd)}
-                          style={{marginRight: '2px', padding: '1px 5px'}}>
-                        {vd.display}
-                        &nbsp;<i className="fa fa-close"/>
-                    </span>
-                )).toArray()}
+                {values
+                    .filter(vd => vd.raw !== undefined)
+                    .map((vd, i) => (
+                        <span
+                            className="btn btn-primary btn-sm"
+                            key={i}
+                            onClick={this.onItemRemove.bind(this, vd)}
+                            style={{ marginRight: '2px', padding: '1px 5px' }}
+                        >
+                            {vd.display}
+                            &nbsp;
+                            <i className="fa fa-close" />
+                        </span>
+                    ))
+                    .toArray()}
             </div>
-        )
+        );
     }
 
     getStore(): LookupStore {
@@ -250,33 +278,32 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
         const store = this.getStore();
 
         if (store) {
-            return store.descriptors.filter((vd) => {
-                return !(values && values.some(v => v.raw === vd.raw && vd.display === vd.display));
-            }).toList();
+            return store.descriptors
+                .filter(vd => {
+                    return !(values && values.some(v => v.raw === vd.raw && vd.display === vd.display));
+                })
+                .toList();
         }
 
         return emptyList;
     }
 
     render() {
-
         return (
             <div className="cell-lookup">
                 {this.renderValue()}
                 <input
-                   autoFocus
-                   className="cell-lookup-input"
-                   disabled={this.props.disabled}
-                   onBlur={this.onInputBlur}
-                   onChange={this.onInputChange}
-                   onKeyDown={this.onInputKeyDown}
-                   ref={this.inputEl}
-                   type="text"
+                    autoFocus
+                    className="cell-lookup-input"
+                    disabled={this.props.disabled}
+                    onBlur={this.onInputBlur}
+                    onChange={this.onInputChange}
+                    onKeyDown={this.onInputKeyDown}
+                    ref={this.inputEl}
+                    type="text"
                 />
-                <div className="cell-lookup-menu">
-                    {this.renderOptions()}
-                </div>
+                <div className="cell-lookup-menu">{this.renderOptions()}</div>
             </div>
-        )
+        );
     }
 }

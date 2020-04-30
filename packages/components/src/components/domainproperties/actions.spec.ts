@@ -15,6 +15,8 @@
  */
 import { List } from 'immutable';
 
+import { QueryColumn } from '../base/models/model';
+
 import {
     createFormInputId,
     getBannerMessages,
@@ -25,7 +27,7 @@ import {
     getDomainPanelHeaderId,
     getDomainPanelStatus,
     setDomainFields,
-    updateDomainException
+    updateDomainException,
 } from './actions';
 import {
     DATETIME_TYPE,
@@ -46,20 +48,18 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
 } from './constants';
-import { QueryColumn } from '../base/models/model';
 
-describe("domain properties actions", () => {
-
-    test("test create id", () => {
-        return expect(createFormInputId("marty", 0, 100)).toBe(DOMAIN_FIELD_PREFIX + "-marty-0-100");
+describe('domain properties actions', () => {
+    test('test create id', () => {
+        return expect(createFormInputId('marty', 0, 100)).toBe(DOMAIN_FIELD_PREFIX + '-marty-0-100');
     });
 
-    test("test get field type", () => {
+    test('test get field type', () => {
         const field1 = DomainField.create({
             name: 'field1name',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
         expect(field1.dataType.rangeURI).toBe(INT_RANGE_URI);
 
@@ -68,7 +68,7 @@ describe("domain properties actions", () => {
             rangeURI: STRING_RANGE_URI,
             conceptURI: FLAG_CONCEPT_URI,
             propertyId: 0,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
         expect(field2.dataType.name).toBe('flag');
 
@@ -78,7 +78,7 @@ describe("domain properties actions", () => {
             lookupSchema: 'core',
             lookupQuery: 'users',
             propertyId: 0,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
         expect(field3.dataType.name).toBe('users');
     });
@@ -91,32 +91,32 @@ describe("domain properties actions", () => {
         fields.push({
             name: field1,
             rangeURI: INT_RANGE_URI,
-            propertyId: 1, //simulate existing field
-            propertyURI: 'test'
+            propertyId: 1, // simulate existing field
+            propertyURI: 'test',
         });
 
         fields.push({
             name: field1,
             rangeURI: INT_RANGE_URI,
-            propertyId: undefined, //new field with duplicate column name
-            propertyURI: 'test'
+            propertyId: undefined, // new field with duplicate column name
+            propertyURI: 'test',
         });
 
         let message = "The field name 'column1' is already taken. Please provide a unique name for each field.";
-        let domainFieldError = [];
-        domainFieldError.push({message, field: field1, id: 0});
-        let rawModel = {exception: message, success: false, errors: domainFieldError};
+        const domainFieldError = [];
+        domainFieldError.push({ message, field: field1, id: 0 });
+        let rawModel = { exception: message, success: false, errors: domainFieldError };
         let domainException = DomainException.create(rawModel, SEVERITY_LEVEL_ERROR);
 
         let domain = DomainDesign.create({
-            name: "CancerCuringStudy",
-            schemaName : 'Study',
-            queryName : 'CancerCuringStudy',
+            name: 'CancerCuringStudy',
+            schemaName: 'Study',
+            queryName: 'CancerCuringStudy',
             description: 'description',
             domainURI: 'test',
             domainId: 123,
-            fields: fields,
-            indices: []
+            fields,
+            indices: [],
         });
         let badDomain = domain.set('domainException', domainException);
 
@@ -124,28 +124,29 @@ describe("domain properties actions", () => {
         expect(getBannerMessages(badDomain).get(0).message).toBe(message);
 
         fields.push({
-            name: field2,//reserved field
+            name: field2, // reserved field
             rangeURI: INT_RANGE_URI,
             propertyId: undefined,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
 
-        let multipleErrorMsg = "Multiple fields contain issues that need to be fixed. Review the red highlighted fields above for more information.";
+        const multipleErrorMsg =
+            'Multiple fields contain issues that need to be fixed. Review the red highlighted fields above for more information.';
 
         message = "'modified' is a reserved field name in 'CancerCuringStudy'";
-        domainFieldError.push({message, field: field2, id: 1});
-        rawModel = {exception: message, success: false, errors: domainFieldError};
+        domainFieldError.push({ message, field: field2, id: 1 });
+        rawModel = { exception: message, success: false, errors: domainFieldError };
         domainException = DomainException.create(rawModel, SEVERITY_LEVEL_ERROR);
 
         domain = DomainDesign.create({
-            name: "CancerCuringStudy",
-            schemaName : 'Study',
-            queryName : 'CancerCuringStudy',
+            name: 'CancerCuringStudy',
+            schemaName: 'Study',
+            queryName: 'CancerCuringStudy',
             description: 'description',
             domainURI: 'test',
             domainId: 123,
-            fields: fields,
-            indices: []
+            fields,
+            indices: [],
         });
         badDomain = domain.set('domainException', domainException);
 
@@ -158,39 +159,51 @@ describe("domain properties actions", () => {
             name: '#column#',
             rangeURI: INT_RANGE_URI,
             propertyId: undefined,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
 
-        let fieldName = '#column#';
-        let domainFieldError = [];
-        domainFieldError.push({message: FIELD_NAME_CHAR_WARNING_MSG, extraInfo: FIELD_NAME_CHAR_WARNING_INFO, fieldName, propertyId: undefined, severity: SEVERITY_LEVEL_WARN});
+        const fieldName = '#column#';
+        const domainFieldError = [];
+        domainFieldError.push({
+            message: FIELD_NAME_CHAR_WARNING_MSG,
+            extraInfo: FIELD_NAME_CHAR_WARNING_INFO,
+            fieldName,
+            propertyId: undefined,
+            severity: SEVERITY_LEVEL_WARN,
+        });
 
-        let domain = DomainDesign.create({
-            name: "CancerCuringStudy",
-            description: 'description',
-            domainURI: 'test',
-            domainId: 123,
-            fields: fields,
-            indices: []
-        }, undefined);
+        const domain = DomainDesign.create(
+            {
+                name: 'CancerCuringStudy',
+                description: 'description',
+                domainURI: 'test',
+                domainId: 123,
+                fields,
+                indices: [],
+            },
+            undefined
+        );
 
-        let updatedDomain = updateDomainException(domain, 0, domainFieldError);
+        const updatedDomain = updateDomainException(domain, 0, domainFieldError);
         expect(updatedDomain.domainException.get('errors').get(0)[0].message).toBe(FIELD_NAME_CHAR_WARNING_MSG);
     });
 
     test('setDomainFields', () => {
-        const initDomain = DomainDesign.create({name: 'Foo', fields: [
-                {name:'text', rangeURI: TEXT_TYPE.rangeURI},
-                {name:'int', rangeURI: INTEGER_TYPE.rangeURI}
-            ]});
+        const initDomain = DomainDesign.create({
+            name: 'Foo',
+            fields: [
+                { name: 'text', rangeURI: TEXT_TYPE.rangeURI },
+                { name: 'int', rangeURI: INTEGER_TYPE.rangeURI },
+            ],
+        });
         expect(initDomain.fields.size).toBe(2);
         expect(initDomain.fields.get(0).rangeURI).toBe(TEXT_TYPE.rangeURI);
         expect(initDomain.fields.get(1).rangeURI).toBe(INTEGER_TYPE.rangeURI);
 
         const newFields = [
-            QueryColumn.create({name:'text', rangeURI: TEXT_TYPE.rangeURI}),
-            QueryColumn.create({name:'dbl', rangeURI: DOUBLE_TYPE.rangeURI}),
-            QueryColumn.create({name:'dt', rangeURI: DATETIME_TYPE.rangeURI})
+            QueryColumn.create({ name: 'text', rangeURI: TEXT_TYPE.rangeURI }),
+            QueryColumn.create({ name: 'dbl', rangeURI: DOUBLE_TYPE.rangeURI }),
+            QueryColumn.create({ name: 'dt', rangeURI: DATETIME_TYPE.rangeURI }),
         ];
 
         const updatedDomain = setDomainFields(initDomain, List<QueryColumn>(newFields));
@@ -212,16 +225,24 @@ describe("domain properties actions", () => {
 
     test('getDomainBottomErrorMessage', () => {
         expect(getDomainBottomErrorMessage('Test exception', List.of(), true, List.of())).toBe('Test exception');
-        expect(getDomainBottomErrorMessage('Test exception', List.of('test1', 'test2'), true, List.of())).toBe('Test exception');
-        expect(getDomainBottomErrorMessage('Test exception', List.of('test1'), false, List.of())).toBe('Test exception');
+        expect(getDomainBottomErrorMessage('Test exception', List.of('test1', 'test2'), true, List.of())).toBe(
+            'Test exception'
+        );
+        expect(getDomainBottomErrorMessage('Test exception', List.of('test1'), false, List.of())).toBe(
+            'Test exception'
+        );
         expect(getDomainBottomErrorMessage('Test exception', List.of('test1'), true, List.of())).toBe('Test exception');
         expect(getDomainBottomErrorMessage('Test exception', List.of(), true, List.of(0))).toBe('Test exception');
         expect(getDomainBottomErrorMessage('Test exception', List.of(), false, List.of(0))).toBe('Test exception');
 
-        expect(getDomainBottomErrorMessage(undefined, List.of('test1', 'test2'), true, List.of())).toContain('errors above');
+        expect(getDomainBottomErrorMessage(undefined, List.of('test1', 'test2'), true, List.of())).toContain(
+            'errors above'
+        );
         expect(getDomainBottomErrorMessage(undefined, List.of('test1'), false, List.of())).toContain('errors above');
         expect(getDomainBottomErrorMessage(undefined, List.of('test1'), true, List.of())).toContain('errors in test1');
-        expect(getDomainBottomErrorMessage(undefined, List.of(), false, List.of(0))).toContain('errors in the properties panel');
+        expect(getDomainBottomErrorMessage(undefined, List.of(), false, List.of(0))).toContain(
+            'errors in the properties panel'
+        );
 
         expect(getDomainBottomErrorMessage(undefined, List.of(), true, List.of())).toBe(undefined);
         expect(getDomainBottomErrorMessage(undefined, List.of(), true, List.of(0))).toBe(undefined);
@@ -243,10 +264,18 @@ describe("domain properties actions", () => {
         expect(getDomainAlertClasses(true, false, true)).toBe('domain-bottom-alert panel-default');
         expect(getDomainAlertClasses(true, true, false)).toBe('domain-bottom-alert panel-default');
         expect(getDomainAlertClasses(true, false, false)).toBe('domain-bottom-alert panel-default');
-        expect(getDomainAlertClasses(false, true, true)).toBe('domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top');
-        expect(getDomainAlertClasses(false, true, false)).toBe('domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top');
-        expect(getDomainAlertClasses(false, false, true)).toBe('domain-bottom-alert panel-default domain-bottom-alert-top');
-        expect(getDomainAlertClasses(false, false, false)).toBe('domain-bottom-alert panel-default domain-bottom-alert-top');
+        expect(getDomainAlertClasses(false, true, true)).toBe(
+            'domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top'
+        );
+        expect(getDomainAlertClasses(false, true, false)).toBe(
+            'domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top'
+        );
+        expect(getDomainAlertClasses(false, false, true)).toBe(
+            'domain-bottom-alert panel-default domain-bottom-alert-top'
+        );
+        expect(getDomainAlertClasses(false, false, false)).toBe(
+            'domain-bottom-alert panel-default domain-bottom-alert-top'
+        );
     });
 
     test('getDomainPanelHeaderId', () => {
@@ -254,8 +283,10 @@ describe("domain properties actions", () => {
         expect(getDomainPanelHeaderId(undefined, 'domain-header-test')).toBe('domain-header-test');
         expect(getDomainPanelHeaderId(DomainDesign.create({}))).toBe('domain-header');
         expect(getDomainPanelHeaderId(DomainDesign.create({}), 'domain-header-test')).toBe('domain-header-test');
-        expect(getDomainPanelHeaderId(DomainDesign.create({name: 'test'}))).toBe('domainpropertiesrow-test-hdr');
-        expect(getDomainPanelHeaderId(DomainDesign.create({name: 'test'}), 'domain-header-test')).toBe('domainpropertiesrow-test-hdr');
+        expect(getDomainPanelHeaderId(DomainDesign.create({ name: 'test' }))).toBe('domainpropertiesrow-test-hdr');
+        expect(getDomainPanelHeaderId(DomainDesign.create({ name: 'test' }), 'domain-header-test')).toBe(
+            'domainpropertiesrow-test-hdr'
+        );
     });
 
     test('getDomainHeaderName', () => {

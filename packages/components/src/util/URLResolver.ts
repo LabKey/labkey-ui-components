@@ -15,24 +15,23 @@
  */
 import { fromJS, List, Map } from 'immutable';
 import { ActionURL, Filter } from '@labkey/api';
+
 import { AppURL } from '../url/AppURL';
 import { LineageResult } from '../components/lineage/models';
 
 interface MapURLOptions {
-    column: any
-    url: string
-    row: any
-    query?: string
-    schema?: string
+    column: any;
+    url: string;
+    row: any;
+    query?: string;
+    schema?: string;
 }
 
 export class URLResolver {
-
     mappers: List<URLMapper>;
 
     constructor() {
         this.mappers = List<URLMapper>([
-
             new ActionMapper('experiment', 'showDataClass', (row, column) => {
                 let identifier: string;
 
@@ -42,8 +41,7 @@ export class URLResolver {
                     identifier = row.getIn(['data', 'name']);
                 } else if (column.has('lookup')) {
                     identifier = row.get('displayValue').toString();
-                }
-                else {
+                } else {
                     identifier = row.get('value').toString();
                 }
                 if (identifier !== undefined) {
@@ -51,13 +49,12 @@ export class URLResolver {
                 }
             }),
 
-
-            new ActionMapper('experiment', 'showData', (row) => {
+            new ActionMapper('experiment', 'showData', row => {
                 const targetURL = row.get('url');
                 if (targetURL) {
                     const params = ActionURL.getParameters(targetURL);
 
-                    let url = ['rd', 'expdata', params.rowId];
+                    const url = ['rd', 'expdata', params.rowId];
                     return AppURL.create(...url);
                 }
             }),
@@ -89,11 +86,11 @@ export class URLResolver {
                 }
             }),
 
-            new ActionMapper('experiment', 'showMaterial', (row) => {
+            new ActionMapper('experiment', 'showMaterial', row => {
                 const targetURL = row.get('url');
                 if (targetURL) {
                     const params = ActionURL.getParameters(targetURL);
-                    let rowId = params.rowId;
+                    const rowId = params.rowId;
 
                     const url = ['rd', 'samples', rowId];
 
@@ -103,7 +100,7 @@ export class URLResolver {
                 }
             }),
 
-            new ActionMapper('experiment', 'showRunText', (row) => {
+            new ActionMapper('experiment', 'showRunText', row => {
                 const targetURL = row.get('url');
                 if (targetURL) {
                     const params = ActionURL.getParameters(targetURL);
@@ -116,7 +113,7 @@ export class URLResolver {
             }),
 
             // http://localhost:8080/labkey/Sam%20Man/experiment-protocolDetails.view?rowId=1424
-            new ActionMapper("experiment", "protocolDetails", (row) => {
+            new ActionMapper('experiment', 'protocolDetails', row => {
                 const targetURL = row.get('url');
                 if (targetURL) {
                     const params = ActionURL.getParameters(targetURL);
@@ -129,7 +126,7 @@ export class URLResolver {
             }),
 
             // Fixme.  This is really sketchy since there is no corresponding URL in LKS
-            new ActionMapper('samplesworkflow', 'samples', (row) => {
+            new ActionMapper('samplesworkflow', 'samples', row => {
                 const targetURL = row.get('url');
                 if (targetURL) {
                     const params = ActionURL.getParameters(targetURL);
@@ -141,7 +138,7 @@ export class URLResolver {
                 }
             }),
 
-            new ActionMapper('samplesworkflow', 'tasks', (row) => {
+            new ActionMapper('samplesworkflow', 'tasks', row => {
                 const targetURL = row.get('url');
                 if (targetURL) {
                     const params = ActionURL.getParameters(targetURL);
@@ -153,19 +150,19 @@ export class URLResolver {
                 }
             }),
 
-            new ActionMapper('samplesworkflow', 'templateJobs', (row) => {
+            new ActionMapper('samplesworkflow', 'templateJobs', row => {
                 const targetURL = row.get('url');
                 if (targetURL) {
                     const params = ActionURL.getParameters(targetURL);
                     const templateId = params.templateId;
-                    const url = ['workflow', "template", templateId, 'jobs'];
+                    const url = ['workflow', 'template', templateId, 'jobs'];
                     if (templateId !== undefined) {
-                        return AppURL.create(...url).addParam("tab", "all");
+                        return AppURL.create(...url).addParam('tab', 'all');
                     }
                 }
             }),
 
-            new ActionMapper('samplemanager', 'downloadAttachments', (row) => {
+            new ActionMapper('samplemanager', 'downloadAttachments', row => {
                 const targetURL = row.get('url');
                 if (targetURL) {
                     const params = ActionURL.getParameters(targetURL);
@@ -177,14 +174,14 @@ export class URLResolver {
                 }
             }),
 
-            new ActionMapper('assay', 'assayDetailRedirect', (row) => {
+            new ActionMapper('assay', 'assayDetailRedirect', row => {
                 if (row.has('url')) {
                     const rowURL = row.get('url');
                     const params = ActionURL.getParameters(rowURL);
 
                     // expecting a parameter of runId=<runId>
                     if (params.hasOwnProperty('runId')) {
-                        let runId = params['runId'];
+                        const runId = params['runId'];
 
                         const url = ['rd', 'assayrun', runId];
                         return AppURL.create(...url);
@@ -197,15 +194,15 @@ export class URLResolver {
                     const url = row.get('url');
 
                     // expecting a filter on Batch/RowId~eq=<rowId>
-                    let filters = Filter.getFiltersFromUrl(url, 'Runs');
+                    const filters = Filter.getFiltersFromUrl(url, 'Runs');
                     if (filters.length > 0) {
-                        for (let i=0; i < filters.length; i++) {
+                        for (let i = 0; i < filters.length; i++) {
                             if (filters[i].getColumnName().toLowerCase() === 'batch/rowid') {
-                                let rowId = filters[i].getValue();
+                                const rowId = filters[i].getValue();
 
                                 // expecting a schema of assay.<provider>.<protocol>
                                 if (schema.indexOf('assay.') === 0) {
-                                    let url = ['assays'].concat(schema.replace('assay.', '').split('.'));
+                                    const url = ['assays'].concat(schema.replace('assay.', '').split('.'));
                                     url.push('batches', rowId);
 
                                     return AppURL.create(...url);
@@ -216,7 +213,7 @@ export class URLResolver {
                 }
             }),
 
-            new ActionMapper('assay', 'assayBegin', (row) => {
+            new ActionMapper('assay', 'assayBegin', row => {
                 const url = row.get('url');
                 if (url) {
                     const params = ActionURL.getParameters(url);
@@ -227,7 +224,7 @@ export class URLResolver {
                 }
             }),
 
-            new ActionMapper('assay', 'assayResults', (row) => {
+            new ActionMapper('assay', 'assayResults', row => {
                 const url = row.get('url');
                 if (url) {
                     const params = ActionURL.getParameters(url);
@@ -243,7 +240,7 @@ export class URLResolver {
             // 33680: Prevent remapping issues-details
             new ActionMapper('issues', 'details', () => false),
 
-            new ActionMapper('issues', 'list', (row) => {
+            new ActionMapper('issues', 'list', row => {
                 const url = row.get('url');
                 if (url) {
                     const params = ActionURL.getParameters(url);
@@ -257,12 +254,7 @@ export class URLResolver {
                 if (!column.has('lookup')) {
                     const params = ActionURL.getParameters(row.get('url'));
 
-                    let parts = [
-                        'q',
-                        'lists',
-                        params.listId,
-                        params.pk
-                    ];
+                    const parts = ['q', 'lists', params.listId, params.pk];
 
                     return AppURL.create(...parts);
                 }
@@ -272,17 +264,13 @@ export class URLResolver {
                 if (!column.has('lookup')) {
                     const params = ActionURL.getParameters(row.get('url'));
 
-                    let parts = [
-                        'q',
-                        'lists',
-                        params.listId
-                    ];
+                    const parts = ['q', 'lists', params.listId];
 
                     return AppURL.create(...parts);
                 }
             }),
 
-            new ActionMapper('query', 'detailsQueryRow', (row) => {
+            new ActionMapper('query', 'detailsQueryRow', row => {
                 const url = row.get('url');
                 if (url) {
                     const params = ActionURL.getParameters(url);
@@ -290,11 +278,12 @@ export class URLResolver {
                     const queryName = params['query.queryName'];
 
                     if (schemaName && queryName) {
-                        if (schemaName === 'labbook' && queryName === 'LabBookExperiment' && params.RowId !== undefined) {
-                            let parts = [
-                                'experiments',
-                                params.RowId
-                            ];
+                        if (
+                            schemaName === 'labbook' &&
+                            queryName === 'LabBookExperiment' &&
+                            params.RowId !== undefined
+                        ) {
+                            const parts = ['experiments', params.RowId];
 
                             return AppURL.create(...parts);
                         }
@@ -302,12 +291,7 @@ export class URLResolver {
                         const key = params.keyValue ? params.keyValue : params.RowId;
 
                         if (key !== undefined) {
-                            let parts = [
-                                'q',
-                                schemaName,
-                                queryName,
-                                key
-                            ];
+                            const parts = ['q', schemaName, queryName, key];
 
                             return AppURL.create(...parts);
                         }
@@ -323,7 +307,7 @@ export class URLResolver {
                 }
             }),
 
-            new ActionMapper('labbook', 'experiment', (row) => {
+            new ActionMapper('labbook', 'experiment', row => {
                 const url = row.get('url');
                 if (url) {
                     const params = ActionURL.getParameters(url);
@@ -338,24 +322,24 @@ export class URLResolver {
             new ActionMapper('audit', 'detailedAuditChanges', () => false),
 
             new LookupMapper('q', {
-                'exp-dataclasses': (row) => row.get('displayValue') ? AppURL.create('rd', 'dataclass', row.get('displayValue')) : undefined,
-                'exp-runs': (row) => {
+                'exp-dataclasses': row =>
+                    row.get('displayValue') ? AppURL.create('rd', 'dataclass', row.get('displayValue')) : undefined,
+                'exp-runs': row => {
                     const runId = row.get('value');
                     if (!isNaN(parseInt(runId))) {
                         return AppURL.create('rd', 'assayrun', runId);
                     }
                     return false;
                 },
-                'issues': () => false // 33680: Prevent remapping issues lookup
-            })
+                issues: () => false, // 33680: Prevent remapping issues lookup
+            }),
         ]);
     }
 
     private mapURL = (mapper: MapURLOptions): string => {
-
-        let _url = this.mappers.toSeq()
-            .map(m =>
-                m.resolve(mapper.url, mapper.row, mapper.column, mapper.schema, mapper.query))
+        const _url = this.mappers
+            .toSeq()
+            .map(m => m.resolve(mapper.url, mapper.row, mapper.column, mapper.schema, mapper.query))
             .filter(v => v !== undefined)
             .first();
 
@@ -370,10 +354,10 @@ export class URLResolver {
         return mapper.url;
     };
 
-    public resolveLineageNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
-        let updatedNodes = result.nodes.map((node) => {
+    resolveLineageNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
+        const updatedNodes = result.nodes.map(node => {
             if (acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
-                let parts = node.cpasType.split(':');
+                const parts = node.cpasType.split(':');
                 let name = parts[parts.length - 1];
 
                 // LSID strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
@@ -390,9 +374,9 @@ export class URLResolver {
                         row: node,
                         column: Map<string, any>(),
                         schema: node.schemaName,
-                        query: node.queryName
-                    })
-                })
+                        query: node.queryName,
+                    }),
+                });
             }
             return node;
         });
@@ -405,56 +389,60 @@ export class URLResolver {
      * @param json - selectRowsResult
      * @returns {Promise<T>}
      */
-    public resolveSelectRows(json): Promise<any> {
+    resolveSelectRows(json): Promise<any> {
         // TODO: Do not return a Promise. This method doesn't actually do anything async, so it does not need to be a
         //  promise.
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             let resolved = fromJS(JSON.parse(JSON.stringify(json)));
 
             if (resolved.get('rows').count()) {
+                const schema = resolved.get('schemaName').toJS().join('.');
+                const query = resolved.get('queryName');
+                const fields = resolved.getIn(['metaData', 'fields']).reduce((fields, column) => {
+                    return fields.set(column.get('fieldKey'), column);
+                }, Map());
 
-                let schema = resolved.get('schemaName').toJS().join('.');
-                let query = resolved.get('queryName');
-                let fields = resolved.getIn(['metaData', 'fields'])
-                    .reduce((fields, column) => {
-                        return fields.set(column.get('fieldKey'), column);
-                    }, Map());
-
-                let rows = resolved.get('rows')
-                    .map(row => {
-                        return row.map((cell, fieldKey) => {
-
-                            // single-value cells
-                            if (Map.isMap(cell) && cell.has('url')) {
-                                return cell.set('url', this.mapURL({
+                const rows = resolved.get('rows').map(row => {
+                    return row.map((cell, fieldKey) => {
+                        // single-value cells
+                        if (Map.isMap(cell) && cell.has('url')) {
+                            return cell.set(
+                                'url',
+                                this.mapURL({
                                     url: cell.get('url'),
                                     row: cell,
                                     column: fields.get(fieldKey),
                                     schema,
-                                    query
-                                }));
-                            }
+                                    query,
+                                })
+                            );
+                        }
 
-                            // multi-value cells
-                            if (List.isList(cell) && cell.size > 0) {
-                                return cell.map((innerCell) => {
+                        // multi-value cells
+                        if (List.isList(cell) && cell.size > 0) {
+                            return cell
+                                .map(innerCell => {
                                     if (Map.isMap(innerCell) && innerCell.has('url')) {
-                                        return innerCell.set('url', this.mapURL({
-                                            url: innerCell.get('url'),
-                                            row: innerCell,
-                                            column: fields.get(fieldKey),
-                                            schema,
-                                            query
-                                        }));
+                                        return innerCell.set(
+                                            'url',
+                                            this.mapURL({
+                                                url: innerCell.get('url'),
+                                                row: innerCell,
+                                                column: fields.get(fieldKey),
+                                                schema,
+                                                query,
+                                            })
+                                        );
                                     }
 
                                     return innerCell;
-                                }).toList();
-                            }
+                                })
+                                .toList();
+                        }
 
-                            return cell;
-                        });
+                        return cell;
                     });
+                });
 
                 resolved = resolved.set('rows', rows);
             }
@@ -464,13 +452,12 @@ export class URLResolver {
     }
 
     // ToDo: this is rather fragile and data specific. this should be reworked with the mappers and rest of the resolvers to provide for more thorough coverage of our incoming URLs
-    public resolveSearchUsingIndex(json): Promise<List<Map<any, any>>> {
-        return new Promise((resolve) => {
+    resolveSearchUsingIndex(json): Promise<List<Map<any, any>>> {
+        return new Promise(resolve => {
             let resolved = fromJS(JSON.parse(JSON.stringify(json)));
 
             if (resolved.get('hits').count()) {
-
-                let rows = resolved.get('hits').map(row => {
+                const rows = resolved.get('hits').map(row => {
                     if (row && row.has('url')) {
                         let url = row.get('url'),
                             id = row.get('id'),
@@ -481,36 +468,29 @@ export class URLResolver {
                         if (row.has('data') && row.hasIn(['data', 'dataClass'])) {
                             query = row.getIn(['data', 'dataClass', 'name']); // dataClass is nested Map/Object inside of 'data' return
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                            return row.set('url', this.mapURL({url, row, column, query}));
-                        }
-                        else if (id.indexOf('dataClass') >= 0) {
-                            query = row.getIn(['data', 'name']);
-                            url = url.substring(0, url.indexOf("&")); // URL includes documentID value, this will split off at the start of the docID
-                            return row.set('url', this.mapURL({url, row, column, query}));
-                        }
-                        else if (id.indexOf('materialSource') >= 0 ) {
+                            return row.set('url', this.mapURL({ url, row, column, query }));
+                        } else if (id.indexOf('dataClass') >= 0) {
                             query = row.getIn(['data', 'name']);
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                            return row.set('url', this.mapURL({url, row, column, query}));
-                        }
-                        else if (id.indexOf('assay') >= 0) {
+                            return row.set('url', this.mapURL({ url, row, column, query }));
+                        } else if (id.indexOf('materialSource') >= 0) {
+                            query = row.getIn(['data', 'name']);
+                            url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                            return row.set('url', this.mapURL({ url, row, column, query }));
+                        } else if (id.indexOf('assay') >= 0) {
                             query = row.getIn(['title']);
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                            return row.set('url', this.mapURL({url, row, column, query}));
-                        }
-                        else if (id.indexOf('material') != -1 && row.hasIn(['data', 'sampleSet'])) {
+                            return row.set('url', this.mapURL({ url, row, column, query }));
+                        } else if (id.indexOf('material') != -1 && row.hasIn(['data', 'sampleSet'])) {
                             query = row.getIn(['data', 'sampleSet', 'name']);
-                            return row.set('url', this.mapURL({url, row, column, query}));
-                        }
-                        else if (row.has('data') && row.hasIn(['data', 'id'])) {
+                            return row.set('url', this.mapURL({ url, row, column, query }));
+                        } else if (row.has('data') && row.hasIn(['data', 'id'])) {
                             query = row.getIn(['data', 'type']);
-                            return row.set('url', this.mapURL({url, row, column, query}))
-                        }
-                        else if (id.indexOf('samplemanagerJob') >= 0) {
-                            return row.set('url', this.mapURL({url, row, column}));
-                        }
-                        else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
-                            return row.set('url', this.mapURL({url, row, column}));
+                            return row.set('url', this.mapURL({ url, row, column, query }));
+                        } else if (id.indexOf('samplemanagerJob') >= 0) {
+                            return row.set('url', this.mapURL({ url, row, column }));
+                        } else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
+                            return row.set('url', this.mapURL({ url, row, column }));
                         }
                     }
                     return row;
@@ -525,11 +505,10 @@ export class URLResolver {
 }
 
 interface URLMapper {
-    resolve(url, row, column, schema, query): AppURL | boolean
+    resolve(url, row, column, schema, query): AppURL | boolean;
 }
 
 class ActionMapper implements URLMapper {
-
     controller: string;
     action: string;
     resolver: (row, column, schema, query) => AppURL | boolean;
@@ -552,7 +531,6 @@ class ActionMapper implements URLMapper {
 }
 
 class LookupMapper implements URLMapper {
-
     defaultPrefix: string;
     lookupResolvers: any;
 
@@ -578,11 +556,11 @@ class LookupMapper implements URLMapper {
                 }
             }
 
-            let parts = [
+            const parts = [
                 this.defaultPrefix,
                 lookup.get('schemaName'),
                 lookup.get('queryName'),
-                row.get('value').toString()
+                row.get('value').toString(),
             ];
 
             return AppURL.create(...parts);
@@ -604,27 +582,26 @@ export function parsePathName(path: string) {
     let controller = null;
 
     const dash = action.indexOf('-');
-    if (0 < dash) {
+    if (dash > 0) {
         controller = action.substring(0, dash);
         action = action.substring(dash + 1);
-    }
-    else {
+    } else {
         const slash = path.indexOf('/', 1);
-        if (slash < 0) // 21945: e.g. '/admin'
+        if (slash < 0)
+            // 21945: e.g. '/admin'
             controller = path.substring(1);
-        else
-            controller = path.substring(1, slash);
+        else controller = path.substring(1, slash);
         path = path.substring(slash);
     }
 
     const dot = action.indexOf('.');
-    if (0 < dot) {
+    if (dot > 0) {
         action = action.substring(0, dot);
     }
 
     return {
         controller: decodeURIComponent(controller).toLowerCase(),
         action: decodeURIComponent(action).toLowerCase(),
-        containerPath: decodeURI(path)
+        containerPath: decodeURI(path),
     };
 }

@@ -15,28 +15,29 @@
  */
 import React from 'react';
 
-import { TextInput, TextInputProps } from './TextInput';
-import { DisableableInput, DisableableInputProps } from './DisableableInput';
 import { datePlaceholder } from '../../../util/Date';
+
 import { QueryColumn } from '../../base/models/model';
 
+import { TextInput, TextInputProps } from './TextInput';
+import { DisableableInput, DisableableInputProps } from './DisableableInput';
+
 interface DateInputProps extends DisableableInputProps {
-    changeDebounceInterval?: number
-    elementWrapperClassName?: Array<any> | string
-    label?: any
-    labelClassName?: Array<any> | string
-    name?: string
-    onChange?: any
-    queryColumn: QueryColumn
-    rowClassName?: Array<any> | string
-    showLabel?: boolean
-    validatePristine?: boolean
-    value?: string
-    addLabelAsterisk?: boolean
+    changeDebounceInterval?: number;
+    elementWrapperClassName?: any[] | string;
+    label?: any;
+    labelClassName?: any[] | string;
+    name?: string;
+    onChange?: any;
+    queryColumn: QueryColumn;
+    rowClassName?: any[] | string;
+    showLabel?: boolean;
+    validatePristine?: boolean;
+    value?: string;
+    addLabelAsterisk?: boolean;
 }
 
 export class DateInput extends DisableableInput<DateInputProps, any> {
-
     static defaultProps = {
         allowDisable: false,
         initiallyDisabled: false,
@@ -45,7 +46,7 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
         labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
         validatePristine: false,
-        addLabelAsterisk: false
+        addLabelAsterisk: false,
     };
 
     render() {
@@ -62,7 +63,7 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
             showLabel,
             validatePristine,
             value,
-            addLabelAsterisk
+            addLabelAsterisk,
         } = this.props;
 
         const props: TextInputProps = {
@@ -79,9 +80,9 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
             showLabel,
             validatePristine,
             addLabelAsterisk,
-            value: value ? value : '' // to avoid uncontrolled -> controlled warnings
+            value: value ? value : '', // to avoid uncontrolled -> controlled warnings
         };
 
-        return <TextInput {...props}/>
+        return <TextInput {...props} />;
     }
 }

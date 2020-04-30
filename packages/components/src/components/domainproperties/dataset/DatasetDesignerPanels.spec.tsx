@@ -14,43 +14,77 @@
  * limitations under the License.
  */
 
-import {DatasetModel} from "./models";
-import {NEW_DATASET_MODEL} from "../../../test/data/constants";
-import getDatasetDesign from "../../../test/data/dataset-getDatasetDesign.json";
-import {DatasetDesignerPanels} from "./DatasetDesignerPanels";
-import renderer from "react-test-renderer";
-import React from "react";
+import renderer from 'react-test-renderer';
+import React from 'react';
+import { mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
-describe("Dataset Designer", () => {
+import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
+import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../test/data/constants';
+import { Alert } from '../../..';
+import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL, undefined);
+import { DatasetDesignerPanels } from './DatasetDesignerPanels';
+
+import { DatasetModel } from './models';
+
+describe('Dataset Designer', () => {
+    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
-    test("New dataset", () => {
-        const designerPanel =
+    test('New dataset', () => {
+        const designerPanel = (
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
                 useTheme={true}
-                showDataSpace={true}
-                showVisitDate={true}
-            />;
+                onCancel={jest.fn()}
+                onComplete={jest.fn()}
+            />
+        );
 
         const dom = renderer.create(designerPanel).toJSON();
         expect(dom).toMatchSnapshot();
     });
 
-    test("Edit existing dataset", () => {
-        const designerPanel =
+    test('Edit existing dataset', () => {
+        const designerPanels = mount(
             <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
                 useTheme={true}
-                showDataSpace={true}
-                showVisitDate={true}
-            />;
+                onCancel={jest.fn()}
+                onComplete={jest.fn()}
+            />
+        );
 
-        const dom = renderer.create(designerPanel).toJSON();
-        expect(dom).toMatchSnapshot();
-    })
+        expect(toJson(designerPanels)).toMatchSnapshot();
+        designerPanels.unmount();
+    });
 
-    // TODO: testCase for testing the alert / error message similar to DataClassDesigner.spec.tsx
+    test('Test for alert/message', () => {
+        const wrapped = mount(
+            <DatasetDesignerPanels
+                initModel={newDatasetModel}
+                useTheme={true}
+                onCancel={jest.fn()}
+                onComplete={jest.fn()}
+            />
+        );
+
+        const datasetHeader = wrapped.find('div#dataset-header-id');
+        expect(wrapped.find('#dataset-header-id').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
+        datasetHeader.simulate('click');
+        expect(wrapped.find('#dataset-header-id').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
+
+        const panelHeader = wrapped.find('div#domain-header');
+        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
+        panelHeader.simulate('click');
+        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
+
+        expect(wrapped.find(Alert)).toHaveLength(2);
+        expect(wrapped.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
+        expect(wrapped.find(Alert).at(1).text()).toEqual(
+            'Please correct errors in the properties panel before saving.'
+        );
+        wrapped.unmount();
+    });
 });

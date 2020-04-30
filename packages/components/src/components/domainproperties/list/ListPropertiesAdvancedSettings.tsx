@@ -1,29 +1,32 @@
 import React from 'react';
-import classNames from "classnames";
+import classNames from 'classnames';
 import { Button, Col, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../..';
+
+import { DomainFieldLabel } from '../DomainFieldLabel';
+
 import { CheckBox } from './ListPropertiesPanelFormElements';
-import {AdvancedSettingsForm} from "./models";
+import { AdvancedSettingsForm } from './models';
 import {
     CUSTOM_TEMPLATE_TIP,
     DATA_INDEXING_TIP,
     DISCUSSION_LINKS_TIP,
     DOCUMENT_TITLE_TIP,
-    SEARCH_INDEXING_TIP
-} from "./constants";
-import { DomainFieldLabel } from "../DomainFieldLabel";
+    SEARCH_INDEXING_TIP,
+} from './constants';
 
 interface DisplayTitleProps {
-    model: ListModel
+    model: ListModel;
     onSelectChange: (name, formValue, selected) => void;
     titleColumn: string;
 }
 
 export class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
     render() {
-        const {model, onSelectChange, titleColumn} = this.props;
+        const { model, onSelectChange, titleColumn } = this.props;
         const fields = model.domain.fields;
         const disabled = fields.size === 0;
         const placeholder = disabled ? 'No fields have been defined yet' : 'Auto';
@@ -90,10 +93,7 @@ class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
         const title = titleTemplate == null ? '' : titleTemplate;
         return (
             <div>
-                <DomainFieldLabel
-                    label={'Document title'}
-                    helpTipBody={() => DOCUMENT_TITLE_TIP}
-                />
+                <DomainFieldLabel label="Document title" helpTipBody={() => DOCUMENT_TITLE_TIP} />
                 <span>
                     <FormControl
                         className="list__advanced-settings-modal__text-field"
@@ -127,11 +127,11 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
                 <FormGroup>
                     <Radio name={name} value={2} checked={indexSetting == 2} onChange={onRadioChange}>
                         Include both metadata and data
-                        <LabelHelpTip title="Warning" body={() => DATA_INDEXING_TIP}/>
+                        <LabelHelpTip title="Warning" body={() => DATA_INDEXING_TIP} />
                     </Radio>
                     <Radio name={name} value={1} checked={indexSetting == 1} onChange={onRadioChange}>
                         Include data only
-                        <LabelHelpTip title="Warning" body={() => DATA_INDEXING_TIP}/>
+                        <LabelHelpTip title="Warning" body={() => DATA_INDEXING_TIP} />
                     </Radio>
                     <Radio name={name} value={0} checked={indexSetting == 0} onChange={onRadioChange}>
                         Include metadata only (name and description of list and fields)
@@ -153,7 +153,7 @@ interface IndexFieldProps {
 export class IndexField extends React.PureComponent<IndexFieldProps> {
     render() {
         const { name, onRadioChange, bodySetting, bodyTemplate, onInputChange } = this.props;
-        const id = (name == "entireListBodySetting") ? "entireListBodyTemplate" : "eachItemBodyTemplate";
+        const id = name == 'entireListBodySetting' ? 'entireListBodyTemplate' : 'eachItemBodyTemplate';
 
         return (
             <div>
@@ -166,19 +166,19 @@ export class IndexField extends React.PureComponent<IndexFieldProps> {
                     </Radio>
                     <Radio name={name} value={2} checked={bodySetting == 2} onChange={onRadioChange}>
                         Index using custom template
-                        <LabelHelpTip title="" body={() => CUSTOM_TEMPLATE_TIP}/>
+                        <LabelHelpTip title="" body={() => CUSTOM_TEMPLATE_TIP} />
                     </Radio>
                 </FormGroup>
 
-                {bodySetting == 2 &&
+                {bodySetting == 2 && (
                     <FormControl
                         id={id}
                         type="text"
                         value={bodyTemplate}
                         onChange={onInputChange}
-                        className='list__advanced-settings-modal__custom-template-text-field'
+                        className="list__advanced-settings-modal__custom-template-text-field"
                     />
-                }
+                )}
             </div>
         );
     }
@@ -302,7 +302,7 @@ class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
         const { expanded, fields, title, checked } = this.props;
         const icon = expanded ? faAngleDown : faAngleRight;
         const classes = classNames('list__advanced-settings-model__collapsible-field list__properties__no-highlight', {
-            'list__properties__checkbox-unchecked': !checked
+            'list__properties__checkbox-unchecked': !checked,
         });
 
         return (
@@ -313,7 +313,7 @@ class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
                 <span className="list__advanced-settings-modal__index-checkbox">
                     <CheckBox checked={checked} onClick={() => this.onClick()} />
                     <span className="list__advanced-settings-modal__index-text">
-                        <span className='list__clickable' onClick={() => this.onClick()}>
+                        <span className="list__clickable" onClick={() => this.onClick()}>
                             {title}
                         </span>
                         {expanded && fields}
@@ -404,7 +404,7 @@ export class SearchIndexing extends React.PureComponent<SearchIndexingProps, Sea
                     onCheckboxChange={onCheckboxChange}
                 />
 
-                <span className='list__advanced-settings-model__index-checkbox'>
+                <span className="list__advanced-settings-model__index-checkbox">
                     <CheckBox
                         checked={fileAttachmentIndex}
                         onClick={() => onCheckboxChange('fileAttachmentIndex', fileAttachmentIndex)}
@@ -436,10 +436,7 @@ class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
             <div className="list__advanced-settings-modal__section-container">
                 <div className="list__advanced-settings-modal__heading">
                     <span className="list__bold-text"> {title} </span>
-                    <LabelHelpTip
-                        title={tipTitle || title}
-                        body={() => tipBody}
-                    />
+                    <LabelHelpTip title={tipTitle || title} body={() => tipBody} />
                 </div>
 
                 {fieldComponent}
@@ -455,7 +452,7 @@ interface AdvancedSettingsProps {
     successBsStyle?: string;
 }
 
-interface AdvancedSettingsState extends AdvancedSettingsForm{
+interface AdvancedSettingsState extends AdvancedSettingsForm {
     modalOpen?: boolean;
 }
 
@@ -525,7 +522,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     onSelectChange = (name, formValue, selected): void => {
-        const value = (selected) ? selected.name : '<AUTO>';
+        const value = selected ? selected.name : '<AUTO>';
         this.setState({ [name]: value });
     };
 
@@ -559,7 +556,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
-            entireListBodyTemplate
+            entireListBodyTemplate,
         };
 
         const eachItemIndexSettings = {
@@ -569,15 +566,16 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             eachItemBodyTemplate,
         };
 
-        let displayTitleTip =
+        const displayTitleTip = (
             <>
-                Choose a field to identify this list when other lists or datasets have lookups into this list.
-                When “Auto” is enabled, LabKey will select the title field for you by using:
+                Choose a field to identify this list when other lists or datasets have lookups into this list. When
+                “Auto” is enabled, LabKey will select the title field for you by using:
                 <ul>
                     <li>The first non-lookup string column</li>
                     <li>The primary key, if there are no string fields</li>
                 </ul>
-            </> as JSX.Element;
+            </>
+        ) as JSX.Element;
 
         return (
             <>
@@ -628,24 +626,23 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 />
                             }
                         />
-
                     </Modal.Body>
 
                     <Modal.Footer>
                         <>
                             <Button
                                 onClick={() => this.toggleModal(false)}
-                                className='domain-adv-footer domain-adv-cancel-btn'
+                                className="domain-adv-footer domain-adv-cancel-btn"
                             >
                                 Cancel
                             </Button>
 
-                            {helpLinkNode('lists', "Learn more about using lists", 'domain-adv-footer domain-adv-link')}
+                            {helpLinkNode('lists', 'Learn more about using lists', 'domain-adv-footer domain-adv-link')}
 
                             <Button
                                 onClick={this.applyChanges}
                                 bsStyle={successBsStyle || 'success'}
-                                className='domain-adv-footer domain-adv-apply-btn'
+                                className="domain-adv-footer domain-adv-apply-btn"
                             >
                                 Apply
                             </Button>

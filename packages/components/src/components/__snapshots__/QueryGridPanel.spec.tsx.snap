@@ -189,8 +189,8 @@ exports[`QueryGridPanel render loading 1`] = `
           >
             <div
               className="OmniBox-control"
+              onClick={[Function]}
               onKeyDown={[Function]}
-              onMouseDown={[Function]}
             >
               <span
                 className="OmniBox-multi-value-wrapper"
@@ -679,8 +679,8 @@ exports[`QueryGridPanel render query grid error 1`] = `
           >
             <div
               className="OmniBox-control"
+              onClick={[Function]}
               onKeyDown={[Function]}
-              onMouseDown={[Function]}
             >
               <span
                 className="OmniBox-multi-value-wrapper"
@@ -953,8 +953,8 @@ exports[`QueryGridPanel render with header and message props 1`] = `
           >
             <div
               className="OmniBox-control"
+              onClick={[Function]}
               onKeyDown={[Function]}
-              onMouseDown={[Function]}
             >
               <span
                 className="OmniBox-multi-value-wrapper"
@@ -1269,8 +1269,8 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
           >
             <div
               className="OmniBox-control"
+              onClick={[Function]}
               onKeyDown={[Function]}
-              onMouseDown={[Function]}
             >
               <span
                 className="OmniBox-multi-value-wrapper"
@@ -1582,8 +1582,8 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
           >
             <div
               className="OmniBox-control"
+              onClick={[Function]}
               onKeyDown={[Function]}
-              onMouseDown={[Function]}
             >
               <span
                 className="OmniBox-multi-value-wrapper"
@@ -2098,8 +2098,8 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
           >
             <div
               className="OmniBox-control"
+              onClick={[Function]}
               onKeyDown={[Function]}
-              onMouseDown={[Function]}
             >
               <span
                 className="OmniBox-multi-value-wrapper"

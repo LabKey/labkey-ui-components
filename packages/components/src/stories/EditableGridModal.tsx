@@ -16,76 +16,78 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+
 import { getStateQueryGridModel } from '../models';
 
 import './stories.scss';
 import * as constants from '../test/data/constants';
+
 import { List, Map } from 'immutable';
+
 import { EditableGridModal } from '../components/editable/EditableGridModal';
 import { gridInit } from '../actions';
 import { EditableColumnMetadata } from '../components/editable/EditableGrid';
 import { EditableGridLoader } from '../components/editable/EditableGridLoader';
 import { SchemaQuery } from '../components/base/models/model';
 
-
 storiesOf('EditableGridModal', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
-        const modelId = "editableModal";
+    .add('with knobs', () => {
+        const modelId = 'editableModal';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery, {
             loader: new EditableGridLoader(),
-            editable: true
+            editable: true,
         });
         return (
             <EditableGridModal
                 model={model}
-                allowRemove={boolean("Allow remove", false)}
-                show={boolean("Show modal?", true)}
-                title={text("Title", "Editable modal")}
-                onCancel={() => console.log("Cancel")}
-                onSave={() => console.log("Save changes")}
-                cancelText={text("Cancel text", undefined)}
-                saveText={text("Save text", undefined)}
+                allowRemove={boolean('Allow remove', false)}
+                show={boolean('Show modal?', true)}
+                title={text('Title', 'Editable modal')}
+                onCancel={() => console.log('Cancel')}
+                onSave={() => console.log('Save changes')}
+                cancelText={text('Cancel text', undefined)}
+                saveText={text('Save text', undefined)}
             />
         );
     })
-    .add("with undeletable items", () => {
-        const modelId = "editableGridModalWithDeleteRestrictions";
+    .add('with undeletable items', () => {
+        const modelId = 'editableGridModalWithDeleteRestrictions';
         const schemaQuery = new SchemaQuery({
-            schemaName: "exp.data",
-            queryName: "mixtures"
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
         });
 
         const model = getStateQueryGridModel(modelId, schemaQuery, {
             editable: true,
             loader: {
                 fetch: () => {
-                    return new Promise((resolve) => {
+                    return new Promise(resolve => {
                         resolve({
                             data: constants.GRID_DATA,
                             dataIds: constants.GRID_DATA.keySeq().toList(),
                         });
                     });
-                }
-            }
+                },
+            },
         });
 
         gridInit(model, true);
 
         let columnMetadata = Map<string, EditableColumnMetadata>();
-        columnMetadata = columnMetadata.set("Delete", {toolTip: <span>Items in use cannot be deleted.</span>});
+        columnMetadata = columnMetadata.set('Delete', { toolTip: <span>Items in use cannot be deleted.</span> });
 
         return (
             <EditableGridModal
                 columnMetadata={columnMetadata}
                 show={true}
-                title={"Delete restrictions"}
-                onSave={() => console.log("Save changes")}
-                onCancel={() => console.log("Cancel")}
+                title="Delete restrictions"
+                onSave={() => console.log('Save changes')}
+                onCancel={() => console.log('Cancel')}
                 bordered={true}
                 allowBulkRemove={false}
                 allowRemove={true}
@@ -93,5 +95,4 @@ storiesOf('EditableGridModal', module)
                 model={model}
             />
         );
-    })
-;
+    });

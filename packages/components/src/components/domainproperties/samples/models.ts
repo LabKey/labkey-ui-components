@@ -1,6 +1,7 @@
-import {fromJS, Map, OrderedMap, Record, Set} from "immutable";
-import { DomainDesign, DomainDetails, IDomainField } from "../models";
-import { IParentOption } from "../../entities/models";
+import { fromJS, Map, OrderedMap, Record, Set } from 'immutable';
+
+import { DomainDesign, DomainDetails, IDomainField } from '../models';
+import { IParentOption } from '../../entities/models';
 
 export class SampleTypeModel extends Record({
     rowId: undefined,
@@ -25,23 +26,20 @@ export class SampleTypeModel extends Record({
     domain?: DomainDesign;
     exception: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {
-        if (!raw)
-            return new SampleTypeModel();
+        if (!raw) return new SampleTypeModel();
 
-        let domain = raw.domainDesign ?
-            raw.domainDesign :
-            DomainDesign.create({});
+        const domain = raw.domainDesign ? raw.domainDesign : DomainDesign.create({});
 
-        const {options} = raw;
-        let importAliases = Map<string,string>();
+        const { options } = raw;
+        let importAliases = Map<string, string>();
         if (options) {
-            let aliases = options.get('importAliases') || {};
-            importAliases = Map<string,string>(fromJS(aliases));
+            const aliases = options.get('importAliases') || {};
+            importAliases = Map<string, string>(fromJS(aliases));
         }
 
         return new SampleTypeModel({
@@ -49,21 +47,25 @@ export class SampleTypeModel extends Record({
             name,
             nameReadOnly: raw.nameReadOnly,
             importAliases,
-            domain
+            domain,
         });
     }
 
     static serialize(model: SampleTypeModel): any {
         const domain = DomainDesign.serialize(model.domain);
-        return model.merge({domain}).toJS();
+        return model.merge({ domain }).toJS();
     }
 
     isNew(): boolean {
         return !this.rowId;
-    };
+    }
 
     static isValid(model: SampleTypeModel, defaultNameFieldConfig?: Partial<IDomainField>) {
-        return model.hasValidProperties() && !model.hasInvalidNameField(defaultNameFieldConfig) && model.getDuplicateAlias(true).size === 0;
+        return (
+            model.hasValidProperties() &&
+            !model.hasInvalidNameField(defaultNameFieldConfig) &&
+            model.getDuplicateAlias(true).size === 0
+        );
     }
 
     /**
@@ -71,8 +73,7 @@ export class SampleTypeModel extends Record({
      * @param alias
      */
     parentAliasInvalid(alias: IParentAlias): boolean {
-        if (!alias)
-            return true;
+        if (!alias) return true;
 
         const aliasValueInvalid = !alias.ignoreAliasError && (!alias.alias || alias.alias.trim() === '');
         const parentValueInvalid = !alias.ignoreSelectError && !alias.parentValue;
@@ -81,34 +82,32 @@ export class SampleTypeModel extends Record({
     }
 
     hasValidProperties(): boolean {
-        const {parentAliases} = this;
-        const hasInvalidAliases = parentAliases && parentAliases.size > 0 && parentAliases.find(this.parentAliasInvalid);
+        const { parentAliases } = this;
+        const hasInvalidAliases =
+            parentAliases && parentAliases.size > 0 && parentAliases.find(this.parentAliasInvalid);
 
-        return ((this.name !== undefined && this.name !== null && this.name.trim().length > 0)
-            && !hasInvalidAliases
-        );
+        return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && !hasInvalidAliases;
     }
 
     hasInvalidNameField(defaultNameFieldConfig: Partial<IDomainField>): boolean {
-        return (this.domain && defaultNameFieldConfig) ? this.domain.hasInvalidNameField(defaultNameFieldConfig) : false;
+        return this.domain && defaultNameFieldConfig ? this.domain.hasInvalidNameField(defaultNameFieldConfig) : false;
     }
 
     /**
      * returns a Set of ids corresponding to the aliases that have duplicate alias values
      */
     getDuplicateAlias(returnAliases = false): Set<string> {
-        const {parentAliases} = this;
+        const { parentAliases } = this;
         let uniqueAliases = Set<string>();
         let dupeAliases = Set<string>();
         let dupeIds = Set<string>();
 
         if (parentAliases) {
-            parentAliases.forEach((alias:IParentAlias) => {
+            parentAliases.forEach((alias: IParentAlias) => {
                 if (uniqueAliases.has(alias.alias)) {
                     dupeIds = dupeIds.add(alias.id);
                     dupeAliases = dupeAliases.add(alias.alias);
-                }
-                else {
+                } else {
                     uniqueAliases = uniqueAliases.add(alias.alias);
                 }
             });
@@ -120,9 +119,9 @@ export class SampleTypeModel extends Record({
 
 export interface IParentAlias {
     alias: string;
-    id: string; //generated by panel used for removal, not saved
+    id: string; // generated by panel used for removal, not saved
     parentValue: IParentOption;
-    ignoreAliasError: boolean
-    ignoreSelectError: boolean
-    isDupe?: boolean
+    ignoreAliasError: boolean;
+    ignoreSelectError: boolean;
+    isDupe?: boolean;
 }

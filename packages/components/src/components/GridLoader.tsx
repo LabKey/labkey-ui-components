@@ -18,10 +18,10 @@ import { fromJS, List } from 'immutable';
 
 import { selectRows } from '../query/api';
 import { getSelected } from '../actions';
+
 import { IGridLoader, IGridResponse, IGridSelectionResponse, QueryGridModel } from './base/models/model';
 
 class GridLoader implements IGridLoader {
-
     fetch(model: QueryGridModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
             return selectRows({
@@ -38,21 +38,23 @@ class GridLoader implements IGridLoader {
                 parameters: model.queryParameters,
                 includeDetailsColumn: model.includeDetailsColumn,
                 includeUpdateColumn: model.includeUpdateColumn,
-            }).then(response => {
-                const { models, orderedModels, totalRows, messages } = response;
+            })
+                .then(response => {
+                    const { models, orderedModels, totalRows, messages } = response;
 
-                resolve({
-                    data: fromJS(models[model.getModelName()]),
-                    dataIds: List(orderedModels[model.getModelName()]),
-                    totalRows,
-                    messages,
+                    resolve({
+                        data: fromJS(models[model.getModelName()]),
+                        dataIds: List(orderedModels[model.getModelName()]),
+                        totalRows,
+                        messages,
+                    });
+                })
+                .catch(error => {
+                    reject({
+                        model,
+                        error,
+                    });
                 });
-            }).catch(error => {
-                reject({
-                    model,
-                    error
-                });
-            });
         });
     }
 
@@ -61,12 +63,13 @@ class GridLoader implements IGridLoader {
             return getSelected(model.getId(), model.schema, model.query, model.filterArray, model.containerPath)
                 .then(response => {
                     resolve({
-                        selectedIds: List(response.selected)
-                    })
-                }).catch(error => {
+                        selectedIds: List(response.selected),
+                    });
+                })
+                .catch(error => {
                     reject({
                         model,
-                        error
+                        error,
                     });
                 });
         });

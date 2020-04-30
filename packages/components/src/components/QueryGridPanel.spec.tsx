@@ -17,59 +17,61 @@ import React from 'reactn';
 import renderer from 'react-test-renderer';
 import { List } from 'immutable';
 
-import { QueryGridPanel } from './QueryGridPanel';
 import { TESTS_ONLY_RESET_DOM_COUNT } from '../util/utils';
-import { QueryGridModel, SchemaQuery } from './base/models/model';
+
 import { getStateQueryGridModel } from '../models';
 import { initUnitTestMocks } from '../testHelpers';
+
+import { QueryGridModel, SchemaQuery } from './base/models/model';
+import { QueryGridPanel } from './QueryGridPanel';
 
 beforeAll(() => {
     initUnitTestMocks();
 });
 
-describe("QueryGridPanel render", () => {
+describe('QueryGridPanel render', () => {
     beforeEach(() => {
         // Reset the DOM counter used to generate IDs. This way snapshot tests will produce the same output when run
         // as a test suite or individually.
         TESTS_ONLY_RESET_DOM_COUNT();
     });
 
-    test("no model", () => {
-        const tree = renderer.create(<QueryGridPanel model={null}/>).toJSON();
+    test('no model', () => {
+        const tree = renderer.create(<QueryGridPanel model={null} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("loading", () => {
-        const modelId = "gridPanelLoading";
+    test('loading', () => {
+        const modelId = 'gridPanelLoading';
         const schemaQuery = new SchemaQuery({
-            schemaName: "assay.General.Amino Acids",
-            queryName: "Data"
+            schemaName: 'assay.General.Amino Acids',
+            queryName: 'Data',
         });
-       const model = getStateQueryGridModel(modelId, schemaQuery);
-       const tree = renderer.create(<QueryGridPanel model={model}/>).toJSON();
-       expect(tree).toMatchSnapshot();
+        const model = getStateQueryGridModel(modelId, schemaQuery);
+        const tree = renderer.create(<QueryGridPanel model={model} />).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
-    test("query grid error", (done) => {
-        const modelId = "gridPanelError";
+    test('query grid error', done => {
+        const modelId = 'gridPanelError';
         const schemaQuery = new SchemaQuery({
-            schemaName: "i.dont.exist",
-            queryName: "shouldFourOhFour"
+            schemaName: 'i.dont.exist',
+            queryName: 'shouldFourOhFour',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery);
 
-        const tree = renderer.create(<QueryGridPanel model={model}/>);
+        const tree = renderer.create(<QueryGridPanel model={model} />);
         setTimeout(() => {
             expect(tree).toMatchSnapshot();
             done();
         }, 0);
     });
 
-    test("with header and message props", () => {
-        const modelId = "gridPanelHeaderAndMessageProps";
+    test('with header and message props', () => {
+        const modelId = 'gridPanelHeaderAndMessageProps';
         const schemaQuery = new SchemaQuery({
-            schemaName: "assay.General.Amino Acids",
-            queryName: "Data"
+            schemaName: 'assay.General.Amino Acids',
+            queryName: 'Data',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery);
         const tree = renderer.create(
@@ -83,50 +85,50 @@ describe("QueryGridPanel render", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("with showAllTabs and one empty grid tab (we never show tabs for single model)", () => {
-        const modelId = "gridPanelWithSingleModelShowAllTabs";
+    test('with showAllTabs and one empty grid tab (we never show tabs for single model)', () => {
+        const modelId = 'gridPanelWithSingleModelShowAllTabs';
         const schemaQuery = new SchemaQuery({
-            schemaName: "assay.General.ImageFieldAssay",
-            queryName: "Runs"
+            schemaName: 'assay.General.ImageFieldAssay',
+            queryName: 'Runs',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery);
-        const tree = renderer.create(<QueryGridPanel model={model} showAllTabs={true}/>);
+        const tree = renderer.create(<QueryGridPanel model={model} showAllTabs={true} />);
         expect(tree).toMatchSnapshot();
     });
 
-    test("with showAllTabs and two empty grid tabs (both should show)", () => {
-        const modelId1 = "gridPanelWithTabs1";
+    test('with showAllTabs and two empty grid tabs (both should show)', () => {
+        const modelId1 = 'gridPanelWithTabs1';
         const schemaQuery1 = new SchemaQuery({
-            schemaName: "assay.General.Amino Acids",
-            queryName: "Runs"
+            schemaName: 'assay.General.Amino Acids',
+            queryName: 'Runs',
         });
-        const model1 = getStateQueryGridModel(modelId1, schemaQuery1, {title: "First Query Grid"});
-        const modelId2 = "gridPanelWithTabs2";
+        const model1 = getStateQueryGridModel(modelId1, schemaQuery1, { title: 'First Query Grid' });
+        const modelId2 = 'gridPanelWithTabs2';
         const schemaQuery2 = new SchemaQuery({
-            schemaName: "assay.General.Amino Acids",
-            queryName: "Data"
+            schemaName: 'assay.General.Amino Acids',
+            queryName: 'Data',
         });
-        const model2 = getStateQueryGridModel(modelId2, schemaQuery2, {title: "Second Query Grid"});
+        const model2 = getStateQueryGridModel(modelId2, schemaQuery2, { title: 'Second Query Grid' });
         const models = List<QueryGridModel>([model1, model2]);
-        const tree = renderer.create(<QueryGridPanel model={models} showTabs={true} showAllTabs={true}/>);
+        const tree = renderer.create(<QueryGridPanel model={models} showTabs={true} showAllTabs={true} />);
         expect(tree).toMatchSnapshot();
     });
 
-    test("with showTabs and two grid tabs with one empty (should show only non-empty)", (done) => {
-        const modelId1 = "gridPanelWithTabsAndData";
+    test('with showTabs and two grid tabs with one empty (should show only non-empty)', done => {
+        const modelId1 = 'gridPanelWithTabsAndData';
         const schemaQuery1 = new SchemaQuery({
-            schemaName: "assay.General.GPAT 1",
-            queryName: "Runs"
+            schemaName: 'assay.General.GPAT 1',
+            queryName: 'Runs',
         });
-        const model1 = getStateQueryGridModel(modelId1, schemaQuery1, {title: "First Query Grid"});
-        const modelId2 = "gridPanelWithTabsAndNoData";
+        const model1 = getStateQueryGridModel(modelId1, schemaQuery1, { title: 'First Query Grid' });
+        const modelId2 = 'gridPanelWithTabsAndNoData';
         const schemaQuery2 = new SchemaQuery({
-            schemaName: "assay.General.GPAT 1",
-            queryName: "EmptyRuns"
+            schemaName: 'assay.General.GPAT 1',
+            queryName: 'EmptyRuns',
         });
-        const model2 = getStateQueryGridModel(modelId2, schemaQuery2, {title: "Second Query Grid"});
+        const model2 = getStateQueryGridModel(modelId2, schemaQuery2, { title: 'Second Query Grid' });
         const models = List<QueryGridModel>([model1, model2]);
-        const tree = renderer.create(<QueryGridPanel model={models} showTabs={true}/>);
+        const tree = renderer.create(<QueryGridPanel model={models} showTabs={true} />);
         setTimeout(() => {
             expect(tree).toMatchSnapshot();
             done();

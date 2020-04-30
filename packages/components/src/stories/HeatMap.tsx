@@ -24,49 +24,56 @@ import { AppURL } from '../url/AppURL';
 
 storiesOf('HeatMap', module)
     .addDecorator(withKnobs)
-    .add("samples with data", () => {
+    .add('samples with data', () => {
         return (
             <HeatMap
                 schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SET_HEAT_MAP}
-                nounSingular={'sample'}
-                nounPlural={'samples'}
-                yAxis={'protocolName'}
-                xAxis={'monthName'}
-                measure={'monthTotal'}
-                yInRangeTotal={'InRangeTotal'}
+                nounSingular="sample"
+                nounPlural="samples"
+                yAxis="protocolName"
+                xAxis="monthName"
+                measure="monthTotal"
+                yInRangeTotal="InRangeTotal"
                 yTotalLabel={text('yTotalLabel', '12 month total samples')}
-                getCellUrl={(row) => AppURL.create('samples', row.getIn(['Protocol', 'displayValue']).toLowerCase())}
-                getHeaderUrl={(cell) => cell.get('url')}
-                getTotalUrl={(cell) => cell.get('url')}
+                getCellUrl={row => AppURL.create('samples', row.getIn(['Protocol', 'displayValue']).toLowerCase())}
+                getHeaderUrl={cell => cell.get('url')}
+                getTotalUrl={cell => cell.get('url')}
                 headerClickUrl={AppURL.create('q', 'exp', 'materials')}
-                navigate={(url) => console.log(url.toString())}
+                navigate={url => console.log(url.toString())}
             />
-        )
+        );
     })
-    .add("assays with data", () => {
+    .add('assays with data', () => {
         return (
             <HeatMap
                 schemaQuery={SCHEMAS.EXP_TABLES.ASSAY_HEAT_MAP}
-                nounSingular={'run'}
-                nounPlural={'runs'}
-                yAxis={'protocolName'}
-                xAxis={'monthName'}
-                measure={'monthTotal'}
-                yInRangeTotal={'InRangeTotal'}
+                nounSingular="run"
+                nounPlural="runs"
+                yAxis="protocolName"
+                xAxis="monthName"
+                measure="monthTotal"
+                yInRangeTotal="InRangeTotal"
                 yTotalLabel={text('yTotalLabel', '12 month total runs')}
-                getCellUrl={(row) => AppURL.create('assays', row.getIn(['Provider', 'value']), row.getIn(['Protocol', 'displayValue']), 'runs')}
-                getHeaderUrl={(cell) => {
+                getCellUrl={row =>
+                    AppURL.create(
+                        'assays',
+                        row.getIn(['Provider', 'value']),
+                        row.getIn(['Protocol', 'displayValue']),
+                        'runs'
+                    )
+                }
+                getHeaderUrl={cell => {
                     const provider = cell.get('providerName');
                     const protocol = cell.get('protocolName');
                     return AppURL.create('assays', provider, protocol, 'overview');
                 }}
-                getTotalUrl={(cell) => {
+                getTotalUrl={cell => {
                     const provider = cell.get('providerName');
                     const protocol = cell.get('protocolName');
                     return AppURL.create('assays', provider, protocol, 'runs');
                 }}
                 headerClickUrl={AppURL.create('q', 'exp', 'assayruns')}
-                navigate={(url) => console.log(url.toString())}
+                navigate={url => console.log(url.toString())}
             />
-        )
+        );
     });

@@ -18,12 +18,13 @@ import { fromJS, List } from 'immutable';
 import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api';
 
+import { QueryColumn, SchemaQuery } from '../base/models/model';
+
 import { DELIMITER, SelectInput } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { FOCUS_FLAG } from './constants';
 import { QuerySelectModel } from './model';
-import { QueryColumn, SchemaQuery } from '../base/models/model';
 
 function getValue(model: QuerySelectModel, props: any): any {
     const { rawSelectedValue } = model;
@@ -31,8 +32,7 @@ function getValue(model: QuerySelectModel, props: any): any {
     if (rawSelectedValue !== undefined && !Utils.isString(rawSelectedValue)) {
         if (List.isList(rawSelectedValue)) {
             return rawSelectedValue.toArray();
-        }
-        else if (isNaN(rawSelectedValue)) {
+        } else if (isNaN(rawSelectedValue)) {
             console.warn('QuerySelect: NaN is not a valid value', rawSelectedValue);
             return undefined;
         }
@@ -48,7 +48,12 @@ function getValue(model: QuerySelectModel, props: any): any {
     // convert that value to an array here, or Formsy will only return a single value if the input is never touched
     // by the user. Converting it to an array right here gets us the best of both worlds: a pre-populated value that
     // is returned as an array when the user hits submit.
-    if (rawSelectedValue !== undefined && rawSelectedValue !== '' && props.multiple && !Array.isArray(rawSelectedValue)) {
+    if (
+        rawSelectedValue !== undefined &&
+        rawSelectedValue !== '' &&
+        props.multiple &&
+        !Array.isArray(rawSelectedValue)
+    ) {
         return [rawSelectedValue];
     }
 
@@ -57,7 +62,7 @@ function getValue(model: QuerySelectModel, props: any): any {
 
 // 33775: Provide a default no-op filter to a React Select to prevent "normal" filtering on the input when fetching
 // async query results. They have already been filtered.
-function noopFilterOptions(options: Array<Option>): Array<Option> {
+function noopFilterOptions(options: Option[]): Option[] {
     return options;
 }
 
@@ -65,37 +70,33 @@ function renderPreviewOption(option: Option, model: QuerySelectModel): React.Rea
     const { allResults, queryInfo } = model;
 
     if (queryInfo && allResults.size) {
-
-        let item = allResults.find((result) => {
+        const item = allResults.find(result => {
             return option.value === result.getIn([model.valueColumn, 'value']);
         });
 
         return (
             <div className="wizard--select-option">
-                {queryInfo
-                    .getDisplayColumns(model.schemaQuery.viewName)
-                    .map((column: QueryColumn, i: number) => {
-
-                        if (item !== undefined) {
-                            let text = resolveDetailFieldValue(item.get(column.name));
-                            if (!Utils.isString(text)) {
-                                text = text ? text.toString() : '';
-                            }
-
-                            return (
-                                <div key={i} className="text__truncate">
-                                    <strong>{column.caption}: </strong>
-                                    <span>{text}</span>
-                                </div>
-                            );
+                {queryInfo.getDisplayColumns(model.schemaQuery.viewName).map((column: QueryColumn, i: number) => {
+                    if (item !== undefined) {
+                        let text = resolveDetailFieldValue(item.get(column.name));
+                        if (!Utils.isString(text)) {
+                            text = text ? text.toString() : '';
                         }
 
                         return (
                             <div key={i} className="text__truncate">
-                                <span>{option.label}</span>
+                                <strong>{column.caption}: </strong>
+                                <span>{text}</span>
                             </div>
                         );
-                    })}
+                    }
+
+                    return (
+                        <div key={i} className="text__truncate">
+                            <span>{option.label}</span>
+                        </div>
+                    );
+                })}
             </div>
         );
     }
@@ -110,59 +111,60 @@ function renderPreviewOption(option: Option, model: QuerySelectModel): React.Rea
  * be specified by the user).
  */
 interface InheritedSelectInputProps {
-    addLabelText?: string
-    allowCreate?: boolean
-    allowDisable?: boolean
-    backspaceRemoves?: boolean
-    clearCacheOnChange?: boolean
-    clearable?: boolean
-    delimiter?: string
-    description?: string
-    disabled?: boolean
-    filterOptions?: (options, filterString, values) => any // from ReactSelect
-    formsy?: boolean
-    initiallyDisabled?: boolean
-    inputClass?: string
-    joinValues?: boolean
-    label?: React.ReactNode
-    labelClass?: string
-    multiple?: boolean
-    name?: string
-    noResultsText?: string
-    placeholder?: string
-    required?: boolean
-    saveOnBlur?: boolean
-    showLabel?: boolean
-    addLabelAsterisk?: boolean
-    validations?: any
-    value?: any
+    addLabelText?: string;
+    allowCreate?: boolean;
+    allowDisable?: boolean;
+    onToggleDisable?: (disabled: boolean) => void;
+    backspaceRemoves?: boolean;
+    clearCacheOnChange?: boolean;
+    clearable?: boolean;
+    delimiter?: string;
+    description?: string;
+    disabled?: boolean;
+    filterOptions?: (options, filterString, values) => any; // from ReactSelect
+    formsy?: boolean;
+    initiallyDisabled?: boolean;
+    inputClass?: string;
+    joinValues?: boolean;
+    label?: React.ReactNode;
+    labelClass?: string;
+    multiple?: boolean;
+    name?: string;
+    noResultsText?: string;
+    placeholder?: string;
+    required?: boolean;
+    saveOnBlur?: boolean;
+    showLabel?: boolean;
+    addLabelAsterisk?: boolean;
+    validations?: any;
+    value?: any;
 }
 
 export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     // required
-    componentId: string
-    schemaQuery: SchemaQuery
+    componentId: string;
+    schemaQuery: SchemaQuery;
 
     // optional
-    containerClass?: string // The css class used by SelectInput, has nothing to do with LK containers.
-    containerPath?: string // The path to the LK container that the queries should be scoped to.
-    displayColumn?: string
-    fireQSChangeOnInit?: boolean
-    loadOnChange?: boolean
-    loadOnFocus?: boolean
-    maxRows?: number
-    onQSChange?: (name: string, value: string | Array<any>, items: any) => any
-    onInitValue?: (value: any, selectedValues: List<any>) => any
-    preLoad?: boolean
-    previewOptions?: boolean
-    queryFilters?: List<Filter.IFilter>
-    showLoading?: boolean
-    valueColumn?: string
+    containerClass?: string; // The css class used by SelectInput, has nothing to do with LK containers.
+    containerPath?: string; // The path to the LK container that the queries should be scoped to.
+    displayColumn?: string;
+    fireQSChangeOnInit?: boolean;
+    loadOnChange?: boolean;
+    loadOnFocus?: boolean;
+    maxRows?: number;
+    onQSChange?: (name: string, value: string | any[], items: any) => any;
+    onInitValue?: (value: any, selectedValues: List<any>) => any;
+    preLoad?: boolean;
+    previewOptions?: boolean;
+    queryFilters?: List<Filter.IFilter>;
+    showLoading?: boolean;
+    valueColumn?: string;
 }
 
 interface QuerySelectStateProps {
-    model: QuerySelectModel
-    error: any
+    model: QuerySelectModel;
+    error: any;
 }
 
 export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelectStateProps> {
@@ -173,7 +175,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
         loadOnFocus: false,
         preLoad: false,
         previewOptions: false,
-        showLoading: true
+        showLoading: true,
     };
 
     _mounted: boolean;
@@ -189,7 +191,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
 
         this.state = {
             model: undefined,
-            error: undefined
+            error: undefined,
         };
     }
 
@@ -205,12 +207,14 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
     }
 
     initModel(props: QuerySelectOwnProps) {
-        initSelect(props)
-            .then((model) => {
-                this.setState(() => ({error: undefined, model}));
-            }, (reason) => {
-                this.setState(() => ({error: reason}));
-            });
+        initSelect(props).then(
+            model => {
+                this.setState(() => ({ error: undefined, model }));
+            },
+            reason => {
+                this.setState(() => ({ error: reason }));
+            }
+        );
     }
 
     componentWillUnmount() {
@@ -218,7 +222,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
         clearTimeout(this.querySelectTimer);
     }
 
-    filterOptions(options: Array<Option>, inputValue: string, currentValue: Array<Option>): Array<Option> {
+    filterOptions(options: Option[], inputValue: string, currentValue: Option[]): Option[] {
         return this.props.filterOptions(options, inputValue, currentValue);
     }
 
@@ -232,7 +236,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
             this.querySelectTimer = window.setTimeout(() => {
                 this.querySelectTimer = undefined;
                 const v = token === true ? input : token;
-                model.search(v).then((data) => {
+                model.search(v).then(data => {
                     const { model } = this.state;
 
                     // prevent stale state updates of ReactSelect
@@ -242,21 +246,20 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                     }
 
                     const key = data.key,
-                          models = fromJS(data.models[key]);
+                        models = fromJS(data.models[key]);
 
                     callback(null, {
-                        options: model.formatSavedResults(models, v)
+                        options: model.formatSavedResults(models, v),
                     });
 
                     this.setState(() => ({
-                        model: model.saveSearchResults(models)
+                        model: model.saveSearchResults(models),
                     }));
                 });
             }, 250);
-        }
-        else {
+        } else {
             callback(null, {
-                options: model.formatSavedResults()
+                options: model.formatSavedResults(),
             });
         }
     }
@@ -265,17 +268,20 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
         const { loadOnChange, onQSChange } = this.props;
         const { model } = this.state;
 
-        this.setState(() => ({
-            model: model.setSelection(value)
-        }), () => {
-            if (loadOnChange && Utils.isFunction(selectRef.loadOptions)) {
-                selectRef.loadOptions(FOCUS_FLAG);
-            }
+        this.setState(
+            () => ({
+                model: model.setSelection(value),
+            }),
+            () => {
+                if (loadOnChange && Utils.isFunction(selectRef.loadOptions)) {
+                    selectRef.loadOptions(FOCUS_FLAG);
+                }
 
-            if (Utils.isFunction(onQSChange)) {
-                onQSChange(name, value, selectedOptions);
+                if (Utils.isFunction(onQSChange)) {
+                    onQSChange(name, value, selectedOptions);
+                }
             }
-        });
+        );
     }
 
     optionRenderer(option) {
@@ -293,14 +299,25 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
     }
 
     render() {
-        const { allowDisable, description, filterOptions, initiallyDisabled, label, previewOptions, required, showLoading } = this.props;
+        const {
+            allowDisable,
+            onToggleDisable,
+            description,
+            filterOptions,
+            initiallyDisabled,
+            label,
+            previewOptions,
+            required,
+            showLoading,
+        } = this.props;
         const { error, model } = this.state;
 
-        if ( error ) {
+        if (error) {
             const inputProps = {
-                allowDisable: allowDisable,
-                description: description,
-                initiallyDisabled: initiallyDisabled,
+                allowDisable,
+                onToggleDisable,
+                description,
+                initiallyDisabled,
                 disabled: true,
                 formsy: this.props.formsy,
                 containerClass: this.props.containerClass,
@@ -311,45 +328,48 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 name: this.props.name || this.props.componentId + '-error',
                 placeholder: 'Error: ' + error.message,
                 required,
-                type: 'text'
+                type: 'text',
             };
 
-            return <SelectInput {...inputProps}/>
-        }
-        else if (model && model.isInit) {
-            const inputProps = Object.assign({
-                id: model.id,
-                label: label !== undefined ? label : model.queryInfo.title,
-            }, this.props, {
-                allowCreate: false,
-                autoValue: false, // QuerySelect will directly control value of ReactSelect via selectedOptions
-                autoload: true,
-                cache: true,
-                description: description,
-                filterOptions: Utils.isFunction(filterOptions) ? this.filterOptions : noopFilterOptions,
-                ignoreCase: false,
-                loadOptions: this.loadOptions,
-                onChange: this.onChange,
-                onFocus: this.onFocus,
-                options: undefined, // prevent override
-                optionRenderer: previewOptions ? this.optionRenderer.bind(this) : undefined,
-                selectedOptions: model.getSelectedOptions(),
-                value: getValue(model, this.props) // needed to initialize the Formsy "value" properly
-            });
+            return <SelectInput {...inputProps} />;
+        } else if (model && model.isInit) {
+            const inputProps = Object.assign(
+                {
+                    id: model.id,
+                    label: label !== undefined ? label : model.queryInfo.title,
+                },
+                this.props,
+                {
+                    allowCreate: false,
+                    autoValue: false, // QuerySelect will directly control value of ReactSelect via selectedOptions
+                    autoload: true,
+                    cache: true,
+                    description,
+                    filterOptions: Utils.isFunction(filterOptions) ? this.filterOptions : noopFilterOptions,
+                    ignoreCase: false,
+                    loadOptions: this.loadOptions,
+                    onChange: this.onChange,
+                    onFocus: this.onFocus,
+                    options: undefined, // prevent override
+                    optionRenderer: previewOptions ? this.optionRenderer.bind(this) : undefined,
+                    selectedOptions: model.getSelectedOptions(),
+                    value: getValue(model, this.props), // needed to initialize the Formsy "value" properly
+                }
+            );
 
-            return <SelectInput {...inputProps}/>
-        }
-        else if (showLoading) {
+            return <SelectInput {...inputProps} />;
+        } else if (showLoading) {
             // This <Input/> is used as a placeholder for fields while the model
             // is initialized. The intent is to allow normal required validation to work
             // even while QuerySelects are being initialized
             const inputProps = {
-                allowDisable: allowDisable,
+                allowDisable,
                 containerClass: this.props.containerClass,
                 inputClass: this.props.inputClass,
                 labelClass: this.props.labelClass,
-                description: description,
-                initiallyDisabled: initiallyDisabled,
+                description,
+                initiallyDisabled,
+                onToggleDisable,
                 disabled: true,
                 formsy: this.props.formsy,
                 label,
@@ -357,10 +377,10 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 placeholder: 'Loading...',
                 required,
                 type: 'text',
-                value: undefined
+                value: undefined,
             };
 
-            return <SelectInput {...inputProps}/>
+            return <SelectInput {...inputProps} />;
         }
 
         return null;

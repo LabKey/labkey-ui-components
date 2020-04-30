@@ -15,6 +15,7 @@
  */
 import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
+
 import { AssayProtocolModel } from '../components/domainproperties/assay/models';
 import { fetchProtocol } from '../components/domainproperties/assay/actions';
 
@@ -23,8 +24,8 @@ import { AppURL, spliceURL } from '../url/AppURL';
 import { SCHEMAS } from '../components/base/models/schemas';
 
 export interface AppRouteResolver {
-    matches: (route: string) => boolean
-    fetch: (parts: Array<any>) => Promise<AppURL | boolean>
+    matches: (route: string) => boolean;
+    fetch: (parts: any[]) => Promise<AppURL | boolean>;
 }
 
 /**
@@ -32,40 +33,37 @@ export interface AppRouteResolver {
  * /assays/44/... -> /assays/providerName/assayName/...
  */
 export class AssayResolver implements AppRouteResolver {
+    datas: Map<number, { name: string; provider: string }>; // Map<AssayProtocolId, {name, provider}>
 
-    datas: Map<number, {name: string, provider: string}>; // Map<AssayProtocolId, {name, provider}>
-
-    constructor(datas?: Map<number, {name: string, provider: string}>) {
-        this.datas = datas !== undefined ? datas : Map<number, {name: string, provider: string}>();
+    constructor(datas?: Map<number, { name: string; provider: string }>) {
+        this.datas = datas !== undefined ? datas : Map<number, { name: string; provider: string }>();
     }
 
     matches(route: string): boolean {
         return /\/assays\/(\d+$|\d+\/)/.test(route);
     }
 
-    fetch(parts: Array<any>): Promise<AppURL | boolean> {
+    fetch(parts: any[]): Promise<AppURL | boolean> {
         const assayRowIdIndex = 1;
-        let assayRowId: number = parseInt(parts[assayRowIdIndex]);
+        const assayRowId: number = parseInt(parts[assayRowIdIndex]);
 
         if (isNaN(assayRowId)) {
             return Promise.resolve(true);
-        }
-        else if (this.datas.has(assayRowId)) {
+        } else if (this.datas.has(assayRowId)) {
             const context = this.datas.get(assayRowId);
-            let newParts = [context.provider, context.name];
+            const newParts = [context.provider, context.name];
             return Promise.resolve(spliceURL(parts, newParts, assayRowIdIndex));
-        }
-        else {
-            return new Promise((resolve) => {
+        } else {
+            return new Promise(resolve => {
                 return fetchProtocol(assayRowId)
                     .then((assay: AssayProtocolModel) => {
                         const context = {
                             name: encodeURIComponent(assay.name),
-                            provider: assay.providerName
+                            provider: assay.providerName,
                         };
 
                         this.datas = this.datas.set(assayRowId, context);
-                        let newParts = [context.provider, context.name];
+                        const newParts = [context.provider, context.name];
                         return resolve(spliceURL(parts, newParts, assayRowIdIndex));
                     })
                     .catch(() => {
@@ -81,7 +79,6 @@ export class AssayResolver implements AppRouteResolver {
  * /rd/assayrun/543/... -> /assays/44/runs/584/...
  */
 export class AssayRunResolver implements AppRouteResolver {
-
     datas: Map<number, number>;
 
     constructor(datas?: Map<number, number>) {
@@ -92,47 +89,45 @@ export class AssayRunResolver implements AppRouteResolver {
         return /\/rd\/assayrun\/(\d+$|\d+\/)/.test(route);
     }
 
-    fetch(parts: Array<any>): Promise<AppURL | boolean> {
+    fetch(parts: any[]): Promise<AppURL | boolean> {
         // ["rd", "assayrun", "543", ...]
         const assayRunIdIndex = 2;
-        let assayRunId: number = parseInt(parts[assayRunIdIndex]);
+        const assayRunId: number = parseInt(parts[assayRunIdIndex]);
 
         if (isNaN(assayRunId)) {
             return Promise.resolve(true);
-        }
-        else if (this.datas.has(assayRunId)) {
-            let newParts = ['assays', this.datas.get(assayRunId), 'runs'];
+        } else if (this.datas.has(assayRunId)) {
+            const newParts = ['assays', this.datas.get(assayRunId), 'runs'];
             return Promise.resolve(spliceURL(parts, newParts, 0, assayRunIdIndex));
-        }
-        else {
-            return new Promise((resolve) => {
-
+        } else {
+            return new Promise(resolve => {
                 return selectRows({
                     schemaName: SCHEMAS.EXP_TABLES.ASSAY_RUNS.schemaName,
                     queryName: SCHEMAS.EXP_TABLES.ASSAY_RUNS.queryName,
                     columns: 'RowId,Protocol/RowId',
-                    filterArray: [Filter.create('RowId', assayRunId)]
-                }).then((result) => {
+                    filterArray: [Filter.create('RowId', assayRunId)],
+                })
+                    .then(result => {
+                        const entries = result.orderedModels[result.key];
 
-                    const entries = result.orderedModels[result.key];
+                        if (entries.size === 1) {
+                            const data = result.models[result.key][entries.first()];
+                            const assayProtocolId = data['Protocol/RowId']['value'];
 
-                    if (entries.size === 1) {
-                        const data = result.models[result.key][entries.first()];
-                        const assayProtocolId = data['Protocol/RowId']['value'];
+                            // cache
+                            this.datas.set(assayRunId, assayProtocolId);
 
-                        // cache
-                        this.datas.set(assayRunId, assayProtocolId);
+                            const newParts = ['assays', assayProtocolId, 'runs'];
+                            return resolve(spliceURL(parts, newParts, 0, assayRunIdIndex));
+                        }
 
-                        const newParts = ['assays', assayProtocolId, 'runs'];
-                        return resolve(spliceURL(parts, newParts, 0, assayRunIdIndex));
-                    }
-
-                    // skip it
-                    resolve(true);
-                }).catch(() => {
-                    // skip it
-                    resolve(true);
-                });
+                        // skip it
+                        resolve(true);
+                    })
+                    .catch(() => {
+                        // skip it
+                        resolve(true);
+                    });
             });
         }
     }
@@ -143,7 +138,6 @@ export class AssayRunResolver implements AppRouteResolver {
  * /q/lists/22/14/... -> /q/lists/listByName/14/...
  */
 export class ListResolver implements AppRouteResolver {
-
     fetched: boolean;
     lists: Map<number, string>; // Map<listId, listName>
 
@@ -156,7 +150,7 @@ export class ListResolver implements AppRouteResolver {
         return /\/q\/lists\/(\d+$|\d+\/)/.test(route);
     }
 
-    fetch(parts: Array<any>): Promise<AppURL | boolean> {
+    fetch(parts: any[]): Promise<AppURL | boolean> {
         // ["q", "lists", "44", ...]
         const listIdIndex = 2;
         const listIdNum: number = parseInt(parts[listIdIndex]);
@@ -164,24 +158,21 @@ export class ListResolver implements AppRouteResolver {
         if (isNaN(listIdNum)) {
             // skip it
             return Promise.resolve(true);
-        }
-        else if (this.lists.has(listIdNum)) {
+        } else if (this.lists.has(listIdNum)) {
             // resolve it
             const newParts = [this.lists.get(listIdNum)];
             return Promise.resolve(spliceURL(parts, newParts, listIdIndex));
-        }
-        else if (this.fetched) {
+        } else if (this.fetched) {
             // skip it
             return Promise.resolve(true);
-        }
-        else {
+        } else {
             // fetch it
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 return selectRows({
                     schemaName: 'ListManager',
                     queryName: 'ListManager',
-                    columns: 'ListId,Name'
-                }).then((result) => {
+                    columns: 'ListId,Name',
+                }).then(result => {
                     this.fetched = true;
 
                     // fulfill local cache
@@ -214,7 +205,6 @@ export class ListResolver implements AppRouteResolver {
  * rd/samples/14/... -> /samples/sampleSetByName/14/... || /media/batches/14
  */
 export class SamplesResolver implements AppRouteResolver {
-
     samples: Map<number, List<string>>; // Map<SampleRowId, List<'samples' | 'media', sampleSetName | 'batches'>>
 
     constructor(samples?: Map<number, List<string>>) {
@@ -225,7 +215,7 @@ export class SamplesResolver implements AppRouteResolver {
         return /\/rd\/samples\/(\d+$|\d+\/)/.test(route);
     }
 
-    fetch(parts: Array<any>): Promise<AppURL | boolean> {
+    fetch(parts: any[]): Promise<AppURL | boolean> {
         // ["rd", "samples", "118", ...]
         const sampleRowIdIndex = 2;
         const sampleRowId: number = parseInt(parts[sampleRowIdIndex]);
@@ -233,64 +223,71 @@ export class SamplesResolver implements AppRouteResolver {
         if (isNaN(sampleRowId)) {
             // skip it
             return Promise.resolve(true);
-        }
-        else if (this.samples.has(sampleRowId)) {
+        } else if (this.samples.has(sampleRowId)) {
             // resolve it
-            let newParts = this.samples.get(sampleRowId).toArray();
+            const newParts = this.samples.get(sampleRowId).toArray();
             return Promise.resolve(spliceURL(parts, newParts, 0, 2));
-        }
-        else {
+        } else {
             // fetch it
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 return selectRows({
                     schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
                     queryName: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
                     columns: 'RowId,SampleSet',
-                    filterArray: [
-                        Filter.create('RowId', sampleRowId)
-                    ]
-                }).then((result) => {
-                    const samples = result.models[result.key];
+                    filterArray: [Filter.create('RowId', sampleRowId)],
+                })
+                    .then(result => {
+                        const samples = result.models[result.key];
 
-                    if (samples && samples[sampleRowId]) {
-                        const sample = samples[sampleRowId],
-                            sampleSetName = sample['SampleSet'].displayValue.toLowerCase();
+                        if (samples && samples[sampleRowId]) {
+                            const sample = samples[sampleRowId],
+                                sampleSetName = sample['SampleSet'].displayValue.toLowerCase();
 
-                        return getQueryDetails({
-                            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                            queryName: sampleSetName
-                        }).then(info => {
+                            return getQueryDetails({
+                                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                                queryName: sampleSetName,
+                            })
+                                .then(info => {
+                                    if (info) {
+                                        if (info.isMedia) {
+                                            // for supporting MIXTURE_BATCHES => batches
+                                            this.samples = this.samples.set(
+                                                sampleRowId,
+                                                List([
+                                                    'media',
+                                                    info.name.toLowerCase() ===
+                                                    SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase()
+                                                        ? 'batches'
+                                                        : info.name,
+                                                ])
+                                            );
+                                        } else {
+                                            this.samples = this.samples.set(
+                                                sampleRowId,
+                                                List([
+                                                    SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase(),
+                                                    encodeURIComponent(sampleSetName),
+                                                ])
+                                            );
+                                        }
+                                    }
 
-                            if (info) {
-                                if (info.isMedia) {
-                                    // for supporting MIXTURE_BATCHES => batches
-                                    this.samples = this.samples.set(
-                                        sampleRowId, List([
-                                            'media',
-                                            (info.name.toLowerCase() === SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase() ? 'batches' : info.name)
-                                        ])
-                                    );
-                                }
-                                else {
-                                    this.samples = this.samples.set(sampleRowId, List([SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase(), encodeURIComponent(sampleSetName)]));
-                                }
-                            }
+                                    if (this.samples.has(sampleRowId)) {
+                                        const newParts = this.samples.get(sampleRowId).toArray();
+                                        return resolve(spliceURL(parts, newParts, 0, 2));
+                                    }
+                                })
+                                .catch(() => {
+                                    resolve(true);
+                                });
+                        }
 
-                            if (this.samples.has(sampleRowId)) {
-                                const newParts = this.samples.get(sampleRowId).toArray();
-                                return resolve(spliceURL(parts, newParts, 0, 2));
-                            }
-
-                        }).catch(() => {
-                            resolve(true);
-                        });
-                    }
-
-                    // skip it
-                    return resolve(true);
-                }).catch(() => {
-                    return resolve(true);
-                });
+                        // skip it
+                        return resolve(true);
+                    })
+                    .catch(() => {
+                        return resolve(true);
+                    });
             });
         }
     }

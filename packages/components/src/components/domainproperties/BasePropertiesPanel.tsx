@@ -1,34 +1,35 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
-import { DomainPanelStatus } from "./models";
-import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from "./actions";
-import { CollapsiblePanelHeader } from "./CollapsiblePanelHeader";
-import { PROPERTIES_PANEL_ERROR_MSG } from "./constants";
-import { Alert } from "../base/Alert";
-import { InjectedDomainPropertiesPanelCollapseProps } from "./DomainPropertiesPanelCollapse";
+
+import { Alert } from '../base/Alert';
+
+import { DomainPanelStatus } from './models';
+import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from './actions';
+import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
+import { PROPERTIES_PANEL_ERROR_MSG } from './constants';
+import { InjectedDomainPropertiesPanelCollapseProps } from './DomainPropertiesPanelCollapse';
 
 export interface BasePropertiesPanelProps {
-    panelStatus: DomainPanelStatus
-    validate: boolean
-    useTheme: boolean
+    panelStatus: DomainPanelStatus;
+    validate: boolean;
+    useTheme: boolean;
 }
 
 interface OwnProps {
-    headerId: string
-    title: string
-    titlePrefix: string
-    isValid: boolean
-    updateValidStatus: (model?: any) => any
+    headerId: string;
+    title: string;
+    titlePrefix: string;
+    isValid: boolean;
+    updateValidStatus: (model?: any) => any;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps & InjectedDomainPropertiesPanelCollapseProps;
 
 export class BasePropertiesPanel extends React.PureComponent<Props, any> {
-
     static defaultProps = {
         title: 'Properties',
         validate: false,
-        useTheme: false
+        useTheme: false,
     };
 
     componentWillReceiveProps(nextProps: Readonly<Props>): void {
@@ -51,18 +52,29 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
         const { togglePanel, collapsed, updateValidStatus } = this.props;
 
         updateValidStatus();
-        togglePanel(evt, !collapsed)
+        togglePanel(evt, !collapsed);
     };
 
     render() {
-        const { collapsed, collapsible, controlledCollapse, panelStatus, useTheme, headerId, titlePrefix, title, isValid, children } = this.props;
+        const {
+            collapsed,
+            collapsible,
+            controlledCollapse,
+            panelStatus,
+            useTheme,
+            headerId,
+            titlePrefix,
+            title,
+            isValid,
+            children,
+        } = this.props;
 
         return (
             <>
                 <Panel
                     className={getDomainPanelClass(collapsed, true, useTheme)}
                     expanded={!collapsed}
-                    onToggle={function(){}} // this is added to suppress JS warning about providing an expanded prop without onToggle
+                    onToggle={function () {}} // this is added to suppress JS warning about providing an expanded prop without onToggle
                 >
                     <CollapsiblePanelHeader
                         id={headerId}
@@ -77,19 +89,17 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
                         iconHelpMsg={PROPERTIES_PANEL_ERROR_MSG}
                         useTheme={useTheme}
                     />
-                    <Panel.Body collapsible={collapsible || controlledCollapse}>
-                        {children}
-                    </Panel.Body>
+                    <Panel.Body collapsible={collapsible || controlledCollapse}>{children}</Panel.Body>
                 </Panel>
-                {!isValid &&
+                {!isValid && (
                     <div
                         onClick={(evt: any) => this.toggleLocalPanel(evt)}
                         className={getDomainAlertClasses(collapsed, true, useTheme)}
                     >
                         <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
                     </div>
-                }
+                )}
             </>
-        )
+        );
     }
 }

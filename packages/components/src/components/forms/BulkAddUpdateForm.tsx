@@ -1,33 +1,33 @@
 import React from 'react';
 import { List } from 'immutable';
 
-import { QueryInfoForm } from './QueryInfoForm';
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { QueryColumn, QueryGridModel } from '../base/models/model';
-import { getEditorModel } from "../../global";
-import { EditorModel } from "../../models";
+import { getEditorModel } from '../../global';
+import { EditorModel } from '../../models';
+
+import { QueryInfoForm } from './QueryInfoForm';
 
 interface Props {
-    selectedRowIndexes: List<number>
-    singularNoun?: string
-    pluralNoun?: string
-    title?: string
-    columnFilter?: (col?: QueryColumn) => boolean
-    itemLabel?: string
-    model: QueryGridModel,
-    onCancel: () => any,
-    onError?: (message: string) => any,
-    onComplete: (data: any, submitForEdit: boolean) => any
-    onSubmitForEdit: (updateData: any) => any
+    selectedRowIndexes: List<number>;
+    singularNoun?: string;
+    pluralNoun?: string;
+    title?: string;
+    columnFilter?: (col?: QueryColumn) => boolean;
+    itemLabel?: string;
+    model: QueryGridModel;
+    onCancel: () => any;
+    onError?: (message: string) => any;
+    onComplete: (data: any, submitForEdit: boolean) => any;
+    onSubmitForEdit: (updateData: any) => any;
 }
 
 export class BulkAddUpdateForm extends React.Component<Props, any> {
-
     static defaultProps = {
         singularNoun: 'row',
         pluralNoun: 'rows',
-        itemLabel: 'table'
+        itemLabel: 'table',
     };
 
     getEditorModel(): EditorModel {
@@ -47,17 +47,28 @@ export class BulkAddUpdateForm extends React.Component<Props, any> {
 
     getInsertQueryInfo(): QueryInfo {
         const { model } = this.props;
-        const updateColumns = model.queryInfo.columns.filter((column) => (column.shownInInsertView));
+        const updateColumns = model.queryInfo.columns.filter(column => column.shownInInsertView);
         return model.queryInfo.set('columns', updateColumns) as QueryInfo;
     }
 
     render() {
-        const { pluralNoun, model, onCancel, onComplete, columnFilter, onSubmitForEdit, selectedRowIndexes } = this.props;
+        const {
+            pluralNoun,
+            model,
+            onCancel,
+            onComplete,
+            columnFilter,
+            onSubmitForEdit,
+            selectedRowIndexes,
+        } = this.props;
 
         const editorModel = this.getEditorModel();
-        const editorData = editorModel.getRawData(model).filter((val, index) => {
-            return selectedRowIndexes.contains(index);
-        }).toMap();
+        const editorData = editorModel
+            .getRawData(model)
+            .filter((val, index) => {
+                return selectedRowIndexes.contains(index);
+            })
+            .toMap();
         const fieldValues = getCommonDataValues(editorData);
 
         return (
@@ -80,6 +91,6 @@ export class BulkAddUpdateForm extends React.Component<Props, any> {
                 schemaQuery={model.queryInfo.schemaQuery}
                 title={this.getTitle()}
             />
-        )
+        );
     }
 }

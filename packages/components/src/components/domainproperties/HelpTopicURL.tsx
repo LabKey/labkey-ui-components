@@ -1,10 +1,11 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
+
 import { helpLinkNode } from '../../util/helpLinks';
 
 interface Props {
-    nounPlural?: string
-    helpTopic: string
+    nounPlural?: string;
+    helpTopic: string;
 }
 
 export function HelpTopicURL(props: Props) {
@@ -14,9 +15,7 @@ export function HelpTopicURL(props: Props) {
 
     return (
         <Row>
-            <Col xs={12}>
-                {helpLinkNode(props.helpTopic, text, 'domain-field-float-right')}
-            </Col>
+            <Col xs={12}>{helpLinkNode(props.helpTopic, text, 'domain-field-float-right')}</Col>
         </Row>
-    )
+    );
 }

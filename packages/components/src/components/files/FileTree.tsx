@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { Checkbox, Alert } from 'react-bootstrap';
 import { List } from 'immutable';
-import {LoadingSpinner} from "../..";
+
+import { LoadingSpinner } from '../..';
 
 const customStyle = {
     tree: {
@@ -101,13 +102,13 @@ const nodeIsEmpty = (id: string): boolean => {
     return id.endsWith('|' + EMPTY_FILE_NAME);
 };
 
-const Header = (props) => {
+const Header = props => {
     const { style, onSelect, node, customStyles, checked, handleCheckbox } = props;
     const iconType = node.children ? 'folder' : 'file-text';
     const icon = iconType === 'folder' ? faFolder : faFileAlt;
 
     if (nodeIsEmpty(node.id)) {
-        return ( <div className="filetree-empty-directory">No Files Found</div> );
+        return <div className="filetree-empty-directory">No Files Found</div>;
     }
 
     if (nodeIsLoading(node.id)) {
@@ -125,12 +126,7 @@ const Header = (props) => {
 
     return (
         <span className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node')}>
-            <Checkbox
-                id={CHECK_ID_PREFIX + node.id}
-                checked={checked}
-                onChange={handleCheckbox}
-                onClick={checkClick}
-            />
+            <Checkbox id={CHECK_ID_PREFIX + node.id} checked={checked} onChange={handleCheckbox} onClick={checkClick} />
             <div style={style.base} onClick={onSelect}>
                 <div style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}>
                     <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
@@ -142,16 +138,16 @@ const Header = (props) => {
 };
 
 interface FileTreeProps {
-    loadData: (directory?: string) => Promise<any>
-    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean) => void
+    loadData: (directory?: string) => Promise<any>;
+    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean) => void;
 }
 
 interface FileTreeState {
-    cursor: any
-    checked: List<string>
-    data: Array<any>
-    error?: string
-    loading: boolean  // Only used for testing
+    cursor: any;
+    checked: List<string>;
+    data: any[];
+    error?: string;
+    loading: boolean; // Only used for testing
 }
 
 export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
@@ -170,7 +166,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     componentDidMount(): void {
         const { loadData } = this.props;
 
-        this.setState(() => ({loading: true}));
+        this.setState(() => ({ loading: true }));
         loadData()
             .then(data => {
                 let loadedData = data;
@@ -178,9 +174,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                 // treebeard has bugs when there is not a single root node
                 if (Array.isArray(data)) {
                     if (data.length < 1) {
-                        data = [
-                            { id: DEFAULT_ROOT_PREFIX + '|' + EMPTY_FILE_NAME, active: false, name: 'empty' },
-                        ];
+                        data = [{ id: DEFAULT_ROOT_PREFIX + '|' + EMPTY_FILE_NAME, active: false, name: 'empty' }];
                     }
 
                     loadedData = {
@@ -202,7 +196,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             });
     }
 
-    headerDecorator = (props) => {
+    headerDecorator = props => {
         const { checked } = this.state;
         return <Header {...props} checked={checked.contains(props.node.id)} handleCheckbox={this.handleCheckbox} />;
     };
@@ -270,15 +264,12 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
 
         // If node is not a loading or empty placeholder then add or remove checked value from state
         if (!nodeIsLoading(node.id) && !nodeIsEmpty(node.id)) {
-            if (checked)
-            {
+            if (checked) {
                 this.setState(
-                    state => ({checked: state.checked.push(node.id)}),
+                    state => ({ checked: state.checked.push(node.id) }),
                     () => this.onFileSelect(node.id, checked, !!node.children)
                 );
-            }
-            else
-            {
+            } else {
                 this.setState(
                     state => ({
                         checked: state.checked.filter(check => {
@@ -325,12 +316,11 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     loadDirectory = (nodeId: string, callback?: () => any): any => {
         const { loadData } = this.props;
 
-        this.setState(() => ({loading: true}));
+        this.setState(() => ({ loading: true }));
         loadData(this.getPathFromId(nodeId))
             .then(children => {
-
                 const { data } = this.state;
-                let dataNode = this.getDataNode(nodeId, data);
+                const dataNode = this.getDataNode(nodeId, data);
 
                 children = children.map(child => {
                     child.id = dataNode.id + '|' + child.name; // generate Id from path
@@ -343,12 +333,15 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
 
                 dataNode.children = children; // This is not immutable so this is updating the data object
                 this.setState(
-                    () => ({ cursor: dataNode, data: {...data}, error: undefined, loading: false }),
+                    () => ({ cursor: dataNode, data: { ...data }, error: undefined, loading: false }),
                     callback
                 );
             })
             .catch((reason: any) => {
-                this.setState(() => ({ error: reason.message ? reason.message : 'Unable to fetch data', loading: false }));
+                this.setState(() => ({
+                    error: reason.message ? reason.message : 'Unable to fetch data',
+                    loading: false,
+                }));
             });
     };
 
@@ -370,16 +363,13 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             if (node.children.length === 0) {
                 node.children = [{ id: node.id + '|' + LOADING_FILE_NAME }];
                 this.setState(
-                    () => ({ cursor: node, data: { ...data }}),
+                    () => ({ cursor: node, data: { ...data } }),
                     () => {
                         this.loadDirectory(node.id, callback);
                     }
                 );
             } else {
-                this.setState(
-                    () => ({ cursor: node, data: {...data}, error: undefined }),
-                    callback
-                );
+                this.setState(() => ({ cursor: node, data: { ...data }, error: undefined }), callback);
             }
         }
     };
@@ -401,5 +391,5 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                 )}
             </div>
         );
-    };
+    }
 }

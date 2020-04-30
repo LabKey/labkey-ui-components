@@ -1,13 +1,16 @@
-
 // commented out attributes are not used in app
 import { List, Map, OrderedMap, Record } from 'immutable';
-import { toLowerSafe } from '../../../util/utils';
+
 import { Filter } from '@labkey/api';
+
+import { toLowerSafe } from '../../../util/utils';
+
 import {
     insertColumnFilter,
     LastActionStatus,
     QueryColumn,
-    QueryInfoStatus, QuerySort,
+    QueryInfoStatus,
+    QuerySort,
     SchemaQuery,
     updateColumnFilter,
     ViewInfo,
@@ -52,7 +55,7 @@ export class QueryInfo extends Record({
     schemaQuery: undefined,
     showInsertNewButton: true, // opt out
     singular: undefined, // defaults to value of queryLabel
-    plural: undefined  // defaults to value of queryLabel
+    plural: undefined, // defaults to value of queryLabel
 }) {
     private appEditableTable: boolean; // use isAppEditable()
     // canEdit: boolean;
@@ -98,9 +101,11 @@ export class QueryInfo extends Record({
             schemaQuery = SchemaQuery.create(rawQueryInfo.schemaName, rawQueryInfo.name);
         }
 
-        return new QueryInfo(Object.assign({}, rawQueryInfo, {
-            schemaQuery
-        }));
+        return new QueryInfo(
+            Object.assign({}, rawQueryInfo, {
+                schemaQuery,
+            })
+        );
     }
 
     /**
@@ -109,25 +114,27 @@ export class QueryInfo extends Record({
      *
      * @param queryInfoJson
      */
-    static fromJSON(queryInfoJson: any) : QueryInfo {
+    static fromJSON(queryInfoJson: any): QueryInfo {
         let schemaQuery: SchemaQuery;
 
         if (queryInfoJson.schemaName && queryInfoJson.name) {
             schemaQuery = SchemaQuery.create(queryInfoJson.schemaName, queryInfoJson.name);
         }
         let columns = OrderedMap<string, QueryColumn>();
-        Object.keys(queryInfoJson.columns).forEach((columnKey) => {
-            let rawColumn = queryInfoJson.columns[columnKey];
-            columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn))
+        Object.keys(queryInfoJson.columns).forEach(columnKey => {
+            const rawColumn = queryInfoJson.columns[columnKey];
+            columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn));
         });
 
-        return QueryInfo.create(Object.assign({}, queryInfoJson, {
-            columns,
-            schemaQuery
-        }))
+        return QueryInfo.create(
+            Object.assign({}, queryInfoJson, {
+                columns,
+                schemaQuery,
+            })
+        );
     }
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -149,50 +156,48 @@ export class QueryInfo extends Record({
     }
 
     getDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
-
         if (!view) {
             view = ViewInfo.DEFAULT_NAME;
         }
 
         let lowerOmit;
-        if (omittedColumns)
-            lowerOmit = toLowerSafe(omittedColumns);
+        if (omittedColumns) lowerOmit = toLowerSafe(omittedColumns);
 
-        const colFilter = (c) => {
+        const colFilter = c => {
             if (lowerOmit && lowerOmit.size > 0) {
                 return c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase());
             }
             return true;
         };
 
-        let viewInfo = this.getView(view);
+        const viewInfo = this.getView(view);
         let displayColumns = List<QueryColumn>();
         if (viewInfo) {
-            displayColumns = viewInfo.columns
-                .filter(colFilter)
-                .reduce((list, col) => {
-                    let c = this.getColumn(col.fieldKey);
+            displayColumns = viewInfo.columns.filter(colFilter).reduce((list, col) => {
+                let c = this.getColumn(col.fieldKey);
 
-                    if (c !== undefined) {
-                        if (col.title !== undefined) {
-                            c = c.merge({
-                                caption: col.title,
-                                shortCaption: col.title
-                            }) as QueryColumn;
-                        }
-
-                        return list.push(c);
+                if (c !== undefined) {
+                    if (col.title !== undefined) {
+                        c = c.merge({
+                            caption: col.title,
+                            shortCaption: col.title,
+                        }) as QueryColumn;
                     }
 
-                    console.warn(`Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`);
-                    return list;
-                }, List<QueryColumn>());
+                    return list.push(c);
+                }
+
+                console.warn(
+                    `Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`
+                );
+                return list;
+            }, List<QueryColumn>());
 
             // add addToDisplayView columns
             const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
                 return list.push(col.fieldKey.toLowerCase());
             }, List<string>());
-            this.columns.forEach((col) => {
+            this.columns.forEach(col => {
                 if (col.fieldKey && col.addToDisplayView && !columnFieldKeys.includes(col.fieldKey.toLowerCase())) {
                     if (!lowerOmit || (lowerOmit.size > 0 && !lowerOmit.includes(col.fieldKey.toLowerCase())))
                         displayColumns = displayColumns.push(col);
@@ -211,7 +216,7 @@ export class QueryInfo extends Record({
         // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for
         // additional context.
         return List<QueryColumn>(this.columns.values()).reduce((result, rawColumn) => {
-            if(!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
+            if (!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
                 return result.push(rawColumn);
             }
 
@@ -221,22 +226,18 @@ export class QueryInfo extends Record({
 
     getInsertColumns(): List<QueryColumn> {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
-        return this.columns
-            .filter(insertColumnFilter)
-            .toList();
+        return this.columns.filter(insertColumnFilter).toList();
     }
 
     getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
-
         return this.columns
-            .filter((column) => {
+            .filter(column => {
                 return updateColumnFilter(column) || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
             })
-            .map((column) => {
+            .map(column => {
                 if (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1) {
                     return column.set('readOnly', true) as QueryColumn;
-                }
-                else {
+                } else {
                     return column;
                 }
             })
@@ -245,7 +246,7 @@ export class QueryInfo extends Record({
 
     getFilters(view?: string): List<Filter.IFilter> {
         if (view) {
-            let viewInfo = this.getView(view);
+            const viewInfo = this.getView(view);
 
             if (viewInfo) {
                 return viewInfo.filters;
@@ -272,7 +273,7 @@ export class QueryInfo extends Record({
 
     getSorts(view?: string): List<QuerySort> {
         if (view) {
-            let viewInfo = this.getView(view);
+            const viewInfo = this.getView(view);
 
             if (viewInfo) {
                 return viewInfo.sorts;
@@ -307,13 +308,11 @@ export class QueryInfo extends Record({
      * @param queryColumns the (ordered) set of columns
      * @returns a new set of columns when the given columns inserted
      */
-    insertColumns(colIndex: number, queryColumns: OrderedMap<string, QueryColumn>) : OrderedMap<string, QueryColumn> {
-        if (colIndex < 0 || colIndex > this.columns.size)
-            return this.columns;
+    insertColumns(colIndex: number, queryColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
+        if (colIndex < 0 || colIndex > this.columns.size) return this.columns;
 
         // put them at the end
-        if (colIndex === this.columns.size)
-            return this.columns.merge(queryColumns);
+        if (colIndex === this.columns.size) return this.columns.merge(queryColumns);
 
         let columns = OrderedMap<string, QueryColumn>();
         let index = 0;

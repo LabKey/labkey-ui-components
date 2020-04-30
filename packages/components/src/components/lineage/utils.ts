@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map } from 'immutable';
+
 import { imageURL, Theme } from '../..';
 
 import { LineageLink, LineageNode } from './models';
@@ -18,10 +19,10 @@ export function getImagesForNode(node?: LineageNode, isSeed?: boolean) {
         imageBackup: getBackupImageFromLineageNode(node, isSeed, false),
         imageSelected: imageFromIdentifier(iconURL, isSeed, true),
         shape,
-    }
+    };
 }
 
-export function getIconAndShapeForNode(node?: LineageNode): { iconURL: string, shape: string } {
+export function getIconAndShapeForNode(node?: LineageNode): { iconURL: string; shape: string } {
     let iconURL = DEFAULT_ICON_URL;
     let shape = 'circularImage';
 
@@ -39,7 +40,7 @@ export function getIconAndShapeForNode(node?: LineageNode): { iconURL: string, s
 
     return {
         iconURL,
-        shape
+        shape,
     };
 }
 
@@ -65,8 +66,7 @@ export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelect
 
     if (isSelected === true) {
         theme = Theme.ORANGE;
-    }
-    else if (isSeed === true) {
+    } else if (isSeed === true) {
         theme = Theme.DEFAULT;
     }
 
@@ -75,28 +75,46 @@ export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelect
     return [iconURL, suffix, '.svg'].join('').toLowerCase();
 }
 
-export function getLineageDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LINEAGE_DIRECTIONS, maxDistance: number) : List<LineageNode> {
-    let nodeList = List<LineageNode>().asMutable();
+export function getLineageDepthFirstNodeList(
+    nodes: Map<string, LineageNode>,
+    lsid: string,
+    direction: LINEAGE_DIRECTIONS,
+    maxDistance: number
+): List<LineageNode> {
+    const nodeList = List<LineageNode>().asMutable();
     nodeList.push(nodes.get(lsid).set('distance', 0));
 
-    let nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
+    const nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
     if (nextNodes) {
-        nextNodes.forEach((next) => {
-            nodeList.push(..._getDepthFirstNodeList(nodes, next.lsid, direction, maxDistance, 1).toArray())
+        nextNodes.forEach(next => {
+            nodeList.push(..._getDepthFirstNodeList(nodes, next.lsid, direction, maxDistance, 1).toArray());
         });
     }
     return nodeList.asImmutable();
 }
 
-
-function _getDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LINEAGE_DIRECTIONS, maxDistance: number, distance: number) : List<LineageNode> {
-    let nodeList = List<LineageNode>().asMutable();
+function _getDepthFirstNodeList(
+    nodes: Map<string, LineageNode>,
+    lsid: string,
+    direction: LINEAGE_DIRECTIONS,
+    maxDistance: number,
+    distance: number
+): List<LineageNode> {
+    const nodeList = List<LineageNode>().asMutable();
     const nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
     if (distance <= maxDistance) {
         nodeList.push(nodes.get(lsid).set('distance', distance));
         if (nextNodes !== undefined) {
-            nextNodes.forEach((nextNode) => {
-                nodeList.push(..._getDepthFirstNodeList(nodes, nextNode.get('lsid'), direction, maxDistance, distance + 1).toArray());
+            nextNodes.forEach(nextNode => {
+                nodeList.push(
+                    ..._getDepthFirstNodeList(
+                        nodes,
+                        nextNode.get('lsid'),
+                        direction,
+                        maxDistance,
+                        distance + 1
+                    ).toArray()
+                );
             });
         }
     }

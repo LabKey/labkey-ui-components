@@ -8,7 +8,7 @@ import {
     LINEAGE_GROUPING_GENERATIONS,
     LineageOptions,
     LineageURLResolvers,
-} from './types'
+} from './types';
 
 // Default depth to fetch with the lineage API
 export const DEFAULT_LINEAGE_DISTANCE = 3;

@@ -12,24 +12,18 @@ import './stories.scss';
 import { PageHeader } from '../components/base/PageHeader';
 import { Page } from '../components/base/Page';
 
-storiesOf("Page", module)
+storiesOf('Page', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
-        const hasChildren = boolean("Has child elements?", true);
-        const children = hasChildren ? [
-            <Button href="#">Button 1</Button>,
-            <div>A div element</div>
-        ]: undefined;
+    .add('with knobs', () => {
+        const hasChildren = boolean('Has child elements?', true);
+        const children = hasChildren ? [<Button href="#">Button 1</Button>, <div>A div element</div>] : undefined;
         return (
-            <Page
-                notFound={boolean('Page not found?', false)}
-                hasHeader={boolean('Page has its own header?', false)}
-            >
+            <Page notFound={boolean('Page not found?', false)} hasHeader={boolean('Page has its own header?', false)}>
                 {children}
             </Page>
-        )
+        );
     })
-    .add("with PageHeader child", () => {
+    .add('with PageHeader child', () => {
         return (
             <Page>
                 <PageHeader>
@@ -41,17 +35,16 @@ storiesOf("Page", module)
                 <span>Page content</span>
                 <table className="table table-bordered">
                     <thead>
-                    <tr >
-                        <th className="grid-header-cell">Key</th>
-                        <th className="grid-header-cell">Language</th>
-                    </tr>
+                        <tr>
+                            <th className="grid-header-cell">Key</th>
+                            <th className="grid-header-cell">Language</th>
+                        </tr>
                     </thead>
                     <tr>
                         <td>Schl&uuml;ssel</td>
                         <td>German</td>
                     </tr>
                     <tr>
-
                         <td>cl&eacute;</td>
                         <td>French</td>
                     </tr>
@@ -61,5 +54,5 @@ storiesOf("Page", module)
                     </tr>
                 </table>
             </Page>
-        )
-    })
+        );
+    });

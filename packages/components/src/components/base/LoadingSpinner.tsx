@@ -16,15 +16,14 @@
 import React from 'react';
 
 interface SpinnerProps {
-    msg?: React.ReactNode
-    wrapperClassName?: string
+    msg?: React.ReactNode;
+    wrapperClassName?: string;
 }
 
 export class LoadingSpinner extends React.Component<SpinnerProps, any> {
-
     static defaultProps = {
         msg: 'Loading...',
-        wrapperClassName: ''
+        wrapperClassName: '',
     };
 
     render() {
@@ -32,8 +31,8 @@ export class LoadingSpinner extends React.Component<SpinnerProps, any> {
 
         return (
             <span className={wrapperClassName}>
-                <i aria-hidden="true" className="fa fa-spinner fa-pulse"/> {msg}
+                <i aria-hidden="true" className="fa fa-spinner fa-pulse" /> {msg}
             </span>
-        )
+        );
     }
 }

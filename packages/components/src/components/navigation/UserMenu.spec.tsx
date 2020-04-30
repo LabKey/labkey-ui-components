@@ -17,162 +17,155 @@ import React from 'reactn';
 import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 
+import { User } from '../base/models/model';
+
 import { UserMenu } from './UserMenu';
 import { MenuSectionModel, ProductMenuModel } from './model';
-import { User } from '../base/models/model';
 
 beforeAll(() => {
     LABKEY.devMode = false;
 });
 
-describe("UserMenu", () => {
-    let sections = List<MenuSectionModel>().asMutable();
-    sections.push( MenuSectionModel.create({
-        key: "user",
-        label: "Your Items",
-        url: undefined,
-        items: [
-            {
-                key: "profile",
-                label: "Profile",
-                url: "profile/link/here",
-                requiresLogin: true
-            },
-            {
-                key: "docs",
-                label: "Documentation",
-                url: "http://show/me/the/docs",
-                requiresLogin: false
-            }
-        ]
-    }));
+describe('UserMenu', () => {
+    const sections = List<MenuSectionModel>().asMutable();
+    sections.push(
+        MenuSectionModel.create({
+            key: 'user',
+            label: 'Your Items',
+            url: undefined,
+            items: [
+                {
+                    key: 'profile',
+                    label: 'Profile',
+                    url: 'profile/link/here',
+                    requiresLogin: true,
+                },
+                {
+                    key: 'docs',
+                    label: 'Documentation',
+                    url: 'http://show/me/the/docs',
+                    requiresLogin: false,
+                },
+            ],
+        })
+    );
 
-    test("not initialized", () => {
+    test('not initialized', () => {
         const model = new ProductMenuModel({
-            productId: "testProduct"
+            productId: 'testProduct',
         });
-        const tree = renderer.create(<UserMenu model={model} user={new User()} showSwitchToLabKey={true}/>).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={new User()} showSwitchToLabKey={true} />).toJSON();
         expect(tree).toBe(null);
     });
 
-    test("user not logged in", () => {
-        const productId = "notLoggedInUser";
-        const user = new User( {
-            isSignedIn: false
+    test('user not logged in', () => {
+        const productId = 'notLoggedInUser';
+        const user = new User({
+            isSignedIn: false,
         });
 
-        const model = new ProductMenuModel(
-            {
-                isLoaded: true,
-                isLoading: false,
-                productId,
-                sections: sections.asImmutable()
-            }
-        );
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true}/>).toJSON();
+        const model = new ProductMenuModel({
+            isLoaded: true,
+            isLoading: false,
+            productId,
+            sections: sections.asImmutable(),
+        });
+        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("user logged in, but not in dev mode", () => {
-        const productId = "loggedInUser";
-        const user = new User( {
-            isSignedIn: true
+    test('user logged in, but not in dev mode', () => {
+        const productId = 'loggedInUser';
+        const user = new User({
+            isSignedIn: true,
         });
 
-        const model = new ProductMenuModel(
-            {
-                isLoaded: true,
-                isLoading: false,
-                productId,
-                sections: sections.asImmutable()
-            }
-        );
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true}/>).toJSON();
+        const model = new ProductMenuModel({
+            isLoaded: true,
+            isLoading: false,
+            productId,
+            sections: sections.asImmutable(),
+        });
+        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("user logged in dev mode", () => {
-        const productId = "logginedInDevMode";
-        const user = new User( {
-            isSignedIn: true
+    test('user logged in dev mode', () => {
+        const productId = 'logginedInDevMode';
+        const user = new User({
+            isSignedIn: true,
         });
         LABKEY.devMode = true;
-        const model = new ProductMenuModel(
-            {
-                isLoaded: true,
-                isLoading: false,
-                productId,
-                sections: sections.asImmutable()
-            }
-        );
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true}/>).toJSON();
+        const model = new ProductMenuModel({
+            isLoaded: true,
+            isLoading: false,
+            productId,
+            sections: sections.asImmutable(),
+        });
+        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("user logged in extra items", () => {
-        const productId = "extraUserItems";
-        const user = new User( {
-            isSignedIn: true
+    test('user logged in extra items', () => {
+        const productId = 'extraUserItems';
+        const user = new User({
+            isSignedIn: true,
         });
 
-        const model = new ProductMenuModel(
-            {
-                isLoaded: true,
-                isLoading: false,
-                productId,
-                sections: sections.asImmutable()
-            }
-        );
-        let extraUserItems = [
-            <div key="e1">Extra One</div>,
-            <div key="e2">Extra Two</div>
-        ];
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} extraUserItems={extraUserItems}/>).toJSON();
+        const model = new ProductMenuModel({
+            isLoaded: true,
+            isLoading: false,
+            productId,
+            sections: sections.asImmutable(),
+        });
+        const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
+        const tree = renderer
+            .create(<UserMenu model={model} user={user} showSwitchToLabKey={true} extraUserItems={extraUserItems} />)
+            .toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("user logged in, without switch to labkey", () => {
-        const productId = "switchToLabkey";
-        const user = new User( {
-            isSignedIn: true
+    test('user logged in, without switch to labkey', () => {
+        const productId = 'switchToLabkey';
+        const user = new User({
+            isSignedIn: true,
         });
 
-        const model = new ProductMenuModel(
-            {
-                isLoaded: true,
-                isLoading: false,
-                productId,
-                sections: sections.asImmutable()
-            }
-        );
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={false}/>).toJSON();
+        const model = new ProductMenuModel({
+            isLoaded: true,
+            isLoading: false,
+            productId,
+            sections: sections.asImmutable(),
+        });
+        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={false} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("user logged in extra dev mode items", () => {
-        const productId = "extraDevItems";
-        const user = new User( {
-            isSignedIn: true
+    test('user logged in extra dev mode items', () => {
+        const productId = 'extraDevItems';
+        const user = new User({
+            isSignedIn: true,
         });
 
-        const model = new ProductMenuModel(
-
-            {
-                isLoaded: true,
-                isLoading: false,
-                productId,
-                sections: sections.asImmutable()
-            }
-        );
-        let extraUserItems = [
-            <div key="e1">Extra One</div>,
-            <div key="e2">Extra Two</div>
-        ];
-        let extraDevItems = [
-            <div key="e1">Extra Dev One</div>,
-            <div key="e2">Extra Dev Two</div>
-        ];
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} extraUserItems={extraUserItems} extraDevItems={extraDevItems}/>).toJSON();
+        const model = new ProductMenuModel({
+            isLoaded: true,
+            isLoading: false,
+            productId,
+            sections: sections.asImmutable(),
+        });
+        const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
+        const extraDevItems = [<div key="e1">Extra Dev One</div>, <div key="e2">Extra Dev Two</div>];
+        const tree = renderer
+            .create(
+                <UserMenu
+                    model={model}
+                    user={user}
+                    showSwitchToLabKey={true}
+                    extraUserItems={extraUserItems}
+                    extraDevItems={extraDevItems}
+                />
+            )
+            .toJSON();
         expect(tree).toMatchSnapshot();
-    })
+    });
 });

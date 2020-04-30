@@ -15,16 +15,16 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import { EntityTypeDeleteConfirmModal } from "./EntityTypeDeleteConfirmModal";
 
-describe("<EntityTypeDeleteConfirmModal/>", () => {
+import { EntityTypeDeleteConfirmModal } from './EntityTypeDeleteConfirmModal';
 
-    test("showDependenciesLink prop", () => {
+describe('<EntityTypeDeleteConfirmModal/>', () => {
+    test('showDependenciesLink prop', () => {
         const component = (
             <EntityTypeDeleteConfirmModal
                 rowId={0}
-                noun={'sample'}
-                deleteConfirmationActionName={'deleteMaterialSource'}
+                noun="sample"
+                deleteConfirmationActionName="deleteMaterialSource"
                 showDependenciesLink={true}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
@@ -36,14 +36,14 @@ describe("<EntityTypeDeleteConfirmModal/>", () => {
         wrapper.unmount();
     });
 
-    test("button clicks", () => {
+    test('button clicks', () => {
         const onConfirmFn = jest.fn();
         const onCancelFn = jest.fn();
         const component = (
             <EntityTypeDeleteConfirmModal
                 rowId={0}
-                noun={'sample'}
-                deleteConfirmationActionName={'deleteMaterialSource'}
+                noun="sample"
+                deleteConfirmationActionName="deleteMaterialSource"
                 onCancel={onCancelFn}
                 onConfirm={onConfirmFn}
             />
@@ -51,7 +51,9 @@ describe("<EntityTypeDeleteConfirmModal/>", () => {
 
         const wrapper = mount(component);
         const cancelBtn = wrapper.find('.modal-footer').findWhere(n => n.type() === 'button' && n.text() === 'Cancel');
-        const confirmBtn = wrapper.find('.modal-footer').findWhere(n => n.type() === 'button' && n.text() === 'Yes, Delete');
+        const confirmBtn = wrapper
+            .find('.modal-footer')
+            .findWhere(n => n.type() === 'button' && n.text() === 'Yes, Delete');
         expect(onCancelFn).toHaveBeenCalledTimes(0);
         expect(onConfirmFn).toHaveBeenCalledTimes(0);
 
@@ -69,5 +71,4 @@ describe("<EntityTypeDeleteConfirmModal/>", () => {
 
         wrapper.unmount();
     });
-
 });

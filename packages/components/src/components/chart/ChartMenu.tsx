@@ -17,16 +17,17 @@ import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { ChartModal } from './ChartModal';
 import { generateId } from '../../util/utils';
 import { QueryGridModel } from '../base/models/model';
 import { DataViewInfo } from '../../models';
 import { setReportId } from '../../actions';
 import { DataViewInfoTypes } from '../../constants';
 
+import { ChartModal } from './ChartModal';
+
 interface ChartMenuItemProps {
-    chart: DataViewInfo,
-    showChart: Function,
+    chart: DataViewInfo;
+    showChart: Function;
 }
 
 class ChartMenuItem extends PureComponent<ChartMenuItemProps> {
@@ -43,13 +44,13 @@ class ChartMenuItem extends PureComponent<ChartMenuItemProps> {
 }
 
 interface Props {
-    model: QueryGridModel,
-    charts: List<DataViewInfo>,
-    privateCharts: List<DataViewInfo>,
-    error: string,
-    onCreateReportClicked?: Function,
-    onReportClicked?: Function,
-    showSampleComparisonReports?: boolean,
+    model: QueryGridModel;
+    charts: List<DataViewInfo>;
+    privateCharts: List<DataViewInfo>;
+    error: string;
+    onCreateReportClicked?: Function;
+    onReportClicked?: Function;
+    showSampleComparisonReports?: boolean;
 }
 
 export class ChartMenu extends PureComponent<Props> {
@@ -60,38 +61,46 @@ export class ChartMenu extends PureComponent<Props> {
         this.dropId = generateId('chartselector-');
     }
 
-    createMenuItems(): Array<ReactNode> {
+    createMenuItems(): ReactNode[] {
         const { charts, privateCharts, error, showSampleComparisonReports, onCreateReportClicked } = this.props;
 
         if (error) {
-            return [
-                <MenuItem key='error'>
-                    {error}
-                </MenuItem>
-            ];
+            return [<MenuItem key="error">{error}</MenuItem>];
         }
 
         const items = [];
 
         if (showSampleComparisonReports) {
-            items.push(<MenuItem header key="new-charts">New Charts & Reports</MenuItem>);
-            items.push((
+            items.push(
+                <MenuItem header key="new-charts">
+                    New Charts & Reports
+                </MenuItem>
+            );
+            items.push(
                 <MenuItem key="preview-scr" onSelect={() => onCreateReportClicked(DataViewInfoTypes.SampleComparison)}>
-                    <i className={"chart-menu-icon fa fa-table"}/>
+                    <i className="chart-menu-icon fa fa-table" />
                     <span className="chart-menu-label">Preview Sample Comparison Report</span>
                 </MenuItem>
-            ));
+            );
         }
 
         if (privateCharts && !privateCharts.isEmpty()) {
-            items.push(<MenuItem header key="private-header">My Saved Charts</MenuItem>);
+            items.push(
+                <MenuItem header key="private-header">
+                    My Saved Charts
+                </MenuItem>
+            );
             privateCharts.forEach(chart => {
                 items.push(<ChartMenuItem key={chart.reportId} chart={chart} showChart={this.showChart} />);
             });
         }
 
         if (charts && !charts.isEmpty()) {
-            items.push(<MenuItem header key="public-header">All Saved Charts</MenuItem>);
+            items.push(
+                <MenuItem header key="public-header">
+                    All Saved Charts
+                </MenuItem>
+            );
             charts.forEach(chart => {
                 items.push(<ChartMenuItem key={chart.reportId} chart={chart} showChart={this.showChart} />);
             });
@@ -112,14 +121,14 @@ export class ChartMenu extends PureComponent<Props> {
     };
 
     hideChart = () => {
-        setReportId(this.props.model,undefined);
+        setReportId(this.props.model, undefined);
     };
 
     getSelectedChart = () => {
         let selectedChart;
-        const {charts, privateCharts } = this.props;
+        const { charts, privateCharts } = this.props;
         const reportId = this.props.model.urlParamValues.get('reportId');
-        const searchFn = (dataViewInfo) => dataViewInfo.reportId === reportId;
+        const searchFn = dataViewInfo => dataViewInfo.reportId === reportId;
 
         if (charts && reportId) {
             selectedChart = charts.find(searchFn) || privateCharts.find(searchFn);
@@ -131,7 +140,7 @@ export class ChartMenu extends PureComponent<Props> {
     getChartButtonTitle = () => {
         const { charts, error } = this.props;
         const chartsLoaded = charts !== undefined && charts !== null;
-        return chartsLoaded || error ? "Charts" : <span className="fa fa-spinner fa-pulse"/>;
+        return chartsLoaded || error ? 'Charts' : <span className="fa fa-spinner fa-pulse" />;
     };
 
     render() {

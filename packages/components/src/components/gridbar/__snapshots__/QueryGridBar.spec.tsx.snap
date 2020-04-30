@@ -198,8 +198,8 @@ exports[`<QueryGridBar/> default props 1`] = `
       >
         <div
           className="OmniBox-control"
+          onClick={[Function]}
           onKeyDown={[Function]}
-          onMouseDown={[Function]}
         >
           <span
             className="OmniBox-multi-value-wrapper"
@@ -337,7 +337,8 @@ exports[`<QueryGridBar/> isPaged 1`] = `
              - 
             20
           </span>
-           of 
+           
+          of 
           34
         </span>
         <div
@@ -705,8 +706,8 @@ exports[`<QueryGridBar/> isPaged 1`] = `
       >
         <div
           className="OmniBox-control"
+          onClick={[Function]}
           onKeyDown={[Function]}
-          onMouseDown={[Function]}
         >
           <span
             className="OmniBox-multi-value-wrapper"
@@ -908,8 +909,8 @@ exports[`<QueryGridBar/> without charts and views 1`] = `
       >
         <div
           className="OmniBox-control"
+          onClick={[Function]}
           onKeyDown={[Function]}
-          onMouseDown={[Function]}
         >
           <span
             className="OmniBox-multi-value-wrapper"

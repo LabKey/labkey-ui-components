@@ -20,21 +20,20 @@ import { List } from 'immutable';
 import { ISubItem, SubMenuItem } from './SubMenuItem';
 
 export interface MenuOption {
-    disabled?: boolean
-    disabledMsg?: string
-    href: string
-    name: string
-    key: string
+    disabled?: boolean;
+    disabledMsg?: string;
+    href: string;
+    name: string;
+    key: string;
 }
 
 interface SubMenuProps {
-    currentMenuChoice?: string
-    options: List<MenuOption>
-    text: string
+    currentMenuChoice?: string;
+    options: List<MenuOption>;
+    text: string;
 }
 
 export class SubMenu extends React.Component<SubMenuProps, any> {
-
     constructor(props: SubMenuProps) {
         super(props);
 
@@ -57,17 +56,17 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
         return undefined;
     }
 
-    getItems(): Array<ISubItem> {
+    getItems(): ISubItem[] {
         const { options } = this.props;
 
-        let items = [];
+        const items = [];
         options.forEach(option => {
             if (!this.isCurrentMenuChoice(option)) {
                 items.push({
                     disabled: option.disabled,
                     disabledMsg: option.disabledMsg,
                     text: option.name,
-                    href: option.href
+                    href: option.href,
                 });
             }
         });
@@ -75,16 +74,14 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
     }
 
     static renderMenuItem(option: MenuOption, key: any) {
-        let itemProps = Object.assign({}, option);
+        const itemProps = Object.assign({}, option);
 
         // remove ISubItem specific props
         delete itemProps.name;
         delete itemProps.disabledMsg;
 
         const menuItem = (
-            <MenuItem
-                {...itemProps}
-                key={key}>
+            <MenuItem {...itemProps} key={key}>
                 {option.name}
             </MenuItem>
         );
@@ -92,7 +89,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
         if (option.disabledMsg && option.disabled) {
             const overlay = <Popover id="attach-submenu-warning">{option.disabledMsg}</Popover>;
             return (
-                <OverlayTrigger overlay={overlay} placement={"right"}>
+                <OverlayTrigger overlay={overlay} placement="right">
                     {menuItem}
                 </OverlayTrigger>
             );
@@ -103,26 +100,23 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
     render() {
         const { currentMenuChoice, options, text } = this.props;
 
-        let items = [];
+        const items = [];
         // if there are 2 items or fewer, just show the items as the menu
         if (currentMenuChoice && options.size < 3) {
             options.forEach((option, i) => {
-                items.push(
-                    SubMenu.renderMenuItem(option, i)
-                )
+                items.push(SubMenu.renderMenuItem(option, i));
             });
-        }
-        else {
+        } else {
             if (currentMenuChoice) {
                 items.push(this.getCurrentMenuChoiceItem());
             }
-            let menuProps = {
+            const menuProps = {
                 key: 1,
                 items: this.getItems(),
                 maxWithoutFilter: 10,
-                text
+                text,
             };
-            items.push(<SubMenuItem {...menuProps}/>);
+            items.push(<SubMenuItem {...menuProps} />);
         }
 
         return items;

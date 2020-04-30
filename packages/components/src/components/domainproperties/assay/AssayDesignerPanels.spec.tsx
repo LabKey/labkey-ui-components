@@ -2,13 +2,19 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { mount } from 'enzyme';
 
-import { AssayDesignerPanels } from './AssayDesignerPanels';
-import { DomainDesign } from '../models';
-import { AssayProtocolModel } from '../assay/models';
-import { DescriptionInput, NameInput } from './AssayPropertiesInput';
 import { Panel } from 'react-bootstrap';
+
 import toJson from 'enzyme-to-json';
+
+import { DomainDesign } from '../models';
+
 import { FileAttachmentForm } from '../../files/FileAttachmentForm';
+
+import { AssayProtocolModel } from './models';
+
+import { DescriptionInput, NameInput } from './AssayPropertiesInput';
+
+import { AssayDesignerPanels } from './AssayDesignerPanels';
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,
@@ -19,77 +25,70 @@ const EXISTING_MODEL = AssayProtocolModel.create({
     editableResults: true,
     allowBackgroundUpload: true,
     backgroundUpload: true,
-    domains: [{
-        name: 'Batch Fields'
-    },{
-        name: 'Sample Fields',
-        fields: [{
-            name: 'field1',
-            rangeURI: 'xsd:string'
-        },{
-            name: 'field2',
-            rangeURI: 'xsd:int'
-        },{
-            name: 'field3',
-            rangeURI: 'xsd:dateTime'
-        }]
-    }]
+    domains: [
+        {
+            name: 'Batch Fields',
+        },
+        {
+            name: 'Sample Fields',
+            fields: [
+                {
+                    name: 'field1',
+                    rangeURI: 'xsd:string',
+                },
+                {
+                    name: 'field2',
+                    rangeURI: 'xsd:int',
+                },
+                {
+                    name: 'field3',
+                    rangeURI: 'xsd:dateTime',
+                },
+            ],
+        },
+    ],
 });
 
-const EMPTY_MODEL  = AssayProtocolModel.create({
+const EMPTY_MODEL = AssayProtocolModel.create({
     providerName: 'General',
     domains: List([
-        DomainDesign.create({name: 'Batch Fields'}),
-        DomainDesign.create({name: 'Run Fields'}),
-        DomainDesign.create({name: 'Data Fields'})
-    ])
+        DomainDesign.create({ name: 'Batch Fields' }),
+        DomainDesign.create({ name: 'Run Fields' }),
+        DomainDesign.create({ name: 'Data Fields' }),
+    ]),
 });
 
 const nameInputId = 'assay-design-name';
 function setAssayName(wrapper: any, value: string) {
-    const nameInputValue = { id: nameInputId, value: value };
-    wrapper.find('input#' + nameInputId).simulate('focus').simulate('change', { target: nameInputValue});
+    const nameInputValue = { id: nameInputId, value };
+    wrapper
+        .find('input#' + nameInputId)
+        .simulate('focus')
+        .simulate('change', { target: nameInputValue });
 }
 
 const BASE_PROPS = {
     onComplete: jest.fn(),
-    onCancel: jest.fn()
+    onCancel: jest.fn(),
 };
 
 describe('AssayDesignerPanels', () => {
-
     test('default properties', () => {
-        const form = mount(
-            <AssayDesignerPanels
-                {...BASE_PROPS}
-                initModel={EMPTY_MODEL}
-            />
-        );
+        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 
     test('initModel', () => {
-        const form = mount(
-            <AssayDesignerPanels
-                {...BASE_PROPS}
-                initModel={EXISTING_MODEL}
-            />
-        );
+        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 
     test('hideEmptyBatchDomain for new assay', () => {
-        const form = mount(
-            <AssayDesignerPanels
-                {...BASE_PROPS}
-                initModel={EMPTY_MODEL}
-                hideEmptyBatchDomain={true}
-            />
-        );
+        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} hideEmptyBatchDomain={true} />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
@@ -97,11 +96,7 @@ describe('AssayDesignerPanels', () => {
 
     test('hideEmptyBatchDomain with initModel', () => {
         const form = mount(
-            <AssayDesignerPanels
-                {...BASE_PROPS}
-                initModel={EXISTING_MODEL}
-                hideEmptyBatchDomain={true}
-            />
+            <AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} hideEmptyBatchDomain={true} />
         );
 
         expect(toJson(form)).toMatchSnapshot();
@@ -109,39 +104,21 @@ describe('AssayDesignerPanels', () => {
     });
 
     test('appPropertiesOnly for new assay', () => {
-        const form = mount(
-            <AssayDesignerPanels
-                {...BASE_PROPS}
-                initModel={EMPTY_MODEL}
-                appPropertiesOnly={true}
-            />
-        );
+        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} appPropertiesOnly={true} />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 
     test('appPropertiesOnly with initModel', () => {
-        const form = mount(
-            <AssayDesignerPanels
-                {...BASE_PROPS}
-                initModel={EXISTING_MODEL}
-                appPropertiesOnly={true}
-            />
-        );
+        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} appPropertiesOnly={true} />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 
     test('new assay wizard', () => {
-        const component = (
-            <AssayDesignerPanels
-                {...BASE_PROPS}
-                initModel={EMPTY_MODEL}
-                successBsStyle={'primary'}
-            />
-        );
+        const component = <AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} successBsStyle="primary" />;
 
         const wrapper = mount(component);
         expect(wrapper.find('.domain-heading-collapsible').hostNodes()).toHaveLength(4);
@@ -161,12 +138,7 @@ describe('AssayDesignerPanels', () => {
 
     test('infer from file', () => {
         function validateInferFromFile(model: AssayProtocolModel, shouldInfer: boolean) {
-            const component = (
-                <AssayDesignerPanels
-                    {...BASE_PROPS}
-                    initModel={model}
-                />
-            );
+            const component = <AssayDesignerPanels {...BASE_PROPS} initModel={model} />;
             const wrapper = mount(component);
             setAssayName(wrapper, 'Foo');
             expect(wrapper.find(FileAttachmentForm)).toHaveLength(shouldInfer ? 1 : 0);
@@ -174,22 +146,31 @@ describe('AssayDesignerPanels', () => {
         }
 
         // General assay with Data domain should show infer from files component
-        validateInferFromFile(AssayProtocolModel.create({
-            providerName: 'General',
-            domains: List([DomainDesign.create({name: 'Data Fields'})])
-        }), true);
+        validateInferFromFile(
+            AssayProtocolModel.create({
+                providerName: 'General',
+                domains: List([DomainDesign.create({ name: 'Data Fields' })]),
+            }),
+            true
+        );
 
         // General assay with non-Data domain should not show infer from files component
-        validateInferFromFile(AssayProtocolModel.create({
-            providerName: 'General',
-            domains: List([DomainDesign.create({name: 'Results Fields'})])
-        }), false);
+        validateInferFromFile(
+            AssayProtocolModel.create({
+                providerName: 'General',
+                domains: List([DomainDesign.create({ name: 'Results Fields' })]),
+            }),
+            false
+        );
 
         // Other assay with Data domain should not show infer from files component
-        validateInferFromFile(AssayProtocolModel.create({
-            providerName: 'Other',
-            domains: List([DomainDesign.create({name: 'Data Fields'})])
-        }), false);
+        validateInferFromFile(
+            AssayProtocolModel.create({
+                providerName: 'Other',
+                domains: List([DomainDesign.create({ name: 'Data Fields' })]),
+            }),
+            false
+        );
     });
 
     test('Show app headers', () => {
@@ -197,21 +178,27 @@ describe('AssayDesignerPanels', () => {
         const _appHeaderText = 'This is a mock app header';
 
         const mockAppHeader = jest.fn();
-        mockAppHeader.mockReturnValue(<><div id={_appHeaderId}>{_appHeaderText}</div></>);
+        mockAppHeader.mockReturnValue(
+            <>
+                <div id={_appHeaderId}>{_appHeaderText}</div>
+            </>
+        );
 
         const component = (
             <AssayDesignerPanels
                 {...BASE_PROPS}
                 initModel={EXISTING_MODEL}
-                appDomainHeaders={Map({'Sample': mockAppHeader})}
+                appDomainHeaders={Map({ Sample: mockAppHeader })}
             />
         );
 
-        let wrapper = mount(component);
-        //Open Sample Fields panel body
-        wrapper.find(Panel.Heading).filterWhere(n => n.text().indexOf('Sample Fields') === 0).simulate('click');
+        const wrapper = mount(component);
+        // Open Sample Fields panel body
+        wrapper
+            .find(Panel.Heading)
+            .filterWhere(n => n.text().indexOf('Sample Fields') === 0)
+            .simulate('click');
         expect(wrapper.find('#' + _appHeaderId)).toHaveLength(1);
         expect(wrapper.find('#' + _appHeaderId).text()).toBe(_appHeaderText);
     });
-
 });

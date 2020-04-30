@@ -4,6 +4,7 @@
  */
 import React, { PureComponent } from 'react';
 import { List } from 'immutable';
+
 import { getLocation } from '../..';
 
 import { createGridModel, getLocationString, loadLineageIfNeeded } from './actions';
@@ -13,21 +14,20 @@ import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants
 import { LINEAGE_GRID_COLUMNS } from './Tag';
 
 interface Props {
-    lsid?: string
+    lsid?: string;
 }
 
 interface State {
-    model: LineagePageModel
+    model: LineagePageModel;
 }
 
 export class LineageGrid extends PureComponent<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            model: new LineagePageModel()
-        }
+            model: new LineagePageModel(),
+        };
     }
 
     componentDidMount() {
@@ -46,15 +46,13 @@ export class LineageGrid extends PureComponent<Props, State> {
         const distance = location.query.has('distance') ? location.query.get('distance') : DEFAULT_LINEAGE_DISTANCE;
 
         this.setGridLoading();
-        loadLineageIfNeeded(this.getSeed(), distance)
-            .then(lineage => {
-                if (lineage.error) {
-                    this.setGridError(lineage);
-                }
-                else {
-                    this.setGridSuccess(lineage, distance);
-                }
-            });
+        loadLineageIfNeeded(this.getSeed(), distance).then(lineage => {
+            if (lineage.error) {
+                this.setGridError(lineage);
+            } else {
+                this.setGridSuccess(lineage, distance);
+            }
+        });
     }
 
     getSeed(): string {
@@ -66,7 +64,7 @@ export class LineageGrid extends PureComponent<Props, State> {
         const location = getLocation();
         const seeds = location.query.get('seeds');
 
-        return seeds ? decodeURIComponent(seeds.split(",")[0]) : undefined;
+        return seeds ? decodeURIComponent(seeds.split(',')[0]) : undefined;
     }
 
     setGridLoading() {
@@ -76,19 +74,19 @@ export class LineageGrid extends PureComponent<Props, State> {
         this.setState(() => ({
             model: newModel.mergeIn(['grid'], {
                 isLoaded: false,
-                isLoading: true
-            }) as LineagePageModel
+                isLoading: true,
+            }) as LineagePageModel,
         }));
     }
 
     setGridError(lineage: Lineage) {
-        this.setState((state) => ({
+        this.setState(state => ({
             model: state.model.mergeIn(['grid'], {
                 isError: true,
                 isLoaded: false,
                 isLoading: false,
-                message: lineage.error
-            }) as LineagePageModel
+                message: lineage.error,
+            }) as LineagePageModel,
         }));
     }
 
@@ -97,17 +95,17 @@ export class LineageGrid extends PureComponent<Props, State> {
         const members = location.query.has('members') ? location.query.get('members') : DEFAULT_LINEAGE_DIRECTION;
         const pageNumber = location.query.has('p') ? parseInt(location.query.get('p')) : 1;
 
-        this.setState((state) => ({
+        this.setState(state => ({
             model: state.model.merge({
                 grid: createGridModel(lineage, members, distance, LINEAGE_GRID_COLUMNS, pageNumber),
                 seeds: List(this.getSeed()),
                 members,
-                distance
-            }) as LineagePageModel
+                distance,
+            }) as LineagePageModel,
         }));
     }
 
     render() {
-        return <LineageGridDisplay model={this.state.model.grid}/>
+        return <LineageGridDisplay model={this.state.model.grid} />;
     }
 }

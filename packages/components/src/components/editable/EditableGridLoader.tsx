@@ -15,12 +15,12 @@
  */
 import React from 'react';
 import { fromJS, List } from 'immutable';
+
 import { EditorModel } from '../../models';
 import { selectRows } from '../../query/api';
 import { IGridLoader, IGridResponse, QueryGridModel } from '../base/models/model';
 
 export class EditableGridLoader implements IGridLoader {
-
     fetch(gridModel: QueryGridModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
             return selectRows({
@@ -30,22 +30,24 @@ export class EditableGridLoader implements IGridLoader {
                 sort: gridModel.getSorts(),
                 columns: gridModel.getRequestColumnsString(),
                 offset: gridModel.getOffset(),
-                maxRows: gridModel.getMaxRows()
-            }).then( response => {
-                const { models, orderedModels, totalRows, messages } = response;
-
-                resolve({
-                    data: EditorModel.convertQueryDataToEditorData(fromJS(models[gridModel.getModelName()])),
-                    dataIds: List(orderedModels[gridModel.getModelName()]),
-                    totalRows,
-                    messages,
-                });
-            }).catch( error => {
-                reject({
-                    gridModel,
-                    error
-                })
+                maxRows: gridModel.getMaxRows(),
             })
+                .then(response => {
+                    const { models, orderedModels, totalRows, messages } = response;
+
+                    resolve({
+                        data: EditorModel.convertQueryDataToEditorData(fromJS(models[gridModel.getModelName()])),
+                        dataIds: List(orderedModels[gridModel.getModelName()]),
+                        totalRows,
+                        messages,
+                    });
+                })
+                .catch(error => {
+                    reject({
+                        gridModel,
+                        error,
+                    });
+                });
         });
     }
 }

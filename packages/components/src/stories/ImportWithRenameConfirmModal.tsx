@@ -23,11 +23,13 @@ import { ImportWithRenameConfirmModal } from '../components/assay/ImportWithRena
 storiesOf('ImportWithRenameConfirmModal', module)
     .addDecorator(withKnobs)
     .add('with knobs', () => {
-        return <ImportWithRenameConfirmModal
-            originalName={text('Original file name', 'original.txt')}
-            newName={text('New file name', 'original_1.txt')}
-            folderType={text('Folder type', "Product")}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
+        return (
+            <ImportWithRenameConfirmModal
+                originalName={text('Original file name', 'original.txt')}
+                newName={text('New file name', 'original_1.txt')}
+                folderType={text('Folder type', 'Product')}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     });

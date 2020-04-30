@@ -1,18 +1,18 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
+
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 
-describe("<CollapsiblePanelHeader/>", () => {
-
-    test("default properties", () => {
+describe('<CollapsiblePanelHeader/>', () => {
+    test('default properties', () => {
         const component = (
             <CollapsiblePanelHeader
-                id={'test-id'}
-                title={'Test Title'}
+                id="test-id"
+                title="Test Title"
                 collapsed={true}
                 collapsible={true}
                 controlledCollapse={true}
-                panelStatus={'NONE'}
+                panelStatus="NONE"
                 useTheme={true}
                 isValid={true}
                 togglePanel={jest.fn()}
@@ -23,21 +23,20 @@ describe("<CollapsiblePanelHeader/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("custom properties", () => {
+    test('custom properties', () => {
         const component = (
             <CollapsiblePanelHeader
-                id={'test-id'}
-                title={'Test Title'}
+                id="test-id"
+                title="Test Title"
                 collapsed={true}
                 collapsible={true}
                 controlledCollapse={true}
                 useTheme={true}
                 isValid={true}
                 togglePanel={jest.fn()}
-
-                titlePrefix={'Test Prefix'}
-                headerDetails={'N Fields'}
-                panelStatus={'COMPLETE'}
+                titlePrefix="Test Prefix"
+                headerDetails="N Fields"
+                panelStatus="COMPLETE"
             />
         );
 
@@ -45,20 +44,19 @@ describe("<CollapsiblePanelHeader/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("not controlledCollapse", () => {
+    test('not controlledCollapse', () => {
         const component = (
             <CollapsiblePanelHeader
-                id={'test-id'}
-                title={'Test Title'}
+                id="test-id"
+                title="Test Title"
                 useTheme={true}
                 isValid={true}
                 togglePanel={jest.fn()}
-
                 collapsed={true}
                 collapsible={false}
                 controlledCollapse={false}
-                headerDetails={'N Fields'}
-                panelStatus={'COMPLETE'}
+                headerDetails="N Fields"
+                panelStatus="COMPLETE"
             />
         );
 
@@ -66,16 +64,15 @@ describe("<CollapsiblePanelHeader/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("not collapsible", () => {
+    test('not collapsible', () => {
         const component = (
             <CollapsiblePanelHeader
-                id={'test-id'}
-                title={'Test Title'}
-                panelStatus={'NONE'}
+                id="test-id"
+                title="Test Title"
+                panelStatus="NONE"
                 useTheme={true}
                 isValid={true}
                 togglePanel={jest.fn()}
-
                 collapsed={false}
                 collapsible={false}
                 controlledCollapse={false}
@@ -86,18 +83,17 @@ describe("<CollapsiblePanelHeader/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("not useTheme", () => {
+    test('not useTheme', () => {
         const component = (
             <CollapsiblePanelHeader
-                id={'test-id'}
-                title={'Test Title'}
+                id="test-id"
+                title="Test Title"
                 collapsed={false}
                 collapsible={false}
                 controlledCollapse={false}
-                panelStatus={'NONE'}
+                panelStatus="NONE"
                 isValid={true}
                 togglePanel={jest.fn()}
-
                 useTheme={false}
             />
         );
@@ -106,20 +102,19 @@ describe("<CollapsiblePanelHeader/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("invalid, iconHelpMsg, and expanded", () => {
+    test('invalid, iconHelpMsg, and expanded', () => {
         const component = (
             <CollapsiblePanelHeader
-                id={'test-id'}
-                title={'Test Title'}
+                id="test-id"
+                title="Test Title"
                 collapsed={false}
                 collapsible={true}
                 controlledCollapse={true}
                 useTheme={true}
                 togglePanel={jest.fn()}
-
                 isValid={false}
-                panelStatus={'INPROGRESS'}
-                iconHelpMsg={'Test icon help message'}
+                panelStatus="INPROGRESS"
+                iconHelpMsg="Test icon help message"
             />
         );
 
@@ -127,21 +122,18 @@ describe("<CollapsiblePanelHeader/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-
-
-    test("panelStatus TODO and help tip", () => {
+    test('panelStatus TODO and help tip', () => {
         const component = (
             <CollapsiblePanelHeader
-                id={'test-id'}
-                title={'Test Title'}
+                id="test-id"
+                title="Test Title"
                 collapsed={true}
                 collapsible={true}
                 controlledCollapse={true}
                 useTheme={true}
                 isValid={true}
                 togglePanel={jest.fn()}
-
-                panelStatus={'TODO'}
+                panelStatus="TODO"
             >
                 <div>Test help tip message</div>
             </CollapsiblePanelHeader>
@@ -150,5 +142,4 @@ describe("<CollapsiblePanelHeader/>", () => {
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
-
 });

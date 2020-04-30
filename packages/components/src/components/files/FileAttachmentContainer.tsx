@@ -18,39 +18,41 @@ import { Alert } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
+import { Map, Set } from 'immutable';
+
 import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
-import { Map, Set } from 'immutable';
 import { ALL_FILES_LIMIT_KEY, FileSizeLimitProps } from './models';
 
-
 interface FileAttachmentContainerProps {
-    acceptedFormats?: string // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
+    acceptedFormats?: string; // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
     // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
     // "all" limits will be overridden by limits for a specific extension.
-    sizeLimits?: Map<string, FileSizeLimitProps>
-    sizeLimitsHelpText?: React.ReactNode
-    allowMultiple: boolean
-    allowDirectories: boolean
-    handleChange?: any
-    handleRemoval?: any
-    index?: number
-    labelLong?: string
-    initialFileNames?: Array<string>
-    initialFiles?: {[key:string]: File}
-    compact?: boolean
+    sizeLimits?: Map<string, FileSizeLimitProps>;
+    sizeLimitsHelpText?: React.ReactNode;
+    allowMultiple: boolean;
+    allowDirectories: boolean;
+    handleChange?: any;
+    handleRemoval?: any;
+    index?: number;
+    labelLong?: string;
+    initialFileNames?: string[];
+    initialFiles?: { [key: string]: File };
+    compact?: boolean;
 }
 
 interface FileAttachmentContainerState {
-    errorMsg?: React.ReactNode
-    files?: {[key:string]: File}
-    isDirty?: boolean
-    fileNames?: Array<string> // separate list of names for the case when an initial set of file names is provided for which we have no file object
-    isHover?: boolean
+    errorMsg?: React.ReactNode;
+    files?: { [key: string]: File };
+    isDirty?: boolean;
+    fileNames?: string[]; // separate list of names for the case when an initial set of file names is provided for which we have no file object
+    isHover?: boolean;
 }
 
-export class FileAttachmentContainer extends React.Component<FileAttachmentContainerProps, FileAttachmentContainerState> {
-
+export class FileAttachmentContainer extends React.Component<
+    FileAttachmentContainerProps,
+    FileAttachmentContainerState
+> {
     fileInput: React.RefObject<HTMLInputElement>;
 
     constructor(props?: FileAttachmentContainerProps) {
@@ -62,8 +64,8 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             files: props.initialFiles ? props.initialFiles : {},
             fileNames: props.initialFileNames || [],
             isDirty: false,
-            isHover: false
-        }
+            isHover: false,
+        };
     }
 
     componentWillMount() {
@@ -71,7 +73,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
     }
 
     componentWillReceiveProps(nextProps: FileAttachmentContainerProps) {
-        if (this.props.initialFileNames != nextProps.initialFileNames && !this.state.isDirty)  {
+        if (this.props.initialFileNames != nextProps.initialFileNames && !this.state.isDirty) {
             this.initFileNames(nextProps);
         }
     }
@@ -80,15 +82,17 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         // since we do not have the file objects themselves, we do not check if the
         // file "type" is valid.  There is presumably nothing a user could do if it were
         // invalid.
-        this.setState(() => ({fileNames: props.initialFileNames || (props.initialFiles && Object.keys(props.initialFiles)) || []}))
+        this.setState(() => ({
+            fileNames: props.initialFileNames || (props.initialFiles && Object.keys(props.initialFiles)) || [],
+        }));
     }
 
-    validateFiles = (fileList: FileList, transferItems?: DataTransferItemList) : Set<string> => {
+    validateFiles = (fileList: FileList, transferItems?: DataTransferItemList): Set<string> => {
         const { acceptedFormats, allowDirectories, sizeLimits } = this.props;
 
         this.setState({
             errorMsg: undefined,
-            isHover: false
+            isHover: false,
         });
 
         if (!acceptedFormats && allowDirectories && !sizeLimits) {
@@ -97,7 +101,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
         let invalidFileTypes = Map<string, string>(); // map from file name to extension
         let oversizedFiles = Map<string, string>(); // map from file name to display size limit
-        let invalidDirectories = []; // list of directory names if not allowed;
+        const invalidDirectories = []; // list of directory names if not allowed;
         let invalidNames = Set<string>();
 
         Array.from(fileList).forEach((file, index) => {
@@ -106,8 +110,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                     invalidDirectories.push(file.name);
                     invalidNames = invalidNames.add(file.name);
                 }
-            }
-            else if (acceptedFormats) {
+            } else if (acceptedFormats) {
                 const formatCheck = fileMatchesAcceptedFormat(file.name, acceptedFormats);
                 if (!formatCheck.get('isMatch')) {
                     invalidFileTypes = invalidFileTypes.set(file.name, formatCheck.get('extension'));
@@ -125,35 +128,47 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             }
         });
         if (!invalidNames.isEmpty()) {
-            let errors = [];
+            const errors = [];
             if (invalidDirectories.length > 0) {
-                errors.push("Folders are not supported.");
+                errors.push('Folders are not supported.');
             }
             if (!invalidFileTypes.isEmpty()) {
                 let errorMsg = '';
                 if (invalidFileTypes.size === 1) {
                     const fileName = invalidFileTypes.keySeq().first();
-                    errorMsg += "Invalid file type " + invalidFileTypes.get(fileName) + ".";
+                    errorMsg += 'Invalid file type ' + invalidFileTypes.get(fileName) + '.';
+                } else {
+                    errorMsg +=
+                        'Invalid file types: ' +
+                        invalidFileTypes.map((extension, fileName) => extension).join(', ') +
+                        '.';
                 }
-                else {
-                    errorMsg += "Invalid file types: " + invalidFileTypes.map((extension, fileName) => (extension)).join(", ") + ".";
-                }
-                errorMsg += '  Valid types are ' + acceptedFormats + ".  ";
+                errorMsg += '  Valid types are ' + acceptedFormats + '.  ';
                 errors.push(errorMsg);
             }
             if (!oversizedFiles.isEmpty()) {
                 if (oversizedFiles.size === 1) {
                     const fileName = oversizedFiles.keySeq().first();
-                    errors.push(<>The file '{fileName}' is larger than the maximum allowed size of {oversizedFiles.get(fileName)}.  {this.props.sizeLimitsHelpText}</>);
-                }
-                else {
+                    errors.push(
+                        <>
+                            The file '{fileName}' is larger than the maximum allowed size of{' '}
+                            {oversizedFiles.get(fileName)}. {this.props.sizeLimitsHelpText}
+                        </>
+                    );
+                } else {
                     errors.push(
                         <>
                             These files are larger than their maximum allowed sizes:
                             <ul>
-                            {oversizedFiles.map((limit, fileName) => {
-                                return <li key={fileName}>{fileName} (max size: {limit})</li>
-                            }).toArray()}
+                                {oversizedFiles
+                                    .map((limit, fileName) => {
+                                        return (
+                                            <li key={fileName}>
+                                                {fileName} (max size: {limit})
+                                            </li>
+                                        );
+                                    })
+                                    .toArray()}
                             </ul>
                             {this.props.sizeLimitsHelpText}
                         </>
@@ -161,8 +176,17 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 }
             }
             this.setState({
-                errorMsg: invalidNames.size > 1 ? <ul>{errors.map((error, index) => (<li key={index}>{error}</li>))}</ul> : errors,
-                isHover: false
+                errorMsg:
+                    invalidNames.size > 1 ? (
+                        <ul>
+                            {errors.map((error, index) => (
+                                <li key={index}>{error}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        errors
+                    ),
+                isHover: false,
             });
             return invalidNames;
         }
@@ -182,7 +206,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
         this.cancelEvent(evt);
         if (!isHover) {
-            this.setState({isHover: true});
+            this.setState({ isHover: true });
         }
     };
 
@@ -199,16 +223,16 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         if (!allowMultiple && fileList.length > 1) {
             this.setState({
                 errorMsg: 'Only one file allowed.',
-                isHover: false
+                isHover: false,
             });
             return;
         }
 
-        let invalidFiles = this.validateFiles(fileList, transferItems);
+        const invalidFiles = this.validateFiles(fileList, transferItems);
 
         let haveValidFiles = false;
         // iterate through the file list and set the names as the object key
-        let newFiles : any = Object.keys(fileList).reduce((prev, next) => {
+        const newFiles: any = Object.keys(fileList).reduce((prev, next) => {
             const file = fileList[next];
             if (!invalidFiles.contains(file.name)) {
                 prev[file.name] = file;
@@ -218,7 +242,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         }, {});
 
         if (haveValidFiles) {
-            let files = Object.assign({}, newFiles, this.state.files);
+            const files = Object.assign({}, newFiles, this.state.files);
             this.setState({
                 files,
                 fileNames: Object.keys(files),
@@ -230,7 +254,6 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 handleChange(files);
             }
         }
-
     }
 
     handleLeave = (evt: React.DragEvent<HTMLLabelElement>) => {
@@ -239,19 +262,18 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         this.cancelEvent(evt);
 
         if (isHover) {
-            this.setState({isHover: false});
+            this.setState({ isHover: false });
         }
     };
 
     handleRemove = (name: string) => {
         const { handleRemoval } = this.props;
 
-        const fileNames = this.state.fileNames.filter((fileName) =>  (name !== fileName));
+        const fileNames = this.state.fileNames.filter(fileName => name !== fileName);
 
-        let files = {};
-        for (let filename of Object.keys(this.state.files)) {
-            if (fileNames.indexOf(filename) >=0)
-                files[filename] = this.state.files[filename];
+        const files = {};
+        for (const filename of Object.keys(this.state.files)) {
+            if (fileNames.indexOf(filename) >= 0) files[filename] = this.state.files[filename];
         }
 
         // NOTE: This will clear the field entirely so multiple file support
@@ -260,7 +282,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             this.fileInput.current.value = '';
         }
 
-        this.setState({isDirty: true, errorMsg: undefined, files, fileNames});
+        this.setState({ isDirty: true, errorMsg: undefined, files, fileNames });
 
         if (Utils.isFunction(handleRemoval)) {
             handleRemoval(name);
@@ -272,13 +294,10 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
         if (errorMsg !== '' && errorMsg !== undefined) {
             return (
-                <Alert
-                    className={this.props.compact ? "file-upload--error-message--compact" : null}
-                    bsStyle={'danger'}
-                >
+                <Alert className={this.props.compact ? 'file-upload--error-message--compact' : null} bsStyle="danger">
                     {errorMsg}
                 </Alert>
-            )
+            );
         }
     }
 
@@ -296,18 +315,23 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             return labelLong;
         }
         const allMaxSize = sizeLimits.get(ALL_FILES_LIMIT_KEY).maxSize;
-        return allMaxSize ? labelLong + " The maximum file size allowed is " + sizeLimits.get(ALL_FILES_LIMIT_KEY).maxSize.displayValue + "." : labelLong;
+        return allMaxSize
+            ? labelLong +
+                  ' The maximum file size allowed is ' +
+                  sizeLimits.get(ALL_FILES_LIMIT_KEY).maxSize.displayValue +
+                  '.'
+            : labelLong;
     }
 
     render() {
         const { acceptedFormats, allowMultiple, index, compact } = this.props;
         const { fileNames, isHover } = this.state;
         const hideFileUpload = !allowMultiple && fileNames.length > 0;
-        const fileUploadText = "fileUpload" + (index !== undefined ? index : '');
+        const fileUploadText = 'fileUpload' + (index !== undefined ? index : '');
 
         return (
             <div>
-                <div className={classNames("file-upload--container", (hideFileUpload ? "hidden" : "block"))}>
+                <div className={classNames('file-upload--container', hideFileUpload ? 'hidden' : 'block')}>
                     <label
                         className={classNames({
                             'file-upload--label': !compact,
@@ -318,12 +342,13 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                         onDragEnter={this.handleDrag}
                         onDragLeave={this.handleLeave}
                         onDragOver={this.handleDrag}
-                        onDrop={this.handleDrop}>
+                        onDrop={this.handleDrop}
+                    >
                         <i
-                            className={classNames(
-                                'fa fa-cloud-upload',
-                                { 'fa-2x cloud-logo': !compact, 'file-upload__label__icon': compact }
-                            )}
+                            className={classNames('fa fa-cloud-upload', {
+                                'fa-2x cloud-logo': !compact,
+                                'file-upload__label__icon': compact,
+                            })}
                             aria-hidden="true"
                         />
                         {this.getLabelLong()}
@@ -343,15 +368,9 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 {this.renderErrorDetails()}
 
                 {fileNames.map((fileName: string) => {
-                    return (
-                        <FileAttachmentEntry
-                            key={fileName}
-                            name={fileName}
-                            onDelete={this.handleRemove}
-                        />
-                    )
+                    return <FileAttachmentEntry key={fileName} name={fileName} onDelete={this.handleRemove} />;
                 })}
             </div>
-        )
+        );
     }
 }

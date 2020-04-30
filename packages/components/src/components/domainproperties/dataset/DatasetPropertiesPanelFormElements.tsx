@@ -15,14 +15,26 @@
  */
 
 import React from 'react';
-import {Col, Checkbox, Radio, Row} from 'react-bootstrap';
-import {DatasetModel} from './models';
-import {Creatable, Option} from 'react-select'
-import {fetchCategories, getHelpTip} from "./actions";
-import {DatasetSettingsInput, DatasetSettingsSelect} from "./DatasetPropertiesAdvancedSettings";
-import "../../../theme/dataset.scss";
-import {DomainFieldLabel} from "../DomainFieldLabel";
-import {SectionHeading} from "../SectionHeading";
+import { Col, Checkbox, Radio, Row } from 'react-bootstrap';
+
+import { Creatable, Option } from 'react-select';
+
+import { DomainFieldLabel } from '../DomainFieldLabel';
+
+import { SectionHeading } from '../SectionHeading';
+
+import { DatasetModel } from './models';
+import {
+    getAdditionalKeyFields,
+    fetchCategories,
+    getHelpTip,
+    getStudySubjectProp,
+    getStudyTimepointLabel,
+} from './actions';
+import { DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
+
+import '../../../theme/dataset.scss';
+import { TIME_KEY_FIELD_KEY } from './constants';
 
 interface BasicPropertiesInputsProps {
     model: DatasetModel;
@@ -31,7 +43,7 @@ interface BasicPropertiesInputsProps {
 }
 
 interface BasicPropertiesInputsState {
-    availableCategories: Array<Option>;
+    availableCategories: Option[];
 }
 
 export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsProps> {
@@ -39,52 +51,46 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
         const { model, onInputChange } = this.props;
         const value = model.description === null ? '' : model.description;
 
-        return(
-            <Row className={'margin-top'}>
+        return (
+            <Row className="margin-top">
                 <Col xs={4}>
-                    <DomainFieldLabel
-                        label={'Description'}
-                    />
+                    <DomainFieldLabel label="Description" />
                 </Col>
 
                 <Col xs={7}>
                     <textarea
                         className="form-control textarea-noresize"
-                        id={'description'}
+                        id="description"
                         value={value}
                         onChange={onInputChange}
                     />
                 </Col>
 
-                <Col xs={1}/>
+                <Col xs={1} />
             </Row>
         );
     }
 }
 
 export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesInputsProps, BasicPropertiesInputsState> {
-
     constructor(props) {
         super(props);
 
         this.state = {
-             availableCategories: []
+            availableCategories: [],
         };
     }
 
-  getHelpTipElement(field: string) : JSX.Element {
-        return <> {getHelpTip(field)} </> as JSX.Element;
-  }
+    getHelpTipElement(field: string): JSX.Element {
+        return (<> {getHelpTip(field)} </>) as JSX.Element;
+    }
 
     componentDidMount() {
-        const { model } = this.props;
-
-        fetchCategories()
-            .then((data) => {
-                this.setState(() => ({
-                    availableCategories: data.categories
-                }))
-            })
+        fetchCategories().then(data => {
+            this.setState(() => ({
+                availableCategories: data.toArray(),
+            }));
+        });
     }
 
     render() {
@@ -98,56 +104,49 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                 <DatasetSettingsInput
                     name="name"
                     label="Name"
-                    helpTip={this.getHelpTipElement("name")}
+                    helpTip={this.getHelpTipElement('name')}
                     value={model.name}
                     placeholder="Enter a name for this dataset"
-                    disabled={false}
+                    disabled={model.isFromAssay()}
                     onValueChange={onInputChange}
                     showInAdvancedSettings={false}
                     required={true}
                 />
 
-                <DescriptionInput
-                    model={model}
-                    onInputChange={onInputChange}
-                />
-
-                <Row className={'margin-top'}>
-
-                    <Col xs={4}>
-                        <DomainFieldLabel
-                            label={"Category"}
-                            required={false}
-                            helpTipBody={() => this.getHelpTipElement("category")}
-                        />
-                    </Col>
-
-                    <Col xs={7}>
-                        {/*TODO: could be replaced by QuerySelect along with server side story*/}
-                        <Creatable
-                            name="categoryId"
-                            placeholder="Select dataset category"
-                            onChange={onCategoryChange}
-                            value={model.categoryId}
-                            options={availableCategories}
-                        />
-                    </Col>
-
-                    <Col xs={1}/>
-
-                </Row>
-
                 <DatasetSettingsInput
                     name="label"
                     label="Label"
-                    helpTip={this.getHelpTipElement("label")}
+                    helpTip={this.getHelpTipElement('label')}
                     value={model.label}
                     disabled={false}
                     onValueChange={onInputChange}
                     showInAdvancedSettings={false}
-                    required={false}
+                    required={!model.isNew()}
                 />
 
+                <DescriptionInput model={model} onInputChange={onInputChange} />
+
+                <Row className="margin-top">
+                    <Col xs={4}>
+                        <DomainFieldLabel
+                            label="Category"
+                            required={false}
+                            helpTipBody={() => this.getHelpTipElement('category')}
+                        />
+                    </Col>
+
+                    <Col xs={7}>
+                        <Creatable
+                            name="category"
+                            placeholder="Select dataset category"
+                            onChange={onCategoryChange}
+                            value={model.category}
+                            options={availableCategories}
+                        />
+                    </Col>
+
+                    <Col xs={1} />
+                </Row>
             </>
         );
     }
@@ -156,40 +155,46 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
 interface DataRowUniquenessElementsProps {
     onRadioChange: (evt: any) => any;
     dataRowSetting: number;
+    isFromAssay: boolean;
 }
 
 class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessElementsProps> {
     render() {
-        const { onRadioChange, dataRowSetting } = this.props;
-        const radioName = "dataRowSetting";
+        const { onRadioChange, dataRowSetting, isFromAssay } = this.props;
+        const radioName = 'dataRowSetting';
+        const participantIdTxt = getStudySubjectProp('nounPlural');
+        const timepointTxt = getStudyTimepointLabel();
 
         return (
-            <div className='dataset_data_row_uniqueness_container'>
+            <div className="dataset_data_row_uniqueness_container">
                 <Radio
                     name={radioName}
                     value={0}
-                    checked={dataRowSetting == 0}
+                    checked={dataRowSetting === 0}
                     onChange={onRadioChange}
+                    disabled={isFromAssay}
                 >
-                    Participant ID only (demographic data)
+                    {participantIdTxt} only (demographic data)
                 </Radio>
 
                 <Radio
                     name={radioName}
                     value={1}
-                    checked={dataRowSetting == 1}
+                    checked={dataRowSetting === 1}
                     onChange={onRadioChange}
+                    disabled={isFromAssay}
                 >
-                    Participant ID and timepoint
+                    {participantIdTxt} and {timepointTxt.toLowerCase()}
                 </Radio>
 
                 <Radio
                     name={radioName}
                     value={2}
-                    checked={dataRowSetting == 2}
+                    checked={dataRowSetting === 2}
                     onChange={onRadioChange}
+                    disabled={isFromAssay}
                 >
-                    Participant ID, timepoint, and additional key field
+                    {participantIdTxt}, {timepointTxt.toLowerCase()}, and additional key field
                 </Radio>
             </div>
         );
@@ -201,65 +206,90 @@ interface DataRowUniquenessContainerProps {
     onRadioChange: (e: any) => any;
     onCheckBoxChange: (any) => void;
     onSelectChange: (name, formValue, selected) => void;
+    keyPropertyIndex?: number;
 }
 
 export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {
-
     getHelpTipForAdditionalField(): JSX.Element {
+        const ptidSingularTxt = getStudySubjectProp('nounSingular');
+        const timepointTxt = getStudyTimepointLabel();
+
         return (
             <>
                 <p>
-                    If dataset has more than one row per participant/visit, an additional key field must be provided.
-                    There can be at most one row in the dataset for each combination of participant, visit and key.
+                    If the dataset has more than one row per {ptidSingularTxt.toLowerCase()}/
+                    {timepointTxt.toLowerCase()}, an additional key field must be provided.
                 </p>
+                <p>
+                    There can be at most one row in the dataset for each combination of {ptidSingularTxt.toLowerCase()},
+                    {timepointTxt.toLowerCase()} and key.
+                </p>
+                The dataset additional key field can be one of the following two types:
                 <ul>
-                    <li>None: No additional key</li>
-                    <li>Data Field: A user-managed key field</li>
-                    <li>Managed Field: A numeric or string field defined below will be managed by the server to make each new entry unique.
-                        Numbers will be assigned auto-incrementing integer values, strings will be assigned globally unique identifiers (GUIDs).</li>
+                    <li>Data Field: A user-managed key field.</li>
+                    <li>
+                        Managed Field: A numeric or string field that will be managed by the server to make each new
+                        entry unique. Numbers will be assigned auto-incrementing integer values, strings will be
+                        assigned globally unique identifiers (GUIDs).
+                    </li>
                 </ul>
-            </> as JSX.Element
-        );
+            </>
+        ) as JSX.Element;
     }
 
-    getHelpTipElement(field: string) : JSX.Element {
-        return <> {getHelpTip(field)} </> as JSX.Element;
+    getHelpTipElement(field: string): JSX.Element {
+        return (<> {getHelpTip(field)} </>) as JSX.Element;
     }
 
     render() {
-        const { model, onRadioChange, onCheckBoxChange, onSelectChange } = this.props;
+        const { model, onRadioChange, onCheckBoxChange, onSelectChange, keyPropertyIndex } = this.props;
         const domain = model.domain;
-
+        const additionalKeyFields = getAdditionalKeyFields(domain);
         const dataRowSetting = model.getDataRowSetting();
-        const showAdditionalKeyField = dataRowSetting === 2;
+        const showAdditionalKeyField = dataRowSetting === 2 || model.isFromAssay();
 
-        const validKeyField = model.validManagedKeyField();
+        let keyPropertyName = model.keyPropertyName;
+        if (model.useTimeKeyField) {
+            keyPropertyName = TIME_KEY_FIELD_KEY;
+        } else if (keyPropertyIndex !== undefined) {
+            keyPropertyName = model.domain.fields.get(keyPropertyIndex).name;
+        }
 
-        const showAdditionalKeyFieldCls = showAdditionalKeyField ? "dataset_data_row_uniqueness_keyField_show margin-top" : "dataset_data_row_uniqueness_keyField_hide";
-        const keyPropertyManagedCls = showAdditionalKeyField && validKeyField ? "dataset_data_row_uniqueness_keyField_show margin-top" : "dataset_data_row_uniqueness_keyField_hide margin-top";
+        const validKeyField = model.validManagedKeyField(keyPropertyName);
+
+        const showAdditionalKeyFieldCls = showAdditionalKeyField
+            ? 'dataset_data_row_element_show margin-top'
+            : 'dataset_data_row_element_hide';
+        const keyPropertyManagedCls =
+            showAdditionalKeyField && validKeyField
+                ? 'dataset_data_row_element_show margin-top'
+                : 'dataset_data_row_element_hide margin-top';
+
+        const managedKeyDisabled = !showAdditionalKeyField || !validKeyField || model.isFromAssay();
 
         return (
             <>
                 <SectionHeading
                     title="Data Row Uniqueness"
-                    helpTipBody={() => this.getHelpTipElement("dataRowUniqueness")}
+                    helpTipBody={() => this.getHelpTipElement('dataRowUniqueness')}
                 />
 
                 <DataRowUniquenessElements
                     onRadioChange={onRadioChange}
                     dataRowSetting={dataRowSetting}
+                    isFromAssay={model.isFromAssay()}
                 />
 
                 <div className={showAdditionalKeyFieldCls}>
                     <DatasetSettingsSelect
-                        name={"keyPropertyId"}
-                        label={"Additional Key Field"}
-                        selectOptions={domain.fields.toArray()}
+                        name="keyPropertyName"
+                        label="Additional Key Field"
+                        selectOptions={additionalKeyFields.toArray()}
                         onSelectChange={onSelectChange}
-                        labelKey={"label"}
-                        valueKey={"propertyId"}
-                        selectedValue={model.keyPropertyId}
-                        disabled={!showAdditionalKeyField}
+                        labelKey="label"
+                        valueKey="value"
+                        selectedValue={keyPropertyName}
+                        disabled={!showAdditionalKeyField || model.isFromAssay()}
                         helpTip={this.getHelpTipForAdditionalField()}
                         clearable={false}
                     />
@@ -267,15 +297,14 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
 
                 <div className={keyPropertyManagedCls}>
                     <Checkbox
-                        checked={model.keyPropertyManaged}
+                        checked={model.keyPropertyManaged && !managedKeyDisabled}
                         onChange={onCheckBoxChange}
-                        id={"keyPropertyManaged"}
-                        disabled={!showAdditionalKeyField || !validKeyField}
+                        id="keyPropertyManaged"
+                        disabled={managedKeyDisabled}
                     >
                         Let server manage fields to make entries unique
                     </Checkbox>
                 </div>
-
             </>
         );
     }

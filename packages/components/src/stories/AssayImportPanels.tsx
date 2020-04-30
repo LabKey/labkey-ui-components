@@ -18,7 +18,6 @@ import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, number, withKnobs } from '@storybook/addon-knobs';
 
-
 import { gridInit } from '../actions';
 import { getStateQueryGridModel } from '../models';
 import { getQueryGridModel } from '../global';
@@ -37,10 +36,9 @@ import './stories.scss';
 import { AssayDefinitionModel, AssayUploadTabs } from '../components/base/models/model';
 
 class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
-
     componentDidMount(): void {
         gridInit(this.getQueryGridModel(), false, this);
-        const runPropertiesModel =  getRunPropertiesModel(ASSAY_WIZARD_MODEL.assayDef, '123');
+        const runPropertiesModel = getRunPropertiesModel(ASSAY_WIZARD_MODEL.assayDef, '123');
         gridInit(runPropertiesModel, true, this);
     }
 
@@ -48,7 +46,7 @@ class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
         const model = getStateQueryGridModel('assayImportRunDataPanel', ASSAY_WIZARD_MODEL.queryInfo.schemaQuery, {
             editable: true,
             allowSelection: false,
-            bindURL: false
+            bindURL: false,
         });
 
         return getQueryGridModel(model.getId()) || model;
@@ -78,81 +76,78 @@ class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
                 allowBulkInsert={boolean('Allow bulk insert', true)}
                 allowBulkUpdate={boolean('Allow bulk update', true)}
                 allowBulkRemove={boolean('Allow bulk remove', true)}
-                maxInsertRows={number("Maximum cut-and-paste rows", undefined)}
+                maxInsertRows={number('Maximum cut-and-paste rows', undefined)}
             />
-        )
+        );
     }
 }
 
 const RunDataPanelWrapper = withFormSteps(RunDataPanelWrapperImpl, {
     currentStep: AssayUploadTabs.Files,
     furthestStep: AssayUploadTabs.Grid,
-    hasDependentSteps: false
+    hasDependentSteps: false,
 });
 
 storiesOf('AssayImportPanels', module)
     .addDecorator(withKnobs)
-    .add("BatchPropertiesPanel", () => {
-
+    .add('BatchPropertiesPanel', () => {
         function onChange(fieldValues: any) {
             console.log(fieldValues);
         }
 
-        return (
-            <BatchPropertiesPanel model={ASSAY_WIZARD_MODEL} onChange={onChange}/>
-        )
+        return <BatchPropertiesPanel model={ASSAY_WIZARD_MODEL} onChange={onChange} />;
     })
-    .add("RunPropertiesPanel", () => {
-
+    .add('RunPropertiesPanel', () => {
         function onChange(fieldValues: any) {
             console.log(fieldValues);
         }
 
-        return (
-            <RunPropertiesPanel model={ASSAY_WIZARD_MODEL} onChange={onChange}/>
-        )
+        return <RunPropertiesPanel model={ASSAY_WIZARD_MODEL} onChange={onChange} />;
     })
-    .add("RunDataPanel", () => {
-        return (
-            <RunDataPanelWrapper/>
-        )
+    .add('RunDataPanel', () => {
+        return <RunDataPanelWrapper />;
     })
-    .add("AssayImportPanels", () => {
+    .add(
+        'AssayImportPanels',
+        () => {
+            return (
+                <AssayImportPanels
+                    assayDefinition={ASSAY_WIZARD_MODEL.assayDef}
+                    onCancel={() => console.log('onCancel clicked')}
+                    onComplete={response => console.log('onComplete', response)}
+                    allowBulkInsert={boolean('Allow bulk insert', true)}
+                    allowBulkUpdate={boolean('Allow bulk update', true)}
+                    allowBulkRemove={boolean('Allow bulk remove', true)}
+                    maxInsertRows={number('Max cut-and-paste insert rows', undefined)}
+                />
+            );
+        },
+        {
+            notes:
+                'For uploading files, choose a .tsv or .csv file to see the duplicate modal.  Choose a .xls or .xlsx file for the no duplicate experience.  Any other file extension will produce an error message.',
+        }
+    )
+    .add('AssayImportPanels for re-import', () => {
         return (
             <AssayImportPanels
                 assayDefinition={ASSAY_WIZARD_MODEL.assayDef}
                 onCancel={() => console.log('onCancel clicked')}
-                onComplete={(response) => console.log('onComplete', response)}
-                allowBulkInsert={boolean('Allow bulk insert', true)}
-                allowBulkUpdate={boolean('Allow bulk update', true)}
-                allowBulkRemove={boolean('Allow bulk remove', true)}
-                maxInsertRows={number("Max cut-and-paste insert rows", undefined)}
+                onComplete={response => console.log('onComplete', response)}
+                runId={number('RunId', 568)}
             />
-        )
-    }, {
-        notes: "For uploading files, choose a .tsv or .csv file to see the duplicate modal.  Choose a .xls or .xlsx file for the no duplicate experience.  Any other file extension will produce an error message."
+        );
     })
-    .add("AssayImportPanels for re-import", () => {
-        return (
-            <AssayImportPanels
-                assayDefinition={ASSAY_WIZARD_MODEL.assayDef}
-                onCancel={() => console.log("onCancel clicked")}
-                onComplete={(response) => console.log("onComplete", response)}
-                runId={number("RunId", 568)}
-            />
-        )
-    })
-    .add("AssayReimportHeader", () => {
+    .add('AssayReimportHeader', () => {
         const assay = AssayDefinitionModel.create(assayDefJSON);
         const runData = fromJS({
-            'RowId': "10",
-            'Name':  'Test Name'
+            RowId: '10',
+            Name: 'Test Name',
         });
         return (
             <AssayReimportHeader
-                hasBatchProperties={boolean("Has batch properties?", false)}
+                hasBatchProperties={boolean('Has batch properties?', false)}
                 assay={assay}
                 replacedRunProperties={runData}
             />
-        )
+        );
     });

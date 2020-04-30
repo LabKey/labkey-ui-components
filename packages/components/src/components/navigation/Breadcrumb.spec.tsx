@@ -17,43 +17,40 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { Breadcrumb } from './Breadcrumb';
 import { AppURL } from '../../url/AppURL';
 
-describe("<Breadcrumb/>", () => {
+import { Breadcrumb } from './Breadcrumb';
 
-   test("with one link", () => {
-      const component = (
-          <Breadcrumb>
-             <a href={AppURL.create('q').toString()}>First</a>
-          </Breadcrumb>
-      );
+describe('<Breadcrumb/>', () => {
+    test('with one link', () => {
+        const component = (
+            <Breadcrumb>
+                <a href={AppURL.create('q').toString()}>First</a>
+            </Breadcrumb>
+        );
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 
-   test("with multiple links", () => {
-      const component = (
-          <Breadcrumb>
-             <a href={AppURL.create('q').toString()}>First</a>
-             <a href={AppURL.create('q', 'two').toString()}>Second</a>
-             <a href={AppURL.create('q', 'two', 'three').toString()}>Third</a>
-          </Breadcrumb>
-      );
+    test('with multiple links', () => {
+        const component = (
+            <Breadcrumb>
+                <a href={AppURL.create('q').toString()}>First</a>
+                <a href={AppURL.create('q', 'two').toString()}>Second</a>
+                <a href={AppURL.create('q', 'two', 'three').toString()}>Third</a>
+            </Breadcrumb>
+        );
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 
-   test("with className prop", () => {
-      const component = (
-          <Breadcrumb className={'anotherclass'}/>
-      );
+    test('with className prop', () => {
+        const component = <Breadcrumb className="anotherclass" />;
 
-      const wrapper = mount(component);
-      expect(wrapper.find('ol').getDOMNode().getAttribute('class')).toBe('breadcrumb anotherclass');
-      wrapper.unmount();
-   });
-
+        const wrapper = mount(component);
+        expect(wrapper.find('ol').getDOMNode().getAttribute('class')).toBe('breadcrumb anotherclass');
+        wrapper.unmount();
+    });
 });

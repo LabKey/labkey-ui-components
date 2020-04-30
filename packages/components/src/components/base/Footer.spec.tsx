@@ -18,13 +18,11 @@ import renderer from 'react-test-renderer';
 
 import { Footer } from './Footer';
 
-describe("<Footer/>", () => {
-   test("test render", () => {
-      const component = (
-          <Footer/>
-      );
+describe('<Footer/>', () => {
+    test('test render', () => {
+        const component = <Footer />;
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });

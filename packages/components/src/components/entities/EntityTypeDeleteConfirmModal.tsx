@@ -1,21 +1,21 @@
 import React from 'react';
 import { Map } from 'immutable';
+
 import { ConfirmModal } from '../base/ConfirmModal';
 import { buildURL } from '../../url/ActionURL';
 
 interface Props {
-    onConfirm: () => any
-    onCancel: () => any
-    rowId: number
-    noun: string
-    deleteConfirmationActionName?: string
-    showDependenciesLink: boolean
+    onConfirm: () => any;
+    onCancel: () => any;
+    rowId: number;
+    noun: string;
+    deleteConfirmationActionName?: string;
+    showDependenciesLink: boolean;
 }
 
 export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
-
     static defaultProps = {
-        showDependenciesLink: false
+        showDependenciesLink: false,
     };
 
     render() {
@@ -25,7 +25,9 @@ export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
         if (showDependenciesLink && deleteConfirmationActionName) {
             let params = Map<string, string>();
             params = params.set('singleObjectRowId', rowId.toString());
-            dependencies = <a href={buildURL('experiment', deleteConfirmationActionName, params.toJS())}>dependencies</a>;
+            dependencies = (
+                <a href={buildURL('experiment', deleteConfirmationActionName, params.toJS())}>dependencies</a>
+            );
         }
 
         return (
@@ -34,7 +36,7 @@ export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
                 msg={
                     <span>
                         The {noun.toLowerCase()} type and all of its {dependencies} will be permanently deleted.
-                        <p className={'top-spacing'}>
+                        <p className="top-spacing">
                             <strong>Deletion cannot be undone. </strong>
                             Do you want to proceed?
                         </p>
@@ -42,10 +44,10 @@ export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
                 }
                 onConfirm={onConfirm}
                 onCancel={onCancel}
-                confirmVariant='danger'
-                confirmButtonText='Yes, Delete'
-                cancelButtonText='Cancel'
+                confirmVariant="danger"
+                confirmButtonText="Yes, Delete"
+                cancelButtonText="Cancel"
             />
-        )
+        );
     }
 }

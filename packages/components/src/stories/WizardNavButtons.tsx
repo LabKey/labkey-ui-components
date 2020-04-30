@@ -10,9 +10,9 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { WizardNavButtons } from '../components/buttons/WizardNavButtons';
 import './stories.scss';
 
-storiesOf("WizardNavButtons", module)
+storiesOf('WizardNavButtons', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
+    .add('with knobs', () => {
         return (
             <WizardNavButtons
                 cancel={() => console.log('WizardNavButtons cancel button clicked')}
@@ -34,5 +34,5 @@ storiesOf("WizardNavButtons", module)
                 previousStep={() => console.log('WizardNavButtons previous button clicked')}
                 singularNoun={text('singularNoun', '')}
             />
-        )
+        );
     });

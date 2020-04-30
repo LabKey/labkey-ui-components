@@ -1,33 +1,36 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-import { AddRowsControlProps } from './Controls';
 import { gridInit, schemaGridInvalidate } from '../../actions';
 import { getQueryGridModel } from '../../global';
-import { EditableGridPanel } from './EditableGridPanel';
-import { EditableGridProps } from './EditableGrid';
+
 import { QueryGridModel } from '../base/models/model';
+
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 
+import { EditableGridPanel } from './EditableGridPanel';
+import { EditableGridProps } from './EditableGrid';
+
+import { AddRowsControlProps } from './Controls';
+
 interface Props extends EditableGridProps {
-    show: boolean,
-    title: string,
-    onCancel?: () => void
-    onSave: (model: QueryGridModel) => void
-    cancelText?: string
-    addControlProps?: Partial<AddRowsControlProps>
-    saveText?: string
-    savingText?: string
-    isSaving?: boolean
+    show: boolean;
+    title: string;
+    onCancel?: () => void;
+    onSave: (model: QueryGridModel) => void;
+    cancelText?: string;
+    addControlProps?: Partial<AddRowsControlProps>;
+    saveText?: string;
+    savingText?: string;
+    isSaving?: boolean;
 }
 
 export class EditableGridModal extends React.PureComponent<Props, any> {
-
     static defaultProps = {
         cancelText: 'Cancel',
         saveText: 'Save',
         savingText: 'Saving...',
-        isSaving: false
+        isSaving: false,
     };
 
     componentWillMount() {
@@ -35,8 +38,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.show && !nextProps.isSaving)
-            this.init();
+        if (nextProps.show && !nextProps.isSaving) this.init();
     }
 
     componentWillUnmount() {
@@ -44,7 +46,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
     }
 
     init() {
-        gridInit(this.getQueryGridModel(), true, this)
+        gridInit(this.getQueryGridModel(), true, this);
     }
 
     onCancel = () => {
@@ -83,7 +85,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
                         striped={true}
                         model={this.getQueryGridModel()}
                         initialEmptyRowCount={0}
-                        emptyGridMsg={'Start by adding the number of locations you want to create.'}
+                        emptyGridMsg="Start by adding the number of locations you want to create."
                     />
                 </Modal.Body>
                 <Modal.Footer>
@@ -99,6 +101,6 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
                     />
                 </Modal.Footer>
             </Modal>
-        )
+        );
     }
 }

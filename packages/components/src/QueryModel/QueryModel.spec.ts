@@ -1,8 +1,9 @@
-import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
 import { QueryInfo, SchemaQuery } from '..';
 import { QuerySort } from '../components/base/models/model';
-import { initUnitTests, makeQueryInfo } from './testUtils';
+import { initUnitTests, makeQueryInfo } from '../testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
+
+import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -14,7 +15,7 @@ const ROWS = {
     '1': {
         RowId: { value: 1 },
         Data: { values: 200 },
-    }
+    },
 };
 const ORDERED_ROWS = ['0', '1'];
 
@@ -26,7 +27,9 @@ beforeAll(() => {
 
 describe('QueryModel', () => {
     test('Instantiate Model no SchemaQuery', () => {
-        expect(() => { new QueryModel({} as QueryConfig)}).toThrow('schemaQuery is required to instantiate a QueryModel');
+        expect(() => {
+            new QueryModel({} as QueryConfig);
+        }).toThrow('schemaQuery is required to instantiate a QueryModel');
     });
 
     test('SchemaQuery', () => {
@@ -96,11 +99,8 @@ describe('QueryModel', () => {
     });
 
     test('Sorts', () => {
-        const sorts = [
-            new QuerySort({fieldKey: 'RowId', dir: '-'}),
-            new QuerySort({fieldKey: 'Data', dir: '+'}),
-        ];
-        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY, sorts: sorts});
+        const sorts = [new QuerySort({ fieldKey: 'RowId', dir: '-' }), new QuerySort({ fieldKey: 'Data', dir: '+' })];
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY, sorts });
         expect(() => model.sortString).toThrow('Cannot construct sort string, no QueryInfo available');
         model = model.mutate({ queryInfo: QUERY_INFO });
         expect(model.sortString).toEqual('-RowId,Data');
@@ -120,13 +120,13 @@ describe('QueryModel', () => {
             cols.get('flag'),
             cols.get('mixturetypeid'),
             cols.get('expirationtime'),
-            cols.get('extratestcolumn')
+            cols.get('extratestcolumn'),
         ];
         expect(model.displayColumns).toEqual(expectedDisplayCols);
 
         // Change view to noExtraColumn which should change our expected columns.
         model = model.mutate({
-            schemaQuery: SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn')
+            schemaQuery: SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn'),
         });
         expectedDisplayCols = [
             cols.get('name'),

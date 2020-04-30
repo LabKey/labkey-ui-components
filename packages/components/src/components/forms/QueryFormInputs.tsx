@@ -18,6 +18,14 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { Utils } from '@labkey/api';
 
+import { initLookup } from '../../actions';
+
+import { QueryInfo } from '../base/models/QueryInfo';
+
+import { insertColumnFilter, QueryColumn, SchemaQuery } from '../base/models/model';
+
+import { caseInsensitive } from '../../util/utils';
+
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';
 import { TextInput } from './input/TextInput';
@@ -25,63 +33,62 @@ import { DateInput } from './input/DateInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { TextAreaInput } from './input/TextAreaInput';
 import { FileInput } from './input/FileInput';
-import { initLookup } from '../../actions';
-import { QueryInfo } from '../base/models/QueryInfo';
-import { insertColumnFilter, QueryColumn, SchemaQuery } from '../base/models/model';
-import { caseInsensitive } from '../../util/utils';
-import { DatePickerInput } from "./input/DatePickerInput";
+
+import { DatePickerInput } from './input/DatePickerInput';
 
 const LABEL_FIELD_SUFFIX = '::label';
 
-export const getQueryFormLabelFieldName = function(name: string): string {
+export const getQueryFormLabelFieldName = function (name: string): string {
     return name + LABEL_FIELD_SUFFIX;
 };
 
-export const isQueryFormLabelField = function(name: string): boolean {
+export const isQueryFormLabelField = function (name: string): boolean {
     return name.endsWith(LABEL_FIELD_SUFFIX);
 };
 
-export const getFieldEnabledFieldName = function(column: QueryColumn, fieldName?: string): string {
-    const name = fieldName ? fieldName : (column ? column.fieldKey : 'unknownField');
-    return name + "::enabled";
+export const getFieldEnabledFieldName = function (column: QueryColumn, fieldName?: string): string {
+    const name = fieldName ? fieldName : column ? column.fieldKey : 'unknownField';
+    return name + '::enabled';
 };
 
 interface QueryFormInputsProps {
-    columnFilter?: (col?: QueryColumn) => boolean
-    componentKey?: string // unique key to add to QuerySelect to avoid duplication w/ transpose
-    destroyOnDismount?: boolean
-    fieldValues?: any
-    fireQSChangeOnInit?: boolean
-    checkRequiredFields?: boolean
-    showLabelAsterisk?: boolean // only used if checkRequiredFields is false, to show * for fields that are originally required
-    includeLabelField?: boolean
-    onQSChange?: (name: string, value: string | Array<any>, items: any) => any
-    queryColumns?: OrderedMap<string, QueryColumn>
-    queryInfo?: QueryInfo
-    lookups?: Map<string, number>
-    onChange?: Function
-    renderFileInputs?: boolean
-    allowFieldDisable?: boolean
-    initiallyDisableFields?: boolean
-    useDatePicker?: boolean
-    disabledFields?: List<string>
+    columnFilter?: (col?: QueryColumn) => boolean;
+    componentKey?: string; // unique key to add to QuerySelect to avoid duplication w/ transpose
+    destroyOnDismount?: boolean;
+    fieldValues?: any;
+    fireQSChangeOnInit?: boolean;
+    checkRequiredFields?: boolean;
+    showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
+    includeLabelField?: boolean;
+    onQSChange?: (name: string, value: string | any[], items: any) => any;
+    queryColumns?: OrderedMap<string, QueryColumn>;
+    queryInfo?: QueryInfo;
+    lookups?: Map<string, number>;
+    onChange?: Function;
+    renderFileInputs?: boolean;
+    allowFieldDisable?: boolean;
+    onFieldsEnabledChange?: (numEnabled: number) => void;
+    initiallyDisableFields?: boolean;
+    useDatePicker?: boolean;
+    disabledFields?: List<string>;
 }
 
 interface State {
-    labels: any
+    labels: any;
 }
 
 export class QueryFormInputs extends React.Component<QueryFormInputsProps, State> {
-
-    static defaultProps : Partial<QueryFormInputsProps> = {
+    static defaultProps: Partial<QueryFormInputsProps> = {
         checkRequiredFields: true,
         useDatePicker: true,
         includeLabelField: false,
         renderFileInputs: false,
         allowFieldDisable: false,
         initiallyDisableFields: false,
-        disabledFields: List<string>()
+        disabledFields: List<string>(),
     };
+
+    private _fieldEnabledCount: number = 0;
 
     constructor(props: QueryFormInputsProps) {
         super(props);
@@ -95,12 +102,12 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         this.onQSChange = this.onQSChange.bind(this);
 
         this.state = {
-            labels: {}
+            labels: {},
         };
     }
 
     static cleanValues(fieldValues: any, customValues?: any): any {
-        const cleanValues = {...fieldValues, ...customValues};
+        const cleanValues = { ...fieldValues, ...customValues };
 
         return Object.keys(cleanValues)
             .filter(fieldKey => !isQueryFormLabelField(fieldKey))
@@ -110,21 +117,24 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             }, {});
     }
 
-    onQSChange(name: string, value: string | Array<any>, items: any) {
+    onQSChange(name: string, value: string | any[], items: any) {
         const { includeLabelField, onQSChange } = this.props;
 
         if (includeLabelField) {
-            let allItems: Array<any> = items;
+            let allItems: any[] = items;
             if (!Utils.isArray(allItems)) {
                 allItems = [allItems];
             }
 
             this.setState({
                 labels: {
-                    ...this.state.labels, ...{
-                        [getQueryFormLabelFieldName(name)]: allItems.map(item => item ? item.label : '(label not found)').join(', ')
-                    }
-                }
+                    ...this.state.labels,
+                    ...{
+                        [getQueryFormLabelFieldName(name)]: allItems
+                            .map(item => (item ? item.label : '(label not found)'))
+                            .join(', '),
+                    },
+                },
             });
         }
 
@@ -133,12 +143,24 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         }
     }
 
+    onToggleDisable = (disabled: boolean) => {
+        if (disabled) {
+            this._fieldEnabledCount--;
+        }
+        else {
+            this._fieldEnabledCount++;
+        }
+        if (this.props.onFieldsEnabledChange) {
+            this.props.onFieldsEnabledChange(this._fieldEnabledCount);
+        }
+    }
+
     renderLabelField(col: QueryColumn) {
         const { includeLabelField } = this.props;
 
         if (includeLabelField) {
             const fieldName = getQueryFormLabelFieldName(col.name);
-            return <Input name={fieldName} type="hidden" value={this.state.labels[fieldName]}/>
+            return <Input name={fieldName} type="hidden" value={this.state.labels[fieldName]} />;
         }
 
         return null;
@@ -160,7 +182,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             renderFileInputs,
             allowFieldDisable,
             disabledFields,
-            useDatePicker
+            useDatePicker,
         } = this.props;
 
         const filter = columnFilter ? columnFilter : insertColumnFilter;
@@ -173,8 +195,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                 .filter(filter)
                 .valueSeq()
                 .map((col: QueryColumn, i: number) => {
-                    const shouldDisableField = initiallyDisableFields || disabledFields.contains(col.name.toLowerCase());
-
+                    const shouldDisableField =
+                        initiallyDisableFields || disabledFields.contains(col.name.toLowerCase());
+                    if (!shouldDisableField) {
+                        this._fieldEnabledCount++;
+                    }
                     let showAsteriskSymbol = false;
                     if (!checkRequiredFields && col.required) {
                         col = col.set('required', false) as QueryColumn;
@@ -183,7 +208,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
 
                     let value = caseInsensitive(fieldValues, col.name);
                     if (!value && lookups) {
-                        value = lookups.get(col.name) || lookups.get((col.name).toLowerCase());
+                        value = lookups.get(col.name) || lookups.get(col.name.toLowerCase());
                     }
                     if (!value && col.jsonType === 'string') {
                         value = '';
@@ -209,13 +234,14 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         if (col.displayAsLookup !== false) {
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
-                            let id = col.fieldKey + i + (componentKey ? componentKey : '');
+                            const id = col.fieldKey + i + (componentKey ? componentKey : '');
 
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
                                         allowDisable={allowFieldDisable}
+                                        onToggleDisable={this.onToggleDisable}
                                         initiallyDisabled={shouldDisableField}
                                         componentId={id}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
@@ -235,9 +261,10 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
                                         displayColumn={col.lookup.displayColumn}
                                         valueColumn={col.lookup.keyColumn}
-                                        value={value}/>
+                                        value={value}
+                                    />
                                 </React.Fragment>
-                            )
+                            );
                         }
                     }
 
@@ -249,6 +276,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 value={value}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}
+                                onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
                             />
                         );
@@ -261,19 +289,58 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 onChange={onChange}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}
+                                onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
                             />
                         );
                     }
                     switch (col.jsonType) {
                         case 'date':
-                            return useDatePicker ?
-                                <DatePickerInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>
-                                : <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
+                            return useDatePicker ? (
+                                <DatePickerInput
+                                    key={i}
+                                    queryColumn={col}
+                                    value={value}
+                                    allowDisable={allowFieldDisable}
+                                    initiallyDisabled={shouldDisableField}
+                                    onToggleDisable={this.onToggleDisable}
+                                    addLabelAsterisk={showAsteriskSymbol}
+                                />
+                            ) : (
+                                <DateInput
+                                    key={i}
+                                    queryColumn={col}
+                                    value={value}
+                                    allowDisable={allowFieldDisable}
+                                    initiallyDisabled={shouldDisableField}
+                                    onToggleDisable={this.onToggleDisable}
+                                    addLabelAsterisk={showAsteriskSymbol}
+                                />
+                            );
                         case 'boolean':
-                            return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
+                            return (
+                                <CheckboxInput
+                                    key={i}
+                                    queryColumn={col}
+                                    value={value}
+                                    allowDisable={allowFieldDisable}
+                                    initiallyDisabled={shouldDisableField}
+                                    onToggleDisable={this.onToggleDisable}
+                                    addLabelAsterisk={showAsteriskSymbol}
+                                />
+                            );
                         default:
-                            return <TextInput key={i} queryColumn={col} value={value ? String(value) : value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
+                            return (
+                                <TextInput
+                                    key={i}
+                                    queryColumn={col}
+                                    value={value ? String(value) : value}
+                                    allowDisable={allowFieldDisable}
+                                    initiallyDisabled={shouldDisableField}
+                                    onToggleDisable={this.onToggleDisable}
+                                    addLabelAsterisk={showAsteriskSymbol}
+                                />
+                            );
                     }
                 })
                 .toArray();

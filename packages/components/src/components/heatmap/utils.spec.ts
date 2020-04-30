@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 import { Set } from 'immutable';
-import { addDateRangeFilter, ALL_MONTHS, last12Months, monthSort } from './utils';
+
 import { AppURL } from '../../url/AppURL';
 
-describe("HeatMap utils", () => {
+import { addDateRangeFilter, ALL_MONTHS, last12Months, monthSort } from './utils';
 
-    test("addDateRangeFilter", () => {
+describe('HeatMap utils', () => {
+    test('addDateRangeFilter', () => {
         const url = AppURL.create([]);
         const url2 = addDateRangeFilter(url, 'col', new Date('2020-01-01'), new Date('2020-01-02'));
         expect(url2.toString()).toBe('/?query.col~dategte=2020-01-01&query.col~datelte=2020-01-02');
     });
 
-    test("monthSort", () => {
+    test('monthSort', () => {
         const thisMonth = new Date().getMonth();
         // this month should get sorted to the end, so it should be the largest.
-        expect(monthSort(ALL_MONTHS[thisMonth], ALL_MONTHS[thisMonth + 1 %12])).toBe(1);
+        expect(monthSort(ALL_MONTHS[thisMonth], ALL_MONTHS[thisMonth + (1 % 12)])).toBe(1);
         // Check for months not at the end
-        expect(monthSort(ALL_MONTHS[(thisMonth+1) % 12], ALL_MONTHS[(thisMonth+2) % 12])).toBe(-1);
-        expect(monthSort(ALL_MONTHS[(thisMonth+2) % 12], ALL_MONTHS[(thisMonth+1) % 12])).toBe(1);
-        expect(monthSort(ALL_MONTHS[(thisMonth+1) % 12], ALL_MONTHS[(thisMonth+1) % 12])).toBe(0);
+        expect(monthSort(ALL_MONTHS[(thisMonth + 1) % 12], ALL_MONTHS[(thisMonth + 2) % 12])).toBe(-1);
+        expect(monthSort(ALL_MONTHS[(thisMonth + 2) % 12], ALL_MONTHS[(thisMonth + 1) % 12])).toBe(1);
+        expect(monthSort(ALL_MONTHS[(thisMonth + 1) % 12], ALL_MONTHS[(thisMonth + 1) % 12])).toBe(0);
 
         expect(monthSort('test', 'Feb')).toBe(-1);
         expect(monthSort('Feb', 'test')).toBe(1);
@@ -40,15 +41,15 @@ describe("HeatMap utils", () => {
         expect(monthSort('jan', 'feb')).toBe(0);
     });
 
-    test ("last12Months", () => {
+    test('last12Months', () => {
         const months = last12Months();
-        expect (months.length).toBe(12);
+        expect(months.length).toBe(12);
 
         // make sure we got 12 unique months
         let monthNames = Set<string>();
-        months.forEach((month) => {
+        months.forEach(month => {
             monthNames = monthNames.add(month.monthName);
         });
         expect(monthNames.size).toBe(12);
-    })
+    });
 });

@@ -17,18 +17,19 @@ import React from 'react';
 import classNames from 'classnames';
 
 interface Props {
-    className?: string
+    className?: string;
 }
 
 export class Breadcrumb extends React.Component<Props, any> {
-
     render() {
         const { children, className } = this.props;
 
         return (
             <ol className={classNames('breadcrumb', className)}>
-                {React.Children.map(children, child => <li>{child}</li>)}
+                {React.Children.map(children, child => (
+                    <li>{child}</li>
+                ))}
             </ol>
-        )
+        );
     }
 }

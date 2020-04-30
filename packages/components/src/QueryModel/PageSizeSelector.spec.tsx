@@ -1,11 +1,16 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount, render } from 'enzyme';
+
 import { Actions, QueryInfo, SchemaQuery } from '..';
+
+import { initUnitTests, makeQueryInfo } from '../testHelpers';
+
+import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
+
 import { LoadingState, QueryModel } from './QueryModel';
 import { PageSizeSelector } from './PageSizeSelector';
-import { initUnitTests, makeQueryInfo, makeTestActions } from './testUtils';
-import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
+import { makeTestActions } from './testUtils';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -20,7 +25,7 @@ describe('PageSizeSelector', () => {
     let model: QueryModel;
     let actions: Actions;
     beforeEach(() => {
-        model = new QueryModel({id: 'model', schemaQuery: SCHEMA_QUERY}).mutate({
+        model = new QueryModel({ id: 'model', schemaQuery: SCHEMA_QUERY }).mutate({
             queryInfo: QUERY_INFO,
             queryInfoLoadingState: LoadingState.LOADED,
             rowCount: 661,
@@ -41,7 +46,7 @@ describe('PageSizeSelector', () => {
     });
 
     test('interactions', () => {
-        let wrapper = mount(<PageSizeSelector model={model} actions={actions} />);
+        const wrapper = mount(<PageSizeSelector model={model} actions={actions} />);
         wrapper.find('MenuItem').at(1).find('a').simulate('click');
         expect(actions.setMaxRows).toHaveBeenCalledWith('model', 20);
         wrapper.find('MenuItem').last().find('a').simulate('click');
@@ -50,16 +55,16 @@ describe('PageSizeSelector', () => {
 
     test('disabled', () => {
         const dropdownSelector = 'div.dropdown';
-        let wrapper = render(<PageSizeSelector model={model} actions={actions}/>);
+        let wrapper = render(<PageSizeSelector model={model} actions={actions} />);
         expect(wrapper.find(dropdownSelector)[0].attribs.class).not.toContain('disabled');
         model = model.mutate({ error: 'Oh no!' });
-        wrapper = render(<PageSizeSelector model={model} actions={actions}/>);
+        wrapper = render(<PageSizeSelector model={model} actions={actions} />);
         expect(wrapper.find(dropdownSelector)[0].attribs.class).toContain('disabled');
         model = model.mutate({
             error: undefined,
             rowsLoadingState: LoadingState.LOADING,
         });
-        wrapper = render(<PageSizeSelector model={model} actions={actions}/>);
+        wrapper = render(<PageSizeSelector model={model} actions={actions} />);
         expect(wrapper.find(dropdownSelector)[0].attribs.class).toContain('disabled');
     });
 });

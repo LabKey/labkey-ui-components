@@ -15,7 +15,7 @@ export class MockQueryModelLoader implements QueryModelLoader {
     }
 
     loadQueryInfo = (model: QueryModel): Promise<QueryInfo> => {
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             setTimeout(() => {
                 if (this.queryInfoException) {
                     reject(this.queryInfoException);
@@ -23,7 +23,7 @@ export class MockQueryModelLoader implements QueryModelLoader {
 
                 resolve(this.queryInfo);
             }, 0);
-        }));
+        });
     };
 
     loadRows = (model: QueryModel): Promise<RowsResponse> => {

@@ -16,7 +16,6 @@
 import React from 'react';
 import $ from 'jquery';
 
-
 import { DataViewInfo, VisualizationConfigModel } from '../../models';
 import { getVisualizationConfig } from '../../actions';
 import { QueryGridModel } from '../base/models/model';
@@ -24,23 +23,22 @@ import { debounce, generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
-    chart: DataViewInfo
-    model?: QueryGridModel
+    chart: DataViewInfo;
+    model?: QueryGridModel;
 }
 
 interface State {
-    divId: string
-    config: VisualizationConfigModel
+    divId: string;
+    config: VisualizationConfigModel;
 }
 
 export class Chart extends React.Component<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
         this.state = {
             divId: generateId('chart-'),
-            config: undefined
+            config: undefined,
         };
 
         this.handleResize = debounce(this.handleResize.bind(this), 250);
@@ -73,19 +71,17 @@ export class Chart extends React.Component<Props, State> {
         if (chart) {
             if (chart.error) {
                 this.getPlotElement().html(chart.error);
-            }
-            else {
+            } else {
                 getVisualizationConfig(chart.reportId)
-                    .then((config) => {
-                        this.setState({config});
+                    .then(config => {
+                        this.setState({ config });
                         this.renderChart();
                     })
                     .catch(response => {
                         this.renderError(response.exception);
                     });
             }
-        }
-        else {
+        } else {
             this.getPlotElement().html('No chart selected.');
         }
     }
@@ -96,21 +92,21 @@ export class Chart extends React.Component<Props, State> {
 
     renderChart() {
         const { model } = this.props;
-        let { config } = this.state;
-        let processedConfig = config.toJS();
+        const { config } = this.state;
+        const processedConfig = config.toJS();
 
         if (config) {
             // set the size of the SVG based on the plot el width (i.e. the model width)
             processedConfig.chartConfig.width = this.getPlotElement().width();
-            processedConfig.chartConfig.height = processedConfig.chartConfig.width * 9 / 16; // 16:9 aspect ratio
+            processedConfig.chartConfig.height = (processedConfig.chartConfig.width * 9) / 16; // 16:9 aspect ratio
 
             // apply the baseFilters and filterArray from this model to the chart config queryConfig filterArray
             if (model && model.baseFilters && !model.baseFilters.isEmpty()) {
-                model.baseFilters.forEach((filter) => processedConfig.queryConfig.filterArray.push(filter));
+                model.baseFilters.forEach(filter => processedConfig.queryConfig.filterArray.push(filter));
             }
 
             if (model && model.filterArray && !model.filterArray.isEmpty()) {
-                model.filterArray.forEach((filter) => processedConfig.queryConfig.filterArray.push(filter));
+                model.filterArray.forEach(filter => processedConfig.queryConfig.filterArray.push(filter));
             }
 
             this.getPlotElement().html('');
@@ -123,6 +119,10 @@ export class Chart extends React.Component<Props, State> {
     }
 
     render() {
-        return <div id={this.state.divId}><LoadingSpinner/></div>;
+        return (
+            <div id={this.state.divId}>
+                <LoadingSpinner />
+            </div>
+        );
     }
 }

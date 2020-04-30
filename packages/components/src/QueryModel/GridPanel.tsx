@@ -1,7 +1,9 @@
 import React, { ComponentType, PureComponent } from 'react';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
+
 import { Alert, Grid, LoadingSpinner } from '..';
+
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { PaginationButtons, PaginationInfo } from './Pagination';
 import { PageSizeSelector } from './PageSizeSelector';
@@ -13,7 +15,7 @@ interface GridPanelProps {
     showViewSelector?: boolean;
     hideEmptyViewSelector?: boolean;
     pageSizes?: number[];
-    ButtonsComponent?: ComponentType<RequiresModelAndActions>
+    ButtonsComponent?: ComponentType<RequiresModelAndActions>;
 }
 
 type Props = GridPanelProps & RequiresModelAndActions;
@@ -40,7 +42,7 @@ export class GridPanel extends PureComponent<Props> {
             showViewSelector,
             hideEmptyViewSelector,
             pageSizes,
-            ButtonsComponent
+            ButtonsComponent,
         } = this.props;
         const { id, error, messages, queryInfo, hasData } = model;
         const paginate = isPaged && hasData;
@@ -59,9 +61,7 @@ export class GridPanel extends PureComponent<Props> {
                 <>
                     <div className="grid-panel__bar">
                         <div className="grid-panel__bar-left">
-                            <div className="grid-bar__section">
-                                {buttons}
-                            </div>
+                            <div className="grid-bar__section">{buttons}</div>
                         </div>
 
                         <div className="grid-panel__bar-right">
@@ -69,14 +69,13 @@ export class GridPanel extends PureComponent<Props> {
                                 {paginate && <PaginationInfo model={model} />}
                                 {paginate && <PaginationButtons model={model} actions={actions} />}
                                 {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
-                                {
-                                    (showViewSelector && queryInfo) &&
+                                {showViewSelector && queryInfo && (
                                     <ViewSelector
                                         model={model}
                                         actions={actions}
                                         hideEmptyViewSelector={hideEmptyViewSelector}
                                     />
-                                }
+                                )}
                             </div>
                         </div>
                     </div>
@@ -87,8 +86,7 @@ export class GridPanel extends PureComponent<Props> {
                     </div>
 
                     <div className="grid-panel__grid">
-                        {
-                            hasData &&
+                        {hasData && (
                             <Grid
                                 calcWidths
                                 condensed
@@ -97,22 +95,19 @@ export class GridPanel extends PureComponent<Props> {
                                 columns={List(model.displayColumns)}
                                 data={model.gridData}
                             />
-                        }
+                        )}
                     </div>
                 </>
             );
         }
 
         return (
-            <div className={classNames('grid-panel', {'panel': asPanel, 'panel-default': asPanel})}>
-                <div className={classNames('grid-panel__body', {'panel-body': asPanel})}>
-                    {body}
-                </div>
+            <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
+                <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>{body}</div>
             </div>
         );
     }
 }
-
 
 class GridPanelWithModelImpl extends PureComponent<GridPanelProps & InjectedQueryModels> {
     render() {

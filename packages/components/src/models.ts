@@ -18,20 +18,14 @@ import { List, Map, OrderedMap, Record, Set } from 'immutable';
 import { genCellKey } from './actions';
 import { getQueryGridModel, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
-import {
-    IQueryGridModel,
-    QueryColumn,
-    QueryGridModel,
-    SchemaQuery,
-    ViewInfo,
-} from './components/base/models/model';
+import { IQueryGridModel, QueryColumn, QueryGridModel, SchemaQuery, ViewInfo } from './components/base/models/model';
 import { resolveSchemaQuery } from './util/utils';
 import { AppURL } from './url/AppURL';
 import { GRID_EDIT_INDEX } from './components/base/models/constants';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from './constants';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
-    let parts = [gridId, resolveSchemaQuery(schemaQuery)];
+    const parts = [gridId, resolveSchemaQuery(schemaQuery)];
 
     if (schemaQuery && schemaQuery.viewName) {
         parts.push(schemaQuery.viewName);
@@ -78,7 +72,7 @@ export function getStateQueryGridModel(
         query: schemaQuery.queryName,
         view: schemaQuery.viewName,
         hideEmptyChartSelector: metadata.get('hideEmptyChartSelector'),
-        hideEmptyViewSelector: metadata.get('hideEmptyViewSelector')
+        hideEmptyViewSelector: metadata.get('hideEmptyViewSelector'),
     };
 
     if (keyValue !== undefined && schemaQuery.viewName === undefined) {
@@ -97,52 +91,53 @@ export function getStateQueryGridModel(
     return new QueryGridModel(modelProps);
 }
 
-type DataViewInfoType = DataViewInfoTypes.AutomaticPlot |
-    DataViewInfoTypes.BarChart |
-    DataViewInfoTypes.BoxAndWhiskerPlot |
-    DataViewInfoTypes.CrosstabReport |
-    DataViewInfoTypes.Dataset |
-    DataViewInfoTypes.ParticipantReport |
-    DataViewInfoTypes.PieChart |
-    DataViewInfoTypes.Query |
-    DataViewInfoTypes.RReport |
-    DataViewInfoTypes.SampleComparison |
-    DataViewInfoTypes.TimeChart |
-    DataViewInfoTypes.XYScatterPlot |
-    DataViewInfoTypes.XYSeriesLinePlot;
+type DataViewInfoType =
+    | DataViewInfoTypes.AutomaticPlot
+    | DataViewInfoTypes.BarChart
+    | DataViewInfoTypes.BoxAndWhiskerPlot
+    | DataViewInfoTypes.CrosstabReport
+    | DataViewInfoTypes.Dataset
+    | DataViewInfoTypes.ParticipantReport
+    | DataViewInfoTypes.PieChart
+    | DataViewInfoTypes.Query
+    | DataViewInfoTypes.RReport
+    | DataViewInfoTypes.SampleComparison
+    | DataViewInfoTypes.TimeChart
+    | DataViewInfoTypes.XYScatterPlot
+    | DataViewInfoTypes.XYSeriesLinePlot;
 /**
  * IDataViewInfo is a client side implementation of the server-side class DataViewInfo. We currently only implement
  * a subset of the fields that are used by the client.
  */
 export interface IDataViewInfo {
-    name?: string,
-    description?: string,
-    detailsUrl?: string,
-    runUrl?: string, // This comes directly from the API response and is a link to LK Server
-    type?: DataViewInfoType,
-    visible?: boolean,
-    id?: string, // This is actually a uuid from the looks of it, should we be more strict on the type here?
-    reportId?: string, // This is in the format of "db:953", not quite sure why we have an id and reportId.
-    created?: Date,
-    modified?: Date,
-    createdBy?: string,
-    modifiedBy?: string,
-    thumbnail?: string, // This is actually a URL, do we enforce that?
-    icon?: string,
-    iconCls?: string,
-    shared?: boolean,
-    schemaName?: string,
-    queryName?: string,
-    viewName?: string,
+    name?: string;
+    description?: string;
+    detailsUrl?: string;
+    runUrl?: string; // This comes directly from the API response and is a link to LK Server
+    type?: DataViewInfoType;
+    visible?: boolean;
+    id?: string; // This is actually a uuid from the looks of it, should we be more strict on the type here?
+    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
+    created?: Date;
+    modified?: Date;
+    createdBy?: string;
+    modifiedBy?: string;
+    thumbnail?: string; // This is actually a URL, do we enforce that?
+    icon?: string;
+    iconCls?: string;
+    shared?: boolean;
+    schemaName?: string;
+    queryName?: string;
+    viewName?: string;
 
-    appUrl?: AppURL, // This is a client side only attribute. Used to navigate within a Single Page App.
+    appUrl?: AppURL; // This is a client side only attribute. Used to navigate within a Single Page App.
 }
 
 interface DataViewClientMetadata extends IDataViewInfo {
     // The attributes here are all specific to the DataViewInfo class and are not useful as part of IDataViewInfo
-    isLoading?: boolean,
-    isLoaded?: boolean,
-    error?: any
+    isLoading?: boolean;
+    isLoaded?: boolean;
+    error?: any;
 }
 
 const DataViewInfoDefaultValues = {
@@ -168,7 +163,7 @@ const DataViewInfoDefaultValues = {
     // Client Side only attributes
     isLoading: false,
     isLoaded: false,
-    error: undefined
+    error: undefined,
 };
 
 // commented out attributes are not used in app
@@ -223,19 +218,21 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
 
 export class VisualizationConfigModel extends Record({
     queryConfig: undefined,
-    chartConfig: undefined
+    chartConfig: undefined,
 }) {
     queryConfig: QueryConfigModel;
     chartConfig: ChartConfigModel;
 
     static create(raw: any): VisualizationConfigModel {
-        return new VisualizationConfigModel(Object.assign({}, raw, {
-            chartConfig: new ChartConfigModel(raw.chartConfig),
-            queryConfig: new QueryConfigModel(raw.queryConfig)
-        }))
+        return new VisualizationConfigModel(
+            Object.assign({}, raw, {
+                chartConfig: new ChartConfigModel(raw.chartConfig),
+                queryConfig: new QueryConfigModel(raw.queryConfig),
+            })
+        );
     }
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 }
@@ -248,7 +245,7 @@ export class ChartConfigModel extends Record({
     pointType: undefined,
     renderType: undefined,
     scales: undefined,
-    width: undefined
+    width: undefined,
 }) {
     geomOptions: any;
     height: number;
@@ -259,7 +256,7 @@ export class ChartConfigModel extends Record({
     scales: any;
     width: number;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 }
@@ -277,7 +274,7 @@ export class QueryConfigModel extends Record({
     requiredVersion: undefined,
     schemaName: undefined,
     // sort: undefined,
-    viewName: undefined
+    viewName: undefined,
 }) {
     columns: List<string>;
     containerPath: string;
@@ -293,55 +290,57 @@ export class QueryConfigModel extends Record({
     // sort: string;
     viewName: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 }
 
 export interface ValueDescriptor {
-    display: any
-    raw: any
+    display: any;
+    raw: any;
 }
 
 export interface CellMessage {
-    message: string
+    message: string;
 }
 
 export type CellMessages = Map<string, CellMessage>;
 export type CellValues = Map<string, List<ValueDescriptor>>;
 
 export interface EditorModelProps {
-    cellMessages: CellMessages
-    cellValues: CellValues
-    colCount: number
-    id: string
-    isPasting: boolean
-    focusColIdx: number
-    focusRowIdx: number
-    focusValue: List<ValueDescriptor>
-    numPastedRows: number
-    rowCount: number
-    selectedColIdx: number
-    selectedRowIdx: number
-    selectionCells: Set<string>
+    cellMessages: CellMessages;
+    cellValues: CellValues;
+    colCount: number;
+    id: string;
+    isPasting: boolean;
+    focusColIdx: number;
+    focusRowIdx: number;
+    focusValue: List<ValueDescriptor>;
+    numPastedRows: number;
+    rowCount: number;
+    selectedColIdx: number;
+    selectedRowIdx: number;
+    selectionCells: Set<string>;
 }
 
-export class EditorModel extends Record({
-    cellMessages: Map<string, CellMessage>(),
-    cellValues: Map<string, List<ValueDescriptor>>(),
-    colCount: 0,
-    deletedIds: Set<any>(),
-    id: undefined,
-    isPasting: false,
-    focusColIdx: -1,
-    focusRowIdx: -1,
-    focusValue: undefined,
-    numPastedRows: 0,
-    rowCount: 0,
-    selectedColIdx: -1,
-    selectedRowIdx: -1,
-    selectionCells: Set<string>()
-}) implements EditorModelProps {
+export class EditorModel
+    extends Record({
+        cellMessages: Map<string, CellMessage>(),
+        cellValues: Map<string, List<ValueDescriptor>>(),
+        colCount: 0,
+        deletedIds: Set<any>(),
+        id: undefined,
+        isPasting: false,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        focusValue: undefined,
+        numPastedRows: 0,
+        rowCount: 0,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+    })
+    implements EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
     colCount: number;
@@ -357,28 +356,29 @@ export class EditorModel extends Record({
     selectedRowIdx: number;
     selectionCells: Set<string>;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
-    findNextCell(startCol: number, startRow: number,
-                 predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
-                 advance: (colIdx: number, rowIdx: number) => {colIdx: number, rowIdx: number})
-    {
+    findNextCell(
+        startCol: number,
+        startRow: number,
+        predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
+        advance: (colIdx: number, rowIdx: number) => { colIdx: number; rowIdx: number }
+    ) {
         let colIdx = startCol,
             rowIdx = startRow;
 
         while (true) {
-            ({colIdx, rowIdx} = advance(colIdx, rowIdx));
-            if (!this.isInBounds(colIdx, rowIdx))
-                break;
+            ({ colIdx, rowIdx } = advance(colIdx, rowIdx));
+            if (!this.isInBounds(colIdx, rowIdx)) break;
 
-            let value = this.getValue(colIdx, rowIdx);
+            const value = this.getValue(colIdx, rowIdx);
             if (predicate(value, colIdx, rowIdx)) {
                 return {
                     value,
                     colIdx,
-                    rowIdx
+                    rowIdx,
                 };
             }
         }
@@ -394,13 +394,12 @@ export class EditorModel extends Record({
     getColumns(model: QueryGridModel, forUpdate?: boolean, readOnlyColumns?: List<string>) {
         if (forUpdate) {
             return model.getUpdateColumns(readOnlyColumns);
-        }
-        else {
+        } else {
             return model.getInsertColumns();
         }
     }
 
-    getRawData(model: QueryGridModel, forUpdate: boolean = false, readOnlyColumns?: List<string>): List<Map<string, any>> {
+    getRawData(model: QueryGridModel, forUpdate = false, readOnlyColumns?: List<string>): List<Map<string, any>> {
         let data = List<Map<string, any>>();
         const columns = this.getColumns(model, forUpdate, readOnlyColumns);
 
@@ -412,22 +411,27 @@ export class EditorModel extends Record({
                 if (col.isLookup()) {
                     if (col.isExpInput()) {
                         let sep = '';
-                        row = row.set(col.name, values.reduce((str, vd) => {
-                            if (vd.display !== undefined && vd.display !== null) {
-                                str += sep + vd.display;
-                                sep = ', ';
-                            }
-                            return str;
-                        }, ''));
+                        row = row.set(
+                            col.name,
+                            values.reduce((str, vd) => {
+                                if (vd.display !== undefined && vd.display !== null) {
+                                    str += sep + vd.display;
+                                    sep = ', ';
+                                }
+                                return str;
+                            }, '')
+                        );
                         return;
-                    }
-                    else if (col.isJunctionLookup()) {
-                        row = row.set(col.name, values.reduce((arr, vd) => {
-                            if (vd.raw !== undefined && vd.raw !== null) {
-                                arr.push(vd.raw);
-                            }
-                            return arr;
-                        }, []));
+                    } else if (col.isJunctionLookup()) {
+                        row = row.set(
+                            col.name,
+                            values.reduce((arr, vd) => {
+                                if (vd.raw !== undefined && vd.raw !== null) {
+                                    arr.push(vd.raw);
+                                }
+                                return arr;
+                            }, [])
+                        );
                         return;
                     }
                 }
@@ -452,13 +456,16 @@ export class EditorModel extends Record({
      * @param queryGridModel the model whose data we are validating
      * @param uniqueFieldKey optional (non-key) field that should be unique.
      */
-    validateData(queryGridModel: QueryGridModel, uniqueFieldKey?: string) : {
-        uniqueKeyViolations: Map<string, Map<string, List<number>>>, // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
-        missingRequired: Map<string, List<number>> // map from column caption to row numbers with missing values
+    validateData(
+        queryGridModel: QueryGridModel,
+        uniqueFieldKey?: string
+    ): {
+        uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
+        missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
     } {
         const columns = queryGridModel.getInsertColumns();
         let uniqueFieldCol;
-        let keyColumns = columns.filter((column) => column.isKeyField);
+        const keyColumns = columns.filter(column => column.isKeyField);
         let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
         let uniqueKeyMap = Map<string, List<number>>(); // map from value to rows with that value
         let missingRequired = Map<string, List<number>>(); // map from column caption to list of rows missing a value for that column
@@ -466,12 +473,17 @@ export class EditorModel extends Record({
             columns.forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
                 if (col.required) {
-                    if (values.isEmpty() || values.find((value) => this.hasRawValue(value)) == undefined) {
+                    if (values.isEmpty() || values.find(value => this.hasRawValue(value)) == undefined) {
                         if (missingRequired.has(col.caption)) {
-                            missingRequired = missingRequired.set(col.caption, missingRequired.get(col.caption).push(rn+1));
-                        }
-                        else {
-                            missingRequired = missingRequired.set(col.caption, List<number>([rn+1]));
+                            missingRequired = missingRequired.set(
+                                col.caption,
+                                missingRequired.get(col.caption).push(rn + 1)
+                            );
+                        } else {
+                            missingRequired = missingRequired.set(
+                                col.caption,
+                                List<number>([rn + 1])
+                            );
                         }
                     }
                 }
@@ -480,25 +492,31 @@ export class EditorModel extends Record({
                     // there better be only one of these
                     const valueDescriptor = values.get(0);
                     if (this.hasRawValue(valueDescriptor)) {
-                        if (keyValues.has(rn+1)) {
-                            keyValues = keyValues.set(rn+1, keyValues.get(rn+1).push(valueDescriptor.raw.toString()));
-                        }
-                        else {
-                            keyValues = keyValues.set(rn+1, List<string>([valueDescriptor.raw.toString()]));
+                        if (keyValues.has(rn + 1)) {
+                            keyValues = keyValues.set(
+                                rn + 1,
+                                keyValues.get(rn + 1).push(valueDescriptor.raw.toString())
+                            );
+                        } else {
+                            keyValues = keyValues.set(
+                                rn + 1,
+                                List<string>([valueDescriptor.raw.toString()])
+                            );
                         }
                     }
-                }
-                else if (uniqueFieldKey && col.fieldKey === uniqueFieldKey) {
+                } else if (uniqueFieldKey && col.fieldKey === uniqueFieldKey) {
                     uniqueFieldCol = col;
                     // there better be only one of these
                     const valueDescriptor = values.get(0);
                     if (valueDescriptor && this.hasRawValue(valueDescriptor)) {
                         const stringVal = valueDescriptor.raw.toString().trim().toLowerCase();
                         if (uniqueKeyMap.has(stringVal)) {
-                            uniqueKeyMap = uniqueKeyMap.set(stringVal, uniqueKeyMap.get(stringVal).push(rn+1));
-                        }
-                        else {
-                            uniqueKeyMap = uniqueKeyMap.set(stringVal, List<number>([rn+1]))
+                            uniqueKeyMap = uniqueKeyMap.set(stringVal, uniqueKeyMap.get(stringVal).push(rn + 1));
+                        } else {
+                            uniqueKeyMap = uniqueKeyMap.set(
+                                stringVal,
+                                List<number>([rn + 1])
+                            );
                         }
                     }
                 }
@@ -506,22 +524,30 @@ export class EditorModel extends Record({
         }
 
         let uniqueKeyViolations = Map<string, Map<string, List<number>>>();
-        let duplicates = uniqueKeyMap.filter((rowNumbers => rowNumbers.size > 1)).toMap();
+        const duplicates = uniqueKeyMap.filter(rowNumbers => rowNumbers.size > 1).toMap();
         if (duplicates.size > 0 && uniqueFieldCol) {
             uniqueKeyViolations = uniqueKeyViolations.set(uniqueFieldCol.caption, duplicates);
         }
 
         // Join all the keyValues together and put them in a map with a list of row
         // numbers with that key.  Then filter to those lists with more than one item.
-        let keyViolations = keyValues.reduce((keyMap, values, rowNumber) => {
-              const key = values.join(", ");
-              if (keyMap.has(key))
-                  return keyMap.set(key, keyMap.get(key).push(rowNumber));
-              else
-                  return keyMap.set(key, List<number>([rowNumber]));
-        }, Map<string, List<number>>()).filter((rowNumbers => rowNumbers.size > 1)).toMap();
+        const keyViolations = keyValues
+            .reduce((keyMap, values, rowNumber) => {
+                const key = values.join(', ');
+                if (keyMap.has(key)) return keyMap.set(key, keyMap.get(key).push(rowNumber));
+                else
+                    return keyMap.set(
+                        key,
+                        List<number>([rowNumber])
+                    );
+            }, Map<string, List<number>>())
+            .filter(rowNumbers => rowNumbers.size > 1)
+            .toMap();
         if (!keyViolations.isEmpty()) {
-            uniqueKeyViolations = uniqueKeyViolations.set(keyColumns.map(column => column.caption).join(", "), keyViolations)
+            uniqueKeyViolations = uniqueKeyViolations.set(
+                keyColumns.map(column => column.caption).join(', '),
+                keyViolations
+            );
         }
 
         // need to return a map from the column names/captions to the rows with duplicates.
@@ -533,23 +559,41 @@ export class EditorModel extends Record({
         };
     }
 
-    getValidationErrors(queryGridModel: QueryGridModel, uniqueFieldKey?: string) : Array<string> {
-        let { uniqueKeyViolations, missingRequired } = this.validateData(queryGridModel, uniqueFieldKey);
+    getValidationErrors(queryGridModel: QueryGridModel, uniqueFieldKey?: string): string[] {
+        const { uniqueKeyViolations, missingRequired } = this.validateData(queryGridModel, uniqueFieldKey);
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
             const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {
-                return keyMessages.concat(valueMap.reduce((messages, rowNumbers, values) => {
-                    messages.push("Duplicate value (" + values + ") for " + fieldNames + " on rows " + rowNumbers.join(", ") + ".");
-                    return messages;
-                }, new Array<string>()));
+                return keyMessages.concat(
+                    valueMap.reduce((messages, rowNumbers, values) => {
+                        messages.push(
+                            'Duplicate value (' +
+                                values +
+                                ') for ' +
+                                fieldNames +
+                                ' on rows ' +
+                                rowNumbers.join(', ') +
+                                '.'
+                        );
+                        return messages;
+                    }, new Array<string>())
+                );
             }, new Array<string>());
             errors = errors.concat(messages);
         }
         if (!missingRequired.isEmpty()) {
-            const messages = missingRequired.reduce((messages, rowNumbers, fieldName) => {
-                messages.push(fieldName + " is missing from " + (rowNumbers.size > 1 ? "rows " : "row ") + rowNumbers.join(", ") + "." );
-                return messages;
-            }, new Array<string>()).join(" ");
+            const messages = missingRequired
+                .reduce((messages, rowNumbers, fieldName) => {
+                    messages.push(
+                        fieldName +
+                            ' is missing from ' +
+                            (rowNumbers.size > 1 ? 'rows ' : 'row ') +
+                            rowNumbers.join(', ') +
+                            '.'
+                    );
+                    return messages;
+                }, new Array<string>())
+                .join(' ');
             errors = errors.concat(messages);
         }
 
@@ -578,76 +622,69 @@ export class EditorModel extends Record({
     }
 
     isInBounds(colIdx: number, rowIdx: number): boolean {
-        return (colIdx >= 0 && colIdx < this.colCount && rowIdx >= 0 && rowIdx < this.rowCount);
+        return colIdx >= 0 && colIdx < this.colCount && rowIdx >= 0 && rowIdx < this.rowCount;
     }
 
     inSelection(colIdx: number, rowIdx: number): boolean {
-        return (
-            colIdx > -1 && rowIdx > -1 &&
-            this.selectionCells.get(genCellKey(colIdx, rowIdx)) !== undefined
-        )
+        return colIdx > -1 && rowIdx > -1 && this.selectionCells.get(genCellKey(colIdx, rowIdx)) !== undefined;
     }
 
     hasRawValue(descriptor: ValueDescriptor) {
-        return descriptor && descriptor.raw !== undefined && descriptor.raw.toString().trim() !== "";
+        return descriptor && descriptor.raw !== undefined && descriptor.raw.toString().trim() !== '';
     }
 
-    hasData() : boolean {
-        return this.cellValues.find((valueList) => {
-            return valueList.find(value => this.hasRawValue(value)) !== undefined
-        } ) !== undefined;
+    hasData(): boolean {
+        return (
+            this.cellValues.find(valueList => {
+                return valueList.find(value => this.hasRawValue(value)) !== undefined;
+            }) !== undefined
+        );
     }
 
     isFocused(colIdx: number, rowIdx: number): boolean {
-        return (
-            colIdx > -1 && rowIdx > -1 &&
-            this.focusColIdx === colIdx &&
-            this.focusRowIdx === rowIdx
-        );
+        return colIdx > -1 && rowIdx > -1 && this.focusColIdx === colIdx && this.focusRowIdx === rowIdx;
     }
 
     isSelected(colIdx: number, rowIdx: number): boolean {
-        return (
-            colIdx > -1 && rowIdx > -1 &&
-            this.selectedColIdx === colIdx &&
-            this.selectedRowIdx === rowIdx
-        );
+        return colIdx > -1 && rowIdx > -1 && this.selectedColIdx === colIdx && this.selectedRowIdx === rowIdx;
     }
 
-    static getEditorDataFromQueryValueMap(valueMap: any) : List<any> | any {
+    static getEditorDataFromQueryValueMap(valueMap: any): List<any> | any {
         // Editor expects to get either a single value or an array of an object with fields displayValue and value
         if (valueMap && valueMap.has('value') && valueMap.get('value') !== null && valueMap.get('value') !== undefined)
-            return valueMap.has('displayValue') ? List<any>([{displayValue: valueMap.get('displayValue'), value: valueMap.get('value')}]) : valueMap.get('value');
-        else
-            return undefined;
+            return valueMap.has('displayValue')
+                ? List<any>([{ displayValue: valueMap.get('displayValue'), value: valueMap.get('value') }])
+                : valueMap.get('value');
+        else return undefined;
     }
 
-    static convertQueryDataToEditorData(data: Map<string, any>, updates?: Map<any, any>) : Map<any, Map<string, any>> {
-        return data.map((valueMap) => {
+    static convertQueryDataToEditorData(data: Map<string, any>, updates?: Map<any, any>): Map<any, Map<string, any>> {
+        return data.map(valueMap => {
             const returnMap = valueMap.reduce((m, valueMap, key) => {
                 const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap);
-                if (editorData)
-                    return m.set(key, editorData);
-                else
-                    return m;
+                if (editorData) return m.set(key, editorData);
+                else return m;
             }, Map<any, any>());
-            return updates? returnMap.merge(updates) : returnMap;
+            return updates ? returnMap.merge(updates) : returnMap;
         }) as Map<any, Map<string, any>>;
     }
 
-    getDeletedIds() : Set<any> {
-        return this.deletedIds.filter((id) => id.toString().indexOf(GRID_EDIT_INDEX) === -1).toSet();
+    getDeletedIds(): Set<any> {
+        return this.deletedIds.filter(id => id.toString().indexOf(GRID_EDIT_INDEX) === -1).toSet();
     }
 
-    isModified(editedRow: Map<string, any>, originalQueryRow: Map<string, any>) : boolean {
-        return editedRow.find((value, key) => (originalQueryRow.get(key) !== value)) !== undefined;
+    isModified(editedRow: Map<string, any>, originalQueryRow: Map<string, any>): boolean {
+        return editedRow.find((value, key) => originalQueryRow.get(key) !== value) !== undefined;
     }
 
-    isRowEmpty(editedRow: Map<string, any>) : boolean {
-        return editedRow.find((value) => ( value !== undefined )) === undefined;
+    isRowEmpty(editedRow: Map<string, any>): boolean {
+        return editedRow.find(value => value !== undefined) === undefined;
     }
 
-    getModifiedData(model: QueryGridModel, readOnlyColumns?: List<string>) : {newRows: List<Map<string, any>>, updatedRows: List<Map<string, any>>} {
+    getModifiedData(
+        model: QueryGridModel,
+        readOnlyColumns?: List<string>
+    ): { newRows: List<Map<string, any>>; updatedRows: List<Map<string, any>> } {
         // find all the rows where the dataId has a prefix of GRID_EDIT_INDEX
         const rawData: List<Map<string, any>> = this.getRawData(model, false, readOnlyColumns);
         let updatedRows = List<Map<string, any>>();
@@ -655,19 +692,16 @@ export class EditorModel extends Record({
         model.dataIds.forEach((id, index) => {
             const editedRow = rawData.get(index);
             if (id.toString().indexOf(GRID_EDIT_INDEX) === 0) {
-                if (!this.isRowEmpty(editedRow))
-                    newRows = newRows.push(editedRow);
-            }
-            else if (this.isModified(editedRow, model.data.get(id))) {
+                if (!this.isRowEmpty(editedRow)) newRows = newRows.push(editedRow);
+            } else if (this.isModified(editedRow, model.data.get(id))) {
                 updatedRows = updatedRows.push(editedRow.merge(model.getPkData(id)));
             }
         });
         return {
             newRows,
-            updatedRows
-        }
+            updatedRows,
+        };
     }
-
 }
 
 export class LookupStore extends Record({
@@ -677,7 +711,7 @@ export class LookupStore extends Record({
     isLoading: false,
     lastToken: '~~INITIAL_TOKEN~~',
     loadCount: 0,
-    matchCount: 0
+    matchCount: 0,
 }) {
     key: string;
     descriptors: OrderedMap<any, ValueDescriptor>;
@@ -688,21 +722,19 @@ export class LookupStore extends Record({
     matchCount: number;
 
     static key(col: QueryColumn): string {
-        return [
-            col.lookup.schemaName,
-            col.lookup.queryName,
-            col.fieldKey
-        ].join('|');
+        return [col.lookup.schemaName, col.lookup.queryName, col.fieldKey].join('|');
     }
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
     containsAll(values: List<string>): boolean {
-        let displayValues = this.descriptors
-            .reduce((valueSet, descriptor) => valueSet.add(descriptor.display), Set<String>());
+        const displayValues = this.descriptors.reduce(
+            (valueSet, descriptor) => valueSet.add(descriptor.display),
+            Set<string>()
+        );
 
-        return values.find((value) => !displayValues.contains(value)) == undefined;
+        return values.find(value => !displayValues.contains(value)) == undefined;
     }
 }

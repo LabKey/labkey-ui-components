@@ -3,11 +3,12 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { fromJS } from 'immutable';
-import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
+
 import { FOLDER_ADMIN, ASSAYDESIGNER, AUTHOR, EDITOR, GUEST, READER } from '../../test/data/users';
 
-describe('User actions', () => {
+import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
 
+describe('User actions', () => {
     test('getUserPermissionsDisplay guest', () => {
         const displayStrs = getUserPermissionsDisplay(GUEST);
         expect(displayStrs.join(', ')).toBe('Reader');
@@ -45,9 +46,9 @@ describe('User actions', () => {
 
     test('getUserLastLogin', () => {
         const lastLogin = '2019-11-15 13:50:17.987';
-        expect(getUserLastLogin(fromJS({lastlogin: lastLogin}), undefined).indexOf('2019-11-15T')).toBe(0);
-        expect(getUserLastLogin(fromJS({lastlogin: lastLogin}), 'YYYY-MM-DD')).toBe('2019-11-15');
-        expect(getUserLastLogin(fromJS({lastLogin: lastLogin}), 'YYYY-MM-DD')).toBe('2019-11-15');
-        expect(getUserLastLogin(fromJS({LastLogin: lastLogin}), 'YYYY-MM-DD')).toBe('2019-11-15');
+        expect(getUserLastLogin(fromJS({ lastlogin: lastLogin }), undefined).indexOf('2019-11-15T')).toBe(0);
+        expect(getUserLastLogin(fromJS({ lastlogin: lastLogin }), 'YYYY-MM-DD')).toBe('2019-11-15');
+        expect(getUserLastLogin(fromJS({ lastLogin }), 'YYYY-MM-DD')).toBe('2019-11-15');
+        expect(getUserLastLogin(fromJS({ LastLogin: lastLogin }), 'YYYY-MM-DD')).toBe('2019-11-15');
     });
 });

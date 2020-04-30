@@ -15,14 +15,14 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
+
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 
-describe("<UserResetPasswordConfirmModal/>", () => {
-
-    test("with login", () => {
+describe('<UserResetPasswordConfirmModal/>', () => {
+    test('with login', () => {
         const component = (
             <UserResetPasswordConfirmModal
-                email={'jest@localhost.test'}
+                email="jest@localhost.test"
                 hasLogin={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -39,10 +39,10 @@ describe("<UserResetPasswordConfirmModal/>", () => {
         wrapper.unmount();
     });
 
-    test("without login", () => {
+    test('without login', () => {
         const component = (
             <UserResetPasswordConfirmModal
-                email={'jest@localhost.test'}
+                email="jest@localhost.test"
                 hasLogin={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -59,10 +59,10 @@ describe("<UserResetPasswordConfirmModal/>", () => {
         wrapper.unmount();
     });
 
-    test("with state", () => {
+    test('with state', () => {
         const component = (
             <UserResetPasswordConfirmModal
-                email={'jest@localhost.test'}
+                email="jest@localhost.test"
                 hasLogin={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -70,7 +70,7 @@ describe("<UserResetPasswordConfirmModal/>", () => {
         );
 
         const wrapper = mount(component);
-        wrapper.setState({submitting: true, error: 'Test Error'});
+        wrapper.setState({ submitting: true, error: 'Test Error' });
 
         expect(wrapper.find('Alert')).toHaveLength(2);
         expect(wrapper.find('.modal-title').text()).toBe('Reset Password?');
@@ -80,5 +80,4 @@ describe("<UserResetPasswordConfirmModal/>", () => {
         expect(wrapper.find('.btn-success').props().disabled).toBe(true);
         wrapper.unmount();
     });
-
 });

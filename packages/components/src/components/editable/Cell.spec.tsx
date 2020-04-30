@@ -16,37 +16,40 @@
 import React from 'reactn';
 import { Map } from 'immutable';
 import { mount } from 'enzyme';
-import { Cell } from './Cell';
+
 import mock from 'xhr-mock';
+
 import { getStateQueryGridModel } from '../../models';
 import * as constants from '../../test/data/constants';
 import { gridInit } from '../../actions';
 import { initUnitTestMocks } from '../../testHelpers';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 
-const GRID_ID = "CellTestModel";
-const SCHEMA_NAME = "lists";
-const QUERY_NAME = "MixtureTypes";
-const MODEL_ID = (GRID_ID + "|" + SCHEMA_NAME + "/" + QUERY_NAME).toLowerCase();
+import { Cell } from './Cell';
+
+const GRID_ID = 'CellTestModel';
+const SCHEMA_NAME = 'lists';
+const QUERY_NAME = 'MixtureTypes';
+const MODEL_ID = (GRID_ID + '|' + SCHEMA_NAME + '/' + QUERY_NAME).toLowerCase();
 
 beforeAll(() => {
     initUnitTestMocks();
     const schemaQuery = new SchemaQuery({
         schemaName: SCHEMA_NAME,
-        queryName: QUERY_NAME
+        queryName: QUERY_NAME,
     });
     const model = getStateQueryGridModel(GRID_ID, schemaQuery, {
         editable: true,
         loader: {
             fetch: () => {
-                return new Promise((resolve) => {
+                return new Promise(resolve => {
                     resolve({
                         data: constants.GRID_DATA,
                         dataIds: constants.GRID_DATA.keySeq().toList(),
                     });
                 });
-            }
-        }
+            },
+        },
     });
     gridInit(model, true);
 });
@@ -57,76 +60,98 @@ afterAll(() => {
 
 const queryColumn = QueryColumn.create({
     lookup: undefined,
-    name: "myColumn"
+    name: 'myColumn',
 });
 
 const emptyRow = Map<any, any>();
 
+describe('Cell', () => {
+    test('default props', done => {
+        const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} />);
 
-describe("Cell", () => {
-   test("default props", (done) => {
-       const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2}/>);
+        setTimeout(() => {
+            expect(cell.find('div')).toHaveLength(1);
+            expect(cell.find('input')).toHaveLength(0);
+            done();
+        }, 25);
+    });
 
-       setTimeout(() => {
-           expect(cell.find("div")).toHaveLength(1);
-           expect(cell.find("input")).toHaveLength(0);
-           done();
-       }, 25);
-   });
+    test('with focus', done => {
+        const cell = mount(
+            <Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused={true} selected={true} />
+        );
 
-   test("with focus", (done) => {
-       const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused={true} selected={true}/>);
+        setTimeout(() => {
+            expect(cell.find('div')).toHaveLength(0);
+            expect(cell.find('input')).toHaveLength(1);
+            done();
+        }, 25);
+    });
 
-       setTimeout(() => {
-           expect(cell.find("div")).toHaveLength(0);
-           expect(cell.find("input")).toHaveLength(1);
-           done();
-       }, 25);
-   });
+    test('with placeholder', () => {
+        const cell = mount(
+            <Cell col={queryColumn} colIdx={2} modelId={MODEL_ID} placeholder="placeholder text" rowIdx={3} />
+        );
+        const div = cell.find('div');
+        expect(div).toHaveLength(1);
+        expect(div.text()).toBe('placeholder text');
+        expect(cell.find('input')).toHaveLength(0);
+        cell.unmount();
+    });
 
-   test("with placeholder", () => {
-       const cell = mount(<Cell col={queryColumn} colIdx={2} modelId={MODEL_ID} placeholder="placeholder text" rowIdx={3}/>);
-       const div = cell.find("div");
-       expect(div).toHaveLength(1);
-       expect(div.text()).toBe("placeholder text");
-       expect(cell.find("input")).toHaveLength(0);
-       cell.unmount();
-   });
+    test('with placeholder while focused', () => {
+        const cell = mount(
+            <Cell
+                col={queryColumn}
+                colIdx={2}
+                modelId={MODEL_ID}
+                placeholder="placeholder text"
+                rowIdx={3}
+                selected={true}
+                focused={true}
+            />
+        );
+        expect(cell.find('div')).toHaveLength(0);
+        const input = cell.find('input');
+        expect(input).toHaveLength(1);
+        expect(input.prop('placeholder')).toBe('placeholder text');
+        cell.unmount();
+    });
 
-   test("with placeholder while focused", () => {
-       const cell = mount(<Cell col={queryColumn} colIdx={2} modelId={MODEL_ID} placeholder="placeholder text" rowIdx={3} selected={true} focused={true}/>);
-       expect(cell.find("div")).toHaveLength(0);
-       const input = cell.find("input");
-       expect(input).toHaveLength(1);
-       expect(input.prop("placeholder")).toBe("placeholder text");
-       cell.unmount();
-   });
+    test('readOnly property', () => {
+        const cell = mount(<Cell col={queryColumn} colIdx={3} modelId={MODEL_ID} readOnly={true} rowIdx={3} />);
+        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('input')).toHaveLength(0);
+        cell.unmount();
+    });
 
-   test("readOnly property", () => {
-       const cell = mount(<Cell col={queryColumn} colIdx={3} modelId={MODEL_ID} readOnly={true} rowIdx={3}/>);
-       expect(cell.find("div")).toHaveLength(1);
-       expect(cell.find("input")).toHaveLength(0);
-       cell.unmount();
-   });
+    test('column is readOnly', () => {
+        const roColumn = QueryColumn.create({
+            readOnly: true,
+            name: 'roColumn',
+        });
+        const cell = mount(<Cell col={roColumn} colIdx={4} modelId={MODEL_ID} readOnly={false} rowIdx={3} />);
+        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('input')).toHaveLength(0);
+        cell.unmount();
+    });
 
-   test("column is readOnly", () => {
-       const roColumn = QueryColumn.create({
-           readOnly: true,
-           name: "roColumn"
-       });
-       const cell = mount(<Cell col={roColumn} colIdx={4} modelId={MODEL_ID} readOnly={false} rowIdx={3}/>);
-       expect(cell.find("div")).toHaveLength(1);
-       expect(cell.find("input")).toHaveLength(0);
-       cell.unmount();
-   });
+    test('with placeholder and readOnly', () => {
+        const cell = mount(
+            <Cell
+                col={queryColumn}
+                colIdx={3}
+                modelId={MODEL_ID}
+                placeholder="readOnly placeholder"
+                readOnly={true}
+                rowIdx={3}
+            />
+        );
 
-   test("with placeholder and readOnly", () => {
-       const cell = mount(<Cell col={queryColumn} colIdx={3} modelId={MODEL_ID} placeholder="readOnly placeholder" readOnly={true} rowIdx={3}/>);
-
-       const div = cell.find("div");
-       expect(div).toHaveLength(1);
-       expect(div.text()).toBe("readOnly placeholder");
-       expect(cell.find("input")).toHaveLength(0);
-       cell.unmount();
-   });
+        const div = cell.find('div');
+        expect(div).toHaveLength(1);
+        expect(div.text()).toBe('readOnly placeholder');
+        expect(cell.find('input')).toHaveLength(0);
+        cell.unmount();
+    });
 });

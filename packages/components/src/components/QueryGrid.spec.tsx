@@ -16,33 +16,33 @@
 import React from 'reactn';
 import renderer from 'react-test-renderer';
 
-import { QueryGrid } from './QueryGrid';
 import { initQueryGridState, updateQueryGridModel } from '../global';
+
+import { QueryGrid } from './QueryGrid';
 import { QueryGridModel, SchemaQuery } from './base/models/model';
 
 beforeAll(() => {
-    initQueryGridState()
+    initQueryGridState();
 });
 
 // Mock all the actions to test just the rendering parts for QueryGrid itself
 jest.mock('../actions');
 
-describe("QueryGrid render", () => {
-    test("loading", () => {
-
+describe('QueryGrid render', () => {
+    test('loading', () => {
         const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: "q-snapshot"
+            schemaName: 'schema',
+            queryName: 'q-snapshot',
         });
-       const tree = renderer.create(<QueryGrid schemaQuery={schemaQuery}/>).toJSON();
-       expect(tree).toMatchSnapshot();
+        const tree = renderer.create(<QueryGrid schemaQuery={schemaQuery} />).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 
-    test("query grid error", () => {
-        const modelId = "queryGridError";
+    test('query grid error', () => {
+        const modelId = 'queryGridError';
         const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: "q-snapshot"
+            schemaName: 'schema',
+            queryName: 'q-snapshot',
         });
         const model = new QueryGridModel({
             id: modelId,
@@ -53,8 +53,7 @@ describe("QueryGrid render", () => {
             query: schemaQuery.queryName,
         });
         updateQueryGridModel(model, {}, undefined, false);
-        const tree = renderer.create(<QueryGrid model={model} schemaQuery={schemaQuery}/>);
+        const tree = renderer.create(<QueryGrid model={model} schemaQuery={schemaQuery} />);
         expect(tree).toMatchSnapshot();
     });
-
 });

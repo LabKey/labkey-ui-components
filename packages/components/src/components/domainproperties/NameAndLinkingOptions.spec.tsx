@@ -1,4 +1,9 @@
 import { mount } from 'enzyme';
+
+import React from 'react';
+
+import toJson from 'enzyme-to-json';
+
 import { createFormInputId } from './actions';
 import {
     DOMAIN_FIELD_DESCRIPTION,
@@ -7,14 +12,11 @@ import {
     DOMAIN_FIELD_URL,
     STRING_RANGE_URI,
 } from './constants';
-import React from 'react';
-import toJson from 'enzyme-to-json';
+
 import { DomainField } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 
-
 describe('NameAndLinkingOptions', () => {
-
     test('Name and Linking options', () => {
         const _description = 'This is a description';
         const _label = 'This is a label';
@@ -29,39 +31,40 @@ describe('NameAndLinkingOptions', () => {
             label: _label,
             importAliases: _importAliases,
             URL: _URL,
-            propertyURI: 'test'
+            propertyURI: 'test',
         });
 
-        const numeric  = mount(<NameAndLinkingOptions
-            index={1}
-            domainIndex={1}
-            field={field}
-            onChange={jest.fn()}
-        />);
+        const numeric = mount(<NameAndLinkingOptions index={1} domainIndex={1} field={field} onChange={jest.fn()} />);
 
         // Verify section label
-        const sectionLabel = numeric.find({className: 'domain-field-section-heading domain-field-section-hdr'});
+        const sectionLabel = numeric.find({ className: 'domain-field-section-heading domain-field-section-hdr' });
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual('Name and Linking Options');
 
         // Verify values
         // Description
-        let formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1, 1), className: 'form-control textarea-noresize form-control'});
+        let formField = numeric.find({
+            id: createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1, 1),
+            className: 'form-control textarea-noresize form-control',
+        });
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_description);
 
         // Label
-        formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_LABEL, 1, 1), className: 'form-control'});
+        formField = numeric.find({ id: createFormInputId(DOMAIN_FIELD_LABEL, 1, 1), className: 'form-control' });
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_label);
 
         // Aliases
-        formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1), className: 'form-control'});
+        formField = numeric.find({
+            id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1),
+            className: 'form-control',
+        });
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_importAliases);
 
         // URL
-        formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_URL, 1, 1), className: 'form-control'});
+        formField = numeric.find({ id: createFormInputId(DOMAIN_FIELD_URL, 1, 1), className: 'form-control' });
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_URL);
 

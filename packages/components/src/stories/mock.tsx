@@ -15,6 +15,7 @@
  */
 import mock, { proxy, delay } from 'xhr-mock';
 import { fromJS } from 'immutable';
+
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixtureTypesQueryInfo from '../test/data/mixtureTypes-getQueryDetails.json';
 import mixtureTypesQuery from '../test/data/mixtureTypes-getQuery.json';
@@ -74,9 +75,9 @@ import usersQueryInfo from '../test/data/users-getQueryDetails.json';
 import usersQuery from '../test/data/users-getQuery.json';
 import userPropsInfo from '../test/data/user-getUserProps.json';
 import getMaxPhiLevelJson from '../test/data/security-GetMaxPhiLevel.json';
-import getRolesJson from "../test/data/security-getRoles.json";
-import getPrincipalsJson from "../test/data/security-getPrincipals.json";
-import getQueryDetailsPrincipalsJson from "../test/data/security-getQueryDetailsPrincipals.json";
+import getRolesJson from '../test/data/security-getRoles.json';
+import getPrincipalsJson from '../test/data/security-getPrincipals.json';
+import getQueryDetailsPrincipalsJson from '../test/data/security-getQueryDetailsPrincipals.json';
 import inferDomainJson from '../test/data/property-inferDomain.json';
 import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTargets.json';
 import browseData from '../test/data/example_browse_data_tree_api.json';
@@ -96,116 +97,116 @@ import source1Query from '../test/data/source1-getQuery.json';
 import source1QueryDetails from '../test/data/source1-getQueryDetails.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
-const JSON_HEADERS = {'Content-Type': 'application/json'};
+const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {
-        'runs': assayRunsWithQCFlagsQueryInfo,
-        'data': assayAminoAcidsDataQueryInfo,
+        runs: assayRunsWithQCFlagsQueryInfo,
+        data: assayAminoAcidsDataQueryInfo,
     },
     'assay.general.gpat 1': {
-        'data': assayGpatDataQueryInfo,
-        'runs': assayGpatRunsQueryInfo,
-        'emptyruns': assayGpatRunsQueryInfo,
+        data: assayGpatDataQueryInfo,
+        runs: assayGpatRunsQueryInfo,
+        emptyruns: assayGpatRunsQueryInfo,
     },
     'assay.general.imagefieldassay': {
-        'runs': assayImageFieldRunsQueryInfo,
+        runs: assayImageFieldRunsQueryInfo,
     },
-    'core': {
-        'users': usersQueryInfo,
-        'core_temp_240': getQueryDetailsPrincipalsJson,
+    core: {
+        users: usersQueryInfo,
+        core_temp_240: getQueryDetailsPrincipalsJson,
     },
-    'exp': {
-        'samplesetheatmap': sampleSetHeatMapQueryInfo,
-        'assaysheatmap': assaysHeatMapQueryInfo,
-        'samplesets': sampleSetsQueryInfo,
-        'dataclasses': dataClassesQueryInfo,
-        'dataclasscategorytype': dataClassCategoryTypeQueryInfo,
-        'runs': runsQueryInfo,
+    exp: {
+        samplesetheatmap: sampleSetHeatMapQueryInfo,
+        assaysheatmap: assaysHeatMapQueryInfo,
+        samplesets: sampleSetsQueryInfo,
+        dataclasses: dataClassesQueryInfo,
+        dataclasscategorytype: dataClassCategoryTypeQueryInfo,
+        runs: runsQueryInfo,
     },
     'exp.data': {
-        'mixtures': mixturesQueryInfo,
-        'mixturespaging': mixturesQueryInfo,
-        'expressionsystem': expressionsystemQueryInfo,
+        mixtures: mixturesQueryInfo,
+        mixturespaging: mixturesQueryInfo,
+        expressionsystem: expressionsystemQueryInfo,
         'second source': secondSourceQueryDetails,
         'source 1': source1QueryDetails,
     },
-    'labbook': {
-        'labbookexperiment': labbookQueryInfo,
+    labbook: {
+        labbookexperiment: labbookQueryInfo,
     },
-    'lists': {
-        'mixturetypes': mixtureTypesQueryInfo,
-        'lookuplist': lookuplistQueryInfo,
+    lists: {
+        mixturetypes: mixtureTypesQueryInfo,
+        lookuplist: lookuplistQueryInfo,
     },
-    'samples': {
-        'hemoglobin': hemoglobinLineageQueryInfo,
-        'samples': sampleSetQueryInfo,
+    samples: {
+        hemoglobin: hemoglobinLineageQueryInfo,
+        samples: sampleSetQueryInfo,
         'sample set 2': sampleSet2QueryInfo,
-        'expressionsystemsamples': expressionsystemsamplesQueryInfo,
-        'samplesetwithallfieldtypes': sampleSetAllFieldTypesQueryInfo,
+        expressionsystemsamples: expressionsystemsamplesQueryInfo,
+        samplesetwithallfieldtypes: sampleSetAllFieldTypesQueryInfo,
         'name expression set': nameExpressionQueryInfo,
         'name%20expression%20set': nameExpressionQueryInfo,
-        'examples': sampleWithParentsQueryDetails,
-        'multisource': sampleWithParentsQueryDetails,
+        examples: sampleWithParentsQueryDetails,
+        multisource: sampleWithParentsQueryDetails,
     },
-    'schema': {
-        'gridwithoutdata': mixturesQueryInfo,
-    }
+    schema: {
+        gridwithoutdata: mixturesQueryInfo,
+    },
 });
 
 const QUERY_RESPONSES = fromJS({
     'assay.general.amino acids': {
-        'runs': assayRunsWithQCFlagsQuery,
-        'data': assayAminoAcidsDataQuery,
+        runs: assayRunsWithQCFlagsQuery,
+        data: assayAminoAcidsDataQuery,
     },
     'assay.general.gpat 1': {
-        'runs': assayGpatRunData,
-        'emptyruns': {
+        runs: assayGpatRunData,
+        emptyruns: {
             ...assayGpatRunData,
             rows: [],
             rowCount: 0,
         },
     },
     'assay.general.imagefieldassay': {
-        'runs': assayImageFieldRunsQuery,
+        runs: assayImageFieldRunsQuery,
     },
-    'core': {
-        'users': usersQuery,
+    core: {
+        users: usersQuery,
     },
-    'exp': {
-        'samplesetheatmap': sampleSetHeatMapQuery,
-        'assaysheatmap': assaysHeatMapQuery,
-        'samplesets': sampleSetsQuery,
-        'dataclasses': dataClassesQuery,
-        'dataclasscategorytype': dataClassCategoryTypeQuery,
-        'runs': runsQuery,
+    exp: {
+        samplesetheatmap: sampleSetHeatMapQuery,
+        assaysheatmap: assaysHeatMapQuery,
+        samplesets: sampleSetsQuery,
+        dataclasses: dataClassesQuery,
+        dataclasscategorytype: dataClassCategoryTypeQuery,
+        runs: runsQuery,
     },
     'exp.data': {
-        'mixtures': mixturesQuery,
-        'mixturespaging': mixturesQueryPaging,
-        'expressionsystem': expSystemLineageQuery,
+        mixtures: mixturesQuery,
+        mixturespaging: mixturesQueryPaging,
+        expressionsystem: expSystemLineageQuery,
         'second source': secondSourceQuery,
         'source 1': source1Query,
     },
-    'labbook': {
-        'labbookexperiment': labbookQuery,
+    labbook: {
+        labbookexperiment: labbookQuery,
     },
-    'lists': {
-        'mixturetypes': mixtureTypesQuery,
-        'lookuplist': lookuplistQuery,
+    lists: {
+        mixturetypes: mixtureTypesQuery,
+        lookuplist: lookuplistQuery,
     },
-    'samples': {
-        'hemoglobin': hemoglobinLineageQueryIn,
-        'samples': sampleDetailsQuery,
-        'expressionsystemsamples': expSystemSamplesLineageQuery,
-        'samplesetwithallfieldtypes': samplesLineageQuery,
+    samples: {
+        hemoglobin: hemoglobinLineageQueryIn,
+        samples: sampleDetailsQuery,
+        expressionsystemsamples: expSystemSamplesLineageQuery,
+        samplesetwithallfieldtypes: samplesLineageQuery,
         'name expression set': nameExpressionSelectedQuery,
-        'examples': sampleWithParentsQuery,
-        'multisource': sampleWithTwoSourcesQuery,
+        examples: sampleWithParentsQuery,
+        multisource: sampleWithTwoSourcesQuery,
     },
-    'schema': {
-        'gridwithoutdata': noDataQuery,
-    }
+    schema: {
+        gridwithoutdata: noDataQuery,
+    },
 });
 
 export function initMocks() {
@@ -215,22 +216,19 @@ export function initMocks() {
     initLineageMocks();
     initUserPropsMocks();
 
-    mock.post(/.*\/query\/?.*\/executeSql.*/,  (req, res) => {
+    mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
         const body = decodeURIComponent(req.body());
 
         let responseBody;
         if (body.indexOf('"core"') > -1 && body.indexOf('FROM Principals') > -1) {
-            responseBody = getPrincipalsJson
+            responseBody = getPrincipalsJson;
         }
 
         if (!responseBody) {
             console.log(`executeSql response not found! "${body}"`);
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody));
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     });
 
     mock.get(/.*\/query\/?.*\/getSchemas.*/, (req, res) => {
@@ -243,10 +241,7 @@ export function initMocks() {
             responseBody = assayGetSchemasJson;
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody));
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     });
 
     mock.get(/.*\/query\/?.*\/getQueries.*/, (req, res) => {
@@ -257,37 +252,31 @@ export function initMocks() {
             responseBody = assayGetQueriesJson;
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody));
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     });
 
-    mock.post(/.*\/query\/?.*\/updateRows.*/,  (req, res) => {
+    mock.post(/.*\/query\/?.*\/updateRows.*/, (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
 
-        if (bodyParams.indexOf("\"queryname\":\"samples\"") > -1) {
+        if (bodyParams.indexOf('"queryname":"samples"') > -1) {
             responseBody = samplesUpdate;
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody));
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     });
 
-    //TODO conditionalize based on queryName
+    // TODO conditionalize based on queryName
     mock.post(/.*\/query\/?.*\/insertRows.*/, {
         status: 200,
         headers: JSON_HEADERS,
-        body: JSON.stringify(samplesInsert)
+        body: JSON.stringify(samplesInsert),
     });
 
     mock.get(/.*ConfirmationData.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
-        let selectionKey = queryParams.dataRegionSelectionKey;
+        const selectionKey = queryParams.dataRegionSelectionKey;
         if (selectionKey === 'deleteNone') {
             responseBody = deleteNoneConfirmation;
         } else if (selectionKey === 'deleteOne') {
@@ -298,40 +287,31 @@ export function initMocks() {
             responseBody = deleteAllConfirmation;
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody));
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     });
 
     mock.post(/.*FileDuplicateCheck.*/, (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
 
-        if ((bodyParams.indexOf(".csv") > -1) || (bodyParams.indexOf('.tsv') > -1)) {
+        if (bodyParams.indexOf('.csv') > -1 || bodyParams.indexOf('.tsv') > -1) {
             responseBody = assayFileDuplicateCheck;
-        } else if (bodyParams.indexOf(".xls") > -1) {
-            responseBody= assayFileNoDuplicateCheck;
+        } else if (bodyParams.indexOf('.xls') > -1) {
+            responseBody = assayFileNoDuplicateCheck;
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody))
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     });
 
     mock.get(/.*getFilePreview.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
 
-        if (queryParams.file === "1949" || queryParams.file === "2010") {
+        if (queryParams.file === '1949' || queryParams.file === '2010') {
             responseBody = filePreviewData;
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody));
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     });
 
     mock.post(/.*\/visualization\/?.*\/getVisualization.*/, {
@@ -340,36 +320,41 @@ export function initMocks() {
         body: JSON.stringify(visualizationConfig),
     });
 
-    mock.post(/.*\/property\/inferDomain.*/, {
+    mock.post(/.*\/property\/?.*\/inferDomain.*/, {
         status: 200,
         headers: JSON_HEADERS,
-        body: JSON.stringify(inferDomainJson)
+        body: JSON.stringify(inferDomainJson),
     });
 
     mock.get(/.*\/security\/GetMaxPhiLevel.*/, {
         status: 200,
         headers: JSON_HEADERS,
-        body: JSON.stringify(getMaxPhiLevelJson)
+        body: JSON.stringify(getMaxPhiLevelJson),
     });
 
     mock.get(/.*\/security\/?.*\/getRoles.*/, {
         status: 200,
         headers: JSON_HEADERS,
-        body: JSON.stringify(getRolesJson)
+        body: JSON.stringify(getRolesJson),
     });
 
     mock.get(/.*\/assay\/getValidPublishTargets.*/, {
         status: 200,
         headers: JSON_HEADERS,
-        body: JSON.stringify(getValidPublishTargetsJson)
+        body: JSON.stringify(getValidPublishTargetsJson),
     });
 
-
-    mock.get(/.*browseData.*/, delay({
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(browseData),
-    }, 1000));
+    mock.get(
+        /.*browseData.*/,
+        delay(
+            {
+                status: 200,
+                headers: JSON_HEADERS,
+                body: JSON.stringify(browseData),
+            },
+            1000
+        )
+    );
 
     mock.use(proxy);
 }
@@ -400,18 +385,17 @@ export function initQueryGridMocks(delayMs = undefined) {
             return res.status(404).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody));
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     };
 
     let getQuery = (req, res) => {
-        const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
-            const [name, value] = param.split('=');
-            result[name] = value;
-            return result;
-        }, {}) as any;
+        const params = decodeURIComponent(req.body())
+            .split('&')
+            .reduce((result, param) => {
+                const [name, value] = param.split('=');
+                result[name] = value;
+                return result;
+            }, {}) as any;
         const queryName = params['query.queryName'].toLowerCase();
         const schemaName = params.schemaName.toLowerCase();
         let responseBody;
@@ -432,17 +416,15 @@ export function initQueryGridMocks(delayMs = undefined) {
             }
         }
 
-        let maxRows = params['query.maxRows'], offset = params['query.offset'] || 0;
+        let maxRows = params['query.maxRows'],
+            offset = params['query.offset'] || 0;
         if (maxRows !== undefined) {
             maxRows = parseInt(maxRows);
             offset = parseInt(offset);
             responseBody = responseBody.set('rows', responseBody.get('rows').slice(offset, offset + maxRows));
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody));
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     };
 
     let getSelected = (req, res) => {
@@ -450,16 +432,34 @@ export function initQueryGridMocks(delayMs = undefined) {
         const key = queryParams.key;
         let responseBody;
 
-        if (key && key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
+        if (key && key.toLowerCase() === 'sample-set-name%20expression%20set|samples/name%20expression%20set') {
             responseBody = nameExpressionSelected;
         } else {
             responseBody = mixturesSelected;
         }
 
-        return res
-            .status(200)
-            .headers(JSON_HEADERS)
-            .body(JSON.stringify(responseBody));
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+    };
+
+    let selectDistinct = (req, res) => {
+        const queryParams = req.url().query;
+        const schemaName = queryParams.schemaName;
+        const queryName = queryParams['query.queryName'];
+        const column = queryParams['query.columns'];
+        const responseBody = { schemaName, queryName, values: [] };
+        const queryResponse = QUERY_RESPONSES.getIn([schemaName.toLowerCase(), queryName.toLowerCase()]);
+
+        if (queryResponse) {
+            const unique = new Set(
+                queryResponse.get('rows').map(row => {
+                    const data = row.getIn(['data', column]);
+                    return data.get('displayValue') ?? data.get('value');
+                })
+            );
+            responseBody.values = Array.from(unique);
+        }
+
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     };
 
     if (delayMs !== undefined) {
@@ -467,24 +467,26 @@ export function initQueryGridMocks(delayMs = undefined) {
         getQueryDetails = delay(getQueryDetails, delayMs);
         getQuery = delay(getQuery, delayMs);
         getSelected = delay(getSelected, delayMs);
+        selectDistinct = delay(selectDistinct, delayMs);
     }
 
     mock.get(/.*\/query\/?.*\/getQueryDetails.*/, getQueryDetails);
-    mock.post(/.*\/query\/?.*\/getQuery.*/,  getQuery);
+    mock.post(/.*\/query\/?.*\/getQuery.*/, getQuery);
+    mock.get(/.*\/query\/?.*\/selectDistinct.*/, selectDistinct);
     mock.post(/.*\/query\/?.*\/getSelected.*/, getSelected);
 
-    //TODO response JSON?
+    // TODO response JSON?
     mock.post(/.*\/query\/?.*\/setSelected.*/, {
         status: 200,
         headers: JSON_HEADERS,
-        body: JSON.stringify({})
+        body: JSON.stringify({}),
     });
 
-    //TODO conditionalize based on queryName
+    // TODO conditionalize based on queryName
     mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, {
         status: 200,
         headers: JSON_HEADERS,
-        body: JSON.stringify(mixturesReportInfos)
+        body: JSON.stringify(mixturesReportInfos),
     });
 }
 
@@ -492,15 +494,15 @@ export function initLineageMocks() {
     mock.get(/.*\/experiment\/?.*\/lineage.*/, {
         status: 200,
         headers: JSON_HEADERS,
-        body: JSON.stringify(lineageData)
+        body: JSON.stringify(lineageData),
     });
 }
 
 export function initUserPropsMocks() {
-    //TODO conditionalize based on userId
+    // TODO conditionalize based on userId
     mock.get(/.*\/user\/getUserProps.*/, {
         status: 200,
         headers: JSON_HEADERS,
-        body: JSON.stringify(userPropsInfo)
+        body: JSON.stringify(userPropsInfo),
     });
 }

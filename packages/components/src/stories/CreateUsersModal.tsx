@@ -16,19 +16,20 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
+
 import { CreateUsersModal } from '../components/user/CreateUsersModal';
-import { SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from "../test/data/constants";
+import { SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../test/data/constants';
 import './stories.scss';
 
 const ROLE_OPTIONS = [
-    {id: SECURITY_ROLE_READER, label: "Reader (default)"},
-    {id: SECURITY_ROLE_AUTHOR, label: "Author"},
-    {id: SECURITY_ROLE_EDITOR, label: "Editor"}
+    { id: SECURITY_ROLE_READER, label: 'Reader (default)' },
+    { id: SECURITY_ROLE_AUTHOR, label: 'Author' },
+    { id: SECURITY_ROLE_EDITOR, label: 'Editor' },
 ];
 
 storiesOf('CreateUsersModal', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
+    .add('with knobs', () => {
         const showRoleOptions = boolean('showRoleOptions', true);
 
         return (

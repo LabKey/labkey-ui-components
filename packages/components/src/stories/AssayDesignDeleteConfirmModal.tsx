@@ -23,22 +23,28 @@ import { AssayDesignDeleteConfirmModal } from '..';
 storiesOf('AssayDesignDeleteConfirmModal', module)
     .addDecorator(withKnobs)
     .add('without assay design name', () => {
-        return <AssayDesignDeleteConfirmModal
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
+        return (
+            <AssayDesignDeleteConfirmModal
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     })
     .add('with assay design name', () => {
-        return <AssayDesignDeleteConfirmModal
-            assayDesignName={text("Assay Design Name", "GPAT-10")}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
+        return (
+            <AssayDesignDeleteConfirmModal
+                assayDesignName={text('Assay Design Name', 'GPAT-10')}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     })
     .add('with runs', () => {
-        return <AssayDesignDeleteConfirmModal
-            numRuns={number("Number of runs", 3)}
-            onConfirm={() => console.log('confirm')}
-            onCancel={() => console.log('cancel')}
-        />
+        return (
+            <AssayDesignDeleteConfirmModal
+                numRuns={number('Number of runs', 3)}
+                onConfirm={() => console.log('confirm')}
+                onCancel={() => console.log('cancel')}
+            />
+        );
     });

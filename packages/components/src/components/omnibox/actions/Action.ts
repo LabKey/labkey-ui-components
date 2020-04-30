@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
+
 import { QueryColumn } from '../../base/models/model';
 
 /**
@@ -26,25 +27,25 @@ export interface Action {
      * Special case to allow an action to be the default if no keyword is provided. Note the first action with this
      * set, if there are multiple, will be the default.
      */
-    isDefaultAction?: boolean
+    isDefaultAction?: boolean;
 
     /**
      * This is the keyword the user uses to activate this action. This should consist of one word
      * with no spaces.
      */
-    keyword: string
+    keyword: string;
 
     /**
      * This is a shorthand font awesome icon class. E.g. "globe" would apply the icon fa-globe.
      * http://fontawesome.io/icons
      */
-    iconCls: string
+    iconCls: string;
 
     /**
      * This is a one word label used to describe the action. Only needs to be specified if the keyword is not
      * sufficient. Usages default to display the keyword.
      */
-    oneWordLabel?: string
+    oneWordLabel?: string;
 
     /**
      * An optional label that provides additional context to the user about what the action will do. This is used
@@ -54,7 +55,7 @@ export interface Action {
      * Would display:
      *      hello planet
      */
-    optionalLabel?: string
+    optionalLabel?: string;
 
     /**
      * Called to provide the final value from the current input. Only called when the current input is
@@ -64,13 +65,13 @@ export interface Action {
      * the value will not be applied.
      * @param tokens - The current tokenized input value.
      */
-    completeAction: (tokens: Array<string>) => Promise<Value>
+    completeAction: (tokens: string[]) => Promise<Value>;
 
     /**
      * Called to provide the set of ActionOption's for the current input.
      * @param tokens - The current tokenized input value.
      */
-    fetchOptions: (tokens: Array<string>) => Promise<Array<ActionOption>>
+    fetchOptions: (tokens: string[], uniqueValues?: List<any>) => Promise<ActionOption[]>;
 
     /**
      * Called to determine if the incoming Action is equivalent to this Action. This allows for more subtle
@@ -78,14 +79,14 @@ export interface Action {
      * to the set of Value's for Action's of this type.
      * @param action
      */
-    isEqual?: (action: Action) => boolean
+    isEqual?: (action: Action) => boolean;
 
     /**
      * Allows Actions to convert a set of ActionValue's into a set of paramKey/paramValue pairs for URL
      * parameters. This allows for mapping 1-1, N-1, 1-M, N-M.
      * @param actionValues
      */
-    buildParams: (actionValues: Array<ActionValue>) => Array<{paramKey: string, paramValue: string}>
+    buildParams: (actionValues: ActionValue[]) => Array<{ paramKey: string; paramValue: string }>;
 
     /**
      * Allows Actions to examine a paramKey/paramValue pair to determine if the Action will
@@ -93,7 +94,7 @@ export interface Action {
      * @param paramKey
      * @param paramValue
      */
-    matchParam: (paramKey: string, paramValue: any) => boolean
+    matchParam: (paramKey: string, paramValue: any) => boolean;
 
     /**
      * If a paramKey/paramValue has been matched via Action.matchParam then the pair can be handled
@@ -101,40 +102,40 @@ export interface Action {
      * @param paramKey
      * @param paramValue
      */
-    parseParam: (paramKey: string, paramValue: any, columns: List<QueryColumn>) => Array<string> | Array<Value>
+    parseParam: (paramKey: string, paramValue: any, columns: List<QueryColumn>) => string[] | Value[];
 
-    singleton?: boolean
+    singleton?: boolean;
 }
 
 export interface Value {
-    value: string
+    value: string;
 
-    displayValue?: string
-    isReadOnly?: boolean
-    isRemovable?: boolean
-    isValid?: boolean
-    param?: any
+    displayValue?: string;
+    isReadOnly?: boolean;
+    isRemovable?: boolean;
+    isValid?: boolean;
+    param?: any;
 }
 
 export interface ActionValue extends Value {
-    action: Action
+    action: Action;
 }
 
 export interface ActionValueCollection {
-    action: Action
-    values: Array<ActionValue>
+    action: Action;
+    values: ActionValue[];
 }
 
 export interface ActionOption {
-    label: string
+    label: string;
 
-    action?: Action
-    value?: string
-    appendValue?: boolean
-    isAction?: boolean
-    isComplete?: boolean
-    isSelected?: boolean
-    isOverwrite?: boolean
-    nextLabel?: string
-    selectable?: boolean
+    action?: Action;
+    value?: string;
+    appendValue?: boolean;
+    isAction?: boolean;
+    isComplete?: boolean;
+    isSelected?: boolean;
+    isOverwrite?: boolean;
+    nextLabel?: string;
+    selectable?: boolean;
 }

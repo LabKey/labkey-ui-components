@@ -21,7 +21,6 @@ export const GENBANK_EXPORT_CONTROLLER = 'biologics';
 export const SAMPLE_SET_DISPLAY_TEXT = 'Sample Type';
 export const STICKY_HEADER_HEIGHT = 60; // Issue 38478
 
-
 export const MAX_EDITABLE_GRID_ROWS = 1000;
 export const LOOKUP_DEFAULT_SIZE = 25;
 
@@ -30,20 +29,20 @@ export enum EXPORT_TYPES {
     EXCEL,
     TSV,
     FASTA,
-    GENBANK
+    GENBANK,
 }
 
 export enum MODIFICATION_TYPES {
     ADD,
     REPLACE,
     REMOVE,
-    REMOVE_ALL
+    REMOVE_ALL,
 }
 
 export enum SELECTION_TYPES {
     ALL,
     AREA,
-    SINGLE
+    SINGLE,
 }
 
 export enum KEYS {
@@ -173,7 +172,7 @@ export enum KEYS {
     ClosedBracket = 221,
     Quote = 222,
 
-    FFLeftMetaKey = 224 // Firefox
+    FFLeftMetaKey = 224, // Firefox
 }
 
 // This is used for filtering search results.  Since we first check for search hits containing
@@ -186,7 +185,6 @@ export const DATA_CLASS_UNIQUE_FIELD_KEY = 'Name';
 
 export const NO_UPDATES_MESSAGE = 'No changes were made because the provided values match the existing values.';
 export const PARENT_ALIAS_HELPER_TEXT = "Column headings used during import to set a sample's parentage.";
-
 
 export enum DataViewInfoTypes {
     AutomaticPlot = 'Automatic Plot',
@@ -218,5 +216,5 @@ export enum IMPORT_DATA_FORM_TYPES {
     GRID = 1, // This designates the starting point for the enum. By default it starts at 0, but since that is falsy, it makes the check "if (inputFormType)" problematic.
     TEXT,
     FILE,
-    OTHER
+    OTHER,
 }

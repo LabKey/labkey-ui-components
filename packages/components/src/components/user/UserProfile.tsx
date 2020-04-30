@@ -7,39 +7,50 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
-import { getUserDetailsRowData, updateUserDetails } from './actions';
-import { getQueryDetails } from '../../../src/query/api';
+import { getQueryDetails } from '../../query/api';
 import { FileInput } from '../forms/input/FileInput';
 import { QueryInfoForm } from '../forms/QueryInfoForm';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { QueryColumn, User } from '../base/models/model';
 import { SCHEMAS } from '../base/models/schemas';
-import { getActionErrorMessage } from "../../util/messaging";
-import { Alert } from "../base/Alert";
+import { getActionErrorMessage } from '../../util/messaging';
+import { Alert } from '../base/Alert';
 
-const FIELDS_TO_EXCLUDE = List<string>(['userid', 'owner', 'groups', 'lastlogin', 'haspassword', 'phone', 'mobile', 'pager', 'im', 'avatar']);
+import { getUserDetailsRowData, updateUserDetails } from './actions';
+
+const FIELDS_TO_EXCLUDE = List<string>([
+    'userid',
+    'owner',
+    'groups',
+    'lastlogin',
+    'haspassword',
+    'phone',
+    'mobile',
+    'pager',
+    'im',
+    'avatar',
+]);
 const DISABLED_FIELDS = List<string>(['email']);
 const USER_AVATAR_FILE = 'user_avatar_file';
 const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
 
 interface State {
-    queryInfo: QueryInfo
-    avatar: File
-    removeCurrentAvatar: boolean
-    reloadRequired: boolean
-    hasError: boolean
+    queryInfo: QueryInfo;
+    avatar: File;
+    removeCurrentAvatar: boolean;
+    reloadRequired: boolean;
+    hasError: boolean;
 }
 
 interface Props {
-    user: User
-    userProperties: Map<string, any>
-    onSuccess: (result: {}, shouldReload: boolean) => any
-    onCancel: () => any
+    user: User;
+    userProperties: Map<string, any>;
+    onSuccess: (result: {}, shouldReload: boolean) => any;
+    onCancel: () => any;
 }
 
 export class UserProfile extends React.Component<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
@@ -48,52 +59,54 @@ export class UserProfile extends React.Component<Props, State> {
             avatar: undefined,
             removeCurrentAvatar: false,
             reloadRequired: false,
-            hasError: false
+            hasError: false,
         };
     }
 
     componentDidMount() {
-        getQueryDetails(SCHEMAS.CORE_TABLES.USERS).then((queryInfo) => {
-            this.setState(() => ({queryInfo}));
-        }).catch(reason => {
-            console.error(reason);
-            this.setState(() => ({hasError: true}));
-        });
+        getQueryDetails(SCHEMAS.CORE_TABLES.USERS)
+            .then(queryInfo => {
+                this.setState(() => ({ queryInfo }));
+            })
+            .catch(reason => {
+                console.error(reason);
+                this.setState(() => ({ hasError: true }));
+            });
     }
 
     getUpdateQueryInfo(): QueryInfo {
         const { queryInfo } = this.state;
-        let updateColumns = queryInfo.columns.filter((column) => {
+        let updateColumns = queryInfo.columns.filter(column => {
             return column.userEditable && !FIELDS_TO_EXCLUDE.contains(column.fieldKey.toLowerCase());
         });
 
         // make sure all columns are set as shownInInsertView
-        updateColumns = updateColumns.map((col) => col.set('shownInInsertView', true) as QueryColumn);
+        updateColumns = updateColumns.map(col => col.set('shownInInsertView', true) as QueryColumn);
 
         return queryInfo.set('columns', updateColumns) as QueryInfo;
     }
 
     onAvatarFileChange = (files: {}) => {
-        this.setState(() => ({avatar: files[USER_AVATAR_FILE]}));
+        this.setState(() => ({ avatar: files[USER_AVATAR_FILE] }));
     };
 
     removeCurrentAvatar = () => {
-        this.setState(() => ({removeCurrentAvatar: true}));
+        this.setState(() => ({ removeCurrentAvatar: true }));
     };
 
-    submitUserDetails = (data: OrderedMap<string, any>) : Promise<any> => {
+    submitUserDetails = (data: OrderedMap<string, any>): Promise<any> => {
         const { user } = this.props;
         const avatar = this.state.avatar || (this.state.removeCurrentAvatar ? null : undefined);
 
         // Issue 39225: don't submit empty string for required DisplayName
         const displayName = data.get('DisplayName');
         if (displayName.trim() === '') {
-            return Promise.reject({exception: 'Missing required value for Display Name.'});
+            return Promise.reject({ exception: 'Missing required value for Display Name.' });
         }
 
         // need to reload the page if the avatar changes or is removed since that is coming from LABKEY.user on page load
         if (avatar !== undefined) {
-            this.setState(() => ({reloadRequired: true}));
+            this.setState(() => ({ reloadRequired: true }));
         }
 
         return updateUserDetails(SCHEMAS.CORE_TABLES.USERS, getUserDetailsRowData(user, data, avatar));
@@ -104,9 +117,7 @@ export class UserProfile extends React.Component<Props, State> {
     };
 
     renderSectionTitle(title: string) {
-        return (
-            <p className={'user-section-header'}>{title}</p>
-        )
+        return <p className="user-section-header">{title}</p>;
     }
 
     renderForm() {
@@ -134,17 +145,19 @@ export class UserProfile extends React.Component<Props, State> {
                                 name={USER_AVATAR_FILE}
                                 onChange={this.onAvatarFileChange}
                             />
-                            {!isDefaultAvatar && !removeCurrentAvatar &&
+                            {!isDefaultAvatar && !removeCurrentAvatar && (
                                 <div>
-                                    <a className={'user-text-link'} onClick={this.removeCurrentAvatar}>Delete Current Avatar</a>
+                                    <a className="user-text-link" onClick={this.removeCurrentAvatar}>
+                                        Delete Current Avatar
+                                    </a>
                                 </div>
-                            }
+                            )}
                         </>
                     </Col>
                 </Row>
                 <Row>
                     <Col xs={12}>
-                        <hr/>
+                        <hr />
                     </Col>
                 </Row>
                 {this.renderSectionTitle('User Details')}
@@ -153,8 +166,8 @@ export class UserProfile extends React.Component<Props, State> {
                     schemaQuery={queryInfo.schemaQuery}
                     fieldValues={userProperties.toJS()}
                     includeCountField={false}
-                    submitText={'Save'}
-                    isSubmittedText={'Saving...'}
+                    submitText="Save"
+                    isSubmittedText="Saving..."
                     onSubmit={this.submitUserDetails}
                     onSuccess={this.onSuccess}
                     onHide={onCancel}
@@ -162,7 +175,7 @@ export class UserProfile extends React.Component<Props, State> {
                     showErrorsAtBottom={true}
                 />
             </>
-        )
+        );
     }
 
     render() {
@@ -170,11 +183,14 @@ export class UserProfile extends React.Component<Props, State> {
 
         return (
             <>
-                {hasError
-                    ? <Alert>{getActionErrorMessage('There was a problem loading your user profile', 'profile')}</Alert>
-                    : (!queryInfo ? <LoadingSpinner/> : this.renderForm())
-                }
+                {hasError ? (
+                    <Alert>{getActionErrorMessage('There was a problem loading your user profile', 'profile')}</Alert>
+                ) : !queryInfo ? (
+                    <LoadingSpinner />
+                ) : (
+                    this.renderForm()
+                )}
             </>
-        )
+        );
     }
 }

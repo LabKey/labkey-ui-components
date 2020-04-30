@@ -20,29 +20,28 @@ const DETAIL_ALIAS_WORD_LENGTH = 5,
     GRID_ALIAS_WORD_LENGTH = 3;
 
 interface AliasRendererProps {
-    data: List<any>
-    view?: string
+    data: List<any>;
+    view?: string;
 }
 
 interface AliasRendererState {
-    showMore?: boolean
+    showMore?: boolean;
 }
 
 export class AliasRenderer extends React.Component<AliasRendererProps, AliasRendererState> {
-
     constructor(props?: AliasRendererProps) {
         super(props);
 
         this.state = {
-            showMore: false
-        }
+            showMore: false,
+        };
     }
 
     handleClick() {
         const { showMore } = this.state;
 
         this.setState({
-            showMore: !showMore
+            showMore: !showMore,
         });
     }
 
@@ -56,19 +55,19 @@ export class AliasRenderer extends React.Component<AliasRendererProps, AliasRend
 
             const aliases = data.map(alias => alias.get('displayValue'));
 
-            const aliasDisplay = aliases.filter((alias, i) => {
-                return (i < truncationLength) || showMore;
-            }).join(', ');
+            const aliasDisplay = aliases
+                .filter((alias, i) => {
+                    return i < truncationLength || showMore;
+                })
+                .join(', ');
 
             let trailingLink;
             if (extraCount > 0) {
                 trailingLink = (
                     <span>
                         {!showMore ? `... and ${extraCount} more ` : ' '}
-                        <span
-                            className="alias-renderer--more-link"
-                            onClick={this.handleClick.bind(this)}>
-                            {!showMore ? "(see all)" : "(see less)"}
+                        <span className="alias-renderer--more-link" onClick={this.handleClick.bind(this)}>
+                            {!showMore ? '(see all)' : '(see less)'}
                         </span>
                     </span>
                 );
@@ -78,7 +77,7 @@ export class AliasRenderer extends React.Component<AliasRendererProps, AliasRend
                     {aliasDisplay}
                     {trailingLink}
                 </div>
-            )
+            );
         }
 
         return null;

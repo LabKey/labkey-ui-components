@@ -1,10 +1,15 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
+
 import { QueryInfo, SchemaQuery } from '..';
-import { ViewSelector } from './ViewSelector';
-import { initUnitTests, makeQueryInfo, makeTestActions, makeTestModel } from './testUtils';
+
+import { initUnitTests, makeQueryInfo } from '../testHelpers';
+
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
+
+import { ViewSelector } from './ViewSelector';
+import { makeTestActions, makeTestModel } from './testUtils';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO_NO_VIEWS: QueryInfo;
@@ -26,7 +31,7 @@ beforeAll(() => {
             {
                 ...mixturesQueryInfo.views[1],
                 shared: false,
-            }
+            },
         ],
     });
 });
@@ -60,7 +65,7 @@ describe('ViewSelector', () => {
 
         // Same as previous, but the No Extra Column view is set to active.
         model = model.mutate({
-            schemaQuery: SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn')
+            schemaQuery: SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
         });
         tree = renderer.create(<ViewSelector hideEmptyViewSelector={true} model={model} actions={actions} />);
         expect(tree.toJSON()).toMatchSnapshot();

@@ -5,12 +5,13 @@
 import React, { PureComponent } from 'react';
 import ReactN from 'reactn';
 import { List } from 'immutable';
+
 import { Alert, getStateQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '../..';
 
 import { loadLineageIfNeeded, NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { Lineage, LineageNode, LineageNodeMetadata, } from './models';
+import { Lineage, LineageNode, LineageNodeMetadata } from './models';
 import {
     VisGraphClusterNode,
     VisGraphCombinedNode,
@@ -25,16 +26,15 @@ const omittedColumns = List(['Alias', 'Description', 'Name', 'SampleSet', 'DataC
 const requiredColumns = List(['Run']);
 
 interface LinageGraphOwnProps {
-    distance?: number
-    hideLegacyLinks?: boolean
-    initialModel?: QueryGridModel
-    lsid: string
-    members?: LINEAGE_DIRECTIONS
-    navigate?: (node: VisGraphNode) => any
+    distance?: number;
+    hideLegacyLinks?: boolean;
+    initialModel?: QueryGridModel;
+    lsid: string;
+    members?: LINEAGE_DIRECTIONS;
+    navigate?: (node: VisGraphNode) => any;
 }
 
 export class LineageGraph extends ReactN.PureComponent<LinageGraphOwnProps & LineageOptions & SummaryOptions> {
-
     componentDidMount() {
         loadLineageIfNeeded(this.props.lsid, this.props.distance, this.props);
     }
@@ -53,29 +53,33 @@ export class LineageGraph extends ReactN.PureComponent<LinageGraphOwnProps & Lin
     render() {
         const lineage = this.getLineage();
 
-        return <LineageGraphDisplay
-            {...this.props}
-            lineage={lineage}
-            visGraphOptions={lineage?.generateGraph(this.props)}
-        />
+        return (
+            <LineageGraphDisplay
+                {...this.props}
+                lineage={lineage}
+                visGraphOptions={lineage?.generateGraph(this.props)}
+            />
+        );
     }
 }
 
 interface LineageGraphDisplayProps {
-    lineage: Lineage
-    visGraphOptions: VisGraphOptions
+    lineage: Lineage;
+    visGraphOptions: VisGraphOptions;
 }
 
 interface LineageGraphDisplayState {
-    hoverNode: VisGraphNodeType
-    nodeInteractions: WithNodeInteraction
-    selectedNodes: Array<VisGraphNodeType>
+    hoverNode: VisGraphNodeType;
+    nodeInteractions: WithNodeInteraction;
+    selectedNodes: VisGraphNodeType[];
 }
 
-class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & LinageGraphOwnProps & LineageOptions & SummaryOptions, Partial<LineageGraphDisplayState>> {
-
+class LineageGraphDisplay extends PureComponent<
+    LineageGraphDisplayProps & LinageGraphOwnProps & LineageOptions & SummaryOptions,
+    Partial<LineageGraphDisplayState>
+> {
     static defaultProps = {
-        distance: DEFAULT_LINEAGE_DISTANCE
+        distance: DEFAULT_LINEAGE_DISTANCE,
     };
 
     private readonly visGraphRef = undefined;
@@ -91,7 +95,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
                 onNodeMouseOver: this.onSummaryNodeMouseOver,
                 onNodeMouseOut: this.onSummaryNodeMouseOut,
                 onNodeClick: this.onSummaryNodeClick,
-            }
+            },
         };
     }
 
@@ -131,13 +135,13 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         }
     };
 
-    onVisGraphNodeSelect = (selectedNodes: Array<VisGraphNodeType>): void => {
+    onVisGraphNodeSelect = (selectedNodes: VisGraphNodeType[]): void => {
         this.setState({
             selectedNodes,
         });
     };
 
-    onVisGraphNodeDeselect = (selectedNodes: Array<VisGraphNodeType>): void => {
+    onVisGraphNodeDeselect = (selectedNodes: VisGraphNodeType[]): void => {
         this.setState({
             selectedNodes,
         });
@@ -158,19 +162,21 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
 
         if (!selectedNodes || selectedNodes.length == 0) {
             return <em>Select a node from the graph to view the details.</em>;
-        }
-        else if (selectedNodes.length === 1) {
-            const hoverNodeLsid = hoverNode && hoverNode.kind === 'node' && hoverNode.lineageNode && hoverNode.lineageNode.lsid;
+        } else if (selectedNodes.length === 1) {
+            const hoverNodeLsid =
+                hoverNode && hoverNode.kind === 'node' && hoverNode.lineageNode && hoverNode.lineageNode.lsid;
             const selectedNode = selectedNodes[0];
             switch (selectedNode.kind) {
-                case 'node':     return this.renderSelectedGraphNode(seed, hoverNodeLsid, selectedNode);
-                case 'combined': return this.renderSelectedCombinedNode(seed, hoverNodeLsid, selectedNode);
-                case 'cluster':  return this.renderSelectedClusterNode(seed, hoverNodeLsid, selectedNode);
+                case 'node':
+                    return this.renderSelectedGraphNode(seed, hoverNodeLsid, selectedNode);
+                case 'combined':
+                    return this.renderSelectedCombinedNode(seed, hoverNodeLsid, selectedNode);
+                case 'cluster':
+                    return this.renderSelectedClusterNode(seed, hoverNodeLsid, selectedNode);
                 default:
                     throw new Error('unknown node kind');
             }
-        }
-        else {
+        } else {
             return <div>multiple selected nodes</div>;
         }
     }
@@ -180,50 +186,60 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
         const { lineageNode } = node;
 
         // Apply "LineageOptions" when summaryOptions not explicitly given
-        const options = summaryOptions ? summaryOptions : {...this.props};
+        const options = summaryOptions ? summaryOptions : { ...this.props };
 
-        return <SelectedNodeDetail
-            seed={seed}
-            node={lineageNode}
-            entityModel={this.getNodeGridDataModel(lineageNode)}
-            highlightNode={hoverNodeLsid}
-            showSummary={showSummaryOverride ?? showSummary}
-            summaryOptions={options}
-        />;
+        return (
+            <SelectedNodeDetail
+                seed={seed}
+                node={lineageNode}
+                entityModel={this.getNodeGridDataModel(lineageNode)}
+                highlightNode={hoverNodeLsid}
+                showSummary={showSummaryOverride ?? showSummary}
+                summaryOptions={options}
+            />
+        );
     }
 
     renderSelectedClusterNode(seed: string, hoverNodeLsid: string, node: VisGraphClusterNode) {
         // LineageNodes in the cluster
         const nodes = node.nodesInCluster.map(n => n.kind === 'node' && n.lineageNode);
 
-        return <ClusterNodeDetail
-            highlightNode={hoverNodeLsid}
-            nodes={nodes}
-            nodesByType={undefined}
-            options={this.props}
-        />;
+        return (
+            <ClusterNodeDetail
+                highlightNode={hoverNodeLsid}
+                nodes={nodes}
+                nodesByType={undefined}
+                options={this.props}
+            />
+        );
     }
 
     renderSelectedCombinedNode(seed: string, hoverNodeLsid: string, node: VisGraphCombinedNode) {
         const { lineage } = this.props;
-        if (!lineage && !lineage.result)
-            return null;
+        if (!lineage && !lineage.result) return null;
 
-        return <ClusterNodeDetail
-            highlightNode={hoverNodeLsid}
-            nodes={node.containedNodes}
-            nodesByType={node.containedNodesByType}
-            options={this.props}
-        />;
+        return (
+            <ClusterNodeDetail
+                highlightNode={hoverNodeLsid}
+                nodes={node.containedNodes}
+                nodesByType={node.containedNodesByType}
+                options={this.props}
+            />
+        );
     }
 
     getNodeGridDataModel(node: LineageNode): QueryGridModel {
         if (node.schemaName && node.queryName && node.id) {
-            return getStateQueryGridModel('lineage-selected', SchemaQuery.create(node.schemaName, node.queryName), {
-                allowSelection: false,
-                omittedColumns,
-                requiredColumns
-            }, node.id);
+            return getStateQueryGridModel(
+                'lineage-selected',
+                SchemaQuery.create(node.schemaName, node.queryName),
+                {
+                    allowSelection: false,
+                    omittedColumns,
+                    requiredColumns,
+                },
+                node.id
+            );
         }
     }
 
@@ -240,9 +256,9 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
             url: row.getIn(['RowId', 'url']),
             meta: new LineageNodeMetadata({
                 displayType: initialModel.queryInfo.title,
-                description: row.getIn(['Description', 'value'])
+                description: row.getIn(['Description', 'value']),
             }),
-        })
+        });
     }
 
     render() {
@@ -250,7 +266,7 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
 
         if (lineage) {
             if (lineage.error) {
-                return <Alert>{lineage.error}</Alert>
+                return <Alert>{lineage.error}</Alert>;
             }
 
             return (
@@ -273,28 +289,35 @@ class LineageGraphDisplay extends PureComponent<LineageGraphDisplayProps & Linag
                         </div>
                     </div>
                 </NodeInteractionProvider>
-            )
-        }
-        else {
+            );
+        } else {
             return (
                 <NodeInteractionProvider value={this.state.nodeInteractions}>
                     <div className="row">
                         <div className="col-md-8">
                             <div className="top-spacing">
-                                <LoadingSpinner msg="Loading lineage..."/>
+                                <LoadingSpinner msg="Loading lineage..." />
                             </div>
                         </div>
                         <div className="col-md-4 lineage-node-detail-container">
-                            {initialModel ? this.renderSelectedGraphNode(lsid, undefined, {
-                                id: lsid,
-                                kind: 'node',
-                                lineageNode: this.createInitialLineageNode()
-                            }, false) : <LoadingSpinner msg="Loading details..."/>}
+                            {initialModel ? (
+                                this.renderSelectedGraphNode(
+                                    lsid,
+                                    undefined,
+                                    {
+                                        id: lsid,
+                                        kind: 'node',
+                                        lineageNode: this.createInitialLineageNode(),
+                                    },
+                                    false
+                                )
+                            ) : (
+                                <LoadingSpinner msg="Loading details..." />
+                            )}
                         </div>
                     </div>
                 </NodeInteractionProvider>
-            )
+            );
         }
     }
 }
-

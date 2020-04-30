@@ -27,17 +27,17 @@ import { capitalizeFirstChar, decodePart, encodePart, generateId } from '../../u
 import { IEntityDetails } from '../domainproperties/entities/models';
 
 export interface EntityInputProps {
-    role: string
-    rowId: number
+    role: string;
+    rowId: number;
 }
 
 export interface IDerivePayload {
-    dataInputs?: Array<EntityInputProps>
-    materialDefault?: any
-    materialInputs?: Array<EntityInputProps>
-    materialOutputCount?: number
-    materialOutputs?: Array<{[key: string]: any}>
-    targetType: string
+    dataInputs?: EntityInputProps[];
+    materialDefault?: any;
+    materialInputs?: EntityInputProps[];
+    materialOutputCount?: number;
+    materialOutputs?: Array<{ [key: string]: any }>;
+    targetType: string;
 }
 
 // the set of options for selecting a type (e.g., the list of sample types).
@@ -53,13 +53,13 @@ export interface IDerivePayload {
 // Needs(?) to extend Option for use in ReactSelects, but otherwise very much
 // a duplicate of EntityParentType (modulo the value being a DisplayObject vs TValue)
 export interface IParentOption extends Option {
-    query?: string
-    schema?: string
+    query?: string;
+    schema?: string;
 }
 
 export interface DisplayObject {
-    displayValue: any,
-    value: any
+    displayValue: any;
+    value: any;
 }
 
 export class EntityParentType extends Record({
@@ -80,8 +80,7 @@ export class EntityParentType extends Record({
     }
 
     static create(values: any) {
-        if (!values.key)
-            values.key = generateId('parent-type-');
+        if (!values.key) values.key = generateId('parent-type-');
         return new EntityParentType(values);
     }
 
@@ -104,16 +103,22 @@ export class EntityParentType extends Record({
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
         const parentColName = [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
+        // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use
+        // the "Parents" suffix in the editable grid header
+        const captionSuffix = this.schema !== SCHEMAS.DATA_CLASSES.SCHEMA ? ' Parents' : '';
 
         // 32671: Sample import and edit grid key ingredients on scientific name
-        if (this.schema && this.query &&
+        if (
+            this.schema &&
+            this.query &&
             this.schema.toLowerCase() === SCHEMAS.DATA_CLASSES.INGREDIENTS.schemaName.toLowerCase() &&
-            this.query.toLowerCase() === SCHEMAS.DATA_CLASSES.INGREDIENTS.queryName.toLowerCase()) {
-            displayColumn ='scientificName';
+            this.query.toLowerCase() === SCHEMAS.DATA_CLASSES.INGREDIENTS.queryName.toLowerCase()
+        ) {
+            displayColumn = 'scientificName';
         }
 
         return QueryColumn.create({
-            caption: formattedQueryName + ' Parents',
+            caption: formattedQueryName + captionSuffix,
             description: 'Contains optional parent entity for this ' + formattedQueryName,
             fieldKeyArray: [parentColName],
             fieldKey: parentColName,
@@ -124,21 +129,21 @@ export class EntityParentType extends Record({
                 multiValued: 'junction',
                 queryName: this.query,
                 schemaName: this.schema,
-                table: parentInputType
+                table: parentInputType,
             },
             name: parentColName,
             required: false,
             shownInInsertView: true,
             type: 'Text (String)',
-            userEditable: true
+            userEditable: true,
         });
     }
 }
 
 // represents a chosen entity type (e.g., Sample Set 1)
 export interface IEntityTypeOption extends Option {
-    lsid: string
-    rowId: number
+    lsid: string;
+    rowId: number;
 }
 
 export class EntityTypeOption implements IEntityTypeOption {
@@ -149,7 +154,7 @@ export class EntityTypeOption implements IEntityTypeOption {
 
     constructor(props?: Partial<EntityTypeOption>) {
         if (props) {
-            for (let k in props) {
+            for (const k in props) {
                 this[k] = props[k];
             }
         }
@@ -158,32 +163,31 @@ export class EntityTypeOption implements IEntityTypeOption {
 
 // represents an entity type (e.g., Sample Set 1) and the values chosen of that type (e.g., S-1, S-2)
 export interface EntityChoice {
-    type: IEntityTypeOption
-    ids: Array<string> // LSIDs or RowIds
-    value: string // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
+    type: IEntityTypeOption;
+    ids: string[]; // LSIDs or RowIds
+    value: string; // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
 }
 
 export interface MaterialOutput {
-    created: any
-    createdBy: string
-    id: number
-    lsid: string
-    modified: any
-    modifiedBy: string
-    name: string
-    properties: any
-    sampleSet: any
+    created: any;
+    createdBy: string;
+    id: number;
+    lsid: string;
+    modified: any;
+    modifiedBy: string;
+    name: string;
+    properties: any;
+    sampleSet: any;
 }
 
-export class GenerateEntityResponse extends Record( {
+export class GenerateEntityResponse extends Record({
     data: undefined,
     message: undefined,
-    success: false
+    success: false,
 }) {
-
     data: {
-        materialOutputs: Array<MaterialOutput>
-        [key: string]: any
+        materialOutputs: MaterialOutput[];
+        [key: string]: any;
     };
     message: string;
     success: boolean;
@@ -194,14 +198,12 @@ export class GenerateEntityResponse extends Record( {
 
     // Get all of the rowIds of the newly generated entity Ids (or the runs)
     getFilter(): Filter.IFilter {
-        let filterColumn: string,
-            filterValue;
+        let filterColumn: string, filterValue;
 
         // data.id is the run rowId. If provided, create a filter based off the run instead of entityIds.
         if (this.data.id) {
             filterColumn = 'Run/RowId';
             filterValue = [this.data.id];
-
         } else {
             filterColumn = 'RowId';
 
@@ -226,15 +228,15 @@ export class EntityIdCreationModel extends Record({
     targetEntityType: undefined,
     entityCount: 0,
     entityDataType: undefined,
-    auditBehavior: undefined
+    auditBehavior: undefined,
 }) {
-    errors: Array<any>;
+    errors: any[];
     initialEntityType: any;
     isError: boolean;
     isInit: boolean;
-    originalParents: Array<string>; // taken from the query string
+    originalParents: string[]; // taken from the query string
     parentOptions: Map<string, List<IParentOption>>; // map from query name to the options for the different types of parents allowed
-    entityParents:  Map<string, List<EntityParentType>>; // map from query name to the parents already selected for that query
+    entityParents: Map<string, List<EntityParentType>>; // map from query name to the parents already selected for that query
     entityTypeOptions: List<IEntityTypeOption>; // the target type options
     selectionKey: string;
     targetEntityType: EntityTypeOption; // the target entity Type
@@ -253,11 +255,9 @@ export class EntityIdCreationModel extends Record({
                 let schemaName: string;
                 if (fieldKey[0] === QueryColumn.DATA_INPUTS.toLowerCase()) {
                     schemaName = SCHEMAS.DATA_CLASSES.SCHEMA;
-                }
-                else if (fieldKey[0] === QueryColumn.MATERIAL_INPUTS.toLowerCase()) {
+                } else if (fieldKey[0] === QueryColumn.MATERIAL_INPUTS.toLowerCase()) {
                     schemaName = SCHEMAS.SAMPLE_SETS.SCHEMA;
-                }
-                else {
+                } else {
                     throw new Error('Invalid inputColumn fieldKey. "' + fieldKey[0] + '"');
                 }
 
@@ -270,54 +270,59 @@ export class EntityIdCreationModel extends Record({
         throw new Error('Invalid inputColumn.');
     }
 
-    static getEmptyEntityParents(queryNames: List<string>) : Map<string, List<EntityParentType>> {
+    static getEmptyEntityParents(queryNames: List<string>): Map<string, List<EntityParentType>> {
         let entityParents = Map<string, List<EntityParentType>>();
-        queryNames.forEach((queryName) => {
+        queryNames.forEach(queryName => {
             entityParents = entityParents.set(queryName, List<EntityParentType>());
         });
         return entityParents;
     }
 
-    getClearedEntityParents() : Map<string, List<EntityParentType>> {
+    getClearedEntityParents(): Map<string, List<EntityParentType>> {
         return this.entityParents.reduce((clearedParents, parents, key) => {
             return clearedParents.set(key, List<EntityParentType>());
         }, Map<string, List<EntityParentType>>());
     }
 
-    getParentColumns(uniqueFieldKey: string) : OrderedMap<string, QueryColumn> {
+    getParentColumns(uniqueFieldKey: string): OrderedMap<string, QueryColumn> {
         let columns = OrderedMap<string, QueryColumn>();
-        this.entityParents.forEach((parentList) => {
-            parentList.forEach((parent) => {
+        this.entityParents.forEach(parentList => {
+            parentList.forEach(parent => {
                 if (parent.schema && parent.query) {
                     const column = parent.generateColumn(uniqueFieldKey);
                     // Issue 33653: query name is case-sensitive for some data inputs (parents)
                     columns = columns.set(column.name.toLowerCase(), column);
                 }
-            })
+            });
         });
         return columns;
     }
 
-    addParent(queryName: string) : EntityIdCreationModel {
+    addParent(queryName: string): EntityIdCreationModel {
         const nextIndex = this.entityParents.get(queryName).size + 1;
-        const updatedParents = this.entityParents.get(queryName).push(EntityParentType.create({index: nextIndex}));
-        return this.setIn(['entityParents', queryName], updatedParents) as EntityIdCreationModel
+        const updatedParents = this.entityParents.get(queryName).push(EntityParentType.create({ index: nextIndex }));
+        return this.setIn(['entityParents', queryName], updatedParents) as EntityIdCreationModel;
     }
 
-    removeParent(index: number, queryName: string) : [EntityIdCreationModel, string] {
+    removeParent(index: number, queryName: string): [EntityIdCreationModel, string] {
         const entityParents = this.entityParents.get(queryName);
-        let parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
-        let parentColumnName = entityParents.get(parentToResetKey).createColumnName();
+        const parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
+        const parentColumnName = entityParents.get(parentToResetKey).createColumnName();
         const updatedEntityParents = entityParents
             .filter(parent => parent.index !== index)
-            .map((parent, key) => parent.set('index', (key + 1)));
+            .map((parent, key) => parent.set('index', key + 1));
         return [
             this.setIn(['entityParents', queryName], updatedEntityParents) as EntityIdCreationModel,
-            parentColumnName
+            parentColumnName,
         ];
     }
 
-    changeParent(index: number, queryName: string, uniqueFieldKey: string,  parent: IParentOption) : [EntityIdCreationModel, QueryColumn, EntityParentType, string] {
+    changeParent(
+        index: number,
+        queryName: string,
+        uniqueFieldKey: string,
+        parent: IParentOption
+    ): [EntityIdCreationModel, QueryColumn, EntityParentType, string] {
         let column;
         let parentColumnName;
         let existingParent;
@@ -328,8 +333,10 @@ export class EntityIdCreationModel extends Record({
             existingParent = entityParents.get(existingParentKey);
 
             // bail out if the selected parent is the same as the existingParent for this index, i.e. nothing changed
-            const schemaMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
-            const queryMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
+            const schemaMatch =
+                parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
+            const queryMatch =
+                parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
             if (schemaMatch && queryMatch) {
                 return [undefined, undefined, existingParent, undefined];
             }
@@ -338,78 +345,68 @@ export class EntityIdCreationModel extends Record({
                 index,
                 key: existingParent.key,
                 query: parent.query,
-                schema: parent.schema
+                schema: parent.schema,
             });
-            updatedModel = this.mergeIn([
-                'entityParents',
-                queryName,
-                existingParentKey
-            ], parentType) as EntityIdCreationModel;
+            updatedModel = this.mergeIn(
+                ['entityParents', queryName, existingParentKey],
+                parentType
+            ) as EntityIdCreationModel;
             column = parentType.generateColumn(uniqueFieldKey);
-        }
-        else {
-            let parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
+        } else {
+            const parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
             const existingParent = entityParents.get(parentToResetKey);
             parentColumnName = existingParent.createColumnName();
-            updatedModel = this.mergeIn([
-                'entityParents',
-                queryName,
-                parentToResetKey
-            ], EntityParentType.create({
-                key: existingParent.key,
-                index,
-            })) as EntityIdCreationModel;
+            updatedModel = this.mergeIn(
+                ['entityParents', queryName, parentToResetKey],
+                EntityParentType.create({
+                    key: existingParent.key,
+                    index,
+                })
+            ) as EntityIdCreationModel;
         }
-        return [
-            updatedModel,
-            column,
-            existingParent,
-            parentColumnName
-        ]
+        return [updatedModel, column, existingParent, parentColumnName];
     }
 
-    hasTargetEntityType() : boolean {
-        return this.targetEntityType && this.targetEntityType.value
+    hasTargetEntityType(): boolean {
+        return this.targetEntityType && this.targetEntityType.value;
     }
 
-    getTargetEntityTypeName() : string {
+    getTargetEntityTypeName(): string {
         return this.hasTargetEntityType() ? this.targetEntityType.value : undefined;
     }
 
-    getParentCount() : number {
+    getParentCount(): number {
         return this.entityParents.reduce((count: number, parentList) => {
-            return count + parentList.filter((parent) => parent.query !== undefined).count()
+            return count + parentList.filter(parent => parent.query !== undefined).count();
         }, 0);
     }
 
     getEntityInputs(): {
-        dataInputs: Array<EntityInputProps>,
-        materialInputs: Array<EntityInputProps>
+        dataInputs: EntityInputProps[];
+        materialInputs: EntityInputProps[];
     } {
-        let dataInputs: Array<EntityInputProps> = [];
+        const dataInputs: EntityInputProps[] = [];
         this.entityParents.get(SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName).forEach((parent, index) => {
-            const role =  'data';
+            const role = 'data';
 
-            parent.value.forEach((option) => {
+            parent.value.forEach(option => {
                 const rowId = parseInt(option.value);
                 if (!isNaN(rowId)) {
-                    dataInputs.push({role, rowId});
-                }
-                else {
+                    dataInputs.push({ role, rowId });
+                } else {
                     console.warn('Unable to parse rowId from "' + option.value + '" for ' + role + '.');
                 }
             });
         });
-        let materialInputs: Array<EntityInputProps> = [];
+        const materialInputs: EntityInputProps[] = [];
         this.entityParents.get(SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName).forEach((parent, index) => {
-            const role =  'sample';
+            const role = 'sample';
 
-            parent.value.forEach((option) => {
+            parent.value.forEach(option => {
                 const rowId = parseInt(option.value);
                 if (!isNaN(rowId)) {
-                    materialInputs.push({role, rowId});
-                }
-                else {
+                    materialInputs.push({ role, rowId });
+                } else {
                     console.warn('Unable to parse rowId from "' + option.value + '" for ' + role + '.');
                 }
             });
@@ -417,33 +414,34 @@ export class EntityIdCreationModel extends Record({
 
         return {
             dataInputs,
-            materialInputs
-        }
+            materialInputs,
+        };
     }
 
     getSaveValues(): IDerivePayload {
         const { dataInputs, materialInputs } = this.getEntityInputs();
 
-        let materialDefault = {};
+        const materialDefault = {};
 
         return {
             dataInputs,
             materialDefault,
             materialInputs,
-            targetType: this.targetEntityType.lsid
+            targetType: this.targetEntityType.lsid,
         };
     }
 
-    getParentOptions(currentSelection: string, queryName: string): Array<any> {
+    getParentOptions(currentSelection: string, queryName: string): any[] {
         // exclude options that have already been selected, except the current selection for this input
-        return this.parentOptions.get(queryName)
-            .filter(o => (
+        return this.parentOptions
+            .get(queryName)
+            .filter(o =>
                 this.entityParents.get(queryName).every(parent => {
                     const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
                     const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
                     return notParentMatch || matchesCurrent;
                 })
-            ))
+            )
             .toArray();
     }
 
@@ -452,26 +450,28 @@ export class EntityIdCreationModel extends Record({
         return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
-    postEntityGrid(queryGridModel: QueryGridModel) : Promise<any>  {
+    postEntityGrid(queryGridModel: QueryGridModel): Promise<any> {
         const editorModel = getEditorModel(queryGridModel.getId());
         if (!editorModel) {
             gridShowError(queryGridModel, {
-                message: 'Grid does not expose an editor. Ensure the grid is properly initialized for editing.'
+                message: 'Grid does not expose an editor. Ensure the grid is properly initialized for editing.',
             });
             return;
         }
 
-        const rows = editorModel.getRawData(queryGridModel).valueSeq()
+        const rows = editorModel
+            .getRawData(queryGridModel)
+            .valueSeq()
             .reduce((rows, row) => rows.push(row.toMap()), List<Map<string, any>>());
 
         // TODO: InsertRows responses are fragile and depend heavily on shape of data uploaded
         return insertRows({
             fillEmptyFields: true,
-            schemaQuery : this.getSchemaQuery(),
+            schemaQuery: this.getSchemaQuery(),
             rows,
-            auditBehavior: this.auditBehavior
-        })
-    };
+            auditBehavior: this.auditBehavior,
+        });
+    }
 
     getGridValues(queryInfo: QueryInfo): Map<any, any> {
         let data = List<Map<string, any>>();
@@ -479,24 +479,25 @@ export class EntityIdCreationModel extends Record({
         for (let i = 0; i < this.entityCount; i++) {
             let values = Map<string, any>();
 
-            queryInfo
-                .getInsertColumns()
-                .forEach((col) => {
-                    const colName = col.name;
+            queryInfo.getInsertColumns().forEach(col => {
+                const colName = col.name;
 
-                    if (col.isExpInput()) {
-                        // Convert parent values into appropriate column names
-                        const sq = EntityIdCreationModel.revertParentInputSchema(col);
+                if (col.isExpInput()) {
+                    // Convert parent values into appropriate column names
+                    const sq = EntityIdCreationModel.revertParentInputSchema(col);
 
-                        // should be only one parent with the matching schema and query name
-                        const selected = this.entityParents.reduce((found, parentList) => {
-                            return found || parentList.find((parent) => parent.schema === sq.schemaName && parent.query === sq.queryName)
-                        }, undefined);
-                        if (selected && selected.value) {
-                            values = values.set(colName, selected.value);
-                        }
+                    // should be only one parent with the matching schema and query name
+                    const selected = this.entityParents.reduce((found, parentList) => {
+                        return (
+                            found ||
+                            parentList.find(parent => parent.schema === sq.schemaName && parent.query === sq.queryName)
+                        );
+                    }, undefined);
+                    if (selected && selected.value) {
+                        values = values.set(colName, selected.value);
                     }
-                });
+                }
+            });
 
             data = data.push(values);
         }
@@ -506,33 +507,32 @@ export class EntityIdCreationModel extends Record({
 }
 
 export interface IEntityTypeDetails extends IEntityDetails {
-    importAliasKeys?: Array<string>
-    importAliasValues?: Array<string>
+    importAliasKeys?: string[];
+    importAliasValues?: string[];
 }
 
 export const enum EntityInsertPanelTabs {
     Grid = 1,
-    File = 2
+    File = 2,
 }
 
 export interface EntityDataType {
-    typeListingSchemaQuery: SchemaQuery // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
-    instanceSchemaName: string // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
-    deleteConfirmationActionName: string // action in ExperimentController used to get the delete confirmation data
-    nounSingular: string
-    nounAsParentSingular: string
-    nounPlural: string
-    typeNounSingular: string
-    descriptionSingular: string // (e.g., parent sample type) used in EntityInsertPanel for a message about how many of these types are available
-    descriptionPlural: string
-    uniqueFieldKey: string
-    dependencyText: string // text describing the dependencies that may prevent the entity from being deleted (e.g., 'derived sample or assay data dependencies')
-    deleteHelpLinkTopic: string // help topic for finding out more about dependencies and deletion
-    inputColumnName: string // used for extracting or querying for the parents of this type
-    inputTypeColumnName: string // used for extracting or querying for the types for the input columns
-    inputTypeValueField: string
-    appUrlPrefixParts?: Array<string> // the prefix used for creating links to this type in the application
-    insertColumnNamePrefix: string // when updating this value as an input, the name of that column (e.g, MaterialInputs)
-    filterArray?: Array<Filter.IFilter> // A list of filters to use when selecting the set of values
+    typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
+    instanceSchemaName: string; // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
+    deleteConfirmationActionName: string; // action in ExperimentController used to get the delete confirmation data
+    nounSingular: string;
+    nounAsParentSingular: string;
+    nounPlural: string;
+    typeNounSingular: string;
+    descriptionSingular: string; // (e.g., parent sample type) used in EntityInsertPanel for a message about how many of these types are available
+    descriptionPlural: string;
+    uniqueFieldKey: string;
+    dependencyText: string; // text describing the dependencies that may prevent the entity from being deleted (e.g., 'derived sample or assay data dependencies')
+    deleteHelpLinkTopic: string; // help topic for finding out more about dependencies and deletion
+    inputColumnName: string; // used for extracting or querying for the parents of this type
+    inputTypeColumnName: string; // used for extracting or querying for the types for the input columns
+    inputTypeValueField: string;
+    appUrlPrefixParts?: string[]; // the prefix used for creating links to this type in the application
+    insertColumnNamePrefix: string; // when updating this value as an input, the name of that column (e.g, MaterialInputs)
+    filterArray?: Filter.IFilter[]; // A list of filters to use when selecting the set of values
 }
-

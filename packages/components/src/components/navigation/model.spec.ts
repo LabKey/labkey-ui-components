@@ -14,52 +14,55 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
+
 import { MenuSectionModel, ProductMenuModel } from './model';
 
-describe("ProductMenuModel", () => {
-
+describe('ProductMenuModel', () => {
     const testSectionKey = 'test';
     const testSection = MenuSectionModel.create({
         key: testSectionKey,
-        label: "My Items",
+        label: 'My Items',
         totalCount: 2,
         items: [
             {
-                key: "a",
-                label: "A"
+                key: 'a',
+                label: 'A',
             },
             {
-                key: "b",
-                label: "B"
-            }
-        ]
+                key: 'b',
+                label: 'B',
+            },
+        ],
     });
 
     const emptySectionKey = 'empty';
     const emptySection = MenuSectionModel.create({
         key: emptySectionKey,
-        label: "No Items",
+        label: 'No Items',
         totalCount: 0,
-        items: []
+        items: [],
     });
 
-    test("hasSectionItems not loaded", () => {
-        let model = new ProductMenuModel({productId: 'hasSectionItems'});
+    test('hasSectionItems not loaded', () => {
+        const model = new ProductMenuModel({ productId: 'hasSectionItems' });
         expect(model.hasSectionItems(testSectionKey)).toBeFalsy();
         expect(model.hasSectionItems(emptySectionKey)).toBeFalsy();
     });
 
-    test("hasSectionItems key match", () => {
-        let model = new ProductMenuModel({productId: 'hasSectionItems'});
-        model = model.setLoadedSections(List<MenuSectionModel>([testSection, emptySection]));
+    test('hasSectionItems key match', () => {
+        let model = new ProductMenuModel({ productId: 'hasSectionItems' });
+        model = model.setLoadedSections(
+            List<MenuSectionModel>([testSection, emptySection])
+        );
         expect(model.hasSectionItems(testSectionKey)).toBeTruthy();
-        expect(model.hasSectionItems(testSectionKey+'BOGUS')).toBeFalsy();
+        expect(model.hasSectionItems(testSectionKey + 'BOGUS')).toBeFalsy();
     });
 
-    test("hasSectionItems empty section", () => {
-        let model = new ProductMenuModel({productId: 'hasSectionItems'});
-        model = model.setLoadedSections(List<MenuSectionModel>([testSection, emptySection]));
+    test('hasSectionItems empty section', () => {
+        let model = new ProductMenuModel({ productId: 'hasSectionItems' });
+        model = model.setLoadedSections(
+            List<MenuSectionModel>([testSection, emptySection])
+        );
         expect(model.hasSectionItems(emptySectionKey)).toBeFalsy();
     });
-
 });

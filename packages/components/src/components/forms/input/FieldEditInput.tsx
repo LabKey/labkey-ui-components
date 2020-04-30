@@ -18,7 +18,7 @@ import { Button, Popover } from 'react-bootstrap';
 import Formsy, { withFormsy } from 'formsy-react';
 import { List, Record } from 'immutable';
 
-export function cleanProps<P>(props: P, ...propsToRemove: Array<string>): P {
+export function cleanProps<P>(props: P, ...propsToRemove: string[]): P {
     if (props) {
         propsToRemove.forEach(k => delete props[k]);
     }
@@ -31,7 +31,7 @@ export class FieldEditProps extends Record({
     inputPlaceholder: undefined,
     inputType: undefined,
     key: undefined,
-    value: undefined
+    value: undefined,
 }) {
     caption: string;
     fieldKey: string;
@@ -40,7 +40,7 @@ export class FieldEditProps extends Record({
     key: string;
     value?: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -50,16 +50,15 @@ export class FieldEditProps extends Record({
 }
 
 interface Props {
-    caption?: string
-    error?: string
-    fields?: List<FieldEditProps>
+    caption?: string;
+    error?: string;
+    fields?: List<FieldEditProps>;
 
-    hideOverlayFn?: () => void
-    onSubmitFn?: Function
+    hideOverlayFn?: () => void;
+    onSubmitFn?: Function;
 }
 
 export class FieldEditForm extends React.Component<Props, any> {
-
     render() {
         const { caption, error, fields, hideOverlayFn, onSubmitFn } = this.props;
 
@@ -78,59 +77,56 @@ export class FieldEditForm extends React.Component<Props, any> {
         const popoverProps: any = Object.assign({}, this.props, {
             id: 'field-popover',
             placement: 'bottom',
-            title
+            title,
         });
 
         return (
             <Popover {...cleanProps(popoverProps, 'hideOverlayFn', 'onSubmitFn')}>
                 <Formsy onValidSubmit={onSubmitFn}>
-                    {
-                        fields.map((field, index) => (
-                             <FieldEditInput
-                                 caption={caption}
-                                 fieldCaption={field.caption}
-                                 inputType={field.inputType}
-                                 key={index}
-                                 name={field.getFieldEditInputName()}
-                                 inputPlaceholder={field.inputPlaceholder}
-                                 showButtons={index === 0}
-                                 value={field.value}
-                                 hideOverlayFn={hideOverlayFn}
-                            />
-                        ))
-                    }
+                    {fields.map((field, index) => (
+                        <FieldEditInput
+                            caption={caption}
+                            fieldCaption={field.caption}
+                            inputType={field.inputType}
+                            key={index}
+                            name={field.getFieldEditInputName()}
+                            inputPlaceholder={field.inputPlaceholder}
+                            showButtons={index === 0}
+                            value={field.value}
+                            hideOverlayFn={hideOverlayFn}
+                        />
+                    ))}
                 </Formsy>
             </Popover>
-        )
+        );
     }
 }
 
 interface FieldEditInputStateProps {
-    caption?: string
-    fieldCaption?: string
-    inputPlaceholder?: string
-    inputType?: any
-    name: string
-    showButtons?: boolean
-    value?: string
+    caption?: string;
+    fieldCaption?: string;
+    inputPlaceholder?: string;
+    inputType?: any;
+    name: string;
+    showButtons?: boolean;
+    value?: string;
 
-    hideOverlayFn?: () => void
+    hideOverlayFn?: () => void;
 
     // from formsy-react
-    getErrorMessage?: Function
-    getValue?: Function
-    setValue?: Function
-    showRequired?: Function
+    getErrorMessage?: Function;
+    getValue?: Function;
+    setValue?: Function;
+    showRequired?: Function;
 }
 
 class FieldEditInputImpl extends React.Component<FieldEditInputStateProps, any> {
-
     static defaultProps = {
-        inputPlaceholder: '...'
+        inputPlaceholder: '...',
     };
 
     handleChange(e) {
-        this.props.setValue(e.target.value)
+        this.props.setValue(e.target.value);
     }
 
     resolveFormElement() {
@@ -142,24 +138,15 @@ class FieldEditInputImpl extends React.Component<FieldEditInputStateProps, any> 
             defaultValue: value,
             onChange: this.handleChange.bind(this),
             placeholder: inputPlaceholder,
-            type: 'text'
+            type: 'text',
         };
 
         switch (inputType) {
             case 'textarea':
-                return (
-                    <textarea
-                        rows={4}
-                        {...props}
-                    />
-                );
+                return <textarea rows={4} {...props} />;
 
             default:
-                return (
-                    <input
-                        {...props}
-                    />
-                );
+                return <input {...props} />;
         }
     }
 
@@ -171,26 +158,23 @@ class FieldEditInputImpl extends React.Component<FieldEditInputStateProps, any> 
         return (
             <div className="row">
                 <div className="field-edit--input-container">
-                    <div style={showButtons ? {} : {paddingTop: "10px"}}>
+                    <div style={showButtons ? {} : { paddingTop: '10px' }}>
                         {fieldCaption}
                         {this.resolveFormElement()}
                     </div>
                 </div>
-                {showButtons &&
-                <div className="btn-group field-edit--btn-group">
-                    <Button bsStyle="warning" onClick={hideOverlayFn}>
-                        <i className="fa fa-times-circle" title={'Cancel?'}/>
-                    </Button>
-                    <Button
-                        type="submit"
-                        bsStyle="info"
-                    >
-                        <i className="fa fa-check-circle" title={'Update ' + caption + '?'}/>
-                    </Button>
-                </div>
-                }
+                {showButtons && (
+                    <div className="btn-group field-edit--btn-group">
+                        <Button bsStyle="warning" onClick={hideOverlayFn}>
+                            <i className="fa fa-times-circle" title="Cancel?" />
+                        </Button>
+                        <Button type="submit" bsStyle="info">
+                            <i className="fa fa-check-circle" title={'Update ' + caption + '?'} />
+                        </Button>
+                    </div>
+                )}
             </div>
-        )
+        );
     }
 }
 

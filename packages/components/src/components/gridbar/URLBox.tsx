@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 
 import { getLocation, Location, replaceParameters } from '../../util/URL';
 import { OmniBox } from '../omnibox/OmniBox';
@@ -23,9 +23,7 @@ import { FilterAction } from '../omnibox/actions/Filter';
 import { SearchAction } from '../omnibox/actions/Search';
 import { SortAction } from '../omnibox/actions/Sort';
 import { ViewAction } from '../omnibox/actions/View';
-import { QueryColumn, QueryGridModel } from '../base/models/model';
-
-const emptyList = List<QueryColumn>();
+import { QueryGridModel } from '../base/models/model';
 
 /**
  * This is a mapping of actions with their associated URL param. It is keyed by the name of action
@@ -35,82 +33,71 @@ const urlActions = {
     filter: FilterAction,
     search: SearchAction,
     sort: SortAction,
-    view: ViewAction
+    view: ViewAction,
 };
 
-function isLocationEqual(locationA: Location, locationB: Location): boolean {
-    return locationA && locationB &&
+export function isLocationEqual(locationA: Location, locationB: Location): boolean {
+    return (
+        locationA &&
+        locationB &&
         locationA.pathname === locationB.pathname &&
-        locationA.search === locationB.search;
+        locationA.search === locationB.search &&
+        locationA.query.equals(locationB.query)
+    );
 }
 
 interface URLBoxProps {
-    actions?: Array<string>
-    queryModel: QueryGridModel
+    actions?: string[];
+    queryModel: QueryGridModel;
 }
 
 interface URLBoxState {
-    changeLock?: boolean,
-    location: Location
+    changeLock?: boolean;
+    location: Location;
 }
 
 export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
-
     static defaultProps = {
         // TODO: There is only one consumer of URLBox (QueryGridPanel) and it never overrides this. Does it need to be
         //  a prop? Probably not. We can probably simplify some code in this component if we remove it.
-        actions: ['filter', 'search', 'sort', 'view']
+        actions: ['filter', 'search', 'sort', 'view'],
     };
 
     constructor(props: URLBoxProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
-        this.onOmniBoxChange = this.onOmniBoxChange.bind(this);
-        this.requestColumns = this.requestColumns.bind(this);
-        this.requestModel = this.requestModel.bind(this);
-
         this.state = {
             changeLock: false,
-            location: getLocation()
+            location: getLocation(),
         };
     }
 
     shouldComponentUpdate(nextProps: URLBoxProps, nextState: URLBoxState): boolean {
-        return !nextState.changeLock && !isLocationEqual(this.state.location, nextState.location);
+        return !nextState.changeLock && !isLocationEqual(this.state.location, getLocation());
     }
 
-    private getColumns(allColumns?: boolean): List<QueryColumn> {
-        const queryModel = this.getQueryModel();
-        if (!queryModel) {
-            return emptyList;
-        }
-
-        if (allColumns) {
-            return queryModel.getAllColumns();
-        }
-
-        return queryModel.getDisplayColumns();
-    }
-
-    onOmniBoxChange(actionValueCollection: Array<ActionValueCollection>, boxActions: Array<Action>) {
+    onOmniBoxChange = (actionValueCollection: ActionValueCollection[], boxActions: Action[]) => {
         const queryModel = this.getQueryModel();
         const location = getLocation();
 
-        let params = Map<string, string>().asMutable();
+        const params = Map<string, string>().asMutable();
 
         if (actionValueCollection.length > 0) {
-            for (let i=0; i < actionValueCollection.length; i++) {
-                let actionParams = actionValueCollection[i].action.buildParams(actionValueCollection[i].values);
-                for (let p=0; p < actionParams.length; p++) {
-                    params.set(encodeURIComponent(actionParams[p].paramKey), encodeURIComponent(actionParams[p].paramValue));
+            for (let i = 0; i < actionValueCollection.length; i++) {
+                const actionParams = actionValueCollection[i].action.buildParams(actionValueCollection[i].values);
+                for (let p = 0; p < actionParams.length; p++) {
+                    params.set(
+                        encodeURIComponent(actionParams[p].paramKey),
+                        encodeURIComponent(actionParams[p].paramValue)
+                    );
                 }
             }
         }
 
         if (location && location.query) {
             location.query.map((value, key) => {
-                for (let i=0; i < boxActions.length; i++) {
+                for (let i = 0; i < boxActions.length; i++) {
                     if (!params.has(key) && boxActions[i].matchParam(key, value)) {
                         params.set(key, undefined);
                     }
@@ -129,72 +116,74 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         //  version of it. It is entirely plausible that changeLock is still false, by the time we call updateURL, and
         //  even by the time we set changeLock to false again.
         this.setState({
-            changeLock: true
+            changeLock: true,
         });
 
         replaceParameters(location, params.asImmutable());
 
         this.setState({
             changeLock: false,
-            location: getLocation()
+            location: getLocation(),
         });
-    }
+    };
 
-    mapParamsToActionValues(): {actions: Array<Action>, values: Array<ActionValue>} {
+    mapParamsToActionValues = (): { actions: Action[]; values: ActionValue[] } => {
         const queryModel = this.getQueryModel();
         const location = getLocation();
         const urlPrefix = queryModel ? queryModel.urlPrefix : undefined;
         const queryInfo = queryModel ? queryModel.queryInfo : undefined;
 
-        let actions: Array<Action> = [];
-        let actionValues = [];
-        let actionsProp = this.props.actions;
+        const actions: Action[] = [];
+        const actionValues = [];
+        const actionsProp = this.props.actions;
 
         // setup known URL actions
-        for (let i=0; i < actionsProp.length; i++) {
+        for (let i = 0; i < actionsProp.length; i++) {
             if (actionsProp[i].toLowerCase() in urlActions) {
                 const actionName = actionsProp[i].toLowerCase();
-                if (actionName === ViewAction.NAME && queryInfo)
-                {
-                    const {views} = queryInfo;
-                    if (!queryModel.showViewSelector || (views && views.filter(v => !v.name.startsWith('~~')).size === 0))
+                if (actionName === ViewAction.NAME && queryInfo) {
+                    const { views } = queryInfo;
+                    if (
+                        !queryModel.showViewSelector ||
+                        (views && views.filter(v => !v.name.startsWith('~~')).size === 0)
+                    )
                         continue;
                 }
 
-                let urlAction = urlActions[actionName];
-                actions.push(new urlAction(this.requestColumns, urlPrefix, this.requestModel));
+                const urlAction = urlActions[actionName];
+                actions.push(new urlAction(urlPrefix, this.getQueryModel));
             }
         }
 
         // match each parameter against an action
         if (location && location.query) {
             location.query.map((value: any, key) => {
-                let paramValues: Array<string>;
+                let paramValues: string[];
 
                 if (value instanceof Array) {
                     paramValues = value;
-                }
-                else {
+                } else {
                     paramValues = [value];
                 }
 
-                for (let a=0; a < actions.length; a++) {
-                    for (let p=0; p < paramValues.length; p++) {
+                for (let a = 0; a < actions.length; a++) {
+                    for (let p = 0; p < paramValues.length; p++) {
                         const decodedParamVals = decodeURIComponent(paramValues[p]);
                         if (actions[a].matchParam(key, decodedParamVals)) {
-                            let values = actions[a].parseParam(key, decodedParamVals, this.getColumns(true));
+                            const values = actions[a].parseParam(key, decodedParamVals, queryModel.getAllColumns());
 
-                            for (let v=0; v < values.length; v++) {
+                            for (let v = 0; v < values.length; v++) {
                                 if (typeof values[v] === 'string') {
                                     actionValues.push({
                                         action: actions[a],
-                                        value: values[v]
-                                    })
-                                }
-                                else {
-                                    actionValues.push(Object.assign({}, values[v], {
-                                        action: actions[a]
-                                    }));
+                                        value: values[v],
+                                    });
+                                } else {
+                                    actionValues.push(
+                                        Object.assign({}, values[v], {
+                                            action: actions[a],
+                                        })
+                                    );
                                 }
                             }
                         }
@@ -205,24 +194,16 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
         return {
             actions,
-            values: actionValues
-        }
-    }
+            values: actionValues,
+        };
+    };
 
-    requestColumns(allColumns?: boolean): Promise<List<QueryColumn>> {
-        return Promise.resolve(this.getColumns(allColumns));
-    }
-
-    requestModel(): Promise<QueryGridModel> {
-        return Promise.resolve(this.getQueryModel());
-    }
-
-    getQueryModel(): QueryGridModel {
+    getQueryModel = (): QueryGridModel => {
         const { queryModel } = this.props;
 
         // need to access this.global directly to connect this component to the re-render cycle
         return queryModel ? this.global.QueryGrid_models.get(queryModel.getId()) : undefined;
-    }
+    };
 
     render() {
         const queryModel = this.getQueryModel();
@@ -230,11 +211,12 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
         return (
             <OmniBox
+                getModel={this.getQueryModel}
                 actions={actions}
                 onChange={this.onOmniBoxChange}
                 values={values}
                 disabled={queryModel && queryModel.isError}
             />
-        )
+        );
     }
 }

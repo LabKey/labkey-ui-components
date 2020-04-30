@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 import React from 'react';
+
 import { Notification } from '../notifications/Notification';
+
 import { User } from './models/model';
 
 interface PageHeaderProps {
-    iconCls?: string
-    showNotifications?: boolean
-    title?: string
-    user?: User
+    iconCls?: string;
+    showNotifications?: boolean;
+    title?: string;
+    user?: User;
 }
 
 export class PageHeader extends React.Component<PageHeaderProps, any> {
-
     static defaultProps = {
-        showNotifications: true
+        showNotifications: true,
     };
 
     render() {
@@ -40,8 +41,8 @@ export class PageHeader extends React.Component<PageHeaderProps, any> {
                     {iconCls ? <span className={iconCls}>&nbsp;</span> : null}
                     {title}
                 </h2>
-                {showNotifications && <Notification user={user}/>}
+                {showNotifications && <Notification user={user} />}
             </div>
-        )
+        );
     }
 }

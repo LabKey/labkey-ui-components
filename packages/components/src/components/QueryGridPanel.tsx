@@ -21,6 +21,7 @@ import { Utils } from '@labkey/api';
 
 import { gridInit } from '../actions';
 import { getQueryGridModel } from '../global';
+
 import { QueryGrid } from './QueryGrid';
 import { QueryGridBar, QueryGridBarButtons } from './gridbar/QueryGridBar';
 
@@ -30,27 +31,27 @@ import { LoadingSpinner } from './base/LoadingSpinner';
 import { Alert } from './base/Alert';
 
 interface Props {
-    model: QueryGridModel | List<QueryGridModel>,
-    buttons?: QueryGridBarButtons,
-    header?: React.ReactNode,
-    message?: any,
-    asPanel?: boolean,
-    showTabs?: boolean,
-    showAllTabs?: boolean,
-    showGridBar?: boolean,
-    showSampleComparisonReports?: boolean,
-    onReportClicked?: Function,
-    onCreateReportClicked?: Function,
-    activeTab?: number,
-    rightTabs?: List<string>,
-    onChangeTab?: (tabInd : number) => any,
-    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
-    advancedExportOption?: Object
-    highlightLastSelectedRow?: boolean
+    model: QueryGridModel | List<QueryGridModel>;
+    buttons?: QueryGridBarButtons;
+    header?: React.ReactNode;
+    message?: any;
+    asPanel?: boolean;
+    showTabs?: boolean;
+    showAllTabs?: boolean;
+    showGridBar?: boolean;
+    showSampleComparisonReports?: boolean;
+    onReportClicked?: Function;
+    onCreateReportClicked?: Function;
+    activeTab?: number;
+    rightTabs?: List<string>;
+    onChangeTab?: (tabInd: number) => any;
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any;
+    advancedExportOption?: Record<string, any>;
+    highlightLastSelectedRow?: boolean;
 }
 
 interface State {
-    activeTab: number
+    activeTab: number;
 }
 
 export class QueryGridPanel extends React.Component<Props, State> {
@@ -65,7 +66,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            activeTab: props.activeTab // initially set to undefined until a tab is clicked
+            activeTab: props.activeTab, // initially set to undefined until a tab is clicked
         };
     }
 
@@ -76,15 +77,15 @@ export class QueryGridPanel extends React.Component<Props, State> {
     componentWillReceiveProps(nextProps: Props) {
         this.initModel(nextProps);
         if (this.state.activeTab != nextProps.activeTab) {
-            this.setState(() =>( {
-                activeTab: nextProps.activeTab
+            this.setState(() => ({
+                activeTab: nextProps.activeTab,
             }));
         }
     }
 
     initModel(props: Props) {
         // make sure each QueryGridModel is initialized
-        this.getModelsAsList(props).forEach((model) => {
+        this.getModelsAsList(props).forEach(model => {
             if (model && !model.isLoading) {
                 gridInit(model);
             }
@@ -94,18 +95,16 @@ export class QueryGridPanel extends React.Component<Props, State> {
     getActiveModel(): QueryGridModel {
         const { activeTab } = this.state;
         const models = this.getModelsAsList(this.props);
-        const nonZeroModels = models.filter((model) => model && model.isLoaded && model.totalRows > 0);
+        const nonZeroModels = models.filter(model => model && model.isLoaded && model.totalRows > 0);
 
         let activeModel;
         if (this.hasTabs()) {
             if (activeTab !== undefined) {
                 activeModel = models.get(activeTab);
-            }
-            else {
+            } else {
                 activeModel = nonZeroModels.size > 0 ? nonZeroModels.get(0) : models.get(0);
             }
-        }
-        else {
+        } else {
             activeModel = nonZeroModels.size > 0 ? nonZeroModels.get(0) : models.get(0);
         }
 
@@ -120,7 +119,9 @@ export class QueryGridPanel extends React.Component<Props, State> {
     }
 
     getModelsFromGlobalState(): List<QueryGridModel> {
-        return this.getModelsAsList(this.props).map((model) => getQueryGridModel(model.getId())).toList();
+        return this.getModelsAsList(this.props)
+            .map(model => getQueryGridModel(model.getId()))
+            .toList();
     }
 
     getModelsAsList(props: Props): List<QueryGridModel> {
@@ -131,21 +132,19 @@ export class QueryGridPanel extends React.Component<Props, State> {
 
     hasTabs(): boolean {
         const { showTabs } = this.props;
-        if (showTabs)
-            return true;
+        if (showTabs) return true;
 
         const models = this.getModelsAsList(this.props);
-        if (models.size < 2)
-            return false;
+        if (models.size < 2) return false;
         else {
-            const nonZeroSets = models.reduce((count, model) => (count + (model.totalRows > 0 ? 1 : 0)), 0);
+            const nonZeroSets = models.reduce((count, model) => count + (model.totalRows > 0 ? 1 : 0), 0);
             return nonZeroSets > 1;
         }
     }
 
     setActiveTab(id: number) {
         const { onChangeTab } = this.props;
-        this.setState({activeTab: id});
+        this.setState({ activeTab: id });
 
         if (Utils.isFunction(onChangeTab)) {
             onChangeTab(id);
@@ -158,23 +157,30 @@ export class QueryGridPanel extends React.Component<Props, State> {
 
         return this.hasTabs() ? (
             <ul className="nav nav-tabs">
-                {
-                    this.getModelsFromGlobalState().map((model, index) => {
-                        if (model && (showAllTabs || model.totalRows > 0 || (model.filterArray && model.filterArray.size > 0))) {
-                            const tabName = model.title ? model.title : (model.queryInfo ? model.queryInfo.queryLabel : model.query);
-                            const classes = classNames({
-                                'active': activeModel.getId() === model.getId(),
-                                'pull-right': rightTabs && rightTabs.contains(tabName)
-                            });
-                            return (
-                                <li key={index} className={classes}>
-                                    <a onClick={() => this.setActiveTab(index)}>{tabName} ({model.totalRows})</a>
-                                </li>
-                            )
-                        }
-                        return null;
-                    })
-                }
+                {this.getModelsFromGlobalState().map((model, index) => {
+                    if (
+                        model &&
+                        (showAllTabs || model.totalRows > 0 || (model.filterArray && model.filterArray.size > 0))
+                    ) {
+                        const tabName = model.title
+                            ? model.title
+                            : model.queryInfo
+                            ? model.queryInfo.queryLabel
+                            : model.query;
+                        const classes = classNames({
+                            active: activeModel.getId() === model.getId(),
+                            'pull-right': rightTabs && rightTabs.contains(tabName),
+                        });
+                        return (
+                            <li key={index} className={classes}>
+                                <a onClick={() => this.setActiveTab(index)}>
+                                    {tabName} ({model.totalRows})
+                                </a>
+                            </li>
+                        );
+                    }
+                    return null;
+                })}
             </ul>
         ) : null;
     }
@@ -192,7 +198,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
             onCreateReportClicked,
             onSelectionChange,
             advancedExportOption,
-            highlightLastSelectedRow
+            highlightLastSelectedRow,
         } = this.props;
         const activeModel = this.getModel();
         let gridBar;
@@ -221,21 +227,26 @@ export class QueryGridPanel extends React.Component<Props, State> {
                 <div className="row">
                     <div className="col-md-12">
                         {this.renderTabs()}
-                        {activeModel
-                            ? <QueryGrid model={activeModel} onSelectionChange={onSelectionChange} highlightLastSelectedRow={highlightLastSelectedRow}/>
-                            : <LoadingSpinner/>
-                        }
+                        {activeModel ? (
+                            <QueryGrid
+                                model={activeModel}
+                                onSelectionChange={onSelectionChange}
+                                highlightLastSelectedRow={highlightLastSelectedRow}
+                            />
+                        ) : (
+                            <LoadingSpinner />
+                        )}
                     </div>
                 </div>
             </>
-        ) : <Alert>No QueryGridModels defined for this QueryGridPanel.</Alert>;
+        ) : (
+            <Alert>No QueryGridModels defined for this QueryGridPanel.</Alert>
+        );
 
         return (
             <div className={asPanel ? 'panel panel-default' : ''}>
                 {header ? <div className={asPanel ? 'panel-heading' : ''}>{header}</div> : null}
-                <div className={asPanel ? 'panel-body' : ''}>
-                    {content}
-                </div>
+                <div className={asPanel ? 'panel-body' : ''}>{content}</div>
             </div>
         );
     }

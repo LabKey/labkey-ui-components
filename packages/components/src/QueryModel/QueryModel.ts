@@ -4,6 +4,7 @@ import { Filter, Query } from '@labkey/api';
 
 import { naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
 import { QuerySort } from '../components/base/models/model';
+
 import { getOrDefault } from './utils';
 
 export enum LoadingState {
@@ -45,7 +46,7 @@ export interface QueryConfig {
     maxRows?: number;
     offset?: number;
     omittedColumns?: string[];
-    queryParameters?: { [key: string]: any};
+    queryParameters?: { [key: string]: any };
     requiredColumns?: string[];
     schemaQuery: SchemaQuery;
     sorts?: QuerySort[];
@@ -60,7 +61,7 @@ export interface IQueryModel extends QueryConfig {
     queryInfo?: QueryInfo;
     queryInfoLoadingState: LoadingState;
     orderedRows?: string[];
-    rows?: { [key: string]: any};
+    rows?: { [key: string]: any };
     rowCount?: number;
     rowsLoadingState: LoadingState;
 }
@@ -82,7 +83,7 @@ export class QueryModel implements IQueryModel {
     readonly maxRows?: number;
     readonly offset: number;
     readonly omittedColumns: string[];
-    readonly queryParameters?: { [key: string]: any};
+    readonly queryParameters?: { [key: string]: any };
     readonly requiredColumns: string[];
     readonly schemaQuery: SchemaQuery;
     readonly sorts?: QuerySort[];
@@ -95,7 +96,7 @@ export class QueryModel implements IQueryModel {
     readonly orderedRows?: string[];
     readonly queryInfo?: QueryInfo;
     readonly queryInfoLoadingState: LoadingState;
-    readonly rows?: { [key: string]: any};
+    readonly rows?: { [key: string]: any };
     readonly rowCount?: number;
 
     constructor(queryConfig: QueryConfig) {
@@ -169,7 +170,7 @@ export class QueryModel implements IQueryModel {
      * trying to get details for.
      */
     get detailFilters(): Filter.IFilter[] {
-        return this.baseFilters.filter((filter) => (filter.getColumnName().toLowerCase() === 'replaced'));
+        return this.baseFilters.filter(filter => filter.getColumnName().toLowerCase() === 'replaced');
     }
 
     get filters(): Filter.IFilter[] {
@@ -182,10 +183,10 @@ export class QueryModel implements IQueryModel {
         }
 
         if (this.keyValue !== undefined) {
-            let pkFilter = [];
+            const pkFilter = [];
 
             if (queryInfo.pkCols.size === 1) {
-                pkFilter.push(Filter.create(queryInfo.pkCols.first(), keyValue))
+                pkFilter.push(Filter.create(queryInfo.pkCols.first(), keyValue));
             } else {
                 // Note: This behavior of not throwing an error, and continuing despite not having a single PK column is
                 // inherited from QueryGridModel, we may want to rethink this before widely adopting this API.
@@ -196,7 +197,7 @@ export class QueryModel implements IQueryModel {
             return [...pkFilter, ...this.detailFilters];
         }
 
-        return [ ...baseFilters, ...filterArray, ...queryInfo.getFilters(viewName).toArray() ]
+        return [...baseFilters, ...filterArray, ...queryInfo.getFilters(viewName).toArray()];
     }
 
     get columnString(): string {

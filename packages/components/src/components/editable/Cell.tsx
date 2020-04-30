@@ -22,26 +22,27 @@ import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
 import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from '../../actions';
 import { CellMessage, ValueDescriptor } from '../../models';
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-import { LookupCell, LookupCellProps } from './LookupCell';
+
 import { QueryColumn } from '../base/models/model';
 
+import { LookupCell, LookupCellProps } from './LookupCell';
+
 interface Props {
-    col: QueryColumn
-    colIdx: number
-    modelId: string
-    name?: string
-    placeholder?: string
-    readOnly?: boolean
-    rowIdx: number
-    focused?: boolean
-    message?: CellMessage
-    selected?: boolean
-    selection?: boolean
-    values?: List<ValueDescriptor>
+    col: QueryColumn;
+    colIdx: number;
+    modelId: string;
+    name?: string;
+    placeholder?: string;
+    readOnly?: boolean;
+    rowIdx: number;
+    focused?: boolean;
+    message?: CellMessage;
+    selected?: boolean;
+    selection?: boolean;
+    values?: List<ValueDescriptor>;
 }
 
 export class Cell extends React.PureComponent<Props, any> {
-
     private changeTO: number;
     private clickTO: number;
     private displayEl: React.RefObject<any>;
@@ -51,7 +52,7 @@ export class Cell extends React.PureComponent<Props, any> {
         message: undefined,
         selected: false,
         selection: false,
-        values: List<ValueDescriptor>()
+        values: List<ValueDescriptor>(),
     };
 
     constructor(props: Props) {
@@ -83,10 +84,16 @@ export class Cell extends React.PureComponent<Props, any> {
     handleBlur(evt: any) {
         clearTimeout(this.changeTO);
         const { colIdx, modelId, rowIdx } = this.props;
-        modifyCell(modelId, colIdx, rowIdx, {
-            display: evt.target.value,
-            raw: evt.target.value
-        }, MODIFICATION_TYPES.REPLACE);
+        modifyCell(
+            modelId,
+            colIdx,
+            rowIdx,
+            {
+                display: evt.target.value,
+                raw: evt.target.value,
+            },
+            MODIFICATION_TYPES.REPLACE
+        );
     }
 
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -95,20 +102,25 @@ export class Cell extends React.PureComponent<Props, any> {
         clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
             const { colIdx, modelId, rowIdx } = this.props;
-            modifyCell(modelId, colIdx, rowIdx, {
-                display: event.target.value,
-                raw: event.target.value
-            }, MODIFICATION_TYPES.REPLACE);
+            modifyCell(
+                modelId,
+                colIdx,
+                rowIdx,
+                {
+                    display: event.target.value,
+                    raw: event.target.value,
+                },
+                MODIFICATION_TYPES.REPLACE
+            );
         }, 250);
     }
 
-    isReadOnly() : boolean {
+    isReadOnly(): boolean {
         return this.props.readOnly || this.props.col.readOnly;
     }
 
     handleDblClick() {
-        if (this.isReadOnly())
-            return;
+        if (this.isReadOnly()) return;
 
         clearTimeout(this.clickTO);
         const { colIdx, modelId, rowIdx } = this.props;
@@ -156,8 +168,7 @@ export class Cell extends React.PureComponent<Props, any> {
                 if (focused) {
                     cancelEvent(event);
                     selectCell(modelId, colIdx, rowIdx + 1);
-                }
-                else if (selected) {
+                } else if (selected) {
                     cancelEvent(event);
                     focusCell(modelId, colIdx, rowIdx);
                 }
@@ -168,13 +179,13 @@ export class Cell extends React.PureComponent<Props, any> {
                     selectCell(modelId, colIdx, rowIdx, undefined, true);
                 }
                 break;
-            default: // any other key
+            default:
+                // any other key
                 if (!focused && !isCopy(event) && !isPaste(event)) {
                     if (isSelectAll(event)) {
                         cancelEvent(event);
                         selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.ALL);
-                    }
-                    else {
+                    } else {
                         // Do not cancel event here, otherwise, key capture will be lost
                         focusCell(modelId, colIdx, rowIdx, !this.isReadOnly());
                     }
@@ -196,12 +207,10 @@ export class Cell extends React.PureComponent<Props, any> {
 
         if (event.ctrlKey || event.metaKey) {
             selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.SINGLE);
-        }
-        else if (event.shiftKey) {
+        } else if (event.shiftKey) {
             cancelEvent(event);
             selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.AREA);
-        }
-        else if (!selected) {
+        } else if (!selected) {
             selectCell(modelId, colIdx, rowIdx);
         }
     }
@@ -222,7 +231,7 @@ export class Cell extends React.PureComponent<Props, any> {
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),
-                    'cell-placeholder': valueDisplay.length == 0 && placeholder !== undefined
+                    'cell-placeholder': valueDisplay.length == 0 && placeholder !== undefined,
                 }),
                 onDoubleClick: this.handleDblClick,
                 onKeyDown: this.handleKeys,
@@ -230,22 +239,22 @@ export class Cell extends React.PureComponent<Props, any> {
                 onMouseEnter: this.handleMouseEnter,
                 onBlur: this.handleSelectionBlur,
                 ref: this.displayEl,
-                tabIndex: -1
+                tabIndex: -1,
             };
 
-            if (valueDisplay.length == 0 && placeholder)
-                valueDisplay=placeholder;
+            if (valueDisplay.length == 0 && placeholder) valueDisplay = placeholder;
             const cell = <div {...displayProps}>{valueDisplay}</div>;
 
             if (message) {
                 return (
                     <OverlayTrigger
-                        overlay={(
+                        overlay={
                             <Popover bsClass="popover" id="grid-cell-popover">
                                 {message.message}
                             </Popover>
-                        )}
-                        placement="top">
+                        }
+                        placement="top"
+                    >
                         {cell}
                     </OverlayTrigger>
                 );
@@ -260,9 +269,9 @@ export class Cell extends React.PureComponent<Props, any> {
                 colIdx,
                 disabled: this.isReadOnly(),
                 modelId,
-                rowIdx: rowIdx,
+                rowIdx,
                 select: selectCell,
-                values
+                values,
             };
 
             return <LookupCell {...lookupProps} />;
@@ -276,11 +285,11 @@ export class Cell extends React.PureComponent<Props, any> {
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onKeyDown: this.handleKeys,
-            placeholder: placeholder,
+            placeholder,
             tabIndex: -1,
-            type: 'text'
+            type: 'text',
         };
 
-        return <input {...inputProps}/>;
+        return <input {...inputProps} />;
     }
 }

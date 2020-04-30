@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
 import { Button, MenuItem } from 'react-bootstrap';
+
 import {
     GridPanel,
     GridPanelWithModel,
@@ -17,10 +18,8 @@ import './QueryModel.scss';
 class GridPanelButtonsExample extends PureComponent<RequiresModelAndActions> {
     render() {
         return (
-            <ManageDropdownButton id={'storymanagebtn'}>
-                <MenuItem onClick={() => console.log('Menu Item Clicked')}>
-                    Import Data
-                </MenuItem>
+            <ManageDropdownButton id="storymanagebtn">
+                <MenuItem onClick={() => console.log('Menu Item Clicked')}>Import Data</MenuItem>
             </ManageDropdownButton>
         );
     }
@@ -41,7 +40,7 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
         };
     }
 
-    onFormChange = (e) => {
+    onFormChange = e => {
         const { name, value } = e.target;
         this.setState(() => ({ [name]: value }));
     };
@@ -71,14 +70,10 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
         const { queryModels, actions } = this.props;
         const { model } = queryModels;
         const { schemaName, queryName } = this.state;
-        let body = (
-            <div>
-                Enter a Schema, Query, View
-            </div>
-        );
+        let body = <div>Enter a Schema, Query, View</div>;
 
         if (model !== undefined) {
-            body = <GridPanel actions={actions} model={model} asPanel={false} />
+            body = <GridPanel actions={actions} model={model} asPanel={false} />;
         }
 
         return (
@@ -86,12 +81,24 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
                 <div className="form-row">
                     <div className="form-row__input">
                         <label htmlFor="schemaName">Schema</label>
-                        <input id="schemaName" name="schemaName" type="text" value={schemaName} onChange={this.onFormChange}/>
+                        <input
+                            id="schemaName"
+                            name="schemaName"
+                            type="text"
+                            value={schemaName}
+                            onChange={this.onFormChange}
+                        />
                     </div>
 
                     <div className="form-row__input">
                         <label htmlFor="queryName">Query</label>
-                        <input id="queryName" name="queryName" type="text" value={queryName} onChange={this.onFormChange}/>
+                        <input
+                            id="queryName"
+                            name="queryName"
+                            type="text"
+                            value={queryName}
+                            onChange={this.onFormChange}
+                        />
                     </div>
 
                     <div className="form-row__input">
@@ -110,13 +117,13 @@ const ChangeableSchemaQuery = withQueryModels<{}>(ChangeableSchemaQueryImpl);
 storiesOf('QueryModel', module)
     .add('GridPanel', () => {
         const queryConfigs: QueryConfigMap = {
-            'mixtures': {
+            mixtures: {
                 schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
             },
         };
 
         return (
-            <div style={{marginTop: '2em'}}>
+            <div style={{ marginTop: '2em' }}>
                 <GridPanelWithModel queryConfigs={queryConfigs} ButtonsComponent={GridPanelButtonsExample} />
             </div>
         );

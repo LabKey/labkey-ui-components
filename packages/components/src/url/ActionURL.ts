@@ -15,42 +15,40 @@
  */
 import { OrderedMap } from 'immutable';
 import { ActionURL, Utils } from '@labkey/api';
+
 import { AppURL } from './AppURL';
 
 function applyURL(prop: string, options?: BuildURLOptions): string {
     if (options) {
-        if (typeof(options[prop]) === 'string') {
+        if (typeof options[prop] === 'string') {
             return options[prop];
-        }
-        else if (options[prop] instanceof AppURL) {
+        } else if (options[prop] instanceof AppURL) {
             return window.location.pathname + options[prop].toHref();
         }
     }
 }
 
 interface BuildURLOptions {
-    cancelURL?: string | AppURL
-    container?: string
-    returnURL?: boolean | string | AppURL // defaults to true when action does not end in '.api'
-    successURL?: string | AppURL
+    cancelURL?: string | AppURL;
+    container?: string;
+    returnURL?: boolean | string | AppURL; // defaults to true when action does not end in '.api'
+    successURL?: string | AppURL;
 }
 
 export function buildURL(controller: string, action: string, params?: any, options?: BuildURLOptions): string {
-
-    let constructedParams = {
+    const constructedParams = {
         // server expects camel-case URL (e.g. Url)
         cancelUrl: undefined,
         returnUrl: undefined,
-        successUrl: undefined
+        successUrl: undefined,
     };
 
     const applyReturnURL = !options || (options && options.returnURL !== false);
 
     if (applyReturnURL) {
-        if (options && (typeof(options.returnURL) === 'string' || options.returnURL instanceof AppURL)) {
+        if (options && (typeof options.returnURL === 'string' || options.returnURL instanceof AppURL)) {
             constructedParams.returnUrl = applyURL('returnURL', options);
-        }
-        else if (action.toLowerCase().indexOf('.api') === -1 && action.toLowerCase().indexOf('.post') === -1) {
+        } else if (action.toLowerCase().indexOf('.api') === -1 && action.toLowerCase().indexOf('.post') === -1) {
             // use the current URL
             constructedParams.returnUrl = window.location.pathname + (window.location.hash ? window.location.hash : '');
         }
@@ -59,10 +57,10 @@ export function buildURL(controller: string, action: string, params?: any, optio
     constructedParams.cancelUrl = applyURL('cancelURL', options);
     constructedParams.successUrl = applyURL('successURL', options);
 
-    Object.keys(constructedParams).forEach((key) => {
+    Object.keys(constructedParams).forEach(key => {
         if (!constructedParams[key]) {
             // remove any param keys that do not have values
-            delete constructedParams[key]
+            delete constructedParams[key];
         }
     });
 
@@ -91,34 +89,37 @@ export function hasParameter(parameterName: string): boolean {
 }
 
 export function setParameter(parameterName: string, value: any): void {
-    let { search } = window.location;
-    const EQ = '=', SEP = '&';
+    const { search } = window.location;
+    const EQ = '=',
+        SEP = '&';
 
-    let keyValues = search.substr(1).split(SEP).reduce((map, part) => {
-        const [ key, value ] = part.split(EQ).map(p => decodeURIComponent(p));
+    const keyValues = search
+        .substr(1)
+        .split(SEP)
+        .reduce((map, part) => {
+            const [key, value] = part.split(EQ).map(p => decodeURIComponent(p));
 
-        if (!key) {
-            return map;
-        }
-
-        if (map.has(key)) {
-            if (!Utils.isArray(map.get(key))) {
-                map.set(key, [map.get(key)]);
+            if (!key) {
+                return map;
             }
 
-            let arrValue = map.get(key);
-            arrValue.push(value);
+            if (map.has(key)) {
+                if (!Utils.isArray(map.get(key))) {
+                    map.set(key, [map.get(key)]);
+                }
 
-            return map.set(key, arrValue);
-        }
+                const arrValue = map.get(key);
+                arrValue.push(value);
 
-        return map.set(key, value);
-    }, OrderedMap<string, any>().asMutable());
+                return map.set(key, arrValue);
+            }
+
+            return map.set(key, value);
+        }, OrderedMap<string, any>().asMutable());
 
     if (value !== undefined) {
         keyValues.set(parameterName, value);
-    }
-    else {
+    } else {
         keyValues.remove(parameterName);
     }
 
@@ -132,7 +133,7 @@ export function setParameter(parameterName: string, value: any): void {
             }
 
             const eKey = encodeURIComponent(key);
-            value.forEach((v) => {
+            value.forEach(v => {
                 search += sep + eKey + EQ + encodeURIComponent(v);
                 sep = SEP;
             });
@@ -145,11 +146,7 @@ export function setParameter(parameterName: string, value: any): void {
 }
 
 export function imageURL(iconDir: string, src: string): string {
-    return [
-        ActionURL.getContextPath(),
-        iconDir,
-        src
-    ].join('/');
+    return [ActionURL.getContextPath(), iconDir, src].join('/');
 }
 
 export function toggleParameter(parameterName: string, value: any): void {

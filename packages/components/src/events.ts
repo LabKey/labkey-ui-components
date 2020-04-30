@@ -31,7 +31,7 @@ export function getPasteValue(event: React.ClipboardEvent<any>): string {
 }
 
 export function isCopy(event: React.KeyboardEvent<any>): boolean {
-    return isEvent(event) && (event.keyCode === KEYS.C && (event.ctrlKey || event.metaKey));
+    return isEvent(event) && event.keyCode === KEYS.C && (event.ctrlKey || event.metaKey);
 }
 
 function isEvent(event: React.SyntheticEvent<any>): boolean {
@@ -39,11 +39,11 @@ function isEvent(event: React.SyntheticEvent<any>): boolean {
 }
 
 export function isPaste(event: React.KeyboardEvent<any>): boolean {
-    return isEvent(event) && (event.keyCode === KEYS.V && (event.ctrlKey || event.metaKey));
+    return isEvent(event) && event.keyCode === KEYS.V && (event.ctrlKey || event.metaKey);
 }
 
 export function isSelectAll(event: React.KeyboardEvent<any>): boolean {
-    return isEvent(event) && (event.keyCode === KEYS.A && (event.ctrlKey || event.metaKey));
+    return isEvent(event) && event.keyCode === KEYS.A && (event.ctrlKey || event.metaKey);
 }
 
 export function setCopyValue(event: any, value: string): boolean {

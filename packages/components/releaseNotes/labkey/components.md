@@ -1,14 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version TBD
-*Released*: TBD
+## version 0.55.0
+*Released*: 30 April 2020
 * Issue 39633: Choosing to cancel navigating away from a page when using react-router's setRouteLeaveHook will leave
 you on the page but the URL will have been updated to the page where you had originally intended to go, which means
 using that link again from the starting page will not work.
 * Issue 38002: Set isSubmitting to false after updateRows in EditableGridPanelForUpdate in case you stay on the page after updating
 * Update resolveErrorMessage to strip off java.lang.IllegalArgumentException prefixes and detect "Bad SQL grammar" exceptions.
-* Issue 40008: Add optional property to LineageSummary to allow customization of the lineage group headings in the summary panel
+* Partial fix for Issue 40008: Add optional property to LineageSummary to allow customization of the lineage group headings in the summary panel
 * in SingleParentEntityPanel, use paged query model for better performance
 
 ### version 0.54.1

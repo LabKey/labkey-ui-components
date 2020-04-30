@@ -962,6 +962,7 @@ export class DomainField
         delete json.rangeValidators;
         delete json.regexValidators;
         delete json.lookupValidator;
+        delete json.disablePhiLevel;
 
         return json;
     }

@@ -15,7 +15,11 @@
  */
 
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
+
+import produce, { Draft } from 'immer';
+
+import { List } from 'immutable';
 
 import {
     InjectedDomainPropertiesPanelCollapseProps,
@@ -25,16 +29,23 @@ import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BaseProperties
 import { HelpTopicURL } from '../HelpTopicURL';
 import { DEFINE_DATASET_TOPIC } from '../../../util/helpLinks';
 
+import { DomainDesign, DomainField } from '../models';
+
+import { PHILEVEL_NOT_PHI } from '../constants';
+
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { AdvancedSettings } from './DatasetPropertiesAdvancedSettings';
-import { DataRowUniquenessContainer, BasicPropertiesFields } from './DatasetPropertiesPanelFormElements';
+import { BasicPropertiesFields, DataRowUniquenessContainer } from './DatasetPropertiesPanelFormElements';
+import { TIME_KEY_FIELD_KEY } from './constants';
+import { allowAsManagedField } from './actions';
 
 interface OwnProps {
     model: DatasetModel;
     onChange: (model: DatasetModel) => void;
     successBsStyle?: string;
-    showDataspace: boolean;
-    showVisitDate: boolean;
+    keyPropertyIndex?: number;
+    visitDatePropertyIndex?: number;
+    onIndexChange?: (keyPropertyIndex?: number, visitDatePropertyIndex?: number) => void;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;
@@ -74,9 +85,9 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     onChange = (identifier, value): void => {
         const { model } = this.props;
 
-        const newModel = model.merge({
-            [identifier]: value,
-        }) as DatasetModel;
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            draft[identifier] = value;
+        });
 
         this.updateValidStatus(newModel);
     };
@@ -93,54 +104,108 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     };
 
     onCategoryChange = category => {
-        this.onChange('categoryId', category.value);
-    };
-
-    onDataRowRadioChange = e => {
         const { model } = this.props;
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            if (category && category.value) {
+                draft.category = category.value;
+            } else {
+                draft.category = undefined;
+            }
+        });
 
-        const value = e.target.value;
-        let newModel;
-
-        if (value == 0) {
-            newModel = model.merge({
-                keyPropertyId: undefined,
-                isDemographicData: true,
-                keyPropertyManaged: false,
-            }) as DatasetModel;
-        } else if (value == 1) {
-            newModel = model.merge({
-                keyPropertyId: undefined,
-                isDemographicData: false,
-                keyPropertyManaged: false,
-            }) as DatasetModel;
-        } else {
-            newModel = model.merge({
-                keyPropertyId: 0, // resetting key property id
-                isDemographicData: false,
-                keyPropertyManaged: false,
-            }) as DatasetModel;
-        }
         this.updateValidStatus(newModel);
     };
 
-    onAdditionalKeyFieldChange = (name, formValue, selected): void => {
-        let propertyId;
+    onDataRowRadioChange = e => {
+        const { model, onIndexChange, visitDatePropertyIndex } = this.props;
+        const value = e.target.value;
 
-        if (selected) {
-            propertyId = selected.propertyId;
-        }
-        this.onChange(name, propertyId);
+        // set all of the field's disablePhiLevel back to false, since there isn't a selected additional key anymore
+        const updatedDomain = model.domain.merge({
+            fields: this.getUpdatedFieldsWithoutDisablePhi(),
+        }) as DomainDesign;
+
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            draft.domain = updatedDomain;
+            draft.useTimeKeyField = false;
+            draft.keyPropertyManaged = false;
+            draft.dataSharing = 'NONE';
+            draft.demographicData = value == 0;
+            draft.keyPropertyName = value != 2 ? undefined : ''; // resetting key property name
+        });
+
+        onIndexChange(undefined, visitDatePropertyIndex);
+        this.updateValidStatus(newModel);
+    };
+
+    getUpdatedFieldsWithoutDisablePhi(): List<DomainField> {
+        return this.props.model.domain.fields
+            .map((field: DomainField) => {
+                return field.set('disablePhiLevel', false) as DomainField;
+            })
+            .toList();
+    }
+
+    onAdditionalKeyFieldChange = (name, formValue, selected): void => {
+        const { model, onIndexChange, visitDatePropertyIndex } = this.props;
+
+        // first set all of the field's disablePhiLevel back to false
+        const updatedFields = this.getUpdatedFieldsWithoutDisablePhi();
+
+        let keyPropIndex;
+        const updatedDomain = model.domain.merge({
+            fields: updatedFields
+                .map((field: DomainField, index) => {
+                    if (field.name === formValue) {
+                        keyPropIndex = index;
+
+                        // for the selected field, set its PHI level back to none and disable it
+                        return field.merge({
+                            disablePhiLevel: true,
+                            PHI: PHILEVEL_NOT_PHI,
+                        });
+                    }
+
+                    return field;
+                })
+                .toList(),
+        }) as DomainDesign;
+
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            draft.domain = updatedDomain;
+            draft.useTimeKeyField = formValue === TIME_KEY_FIELD_KEY;
+            draft.keyPropertyName = formValue;
+
+            // if we are switching to a field type that is not allowed to be managed, set keyPropertyManaged as false
+            if (!allowAsManagedField(draft.domain.fields.get(keyPropIndex))) {
+                draft.keyPropertyManaged = false;
+            }
+        });
+
+        onIndexChange(keyPropIndex, visitDatePropertyIndex);
+        this.updateValidStatus(newModel);
     };
 
     applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm) => {
-        const { model } = this.props;
-        const newModel = model.merge(advancedSettingsForm) as DatasetModel;
+        const { model, onIndexChange, keyPropertyIndex } = this.props;
+
+        let visitDatePropIndex;
+        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+            Object.assign(draft, model, advancedSettingsForm);
+        });
+
+        newModel.domain.fields.map((field, index) => {
+            if (field.name === newModel.visitDatePropertyName) {
+                visitDatePropIndex = index;
+            }
+        });
+
+        onIndexChange(keyPropertyIndex, visitDatePropIndex);
         this.updateValidStatus(newModel);
     };
 
     render() {
-        const { model, showDataspace, showVisitDate } = this.props;
+        const { model, keyPropertyIndex, visitDatePropertyIndex } = this.props;
 
         const { isValid } = this.state;
 
@@ -173,6 +238,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                             onRadioChange={this.onDataRowRadioChange}
                             onCheckBoxChange={this.onInputChange}
                             onSelectChange={this.onAdditionalKeyFieldChange}
+                            keyPropertyIndex={keyPropertyIndex}
                         />
                     </Col>
 
@@ -180,9 +246,8 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                         <AdvancedSettings
                             title="Advanced Settings"
                             model={model}
-                            showDataspace={showDataspace}
                             applyAdvancedProperties={this.applyAdvancedProperties}
-                            showVisitDate={showVisitDate}
+                            visitDatePropertyIndex={visitDatePropertyIndex}
                         />
                     </Col>
                 </Row>

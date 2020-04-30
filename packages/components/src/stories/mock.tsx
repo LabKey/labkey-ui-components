@@ -320,7 +320,7 @@ export function initMocks() {
         body: JSON.stringify(visualizationConfig),
     });
 
-    mock.post(/.*\/property\/inferDomain.*/, {
+    mock.post(/.*\/property\/?.*\/inferDomain.*/, {
         status: 200,
         headers: JSON_HEADERS,
         body: JSON.stringify(inferDomainJson),
@@ -441,15 +441,38 @@ export function initQueryGridMocks(delayMs = undefined) {
         return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
     };
 
+    let selectDistinct = (req, res) => {
+        const queryParams = req.url().query;
+        const schemaName = queryParams.schemaName;
+        const queryName = queryParams['query.queryName'];
+        const column = queryParams['query.columns'];
+        const responseBody = { schemaName, queryName, values: [] };
+        const queryResponse = QUERY_RESPONSES.getIn([schemaName.toLowerCase(), queryName.toLowerCase()]);
+
+        if (queryResponse) {
+            const unique = new Set(
+                queryResponse.get('rows').map(row => {
+                    const data = row.getIn(['data', column]);
+                    return data.get('displayValue') ?? data.get('value');
+                })
+            );
+            responseBody.values = Array.from(unique);
+        }
+
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+    };
+
     if (delayMs !== undefined) {
         // We have to wrap like this instead of defaulting to 0 otherwise it breaks a lot of our tests :-(
         getQueryDetails = delay(getQueryDetails, delayMs);
         getQuery = delay(getQuery, delayMs);
         getSelected = delay(getSelected, delayMs);
+        selectDistinct = delay(selectDistinct, delayMs);
     }
 
     mock.get(/.*\/query\/?.*\/getQueryDetails.*/, getQueryDetails);
     mock.post(/.*\/query\/?.*\/getQuery.*/, getQuery);
+    mock.get(/.*\/query\/?.*\/selectDistinct.*/, selectDistinct);
     mock.post(/.*\/query\/?.*\/getSelected.*/, getSelected);
 
     // TODO response JSON?

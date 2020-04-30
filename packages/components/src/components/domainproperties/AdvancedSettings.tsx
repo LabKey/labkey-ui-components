@@ -410,7 +410,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
                             onChange={this.handleChange}
                             value={PHI}
-                            disabled={domainFormDisplayOptions.phiLevelDisabled}
+                            disabled={domainFormDisplayOptions.phiLevelDisabled || field.disablePhiLevel}
                         >
                             {phiLevels.map((level, i) => (
                                 <option key={i} value={level.value}>

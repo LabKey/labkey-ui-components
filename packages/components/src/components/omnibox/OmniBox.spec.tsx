@@ -17,8 +17,34 @@ import React from 'react';
 
 import { mount, shallow } from 'enzyme';
 
-import { OmniBox, OmniBoxState } from './OmniBox';
+import { fromJS } from 'immutable';
+
+import { QueryGridModel, QueryInfo } from '../..';
+
+import { initUnitTests, makeQueryInfo, makeTestData } from '../../testHelpers';
+import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
+import mixturesQuery from '../../test/data/mixtures-getQuery.json';
+
 import { Action, ActionOption, ActionValue, Value } from './actions/Action';
+import { OmniBox, OmniBoxState } from './OmniBox';
+
+let queryInfo: QueryInfo;
+let getModel: () => QueryGridModel;
+
+beforeAll(() => {
+    initUnitTests();
+    queryInfo = makeQueryInfo(mixturesQueryInfo);
+    return makeTestData(mixturesQuery).then(mockData => {
+        const model = new QueryGridModel({
+            queryInfo,
+            messages: fromJS(mockData.messages),
+            data: fromJS(mockData.rows),
+            dataIds: fromJS(mockData.orderedRows),
+            totalRows: mockData.rowCount,
+        });
+        getModel = () => model;
+    });
+});
 
 export class HelloWorldAction implements Action {
     keyword = 'hello';
@@ -72,26 +98,26 @@ describe('OmniBox component', () => {
     const actions = [new HelloWorldAction()];
 
     test('requires only an action', () => {
-        const component = shallow(<OmniBox actions={actions} />);
+        const component = shallow(<OmniBox getModel={getModel} actions={actions} />);
 
         expect(component.find('.OmniBox').length).toBe(1);
     });
 
     test('respects openAfterFocus', () => {
         // True
-        const openComponent = mount(<OmniBox actions={actions} openAfterFocus={true} />);
+        const openComponent = mount(<OmniBox getModel={getModel} actions={actions} openAfterFocus={true} />);
         const openControlElement = openComponent.find('.OmniBox-control');
 
         expect(openControlElement.length).toEqual(1);
 
-        openControlElement.simulate('mousedown', { button: 0 });
+        openControlElement.simulate('click', { button: 0 });
 
         const openState: OmniBoxState = openComponent.state();
         expect(openState.isOpen).toBe(true);
         expect(openState.options.length).toBe(1);
         // False
 
-        const closedComponent = mount(<OmniBox actions={actions} openAfterFocus={false} />);
+        const closedComponent = mount(<OmniBox getModel={getModel} actions={actions} openAfterFocus={false} />);
         const closedControlElement = closedComponent.find('.OmniBox-control');
 
         expect(closedControlElement.length).toEqual(1);

@@ -16,29 +16,35 @@
 import { Draft, immerable, produce } from 'immer';
 import { Map, fromJS } from 'immutable';
 import { DomainDesign, IDomainField } from "../models";
-import { getOrDefault } from "../../../QueryModel/utils";
 
-export class DataClassModel {
+interface DataClassOptionsConfig {
+    category: string;
+    description: string;
+    name: string;
+    nameExpression: string;
+    rowId: number;
+    sampleSet: number;
+}
+
+export interface DataClassModelConfig extends DataClassOptionsConfig {
+    domain: DomainDesign;
+    exception: string;
+}
+
+export class DataClassModel implements DataClassModelConfig {
     [immerable] = true;
 
-    readonly rowId: number;
+    readonly category: string;
+    readonly description: string;
+    readonly domain: DomainDesign;
     readonly exception: string;
     readonly name: string;
     readonly nameExpression: string;
-    readonly description: string;
+    readonly rowId: number;
     readonly sampleSet: number;
-    readonly category: string;
-    readonly domain: DomainDesign;
 
-    constructor(values?: {[key:string]: any}) {
-        this.rowId = getOrDefault(values.rowId);
-        this.exception = getOrDefault(values.exception);
-        this.name = getOrDefault(values.name);
-        this.nameExpression = getOrDefault(values.nameExpression);
-        this.description = getOrDefault(values.description);
-        this.sampleSet = getOrDefault(values.sampleSet);
-        this.category = getOrDefault(values.category);
-        this.domain = getOrDefault(values.domain);
+    constructor(values?: Partial<DataClassModelConfig>) {
+        Object.assign(this, values);
     }
 
     static create(raw: any): DataClassModel {
@@ -87,7 +93,7 @@ export class DataClassModel {
         });
     }
 
-    get options(): Object {
+    get options(): DataClassOptionsConfig {
         return {
             rowId: this.rowId,
             name: this.name,
@@ -95,6 +101,6 @@ export class DataClassModel {
             nameExpression: this.nameExpression,
             category: this.category,
             sampleSet: this.sampleSet
-        }
+        };
     }
 }

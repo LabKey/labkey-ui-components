@@ -46,12 +46,12 @@ describe('DataClassModel', () => {
 
         expect(model.options['exception']).toBeUndefined();
         expect(model.options['domain']).toBeUndefined();
-        expect(model.options['rowId']).toBe(1);
-        expect(model.options['name']).toBe('name');
-        expect(model.options['nameExpression']).toBe('nameExpression');
-        expect(model.options['description']).toBe('description');
-        expect(model.options['sampleSet']).toBe(2);
-        expect(model.options['category']).toBe('category');
+        expect(model.options.rowId).toBe(1);
+        expect(model.options.name).toBe('name');
+        expect(model.options.nameExpression).toBe('nameExpression');
+        expect(model.options.description).toBe('description');
+        expect(model.options.sampleSet).toBe(2);
+        expect(model.options.category).toBe('category');
     });
 
 });

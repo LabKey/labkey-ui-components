@@ -15,7 +15,8 @@
  */
 import { Draft, immerable, produce } from 'immer';
 import { Map, fromJS } from 'immutable';
-import { DomainDesign, IDomainField } from "../models";
+
+import { DomainDesign, IDomainField } from '../models';
 
 interface DataClassOptionsConfig {
     category: string;
@@ -54,7 +55,7 @@ export class DataClassModel implements DataClassModelConfig {
         }
 
         if (raw.options) {
-            const model = new DataClassModel({...raw.options, domain});
+            const model = new DataClassModel({ ...raw.options, domain });
             return produce(model, (draft: Draft<DataClassModel>) => {
                 if (model.category === null) {
                     draft.category = undefined;
@@ -65,7 +66,7 @@ export class DataClassModel implements DataClassModelConfig {
             });
         }
 
-        return new DataClassModel({...raw, domain});
+        return new DataClassModel({ ...raw, domain });
     }
 
     get isNew(): boolean {
@@ -77,11 +78,11 @@ export class DataClassModel implements DataClassModelConfig {
     }
 
     get hasValidProperties(): boolean {
-        return (this.name !== undefined && this.name !==null && this.name.trim().length > 0);
+        return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
     }
 
     hasInvalidNameField(defaultNameFieldConfig: Partial<IDomainField>): boolean {
-        return (this.domain && defaultNameFieldConfig) ? this.domain.hasInvalidNameField(defaultNameFieldConfig) : false;
+        return this.domain && defaultNameFieldConfig ? this.domain.hasInvalidNameField(defaultNameFieldConfig) : false;
     }
 
     get entityDataMap(): Map<string, any> {
@@ -89,7 +90,7 @@ export class DataClassModel implements DataClassModelConfig {
             rowId: this.rowId,
             name: this.name,
             description: this.description,
-            nameExpression: this.nameExpression
+            nameExpression: this.nameExpression,
         });
     }
 
@@ -100,7 +101,7 @@ export class DataClassModel implements DataClassModelConfig {
             description: this.description,
             nameExpression: this.nameExpression,
             category: this.category,
-            sampleSet: this.sampleSet
+            sampleSet: this.sampleSet,
         };
     }
 }

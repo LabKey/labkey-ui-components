@@ -39,21 +39,12 @@ const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);
 export const NodeInteractionProvider = NodeInteractionContext.Provider;
 export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 
-function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
+function fetchLineage(options: Omit<Experiment.ILineageOptions, 'lsids'>): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
-        const options: any /* ILineageOptions */ = {};
-
-        if (!isNaN(distance)) {
-            // The lineage includes a "run" object for each parent as well, so we
-            // query for twice the depth requested in the URL.
-            options.depth = distance * 2;
-        }
+        const seed = options.lsid;
 
         Experiment.lineage({
             ...options,
-            includeInputsAndOutputs: true,
-            includeRunSteps: true,
-            lsid: seed,
             success: lineage => {
                 resolve(LineageResult.create(lineage));
             },
@@ -218,10 +209,27 @@ export function invalidateLineageResults(): void {
 }
 
 export function loadLineageResult(seed: string, distance?: number, options?: LineageOptions): Promise<LineageResult> {
-    const key = [seed, distance ?? -1].join('|');
+    const fetchOptions: Experiment.ILineageOptions = {
+        ...options?.request,
+        lsid: seed,
+    };
+
+    if (!isNaN(distance)) {
+        // The lineage includes a "run" object for each parent as well, so we
+        // query for twice the depth requested in the URL.
+        fetchOptions.depth = distance * 2;
+    }
+
+    const key = [
+        seed,
+        distance ?? -1,
+        fetchOptions.includeInputsAndOutputs === true,
+        fetchOptions.includeRunSteps === true,
+        fetchOptions.includeProperties === true
+    ].join('|');
 
     if (!lineageResultCache[key]) {
-        lineageResultCache[key] = fetchLineage(seed, distance).then(r => processLineageResult(r, options));
+        lineageResultCache[key] = fetchLineage(fetchOptions).then(r => processLineageResult(r, options));
     }
 
     return lineageResultCache[key];

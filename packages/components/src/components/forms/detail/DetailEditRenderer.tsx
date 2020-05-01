@@ -29,7 +29,7 @@ import { LookupSelectInput } from '../input/LookupSelectInput';
 import { QueryColumn } from '../../base/models/model';
 import { getUnFormattedNumber } from '../../../util/Date';
 
-import { _defaultRenderer } from './Detail';
+import { _defaultRenderer } from './DetailDisplay';
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is

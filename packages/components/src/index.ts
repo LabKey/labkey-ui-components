@@ -135,7 +135,6 @@ import {
     getQueryGridModel,
     getQueryGridModelsForGridId,
     initQueryGridState,
-    invalidateLineageResults,
     invalidateUsers,
     removeQueryGridModel,
 } from './global';
@@ -155,7 +154,13 @@ import {
     updateRows,
 } from './query/api';
 import { loadReports, flattenBrowseDataTreeResponse } from './query/reports';
-import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from './constants';
+import {
+    IMPORT_DATA_FORM_TYPES,
+    MAX_EDITABLE_GRID_ROWS,
+    NO_UPDATES_MESSAGE,
+    DataViewInfoTypes,
+    LoadingState,
+} from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
@@ -265,10 +270,16 @@ import {
     uploadAssayRunFiles,
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
-import { LineageFilter, LINEAGE_GROUPING_GENERATIONS, LineageURLResolvers } from './components/lineage/types';
+import { invalidateLineageResults } from './components/lineage/actions';
+import {
+    LineageFilter,
+    LINEAGE_DIRECTIONS,
+    LINEAGE_GROUPING_GENERATIONS,
+    LineageURLResolvers,
+} from './components/lineage/types';
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
-import { LineageGrid } from './components/lineage/LineageGrid';
+import { LineageGrid, LineageGridFromLocation } from './components/lineage/grid/LineageGrid';
 import { EntityDeleteConfirmModal } from './components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
@@ -280,6 +291,7 @@ import { ITab, SubNav } from './components/navigation/SubNav';
 import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './components/navigation/model';
+import { confirmLeaveWhenDirty } from './components/navigation/utils';
 import { UserSelectInput } from './components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
@@ -341,6 +353,7 @@ import {
     RequiresModelAndActions,
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
+import { DetailPanelWithModel } from './QueryModel/DetailPanel';
 
 export {
     // global state functions
@@ -525,9 +538,11 @@ export {
     ReportList,
     // lineage
     LINEAGE_GROUPING_GENERATIONS,
+    LINEAGE_DIRECTIONS,
     LineageFilter,
     LineageGraph,
     LineageGrid,
+    LineageGridFromLocation,
     LineageURLResolvers,
     SampleTypeLineageCounts,
     VisGraphNode,
@@ -565,6 +580,7 @@ export {
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
+    confirmLeaveWhenDirty,
     // DomainProperties
     DomainForm,
     DomainFieldsDisplay,
@@ -707,6 +723,7 @@ export {
     helpLinkNode,
     DATA_IMPORT_TOPIC,
     DELETE_SAMPLES_TOPIC,
+    LoadingState,
     // url functions
     buildURL,
     hasParameter,
@@ -738,4 +755,5 @@ export {
     InjectedQueryModels,
     GridPanel,
     GridPanelWithModel,
+    DetailPanelWithModel,
 };

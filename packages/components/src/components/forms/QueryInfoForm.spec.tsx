@@ -270,29 +270,18 @@ describe('QueryInfoForm', () => {
         });
     });
 
-    // TODO the following tests require being able to interact with the form in order to make it
-    // possible to submit the form.  Current attempts to do this interaction have been unsuccessful.
-    // test("with error", () => {
-    //
-    // });
-    //
-    // test("submit", () => {
-    //     return getQueryDetails(schemaQuery).then( (queryInfo) => {
-    //         const formWrapper = mount(
-    //             <QueryInfoForm schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
-    //         );
-    //
-    //         const countInput = formWrapper.find("input#numItems");
-    //         countInput.simulate('focus');
-    //         countInput.simulate('change', { target: {value: "1"}});
-    //         const domNode = countInput.getDOMNode() as HTMLInputElement;
-    //         domNode.value = "2";
-    //         formWrapper.update();
-    //         // console.log('countInput before', countInput.debug());
-    //         // countInput.getElement().value=4;
-    //         console.log("countInput after", countInput.debug());
-    //         console.log("found again countInput after", formWrapper.find("input#numItems").debug());
-    //         expect(countInput.prop('value')).toBe("3");
-    //     });
-    // });
+    test('all fields disabled', () => {
+        return getQueryDetails(schemaQuery).then(queryInfo => {
+            const formWrapper = mount(
+                <QueryInfoForm
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    initiallyDisableFields={true}
+                    onSubmit={jest.fn()}
+                />
+            );
+            expect(formWrapper.find('Button[type="submit"]').prop('disabled')).toBeTruthy();
+            formWrapper.unmount();
+        });
+    });
 });

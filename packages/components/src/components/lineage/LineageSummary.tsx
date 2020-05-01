@@ -2,69 +2,45 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { ReactNode } from 'react';
-import ReactN from 'reactn';
-import { List } from 'immutable';
+import React, { PureComponent, ReactNode } from 'react';
+import { List, Map } from 'immutable';
 
 import { LoadingSpinner } from '../..';
 
-import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { Lineage, LineageLink, LineageResult } from './models';
-import { loadLineageIfNeeded } from './actions';
+import { LineageLink, LineageResult } from './models';
 import { createLineageNodeCollections } from './vis/VisGraphGenerator';
-import { LineageNodeList } from './LineageNodeList';
+import { DetailsListNodes } from './node/DetailsList';
+import { InjectedLineage, withLineage } from './withLineage';
 
-interface Props {
-    seed: string;
+interface LineageSummaryOwnProps extends LineageOptions {
     highlightNode?: string;
-    options?: LineageOptions;
 }
 
-export class LineageSummary extends ReactN.Component<Props> {
-    componentDidMount() {
-        this.load(this.props);
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        const { seed } = this.props;
-        if (seed !== nextProps.seed) {
-            this.load(nextProps);
-        }
-    }
-
-    load = (props: Props) => {
-        loadLineageIfNeeded(props.seed, DEFAULT_LINEAGE_DISTANCE, props.options);
-    };
-
-    getLineage(): Lineage {
-        const { seed } = this.props;
-
-        // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid_lineageResults.get(seed);
-    }
-
-    renderNodeList = (
-        direction: LINEAGE_DIRECTIONS,
-        lineage: LineageResult,
-        edges: List<LineageLink>,
-        highlightNode: string
-    ): ReactNode => {
+class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryOwnProps> {
+    renderNodeList = (direction: LINEAGE_DIRECTIONS, lineage: LineageResult, edges: List<LineageLink>): ReactNode => {
         if (this.empty(edges)) {
-            return;
+            return null;
         }
+        const { groupTitles, highlightNode } = this.props;
 
         const nodes = edges.map(edge => lineage.nodes.get(edge.lsid)).toArray();
 
-        const nodesByType = createLineageNodeCollections(nodes, this.props.options);
+        const nodesByType = createLineageNodeCollections(nodes, this.props);
         const groups = Object.keys(nodesByType).sort();
 
-        const title = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
+        const defaultTitleSuffix = direction === LINEAGE_DIRECTIONS.Parent ? 'Parents' : 'Children';
+        // Issue 40008:  TBD This isn't a full fix here because of differences in treatment of the text of the queryName that identifies the groups
+        const suffixes = groupTitles?.get(direction) || Map<string, string>();
 
         return groups.map(groupName => (
-            <LineageNodeList
+            <DetailsListNodes
                 key={groupName}
-                title={groupName + ' ' + title}
+                title={
+                    groupName +
+                    ' ' +
+                    (suffixes.has(groupName.toLowerCase()) ? suffixes.get(groupName.toLowerCase()) : defaultTitleSuffix)
+                }
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}
             />
@@ -75,17 +51,16 @@ export class LineageSummary extends ReactN.Component<Props> {
         return !nodes || nodes.size === 0;
     }
 
-    render() {
-        const { highlightNode, options } = this.props;
-        const lineage = this.getLineage();
+    render(): ReactNode {
+        const { lineage } = this.props;
 
-        if (!lineage) {
+        if (!lineage || !lineage.isLoaded()) {
             return <LoadingSpinner msg="Loading lineage..." />;
         } else if (lineage.error) {
             return <div>{lineage.error}</div>;
         }
 
-        const result = lineage.filterResult(options);
+        const result = lineage.filterResult(this.props);
         const node = result.nodes.get(result.seed);
 
         if (!node) {
@@ -102,10 +77,12 @@ export class LineageSummary extends ReactN.Component<Props> {
 
         return (
             <>
-                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents, highlightNode)}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents)}
                 {hasChildren && hasParents && <hr />}
-                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children, highlightNode)}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children)}
             </>
         );
     }
 }
+
+export const LineageSummary = withLineage<LineageSummaryOwnProps>(LineageSummaryImpl);

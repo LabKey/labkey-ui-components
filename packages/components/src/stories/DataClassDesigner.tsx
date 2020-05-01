@@ -33,7 +33,7 @@ storiesOf('DataClassDesigner', module)
         return (
             <DataClassDesigner
                 onCancel={() => console.log('cancel')}
-                onComplete={model => console.log('complete', model.toJS())}
+                onComplete={model => console.log('complete', model)}
                 initModel={DataClassModel.create({})}
                 nounSingular={text('nounSingular', undefined)}
                 nounPlural={text('nounPlural', undefined)}
@@ -49,7 +49,7 @@ storiesOf('DataClassDesigner', module)
         return (
             <DataClassDesigner
                 onCancel={() => console.log('cancel')}
-                onComplete={model => console.log('complete', model.toJS())}
+                onComplete={model => console.log('complete', model)}
                 initModel={DataClassModel.create(getDomainDetailsJSON)}
                 defaultNameFieldConfig={DEFAULT_NAME_FIELD_CONFIG}
                 nounSingular={text('nounSingular', 'Source')}

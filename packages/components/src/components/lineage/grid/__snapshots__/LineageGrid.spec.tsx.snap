@@ -2,120 +2,126 @@
 
 exports[`<LineageGrid/> loading 1`] = `
 <div
-  className="row"
+  className="lineage-grid-display"
 >
   <div
-    className="col-md-12"
+    className="row"
   >
     <div
-      className="table-responsive"
+      className="col-md-12"
     >
       <div
-        className="grid-messages"
-      />
-      <table
-        className="table table-striped table-bordered table-condensed"
+        className="table-responsive"
       >
-        <thead>
-          <tr>
-            <th
-              className="grid-header-cell"
-              onClick={[Function]}
-              style={
-                Object {
-                  "minWidth": "270px",
+        <div
+          className="grid-messages"
+        />
+        <table
+          className="table table-striped table-bordered table-condensed"
+        >
+          <thead>
+            <tr>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "270px",
+                  }
                 }
-              }
-            >
-              Name
-            </th>
-            <th
-              className="grid-header-cell"
-              onClick={[Function]}
-              style={
-                Object {
-                  "minWidth": "60px",
+              >
+                Name
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "60px",
+                  }
                 }
-              }
-            >
-              Distance
-            </th>
-            <th
-              className="grid-header-cell"
-              onClick={[Function]}
-              style={
-                Object {
-                  "minWidth": "70px",
+              >
+                Distance
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "70px",
+                  }
                 }
-              }
-            >
-              Change Seed
-            </th>
-            <th
-              className="grid-header-cell"
-              onClick={[Function]}
-              style={
-                Object {
-                  "minWidth": "62px",
+              >
+                Change Seed
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "62px",
+                  }
                 }
-              }
-            >
-              Type
-            </th>
-            <th
-              className="grid-header-cell"
-              onClick={[Function]}
-              style={
-                Object {
-                  "minWidth": "134px",
+              >
+                Type
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "134px",
+                  }
                 }
-              }
-            >
-              Creation Date
-            </th>
-            <th
-              className="grid-header-cell"
-              onClick={[Function]}
-              style={
-                Object {
-                  "minWidth": "118px",
+              >
+                Creation Date
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "118px",
+                  }
                 }
-              }
-            >
-              Description
-            </th>
-            <th
-              className="grid-header-cell"
-              onClick={[Function]}
-              style={
-                Object {
-                  "minWidth": "70px",
+              >
+                Description
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "70px",
+                  }
                 }
-              }
+              >
+                Alias
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="grid-loading"
             >
-              Alias
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            className="grid-loading"
-          >
-            <td
-              colSpan={7}
-            >
-              Loading...
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td
+                colSpan={7}
+              >
+                Loading...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 `;
 
 exports[`<LineageGrid/> with data 1`] = `
-Array [
+<div
+  className="lineage-grid-display"
+>
   <div
     className="row bottom-spacing"
   >
@@ -196,7 +202,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="row"
   >
@@ -1525,6 +1531,6 @@ Array [
         </table>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 import { List } from 'immutable';
 
@@ -10,7 +10,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 import { resolveErrorMessage } from '../../../util/messaging';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
-import { DataClassModel } from './models';
+import { DataClassModel, DataClassModelConfig } from './models';
 
 interface Props {
     nounSingular?: string;
@@ -36,7 +36,7 @@ interface State {
     model: DataClassModel;
 }
 
-export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     static defaultProps = {
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
@@ -45,12 +45,15 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
-        this.state = {
-            model: props.initModel || DataClassModel.create({}),
-        };
+        this.state = produce(
+            {
+                model: props.initModel || DataClassModel.create({}),
+            },
+            () => {}
+        );
     }
 
-    onFinish = () => {
+    onFinish = (): void => {
         const { defaultNameFieldConfig, setSubmitting, nounSingular } = this.props;
         const { model } = this.state;
         const isValid = model.isValid(defaultNameFieldConfig);
@@ -58,7 +61,7 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
         this.props.onFinish(isValid, this.saveDomain);
 
         if (!isValid) {
-            let exception;
+            let exception: string;
 
             if (model.hasInvalidNameField(defaultNameFieldConfig)) {
                 exception =
@@ -69,21 +72,13 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
                     ' ids.';
             }
 
-            const updatedModel = produce(model, (draft: Draft<DataClassModel>) => {
-                draft.exception = exception;
-            });
-
             setSubmitting(false, () => {
-                this.setState(
-                    produce((draft: Draft<State>) => {
-                        draft.model = updatedModel;
-                    })
-                );
+                this.saveModel({ exception });
             });
         }
     };
 
-    saveDomain = () => {
+    saveDomain = (): void => {
         const { setSubmitting, beforeFinish } = this.props;
         const { model } = this.state;
 
@@ -92,80 +87,61 @@ export class DataClassDesignerImpl extends React.PureComponent<Props & InjectedB
         }
 
         saveDomain(model.domain, 'DataClass', model.options, model.name)
-            .then((response: DomainDesign) => {
-                const updatedModel = produce(model, (draft: Draft<DataClassModel>) => {
-                    draft.exception = undefined;
-                    draft.domain = response;
-                });
-
+            .then(response => {
                 setSubmitting(false, () => {
-                    this.setState(
-                        produce((draft: Draft<State>) => {
-                            draft.model = updatedModel;
-                        })
-                    );
-
-                    this.props.onComplete(updatedModel);
+                    this.saveModel({ domain: response, exception: undefined }, () => {
+                        this.props.onComplete(this.state.model);
+                    });
                 });
             })
             .catch(response => {
                 const exception = resolveErrorMessage(response);
-                const updatedModel = produce(model, (draft: Draft<DataClassModel>) => {
-                    if (exception) {
-                        draft.exception = exception;
-                    } else {
-                        draft.exception = undefined;
-                        draft.domain = response;
-                    }
-                });
 
                 setSubmitting(false, () => {
-                    this.setState(
-                        produce((draft: Draft<State>) => {
-                            draft.model = updatedModel;
-                        })
-                    );
+                    if (exception) {
+                        this.saveModel({ exception });
+                    } else {
+                        this.saveModel({ domain: response, exception: undefined });
+                    }
                 });
             });
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean) => {
-        const { onChange } = this.props;
-        const { model } = this.state;
+    saveModel = (modelOrProps: DataClassModel | Partial<DataClassModelConfig>, callback?: () => void): void => {
+        this.setState(
+            produce((draft: Draft<State>) => {
+                if (modelOrProps instanceof DataClassModel) {
+                    draft.model = modelOrProps;
+                } else {
+                    Object.assign(draft.model, modelOrProps);
+                }
+            }),
+            callback
+        );
+    };
 
-        const updatedModel = produce(model, (draft: Draft<DataClassModel>) => {
-            draft.domain = domain;
+    onDomainChange = (domain: DomainDesign, dirty: boolean): void => {
+        const { onChange } = this.props;
+
+        this.saveModel({ domain }, () => {
+            // Issue 39918: use the dirty property that DomainForm onChange passes
+            if (onChange && dirty) {
+                onChange(this.state.model);
+            }
         });
-
-        this.setState(
-            produce((draft: Draft<State>) => {
-                draft.model = updatedModel;
-            }),
-            () => {
-                // Issue 39918: use the dirty property that DomainForm onChange passes
-                if (onChange && dirty) {
-                    onChange(this.state.model);
-                }
-            }
-        );
     };
 
-    onPropertiesChange = (model: DataClassModel) => {
+    onPropertiesChange = (model: DataClassModel): void => {
         const { onChange } = this.props;
 
-        this.setState(
-            produce((draft: Draft<State>) => {
-                draft.model = model;
-            }),
-            () => {
-                if (onChange) {
-                    onChange(model);
-                }
+        this.saveModel(model, () => {
+            if (onChange) {
+                onChange(this.state.model);
             }
-        );
+        });
     };
 
-    render() {
+    render(): ReactNode {
         const {
             onCancel,
             appPropertiesOnly,

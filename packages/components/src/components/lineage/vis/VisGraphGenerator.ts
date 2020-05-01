@@ -2,12 +2,12 @@
  * Copyright (c) 2017-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, Record } from 'immutable';
-import { Utils } from '@labkey/api';
+import { immerable } from 'immer';
+import { List, Map } from 'immutable';
 import { DataSet, Edge, Network, Node } from 'vis-network';
 
 import { applyLineageOptions, LineageLink, LineageNode, LineageResult } from '../models';
-import { getImagesForNode } from '../utils';
+import { getLineageNodeTitle } from '../utils';
 import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS, LineageGroupingOptions, LineageOptions } from '../types';
 import { getURLResolver } from '../LineageURLResolvers';
 
@@ -135,32 +135,34 @@ export interface VisGraphClusterNode {
 }
 
 export function isBasicNode(item: VisGraphNodeType): item is VisGraphNode {
-    return item.kind === 'node';
+    return item && item.kind === 'node';
 }
 
 export function isCombinedNode(item: VisGraphNodeType): item is VisGraphCombinedNode {
-    return item.kind === 'combined';
+    return item && item.kind === 'combined';
 }
 
 export function isClusterNode(item: VisGraphNodeType): item is VisGraphClusterNode {
-    return item.kind === 'cluster';
+    return item && item.kind === 'cluster';
 }
 
-export class VisGraphOptions extends Record({
-    edges: undefined,
-    nodes: undefined,
-    options: {},
-    makeClusters: undefined,
-    initialSelection: undefined,
-}) {
-    edges?: DataSet<Edge>;
-    nodes?: DataSet<VisGraphNode | VisGraphCombinedNode>;
-    options?: { [key: string]: any };
-    makeClusters?: (network: Network, options?: VisGraphOptions) => void;
-    initialSelection?: string[];
+export interface IVisGraphOptions {
+    edges: DataSet<Edge>;
+    initialSelection: string[];
+    nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
+    options: { [key: string]: any };
+}
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
+export class VisGraphOptions implements IVisGraphOptions {
+    [immerable] = true;
+
+    readonly edges: DataSet<Edge>;
+    readonly initialSelection: string[];
+    readonly nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
+    readonly options: { [key: string]: any };
+
+    constructor(config?: Partial<IVisGraphOptions>) {
+        Object.assign(this, config);
     }
 
     getCombinedNodes(): VisGraphCombinedNode[] {
@@ -596,7 +598,7 @@ export function findConnectedNodes(visEdges: Edge[], id: string, dir?: 'from' | 
 
 function createVisNode(node: LineageNode, id: string, isSeed: boolean): VisGraphNode {
     // show the alternate icon image color if this node is the seed or has been selected
-    const { image, imageBackup, imageSelected, shape } = getImagesForNode(node, isSeed);
+    const { image, imageBackup, imageSelected, imageShape } = node.iconProps;
 
     return {
         kind: 'node',
@@ -609,7 +611,7 @@ function createVisNode(node: LineageNode, id: string, isSeed: boolean): VisGraph
             selected: imageSelected,
         },
         brokenImage: imageBackup,
-        shape,
+        shape: imageShape,
         shadow: isSeed === true,
         font: isSeed
             ? {
@@ -680,9 +682,9 @@ function createCombinedVisNode(
     };
 
     if (commonNode) {
-        const { image, imageBackup, imageSelected, shape } = getImagesForNode(commonNode, false);
+        const { image, imageBackup, imageSelected, imageShape } = commonNode.iconProps;
 
-        clusterOptions.shape = shape;
+        clusterOptions.shape = imageShape;
         clusterOptions.image = {
             unselected: image,
             selected: imageSelected,
@@ -697,28 +699,4 @@ function createCombinedVisNode(
 // generate a random id like "ahl3dhtcxchvqbwyga2nhg"
 function randId(): string {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-}
-
-export function getLineageNodeTitle(node: LineageNode, html: boolean): string {
-    // encodeHtml if we are generating html for vis.js to use as the node's tooltip title
-    const h = s => (html ? Utils.encodeHtml(s) : s);
-
-    let title = '';
-
-    const meta = node.meta;
-    if (meta && meta.displayType) {
-        title += h(meta.displayType) + ': ';
-    }
-
-    title += node.name;
-
-    if (meta && meta.aliases && meta.aliases.size) {
-        title += ' (' + meta.aliases.map(h).join(', ') + ')';
-    }
-
-    if (meta && meta.description) {
-        title += (html ? '<br>' : '\n') + h(meta.description);
-    }
-
-    return title;
 }

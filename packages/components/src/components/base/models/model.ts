@@ -412,6 +412,19 @@ export class QueryColumn extends Record({
         return this.name && this.name.toLowerCase().indexOf(QueryColumn.MATERIAL_INPUTS.toLowerCase()) !== -1;
     }
 
+    get isDetailColumn(): boolean {
+        return !this.removeFromViews && this.shownInDetailsView === true;
+    }
+
+    get isUpdateColumn(): boolean {
+        return (
+            this.removeFromViews !== true &&
+            this.shownInUpdateView === true &&
+            this.userEditable === true &&
+            this.fieldKeyArray.length === 1
+        );
+    }
+
     resolveFieldKey(): string {
         let fieldKey: string;
 
@@ -688,14 +701,7 @@ export class QueryGridModel
      * @returns {List<QueryColumn>}
      */
     getDetailsDisplayColumns(): List<QueryColumn> {
-        if (this.queryInfo) {
-            return this.queryInfo
-                .getDisplayColumns(ViewInfo.DETAIL_NAME, this.omittedColumns)
-                .filter(c => !c.removeFromViews && c.shownInDetailsView)
-                .toList();
-        }
-
-        return emptyColumns;
+        return this.queryInfo?.getDetailDisplayColumns(ViewInfo.DETAIL_NAME, this.omittedColumns) || emptyColumns;
     }
 
     /**
@@ -703,14 +709,7 @@ export class QueryGridModel
      * @returns {List<QueryColumn>}
      */
     getUpdateDisplayColumns(): List<QueryColumn> {
-        if (this.queryInfo) {
-            return this.queryInfo
-                .getDisplayColumns(ViewInfo.UPDATE_NAME, this.omittedColumns)
-                .filter(updateColumnFilter)
-                .toList();
-        }
-
-        return emptyColumns;
+        return this.queryInfo?.getUpdateDisplayColumns(ViewInfo.UPDATE_NAME, this.omittedColumns) || emptyColumns;
     }
 
     getColumnIndex(fieldKey: string): number {
@@ -1229,16 +1228,6 @@ export function insertColumnFilter(col: QueryColumn): boolean {
         col &&
         col.removeFromViews !== true &&
         col.shownInInsertView === true &&
-        col.userEditable === true &&
-        col.fieldKeyArray.length === 1
-    );
-}
-
-export function updateColumnFilter(col: QueryColumn): boolean {
-    return (
-        col &&
-        col.removeFromViews !== true &&
-        col.shownInUpdateView === true &&
         col.userEditable === true &&
         col.fieldKeyArray.length === 1
     );

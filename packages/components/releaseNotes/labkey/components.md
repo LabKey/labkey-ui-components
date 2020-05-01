@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Convert DataClassModel to use immer and Data Class components to use produce
 
+## version 0.56.0
+*Released*: 1 May 2020
+* Item 7180: Lineage: improved node details, withLineage
+    - `LineageGraph` supports additional details from `experiment-lineage.api`.
+    - `withLineage` HOC for managing lineage state.
+    - See https://github.com/LabKey/labkey-ui-components/pull/237 for more details.
+
 ## version 0.55.0
 *Released*: 30 April 2020
 * Issue 39633: Choosing to cancel navigating away from a page when using react-router's setRouteLeaveHook will leave

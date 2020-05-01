@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version TBD
-*Released*: TBD
+## version 0.56.1
+*Released*: 1 May 2020
 * DataClassModel convert from Record to immerable
 * Update usages of DataClassModel in DataClassDesigner to use produce() for model updates
 * Update DataClassDesigner setState to use produce()

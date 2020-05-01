@@ -3,7 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ## version TBD
 *Released*: TBD
-* Convert DataClassModel to use immer and Data Class components to use produce
+* DataClassModel convert from Record to immerable
+* Update usages of DataClassModel in DataClassDesigner to use produce() for model updates
+* Update DataClassDesigner setState to use produce()
+* Revert change to default value for DomainDesign allowFileLinkProperties and allowAttachmentProperties
 
 ## version 0.56.0
 *Released*: 1 May 2020

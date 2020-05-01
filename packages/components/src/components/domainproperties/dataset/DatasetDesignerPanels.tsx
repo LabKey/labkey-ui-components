@@ -350,6 +350,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     domainFormDisplayOptions={{
                         isDragDisabled: model.isFromAssay(),
                         showAddFieldsButton: !model.isFromAssay(),
+                        showValidators: true,
+                        showRequired: true,
+                        showTextOptions: true,
+                        phiLevelDisabled: false,
                     }}
                 />
                 <Progress

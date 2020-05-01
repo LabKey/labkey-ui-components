@@ -65,9 +65,9 @@ describe('resolveLineage', () => {
                 },
             },
         });
-        const resolvedLinks = resolver.resolveLineageItem(lineageResult.nodes.get(
-            'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4'
-        ));
+        const resolvedLinks = resolver.resolveLineageItem(
+            lineageResult.nodes.get('urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4')
+        );
 
         expect(resolvedLinks.list).toEqual('#/rd/dataclass/source%201');
         expect(resolvedLinks.overview).toEqual('#/rd/expdata/6648');
@@ -75,17 +75,17 @@ describe('resolveLineage', () => {
 
     test('accepted types', () => {
         const lineageResult = LineageResult.create(lineageJSON);
-        let resolvedLinks = resolver.resolveLineageItem(lineageResult.nodes.get(
-            'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3'
-        ));
+        let resolvedLinks = resolver.resolveLineageItem(
+            lineageResult.nodes.get('urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3')
+        );
         // test a sample type
         expect(resolvedLinks.list).toEqual('#/samples/hemoglobin');
         expect(resolvedLinks.overview).toEqual('#/rd/samples/6814');
 
         // TODO test that the run node doesn't show up
-        resolvedLinks = resolver.resolveLineageItem(lineageResult.nodes.get(
-            'urn:lsid:labkey.com:Run.Folder-61:dbcee598-54f9-1038-9426-08c060dcd006'
-        ));
+        resolvedLinks = resolver.resolveLineageItem(
+            lineageResult.nodes.get('urn:lsid:labkey.com:Run.Folder-61:dbcee598-54f9-1038-9426-08c060dcd006')
+        );
 
         expect(resolvedLinks.list).toEqual(undefined);
         expect(resolvedLinks.overview).toEqual('/labkey/ExampleLineage/experiment-showRunGraph.view?rowId=794');

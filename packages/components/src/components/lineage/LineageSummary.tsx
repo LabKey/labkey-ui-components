@@ -36,7 +36,11 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         return groups.map(groupName => (
             <DetailsListNodes
                 key={groupName}
-                title={groupName + ' ' + (suffixes.has(groupName.toLowerCase()) ? suffixes.get(groupName.toLowerCase()) : defaultTitleSuffix)}
+                title={
+                    groupName +
+                    ' ' +
+                    (suffixes.has(groupName.toLowerCase()) ? suffixes.get(groupName.toLowerCase()) : defaultTitleSuffix)
+                }
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}
             />

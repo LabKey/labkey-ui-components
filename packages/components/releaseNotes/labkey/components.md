@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 
+*Released*: 
+* Epic 6800: Issue Definition designer (Story 1)-  IssuesPropertyPanel and IssuesListDesignerPanels
+    -  Addition of Issues List Definition Designer Panel and Properties Panel components.
+    -  Setting up the initial stage to transform old GWT Issues designer to React-based designer.
+
 ### version 0.54.0
 *Released*: 29 April 2020
 * Item 7138: DatasetDesignerPanels and related components, models, actions

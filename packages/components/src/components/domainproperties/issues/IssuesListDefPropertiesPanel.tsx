@@ -29,7 +29,7 @@ interface State {
     isValid: boolean;
 }
 
-export class IssuesPropertiesPanelImpl extends React.PureComponent<
+export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
     Props & InjectedDomainPropertiesPanelCollapseProps,
     State
 > {
@@ -107,4 +107,4 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
     }
 }
 
-export const IssuesListDefPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(IssuesPropertiesPanelImpl);
+export const IssuesListDefPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(IssuesListDefPropertiesPanelImpl);

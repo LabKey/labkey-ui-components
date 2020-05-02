@@ -15,6 +15,7 @@ import {
     ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP,
     ISSUES_LIST_GROUP_ASSIGN_TIP, ISSUES_LIST_USER_ASSIGN_TIP
 } from "./constants";
+import { getCoreGroups, getCoreUsersInGroups } from "../../permissions/actions";
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -48,9 +49,34 @@ export class BasicPropertiesFields extends React.PureComponent<IssuesListDefBasi
     }
 }
 
-export class AssignmentOptions extends React.PureComponent<SecurityUserGroupProps> {
+export class AssignmentOptions extends React.PureComponent<SecurityUserGroupProps, SecurityUserGroupState> {
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            coreGroups: List<Principal>(),
+            coreUsers: List<UserGroup>()
+        };
+    }
+
+    componentDidMount() {
+        getCoreGroups().then((coreGroupsData: List<Principal>) => {
+            this.setState(() => ({
+                coreGroups: coreGroupsData,
+            }));
+        });
+
+        getCoreUsersInGroups().then((coreUsersData: List<UserGroup>) => {
+            this.setState(() => ({
+                coreUsers: coreUsersData,
+            }));
+        });
+    }
+
     render() {
-        const { model, coreUsers, coreGroups, onSelect } = this.props;
+        const { model, onSelect } = this.props;
+        const { coreUsers, coreGroups } = this.state;
         return (
             <Col xs={12} md={6}>
                 <SectionHeading title="Assignment Options" />
@@ -138,7 +164,7 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
     };
 
     render() {
-        const { model, onSelect } = this.props;
+        const { model } = this.props;
 
         let sortDirectionOptions = [];
         sortDirectionOptions.push({label: "Oldest first", id: "ASC"});
@@ -173,9 +199,11 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
 }
 
 export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupProps, any> {
+
     getHelpTip() {
         return ISSUES_LIST_GROUP_ASSIGN_TIP;
     }
+
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         if (selected && this.props.onSelect) {
             this.props.onSelect(selected, name);
@@ -198,7 +226,7 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupP
                         valueKey="userId"
                         labelKey="displayName"
                         onChange={this.onChange}
-                        value={model.assignedToGroup ? model.assignedToGroup : coreGroups.filter(group => group.name === "Administrators")}
+                        value={model.assignedToGroup ? model.assignedToGroup : undefined}
                         formsy={false}
                         showLabel={false}
                         multiple={false}

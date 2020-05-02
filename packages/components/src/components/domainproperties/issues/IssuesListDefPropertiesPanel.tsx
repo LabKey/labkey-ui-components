@@ -4,19 +4,15 @@ import { Form } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
-import { List } from 'immutable';
-
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,
 } from '../DomainPropertiesPanelCollapse';
-import {getCoreGroups, getCoreUsersInGroups} from '../../permissions/actions';
 import { Principal } from '../../..';
 
 import { AssignmentOptions, BasicPropertiesFields } from './IssuesListDefPropertiesPanelFormElements';
 import { IssuesListDefModel } from './models';
-import {UserGroup} from "../../permissions/models";
 import produce from "immer";
 
 const PROPERTIES_HEADER_ID = 'issues-properties-hdr';
@@ -31,8 +27,6 @@ type Props = OwnProps & BasePropertiesPanelProps;
 
 interface State {
     isValid: boolean;
-    coreGroups: List<Principal>;
-    coreUsers: List<UserGroup>;
 }
 
 export class IssuesPropertiesPanelImpl extends React.PureComponent<
@@ -43,24 +37,8 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
         super(props);
 
         this.state = {
-            isValid: true,
-            coreGroups: List<Principal>(),
-            coreUsers: List<UserGroup>()
+            isValid: true
         };
-    }
-
-    componentDidMount() {
-        getCoreGroups().then((coreGroupsData: List<Principal>) => {
-            this.setState(() => ({
-                coreGroups: coreGroupsData,
-            }));
-        });
-
-        getCoreUsersInGroups().then((coreUsersData: List<UserGroup>) => {
-            this.setState(() => ({
-                coreUsers: coreUsersData,
-            }));
-        });
     }
 
     updateValidStatus = (newModel?: IssuesListDefModel) => {
@@ -109,7 +87,7 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
 
     render() {
         const { model, successBsStyle } = this.props;
-        const { isValid, coreGroups, coreUsers } = this.state;
+        const { isValid } = this.state;
 
         return (
             <BasePropertiesPanel
@@ -122,12 +100,7 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
             >
                 <Form>
                     <BasicPropertiesFields model={model} onInputChange={this.onInputChange} onSelect={this.onSelectChange} />
-                    <AssignmentOptions
-                        model={model}
-                        coreGroups={coreGroups}
-                        coreUsers={coreUsers}
-                        onSelect={this.onSelectChange}
-                    />
+                    <AssignmentOptions model={model} onSelect={this.onSelectChange}/>
                 </Form>
             </BasePropertiesPanel>
         );

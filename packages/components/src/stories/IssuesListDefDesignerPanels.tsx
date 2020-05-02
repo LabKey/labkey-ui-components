@@ -2,10 +2,10 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
-import { DEFAULT_ISSUES_DESIGNER_SETTINGS } from '../test/data/constants';
+import { DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS } from '../test/data/constants';
 import './stories.scss';
-import { IssuesDesignerPanels } from '../components/domainproperties/issues/IssuesDesignerPanels';
-import { IssuesModel } from '../components/domainproperties/issues/models';
+import { IssuesListDefDesignerPanels } from '../components/domainproperties/issues/IssuesListDefDesignerPanels';
+import { IssuesListDefModel } from '../components/domainproperties/issues/models';
 import { getCoreGroups } from '../components/permissions/actions';
 
 import { List } from 'immutable';
@@ -16,7 +16,7 @@ class WrappedNew extends React.Component<any, any> {
     constructor(props) {
         super(props);
 
-        const model = IssuesModel.create(null, this.props.data);
+        const model = IssuesListDefModel.create(null, this.props.data);
         this.state = { model };
     }
 
@@ -37,7 +37,7 @@ class WrappedNew extends React.Component<any, any> {
     }
     render() {
         return (
-            <IssuesDesignerPanels
+            <IssuesListDefDesignerPanels
                 initModel={this.state.model}
                 onCancel={() => console.log('cancel')}
                 onComplete={() => console.log('onComplete')}
@@ -49,5 +49,7 @@ class WrappedNew extends React.Component<any, any> {
 storiesOf('IssuesDesignerPanels', module)
     .addDecorator(withKnobs)
     .add('IssuesDesignerPanels - create', () => {
-        return <WrappedNew data={DEFAULT_ISSUES_DESIGNER_SETTINGS} />;
+        return <WrappedNew data={DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS} />;
     });
+
+//TODO: Add stories for edit Issues List Def in the near future

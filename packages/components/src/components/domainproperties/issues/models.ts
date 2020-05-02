@@ -13,69 +13,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import {Draft, immerable, produce} from 'immer';
+import { DomainDesign } from '../models';
 import { Record } from 'immutable';
 
-import { DomainDesign, DomainField } from '../models';
+export class IssuesListDefModel {
+    [immerable] = true;
 
-export class IssuesModel extends Record({
-    exception: undefined,
-    domain: undefined,
-    entityId: undefined,
-    createdBy: undefined,
-    created: undefined,
-    modifiedBy: undefined,
-    modified: undefined,
-    containerId: undefined,
-    domainId: undefined,
-    name: undefined,
-    singularItemName: undefined,
-    pluralItemName: undefined,
-    commentSortDirection: undefined,
-    assignedToGroup: undefined,
-    assignedToUser: undefined,
-    domainKindName: undefined,
-}) {
-    exception: string;
-    domain: DomainDesign;
-    name: string;
-    singularItemName: string;
-    pluralItemName: string;
-    commentSortDirection: string;
-    assignedToGroup: number;
-    assignedToUser: number;
-    domainId: number;
-    domainKindName: string;
+    readonly exception: string;
+    readonly domain: DomainDesign;
+    readonly entityId?: string;
+    readonly domainId: number;
+    readonly name: string;
+    readonly singularItemName?: string;
+    readonly pluralItemName?: string;
+    readonly commentSortDirection?: string = "ASC";
+    readonly assignedToGroup: number;
+    readonly assignedToUser: number;
+    readonly domainKindName: string;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
+    constructor(issuesListDefModel : IssuesListDefModel) {
+        Object.assign(this, issuesListDefModel)
     }
 
-    static create(raw: any, defaultSettings = null): IssuesModel {
+    static create(raw: any, defaultSettings = null): IssuesListDefModel {
         if (defaultSettings) {
             const domain = DomainDesign.create(undefined);
-            return new IssuesModel({ ...defaultSettings, domain });
+            return new IssuesListDefModel({ ...defaultSettings, domain });
         } else {
             const domain = DomainDesign.create(raw.domainDesign);
-            return new IssuesModel({ ...raw.options, domain });
+            return new IssuesListDefModel({ ...raw.options, domain });
         }
     }
 
     isNew(): boolean {
-        return !this.domainId;
+        return !this.entityId;
     }
 
-    static isValid(model: IssuesModel): boolean {
+    static isValid(model: IssuesListDefModel): boolean {
         return model.hasValidProperties();
     }
 
     hasValidProperties(): boolean {
-        return true; // TODO: when should it be valid or invalid
+        return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
     }
 
     getOptions(): Record<string, any> {
-        const options = this.toJS();
-        delete options.exception;
-        delete options.domain;
-        return options;
+        return produce(this, (draft: Draft<IssuesListDefModel>) => {
+            delete draft.exception;
+            delete draft.domain;
+        });
     }
 }

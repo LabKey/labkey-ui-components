@@ -6,8 +6,6 @@ import { Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { DomainDesign } from '../models';
-
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
@@ -16,15 +14,16 @@ import {
 import {getCoreGroups, getCoreUsersInGroups} from '../../permissions/actions';
 import { Principal } from '../../..';
 
-import { AssignmentOptions, IssuesBasicPropertiesFields } from './IssuesPropertiesPanelFormElements';
-import { IssuesModel } from './models';
+import { AssignmentOptions, BasicPropertiesFields } from './IssuesListDefPropertiesPanelFormElements';
+import { IssuesListDefModel } from './models';
 import {UserGroup} from "../../permissions/models";
+import produce from "immer";
 
 const PROPERTIES_HEADER_ID = 'issues-properties-hdr';
 
 interface OwnProps {
-    model: IssuesModel;
-    onChange: (model: IssuesModel) => void;
+    model: IssuesListDefModel;
+    onChange: (model: IssuesListDefModel) => void;
     successBsStyle?: string;
 }
 
@@ -64,7 +63,7 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
         });
     }
 
-    updateValidStatus = (newModel?: IssuesModel) => {
+    updateValidStatus = (newModel?: IssuesListDefModel) => {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
         const isValid = updatedModel && updatedModel.hasValidProperties();
@@ -92,23 +91,20 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
 
     onChange = (identifier, value): void => {
         const { model } = this.props;
-
-        // Name must be set on Domain as well
-        let newDomain = model.domain;
-        if (identifier == 'name') {
-            newDomain = model.domain.merge({ name: value }) as DomainDesign;
-        }
-
-        const newModel = model.merge({
-            [identifier]: value,
-            domain: newDomain,
-        }) as IssuesModel;
+        const newModel = produce(model, (draft: IssuesListDefModel) =>{
+            draft[identifier] = value;
+        });
 
         this.updateValidStatus(newModel);
     };
 
-    onSelectChange = principal => {
-        this.onChange('assignedToGroup', principal.userId);
+    onSelectChange = (selection, name) => {
+        if (selection instanceof Principal) {
+            this.onChange(name, selection.userId)
+        }
+        else {
+            this.onChange(name, selection);
+        }
     };
 
     render() {
@@ -119,23 +115,23 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
             <BasePropertiesPanel
                 {...this.props}
                 headerId={PROPERTIES_HEADER_ID}
-                title="Issues Properties"
+                title="Issues List Properties"
                 titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >
                 <Form>
-                    <IssuesBasicPropertiesFields model={model} onInputChange={this.onInputChange} />
-                    <AssignmentOptions
-                        model={model}
-                        coreGroups={coreGroups}
-                        coreUsers={coreUsers}
-                        onSelect={(selected: Principal) => this.onSelectChange(selected)}
-                    />
+                    <BasicPropertiesFields model={model} onInputChange={this.onInputChange} onSelect={this.onSelectChange} />
+                    {/*<AssignmentOptions*/}
+                    {/*    model={model}*/}
+                    {/*    coreGroups={coreGroups}*/}
+                    {/*    coreUsers={coreUsers}*/}
+                    {/*    onSelect={this.onSelectChange}*/}
+                    {/*/>*/}
                 </Form>
             </BasePropertiesPanel>
         );
     }
 }
 
-export const IssuesPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(IssuesPropertiesPanelImpl);
+export const IssuesListDefPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(IssuesPropertiesPanelImpl);

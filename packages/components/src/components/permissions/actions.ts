@@ -26,6 +26,25 @@ export function getRolesByUniqueName(roles: List<SecurityRole>): Map<string, Sec
     return rolesByUniqueName;
 }
 
+function processPrincipalsResponse(data: ISelectRowsResult, resolve, isGroup: boolean) {
+
+    const models = fromJS(data.models[data.key]);
+    let principals = List<Principal>();
+
+    data.orderedModels[data.key].forEach(modelKey => {
+        const row = models.get(modelKey);
+        const principal = Principal.createFromSelectRow(row);
+        principals = principals.push(principal);
+    });
+
+    if (isGroup) {
+        resolve(principals.filter(principal => principal.type === 'g'));
+    }
+    else {
+        resolve(principals);
+    }
+}
+
 export function getPrincipals(): Promise<List<Principal>> {
     return new Promise((resolve, reject) => {
         selectRows({
@@ -35,16 +54,7 @@ export function getPrincipals(): Promise<List<Principal>> {
             sql: "SELECT p.*, u.DisplayName FROM Principals p LEFT JOIN Users u ON p.type='u' AND p.UserId=u.UserId",
         })
             .then((data: ISelectRowsResult) => {
-                const models = fromJS(data.models[data.key]);
-                let principals = List<Principal>();
-
-                data.orderedModels[data.key].forEach(modelKey => {
-                    const row = models.get(modelKey);
-                    const principal = Principal.createFromSelectRow(row);
-                    principals = principals.push(principal);
-                });
-
-                resolve(principals);
+                processPrincipalsResponse(data, resolve, false);
             })
             .catch(response => {
                 console.error(response);
@@ -61,19 +71,7 @@ export function getCoreGroups(): Promise<List<Principal>> {
             sql: "SELECT p.UserId, p.Name FROM Principals p WHERE p.type='g'",
         })
             .then((data: ISelectRowsResult) => {
-                const models = fromJS(data.models[data.key]);
-                let principals = List<Principal>();
-
-                data.orderedModels[data.key].forEach(modelKey => {
-                    const row = models.get(modelKey);
-                    const type = row.getIn(['Type', 'value']);
-                    if (type === 'g') {
-                        const principal = Principal.createFromSelectRow(row);
-                        principals = principals.push(principal);
-                    }
-                });
-
-                resolve(principals);
+                processPrincipalsResponse(data, resolve, true);
             })
             .catch(response => {
                 console.error(response);

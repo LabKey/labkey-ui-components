@@ -8,14 +8,14 @@ import { resolveErrorMessage } from '../../../util/messaging';
 import DomainForm from '../DomainForm';
 import { DomainDesign } from '../models';
 
-import { IssuesPropertiesPanel } from './IssuesPropertiesPanel';
-import { IssuesModel } from './models';
+import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
+import { IssuesListDefModel } from './models';
 
 interface Props {
-    initModel?: IssuesModel;
-    onChange?: (model: IssuesModel) => void;
+    initModel?: IssuesListDefModel;
+    onChange?: (model: IssuesListDefModel) => void;
     onCancel: () => void;
-    onComplete: (model: IssuesModel) => void;
+    onComplete: (model: IssuesListDefModel) => void;
     useTheme?: boolean;
     containerTop?: number; // This sets the top of the sticky header, default is 0
     successBsStyle?: string;
@@ -23,7 +23,7 @@ interface Props {
 }
 
 interface State {
-    model: IssuesModel;
+    model: IssuesListDefModel;
 }
 
 class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -31,15 +31,17 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
         super(props);
 
         this.state = {
-            model: props.initModel || IssuesModel.create({}),
+            model: props.initModel || IssuesListDefModel.create({}),
         };
     }
 
-    onPropertiesChange = (model: IssuesModel) => {
+    onPropertiesChange = (model: IssuesListDefModel) => {
         const { onChange } = this.props;
 
         this.setState(
-            () => ({ model }),
+            produce((draft: Draft<State>) => {
+                draft.model = model;
+            }),
             () => {
                 if (onChange) {
                     onChange(model);
@@ -52,8 +54,8 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
         const { onChange } = this.props;
 
         this.setState(
-            state => ({
-                model: state.model.merge({ domain }) as IssuesModel,
+            produce((draft: Draft<State>) => {
+                draft.model.domain = domain;
             }),
             () => {
                 if (onChange && dirty) {
@@ -66,20 +68,9 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
     onFinish = () => {
         const { setSubmitting } = this.props;
         const { model } = this.state;
-        const isValid = IssuesModel.isValid(model);
+        const isValid = IssuesListDefModel.isValid(model);
 
         this.props.onFinish(isValid, this.saveDomain);
-
-        // TODO
-        // if (!isValid) {
-        //     const exception = !model.hasValidKeyType()
-        //         ? 'You must specify a key field for your list in the fields panel to continue.'
-        //         : undefined;
-        //     const updatedModel = model.set('exception', exception) as IssuesModel;
-        //     setSubmitting(false, () => {
-        //         this.setState(() => ({ model: updatedModel }));
-        //     });
-        // }
     };
 
     saveDomain = () => {
@@ -112,9 +103,14 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                             updatedModel.exception = exception;
                         } else {
                             updatedModel.exception = undefined;
-                            updatedModel.domain = Object.assign(updatedModel.domain, response);
+                            updatedModel.domain = response;
                         }
-                    })
+                    }),
+                    () => {
+                        setSubmitting(false, () => {
+                            this.props.onComplete(model);
+                        })
+                    }
                 )
             });
     };
@@ -148,7 +144,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                 saveBtnText={saveBtnText}
                 successBsStyle={successBsStyle}
             >
-                <IssuesPropertiesPanel
+                <IssuesListDefPropertiesPanel
                     model={model}
                     onChange={this.onPropertiesChange}
                     controlledCollapse={true}
@@ -181,7 +177,6 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    showInferFromFile={true}
                     containerTop={containerTop}
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(1, collapsed, callback);
@@ -194,4 +189,4 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
     }
 }
 
-export const IssuesDesignerPanels = withBaseDomainDesigner<Props>(IssuesDesignerPanelsImpl);
+export const IssuesListDefDesignerPanels = withBaseDomainDesigner<Props>(IssuesDesignerPanelsImpl);

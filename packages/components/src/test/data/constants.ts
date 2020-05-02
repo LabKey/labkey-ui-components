@@ -166,7 +166,7 @@ export const NEW_DATASET_MODEL_WITH_DATASPACE = {
     definitionIsShared: true,
 };
 
-export const DEFAULT_ISSUES_DESIGNER_SETTINGS = {
+export const DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS = {
     singularItemName: null,
     pluralItemName: null,
     commentSortDirection: null,

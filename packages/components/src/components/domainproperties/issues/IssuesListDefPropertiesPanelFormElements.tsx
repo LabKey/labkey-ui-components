@@ -8,28 +8,36 @@ import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { Principal, SelectInput } from '../../..';
 
-import { IssuesModel } from './models';
+import { IssuesListDefModel } from './models';
 import {UserGroup} from "../../permissions/models";
+import {getCoreGroups, getCoreUsersInGroups} from "../../permissions/actions";
+import produce from "immer";
 
-interface IssuesBasicPropertiesInputsProps {
-    model: IssuesModel;
-    onInputChange: (any) => void;
+interface IssuesListDefBasicPropertiesInputsProps {
+    model: IssuesListDefModel;
+    onInputChange?: (any) => void;
+    onSelect?: (selected: String, name?: String) => void;
 }
 
 interface SecurityUserGroupProps {
-    model: IssuesModel;
+    model: IssuesListDefModel;
     coreGroups?: List<Principal>;
-    onSelect?: (selected: Principal) => any;
+    onSelect?: (selected: Principal, name?: String) => any;
     coreUsers?: List<UserGroup>;
 }
 
-export class IssuesBasicPropertiesFields extends React.PureComponent<IssuesBasicPropertiesInputsProps> {
+interface SecurityUserGroupState {
+    coreGroups?: List<Principal>;
+    coreUsers?: List<UserGroup>;
+}
+
+export class BasicPropertiesFields extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
     render() {
-        const { model, onInputChange } = this.props;
+        const { model, onInputChange, onSelect } = this.props;
         return (
-            <Col xs={11} md={6}>
+            <Col xs={12} md={6}>
                 <SectionHeading title="Basic Properties" />
-                <CommentSortDirectionDropDown model={model} onInputChange={onInputChange} />
+                <CommentSortDirectionDropDown model={model} onSelect={onSelect} />
                 <SingularItemNameInput model={model} onInputChange={onInputChange} />
                 <PluralItemNameInput model={model} onInputChange={onInputChange} />
             </Col>
@@ -41,23 +49,23 @@ export class AssignmentOptions extends React.PureComponent<SecurityUserGroupProp
     render() {
         const { model, coreUsers, coreGroups, onSelect } = this.props;
         return (
-            <Col xs={11} md={6}>
+            <Col xs={12} md={6}>
                 <SectionHeading title="Assignment Options" />
                 <AssignedToGroupInput
                     model={model}
                     coreGroups={coreGroups}
-                    onSelect={(selected: Principal) => onSelect(selected)}
+                    onSelect={onSelect}
                 />
-                <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={(selected: Principal) => onSelect(selected)} />
+                <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={onSelect} />
             </Col>
         );
     }
 }
 
-export class SingularItemNameInput extends React.PureComponent<IssuesBasicPropertiesInputsProps> {
+export class SingularItemNameInput extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
     render() {
         const { model, onInputChange } = this.props;
-        const value = model.name === null ? '' : model.name;
+        const value = model.singularItemName === null ? '' : model.singularItemName;
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
@@ -80,10 +88,10 @@ export class SingularItemNameInput extends React.PureComponent<IssuesBasicProper
     }
 }
 
-export class PluralItemNameInput extends React.PureComponent<IssuesBasicPropertiesInputsProps> {
+export class PluralItemNameInput extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
     render() {
         const { model, onInputChange } = this.props;
-        const value = model.name === null ? '' : model.name;
+        const value = model.pluralItemName === null ? '' : model.pluralItemName;
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
@@ -106,31 +114,45 @@ export class PluralItemNameInput extends React.PureComponent<IssuesBasicProperti
     }
 }
 
-export class CommentSortDirectionDropDown extends React.PureComponent<IssuesBasicPropertiesInputsProps> {
+export class CommentSortDirectionDropDown extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
+
+    getHelpTip() {
+        return "By default, comments on an issue are shown in the order they are added, oldest first. Change the Comment Sort Direction to newest first if you prefer."
+    }
+
+    onChange = (name: string, formValue: any, selected: String, ref: any): any => {
+        if (selected && this.props.onSelect) {
+            this.props.onSelect(selected, name);
+        }
+    };
+
     render() {
-        const { model, onInputChange } = this.props;
-        const value = model.commentSortDirection;
+        const { model, onSelect } = this.props;
+
+        let sortDirectionOptions = [];
+        sortDirectionOptions.push({label: "Oldest first", id: "ASC"});
+        sortDirectionOptions.push({label: "Newest first", id: "DESC"});
 
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel label="Comment sort direction" required={false} />
+                    <DomainFieldLabel label="Comment sort direction" helpTipBody={this.getHelpTip} required={false} />
                 </Col>
 
                 <Col xs={9} lg={8}>
-                    <FormControl
-                        componentClass="select"
-                        id="commentSortDirection"
-                        onChange={onInputChange}
-                        value={value ? value : ''}
-                    >
-                        <option key="Oldest first" value="ASC">
-                            Oldest first
-                        </option>
-                        <option key="Newest first" value="DESC">
-                            Newest first
-                        </option>
-                    </FormControl>
+                    <SelectInput
+                        name={"commentSortDirection"}
+                        options={sortDirectionOptions}
+                        inputClass={'col-xs-12'}
+                        valueKey={'id'}
+                        onChange={this.onChange}
+                        value={model.commentSortDirection}
+                        formsy={false}
+                        showLabel={true}
+                        multiple={false}
+                        required={false}
+                        placeholder={''}
+                    />
                 </Col>
 
                 <Col lg={2} />
@@ -142,12 +164,12 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesBasi
 export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupProps, any> {
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         if (selected && this.props.onSelect) {
-            this.props.onSelect(selected);
+            this.props.onSelect(selected, name);
         }
     };
 
     render() {
-        const { coreGroups } = this.props;
+        const { coreGroups } = this.state;
         const name = 'addGroupAssignment';
         return (
             <Row className="margin-top">
@@ -178,21 +200,20 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupP
 export class DefaultUserAssignmentInput extends React.PureComponent<SecurityUserGroupProps, any> {
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         if (selected && this.props.onSelect) {
-            this.props.onSelect(selected);
+            this.props.onSelect(selected, name);
         }
     };
 
-    render() {
-        const { coreUsers } = this.props;
-        const name = 'defaultUserAssignment';
+    getFilteredCoreUsers = (groupId: any, coreUsers: List<UserGroup>) => {
+        let filteredCoreUser = coreUsers.filter(coreUser => {
+            return coreUser.groupId === groupId;
+        });
+        return filteredCoreUser.toArray().length > 0 ? filteredCoreUser.toArray() : coreUsers.toArray();
+    };
 
-        function getFilteredCoreUsers(groupId : any)
-        {
-            let filteredCoreUser = coreUsers.filter(coreUser => {
-                return coreUser.groupId === groupId;
-            });
-            return filteredCoreUser.toArray().length > 0 ? filteredCoreUser.toArray() : coreUsers.toArray();
-        }
+    render() {
+        const { coreUsers } = this.state;
+        const name = 'defaultUserAssignment';
 
         return (
             <Row className="margin-top">
@@ -202,7 +223,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<SecurityUser
                 <Col xs={9} lg={8}>
                     <SelectInput
                         name={name}
-                        options={getFilteredCoreUsers(this.props.model.assignedToGroup)}
+                        options={this.getFilteredCoreUsers(this.props.model.assignedToGroup, coreUsers)}
                         placeholder=""
                         inputClass="col-xs-12"
                         valueKey="userId"

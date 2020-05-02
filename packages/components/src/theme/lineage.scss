@@ -7,6 +7,8 @@
 }
 
 .lineage-name {
+    outline: none;
+
     h6 {
         display: inline-block;
     }
@@ -26,12 +28,29 @@
     }
 }
 
+.spacer-left {
+    padding-left: 4px;
+}
+
+.spacer-right {
+    padding-right: 4px;
+}
+
+.spacer-horizontal {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.lineage-link {
+    cursor: pointer;
+}
+
 .lineage-name-data {
     display: inline;
 }
 
-.lineage-data-link-left {
-  padding: 0 1px;
+.lineage-data-link {
+  padding: 0 0 0 4px;
 }
 
 .lineage-data-link--text {
@@ -39,10 +58,11 @@
     color: $gray-light;
     font-size: 75%;
     font-weight: 400;
-}
+    cursor: pointer;
 
-.lineage-data-link-right {
-  padding: 0 5px;
+    &:hover, &:focus {
+        color: $gray-dark;
+    }
 }
 
 .lineage-seed-info {
@@ -107,7 +127,7 @@
     }
 }
 
-.lineage-node-detail {
+.lineage-detail-header {
     display: inline-block;
     width: 100%;
 }
@@ -116,4 +136,10 @@
     height: 1.2em;
     margin: 0.1em;
     width: 1.2em;
+}
+
+.lineage-details-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0.5em;
 }

@@ -95,6 +95,7 @@ interface State {
     isDirty: boolean;
     errorMsg: string;
     count: number;
+    fieldEnabledCount: number;
 }
 
 export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
@@ -130,6 +131,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
         this.state = {
             show: true,
+            fieldEnabledCount: (!props.allowFieldDisable || !props.initiallyDisableFields ? 1 : 0), // initial value of 1 is really just a boolean at this point
             canSubmit: !props.includeCountField && !props.checkRequiredFields,
             isSubmitted: false,
             isSubmitting: false,
@@ -150,7 +152,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     enableSubmitButton() {
-        this.setState({ canSubmit: true });
+        if (this.state.fieldEnabledCount > 0)
+            this.setState({ canSubmit: true });
     }
 
     disableSubmitButton() {
@@ -279,19 +282,15 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             onHide();
         }
 
-        this.setState(() => {
-            return {
-                show: false,
-            };
-        });
+        this.setState(() => ({show: false,}));
     }
 
     onCountChange(field, value) {
-        this.setState(() => {
-            return {
-                count: value,
-            };
-        });
+        this.setState(() => ({count: value}));
+    }
+
+    onFieldsEnabledChange = (fieldEnabledCount: number) => {
+        this.setState(() => ({fieldEnabledCount}));
     }
 
     renderButtons() {
@@ -310,7 +309,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             singularNoun,
         } = this.props;
 
-        const { count, canSubmit, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
+        const { count, canSubmit, fieldEnabledCount, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
 
         const inProgressText = isSubmitted ? isSubmittedText : isSubmitting ? isSubmittingText : undefined;
         const suffix = count > 1 ? pluralNoun : singularNoun;
@@ -354,7 +353,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             <Button
                                 className="test-loc-submit-button"
                                 bsStyle="success"
-                                disabled={isSubmitting || !canSubmit || count === 0 || !(canSubmitNotDirty || isDirty)}
+                                disabled={isSubmitting || fieldEnabledCount == 0 || !canSubmit || count === 0 || !(canSubmitNotDirty || isDirty)}
                                 onClick={this.setSubmittingForSave}
                                 type="submit"
                             >
@@ -434,6 +433,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             allowFieldDisable={allowFieldDisable}
                             useDatePicker={useDatePicker}
                             initiallyDisableFields={initiallyDisableFields}
+                            onFieldsEnabledChange={this.onFieldsEnabledChange}
                             disabledFields={disabledFields}
                             checkRequiredFields={checkRequiredFields}
                             showLabelAsterisk={showLabelAsterisk}

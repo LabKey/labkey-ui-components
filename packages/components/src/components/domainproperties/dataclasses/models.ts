@@ -13,31 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Record } from 'immutable';
+import { Draft, immerable, produce } from 'immer';
+import { Map, fromJS } from 'immutable';
 
 import { DomainDesign, IDomainField } from '../models';
 
-export class DataClassModel extends Record({
-    rowId: undefined,
-    exception: undefined,
-    name: undefined,
-    nameExpression: undefined,
-    description: undefined,
-    sampleSet: undefined,
-    category: undefined,
-    domain: undefined,
-}) {
-    rowId: number;
-    exception: string;
+interface DataClassOptionsConfig {
+    category: string;
+    description: string;
     name: string;
     nameExpression: string;
-    description: string;
+    rowId: number;
     sampleSet: number;
-    category: string;
-    domain: DomainDesign;
+}
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
+export interface DataClassModelConfig extends DataClassOptionsConfig {
+    domain: DomainDesign;
+    exception: string;
+}
+
+export class DataClassModel implements DataClassModelConfig {
+    [immerable] = true;
+
+    readonly category: string;
+    readonly description: string;
+    readonly domain: DomainDesign;
+    readonly exception: string;
+    readonly name: string;
+    readonly nameExpression: string;
+    readonly rowId: number;
+    readonly sampleSet: number;
+
+    constructor(values?: Partial<DataClassModelConfig>) {
+        Object.assign(this, values);
     }
 
     static create(raw: any): DataClassModel {
@@ -47,28 +55,29 @@ export class DataClassModel extends Record({
         }
 
         if (raw.options) {
-            let model = new DataClassModel({ ...raw.options, domain });
-            if (model.category === null) {
-                model = model.set('category', undefined) as DataClassModel;
-            }
-            if (model.sampleSet === null) {
-                model = model.set('sampleSet', undefined) as DataClassModel;
-            }
-            return model;
+            const model = new DataClassModel({ ...raw.options, domain });
+            return produce(model, (draft: Draft<DataClassModel>) => {
+                if (model.category === null) {
+                    draft.category = undefined;
+                }
+                if (model.sampleSet === null) {
+                    draft.sampleSet = undefined;
+                }
+            });
         }
 
         return new DataClassModel({ ...raw, domain });
     }
 
-    isNew(): boolean {
+    get isNew(): boolean {
         return !this.rowId;
     }
 
-    static isValid(model: DataClassModel, defaultNameFieldConfig?: Partial<IDomainField>): boolean {
-        return model.hasValidProperties() && !model.hasInvalidNameField(defaultNameFieldConfig);
+    isValid(defaultNameFieldConfig?: Partial<IDomainField>): boolean {
+        return this.hasValidProperties && !this.hasInvalidNameField(defaultNameFieldConfig);
     }
 
-    hasValidProperties(): boolean {
+    get hasValidProperties(): boolean {
         return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
     }
 
@@ -76,7 +85,16 @@ export class DataClassModel extends Record({
         return this.domain && defaultNameFieldConfig ? this.domain.hasInvalidNameField(defaultNameFieldConfig) : false;
     }
 
-    getOptions(): Object {
+    get entityDataMap(): Map<string, any> {
+        return fromJS({
+            rowId: this.rowId,
+            name: this.name,
+            description: this.description,
+            nameExpression: this.nameExpression,
+        });
+    }
+
+    get options(): DataClassOptionsConfig {
         return {
             rowId: this.rowId,
             name: this.name,

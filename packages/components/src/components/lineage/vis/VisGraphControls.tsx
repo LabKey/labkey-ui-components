@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { Network } from 'vis-network';
 
@@ -45,7 +45,7 @@ export class VisGraphControls extends PureComponent<GraphControlsProps> {
         }
     };
 
-    render() {
+    render(): ReactNode {
         return (
             <div className="lineage-visgraph-controls">
                 <div className="lineage-visgraph-control-settings">

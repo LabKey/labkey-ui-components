@@ -335,8 +335,8 @@ export class DomainDesign
         description: undefined,
         domainURI: undefined,
         domainId: null,
-        allowFileLinkProperties: false,
-        allowAttachmentProperties: false,
+        allowFileLinkProperties: true, // TODO this default should be false and the per domain type values should come from the domain kind
+        allowAttachmentProperties: true, // TODO this default should be false and the per domain type values should come from the domain kind
         allowFlagProperties: true,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
@@ -962,6 +962,7 @@ export class DomainField
         delete json.rangeValidators;
         delete json.regexValidators;
         delete json.lookupValidator;
+        delete json.disablePhiLevel;
 
         return json;
     }

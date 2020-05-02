@@ -3,57 +3,27 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map } from 'immutable';
+import { Experiment, Utils } from '@labkey/api';
 
-import { imageURL, Theme } from '../..';
+import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../..';
 
-import { LineageLink, LineageNode } from './models';
-import { LINEAGE_DIRECTIONS } from './types';
+import { LineageItemWithMetadata, LineageLink, LineageNode } from './models';
+import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
 
 const DEFAULT_ICON_URL = 'default';
+const BACKUP_IMAGE_ROOT = 'https://labkey.org/_images/';
 
-export function getImagesForNode(node?: LineageNode, isSeed?: boolean) {
-    const { iconURL, shape } = getIconAndShapeForNode(node);
+// The default vis-network icon shape to use for nodes in the lineage graph
+const DEFAULT_ICON_SHAPE = 'circularImage';
 
-    return {
-        image: imageFromIdentifier(iconURL, isSeed, false),
-        imageBackup: getBackupImageFromLineageNode(node, isSeed, false),
-        imageSelected: imageFromIdentifier(iconURL, isSeed, true),
-        shape,
-    };
-}
+// A constant set of icons that are better displayed as a normal image (since default is "circularImage")
+const NON_CIRCULAR_IMAGES = ['datafile', 'file', 'expressionsystem', 'mixtures', 'rawmaterials', 'run'];
 
-export function getIconAndShapeForNode(node?: LineageNode): { iconURL: string; shape: string } {
-    let iconURL = DEFAULT_ICON_URL;
-    let shape = 'circularImage';
-
-    if (node) {
-        if (node.meta) {
-            iconURL = node.meta.iconURL;
-        }
-
-        // run icon is not circular so the vis shape is adjusted accordingly
-        if (iconURL === DEFAULT_ICON_URL && node.type && node.type.toLowerCase() === 'run') {
-            iconURL = 'run';
-            shape = 'image';
-        }
-    }
-
-    return {
-        iconURL,
-        shape,
-    };
-}
-
-export function getBackupImageFromLineageNode(node: LineageNode, isSeed: boolean, isSelected: boolean): string {
-    let iconURL = DEFAULT_ICON_URL;
-
-    // Use default image specific for cpasType categories
-    if (node && node.cpasType && node.cpasType.includes('SampleSet')) {
-        iconURL = 'samples';
-    }
-
-    // use labkey.org as a backup for images src
-    return 'https://labkey.org/_images/' + getImageNameWithTheme(iconURL, isSeed, isSelected);
+function getQueryFromSchema(schemasObject: any, queryName: string): SchemaQuery {
+    return Object.keys(schemasObject)
+        .map(k => schemasObject[k])
+        .filter(value => !Utils.isString(value))
+        .find(schemaQuery => schemaQuery.queryName.toLowerCase() === queryName.toLowerCase());
 }
 
 function imageFromIdentifier(iconURL: string, isSeed: boolean, isSelected: boolean): string {
@@ -75,6 +45,34 @@ export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelect
     return [iconURL, suffix, '.svg'].join('').toLowerCase();
 }
 
+export function getLineageNodeTitle(node: LineageItemWithMetadata, asHTML = false): string {
+    // encodeHtml if we are generating html for vis.js to use as the node's tooltip title
+    const h = (s: string): string => (asHTML ? Utils.encodeHtml(s) : s);
+
+    let title = '';
+
+    if (node instanceof LineageNode) {
+        const { meta } = node;
+        if (meta && meta.displayType) {
+            title += h(meta.displayType) + ': ';
+        }
+
+        title += node.name;
+
+        if (meta && meta.aliases && meta.aliases.size) {
+            title += ' (' + meta.aliases.map(h).join(', ') + ')';
+        }
+
+        if (meta && meta.description) {
+            title += (asHTML ? '<br>' : '\n') + h(meta.description);
+        }
+    } else {
+        title = node.name;
+    }
+
+    return title;
+}
+
 export function getLineageDepthFirstNodeList(
     nodes: Map<string, LineageNode>,
     lsid: string,
@@ -82,7 +80,7 @@ export function getLineageDepthFirstNodeList(
     maxDistance: number
 ): List<LineageNode> {
     const nodeList = List<LineageNode>().asMutable();
-    nodeList.push(nodes.get(lsid).set('distance', 0));
+    nodeList.push(nodes.get(lsid).set('distance', 0) as LineageNode);
 
     const nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
     if (nextNodes) {
@@ -103,7 +101,7 @@ function _getDepthFirstNodeList(
     const nodeList = List<LineageNode>().asMutable();
     const nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
     if (distance <= maxDistance) {
-        nodeList.push(nodes.get(lsid).set('distance', distance));
+        nodeList.push(nodes.get(lsid).set('distance', distance) as LineageNode);
         if (nextNodes !== undefined) {
             nextNodes.forEach(nextNode => {
                 nodeList.push(
@@ -119,4 +117,59 @@ function _getDepthFirstNodeList(
         }
     }
     return nodeList.asImmutable();
+}
+
+// TODO: The iconURL should be resolved by the server.
+export function resolveIconAndShapeForNode(
+    item?: Experiment.LineageItemBase,
+    queryInfoIconURL?: string,
+    isSeed?: boolean
+): LineageIconMetadata {
+    let iconURL = DEFAULT_ICON_URL;
+    let imageShape = DEFAULT_ICON_SHAPE;
+
+    if (queryInfoIconURL && queryInfoIconURL !== DEFAULT_ICON_URL) {
+        iconURL = queryInfoIconURL.toLowerCase();
+    } else if (item) {
+        const schemaName = item.schemaName?.toLowerCase() ?? '';
+        const queryName = item.queryName?.toLowerCase() ?? '';
+
+        if (schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase()) {
+            // Samples
+            const schemaQuery = getQueryFromSchema(SCHEMAS.SAMPLE_SETS, queryName);
+
+            iconURL = schemaQuery ? queryName : 'samples';
+
+            // eesh...
+            if (queryName === 'mixturebatches') {
+                iconURL = 'batch';
+            }
+        } else if (schemaName === SCHEMAS.DATA_CLASSES.SCHEMA.toLowerCase()) {
+            // Data Classes
+            const schemaQuery = getQueryFromSchema(SCHEMAS.DATA_CLASSES, queryName);
+
+            if (schemaQuery) {
+                iconURL = queryName;
+            }
+        } else if (schemaName === 'exp.materials') {
+            // Materials
+            iconURL = 'samples';
+        } else if (item.expType === 'ExperimentRun') {
+            iconURL = 'run';
+        } else if (item.expType === 'Data') {
+            iconURL = 'datafile';
+        }
+    }
+
+    if (NON_CIRCULAR_IMAGES.indexOf(iconURL) > -1) {
+        imageShape = 'image';
+    }
+
+    return {
+        iconURL,
+        image: imageFromIdentifier(iconURL, isSeed, false),
+        imageBackup: `${BACKUP_IMAGE_ROOT}${getImageNameWithTheme(iconURL, isSeed, false)}`,
+        imageSelected: imageFromIdentifier(iconURL, isSeed, true),
+        imageShape,
+    };
 }

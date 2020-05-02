@@ -64,4 +64,12 @@ describe('resolveErrorMessage', () => {
         expect(resolveErrorMessage(error, undefined)).toBe('There was a problem retrieving your data. Your session may have expired or the data may no longer be valid.  Try refreshing your page.');
 
     });
+
+    test("IllegalArgumentException", () => {
+        const error = {
+                "msg" : "java.lang.IllegalArgumentException: Can't create new name using the name expression: P-${genId}-${blah}",
+                "message" : "java.lang.IllegalArgumentException: Can't create new name using the name expression: P-${genId}-${blah}"
+            }
+        expect(resolveErrorMessage(error, undefined)).toBe('Can\'t create new name using the name expression: P-${genId}-${blah}');
+    });
 });

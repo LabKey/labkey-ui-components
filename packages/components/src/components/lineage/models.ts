@@ -2,9 +2,11 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
+import { Experiment, Utils } from '@labkey/api';
 
-import { GridColumn, LineageFilter, QueryInfo } from '../..';
+import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../..';
 
 import {
     DEFAULT_GROUPING_OPTIONS,
@@ -12,7 +14,13 @@ import {
     DEFAULT_LINEAGE_DISTANCE,
     DEFAULT_LINEAGE_OPTIONS,
 } from './constants';
-import { LineageGroupingOptions, LINEAGE_DIRECTIONS, LineageNodeLinks, LineageOptions } from './types';
+import {
+    LineageGroupingOptions,
+    LINEAGE_DIRECTIONS,
+    LineageLinkMetadata,
+    LineageOptions,
+    LineageIconMetadata,
+} from './types';
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
 
@@ -34,36 +42,16 @@ export function applyLineageOptions(options?: LineageOptions): LineageOptions {
     return _options;
 }
 
-// TODO add jest test coverage for this function
-function mergeNodes(aNodes: List<any>, bNodes: List<any>): List<any> {
-    const newNodes = aNodes.asMutable();
-
-    bNodes.forEach(node => {
-        const lsid = node.get('lsid');
-        const role = node.get('role');
-
-        const N = newNodes.find(aN => lsid === aN.get('lsid') && role === aN.get('role'));
-
-        if (!N) {
-            newNodes.push(node);
-        }
-    });
-
-    return newNodes.asImmutable();
-}
-
 export class LineageNodeMetadata extends Record({
     date: undefined,
     description: undefined,
     aliases: undefined,
     displayType: undefined,
-    iconURL: undefined,
 }) {
     date?: string;
     description?: string;
     aliases?: List<string>;
     displayType?: string;
-    iconURL?: string;
 
     constructor(values?: { [key: string]: any }) {
         super(values);
@@ -87,7 +75,6 @@ export class LineageNodeMetadata extends Record({
 
         return new LineageNodeMetadata({
             displayType: queryInfo.queryLabel,
-            iconURL: queryInfo.getIconURL(),
             description,
             date: created,
             aliases,
@@ -104,107 +91,212 @@ export class LineageLink extends Record({
         super(values);
     }
 
-    static createList(values?: Array<{ [key: string]: any }>): List<LineageLink> {
+    static createList(values?: any): List<LineageLink> {
         const result = values ? values.map(v => new LineageLink(v)) : [];
         return List(result);
     }
 }
 
-export interface LineagePKFilter {
-    fieldKey: string;
-    value: any;
+export interface LineageItemWithMetadata extends Experiment.LineageItemBase {
+    iconProps: LineageIconMetadata;
+    links: LineageLinkMetadata;
 }
 
-export interface LineageRunStep {
-    applicationType: string;
-    activityDate: string;
-    activitySequence: number;
+export interface LineageIOWithMetadata extends Experiment.LineageIOConfig {
+    dataInputs?: LineageItemWithMetadata[];
+    dataOutputs?: LineageItemWithMetadata[];
+    materialInputs?: LineageItemWithMetadata[];
+    materialOutputs?: LineageItemWithMetadata[];
+}
+
+export interface LineageItemWithIOMetadata extends LineageItemWithMetadata, LineageIOWithMetadata {}
+
+export interface LineageRunStepConfig extends Experiment.LineageRunStepBase, LineageItemWithIOMetadata {}
+
+export class LineageRunStep implements LineageRunStepConfig {
+    [immerable] = true;
+
+    readonly applicationType: string;
+    readonly activityDate: string;
+    readonly activitySequence: number;
+    readonly container: string;
+    readonly created: string;
+    readonly createdBy: string;
+    readonly dataInputs: LineageIO[];
+    readonly dataOutputs: LineageIO[];
+    readonly expType: string;
+    readonly iconProps: LineageIconMetadata;
+    readonly id: number;
+    readonly links: LineageLinkMetadata;
+    readonly lsid: string;
+    readonly materialInputs: LineageIO[];
+    readonly materialOutputs: LineageIO[];
+    readonly modified: string;
+    readonly modifiedBy: string;
+    readonly name: string;
+    readonly pkFilters: Experiment.LineagePKFilter[];
+    readonly protocol: Experiment.LineageItemBase;
+    readonly queryName: string;
+    readonly schemaName: string;
+
+    constructor(values?: LineageRunStepConfig) {
+        Object.assign(this, values, {
+            ...LineageIO.applyConfig(values),
+        });
+    }
+}
+
+export class LineageIO implements LineageItemWithMetadata {
+    [immerable] = true;
+
+    readonly container: string;
+    readonly created: string;
+    readonly createdBy: string;
+    readonly expType: string;
+    readonly iconProps: LineageIconMetadata;
+    readonly id: number;
+    readonly lsid: string;
+    readonly links: LineageLinkMetadata;
+    readonly modified: string;
+    readonly modifiedBy: string;
+    readonly name: string;
+    readonly pkFilters: Experiment.LineagePKFilter[];
+    readonly queryName: string;
+    readonly schemaName: string;
+
+    constructor(values?: Partial<LineageIO>) {
+        Object.assign(this, values);
+    }
+
+    static applyConfig(values?: Experiment.LineageIOConfig): Experiment.LineageIOConfig {
+        return {
+            dataInputs: LineageIO.fromArray(values?.dataInputs),
+            dataOutputs: LineageIO.fromArray(values?.dataOutputs),
+            materialInputs: LineageIO.fromArray(values?.materialInputs),
+            materialOutputs: LineageIO.fromArray(values?.materialOutputs),
+        };
+    }
+
+    static fromArray(values?: any[]): LineageIO[] {
+        if (Utils.isArray(values)) {
+            return (values as any[]).map(io => new LineageIO(io));
+        }
+
+        return [];
+    }
+}
+
+interface LineageNodeConfig
+    extends Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'>,
+        LineageItemWithIOMetadata {
+    children: List<LineageLink>;
+    parents: List<LineageLink>;
+    steps: List<LineageRunStep>;
+
+    // computed properties
+    distance: number;
+    listURL: string;
+    meta: LineageNodeMetadata;
+}
+
+export class LineageNode
+    extends Record({
+        absolutePath: undefined,
+        children: undefined,
+        container: undefined,
+        cpasType: undefined,
+        created: undefined,
+        createdBy: undefined,
+        dataFileURL: undefined,
+        dataInputs: undefined,
+        dataOutputs: undefined,
+        expType: undefined,
+        id: undefined,
+        lsid: undefined,
+        materialInputs: undefined,
+        materialOutputs: undefined,
+        modified: undefined,
+        modifiedBy: undefined,
+        name: undefined,
+        parents: undefined,
+        pipelinePath: undefined,
+        pkFilters: undefined,
+        properties: undefined,
+        queryName: undefined,
+        schemaName: undefined,
+        steps: undefined,
+        type: undefined,
+        url: undefined,
+
+        // computed properties
+        distance: undefined,
+        iconProps: {},
+        links: {},
+        listURL: undefined,
+        meta: undefined,
+    })
+    implements LineageNodeConfig {
+    absolutePath: string;
+    children: List<LineageLink>;
+    container: string;
+    cpasType: string;
     created: string;
     createdBy: string;
+    dataFileURL: string;
+    dataInputs: LineageIO[];
+    dataOutputs: LineageIO[];
+    expType: string;
     id: number;
     lsid: string;
+    materialInputs: LineageIO[];
+    materialOutputs: LineageIO[];
     modified: string;
     modifiedBy: string;
     name: string;
-    protocol: any;
-}
-
-// commented out attributes are not yet used
-export class LineageNode extends Record({
-    // absolutePath: undefined,
-    children: undefined,
-    cpasType: undefined,
-    // created: undefined,
-    // createdBy: undefined,
-    // dataFileURL: undefined,
-    distance: undefined,
-    id: undefined,
-    listURL: undefined,
-    lsid: undefined,
-    // modified?: undefined,
-    // modifiedBy?: undefined,
-    name: undefined,
-    parents: undefined,
-    // pipelinePath: undefined,
-    pkFilters: undefined,
-    queryName: undefined,
-    schemaName: undefined,
-    steps: undefined,
-    type: undefined,
-    url: undefined,
+    parents: List<LineageLink>;
+    pipelinePath: string;
+    pkFilters: Experiment.LineagePKFilter[];
+    properties: any;
+    queryName: string;
+    schemaName: string;
+    steps: List<LineageRunStep>;
+    type: string;
+    url: string;
 
     // computed properties
-    links: {},
-    meta: undefined,
-}) {
-    // absolutePath?: string;
-    children?: List<LineageLink>;
-    cpasType?: string;
-    // created?: string;
-    // createdBy?: string;
-    // dataFileURL?: string;
-    distance?: number;
-    id?: number;
-    listURL?: string;
-    lsid?: string;
-    // modified?: string;
-    // modifiedBy?: string;
-    name?: string;
-    parents?: List<LineageLink>;
-    // pipelinePath?: string;
-    pkFilters?: List<LineagePKFilter>;
-    queryName?: string;
-    schemaName?: string;
-    steps?: List<LineageRunStep>;
-    type?: string;
-    url?: string;
-
-    // computed properties
-    links?: LineageNodeLinks;
-    meta?: LineageNodeMetadata;
+    distance: number;
+    iconProps: LineageIconMetadata;
+    links: LineageLinkMetadata;
+    listURL: string;
+    meta: LineageNodeMetadata;
 
     constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
-    static create(lsid, values?: { [key: string]: any }): LineageNode {
-        return values
-            ? new LineageNode({
-                  children: LineageLink.createList(values.children),
-                  cpasType: values.cpasType,
-                  id: values.id,
-                  lsid,
-                  name: values.name,
-                  parents: LineageLink.createList(values.parents),
-                  pkFilters: List(values.pkFilters),
-                  queryName: values.queryName,
-                  schemaName: values.schemaName,
-                  steps: values.steps ? List(values.steps) : List(),
-                  type: values.type,
-                  url: values.url,
-                  meta: values.meta,
-              })
-            : new LineageNode({ lsid });
+    static create(lsid: string, values?: Partial<LineageNodeConfig>): LineageNode {
+        let config: any;
+
+        if (values && values instanceof LineageNode) {
+            config = values;
+        } else {
+            config = {
+                ...values,
+                ...LineageIO.applyConfig(values as LineageNodeConfig),
+                ...{
+                    children: LineageLink.createList(values.children),
+                    lsid,
+                    parents: LineageLink.createList(values.parents),
+                    steps: List(values.steps?.map(stepProps => new LineageRunStep(stepProps))),
+                },
+            };
+        }
+
+        return new LineageNode(config);
+    }
+
+    get isRun(): boolean {
+        return this.expType === 'ExperimentRun';
     }
 }
 
@@ -248,32 +340,6 @@ export class LineageResult extends Record({
 
     filterOut(field: string, value: undefined | string | string[]): LineageResult {
         return LineageResult._filter(this, field, value, false);
-    }
-
-    mergeLineage(other: LineageResult): LineageResult {
-        const newNodes = (this.nodes.map(node => {
-            const otherNode = other.nodes.get(node.get('lsid'));
-
-            if (otherNode) {
-                return node.merge({
-                    children: mergeNodes(node.get('children'), otherNode.get('children')),
-                    parents: mergeNodes(node.get('parents'), otherNode.get('parents')),
-                });
-            }
-
-            return node;
-        }) as Map<string, any>).asMutable();
-
-        other.nodes.forEach((otherNode, otherLsid: string) => {
-            if (!this.nodes.get(otherLsid)) {
-                newNodes.set(otherLsid, otherNode);
-            }
-        });
-
-        return this.merge({
-            mergedIn: this.mergedIn.push(other.seed),
-            nodes: newNodes.asImmutable(),
-        }) as LineageResult;
     }
 
     /**
@@ -412,17 +478,31 @@ export class LineageResult extends Record({
     }
 }
 
-export class Lineage extends Record({
-    result: undefined,
-    sampleStats: undefined,
-    error: undefined,
-}) {
-    result: LineageResult;
-    sampleStats: any;
+export interface ILineage {
     error?: string;
+    result: LineageResult;
+    resultLoadingState?: LoadingState;
+    sampleStats: any;
+    seed: string;
+    seedResult: LineageResult;
+    seedResultError?: string;
+    seedResultLoadingState?: LoadingState;
+}
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
+export class Lineage implements ILineage {
+    [immerable] = true;
+
+    readonly error?: string;
+    readonly result: LineageResult;
+    readonly resultLoadingState: LoadingState = LoadingState.INITIALIZED;
+    readonly sampleStats: any;
+    readonly seed: string;
+    readonly seedResult: LineageResult;
+    readonly seedResultError?: string;
+    readonly seedResultLoadingState: LoadingState = LoadingState.INITIALIZED;
+
+    constructor(values?: Partial<ILineage>) {
+        Object.assign(this, values);
     }
 
     // Defensive check against calls made when an error is present and provides a more useful error message.
@@ -432,11 +512,6 @@ export class Lineage extends Record({
                 'Invalid call on Lineage object. Check errors prior to attempting to interact with Lineage object.'
             );
         }
-    }
-
-    getSeed(): string {
-        this.checkError();
-        return this.result.seed;
     }
 
     filterResult(options?: LineageOptions): LineageResult {
@@ -476,26 +551,35 @@ export class Lineage extends Record({
      */
     generateGraph(options?: LineageOptions): VisGraphOptions {
         this.checkError();
-        const result = this.filterResult(options);
-        return generate(result, options);
+
+        if (this.isLoaded()) {
+            return generate(this.filterResult(options), options);
+        }
+
+        return undefined;
+    }
+
+    isLoaded(): boolean {
+        return this.resultLoadingState === LoadingState.LOADED;
+    }
+
+    isSeedLoaded(): boolean {
+        return !this.seedResultError && this.seedResultLoadingState === LoadingState.LOADED;
+    }
+
+    /**
+     * Returns a deep copy of this model with props applied iff props is not empty/null/undefined else
+     * returns this.
+     * @param props
+     */
+    mutate(props: Partial<ILineage>): Lineage {
+        return produce(this, (draft: Draft<Lineage>) => {
+            Object.assign(draft, props);
+        });
     }
 }
 
-export class LineageGridModel extends Record({
-    columns: LINEAGE_GRID_COLUMNS,
-    data: List<LineageNode>(),
-    distance: DEFAULT_LINEAGE_DISTANCE,
-    isError: false,
-    isLoaded: false,
-    isLoading: false,
-    maxRows: 20,
-    members: DEFAULT_LINEAGE_DIRECTION,
-    message: undefined,
-    nodeCounts: Map<string, number>(),
-    pageNumber: 1,
-    seedNode: undefined,
-    totalRows: 0,
-}) {
+interface ILineageGridModel {
     columns: List<string | GridColumn>;
     data: List<LineageNode>;
     distance: number;
@@ -503,22 +587,40 @@ export class LineageGridModel extends Record({
     isLoaded: boolean;
     isLoading: boolean;
     maxRows: number;
-    members?: LINEAGE_DIRECTIONS;
-    message?: string;
+    members: LINEAGE_DIRECTIONS;
+    message: string;
     nodeCounts: Map<string, number>;
     pageNumber: number;
-    seedNode?: LineageNode;
+    seedNode: LineageNode;
     totalRows: number;
+}
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
+export class LineageGridModel implements ILineageGridModel {
+    [immerable] = true;
+
+    readonly columns: List<string | GridColumn> = LINEAGE_GRID_COLUMNS;
+    readonly data: List<LineageNode> = List();
+    readonly distance: number = DEFAULT_LINEAGE_DISTANCE;
+    readonly isError: boolean = false;
+    readonly isLoaded: boolean = false;
+    readonly isLoading: boolean = false;
+    readonly maxRows: number = 20;
+    readonly members: LINEAGE_DIRECTIONS = DEFAULT_LINEAGE_DIRECTION;
+    readonly message: string;
+    readonly nodeCounts: Map<string, number> = Map();
+    readonly pageNumber: number = 1;
+    readonly seedNode: LineageNode;
+    readonly totalRows: number = 0;
+
+    constructor(config?: Partial<ILineageGridModel>) {
+        Object.assign(this, { ...config });
     }
 
-    getOffset(): number {
+    get offset(): number {
         return this.pageNumber > 1 ? (this.pageNumber - 1) * this.maxRows : 0;
     }
 
-    getMaxRowIndex(): number {
+    get maxRowIndex(): number {
         const max = this.pageNumber > 1 ? this.pageNumber * this.maxRows : this.maxRows;
 
         if (max > this.totalRows) {
@@ -528,25 +630,7 @@ export class LineageGridModel extends Record({
         return max;
     }
 
-    getMinRowIndex(): number {
-        return this.getOffset() + 1;
-    }
-}
-
-export class LineagePageModel extends Record({
-    distance: DEFAULT_LINEAGE_DISTANCE,
-    grid: new LineageGridModel(),
-    lastLocation: '',
-    seeds: List<string>(),
-    members: DEFAULT_LINEAGE_DIRECTION,
-}) {
-    distance: number;
-    grid: LineageGridModel;
-    lastLocation: string;
-    seeds: List<string>;
-    members: LINEAGE_DIRECTIONS;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
+    get minRowIndex(): number {
+        return this.offset + 1;
     }
 }

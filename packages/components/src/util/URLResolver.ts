@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { fromJS, List, Map } from 'immutable';
-import { ActionURL, Filter } from '@labkey/api';
+import { ActionURL, Experiment, Filter } from '@labkey/api';
 
 import { AppURL } from '../url/AppURL';
-import { LineageResult } from '../components/lineage/models';
+import { LineageLinkMetadata } from '../components/lineage/types';
 
 interface MapURLOptions {
     column: any;
@@ -354,33 +354,42 @@ export class URLResolver {
         return mapper.url;
     };
 
-    resolveLineageNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
-        const updatedNodes = result.nodes.map(node => {
-            if (acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
-                const parts = node.cpasType.split(':');
-                let name = parts[parts.length - 1];
+    resolveLineageItem = (
+        item: Experiment.LineageItemBase,
+        acceptedTypes: string[] = ['Sample', 'Data']
+    ): LineageLinkMetadata => {
+        const metadata: LineageLinkMetadata = {
+            lineage: undefined,
+            list: undefined,
+            overview: item.url,
+        };
 
-                // LSID strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
-                name = name.replace(/\+/g, ' ');
+        if (item.type && acceptedTypes.indexOf(item.type) >= 0 && item.cpasType) {
+            const parts = item.cpasType.split(':');
+            let name = parts[parts.length - 1];
 
-                // Create a URL that will be resolved/redirected in the application resolvers
-                const listURLParts = node.type === 'Sample' ? ['samples', name] : ['rd', 'dataclass', name];
+            // LSID strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
+            name = name.replace(/\+/g, ' ');
 
-                return node.merge({
-                    // listURL is the url to the grid for the data type. It will be filtered to the lineage members.
-                    listURL: AppURL.create(...listURLParts).toHref(),
-                    url: this.mapURL({
-                        url: node.url,
-                        row: node,
-                        column: Map<string, any>(),
-                        schema: node.schemaName,
-                        query: node.queryName,
-                    }),
-                });
-            }
-            return node;
-        });
-        return result.set('nodes', updatedNodes) as LineageResult;
+            // Create a URL that will be resolved/redirected in the application resolvers
+            const listURLParts = item.type === 'Sample' ? ['samples', name] : ['rd', 'dataclass', name];
+
+            // listURL is the url to the grid for the data type. It will be filtered to the lineage members.
+            metadata.list = AppURL.create(...listURLParts).toHref();
+
+            const overviewURL = this.mapURL({
+                url: item.url,
+                row: item,
+                column: Map<string, any>(),
+                schema: item.schemaName,
+                query: item.queryName,
+            });
+
+            metadata.overview = overviewURL;
+            metadata.lineage = overviewURL + '/lineage';
+        }
+
+        return metadata;
     };
 
     /**

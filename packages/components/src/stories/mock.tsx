@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import mock, { proxy, delay } from 'xhr-mock';
+import mock, { MockResponse, proxy, delay } from 'xhr-mock';
 import { fromJS } from 'immutable';
 
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
@@ -61,7 +61,9 @@ import assayGpatDataQueryInfo from '../test/data/assayGpatData-getQueryDetails.j
 import assayGpatRunData from '../test/data/assayGpatRuns-getQuery.json';
 import filePreviewData from '../test/data/property-getFilePreview.json';
 import visualizationConfig from '../test/data/visualization-getVisualization.json';
-import lineageData from '../test/data/experiment-lineage.json';
+import lineageRunDetail from '../test/data/aminoAcidDetail-getQuery.json';
+import lineageRunData from '../test/data/experiment-lineage-run.json';
+import lineageSampleData from '../test/data/experiment-lineage.json';
 import samplesLineageQuery from '../test/data/sampleLineage-getQuery.json';
 import expSystemSamplesLineageQuery from '../test/data/expSystemSampleLineage-getQuery.json';
 import expSystemLineageQuery from '../test/data/expSystemLineage-getQuery.json';
@@ -211,6 +213,18 @@ const QUERY_RESPONSES = fromJS({
     },
 });
 
+function jsonResponse(payload: any, res?: MockResponse): any {
+    if (res) {
+        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(payload));
+    }
+
+    return {
+        status: 200,
+        headers: JSON_HEADERS,
+        body: JSON.stringify(payload),
+    };
+}
+
 export function initMocks() {
     mock.setup();
 
@@ -233,7 +247,7 @@ export function initMocks() {
             console.log(`executeSql response not found! "${body}"`);
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     });
 
     mock.get(/.*\/query\/?.*\/getSchemas.*/, (req, res) => {
@@ -246,7 +260,7 @@ export function initMocks() {
             responseBody = assayGetSchemasJson;
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     });
 
     mock.get(/.*\/query\/?.*\/getQueries.*/, (req, res) => {
@@ -257,7 +271,7 @@ export function initMocks() {
             responseBody = assayGetQueriesJson;
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     });
 
     mock.post(/.*\/query\/?.*\/updateRows.*/, (req, res) => {
@@ -268,15 +282,11 @@ export function initMocks() {
             responseBody = samplesUpdate;
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     });
 
     // TODO conditionalize based on queryName
-    mock.post(/.*\/query\/?.*\/insertRows.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(samplesInsert),
-    });
+    mock.post(/.*\/query\/?.*\/insertRows.*/, jsonResponse(samplesInsert));
 
     mock.get(/.*ConfirmationData.*/, (req, res) => {
         const queryParams = req.url().query;
@@ -292,7 +302,7 @@ export function initMocks() {
             responseBody = deleteAllConfirmation;
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     });
 
     mock.post(/.*FileDuplicateCheck.*/, (req, res) => {
@@ -305,7 +315,7 @@ export function initMocks() {
             responseBody = assayFileNoDuplicateCheck;
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     });
 
     mock.get(/.*getFilePreview.*/, (req, res) => {
@@ -316,50 +326,20 @@ export function initMocks() {
             responseBody = filePreviewData;
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     });
 
-    mock.post(/.*\/visualization\/?.*\/getVisualization.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(visualizationConfig),
-    });
+    mock.post(/.*\/visualization\/?.*\/getVisualization.*/, jsonResponse(visualizationConfig));
 
-    mock.post(/.*\/property\/?.*\/inferDomain.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(inferDomainJson),
-    });
+    mock.post(/.*\/property\/?.*\/inferDomain.*/, jsonResponse(inferDomainJson));
 
-    mock.get(/.*\/security\/GetMaxPhiLevel.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(getMaxPhiLevelJson),
-    });
+    mock.get(/.*\/security\/GetMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
 
-    mock.get(/.*\/security\/?.*\/getRoles.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(getRolesJson),
-    });
+    mock.get(/.*\/security\/?.*\/getRoles.*/, jsonResponse(getRolesJson));
 
-    mock.get(/.*\/assay\/getValidPublishTargets.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(getValidPublishTargetsJson),
-    });
+    mock.get(/.*\/assay\/getValidPublishTargets.*/, jsonResponse(getValidPublishTargetsJson));
 
-    mock.get(
-        /.*browseData.*/,
-        delay(
-            {
-                status: 200,
-                headers: JSON_HEADERS,
-                body: JSON.stringify(browseData),
-            },
-            1000
-        )
-    );
+    mock.get(/.*browseData.*/, delay(jsonResponse(browseData), 1000));
 
     mock.use(proxy);
 }
@@ -390,7 +370,7 @@ export function initQueryGridMocks(delayMs = undefined) {
             return res.status(404).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     };
 
     let getQuery = (req, res) => {
@@ -411,6 +391,12 @@ export function initQueryGridMocks(delayMs = undefined) {
             } else if (params.hasOwnProperty('query.RowId~eq')) {
                 responseBody = hemoglobinLineageQueryEq;
             }
+        } else if (
+            schemaName === 'assay.general.amino acids' &&
+            queryName === 'runs' &&
+            params['query.viewName'] === '~~DETAILS~~'
+        ) {
+            responseBody = lineageRunDetail;
         }
 
         if (!responseBody) {
@@ -429,7 +415,7 @@ export function initQueryGridMocks(delayMs = undefined) {
             responseBody = responseBody.set('rows', responseBody.get('rows').slice(offset, offset + maxRows));
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     };
 
     let getSelected = (req, res) => {
@@ -443,7 +429,7 @@ export function initQueryGridMocks(delayMs = undefined) {
             responseBody = mixturesSelected;
         }
 
-        return res.status(200).headers(JSON_HEADERS).body(JSON.stringify(responseBody));
+        return jsonResponse(responseBody, res);
     };
 
     let selectDistinct = (req, res) => {
@@ -481,33 +467,26 @@ export function initQueryGridMocks(delayMs = undefined) {
     mock.post(/.*\/query\/?.*\/getSelected.*/, getSelected);
 
     // TODO response JSON?
-    mock.post(/.*\/query\/?.*\/setSelected.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify({}),
-    });
+    mock.post(/.*\/query\/?.*\/setSelected.*/, jsonResponse({}));
 
     // TODO conditionalize based on queryName
-    mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(mixturesReportInfos),
-    });
+    mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, jsonResponse(mixturesReportInfos));
 }
 
 export function initLineageMocks() {
-    mock.get(/.*\/experiment\/?.*\/lineage.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(lineageData),
+    mock.get(/.*\/experiment\/?.*\/lineage.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody: any = lineageSampleData;
+
+        if (queryParams.lsid && queryParams.lsid.indexOf('Run') > -1) {
+            responseBody = lineageRunData;
+        }
+
+        return jsonResponse(responseBody, res);
     });
 }
 
 export function initUserPropsMocks() {
     // TODO conditionalize based on userId
-    mock.get(/.*\/user\/getUserProps.*/, {
-        status: 200,
-        headers: JSON_HEADERS,
-        body: JSON.stringify(userPropsInfo),
-    });
+    mock.get(/.*\/user\/getUserProps.*/, jsonResponse(userPropsInfo));
 }

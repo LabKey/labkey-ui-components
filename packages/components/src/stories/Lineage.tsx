@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 import React from 'react';
+import { fromJS, Map } from 'immutable';
 import { Panel } from 'react-bootstrap';
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { LineageGraph } from '../components/lineage/LineageGraph';
-import { LineageGrid } from '../components/lineage/LineageGrid';
-import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from '../components/lineage/types';
+import { LineageGrid, LineageGridFromLocation } from '../components/lineage/grid/LineageGrid';
+import { LineageFilter, LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from '../components/lineage/types';
 
 import './stories.scss';
 
@@ -32,6 +33,17 @@ storiesOf('Lineage', module)
                 lsid="urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3"
                 grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
                 filters={[new LineageFilter('type', ['Sample', 'Data'])]}
+                groupTitles={fromJS({
+                    [LINEAGE_DIRECTIONS.Parent]: { hemoglobin: text('Hemoglobin parent suffix', 'Parents') },
+                })}
+            />
+        );
+    })
+    .add('LineageGraph (Runs)', () => {
+        return (
+            <LineageGraph
+                lsid="urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6"
+                grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
             />
         );
     })
@@ -40,6 +52,21 @@ storiesOf('Lineage', module)
             <Panel>
                 <Panel.Body>
                     <LineageGrid lsid="urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3" />
+                </Panel.Body>
+            </Panel>
+        );
+    })
+    .add('LineageGridFromLocation', () => {
+        const location = {
+            query: Map({
+                seeds: 'urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3',
+            }),
+        };
+
+        return (
+            <Panel>
+                <Panel.Body>
+                    <LineageGridFromLocation location={location} />
                 </Panel.Body>
             </Panel>
         );

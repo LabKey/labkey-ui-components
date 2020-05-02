@@ -1,9 +1,9 @@
-import { QueryInfo, SchemaQuery } from '..';
+import { LoadingState, QueryInfo, SchemaQuery } from '..';
 import { QuerySort } from '../components/base/models/model';
 import { initUnitTests, makeQueryInfo } from '../testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
-import { LoadingState, QueryConfig, QueryModel } from './QueryModel';
+import { QueryConfig, QueryModel } from './QueryModel';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;

@@ -1,52 +1,39 @@
-import { Filter } from '@labkey/api';
+import { ActionURL, Experiment, Filter } from '@labkey/api';
 
 import { URLResolver } from '../..';
 
-import { LineageOptions, LineageURLResolvers } from './types';
-import { LineageNode, LineageResult } from './models';
+import { LineageLinkMetadata, LineageOptions, LineageURLResolvers } from './types';
+import { LineageNode } from './models';
 
-interface LineageURLResolver {
-    resolveNodes: (result: LineageResult, acceptedTypes?: string[]) => LineageResult;
+export interface LineageURLResolver {
+    resolveItem: (item: Experiment.LineageItemBase) => LineageLinkMetadata;
     resolveGroupedNodes: (nodes: LineageNode[]) => string;
 }
 
 export class AppLineageURLResolver implements LineageURLResolver {
     private static resolver = new URLResolver();
 
-    resolveNodes = (result: LineageResult, acceptedTypes: string[] = ['Sample', 'Data']): LineageResult => {
-        const updated = AppLineageURLResolver.resolver.resolveLineageNodes(result, acceptedTypes);
-
-        return AppLineageURLResolver.resolver.resolveLineageNodes(result, acceptedTypes).set(
-            'nodes',
-            updated.nodes.map(node => {
-                if (node && acceptedTypes.indexOf(node.type) >= 0 && node.cpasType) {
-                    return node.set('links', {
-                        overview: node.url,
-                        lineage: node.url + '/lineage',
-                        list: node.listURL,
-                    });
-                }
-
-                return node;
-            })
-        ) as LineageResult;
+    resolveItem = (item: Experiment.LineageItemBase): LineageLinkMetadata => {
+        return AppLineageURLResolver.resolver.resolveLineageItem(item);
     };
 
     resolveGroupedNodes = (nodes: LineageNode[]): string => {
         let listURL: string;
 
         if (nodes && nodes.length) {
-            // arbitrarily choose the first node as the baseURL
-            const baseURL = nodes[0].listURL;
+            // all nodes are expected to share the same type/configuration
+            const { links } = nodes[0];
 
-            const filter = Filter.create(
-                'RowId',
-                nodes.map(n => n.id),
-                Filter.Types.IN
-            );
-            const suffix = '?' + filter.getURLParameterName() + '=' + filter.getURLParameterValue();
+            if (links.list) {
+                const filter = createQueryFilterFromNodes(nodes);
 
-            listURL = baseURL + suffix;
+                if (filter) {
+                    // TODO: This is not how we should compose app URLs.
+                    // This should use something like AppURL.fromString() (DNE). Imagine...
+                    // listURL = AppURL.fromString(links.list).addFilters([filter]).toHref();
+                    listURL = `${links.list}?${filter.getURLParameterName()}=${filter.getURLParameterValue()}`;
+                }
+            }
         }
 
         return listURL;
@@ -54,23 +41,34 @@ export class AppLineageURLResolver implements LineageURLResolver {
 }
 
 export class ServerLineageURLResolver implements LineageURLResolver {
-    resolveNodes = (result: LineageResult): LineageResult => {
-        return result.set(
-            'nodes',
-            result.nodes.map(node =>
-                node.set('links', {
-                    overview: node.url,
-                    // does not currently have a corollary view in LKS
-                    lineage: undefined,
-                    list: undefined,
-                })
-            )
-        ) as LineageResult;
+    resolveItem = (item: Experiment.LineageItemBase): LineageLinkMetadata => {
+        return {
+            // does not currently have a corollary view in LKS
+            lineage: undefined,
+            list: undefined,
+            overview: item.url,
+        };
     };
 
     resolveGroupedNodes = (nodes: LineageNode[]): string => {
-        // NYI
-        return undefined;
+        let listURL: string;
+
+        if (nodes && nodes.length) {
+            // all nodes are expected to share the same type/configuration
+            const { queryName, schemaName } = nodes[0];
+
+            const filter = createQueryFilterFromNodes(nodes);
+
+            if (filter) {
+                listURL = ActionURL.buildURL('query', 'executeQuery.view', undefined, {
+                    schemaName,
+                    'query.queryName': queryName,
+                    [filter.getURLParameterName()]: filter.getURLParameterValue(),
+                });
+            }
+        }
+
+        return listURL;
     };
 }
 
@@ -83,4 +81,33 @@ export function getURLResolver(options?: LineageOptions): LineageURLResolver {
     }
 
     return appResolver;
+}
+
+function createQueryFilterFromNodes(nodes: LineageNode[]): Filter.IFilter {
+    if (nodes && nodes.length) {
+        const { queryName, schemaName } = nodes[0];
+
+        // ensure query configuration is consistent in the set
+        if (nodes.every(n => n.schemaName === schemaName && n.queryName === queryName && n.pkFilters.length === 1)) {
+            const { pkFilters } = nodes[0];
+
+            if (pkFilters && pkFilters.length === 1) {
+                const { fieldKey } = pkFilters[0];
+                let filterType: Filter.IFilterType;
+                let value: any;
+
+                if (nodes.length === 1) {
+                    filterType = Filter.Types.EQ;
+                    value = pkFilters[0].value;
+                } else {
+                    filterType = Filter.Types.IN;
+                    value = nodes.map(n => n.pkFilters[0].value);
+                }
+
+                return Filter.create(fieldKey, value, filterType);
+            }
+        }
+    }
+
+    return undefined;
 }

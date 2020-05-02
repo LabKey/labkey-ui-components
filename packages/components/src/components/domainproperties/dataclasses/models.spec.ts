@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable';
-
 import { DomainDesign } from '../models';
 
 import { DataClassModel } from './models';
 
 describe('DataClassModel', () => {
     test('isNew', () => {
-        expect(DataClassModel.create({ rowId: undefined }).isNew()).toBeTruthy();
-        expect(DataClassModel.create({ rowId: 0 }).isNew()).toBeTruthy();
-        expect(DataClassModel.create({ rowId: 1 }).isNew()).toBeFalsy();
+        expect(DataClassModel.create({ rowId: undefined }).isNew).toBeTruthy();
+        expect(DataClassModel.create({ rowId: 0 }).isNew).toBeTruthy();
+        expect(DataClassModel.create({ rowId: 1 }).isNew).toBeFalsy();
     });
 
     test('hasValidProperties', () => {
-        expect(DataClassModel.create({ name: undefined }).hasValidProperties()).toBeFalsy();
-        expect(DataClassModel.create({ name: null }).hasValidProperties()).toBeFalsy();
-        expect(DataClassModel.create({ name: '' }).hasValidProperties()).toBeFalsy();
-        expect(DataClassModel.create({ name: ' ' }).hasValidProperties()).toBeFalsy();
-        expect(DataClassModel.create({ name: 'test' }).hasValidProperties()).toBeTruthy();
+        expect(DataClassModel.create({ name: undefined }).hasValidProperties).toBeFalsy();
+        expect(DataClassModel.create({ name: null }).hasValidProperties).toBeFalsy();
+        expect(DataClassModel.create({ name: '' }).hasValidProperties).toBeFalsy();
+        expect(DataClassModel.create({ name: ' ' }).hasValidProperties).toBeFalsy();
+        expect(DataClassModel.create({ name: 'test' }).hasValidProperties).toBeTruthy();
     });
 
     test('getOptions', () => {
@@ -46,13 +44,13 @@ describe('DataClassModel', () => {
             domain: DomainDesign.create({}),
         });
 
-        expect(model.getOptions()['exception']).toBeUndefined();
-        expect(model.getOptions()['domain']).toBeUndefined();
-        expect(model.getOptions()['rowId']).toBe(1);
-        expect(model.getOptions()['name']).toBe('name');
-        expect(model.getOptions()['nameExpression']).toBe('nameExpression');
-        expect(model.getOptions()['description']).toBe('description');
-        expect(model.getOptions()['sampleSet']).toBe(2);
-        expect(model.getOptions()['category']).toBe('category');
+        expect(model.options['exception']).toBeUndefined();
+        expect(model.options['domain']).toBeUndefined();
+        expect(model.options.rowId).toBe(1);
+        expect(model.options.name).toBe('name');
+        expect(model.options.nameExpression).toBe('nameExpression');
+        expect(model.options.description).toBe('description');
+        expect(model.options.sampleSet).toBe(2);
+        expect(model.options.category).toBe('category');
     });
 });

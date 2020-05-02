@@ -2,8 +2,8 @@
  * Copyright (c) 2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-// DO NOT IMPORT ANYTHING IN HERE! ONLY MEANT FOR TOP-LEVEL LINEAGE TYPES
-// Can cause circular dependency
+import { Map } from 'immutable';
+import { Experiment } from '@labkey/api';
 
 export enum LINEAGE_DIRECTIONS {
     Children = 'children',
@@ -47,12 +47,6 @@ export class LineageFilter {
     }
 }
 
-export interface LineageNodeLinks {
-    overview: string;
-    lineage: string;
-    list: string;
-}
-
 export enum LineageURLResolvers {
     App = 'App',
     Server = 'Server',
@@ -62,5 +56,21 @@ export interface LineageOptions {
     filterIn?: boolean;
     filters?: LineageFilter[];
     grouping?: LineageGroupingOptions;
+    groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
+    request?: Experiment.ExperimentJSONConverterOptions;
     urlResolver?: LineageURLResolvers;
+}
+
+export interface LineageIconMetadata {
+    iconURL: string;
+    image: string;
+    imageBackup: string;
+    imageSelected: string;
+    imageShape: string;
+}
+
+export interface LineageLinkMetadata {
+    lineage: string;
+    list: string;
+    overview: string;
 }

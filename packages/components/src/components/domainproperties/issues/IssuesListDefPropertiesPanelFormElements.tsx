@@ -10,8 +10,7 @@ import { Principal, SelectInput } from '../../..';
 
 import { IssuesListDefModel } from './models';
 import {UserGroup} from "../../permissions/models";
-import {getCoreGroups, getCoreUsersInGroups} from "../../permissions/actions";
-import produce from "immer";
+import {ISSUES_LIST_DEF_SORT_DIRECTION_TIP, ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP} from "./constants";
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -63,13 +62,16 @@ export class AssignmentOptions extends React.PureComponent<SecurityUserGroupProp
 }
 
 export class SingularItemNameInput extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
+    getIssueNameHelpTip() {
+        return ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP;
+    }
     render() {
         const { model, onInputChange } = this.props;
-        const value = model.singularItemName === null ? '' : model.singularItemName;
+        const value = model.singularItemName === null ? 'Issue' : model.singularItemName;
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel label="Singular item name" required={false} />
+                    <DomainFieldLabel label="Singular item name" helpTipBody={this.getIssueNameHelpTip} required={false} />
                 </Col>
 
                 <Col xs={9} lg={8}>
@@ -89,13 +91,18 @@ export class SingularItemNameInput extends React.PureComponent<IssuesListDefBasi
 }
 
 export class PluralItemNameInput extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
+
+    getIssueNameHelpTip() {
+        return ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP;
+    }
+
     render() {
         const { model, onInputChange } = this.props;
-        const value = model.pluralItemName === null ? '' : model.pluralItemName;
+        const value = model.pluralItemName === null ? 'Issues' : model.pluralItemName;
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel label="Plural items name" required={false} />
+                    <DomainFieldLabel label="Plural items name" helpTipBody={this.getIssueNameHelpTip} required={false} />
                 </Col>
 
                 <Col xs={9} lg={8}>
@@ -117,7 +124,7 @@ export class PluralItemNameInput extends React.PureComponent<IssuesListDefBasicP
 export class CommentSortDirectionDropDown extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
 
     getHelpTip() {
-        return "By default, comments on an issue are shown in the order they are added, oldest first. Change the Comment Sort Direction to newest first if you prefer."
+        return ISSUES_LIST_DEF_SORT_DIRECTION_TIP;
     }
 
     onChange = (name: string, formValue: any, selected: String, ref: any): any => {
@@ -146,7 +153,7 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
                         inputClass={'col-xs-12'}
                         valueKey={'id'}
                         onChange={this.onChange}
-                        value={model.commentSortDirection}
+                        value={model.commentSortDirection ? model.commentSortDirection : sortDirectionOptions[0]}
                         formsy={false}
                         showLabel={true}
                         multiple={false}

@@ -10,7 +10,11 @@ import { Principal, SelectInput } from '../../..';
 
 import { IssuesListDefModel } from './models';
 import {UserGroup} from "../../permissions/models";
-import {ISSUES_LIST_DEF_SORT_DIRECTION_TIP, ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP} from "./constants";
+import {
+    ISSUES_LIST_DEF_SORT_DIRECTION_TIP,
+    ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP,
+    ISSUES_LIST_GROUP_ASSIGN_TIP, ISSUES_LIST_USER_ASSIGN_TIP
+} from "./constants";
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -169,6 +173,9 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
 }
 
 export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupProps, any> {
+    getHelpTip() {
+        return ISSUES_LIST_GROUP_ASSIGN_TIP;
+    }
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         if (selected && this.props.onSelect) {
             this.props.onSelect(selected, name);
@@ -176,22 +183,22 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupP
     };
 
     render() {
-        const { coreGroups } = this.state;
-        const name = 'addGroupAssignment';
+        const { model, coreGroups } = this.props;
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel label="Assigned to list comes from" required={false} />
+                    <DomainFieldLabel label="Assigned to list comes from" helpTipBody={this.getHelpTip} required={false} />
                 </Col>
                 <Col xs={9} lg={8}>
                     <SelectInput
-                        name={name}
+                        name={'assignedToGroup'}
                         options={coreGroups.toArray()}
                         placeholder=""
                         inputClass="col-xs-12"
                         valueKey="userId"
                         labelKey="displayName"
                         onChange={this.onChange}
+                        value={model.assignedToGroup ? model.assignedToGroup : coreGroups.filter(group => group.name === "Administrators")}
                         formsy={false}
                         showLabel={false}
                         multiple={false}
@@ -205,6 +212,11 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupP
 }
 
 export class DefaultUserAssignmentInput extends React.PureComponent<SecurityUserGroupProps, any> {
+
+    getHelpTip() {
+        return ISSUES_LIST_USER_ASSIGN_TIP;
+    }
+
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         if (selected && this.props.onSelect) {
             this.props.onSelect(selected, name);
@@ -215,22 +227,20 @@ export class DefaultUserAssignmentInput extends React.PureComponent<SecurityUser
         let filteredCoreUser = coreUsers.filter(coreUser => {
             return coreUser.groupId === groupId;
         });
-        return filteredCoreUser.toArray().length > 0 ? filteredCoreUser.toArray() : coreUsers.toArray();
+        return filteredCoreUser.toArray().length > 0 ? filteredCoreUser.toArray() : undefined;
     };
 
     render() {
-        const { coreUsers } = this.state;
-        const name = 'defaultUserAssignment';
-
+        const { model, coreUsers } = this.props;
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
-                    <DomainFieldLabel label="Default user assignment" required={false} />
+                    <DomainFieldLabel label="Default user assignment" helpTipBody={this.getHelpTip} required={false} />
                 </Col>
                 <Col xs={9} lg={8}>
                     <SelectInput
-                        name={name}
-                        options={this.getFilteredCoreUsers(this.props.model.assignedToGroup, coreUsers)}
+                        name={'assignedToUser'}
+                        options={this.getFilteredCoreUsers(model.assignedToGroup, coreUsers)}
                         placeholder=""
                         inputClass="col-xs-12"
                         valueKey="userId"

@@ -167,6 +167,7 @@ export const NEW_DATASET_MODEL_WITH_DATASPACE = {
 };
 
 export const DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS = {
+    name: 'Issues List For Storybook',
     singularItemName: null,
     pluralItemName: null,
     commentSortDirection: null,

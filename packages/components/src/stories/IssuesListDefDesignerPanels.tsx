@@ -46,9 +46,9 @@ class WrappedNew extends React.Component<any, any> {
     }
 }
 
-storiesOf('IssuesDesignerPanels', module)
+storiesOf('IssuesListDefDesignerPanels', module)
     .addDecorator(withKnobs)
-    .add('IssuesDesignerPanels - create', () => {
+    .add('IssuesListDefDesignerPanels - create', () => {
         return <WrappedNew data={DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS} />;
     });
 

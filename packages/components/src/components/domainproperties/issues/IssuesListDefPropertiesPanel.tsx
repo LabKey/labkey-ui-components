@@ -122,12 +122,12 @@ export class IssuesPropertiesPanelImpl extends React.PureComponent<
             >
                 <Form>
                     <BasicPropertiesFields model={model} onInputChange={this.onInputChange} onSelect={this.onSelectChange} />
-                    {/*<AssignmentOptions*/}
-                    {/*    model={model}*/}
-                    {/*    coreGroups={coreGroups}*/}
-                    {/*    coreUsers={coreUsers}*/}
-                    {/*    onSelect={this.onSelectChange}*/}
-                    {/*/>*/}
+                    <AssignmentOptions
+                        model={model}
+                        coreGroups={coreGroups}
+                        coreUsers={coreUsers}
+                        onSelect={this.onSelectChange}
+                    />
                 </Form>
             </BasePropertiesPanel>
         );

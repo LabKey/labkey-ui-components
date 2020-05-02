@@ -3,7 +3,7 @@ import { List } from 'immutable';
 
 import { Button } from 'react-bootstrap';
 
-import { Alert } from '../base/Alert';
+import {Alert} from '../base/Alert';
 
 import { getDomainBottomErrorMessage, getDomainHeaderName, getUpdatedVisitedPanelsList } from './actions';
 import { SEVERITY_LEVEL_ERROR } from './constants';
@@ -18,8 +18,10 @@ export interface InjectedBaseDomainDesignerProps {
     firstState: boolean;
     setSubmitting: (submitting: boolean, callback?: () => any) => any;
     onTogglePanel: (index: number, collapsed: boolean, callback: () => any) => any;
-    onFinish: (isValid: boolean, save: () => any) => any;
+    onFinish: (isValid: boolean, save: () => any) => any
 }
+
+
 
 interface State {
     submitting: boolean;
@@ -31,7 +33,7 @@ interface State {
 
 export function withBaseDomainDesigner<Props>(
     ComponentToWrap: ComponentType<Props & InjectedBaseDomainDesignerProps>
-): ComponentType<Props> {
+) {
     class ComponentWithBaseDomainDesigner extends PureComponent<Props, State> {
         constructor(props: Props) {
             super(props);

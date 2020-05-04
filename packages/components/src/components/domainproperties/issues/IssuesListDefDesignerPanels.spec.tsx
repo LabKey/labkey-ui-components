@@ -10,7 +10,7 @@ import {IssuesListDefPropertiesPanel} from "./IssuesListDefPropertiesPanel";
 import {Alert} from "../../..";
 import {PROPERTIES_PANEL_ERROR_MSG} from "../constants";
 
-const emptyNewModel = IssuesListDefModel.create(null, {name: 'Issues List For Jest'});
+const emptyNewModel = IssuesListDefModel.create(null, {issueDefName: 'Issues List For Jest'});
 
 const BASE_PROPS = {
     onComplete: jest.fn(),

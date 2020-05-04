@@ -78,7 +78,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
         const { setSubmitting } = this.props;
         const { model } = this.state;
 
-        saveDomain(model.domain, model.domainKindName, model.getOptions(), model.name)
+        saveDomain(model.domain, model.domainKindName, model.getOptions(), model.issueDefName)
             .then(response => {
 
                 this.setState(
@@ -129,7 +129,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
 
         return (
             <BaseDomainDesigner
-                name={model.name}
+                name={model.issueDefName}
                 exception={model.exception}
                 domains={List.of(model.domain)}
                 hasValidProperties={model.hasValidProperties()}

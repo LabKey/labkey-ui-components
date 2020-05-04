@@ -97,7 +97,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                 {...this.props}
                 headerId={PROPERTIES_HEADER_ID}
                 title="Issues List Properties"
-                titlePrefix={model.name}
+                titlePrefix={model.issueDefName}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >

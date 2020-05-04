@@ -11,7 +11,7 @@ import {Alert} from "../../..";
 import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
 import getDomainDetailsJSON from '../../../test/data/issuesListDef-getDomainDetails.json'
 
-const emptyNewModel = IssuesListDefModel.create(null, DEFAULT_LIST_SETTINGS);
+const emptyNewModel = IssuesListDefModel.create(null, {issueDefName: 'Issues List For Jest'});
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,

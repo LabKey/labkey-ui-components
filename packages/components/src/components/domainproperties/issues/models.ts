@@ -24,7 +24,7 @@ export class IssuesListDefModel {
     readonly domain: DomainDesign;
     readonly entityId?: string;
     readonly domainId: number;
-    readonly name: string;
+    readonly issueDefName: string;
     readonly singularItemName: string = "Issue";
     readonly pluralItemName: string = "Issues";
     readonly commentSortDirection: string = "ASC";
@@ -55,7 +55,7 @@ export class IssuesListDefModel {
     }
 
     hasValidProperties(): boolean {
-        return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
+        return this.issueDefName !== undefined && this.issueDefName !== null && this.issueDefName.trim().length > 0;
     }
 
     getOptions(): Record<string, any> {

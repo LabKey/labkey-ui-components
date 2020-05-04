@@ -12,7 +12,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
     <span
       className="domain-panel-title"
     >
-      Issues List Properties
+      Issues List For Jest - Issues List Properties
     </span>
   </div>
   <div
@@ -76,7 +76,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 className="col-xs-12"
               >
                 <div
-                  className="Select Select--single is-clearable is-searchable has-value"
+                  className="Select Select--single is-searchable has-value"
                 >
                   <input
                     disabled={false}
@@ -153,24 +153,6 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                       </div>
                     </span>
                     <span
-                      aria-label="Clear value"
-                      className="Select-clear-zone"
-                      onMouseDown={[Function]}
-                      onTouchEnd={[Function]}
-                      onTouchMove={[Function]}
-                      onTouchStart={[Function]}
-                      title="Clear value"
-                    >
-                      <span
-                        className="Select-clear"
-                        dangerouslySetInnerHTML={
-                          Object {
-                            "__html": "&times;",
-                          }
-                        }
-                      />
-                    </span>
-                    <span
                       className="Select-arrow-zone"
                       onMouseDown={[Function]}
                     >
@@ -232,8 +214,8 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               className="form-control"
               id="singularItemName"
               onChange={[Function]}
-              placeholder="Enter a singular name for this Issue"
               type="text"
+              value="Issue"
             />
           </div>
           <div
@@ -284,8 +266,8 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               className="form-control"
               id="pluralItemName"
               onChange={[Function]}
-              placeholder="Enter a plural name for this Issue"
               type="text"
+              value="Issues"
             />
           </div>
           <div
@@ -301,262 +283,26 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
         >
           Assignment Options
         </div>
-        <div
-          className="margin-top row"
+        <span
+          className=""
         >
-          <div
-            className="col-lg-2 col-xs-3"
-          >
-            Assigned to list comes 
-            <span
-              className="domain-no-wrap"
-            >
-              from
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                  data-icon="question-circle"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  style={Object {}}
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                    fill="currentColor"
-                    style={Object {}}
-                  />
-                </svg>
-              </span>
-              
-            </span>
-          </div>
-          <div
-            className="col-lg-8 col-xs-9"
-          >
-            <div
-              className="form-group row"
-            >
-              <div
-                className="col-xs-12"
-              >
-                <div
-                  className="Select Select--single is-clearable is-searchable"
-                >
-                  <div
-                    className="Select-control"
-                    onKeyDown={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchEnd={[Function]}
-                    onTouchMove={[Function]}
-                    onTouchStart={[Function]}
-                  >
-                    <span
-                      className="Select-multi-value-wrapper"
-                      id="react-select-3--value"
-                    >
-                      <div
-                        className="Select-placeholder"
-                      >
-                        
-                      </div>
-                      <div
-                        className="Select-input"
-                        style={
-                          Object {
-                            "display": "inline-block",
-                          }
-                        }
-                      >
-                        <input
-                          aria-activedescendant="react-select-3--value"
-                          aria-expanded="false"
-                          aria-haspopup="false"
-                          aria-owns=""
-                          id="selectinput-1"
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          onFocus={[Function]}
-                          required={false}
-                          role="combobox"
-                          style={
-                            Object {
-                              "boxSizing": "content-box",
-                              "width": "5px",
-                            }
-                          }
-                          value=""
-                        />
-                        <div
-                          style={
-                            Object {
-                              "height": 0,
-                              "left": 0,
-                              "overflow": "scroll",
-                              "position": "absolute",
-                              "top": 0,
-                              "visibility": "hidden",
-                              "whiteSpace": "pre",
-                            }
-                          }
-                        >
-                          
-                        </div>
-                      </div>
-                    </span>
-                    <span
-                      className="Select-arrow-zone"
-                      onMouseDown={[Function]}
-                    >
-                      <span
-                        className="Select-arrow"
-                        onMouseDown={[Function]}
-                      />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="col-lg-2"
+          <i
+            aria-hidden="true"
+            className="fa fa-spinner fa-pulse"
           />
-        </div>
-        <div
-          className="margin-top row"
+           
+          Loading...
+        </span>
+        <span
+          className=""
         >
-          <div
-            className="col-lg-2 col-xs-3"
-          >
-            Default user 
-            <span
-              className="domain-no-wrap"
-            >
-              assignment
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                  data-icon="question-circle"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  style={Object {}}
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                    fill="currentColor"
-                    style={Object {}}
-                  />
-                </svg>
-              </span>
-              
-            </span>
-          </div>
-          <div
-            className="col-lg-8 col-xs-9"
-          >
-            <div
-              className="form-group row"
-            >
-              <div
-                className="col-xs-12"
-              >
-                <div
-                  className="Select Select--single is-clearable is-searchable"
-                >
-                  <div
-                    className="Select-control"
-                    onKeyDown={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchEnd={[Function]}
-                    onTouchMove={[Function]}
-                    onTouchStart={[Function]}
-                  >
-                    <span
-                      className="Select-multi-value-wrapper"
-                      id="react-select-4--value"
-                    >
-                      <div
-                        className="Select-placeholder"
-                      >
-                        
-                      </div>
-                      <div
-                        className="Select-input"
-                        style={
-                          Object {
-                            "display": "inline-block",
-                          }
-                        }
-                      >
-                        <input
-                          aria-activedescendant="react-select-4--value"
-                          aria-expanded="false"
-                          aria-haspopup="false"
-                          aria-owns=""
-                          id="selectinput-2"
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          onFocus={[Function]}
-                          required={false}
-                          role="combobox"
-                          style={
-                            Object {
-                              "boxSizing": "content-box",
-                              "width": "5px",
-                            }
-                          }
-                          value=""
-                        />
-                        <div
-                          style={
-                            Object {
-                              "height": 0,
-                              "left": 0,
-                              "overflow": "scroll",
-                              "position": "absolute",
-                              "top": 0,
-                              "visibility": "hidden",
-                              "whiteSpace": "pre",
-                            }
-                          }
-                        >
-                          
-                        </div>
-                      </div>
-                    </span>
-                    <span
-                      className="Select-arrow-zone"
-                      onMouseDown={[Function]}
-                    >
-                      <span
-                        className="Select-arrow"
-                        onMouseDown={[Function]}
-                      />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="col-lg-2"
+          <i
+            aria-hidden="true"
+            className="fa fa-spinner fa-pulse"
           />
-        </div>
+           
+          Loading...
+        </span>
       </div>
     </form>
   </div>

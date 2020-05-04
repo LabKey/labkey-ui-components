@@ -7,10 +7,9 @@ import { DomainPanelStatus } from '../models';
 import {IssuesListDefPropertiesPanel, IssuesListDefPropertiesPanelImpl} from "./IssuesListDefPropertiesPanel";
 import {IssuesListDefModel} from "./models";
 import {mount} from "enzyme";
-import {Alert, QuerySelect} from "../../..";
+import {Alert} from "../../..";
 import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
-import {EntityDetailsForm} from "../entities/EntityDetailsForm";
-import getDomainDetailsJSON from '../../../test/data/issuesListDef-getdomainDetails.json'
+import getDomainDetailsJSON from '../../../test/data/issuesListDef-getDomainDetails.json'
 
 const emptyNewModel = IssuesListDefModel.create(null, DEFAULT_LIST_SETTINGS);
 

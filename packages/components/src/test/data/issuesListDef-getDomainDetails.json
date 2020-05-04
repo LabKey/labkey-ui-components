@@ -1,5 +1,14 @@
 {
-  "options" : null,
+  "options" : {
+    "name" : "genissue",
+    "entityId" : "CD77C749-6245-1038-B95D-C29EE31F42A4",
+    "domainId" : 60504,
+    "singularItemName" : "Bug",
+    "pluralItemName" : "Bugs",
+    "commentSortDirection" : "DESC",
+    "assignedToGroup": -1,
+    "assignedToUser": 4970
+  },
   "domainDesign" : {
     "domainId" : 471,
     "name" : "genissue",

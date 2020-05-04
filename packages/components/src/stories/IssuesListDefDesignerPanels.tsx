@@ -1,55 +1,36 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS } from '../test/data/constants';
-import './stories.scss';
 import { IssuesListDefDesignerPanels } from '../components/domainproperties/issues/IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from '../components/domainproperties/issues/models';
-import { getCoreGroups } from '../components/permissions/actions';
 
-import { List } from 'immutable';
+import getDomainDetailsJSON from '../test/data/issuesListDef-getDomainDetails.json';
 
-import { Principal } from '..';
-
-class WrappedNew extends React.Component<any, any> {
-    constructor(props) {
-        super(props);
-
-        const model = IssuesListDefModel.create(null, this.props.data);
-        this.state = { model };
-    }
-
-    onRadioChange = e => {
-        console.log('onRadioChange', e.target.name, e.target.value);
-    };
-
-    componentDidMount() {
-        getCoreGroups()
-            .then((principals: List<Principal>) => {
-                this.setState(() => ({
-                    coreGroups: principals,
-                }));
-            })
-            .catch(response => {
-                this.setState(() => ({ error: response.message }));
-            });
-    }
-    render() {
-        return (
-            <IssuesListDefDesignerPanels
-                initModel={this.state.model}
-                onCancel={() => console.log('cancel')}
-                onComplete={() => console.log('onComplete')}
-            />
-        );
-    }
-}
+import './stories.scss';
 
 storiesOf('IssuesListDefDesignerPanels', module)
     .addDecorator(withKnobs)
-    .add('IssuesListDefDesignerPanels - create', () => {
-        return <WrappedNew data={DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS} />;
+    .add('for create', () => {
+        return (
+            <IssuesListDefDesignerPanels
+                initModel={IssuesListDefModel.create(null, DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS)}
+                onCancel={() => console.log('cancel')}
+                onComplete={() => console.log('onComplete')}
+                successBsStyle={text('successBsStyle', 'success')}
+                saveBtnText={text('saveBtnText', undefined)}
+            />
+        );
+    })
+    .add('for update', () => {
+        return (
+            <IssuesListDefDesignerPanels
+                initModel={IssuesListDefModel.create(getDomainDetailsJSON)}
+                onCancel={() => console.log('cancel')}
+                onComplete={() => console.log('onComplete')}
+                successBsStyle={text('successBsStyle', 'success')}
+                saveBtnText={text('saveBtnText', undefined)}
+            />
+        );
     });
-
-//TODO: Add stories for edit Issues List Def in the near future

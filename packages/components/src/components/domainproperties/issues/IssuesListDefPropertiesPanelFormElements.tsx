@@ -16,6 +16,7 @@ import {
     ISSUES_LIST_GROUP_ASSIGN_TIP, ISSUES_LIST_USER_ASSIGN_TIP
 } from "./constants";
 import { getCoreGroups, getCoreUsersInGroups } from "../../permissions/actions";
+import produce from "immer";
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -54,10 +55,13 @@ export class AssignmentOptions extends React.PureComponent<SecurityUserGroupProp
     constructor(props: any) {
         super(props);
 
-        this.state = {
-            coreGroups: undefined,
-            coreUsers:undefined
-        };
+        this.state = produce(
+            {
+                coreGroups: undefined,
+                coreUsers:undefined
+            },
+            () => {}
+        );
     }
 
     componentDidMount() {

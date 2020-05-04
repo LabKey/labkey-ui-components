@@ -36,9 +36,12 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
 
-        this.state = {
-            isValid: true
-        };
+        this.state = produce(
+            {
+                isValid: true
+            },
+            () => {}
+        );
     }
 
     updateValidStatus = (newModel?: IssuesListDefModel) => {

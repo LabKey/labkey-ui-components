@@ -29,10 +29,12 @@ interface State {
 class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
-
-        this.state = {
-            model: props.initModel || IssuesListDefModel.create({}),
-        };
+        this.state = produce(
+            {
+                model: props.initModel || IssuesListDefModel.create({}),
+            },
+            () => {}
+        );
     }
 
     onPropertiesChange = (model: IssuesListDefModel) => {

@@ -68,7 +68,6 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
     };
 
     onFinish = () => {
-        const { setSubmitting } = this.props;
         const { model } = this.state;
         const isValid = IssuesListDefModel.isValid(model);
 
@@ -97,16 +96,18 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
             .catch(response => {
                 const exception = resolveErrorMessage(response);
 
-                this.setState(
-                    produce((draft: Draft<State>) => {
-                        if (exception) {
-                            draft.model.exception = exception;
-                        } else {
-                            draft.model.exception = undefined;
-                            draft.model.domain = response;
-                        }
-                    })
-                )
+                setSubmitting(false, () => {
+                    this.setState(
+                        produce((draft: Draft<State>) => {
+                            if (exception) {
+                                draft.model.exception = exception;
+                            } else {
+                                draft.model.exception = undefined;
+                                draft.model.domain = response;
+                            }
+                        })
+                    );
+                });
             });
     };
 
@@ -125,6 +126,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
             saveBtnText,
         } = this.props;
         const { model } = this.state;
+        console.log(model);
 
         return (
             <BaseDomainDesigner

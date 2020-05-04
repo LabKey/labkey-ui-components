@@ -93,7 +93,7 @@ export class QueryModel implements IQueryModel {
     readonly queryParameters?: { [key: string]: any };
     readonly requiredColumns: string[];
     readonly schemaQuery: SchemaQuery;
-    readonly sorts?: QuerySort[];
+    readonly sorts: QuerySort[];
 
     // QueryModel only fields
     readonly filterArray: Filter.IFilter[];
@@ -135,7 +135,7 @@ export class QueryModel implements IQueryModel {
         this.omittedColumns = getOrDefault(queryConfig.omittedColumns, []);
         this.queryParameters = getOrDefault(queryConfig.queryParameters);
         this.requiredColumns = getOrDefault(queryConfig.requiredColumns, []);
-        this.sorts = getOrDefault(queryConfig.sorts);
+        this.sorts = getOrDefault(queryConfig.sorts, []);
         this.rowsError = undefined;
         this.filterArray = [];
         this.messages = [];
@@ -266,7 +266,7 @@ export class QueryModel implements IQueryModel {
             throw new Error('Cannot construct sort string, no QueryInfo available');
         }
 
-        let sortStrings = sorts?.map(sortStringMapper) || [];
+        let sortStrings = sorts.map(sortStringMapper);
         const viewSorts = queryInfo.getSorts(viewName).map(sortStringMapper).toArray();
 
         if (viewSorts.length > 0) {

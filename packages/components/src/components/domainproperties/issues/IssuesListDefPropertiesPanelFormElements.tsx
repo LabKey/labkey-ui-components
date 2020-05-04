@@ -21,12 +21,12 @@ import produce from "immer";
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
     onInputChange?: (any) => void;
-    onSelect?: (selected: String, name?: String) => void;
+    onSelect?: (selected: string, name?: string) => void;
 }
 
 interface AssignmentOptionsProps {
     model: IssuesListDefModel;
-    onSelect?: (selected: Principal, name?: String) => any;
+    onSelect?: (selected: Principal, name?: string) => any;
 }
 
 interface AssignmentOptionsState {
@@ -38,7 +38,7 @@ interface AssignmentOptionsState {
 interface AssignmentOptionsInputProps {
     model: IssuesListDefModel;
     coreGroups?: List<Principal>;
-    onSelect?: (selected: Principal, name?: String) => any;
+    onSelect?: (selected: Principal, name?: string) => any;
     coreUsers?: List<UserGroup>;
 }
 
@@ -165,7 +165,7 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
         return ISSUES_LIST_DEF_SORT_DIRECTION_TIP;
     }
 
-    onChange = (name: string, formValue: any, selected: String, ref: any): any => {
+    onChange = (name: string, formValue: any, selected: any, ref: any): any => {
         if (selected && this.props.onSelect) {
             this.props.onSelect(selected, name);
         }

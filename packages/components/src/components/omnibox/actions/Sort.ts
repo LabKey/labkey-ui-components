@@ -16,9 +16,10 @@
 import { List } from 'immutable';
 
 import { parseColumns, resolveFieldKey } from '../utils';
-import { QueryColumn, QueryGridModel } from '../../base/models/model';
+import { QueryColumn } from '../../base/models/model';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
+import { QuerySort } from '../../..';
 
 export class SortAction implements Action {
     iconCls = 'sort';
@@ -26,10 +27,10 @@ export class SortAction implements Action {
     keyword = 'sort';
     optionalLabel = 'columns';
     separator = ',';
-    getModel: () => QueryGridModel;
+    getColumns: (all?: boolean) => List<QueryColumn>;
 
-    constructor(urlPrefix: string, getModel: () => QueryGridModel) {
-        this.getModel = getModel;
+    constructor(urlPrefix: string, getColumns: () => List<QueryColumn>) {
+        this.getColumns = getColumns;
 
         if (urlPrefix) {
             this.param = [urlPrefix, this.param].join('.');
@@ -57,7 +58,7 @@ export class SortAction implements Action {
         }
 
         if (tokens.length > 1 && tokens[1].length > 0) {
-            options.dir = tokens[1].toUpperCase();
+            options.dir = tokens[1].toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
         }
 
         return options;
@@ -66,21 +67,23 @@ export class SortAction implements Action {
     // e.g. inputValue - "Name ASC" or "Some/Column DESC"
     completeAction(tokens: string[]): Promise<Value> {
         return new Promise(resolve => {
-            const { column, columnName, dir } = SortAction.parseTokens(tokens, this.getModel().getDisplayColumns());
+            const { column, columnName, dir } = SortAction.parseTokens(tokens, this.getColumns());
             // resolveFieldKey because of Issue 34627
-            const name = column ? resolveFieldKey(columnName, column) : columnName;
+            const fieldKey = column ? resolveFieldKey(columnName, column) : columnName;
+            const paramDir = dir === 'DESC' ? '-' : '';
             resolve({
-                displayValue: column ? column.shortCaption : name,
-                isValid: name ? true : false,
-                param: dir ? (dir === 'DESC' ? '-' + name : name) : name,
-                value: name + ' ' + (dir ? (dir === 'DESC' ? 'DESC' : 'ASC') : 'ASC'),
+                displayValue: column ? column.shortCaption : fieldKey,
+                isValid: !!fieldKey,
+                param: `${paramDir}${fieldKey}`,
+                value: `${fieldKey} ${dir === 'DESC' ? 'DESC' : 'ASC'}`,
+                valueObject: new QuerySort({dir: paramDir, fieldKey}),
             });
         });
     }
 
     fetchOptions(tokens: string[]): Promise<ActionOption[]> {
         return new Promise(resolve => {
-            const columns = this.getModel().getDisplayColumns();
+            const columns = this.getColumns();
             const options = SortAction.parseTokens(tokens, columns);
             const results: ActionOption[] = [];
 

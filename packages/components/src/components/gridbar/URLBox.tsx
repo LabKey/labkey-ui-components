@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
+
 
 import { getLocation, Location, replaceParameters } from '../../util/URL';
 import { OmniBox } from '../omnibox/OmniBox';
@@ -23,7 +24,9 @@ import { FilterAction } from '../omnibox/actions/Filter';
 import { SearchAction } from '../omnibox/actions/Search';
 import { SortAction } from '../omnibox/actions/Sort';
 import { ViewAction } from '../omnibox/actions/View';
-import { QueryGridModel } from '../base/models/model';
+import { QueryColumn, QueryGridModel } from '../base/models/model';
+import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
+import { QueryInfo } from '../..';
 
 /**
  * This is a mapping of actions with their associated URL param. It is keyed by the name of action
@@ -83,8 +86,11 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
         const params = Map<string, string>().asMutable();
 
+        console.log('Action Values:')
         if (actionValueCollection.length > 0) {
             for (let i = 0; i < actionValueCollection.length; i++) {
+                const av = actionValueCollection[i];
+                console.log(av.action.keyword, av.values);
                 const actionParams = actionValueCollection[i].action.buildParams(actionValueCollection[i].values);
                 for (let p = 0; p < actionParams.length; p++) {
                     params.set(
@@ -151,7 +157,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
                 }
 
                 const urlAction = urlActions[actionName];
-                actions.push(new urlAction(urlPrefix, this.getQueryModel));
+                actions.push(new urlAction(urlPrefix, this.getColumns, this.getQueryInfo));
             }
         }
 
@@ -205,13 +211,37 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         return queryModel ? this.global.QueryGrid_models.get(queryModel.getId()) : undefined;
     };
 
+    getColumns = (all = false): List<QueryColumn> => {
+        const model = this.getQueryModel();
+        return all ? model.getAllColumns() : model.getDisplayColumns();
+    };
+
+    getQueryInfo = (): QueryInfo => {
+        return this.getQueryModel().queryInfo;
+    };
+
+    getSelectDistinctOptions = (column: string): ISelectDistinctOptions => {
+        const model = this.getQueryModel();
+        return {
+            column,
+            containerFilter: model.containerFilter,
+            containerPath: model.containerPath,
+            schemaName: model.schema,
+            queryName: model.query,
+            viewName: model.view,
+            filterArray: model.getFilters().toJS(),
+            parameters: model.queryParameters,
+        }
+    }
+
     render() {
         const queryModel = this.getQueryModel();
         const { actions, values } = this.mapParamsToActionValues();
 
         return (
             <OmniBox
-                getModel={this.getQueryModel}
+                getColumns={this.getColumns}
+                getSelectDistinctOptions={this.getSelectDistinctOptions}
                 actions={actions}
                 onChange={this.onOmniBoxChange}
                 values={values}

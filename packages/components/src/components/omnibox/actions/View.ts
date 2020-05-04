@@ -15,9 +15,10 @@
  */
 import { List } from 'immutable';
 
-import { QueryColumn, QueryGridModel } from '../../base/models/model';
+import { QueryColumn } from '../../base/models/model';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
+import { QueryInfo } from '../../..';
 
 export class ViewAction implements Action {
     static NAME = 'view';
@@ -26,18 +27,18 @@ export class ViewAction implements Action {
     keyword = ViewAction.NAME;
     oneWordLabel = ViewAction.NAME;
     optionalLabel = 'name';
-    getModel: () => QueryGridModel;
+    getQueryInfo: () => QueryInfo;
     singleton = true;
     urlPrefix: string;
 
-    constructor(urlPrefix: string, getModel: () => QueryGridModel) {
-        this.getModel = getModel;
+    constructor(urlPrefix: string, getColumns: () => List<QueryColumn>, getQueryInfo: () => QueryInfo) {
+        this.getQueryInfo = getQueryInfo;
         this.urlPrefix = urlPrefix;
     }
 
     completeAction(tokens: string[]): Promise<Value> {
         return new Promise(resolve => {
-            const { queryInfo } = this.getModel();
+            const queryInfo = this.getQueryInfo();
             let found = false;
             const name = tokens.join(' ').toLowerCase();
 
@@ -46,6 +47,7 @@ export class ViewAction implements Action {
                 .forEach(view => {
                     found = true;
                     resolve({
+                        isValid: true,
                         param: this.getParamPrefix() + '=' + view.name,
                         value: view.name,
                     });
@@ -62,7 +64,7 @@ export class ViewAction implements Action {
 
     fetchOptions(tokens: string[]): Promise<ActionOption[]> {
         return new Promise(resolve => {
-            const { queryInfo } = this.getModel();
+            const queryInfo = this.getQueryInfo();
             const name = tokens.join(' ').toLowerCase();
 
             let views = queryInfo.views.filter(view => !view.isDefault && view.name.indexOf('~~') !== 0);

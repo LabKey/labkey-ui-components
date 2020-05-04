@@ -20,15 +20,35 @@ import AutosizeInput from 'react-input-autosize';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { naturalSort, QueryColumn, QueryGridModel } from '../..';
+import { naturalSort, QueryColumn } from '../..';
 
 import { Action, ActionOption, ActionValue, ActionValueCollection } from './actions/Action';
 import { Option } from './Option';
 import { Value, valueClassName } from './Value';
 import { parseColumns, resolveFieldKey } from './utils';
+import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
+
+// TODO: Fix bug in omnibox: selecting views sets omnibox value to viewName and not view display value. This causes an
+//  issue where when you edit a view action it will render "no views available" because it searches for views by display
+//  value. This might not be fixible, just like issue with filter column names/display names.
 
 // Export for type declarations (.d.ts)
-export { Option, Value };
+// export { Option, Value };
+
+export enum ChangeType {
+    add = 'add',
+    remove = 'remove',
+    modify = 'modify',
+    none = 'none',
+}
+
+export interface Change {
+    type: ChangeType;
+    index: number;
+}
+
+type MergedValuesHandler = (actionValueCollection: ActionValueCollection[], actions?: Action[]) => void;
+type ValuesArrayHandler = (values: ActionValue[], change: Change) => void;
 
 interface OmniBoxProps {
     actions: Action[];
@@ -36,12 +56,16 @@ interface OmniBoxProps {
     className?: string;
     closeOnComplete?: boolean;
     disabled?: boolean;
-    getModel: () => QueryGridModel;
+    // If all is false it getColumns should return display columns. This prop is a method due to the implementation of
+    // QueryGridModel, it is the only way to guarantee we are always getting the most current columns.
+    getColumns: (all?: boolean) => List<QueryColumn>;
+    getSelectDistinctOptions: (column: string) => ISelectDistinctOptions;
     inputProps?: {
         className?: string;
     };
-    onChange?: (actionValueCollection: ActionValueCollection[], actions?: Action[]) => any;
-    onInputChange?: Function;
+    mergeValues?: boolean;
+    // If mergeValues is true pass in a MergedValuesHandler, otherwise pass in a ValuesArrayHandler
+    onChange?: MergedValuesHandler | ValuesArrayHandler;
     openAfterFocus?: boolean;
     placeholder?: string;
     tabSelectsValue?: boolean;
@@ -51,6 +75,7 @@ interface OmniBoxProps {
 export interface OmniBoxState {
     actionValues?: ActionValue[];
     activeAction?: Action;
+    activeValueIndex?: number;
     focusedIndex?: number;
     inputValue?: string;
     isFocused?: boolean;
@@ -70,6 +95,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         closeOnComplete: true,
         disabled: false,
         inputProps: {},
+        mergeValues: true,
         openAfterFocus: true,
         placeholder: 'Select...',
         tabSelectsValue: true,
@@ -184,18 +210,20 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
     componentWillReceiveProps(nextProps: OmniBoxProps) {
         this.setState({
-            actionValues: nextProps.values ? nextProps.values : [],
+            actionValues: nextProps.values ? [ ...nextProps.values ] : [],
         });
     }
 
     activateValue = (value: ActionValue): void => {
         let newInputValue;
+        let valueIndex;
         const newActionValues = [];
         const { actionValues } = this.state;
 
         for (let i = actionValues.length - 1; i >= 0; i--) {
             if (value && value.value === actionValues[i].value) {
                 newInputValue = actionValues[i].action.keyword + ' ' + actionValues[i].value;
+                valueIndex = i;
             } else {
                 newActionValues.push(actionValues[i]);
             }
@@ -212,6 +240,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 activeAction: matches.activeAction,
                 inputValue: newInputValue,
                 actionValues: newActionValues,
+                activeValueIndex: valueIndex,
             });
 
             this.fetchOptions(matches.matchingActions, newInputValue);
@@ -231,18 +260,20 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     }
 
     completeAction = (lastInputValue?: string, optionAction?: Action): boolean => {
-        const action = optionAction ? optionAction : this.state.activeAction;
-        const value = lastInputValue || this.state.inputValue;
+        const { activeAction, inputValue, actionValues, activeValueIndex } = this.state;
+        const action = optionAction ? optionAction : activeAction;
+        const value = lastInputValue || inputValue;
         let completed = false;
+        let actionValue: ActionValue;
 
         if (value && action) {
-            let newActionValues = this.state.actionValues;
+            let newActionValues = [ ...actionValues ];
             const newInputValue = OmniBox.stripKeyword(value, action).trim();
             const tokenize = this.resolveTokenizer(action);
 
             completed = true;
             action.completeAction(tokenize(newInputValue)).then(result => {
-                if (result.isValid !== false) {
+                if (result.isValid) {
                     // determine if previous actionValues need to be replaced
                     if (action.singleton === true) {
                         const isEqual = action.isEqual
@@ -250,18 +281,20 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                             : (other: Action) => action.keyword === other.keyword;
                         newActionValues = newActionValues.filter(actionValue => !isEqual(actionValue.action));
                     }
-
-                    newActionValues.push({
+                    actionValue = {
                         action,
                         displayValue: result.displayValue,
                         param: result.param,
                         value: result.value,
-                    });
+                        valueObject: result.valueObject,
+                    };
+                    newActionValues.push(actionValue);
                 }
 
                 const newState: OmniBoxState = {
                     actionValues: newActionValues,
                     activeAction: undefined,
+                    activeValueIndex: undefined,
                     focusedIndex: -1,
                     inputValue: '',
                     previewInputValue: '',
@@ -281,7 +314,30 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
                 this.setState(newState);
 
-                this.fireOnChange(newActionValues);
+                let changeType;
+
+                if (result.isValid) {
+                    if (activeValueIndex === undefined) {
+                        changeType = ChangeType.add;
+                    } else {
+                        changeType = ChangeType.modify;
+                    }
+                } else {
+                    if (activeValueIndex === undefined) {
+                        // user never entered a valid ActionValue, so they didn't change anything.
+                        changeType = ChangeType.none;
+                    } else {
+                        changeType = ChangeType.remove;
+                    }
+                }
+
+                if (changeType !== ChangeType.none) {
+                    // Only fire the change handler if the user changed the omnibox values.
+                    this.fireOnChange(
+                        newActionValues,
+                        { type: changeType, index: activeValueIndex }
+                    );
+                }
 
                 if (!this.props.closeOnComplete) {
                     this.fetchOptions(undefined, '');
@@ -301,8 +357,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     };
 
     fetchDistinctValues = (columnName: string) => {
-        const model = this.props.getModel();
-        const column = parseColumns(model.getDisplayColumns(), columnName).first() as QueryColumn;
+        const { getColumns, getSelectDistinctOptions } = this.props;
+        const column = parseColumns(getColumns(), columnName).first() as QueryColumn;
 
         if (!column) {
             // If we don't have a column there is nothing to fetch.
@@ -326,14 +382,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         this.setState({ distinctValuesLoading: true, distinctValuesFieldKey: fieldKey });
 
         Query.selectDistinctRows({
-            containerFilter: model.containerFilter,
-            containerPath: model.containerPath,
-            schemaName: model.schema,
-            queryName: model.query,
-            viewName: model.view,
-            filterArray: model.getFilters().toJS(),
-            parameters: model.queryParameters,
-            column: fieldKey,
+            ...getSelectDistinctOptions(fieldKey),
             success: result => {
                 if (!this.state.activeAction) {
                     // The user closed the action menu, do nothing.
@@ -449,9 +498,17 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
     };
 
-    fireOnChange = (actionValues: ActionValue[]): void => {
-        if (this.props.onChange) {
-            this.props.onChange(this.mergeActionValues(actionValues), this.props.actions);
+    fireOnChange = (actionValues: ActionValue[], change: Change): void => {
+        const { mergeValues, onChange } = this.props;
+
+        if (onChange) {
+            if (mergeValues) {
+                const _onChange = onChange as MergedValuesHandler;
+                _onChange(this.mergeActionValues(actionValues), this.props.actions);
+            } else {
+                const _onChange = onChange as ValuesArrayHandler;
+                _onChange(actionValues, change);
+            }
         }
     };
 
@@ -567,6 +624,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         if (!this.completeAction()) {
             this.setState({
                 activeAction: undefined,
+                activeValueIndex: undefined,
                 focusedIndex: -1,
                 isFocused: false,
                 isOpen: false,
@@ -576,15 +634,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     };
 
     handleInputChange = (event): void => {
-        let newInputValue = event.target.value;
-        if (this.state.inputValue !== event.target.value && this.props.onInputChange) {
-            const nextState = this.props.onInputChange(newInputValue);
-            // Note: != used deliberately here to catch undefined and null
-            if (nextState != null && typeof nextState !== 'object') {
-                newInputValue = '' + nextState;
-            }
-        }
-
+        const { inputValue, activeValueIndex } = this.state;
+        const newInputValue = event.target.value;
         const trimmed = newInputValue.trim();
 
         // Once a user clears the inputValue the onChange should be fired since clearing an action is the same
@@ -604,7 +655,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         });
 
         if (requireOnChange) {
-            this.fireOnChange(this.state.actionValues);
+            this.fireOnChange(
+                this.state.actionValues,
+                { type: ChangeType.remove, index: activeValueIndex }
+            );
         }
 
         this.fetchOptions(matches.matchingActions, newInputValue);
@@ -761,7 +815,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 actionValues: newActionValues,
             });
 
-            this.fireOnChange(newActionValues);
+            this.fireOnChange(
+                newActionValues,
+                { type: ChangeType.remove, index: actionValueIndex }
+            );
         }
     };
 

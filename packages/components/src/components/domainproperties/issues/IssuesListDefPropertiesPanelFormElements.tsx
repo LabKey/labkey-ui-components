@@ -24,15 +24,21 @@ interface IssuesListDefBasicPropertiesInputsProps {
     onSelect?: (selected: String, name?: String) => void;
 }
 
-interface SecurityUserGroupProps {
+interface AssignmentOptionsProps {
     model: IssuesListDefModel;
-    coreGroups?: List<Principal>;
     onSelect?: (selected: Principal, name?: String) => any;
+}
+
+interface AssignmentOptionsState {
+    coreGroups?: List<Principal>;
     coreUsers?: List<UserGroup>;
 }
 
-interface SecurityUserGroupState {
+//For AssignedToGroupInput & DefaultUserAssignmentInput components
+interface AssignmentOptionsInputProps {
+    model: IssuesListDefModel;
     coreGroups?: List<Principal>;
+    onSelect?: (selected: Principal, name?: String) => any;
     coreUsers?: List<UserGroup>;
 }
 
@@ -50,7 +56,7 @@ export class BasicPropertiesFields extends React.PureComponent<IssuesListDefBasi
     }
 }
 
-export class AssignmentOptions extends React.PureComponent<SecurityUserGroupProps, SecurityUserGroupState> {
+export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProps, AssignmentOptionsState> {
 
     constructor(props: any) {
         super(props);
@@ -112,7 +118,6 @@ export class SingularItemNameInput extends React.PureComponent<IssuesListDefBasi
                     <FormControl
                         id="singularItemName"
                         type="text"
-                        placeholder="Enter a singular name for this Issue"
                         value={value}
                         onChange={onInputChange}
                     />
@@ -143,7 +148,6 @@ export class PluralItemNameInput extends React.PureComponent<IssuesListDefBasicP
                     <FormControl
                         id="pluralItemName"
                         type="text"
-                        placeholder="Enter a plural name for this Issue"
                         value={value}
                         onChange={onInputChange}
                     />
@@ -187,7 +191,7 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
                         inputClass={'col-xs-12'}
                         valueKey={'id'}
                         onChange={this.onChange}
-                        value={model.commentSortDirection ? model.commentSortDirection : sortDirectionOptions[0]}
+                        value={model.commentSortDirection ? model.commentSortDirection : 'ASC'}
                         formsy={false}
                         showLabel={true}
                         multiple={false}
@@ -202,7 +206,7 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
     }
 }
 
-export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupProps, any> {
+export class AssignedToGroupInput extends React.PureComponent<AssignmentOptionsInputProps, any> {
 
     getHelpTip() {
         return ISSUES_LIST_GROUP_ASSIGN_TIP;
@@ -228,7 +232,7 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupP
                     <SelectInput
                         name={'assignedToGroup'}
                         options={coreGroups.toArray()}
-                        placeholder=""
+                        placeholder="All Project Users"
                         inputClass="col-xs-12"
                         valueKey="userId"
                         labelKey="displayName"
@@ -246,7 +250,7 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupP
     }
 }
 
-export class DefaultUserAssignmentInput extends React.PureComponent<SecurityUserGroupProps, any> {
+export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOptionsInputProps, any> {
 
     getHelpTip() {
         return ISSUES_LIST_USER_ASSIGN_TIP;
@@ -279,7 +283,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<SecurityUser
                     <SelectInput
                         name={'assignedToUser'}
                         options={this.getFilteredCoreUsers(model.assignedToGroup, coreUsers)}
-                        placeholder=""
+                        placeholder="No default"
                         inputClass="col-xs-12"
                         valueKey="userId"
                         labelKey="userName"

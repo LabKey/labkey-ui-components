@@ -161,7 +161,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle="Fields"
-                    helpNoun="list"
+                    helpNoun="Issues list"
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
                     controlledCollapse={true}

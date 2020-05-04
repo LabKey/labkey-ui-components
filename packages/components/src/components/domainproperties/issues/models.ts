@@ -25,9 +25,9 @@ export class IssuesListDefModel {
     readonly entityId?: string;
     readonly domainId: number;
     readonly name: string;
-    readonly singularItemName?: string;
-    readonly pluralItemName?: string;
-    readonly commentSortDirection?: string = "ASC";
+    readonly singularItemName: string = "Issue";
+    readonly pluralItemName: string = "Issues";
+    readonly commentSortDirection: string = "ASC";
     readonly assignedToGroup: number;
     readonly assignedToUser: number;
     readonly domainKindName: string;

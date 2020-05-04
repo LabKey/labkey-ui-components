@@ -1,8 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS } from '../../../test/data/constants';
-
 import {IssuesListDefModel} from './models';
 import {IssuesListDefDesignerPanels} from "./IssuesListDefDesignerPanels";
 import {mount} from "enzyme";
@@ -12,7 +10,7 @@ import {IssuesListDefPropertiesPanel} from "./IssuesListDefPropertiesPanel";
 import {Alert} from "../../..";
 import {PROPERTIES_PANEL_ERROR_MSG} from "../constants";
 
-const emptyNewModel = IssuesListDefModel.create(null, DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS);
+const emptyNewModel = IssuesListDefModel.create(null, {name: 'Issues List For Jest'});
 
 const BASE_PROPS = {
     onComplete: jest.fn(),

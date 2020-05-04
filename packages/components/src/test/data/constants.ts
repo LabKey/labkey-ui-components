@@ -166,16 +166,6 @@ export const NEW_DATASET_MODEL_WITH_DATASPACE = {
     definitionIsShared: true,
 };
 
-export const DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS = {
-    name: 'Issues List For Storybook',
-    singularItemName: null,
-    pluralItemName: null,
-    commentSortDirection: null,
-    assignedToGroup: null,
-    assignedToUser: null,
-    domainKindName: null,
-};
-
 export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';
 export const SECURITY_ROLE_FOLDERADMIN = 'org.labkey.api.security.roles.FolderAdminRole';
 export const SECURITY_ROLE_EDITOR = 'org.labkey.api.security.roles.EditorRole';

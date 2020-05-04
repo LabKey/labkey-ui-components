@@ -2,7 +2,6 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS } from '../test/data/constants';
 import { IssuesListDefDesignerPanels } from '../components/domainproperties/issues/IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from '../components/domainproperties/issues/models';
 
@@ -15,7 +14,7 @@ storiesOf('IssuesListDefDesignerPanels', module)
     .add('for create', () => {
         return (
             <IssuesListDefDesignerPanels
-                initModel={IssuesListDefModel.create(null, DEFAULT_ISSUES_LIST_DEF_DESIGNER_SETTINGS)}
+                initModel={IssuesListDefModel.create(null, {name: 'Issues List For Storybook'})}
                 onCancel={() => console.log('cancel')}
                 onComplete={() => console.log('onComplete')}
                 successBsStyle={text('successBsStyle', 'success')}

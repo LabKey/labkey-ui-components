@@ -107,7 +107,7 @@ export class SingularItemNameInput extends React.PureComponent<IssuesListDefBasi
     }
     render() {
         const { model, onInputChange } = this.props;
-        const value = model.singularItemName === null ? 'Issue' : model.singularItemName;
+        const value = model.singularItemName === null ? '' : model.singularItemName;
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
@@ -137,7 +137,7 @@ export class PluralItemNameInput extends React.PureComponent<IssuesListDefBasicP
 
     render() {
         const { model, onInputChange } = this.props;
-        const value = model.pluralItemName === null ? 'Issues' : model.pluralItemName;
+        const value = model.pluralItemName === null ? '' : model.pluralItemName;
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
@@ -196,7 +196,7 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
                         showLabel={true}
                         multiple={false}
                         required={false}
-                        placeholder={''}
+                        clearable={false}
                     />
                 </Col>
 

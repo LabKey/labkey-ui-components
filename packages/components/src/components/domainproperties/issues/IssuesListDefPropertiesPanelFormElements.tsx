@@ -6,7 +6,7 @@ import { List } from 'immutable';
 import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
-import { Principal, SelectInput } from '../../..';
+import { LoadingSpinner, Principal, SelectInput } from '../../..';
 
 import { IssuesListDefModel } from './models';
 import {UserGroup} from "../../permissions/models";
@@ -55,8 +55,8 @@ export class AssignmentOptions extends React.PureComponent<SecurityUserGroupProp
         super(props);
 
         this.state = {
-            coreGroups: List<Principal>(),
-            coreUsers: List<UserGroup>()
+            coreGroups: undefined,
+            coreUsers:undefined
         };
     }
 
@@ -212,6 +212,9 @@ export class AssignedToGroupInput extends React.PureComponent<SecurityUserGroupP
 
     render() {
         const { model, coreGroups } = this.props;
+        if (!coreGroups) {
+            return <LoadingSpinner/>
+        }
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>
@@ -260,6 +263,9 @@ export class DefaultUserAssignmentInput extends React.PureComponent<SecurityUser
 
     render() {
         const { model, coreUsers } = this.props;
+        if (!coreUsers) {
+            return <LoadingSpinner/>
+        }
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={2}>

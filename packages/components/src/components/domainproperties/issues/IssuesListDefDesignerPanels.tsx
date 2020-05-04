@@ -126,7 +126,6 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
             saveBtnText,
         } = this.props;
         const { model } = this.state;
-        console.log(model);
 
         return (
             <BaseDomainDesigner

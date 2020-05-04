@@ -84,9 +84,8 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
 
                 this.setState(
                     produce((draft: Draft<State>) => {
-                        const updatedModel = draft.model;
-                        updatedModel.exception = undefined;
-                        updatedModel.domain = response;
+                        draft.model.exception = undefined;
+                        draft.model.domain = response;
                     }),
                     () => {
                         setSubmitting(false, () => {
@@ -100,12 +99,11 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
 
                 this.setState(
                     produce((draft: Draft<State>) => {
-                        const updatedModel = draft.model;
                         if (exception) {
-                            updatedModel.exception = exception;
+                            draft.model.exception = exception;
                         } else {
-                            updatedModel.exception = undefined;
-                            updatedModel.domain = response;
+                            draft.model.exception = undefined;
+                            draft.model.domain = response;
                         }
                     }),
                     () => {

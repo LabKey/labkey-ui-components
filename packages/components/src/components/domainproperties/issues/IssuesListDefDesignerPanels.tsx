@@ -105,12 +105,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                             draft.model.exception = undefined;
                             draft.model.domain = response;
                         }
-                    }),
-                    () => {
-                        setSubmitting(false, () => {
-                            this.props.onComplete(model);
-                        })
-                    }
+                    })
                 )
             });
     };

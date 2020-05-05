@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.57.0-fb-datasetDesigner-story4-7205.0
+*Released*: TBD May 2020
+* Item 7205: Includes support for import data in new Dataset Designer
+
 ## version 0.56.1
 *Released*: 1 May 2020
 * DataClassModel convert from Record to immerable

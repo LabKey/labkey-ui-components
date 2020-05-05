@@ -524,6 +524,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 defaultDefaultValueType={defaultDefaultValueType}
                                 defaultValueOptions={defaultValueOptions}
                                 successBsStyle={successBsStyle}
+                                domainFormDisplayOptions={domainFormDisplayOptions}
                             />
                             <div className="domain-row-handle" {...provided.dragHandleProps}>
                                 <DragDropHandle

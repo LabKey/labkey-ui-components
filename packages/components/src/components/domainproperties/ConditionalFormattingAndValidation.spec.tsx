@@ -136,7 +136,7 @@ describe('ConditionalFormattingAndValidation', () => {
             onChange: jest.fn(),
             showingModal: jest.fn(),
             domainFormDisplayOptions: {
-                hideValidators: false,
+                hideValidators: true,
             },
         };
 

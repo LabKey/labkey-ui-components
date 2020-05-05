@@ -14,6 +14,7 @@ import { Principal } from '../../..';
 import { AssignmentOptions, BasicPropertiesFields } from './IssuesListDefPropertiesPanelFormElements';
 import { IssuesListDefModel } from './models';
 import produce from "immer";
+import {UserGroup} from "../../permissions/models";
 
 const PROPERTIES_HEADER_ID = 'issues-properties-hdr';
 
@@ -79,9 +80,22 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
         this.updateValidStatus(newModel);
     };
 
+    //Change of Group selection clears default User val
+    onChangeAndClear = (identifier, value, clearingField): void => {
+        const { model } = this.props;
+        const newModel = produce(model, (draft: IssuesListDefModel) =>{
+            draft[identifier] = value;
+            draft[clearingField] = null;
+        });
+        this.updateValidStatus(newModel);
+    };
+
     onSelectChange = (selection, name) => {
         if (selection instanceof Principal) {
-            this.onChange(name, selection.userId)
+            this.onChangeAndClear(name, selection.userId, 'assignedToUser');
+        }
+        else if (selection instanceof UserGroup) {
+            this.onChange(name, selection.userId);
         }
         else {
             this.onChange(name, selection);
@@ -91,7 +105,6 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
     render() {
         const { model, successBsStyle } = this.props;
         const { isValid } = this.state;
-
         return (
             <BasePropertiesPanel
                 {...this.props}

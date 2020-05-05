@@ -25,9 +25,14 @@ export class Principal extends Record({
         const userId = row.getIn(['UserId', 'value']);
         const type = row.getIn(['Type', 'value']);
         const name = row.getIn(['Name', 'value']);
+        const container = row.getIn(['Container', 'value']);
 
         let displayName = row.getIn(['DisplayName', 'value']);
         displayName = type === 'u' && displayName ? name + ' (' + displayName + ')' : name;
+
+        if (type === 'g') {
+            displayName = (null === container ? ("Site: " + name) : name);
+        }
 
         return new Principal({ userId, name, type, displayName });
     }

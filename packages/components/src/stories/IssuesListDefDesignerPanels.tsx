@@ -14,7 +14,7 @@ storiesOf('IssuesListDefDesignerPanels', module)
     .add('for create', () => {
         return (
             <IssuesListDefDesignerPanels
-                initModel={IssuesListDefModel.create(null, {name: 'Issues List For Storybook'})}
+                initModel={IssuesListDefModel.create(null, {issueDefName: 'Issues List For Storybook'})}
                 onCancel={() => console.log('cancel')}
                 onComplete={() => console.log('onComplete')}
                 successBsStyle={text('successBsStyle', 'success')}

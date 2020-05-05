@@ -68,7 +68,7 @@ export function getCoreGroups(): Promise<List<Principal>> {
         selectRows({
             saveInSession: true, // needed so that we can call getQueryDetails
             schemaName: 'core',
-            sql: "SELECT p.UserId, p.Name FROM Principals p WHERE p.type='g'",
+            sql: "SELECT p.UserId, p.Name, p.Type, p.Container FROM Principals p WHERE p.Type='g'",
         })
             .then((data: ISelectRowsResult) => {
                 processPrincipalsResponse(data, resolve, true);

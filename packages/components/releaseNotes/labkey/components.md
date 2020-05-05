@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version 0.56.2-fb-FixDomainFormDisplayOptions.0
+## version 0.56.2-fb-FixDomainFormDisplayOptions.1
 *Released*: TBD May 2020
 * Changes for DomainFormDisplayOptions from show to hide for default cases
 

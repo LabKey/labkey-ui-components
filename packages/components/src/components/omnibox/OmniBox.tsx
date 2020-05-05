@@ -28,13 +28,6 @@ import { Value, valueClassName } from './Value';
 import { parseColumns, resolveFieldKey } from './utils';
 import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
 
-// TODO: Fix bug in omnibox: selecting views sets omnibox value to viewName and not view display value. This causes an
-//  issue where when you edit a view action it will render "no views available" because it searches for views by display
-//  value. This might not be fixible, just like issue with filter column names/display names.
-
-// Export for type declarations (.d.ts)
-// export { Option, Value };
-
 export enum ChangeType {
     add = 'add',
     remove = 'remove',

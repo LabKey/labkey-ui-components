@@ -877,12 +877,12 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "hideAddFieldsButton": false,
+                "hideRequired": false,
+                "hideTextOptions": false,
+                "hideValidators": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
-                "showAddFieldsButton": true,
-                "showRequired": true,
-                "showTextOptions": true,
-                "showValidators": true,
               }
             }
             domainIndex={1}
@@ -2092,12 +2092,12 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "hideAddFieldsButton": false,
+                "hideRequired": false,
+                "hideTextOptions": false,
+                "hideValidators": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
-                "showAddFieldsButton": true,
-                "showRequired": true,
-                "showTextOptions": true,
-                "showValidators": true,
               }
             }
             domainIndex={1}
@@ -2581,11 +2581,7 @@ exports[`DomainExpandedOptions No text options 1`] = `
 <DomainRowExpandedOptions
   domainFormDisplayOptions={
     Object {
-      "isDragDisabled": false,
-      "phiLevelDisabled": false,
-      "showRequired": true,
-      "showTextOptions": false,
-      "showValidators": true,
+      "hideTextOptions": true,
     }
   }
   domainIndex={1}
@@ -3230,11 +3226,7 @@ exports[`DomainExpandedOptions No text options 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-                "showRequired": true,
-                "showTextOptions": false,
-                "showValidators": true,
+                "hideTextOptions": true,
               }
             }
             domainIndex={1}
@@ -4645,12 +4637,12 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "hideAddFieldsButton": false,
+                "hideRequired": false,
+                "hideTextOptions": false,
+                "hideValidators": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
-                "showAddFieldsButton": true,
-                "showRequired": true,
-                "showTextOptions": true,
-                "showValidators": true,
               }
             }
             domainIndex={1}
@@ -5774,12 +5766,12 @@ exports[`DomainExpandedOptions Text data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "hideAddFieldsButton": false,
+                "hideRequired": false,
+                "hideTextOptions": false,
+                "hideValidators": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
-                "showAddFieldsButton": true,
-                "showRequired": true,
-                "showTextOptions": true,
-                "showValidators": true,
               }
             }
             domainIndex={1}

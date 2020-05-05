@@ -299,12 +299,12 @@ export const PROP_DESC_TYPES = List([
 export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);
 
 export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
-    showRequired: true,
-    showValidators: true,
+    hideRequired: false,
+    hideValidators: false,
     isDragDisabled: false,
-    showTextOptions: true,
+    hideTextOptions: false,
     phiLevelDisabled: false,
-    showAddFieldsButton: true,
+    hideAddFieldsButton: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -1590,12 +1590,12 @@ export interface IAppDomainHeader {
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
 
 export interface IDomainFormDisplayOptions {
-    showRequired?: boolean;
-    showValidators?: boolean;
+    hideRequired?: boolean;
+    hideValidators?: boolean;
     isDragDisabled?: boolean;
-    showTextOptions?: boolean;
+    hideTextOptions?: boolean;
     phiLevelDisabled?: boolean;
-    showAddFieldsButton?: boolean;
+    hideAddFieldsButton?: boolean;
 }
 
 /**

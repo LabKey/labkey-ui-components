@@ -4663,12 +4663,12 @@ exports[`DataClassDesigner initModel 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideAddFieldsButton": false,
+                "hideRequired": false,
+                "hideTextOptions": false,
+                "hideValidators": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
-                "showAddFieldsButton": true,
-                "showRequired": true,
-                "showTextOptions": true,
-                "showValidators": true,
               }
             }
             domainIndex={0}
@@ -5251,12 +5251,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideAddFieldsButton": false,
+                                                          "hideRequired": false,
+                                                          "hideTextOptions": false,
+                                                          "hideValidators": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
-                                                          "showAddFieldsButton": true,
-                                                          "showRequired": true,
-                                                          "showTextOptions": true,
-                                                          "showValidators": true,
                                                         }
                                                       }
                                                       domainId={58021}
@@ -5439,12 +5439,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideAddFieldsButton": false,
+                                                                      "hideRequired": false,
+                                                                      "hideTextOptions": false,
+                                                                      "hideValidators": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
-                                                                      "showAddFieldsButton": true,
-                                                                      "showRequired": true,
-                                                                      "showTextOptions": true,
-                                                                      "showValidators": true,
                                                                     }
                                                                   }
                                                                   domainId={58021}
@@ -6003,12 +6003,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideAddFieldsButton": false,
+                                                                        "hideRequired": false,
+                                                                        "hideTextOptions": false,
+                                                                        "hideValidators": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
-                                                                        "showAddFieldsButton": true,
-                                                                        "showRequired": true,
-                                                                        "showTextOptions": true,
-                                                                        "showValidators": true,
                                                                       }
                                                                     }
                                                                     domainIndex={0}
@@ -6982,12 +6982,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideAddFieldsButton": false,
+                                                                                  "hideRequired": false,
+                                                                                  "hideTextOptions": false,
+                                                                                  "hideValidators": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
-                                                                                  "showAddFieldsButton": true,
-                                                                                  "showRequired": true,
-                                                                                  "showTextOptions": true,
-                                                                                  "showValidators": true,
                                                                                 }
                                                                               }
                                                                               domainIndex={0}
@@ -7620,12 +7620,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideAddFieldsButton": false,
+                                                          "hideRequired": false,
+                                                          "hideTextOptions": false,
+                                                          "hideValidators": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
-                                                          "showAddFieldsButton": true,
-                                                          "showRequired": true,
-                                                          "showTextOptions": true,
-                                                          "showValidators": true,
                                                         }
                                                       }
                                                       domainId={58021}
@@ -7797,12 +7797,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideAddFieldsButton": false,
+                                                                      "hideRequired": false,
+                                                                      "hideTextOptions": false,
+                                                                      "hideValidators": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
-                                                                      "showAddFieldsButton": true,
-                                                                      "showRequired": true,
-                                                                      "showTextOptions": true,
-                                                                      "showValidators": true,
                                                                     }
                                                                   }
                                                                   domainId={58021}
@@ -8344,12 +8344,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideAddFieldsButton": false,
+                                                                        "hideRequired": false,
+                                                                        "hideTextOptions": false,
+                                                                        "hideValidators": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
-                                                                        "showAddFieldsButton": true,
-                                                                        "showRequired": true,
-                                                                        "showTextOptions": true,
-                                                                        "showValidators": true,
                                                                       }
                                                                     }
                                                                     domainIndex={0}
@@ -9286,12 +9286,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideAddFieldsButton": false,
+                                                                                  "hideRequired": false,
+                                                                                  "hideTextOptions": false,
+                                                                                  "hideValidators": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
-                                                                                  "showAddFieldsButton": true,
-                                                                                  "showRequired": true,
-                                                                                  "showTextOptions": true,
-                                                                                  "showValidators": true,
                                                                                 }
                                                                               }
                                                                               domainIndex={0}
@@ -9913,12 +9913,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideAddFieldsButton": false,
+                                                          "hideRequired": false,
+                                                          "hideTextOptions": false,
+                                                          "hideValidators": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
-                                                          "showAddFieldsButton": true,
-                                                          "showRequired": true,
-                                                          "showTextOptions": true,
-                                                          "showValidators": true,
                                                         }
                                                       }
                                                       domainId={58021}
@@ -10090,12 +10090,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideAddFieldsButton": false,
+                                                                      "hideRequired": false,
+                                                                      "hideTextOptions": false,
+                                                                      "hideValidators": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
-                                                                      "showAddFieldsButton": true,
-                                                                      "showRequired": true,
-                                                                      "showTextOptions": true,
-                                                                      "showValidators": true,
                                                                     }
                                                                   }
                                                                   domainId={58021}
@@ -10619,12 +10619,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideAddFieldsButton": false,
+                                                                        "hideRequired": false,
+                                                                        "hideTextOptions": false,
+                                                                        "hideValidators": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
-                                                                        "showAddFieldsButton": true,
-                                                                        "showRequired": true,
-                                                                        "showTextOptions": true,
-                                                                        "showValidators": true,
                                                                       }
                                                                     }
                                                                     domainIndex={0}
@@ -11523,12 +11523,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideAddFieldsButton": false,
+                                                                                  "hideRequired": false,
+                                                                                  "hideTextOptions": false,
+                                                                                  "hideValidators": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
-                                                                                  "showAddFieldsButton": true,
-                                                                                  "showRequired": true,
-                                                                                  "showTextOptions": true,
-                                                                                  "showValidators": true,
                                                                                 }
                                                                               }
                                                                               domainIndex={0}

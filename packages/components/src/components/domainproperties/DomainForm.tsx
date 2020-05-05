@@ -65,8 +65,6 @@ import {
 } from './models';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
-import { SectionHeading } from './SectionHeading';
-import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface IDomainFormInput {
     domain: DomainDesign;
@@ -521,7 +519,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     renderAddFieldOption() {
         const { domainFormDisplayOptions } = this.props;
 
-        if (domainFormDisplayOptions.showAddFieldsButton) {
+        if (!domainFormDisplayOptions.hideAddFieldsButton) {
             if (this.shouldShowInferFromFile()) {
                 return (
                     <div className="margin-top">
@@ -625,7 +623,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <Col xs={4}>
                             <b>Data Type</b>
                         </Col>
-                        {domainFormDisplayOptions.showRequired && (
+                        {!domainFormDisplayOptions.hideRequired && (
                             <Col xs={2} className="domain-form-hdr-center">
                                 <b>Required</b>
                             </Col>

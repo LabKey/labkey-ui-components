@@ -417,7 +417,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 </Col>
                 <Col xs={2}>
                     <div className="domain-field-checkbox-container">
-                        {domainFormDisplayOptions.showRequired && (
+                        {!domainFormDisplayOptions.hideRequired && (
                             <Checkbox
                                 className="domain-field-checkbox"
                                 name={createFormInputName(DOMAIN_FIELD_REQUIRED)}

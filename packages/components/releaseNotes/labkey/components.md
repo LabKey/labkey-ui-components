@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD May 2020
 * Item 7205: Includes support for import data in new Dataset Designer
 
+### version 0.56.2
+*Released*: 6 May 2020
+* Epic 6800: Issue Definition designer (Story 1)-  IssuesPropertyPanel and IssuesListDesignerPanels
+    -  Addition of Issues List Definition Designer Panel and Properties Panel components.
+    -  Setting up the initial stage to transform old GWT Issues designer to React-based designer.
+
 ## version 0.56.1
 *Released*: 1 May 2020
 * DataClassModel convert from Record to immerable

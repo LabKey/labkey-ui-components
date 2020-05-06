@@ -22,6 +22,7 @@ export const DEFINE_DATA_CLASS_TOPIC = 'createDataClass';
 export const DATA_CLASS_NAME_EXPRESSION_TOPIC = 'dataClass#name';
 export const DEFINE_SAMPLE_TYPE_TOPIC = 'createSampleSet';
 export const DEFINE_LIST_TOPIC = 'createListOptions';
+export const DEFINE_ISSUES_LIST_TOPIC = 'adminIssues';
 export const DEFINE_DATASET_TOPIC = 'createDataset';
 export const DATASET_PROPERTIES_TOPIC = 'datasetProperties';
 

@@ -10,7 +10,7 @@ interface ViewSelectorProps {
     onViewSelect: (viewName) => void;
 }
 
-export class ViewSelector extends PureComponent<ViewSelectorProps> {
+export class ViewMenu extends PureComponent<ViewSelectorProps> {
     render() {
         const { model, hideEmptyViewSelector, onViewSelect } = this.props;
         const { isLoading, views, viewName } = model;
@@ -40,10 +40,10 @@ export class ViewSelector extends PureComponent<ViewSelectorProps> {
 
         return (
             !hidden && (
-                <div className="view-selector">
+                <div className="view-menu">
                     <DropdownButton
                         disabled={disabled}
-                        id={`view-selector-drop-${model.id}`}
+                        id={`view-menu-drop-${model.id}`}
                         pullRight
                         title="Grid Views"
                     >

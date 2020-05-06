@@ -10,7 +10,7 @@ import { headerCell, headerSelectionCell } from '../renderers';
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { PaginationButtons, PaginationInfo } from './Pagination';
 import { PageSizeSelector } from './PageSizeSelector';
-import { ViewSelector } from './ViewSelector';
+import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
@@ -90,7 +90,7 @@ class GridBar extends PureComponent<GridBarProps> {
                         {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
                         {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} />}
                         {canSelectView && (
-                            <ViewSelector
+                            <ViewMenu
                                 model={model}
                                 onViewSelect={onViewSelect}
                                 hideEmptyViewSelector={hideEmptyViewSelector}

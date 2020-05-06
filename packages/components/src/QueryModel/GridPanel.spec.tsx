@@ -43,12 +43,13 @@ describe('GridPanel', () => {
     test('Render GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;
 
-        // Model is loading QueryInfo and Rows, so should render loading, no ViewSelector, and no pagination.
+        // Model is loading QueryInfo and Rows, so should render loading, disabled ViewMenu, disabled ChartSelector,
+        // and no pagination.
         let model = makeTestModel(SCHEMA_QUERY);
         let tree = renderer.create(<GridPanel actions={actions} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
-        // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewSelector.
+        // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
         model = makeTestModel(SCHEMA_QUERY, QUERY_INFO);
         tree = renderer.create(<GridPanel actions={actions} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
@@ -76,7 +77,7 @@ describe('GridPanel', () => {
         tree = renderer.create(<GridPanel actions={actions} model={model} isPaged={false} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
-        // ViewSelector should not be present.
+        // ViewMenu should not be present.
         tree = renderer.create(<GridPanel actions={actions} model={model} showViewSelector={false} />);
         expect(tree.toJSON()).toMatchSnapshot();
 

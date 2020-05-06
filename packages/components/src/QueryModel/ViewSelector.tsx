@@ -1,18 +1,18 @@
 import React, { PureComponent } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-import { ViewInfo } from '..';
+import { QueryModel, ViewInfo } from '..';
+import { blurActiveElement } from '../util/utils';
 
-import { RequiresModelAndActions } from './withQueryModels';
-
-interface ViewSelectorProps extends RequiresModelAndActions {
-    allowSelections: boolean;
+interface ViewSelectorProps {
     hideEmptyViewSelector: boolean;
+    model: QueryModel,
+    onViewSelect: (viewName) => void;
 }
 
 export class ViewSelector extends PureComponent<ViewSelectorProps> {
     render() {
-        const { model, actions, allowSelections, hideEmptyViewSelector } = this.props;
+        const { model, hideEmptyViewSelector, onViewSelect } = this.props;
         const { isLoading, views, viewName } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
@@ -27,7 +27,8 @@ export class ViewSelector extends PureComponent<ViewSelectorProps> {
             const { name, label, isDefault } = view;
             const viewName = isDefault ? undefined : name;
             const onSelect = () => {
-                actions.setView(model.id, viewName, allowSelections);
+                onViewSelect(viewName);
+                blurActiveElement();
             };
 
             return (

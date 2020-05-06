@@ -482,6 +482,3 @@ class GridPanelWithModelImpl extends PureComponent<GridPanelProps & InjectedQuer
  * In the future when GridPanel supports multiple models we will render tabs.
  */
 export const GridPanelWithModel = withQueryModels<GridPanelProps>(GridPanelWithModelImpl);
-
-// TODO: rename all of the "Selector" components to "Menu" for consistency, but also to more easily differentiate
-//  between GridPanel and QueryGridPanel.

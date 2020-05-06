@@ -9,7 +9,7 @@ import { headerCell, headerSelectionCell } from '../renderers';
 
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { PaginationButtons, PaginationInfo } from './Pagination';
-import { PageSizeSelector } from './PageSizeSelector';
+import { PageSizeMenu } from './PageSizeMenu';
 import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
@@ -87,7 +87,7 @@ class ButtonBar extends PureComponent<GridBarProps> {
                     <div className="button-bar__section">
                         {paginate && <PaginationInfo model={model} />}
                         {paginate && <PaginationButtons model={model} actions={actions} />}
-                        {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
+                        {paginate && <PageSizeMenu model={model} actions={actions} pageSizes={pageSizes} />}
                         {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} />}
                         {canSelectView && (
                             <ViewMenu

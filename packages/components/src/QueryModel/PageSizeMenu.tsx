@@ -7,12 +7,12 @@ import { blurActiveElement } from '../util/utils';
 
 import { RequiresModelAndActions } from './withQueryModels';
 
-interface PageSizeSelectorProps extends RequiresModelAndActions {
+interface PageSizeMenuProps extends RequiresModelAndActions {
     // pageSizes is expected to be sorted (ascending)
     pageSizes?: number[];
 }
 
-export class PageSizeSelector extends PureComponent<PageSizeSelectorProps> {
+export class PageSizeMenu extends PureComponent<PageSizeMenuProps> {
     static defaultProps = {
         pageSizes: [20, 40, 100, 250, 400],
     };

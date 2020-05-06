@@ -105,7 +105,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         };
     },
     // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
-    // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementation.
+    // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementations.
     async clearSelections(model) {
         const { id, schemaName, queryName, filters, containerPath } = model;
         return clearSelected(id, schemaName, queryName, List(filters), containerPath);

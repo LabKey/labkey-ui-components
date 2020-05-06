@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Form } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
@@ -9,12 +9,12 @@ import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,
 } from '../DomainPropertiesPanelCollapse';
-import { Principal } from '../../..';
 
 import { AssignmentOptions, BasicPropertiesFields } from './IssuesListDefPropertiesPanelFormElements';
 import { IssuesListDefModel } from './models';
 import produce from "immer";
-import {UserGroup} from "../../permissions/models";
+import { HelpTopicURL } from "../HelpTopicURL";
+import { DEFINE_ISSUES_LIST_TOPIC } from "../../../util/helpLinks";
 
 const PROPERTIES_HEADER_ID = 'issues-properties-hdr';
 
@@ -103,6 +103,11 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >
+                <Row className="margin-bottom">
+                    <Col xs={12}>
+                        <HelpTopicURL helpTopic={DEFINE_ISSUES_LIST_TOPIC} nounPlural="issues lists" />
+                    </Col>
+                </Row>
                 <Form>
                     <BasicPropertiesFields model={model} onInputChange={this.onInputChange} onSelect={this.onSelectChange} />
                     <AssignmentOptions model={model} onSelect={this.onSelectChange}/>

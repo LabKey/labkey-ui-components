@@ -18,6 +18,29 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
   <div
     className="panel-body"
   >
+    <div
+      className="margin-bottom row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=adminIssues"
+              target="_blank"
+            >
+              Learn more about designing issues lists
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
     <form
       className=""
     >

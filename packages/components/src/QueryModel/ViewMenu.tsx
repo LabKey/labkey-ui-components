@@ -4,13 +4,13 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { QueryModel, ViewInfo } from '..';
 import { blurActiveElement } from '../util/utils';
 
-interface ViewSelectorProps {
+interface ViewMenuProps {
     hideEmptyViewSelector: boolean;
     model: QueryModel,
     onViewSelect: (viewName) => void;
 }
 
-export class ViewMenu extends PureComponent<ViewSelectorProps> {
+export class ViewMenu extends PureComponent<ViewMenuProps> {
     render() {
         const { model, hideEmptyViewSelector, onViewSelect } = this.props;
         const { isLoading, views, viewName } = model;

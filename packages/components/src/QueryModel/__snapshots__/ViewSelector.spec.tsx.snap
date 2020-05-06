@@ -99,6 +99,20 @@ exports[`ViewSelector Render 3`] = `
           No Extra Column
         </a>
       </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          No Mixtures or Extra
+        </a>
+      </li>
     </ul>
   </div>
 </div>

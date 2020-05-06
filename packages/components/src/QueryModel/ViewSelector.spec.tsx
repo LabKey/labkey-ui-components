@@ -82,6 +82,6 @@ describe('ViewSelector', () => {
             <ViewSelector hideEmptyViewSelector={true} model={model} onViewSelect={onViewSelect} />
         );
         wrapper.find('MenuItem').last().find('a').simulate('click');
-        expect(onViewSelect).toHaveBeenCalledWith('noExtraColumn');
+        expect(onViewSelect).toHaveBeenCalledWith('noMixtures');
     });
 });

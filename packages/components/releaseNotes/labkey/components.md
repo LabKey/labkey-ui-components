@@ -1,9 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
-*  `@labkey/api` dependency update.
+### version 0.56.3
+*Released*: 6 May 2020
+* `@labkey/api` dependency update.
 * allow using separate singleFilterValue for createQueryGridModelFilteredBySample
 
 ### version 0.56.2

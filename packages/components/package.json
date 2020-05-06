@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.56.2-fb-FixDomainFormDisplayOptions.2",
+  "version": "0.56.3-fb-FixDomainFormDisplayOptions.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

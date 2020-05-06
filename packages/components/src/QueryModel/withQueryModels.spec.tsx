@@ -194,7 +194,7 @@ describe('withQueryModels', () => {
 
         // Expect resolveError to extract the error.
         expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
-        expect(injectedModel.rowsError).toEqual(error);
+        expect(injectedModel.queryInfoError).toEqual(error);
 
         // Reset modelLoader.
         modelLoader.queryInfoException = undefined;

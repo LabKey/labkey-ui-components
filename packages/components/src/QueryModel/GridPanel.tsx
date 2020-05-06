@@ -45,7 +45,7 @@ interface GridBarProps extends Props {
     onViewSelect: (viewName) => void;
 }
 
-class GridBar extends PureComponent<GridBarProps> {
+class ButtonBar extends PureComponent<GridBarProps> {
     render(): ReactNode {
         const {
             model,
@@ -68,9 +68,9 @@ class GridBar extends PureComponent<GridBarProps> {
         const canSelectView = showViewSelector && queryInfo !== undefined;
 
         return (
-            <div className="grid-panel__bar">
-                <div className="grid-panel__bar-left">
-                    <div className="grid-bar__section">
+            <div className="grid-panel__button-bar">
+                <div className="grid-panel__button-bar-left">
+                    <div className="button-bar__section">
                         {ButtonsComponent !== undefined && <ButtonsComponent model={model} actions={actions} />}
 
                         {showChartSelector && (
@@ -83,8 +83,8 @@ class GridBar extends PureComponent<GridBarProps> {
                     </div>
                 </div>
 
-                <div className="grid-panel__bar-right">
-                    <div className="grid-bar__section">
+                <div className="grid-panel__button-bar-right">
+                    <div className="button-bar__section">
                         {paginate && <PaginationInfo model={model} />}
                         {paginate && <PaginationButtons model={model} actions={actions} />}
                         {paginate && <PageSizeSelector model={model} actions={actions} pageSizes={pageSizes} />}
@@ -426,7 +426,7 @@ export class GridPanel extends PureComponent<Props, State> {
         return (
             <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
-                    <GridBar {...this.props} onViewSelect={this.onViewSelect} />
+                    <ButtonBar {...this.props} onViewSelect={this.onViewSelect} />
 
                     {showOmniBox && (
                         <div className="grid-panel__omnibox">

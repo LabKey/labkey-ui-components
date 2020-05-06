@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
-import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
 import { GridPanel, LoadingState, QueryInfo, SchemaQuery } from '..';
 
 import { initUnitTests, makeQueryInfo, makeTestData } from '../testHelpers';
-
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
-
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
 
 import { RequiresModelAndActions } from './withQueryModels';
@@ -33,6 +31,15 @@ beforeAll(() => {
     });
 });
 
+const PAGINATION_SELECTOR = '.pagination-button-group';
+const PAGINATION_INFO_SELECTOR = '.pagination-info';
+const PAGE_SIZE_SELECTOR = '.page-size-menu'
+const VIEW_MENU_SELECTOR = '.view-menu';
+const GRID_SELECTOR = '.grid-panel__grid .table-responsive';
+const GRID_INFO_SELECTOR = '.grid-panel__info';
+const EXPORT_MENU_SELECTOR = '.export-menu';
+const DISABLED_BUTTON_CLASS = 'disabled-button-with-tooltip';
+
 describe('GridPanel', () => {
     let actions;
 
@@ -43,50 +50,72 @@ describe('GridPanel', () => {
     test('Render GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;
 
-        // Model is loading QueryInfo and Rows, so should render loading, disabled ViewMenu, disabled ChartSelector,
-        // and no pagination.
+        // Model is loading QueryInfo and Rows, should render loading, disabled ChartSelector, no pagination/ViewMenu.
         let model = makeTestModel(SCHEMA_QUERY);
-        let tree = renderer.create(<GridPanel actions={actions} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        const wrapper = mount(<GridPanel actions={actions} model={model} />);
+        expect(wrapper.find('button#chart-menu-model[disabled]').exists());
+        expect(!wrapper.find(PAGINATION_SELECTOR).exists());
+        expect(!wrapper.find(VIEW_MENU_SELECTOR).exists());
 
         // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
-        model = makeTestModel(SCHEMA_QUERY, QUERY_INFO);
-        tree = renderer.create(<GridPanel actions={actions} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
-
-        // Loaded rows and QueryInfo, so should render grid.
-        model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
-        tree = renderer.create(<GridPanel actions={actions} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        model = model.mutate({ queryInfoLoadingState: LoadingState.LOADED, queryInfo: QUERY_INFO });
+        wrapper.setProps({ model });
+        expect(wrapper.find(PAGINATION_SELECTOR).exists());
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists());
+        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists());
+        // Loaded rows and QueryInfo. Should render grid, pagination, ViewMenu, ChartMenu
+        model = model.mutate({ rows, orderedRows: orderedRows.slice(0, 20), rowCount, rowsLoadingState: LoadingState.LOADED });
+        wrapper.setProps({ model });
+        expect(wrapper.find(PAGINATION_INFO_SELECTOR).text()).toEqual('1 - 20 of 661');
+        expect(wrapper.find(PAGINATION_SELECTOR).exists()); //.toEqual(true);
+        // Previous, Page Menu, Next buttons should be present.
+        let paginationButtons = wrapper.find(PAGINATION_SELECTOR).find('button');
+        expect(paginationButtons.length).toEqual(3);
+        // Previous button should be disabled.
+        expect(paginationButtons.first().hasClass(DISABLED_BUTTON_CLASS)).toEqual(true);
+        expect(paginationButtons.last().hasClass(DISABLED_BUTTON_CLASS)).toEqual(false);
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists());
+        expect(wrapper.find(GRID_SELECTOR).exists());
+        // Header row + data rows.
+        expect(wrapper.find(GRID_SELECTOR).find('tr').length).toEqual(21);
 
         // Has rows and QueryInfo, but new rows are loading, should render disabled pagination and loading spinner.
         model = model.mutate({ rowsLoadingState: LoadingState.LOADING });
-        tree = renderer.create(<GridPanel actions={actions} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper.setProps({ model });
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists());
+        expect(wrapper.find(PAGINATION_SELECTOR).exists())
+        paginationButtons = wrapper.find(PAGINATION_SELECTOR).find('button');
+        expect(paginationButtons.first().hasClass(DISABLED_BUTTON_CLASS));
+        expect(paginationButtons.last().hasClass(DISABLED_BUTTON_CLASS));
+        expect(wrapper.find(GRID_INFO_SELECTOR).text()).toContain('Loading data...');
 
         // Should render TestButtons component in the left part of the grid bar.
         model = model.mutate({ rowsLoadingState: LoadingState.LOADED });
-        tree = renderer.create(<GridPanel actions={actions} model={model} ButtonsComponent={TestButtons} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper.setProps({ ButtonsComponent: TestButtons });
+        expect(wrapper.find(TestButtons).exists());
 
         // Panel classes should not be present.
-        tree = renderer.create(<GridPanel actions={actions} model={model} asPanel={false} />);
-        expect(tree.toJSON()).toMatchSnapshot();
-
-        // Pagination should not be present.
-        tree = renderer.create(<GridPanel actions={actions} model={model} isPaged={false} />);
-        expect(tree.toJSON()).toMatchSnapshot();
-
-        // ViewMenu should not be present.
-        tree = renderer.create(<GridPanel actions={actions} model={model} showViewSelector={false} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper.setProps({ asPanel: false });
+        expect(!wrapper.find('.grid-panel').hasClass('panel'));
+        expect(!wrapper.find('.grid-panel').hasClass('panel-default'));
 
         // pageSizes should be different
-        tree = renderer.create(<GridPanel actions={actions} model={model} pageSizes={[5, 10, 15, 20]} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(wrapper.find(PAGE_SIZE_SELECTOR).find('ul').text()).toEqual('Page Size2040100250400');
+        wrapper.setProps({ pageSizes: [5, 10, 15, 20] });
+        expect(wrapper.find(PAGE_SIZE_SELECTOR).find('ul').text()).toEqual('Page Size5101520');
+
+        // Pagination should not be present.
+        wrapper.setProps({ isPaged: false });
+        expect(!wrapper.find(PAGINATION_INFO_SELECTOR).exists());
+        expect(!wrapper.find(PAGINATION_SELECTOR).exists());
+        expect(!wrapper.find(PAGE_SIZE_SELECTOR).exists());
+
+        // ViewMenu should not be present.
+        wrapper.setProps({ showViewSelector: false });
+        expect(!wrapper.find(VIEW_MENU_SELECTOR).exists());
 
         // export menu should not be rendered.
-        tree = renderer.create(<GridPanel actions={actions} model={model} showExport={false} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper.setProps({ showExport: false });
+        expect(!wrapper.find(EXPORT_MENU_SELECTOR).exists());
     });
 });

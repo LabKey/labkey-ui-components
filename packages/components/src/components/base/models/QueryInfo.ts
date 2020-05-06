@@ -12,7 +12,6 @@ import {
     QueryInfoStatus,
     QuerySort,
     SchemaQuery,
-    updateColumnFilter,
     ViewInfo,
 } from './model';
 
@@ -155,6 +154,12 @@ export class QueryInfo extends Record({
         return column ? column.required : false;
     }
 
+    getDetailDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
+        return this.getDisplayColumns(view, omittedColumns)
+            .filter(col => col.isDetailColumn)
+            .toList();
+    }
+
     getDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
         if (!view) {
             view = ViewInfo.DEFAULT_NAME;
@@ -232,7 +237,7 @@ export class QueryInfo extends Record({
     getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
         return this.columns
             .filter(column => {
-                return updateColumnFilter(column) || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
+                return column.isUpdateColumn || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
             })
             .map(column => {
                 if (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1) {
@@ -241,6 +246,12 @@ export class QueryInfo extends Record({
                     return column;
                 }
             })
+            .toList();
+    }
+
+    getUpdateDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
+        return this.getDisplayColumns(view, omittedColumns)
+            .filter(col => col.isUpdateColumn)
             .toList();
     }
 

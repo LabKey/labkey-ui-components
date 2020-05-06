@@ -4,6 +4,8 @@
  */
 import { Edge } from 'vis-network';
 
+import { LoadingState } from '../..';
+
 import {
     collapsedNodesTest1,
     collapsedNodesTest2,
@@ -25,6 +27,7 @@ describe('Lineage Graph', () => {
     const ESLineageResult = LineageResult.create(lineageExpressionSystem);
     const ESLineage = new Lineage({
         result: ESLineageResult,
+        resultLoadingState: LoadingState.LOADED,
     });
 
     // expression1 -> run1 -> child1
@@ -34,6 +37,7 @@ describe('Lineage Graph', () => {
     const sampleLineageResult = LineageResult.create(lineageSample);
     const sampleLineage = new Lineage({
         result: sampleLineageResult,
+        resultLoadingState: LoadingState.LOADED,
     });
 
     // S0 -> R1 -> S1 -> R2 -> S2 -> R3 -> S3 -> R4  -> S4 -> R5 -> S5 -> R7 -> S7
@@ -43,6 +47,7 @@ describe('Lineage Graph', () => {
     const fullScreenSampleLineageResult = LineageResult.create(fullScreenLineageSample);
     const fullScreenSampleLineage = new Lineage({
         result: fullScreenSampleLineageResult,
+        resultLoadingState: LoadingState.LOADED,
     });
 
     describe('Lineage', () => {
@@ -235,18 +240,6 @@ describe('Lineage Graph', () => {
                 );
             });
         });
-
-        describe('#getSeed()', () => {
-            test('Should display seed of expressionSystemLineageResult', () => {
-                const seed = ESLineage.getSeed();
-                expect(seed).toBe(ESLineageResult.seed);
-            });
-
-            test('Should display seed of sampleSystemLineageResult', () => {
-                const seed = sampleLineage.getSeed();
-                expect(seed).toBe(sampleLineageResult.seed);
-            });
-        });
     });
 
     describe('collapsed nodes', () => {
@@ -298,7 +291,10 @@ describe('Lineage Graph', () => {
             //    (S2+S3+S4)
             //
             const lineageResult = LineageResult.create({ nodes: collapsedNodesTest1, seed: 'S1' });
-            const lineage = new Lineage({ result: lineageResult });
+            const lineage = new Lineage({
+                result: lineageResult,
+                resultLoadingState: LoadingState.LOADED,
+            });
             const graph = lineage.generateGraph({
                 grouping: { combineSize: 3 },
             });
@@ -323,7 +319,10 @@ describe('Lineage Graph', () => {
             //    (S2+S3+S4)
             //
             const lineageResult = LineageResult.create({ nodes: collapsedNodesTest2, seed: 'S1' });
-            const lineage = new Lineage({ result: lineageResult });
+            const lineage = new Lineage({
+                result: lineageResult,
+                resultLoadingState: LoadingState.LOADED,
+            });
             const graph = lineage.generateGraph({
                 grouping: { combineSize: 3 },
             });
@@ -358,7 +357,10 @@ describe('Lineage Graph', () => {
                 //                  R3
 
                 const lineageResult = LineageResult.create({ nodes: collapsedNodesTest3, seed: 'S1' });
-                const lineage = new Lineage({ result: lineageResult });
+                const lineage = new Lineage({
+                    result: lineageResult,
+                    resultLoadingState: LoadingState.LOADED,
+                });
                 const graph = lineage.generateGraph({
                     grouping: { combineSize: 3 },
                 });
@@ -492,29 +494,6 @@ describe('Lineage Graph', () => {
                 expect(result.nodes.map(n => n.name).toArray()).toEqual(
                     expect.arrayContaining(['run1', 'run2', 'Derived sample'])
                 );
-            });
-        });
-
-        describe('#mergeLineage()', () => {
-            test('Should merge in an empty lineage', () => {
-                const result = fullScreenSampleLineageResult.mergeLineage(
-                    LineageResult.create({
-                        nodes: {},
-                    })
-                );
-                expect(result.nodes.size).toBe(17);
-            });
-
-            test('Should merge in an duplicate lineage', () => {
-                const result = fullScreenSampleLineageResult.mergeLineage(fullScreenSampleLineageResult);
-                expect(result.nodes.size).toBe(17);
-            });
-
-            test('Should merge in an other lineage', () => {
-                const result = fullScreenSampleLineageResult.mergeLineage(sampleLineageResult);
-                // fullScreenSampleLineageResult has 17 nodes, sampleLineageResult has 4 nodes,
-                // but they have 2 nodes with the same name (run1 and run2), so merged there is a total of 19 nodes.
-                expect(result.nodes.size).toBe(19);
             });
         });
     });

@@ -1,0 +1,233 @@
+{
+  "nodes" : {
+    "urn:lsid:labkey.com:Sample.6.Samples:2015_03_17-C6-70-B3-01" : {
+      "created" : "2020-02-24 16:26:24.993",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-6:Samples",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/Nickologics/experiment-showMaterial.view?rowId=122",
+      "lsid" : "urn:lsid:labkey.com:Sample.6.Samples:2015_03_17-C6-70-B3-01",
+      "createdBy" : "nickk@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 122,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "2015_03_17-C6-70-B3-01",
+      "queryName" : "Samples",
+      "modified" : "2020-02-24 16:26:24.993",
+      "modifiedBy" : "nickk@labkey.com",
+      "id" : 122,
+      "properties" : {
+        "name" : "2015_03_17-C6-70-B3-01"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-6:511c629c-3993-1038-b9b7-9ed56a6b3cc3",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-1:101" : {
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-1:101",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "value" : 101,
+        "fieldKey" : "rowId"
+      } ],
+      "name" : "101",
+      "queryName" : "Data",
+      "schemaName" : "assay.General.Amino Acids",
+      "type" : "GeneralAssayResultRow",
+      "url" : "/labkey/Nickologics/assay-assayResults.view?rowId=1&Data.rowId%7Eeq=101",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-1:102" : {
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-1:102",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "value" : 102,
+        "fieldKey" : "rowId"
+      } ],
+      "name" : "102",
+      "queryName" : "Data",
+      "schemaName" : "assay.General.Amino Acids",
+      "type" : "GeneralAssayResultRow",
+      "url" : "/labkey/Nickologics/assay-assayResults.view?rowId=1&Data.rowId%7Eeq=102",
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6" : {
+      "created" : "2020-04-08 15:26:46.398",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-6:Amino+Acids",
+      "schemaName" : "assay.General.Amino Acids",
+      "type" : "GeneralAssayRun",
+      "steps" : [ {
+        "lsid" : "urn:lsid:labkey.com:ProtocolApplication.Run-799:SimpleProtocol.CoreStep",
+        "applicationType" : "ProtocolApplication",
+        "protocol" : {
+          "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-6:Amino+Acids.Core",
+          "createdBy" : "nickk@labkey.com",
+          "created" : "2020-02-24 16:25:32.405",
+          "pkFilters" : [ {
+            "value" : 2,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Amino Acids - Core",
+          "queryName" : "Protocols",
+          "modified" : "2020-02-24 16:25:32.405",
+          "modifiedBy" : "nickk@labkey.com",
+          "id" : 2,
+          "schemaName" : "exp",
+          "url" : "/labkey/Nickologics/experiment-protocolDetails.view?rowId=2"
+        },
+        "activityDate" : "2020-04-08 15:26:46.497",
+        "createdBy" : "nickk@labkey.com",
+        "created" : "2020-04-08 15:26:46.398",
+        "activitySequence" : 10,
+        "name" : "Amino Acids",
+        "modified" : "2020-04-08 15:26:46.455",
+        "modifiedBy" : "nickk@labkey.com",
+        "id" : 2607
+      } ],
+      "url" : "/labkey/Nickologics/experiment-showRunGraph.view?rowId=799",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6",
+      "createdBy" : "nickk@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-1:101",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-1:102",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-6:a8502174-5c05-1038-bd26-eb04885eb6a6",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 799,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "AA_Run04",
+      "queryName" : "Runs",
+      "modified" : "2020-04-08 15:26:46.455",
+      "modifiedBy" : "nickk@labkey.com",
+      "id" : 799,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.6.Samples:2015_07_24-C5-77-B6-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.6.Samples:2015_03_17-C6-70-B3-01",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Run.Folder-6:511c629c-3993-1038-b9b7-9ed56a6b3cc3" : {
+      "created" : "2020-02-24 16:26:26.126",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "schemaName" : "exp",
+      "type" : "Run",
+      "steps" : [ {
+        "lsid" : "urn:lsid:labkey.com:ProtocolApplication.Run-25:SimpleProtocol.CoreStep",
+        "applicationType" : "ProtocolApplication",
+        "protocol" : {
+          "lsid" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol.Core",
+          "createdBy" : "nickk@labkey.com",
+          "created" : "2020-02-24 16:25:59.274",
+          "pkFilters" : [ {
+            "value" : 29,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample Derivation Protocol - Core",
+          "queryName" : "Protocols",
+          "modified" : "2020-02-24 16:25:59.274",
+          "modifiedBy" : "nickk@labkey.com",
+          "id" : 29,
+          "schemaName" : "exp",
+          "url" : "/labkey/Shared/experiment-protocolDetails.view?rowId=29"
+        },
+        "activityDate" : "2020-02-24 16:26:26.110",
+        "createdBy" : "nickk@labkey.com",
+        "created" : "2020-02-24 16:26:26.126",
+        "activitySequence" : 10,
+        "name" : "Sample Derivation Protocol",
+        "modified" : "2020-02-24 16:26:26.126",
+        "modifiedBy" : "nickk@labkey.com",
+        "id" : 74
+      } ],
+      "url" : "/labkey/Nickologics/experiment-showRunGraph.view?rowId=25",
+      "lsid" : "urn:lsid:labkey.com:Run.Folder-6:511c629c-3993-1038-b9b7-9ed56a6b3cc3",
+      "createdBy" : "nickk@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.6.Samples:2015_03_17-C6-70-B3-01",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.6.Samples:2015_07_24-C5-77-B6-01",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 25,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "Derive 39 samples from 2015_01_08_E005",
+      "queryName" : "Runs",
+      "modified" : "2020-02-24 16:26:26.126",
+      "modifiedBy" : "nickk@labkey.com",
+      "id" : 25,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Sample.6.Samples:2015_07_24-C5-77-B6-01" : {
+      "created" : "2020-02-24 16:26:24.993",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-6:Samples",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/Nickologics/experiment-showMaterial.view?rowId=123",
+      "lsid" : "urn:lsid:labkey.com:Sample.6.Samples:2015_07_24-C5-77-B6-01",
+      "createdBy" : "nickk@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 123,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "2015_07_24-C5-77-B6-01",
+      "queryName" : "Samples",
+      "modified" : "2020-02-24 16:26:24.993",
+      "modifiedBy" : "nickk@labkey.com",
+      "id" : 123,
+      "properties" : {
+        "name" : "2015_07_24-C5-77-B6-01"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-6:511c629c-3993-1038-b9b7-9ed56a6b3cc3",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-6:a8502174-5c05-1038-bd26-eb04885eb6a6" : {
+      "created" : "2020-04-08 15:26:46.458",
+      "dataFileURL" : "file:///tmp/Amino_Acids-2020-04-08-1526.tmp",
+      "cpasType" : "Data",
+      "type" : "AssayRunTSVData",
+      "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-6:a8502174-5c05-1038-bd26-eb04885eb6a6",
+      "createdBy" : "nickk@labkey.com",
+      "children" : [ ],
+      "name" : "Amino_Acids-2020-04-08-1526.tmp",
+      "modified" : "2020-04-08 15:26:46.513",
+      "absolutePath" : "/tmp/Amino_Acids-2020-04-08-1526.tmp",
+      "pipelinePath" : "assaydata/Amino_Acids-2020-04-08-1526.tmp",
+      "modifiedBy" : "nickk@labkey.com",
+      "id" : 6730,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6",
+        "role" : "no role"
+      } ]
+    }
+  },
+  "seed" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-6:a8502172-5c05-1038-bd26-eb04885eb6a6"
+}

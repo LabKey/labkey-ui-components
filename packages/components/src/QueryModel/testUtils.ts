@@ -1,6 +1,4 @@
-import { Actions, QueryInfo, QueryModel } from '..';
-
-import { LoadingState } from './QueryModel';
+import { Actions, LoadingState, QueryInfo, QueryModel } from '..';
 
 /**
  * Helper to instantiate a QueryModel for use with tests.

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import renderer from 'react-test-renderer';
 
-import { GridPanel, QueryInfo, SchemaQuery } from '..';
+import { GridPanel, LoadingState, QueryInfo, SchemaQuery } from '..';
 
 import { initUnitTests, makeQueryInfo, makeTestData } from '../testHelpers';
 
@@ -10,7 +10,6 @@ import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
 
 import { RequiresModelAndActions } from './withQueryModels';
-import { LoadingState } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
 import { makeTestActions, makeTestModel } from './testUtils';
 

@@ -3,51 +3,50 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { createContext } from 'react';
-import { fromJS, List, Map, OrderedSet } from 'immutable';
-import { Experiment, Filter } from '@labkey/api';
+import { Draft, produce } from 'immer';
+import { fromJS, Map, OrderedSet } from 'immutable';
+import { Experiment, Filter, getServerContext } from '@labkey/api';
 
-import { AppURL, GridColumn, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../..';
+import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../..';
 
-import { getLineageResult, updateLineageResult } from '../../global';
-
-import { Lineage, LineageGridModel, LineageNode, LineageNodeMetadata, LineageResult } from './models';
-import { LINEAGE_DIRECTIONS, LineageFilter, LineageOptions } from './types';
-import { getLineageDepthFirstNodeList } from './utils';
-import { getURLResolver } from './LineageURLResolvers';
+import {
+    Lineage,
+    LineageGridModel,
+    LineageItemWithIOMetadata,
+    LineageItemWithMetadata,
+    LineageIOWithMetadata,
+    LineageNode,
+    LineageNodeMetadata,
+    LineageResult,
+    LineageRunStep,
+} from './models';
+import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
+import { LINEAGE_DIRECTIONS, LineageFilter, LineageLinkMetadata, LineageOptions } from './types';
+import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
+import { getURLResolver, LineageURLResolver } from './LineageURLResolvers';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
 export interface WithNodeInteraction {
-    isNodeInGraph?: (node: LineageNode) => boolean;
-    onNodeMouseOver?: (node: LineageNode) => void;
-    onNodeMouseOut?: (node: LineageNode) => void;
-    onNodeClick?: (node: LineageNode) => void;
+    isNodeInGraph?: (node: Experiment.LineageItemBase) => boolean;
+    onNodeMouseOver?: (node: Experiment.LineageItemBase) => void;
+    onNodeMouseOut?: (node: Experiment.LineageItemBase) => void;
+    onNodeClick?: (node: Experiment.LineageItemBase) => void;
 }
 
 const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);
 export const NodeInteractionProvider = NodeInteractionContext.Provider;
 export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 
-export function fetchLineage(seed: string, distance?: number): Promise<LineageResult> {
+function fetchLineage(options: Omit<Experiment.LineageOptions, 'lsids'>): Promise<LineageResult> {
     return new Promise((resolve, reject) => {
-        const options: any /* ILineageOptions */ = {
-            includeRunSteps: true,
-            lsid: seed,
-        };
-
-        if (!isNaN(distance)) {
-            // The lineage includes a "run" object for each parent as well, so we
-            // query for twice the depth requested in the URL.
-            options.depth = distance * 2;
-        }
+        const seed = options.lsid;
 
         Experiment.lineage({
             ...options,
-
             success: lineage => {
                 resolve(LineageResult.create(lineage));
             },
-
             failure: error => {
                 let message = `Failed to fetch lineage for seed "${seed}".`;
 
@@ -71,15 +70,30 @@ export function fetchLineage(seed: string, distance?: number): Promise<LineageRe
     });
 }
 
+function fetchLineageNodes(lsids: string[], containerPath?: string): Promise<LineageNode[]> {
+    return new Promise((resolve, reject) => {
+        return Experiment.resolve({
+            containerPath,
+            lsids,
+            success: json => {
+                resolve(json.data.map(n => LineageNode.create(n.lsid, n)));
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
 function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsResult>> {
     // Node metadata does not support nodes with multiple primary keys. These could be supported, however,
     // each node would require it's own request for the unique keys combination. Also, nodes without any primary
     // keys cannot be filtered upon and thus are also not supported.
     return lineage.nodes
-        .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.size === 1)
+        .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.length === 1)
         .groupBy(n => SchemaQuery.create(n.schemaName, n.queryName))
         .map((nodes, schemaQuery) => {
-            const { fieldKey } = nodes.first().pkFilters.get(0);
+            const { fieldKey } = nodes.first().pkFilters[0];
 
             return selectRows({
                 schemaName: schemaQuery.schemaName,
@@ -87,32 +101,91 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
                 // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?
                 // See LineageNodeMetadata (and it's usages) for why this is currently necessary
                 columns: LINEAGE_METADATA_COLUMNS.add(fieldKey).join(','),
-                filterArray: [
-                    Filter.create(fieldKey, nodes.map(n => n.pkFilters.get(0).value).toArray(), Filter.Types.IN),
-                ],
+                filterArray: [Filter.create(fieldKey, nodes.map(n => n.pkFilters[0].value).toArray(), Filter.Types.IN)],
             });
         })
         .toArray();
 }
 
-export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageResult> {
+function applyLineageMetadata(
+    lineage: LineageResult,
+    metadata: { [lsid: string]: LineageNodeMetadata },
+    iconURLByLsid: { [lsid: string]: string },
+    options?: LineageOptions
+): LineageResult {
+    const urlResolver = getURLResolver(options);
+
+    const nodes = lineage.nodes.map(node => {
+        const config = {
+            ...applyItemMetadata(node, iconURLByLsid, urlResolver, lineage.seed === node.lsid),
+            steps: node.steps.map(
+                produce((draft: Draft<LineageRunStep>) => {
+                    Object.assign(draft, applyItemMetadata(draft, iconURLByLsid, urlResolver));
+                })
+            ),
+            meta: metadata[node.lsid],
+        };
+
+        // Unfortunately, Immutable.merge converts all types to Immutable types (e.g. {} -> Map) which
+        // is not acceptable. Doing a manual merge...
+        Object.keys(config).forEach(prop => {
+            node = node.set(prop, config[prop]) as LineageNode;
+        });
+
+        return node;
+    });
+
+    return lineage.set('nodes', nodes) as LineageResult;
+}
+
+function applyItemMetadata(
+    item: LineageItemWithIOMetadata,
+    iconURLByLsid: { [lsid: string]: string },
+    urlResolver: LineageURLResolver,
+    isSeed = false
+): Partial<LineageItemWithIOMetadata> {
+    return {
+        ...applyLineageIOMetadata(item, iconURLByLsid, urlResolver),
+        ...{ iconProps: resolveIconAndShapeForNode(item, iconURLByLsid[item.lsid], isSeed) },
+        ...{ links: urlResolver.resolveItem(item) ?? ({} as LineageLinkMetadata) },
+    };
+}
+
+function applyLineageIOMetadata(
+    item: LineageIOWithMetadata,
+    iconURLByLsid: { [lsid: string]: string },
+    urlResolver: LineageURLResolver
+): LineageIOWithMetadata {
+    const _applyItem = produce((draft: Draft<LineageItemWithMetadata>) => {
+        draft.iconProps = resolveIconAndShapeForNode(draft, iconURLByLsid[draft.lsid]);
+        draft.links = urlResolver.resolveItem(draft);
+    });
+
+    return {
+        dataInputs: item.dataInputs.map(_applyItem),
+        dataOutputs: item.dataOutputs.map(_applyItem),
+        materialInputs: item.materialInputs.map(_applyItem),
+        materialOutputs: item.materialOutputs.map(_applyItem),
+    };
+}
+
+export function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
     return new Promise(resolve => {
         return Promise.all(fetchNodeMetadata(lineage))
             .then(results => {
+                const iconURLByLsid = {};
                 const metadata = {};
                 results.forEach(result => {
                     const queryInfo = result.queries[result.key];
                     const model = fromJS(result.models[result.key]);
                     model.forEach(data => {
                         const lsid = data.getIn(['LSID', 'value']);
+                        iconURLByLsid[lsid] = queryInfo.iconURL;
                         metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
                     });
                 });
 
-                return lineage.set(
-                    'nodes',
-                    lineage.nodes.map(node => node.set('meta', metadata[node.lsid]))
-                ) as LineageResult;
+                return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
             })
             .then(result => {
                 resolve(result);
@@ -120,67 +193,86 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
     });
 }
 
-export function loadLineageIfNeeded(seed: string, distance?: number, options?: LineageOptions): Promise<Lineage> {
-    const existing = getLineageResult(seed);
-    if (existing) {
-        return Promise.resolve(existing);
-    }
+let lineageResultCache: { [key: string]: Promise<LineageResult> } = {};
+let lineageSeedCache: { [key: string]: Promise<LineageResult> } = {};
 
-    return fetchLineage(seed, distance)
-        .then(getLineageNodeMetadata)
-        .then(result => {
-            const updatedResult = getURLResolver(options).resolveNodes(result);
-
-            // either update the global state to include the result or set it
-            let lineage = getLineageResult(seed);
-            if (lineage) {
-                lineage = new Lineage({
-                    ...lineage,
-                    result: updatedResult,
-                });
-            } else {
-                lineage = new Lineage({ result: updatedResult });
-            }
-
-            updateLineageResult(seed, lineage);
-            return lineage;
-        })
-        .catch(reason => {
-            console.error(reason);
-            const lineage = new Lineage({ error: reason.message });
-            updateLineageResult(seed, lineage);
-            return lineage;
-        });
+export function invalidateLineageResults(): void {
+    lineageResultCache = {};
+    lineageSeedCache = {};
 }
 
-export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promise<Lineage> {
-    const existing = getLineageResult(seed);
-    if (existing && existing.sampleStats) {
-        return Promise.resolve(existing);
+export function loadLineageResult(
+    seed: string,
+    container?: string,
+    distance?: number,
+    options?: LineageOptions
+): Promise<LineageResult> {
+    const fetchOptions: Experiment.LineageOptions = {
+        ...options?.request,
+        lsid: seed,
+    };
+
+    // Lineage API currently responds with the container's entity ID.
+    // Only apply container if it doesn't match the current container.
+    if (container !== getServerContext().container.id) {
+        fetchOptions.containerPath = container;
     }
 
-    return Promise.all([loadLineageIfNeeded(seed, distance), fetchSampleSets()]).then(values => {
-        const [lineage, sampleSets] = values;
+    if (!isNaN(distance)) {
+        // The lineage includes a "run" object for each parent as well, so we
+        // query for twice the depth requested in the URL.
+        fetchOptions.depth = distance * 2;
+    }
 
-        const updatedLineage = new Lineage({
-            result: lineage.result,
-            error: lineage.error,
-            sampleStats: computeSampleCounts(lineage, sampleSets),
-        });
+    const key = [
+        seed,
+        container ?? '',
+        distance ?? -1,
+        fetchOptions.includeInputsAndOutputs === true,
+        fetchOptions.includeRunSteps === true,
+        fetchOptions.includeProperties === true,
+    ].join('|');
 
-        updateLineageResult(lineage.getSeed(), updatedLineage);
-        return updatedLineage;
-    });
+    if (!lineageResultCache[key]) {
+        lineageResultCache[key] = fetchLineage(fetchOptions).then(r => processLineageResult(r, options));
+    }
+
+    return lineageResultCache[key];
+}
+
+export function loadSampleStats(lineageResult: LineageResult): Promise<any> {
+    return selectRows({
+        schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
+        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+    }).then(sampleSets => computeSampleCounts(lineageResult, sampleSets));
+}
+
+export function loadSeedResult(seed: string, container?: string, options?: LineageOptions): Promise<LineageResult> {
+    const key = [seed, container ?? ''].join('|');
+
+    if (!lineageSeedCache[key]) {
+        lineageSeedCache[key] = fetchLineageNodes([seed], container)
+            .then(nodes => nodes[0])
+            .then(seedNode =>
+                LineageResult.create({
+                    nodes: { [seedNode.lsid]: seedNode },
+                    seed: seedNode.lsid,
+                })
+            )
+            .then(result => processLineageResult(result, options));
+    }
+
+    return lineageSeedCache[key];
 }
 
 // TODO add jest test coverage for this function
-function computeSampleCounts(lineage: Lineage, sampleSets: any) {
+function computeSampleCounts(lineageResult: LineageResult, sampleSets: any): any {
     const { key, models } = sampleSets;
 
     const rows = [];
     const nodeIds = {};
 
-    lineage.result.nodes.forEach(node => {
+    lineageResult.nodes.forEach(node => {
         if (node.lsid && node.cpasType) {
             const key = node.cpasType;
 
@@ -226,55 +318,31 @@ function computeSampleCounts(lineage: Lineage, sampleSets: any) {
     return fromJS(rows);
 }
 
-function fetchSampleSets() {
-    return selectRows({
-        schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-    });
-}
-
-export function getLocationString(location: Location): string {
-    let loc = '';
-
-    if (location) {
-        let sep = '';
-        // all properties on the URL that are respected by LineagePageModel
-        ['distance', 'members', 'p', 'seeds'].forEach(key => {
-            if (location.query.has(key)) {
-                loc += sep + key + '=' + location.query.get(key);
-                sep = '&';
-            }
-        });
-    }
-
-    return loc;
-}
-
 export function createGridModel(
     lineage: Lineage,
     members: LINEAGE_DIRECTIONS,
     distance: number,
-    columns: List<string | GridColumn>,
     pageNumber: number
 ): LineageGridModel {
     const result = lineage.filterResult({
         filters: [new LineageFilter('type', ['Sample', 'Data'])],
     });
 
-    const nodeList = getLineageDepthFirstNodeList(result.nodes, result.seed, members, distance);
-    const nodeCounts = Map<string, number>().asMutable();
-    nodeList.forEach(node => {
+    distance = distance ?? DEFAULT_LINEAGE_DISTANCE;
+    members = members ?? DEFAULT_LINEAGE_DIRECTION;
+    pageNumber = pageNumber ?? 1;
+
+    const data = getLineageDepthFirstNodeList(result.nodes, result.seed, members, distance);
+    const nodeCounts = data.reduce((map, node) => {
         const { lsid } = node;
-        if (nodeCounts.has(lsid)) {
-            nodeCounts.set(lsid, nodeCounts.get(lsid) + 1);
-        } else {
-            nodeCounts.set(lsid, 1);
+        if (map.has(lsid)) {
+            return map.set(lsid, map.get(lsid) + 1);
         }
-    });
+        return map.set(lsid, 1);
+    }, Map<string, number>());
 
     return new LineageGridModel({
-        columns,
-        data: nodeList,
+        data,
         distance,
         isError: false,
         isLoaded: true,
@@ -283,8 +351,8 @@ export function createGridModel(
         message: undefined,
         nodeCounts,
         pageNumber,
-        seedNode: nodeList.get(0),
-        totalRows: nodeList.size,
+        seedNode: data.get(0),
+        totalRows: data.size,
     });
 }
 

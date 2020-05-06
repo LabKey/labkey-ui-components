@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { Draft, produce } from 'immer';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 import { QuerySelect } from '../../forms/QuerySelect';
@@ -44,7 +45,7 @@ interface State {
 }
 
 // Note: exporting this class for jest test case
-export class DataClassPropertiesPanelImpl extends React.PureComponent<
+export class DataClassPropertiesPanelImpl extends PureComponent<
     Props & InjectedDomainPropertiesPanelCollapseProps,
     State
 > {
@@ -64,14 +65,18 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<
         this.state = {
             isValid: true,
         };
+
+        this.state = produce({ isValid: true }, () => {});
     }
 
-    updateValidStatus = (newModel?: DataClassModel) => {
+    updateValidStatus = (newModel?: DataClassModel): void => {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
-        const isValid = updatedModel && updatedModel.hasValidProperties();
+        const isValid = updatedModel && updatedModel.hasValidProperties;
         this.setState(
-            () => ({ isValid }),
+            produce((draft: Draft<State>) => {
+                draft.isValid = isValid;
+            }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
@@ -81,19 +86,21 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<
         );
     };
 
-    onFormChange = (evt: any) => {
+    onFormChange = (evt: any): void => {
         const id = evt.target.id;
         const value = evt.target.value;
         this.onChange(id, value);
     };
 
-    onChange = (id: string, value: any) => {
+    onChange = (id: string, value: any): void => {
         const { model } = this.props;
-        const newModel = model.set(getFormNameFromId(id), value) as DataClassModel;
+        const newModel = produce(model, (draft: Draft<DataClassModel>) => {
+            draft[getFormNameFromId(id)] = value;
+        });
         this.updateValidStatus(newModel);
     };
 
-    renderSampleTypeSelect() {
+    renderSampleTypeSelect(): ReactNode {
         const { model, nounSingular } = this.props;
 
         return (
@@ -123,7 +130,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<
         );
     }
 
-    renderCategorySelect() {
+    renderCategorySelect(): ReactNode {
         const { model } = this.props;
 
         return (
@@ -150,7 +157,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<
         );
     }
 
-    render() {
+    render(): ReactNode {
         const {
             model,
             headerText,
@@ -185,7 +192,7 @@ export class DataClassPropertiesPanelImpl extends React.PureComponent<
                 <EntityDetailsForm
                     noun={nounSingular}
                     onFormChange={this.onFormChange}
-                    data={model}
+                    data={model.entityDataMap}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                 />

@@ -101,16 +101,7 @@ describe('<Detail/>', () => {
 
     test('detailRenderer', () => {
         const model = getQueryGridModel(MODEL_ID);
-        const component = (
-            <Detail
-                queryModel={model}
-                detailRenderer={() => {
-                    return () => {
-                        return <h1>TESTING</h1>;
-                    };
-                }}
-            />
-        );
+        const component = <Detail queryModel={model} detailRenderer={() => () => <h1>TESTING</h1>} />;
 
         const wrapper = mount(component);
         expect(wrapper.find('a')).toHaveLength(0);

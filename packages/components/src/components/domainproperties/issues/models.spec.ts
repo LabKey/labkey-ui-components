@@ -15,22 +15,22 @@
  */
 import { DomainDesign } from '../models';
 
-import { IssuesListDefModel } from './models';
 import getDomainDetailsJSON from '../../../test/data/issuesListDef-getDomainDetails.json';
 
+import { IssuesListDefModel } from './models';
 
 describe('IssuesListDefModel', () => {
     test('isNew', () => {
-        const newModel = IssuesListDefModel.create(null, {name: 'Issues List For Model jest'});
+        const newModel = IssuesListDefModel.create(null, { name: 'Issues List For Model jest' });
         expect(newModel.isNew()).toBeTruthy();
     });
 
     test('hasValidProperties', () => {
-        expect(IssuesListDefModel.create({ options: { issueDefName: undefined }}).hasValidProperties()).toBeFalsy();
-        expect(IssuesListDefModel.create({ options: { issueDefName: null }}).hasValidProperties()).toBeFalsy();
-        expect(IssuesListDefModel.create({ options: { issueDefName: '' }}).hasValidProperties()).toBeFalsy();
-        expect(IssuesListDefModel.create({ options: { issueDefName: ' ' }}).hasValidProperties()).toBeFalsy();
-        expect(IssuesListDefModel.create({ options: { issueDefName: 'test' }}).hasValidProperties()).toBeTruthy();
+        expect(IssuesListDefModel.create({ options: { issueDefName: undefined } }).hasValidProperties()).toBeFalsy();
+        expect(IssuesListDefModel.create({ options: { issueDefName: null } }).hasValidProperties()).toBeFalsy();
+        expect(IssuesListDefModel.create({ options: { issueDefName: '' } }).hasValidProperties()).toBeFalsy();
+        expect(IssuesListDefModel.create({ options: { issueDefName: ' ' } }).hasValidProperties()).toBeFalsy();
+        expect(IssuesListDefModel.create({ options: { issueDefName: 'test' } }).hasValidProperties()).toBeTruthy();
     });
 
     test('getOptions', () => {

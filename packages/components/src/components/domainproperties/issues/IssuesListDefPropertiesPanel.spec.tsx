@@ -1,17 +1,20 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
+import { mount } from 'enzyme';
+
 import { DEFAULT_LIST_SETTINGS } from '../../../test/data/constants';
 
 import { DomainPanelStatus } from '../models';
-import {IssuesListDefPropertiesPanel, IssuesListDefPropertiesPanelImpl} from "./IssuesListDefPropertiesPanel";
-import {IssuesListDefModel} from "./models";
-import {mount} from "enzyme";
-import {Alert} from "../../..";
-import {CollapsiblePanelHeader} from "../CollapsiblePanelHeader";
-import getDomainDetailsJSON from '../../../test/data/issuesListDef-getDomainDetails.json'
 
-const emptyNewModel = IssuesListDefModel.create(null, {issueDefName: 'Issues List For Jest'});
+import { Alert } from '../../..';
+import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
+import getDomainDetailsJSON from '../../../test/data/issuesListDef-getDomainDetails.json';
+
+import { IssuesListDefModel } from './models';
+import { IssuesListDefPropertiesPanel, IssuesListDefPropertiesPanelImpl } from './IssuesListDefPropertiesPanel';
+
+const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,

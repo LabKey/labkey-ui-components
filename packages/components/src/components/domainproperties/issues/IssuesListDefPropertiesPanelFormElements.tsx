@@ -3,20 +3,24 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
+import produce from 'immer';
+
 import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { LoadingSpinner, Principal, SelectInput } from '../../..';
 
+import { UserGroup } from '../../permissions/models';
+
+import { getCoreGroups, getCoreUsersInGroups } from '../../permissions/actions';
+
 import { IssuesListDefModel } from './models';
-import {UserGroup} from "../../permissions/models";
 import {
     ISSUES_LIST_DEF_SORT_DIRECTION_TIP,
     ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP,
-    ISSUES_LIST_GROUP_ASSIGN_TIP, ISSUES_LIST_USER_ASSIGN_TIP
-} from "./constants";
-import { getCoreGroups, getCoreUsersInGroups } from "../../permissions/actions";
-import produce from "immer";
+    ISSUES_LIST_GROUP_ASSIGN_TIP,
+    ISSUES_LIST_USER_ASSIGN_TIP,
+} from './constants';
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -34,7 +38,7 @@ interface AssignmentOptionsState {
     coreUsers?: List<UserGroup>;
 }
 
-//For AssignedToGroupInput & DefaultUserAssignmentInput components
+// For AssignedToGroupInput & DefaultUserAssignmentInput components
 interface AssignmentOptionsInputProps {
     model: IssuesListDefModel;
     onSelect: (name: string, value: any) => any;
@@ -57,14 +61,13 @@ export class BasicPropertiesFields extends React.PureComponent<IssuesListDefBasi
 }
 
 export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProps, AssignmentOptionsState> {
-
     constructor(props: any) {
         super(props);
 
         this.state = produce(
             {
                 coreGroups: undefined,
-                coreUsers:undefined
+                coreUsers: undefined,
             },
             () => {}
         );
@@ -90,11 +93,7 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
         return (
             <Col xs={12} md={6}>
                 <SectionHeading title="Assignment Options" />
-                <AssignedToGroupInput
-                    model={model}
-                    coreGroups={coreGroups}
-                    onSelect={onSelect}
-                />
+                <AssignedToGroupInput model={model} coreGroups={coreGroups} onSelect={onSelect} />
                 <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={onSelect} />
             </Col>
         );
@@ -111,16 +110,15 @@ export class SingularItemNameInput extends React.PureComponent<IssuesListDefBasi
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={4}>
-                    <DomainFieldLabel label="Singular Item Name" helpTipBody={this.getIssueNameHelpTip} required={false} />
+                    <DomainFieldLabel
+                        label="Singular Item Name"
+                        helpTipBody={this.getIssueNameHelpTip}
+                        required={false}
+                    />
                 </Col>
 
                 <Col xs={9} lg={8}>
-                    <FormControl
-                        id="singularItemName"
-                        type="text"
-                        value={value}
-                        onChange={onInputChange}
-                    />
+                    <FormControl id="singularItemName" type="text" value={value} onChange={onInputChange} />
                 </Col>
             </Row>
         );
@@ -128,7 +126,6 @@ export class SingularItemNameInput extends React.PureComponent<IssuesListDefBasi
 }
 
 export class PluralItemNameInput extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
-
     getIssueNameHelpTip() {
         return ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP;
     }
@@ -139,16 +136,15 @@ export class PluralItemNameInput extends React.PureComponent<IssuesListDefBasicP
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={4}>
-                    <DomainFieldLabel label="Plural Items Name" helpTipBody={this.getIssueNameHelpTip} required={false} />
+                    <DomainFieldLabel
+                        label="Plural Items Name"
+                        helpTipBody={this.getIssueNameHelpTip}
+                        required={false}
+                    />
                 </Col>
 
                 <Col xs={9} lg={8}>
-                    <FormControl
-                        id="pluralItemName"
-                        type="text"
-                        value={value}
-                        onChange={onInputChange}
-                    />
+                    <FormControl id="pluralItemName" type="text" value={value} onChange={onInputChange} />
                 </Col>
             </Row>
         );
@@ -156,7 +152,6 @@ export class PluralItemNameInput extends React.PureComponent<IssuesListDefBasicP
 }
 
 export class CommentSortDirectionDropDown extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
-
     getHelpTip() {
         return ISSUES_LIST_DEF_SORT_DIRECTION_TIP;
     }
@@ -170,9 +165,9 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
     render() {
         const { model } = this.props;
 
-        let sortDirectionOptions = [];
-        sortDirectionOptions.push({label: "Oldest first", id: "ASC"});
-        sortDirectionOptions.push({label: "Newest first", id: "DESC"});
+        const sortDirectionOptions = [];
+        sortDirectionOptions.push({ label: 'Oldest first', id: 'ASC' });
+        sortDirectionOptions.push({ label: 'Newest first', id: 'DESC' });
 
         return (
             <Row className="margin-top">
@@ -182,10 +177,10 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
 
                 <Col xs={9} lg={8}>
                     <SelectInput
-                        name={"commentSortDirection"}
+                        name="commentSortDirection"
                         options={sortDirectionOptions}
-                        inputClass={'col-xs-12'}
-                        valueKey={'id'}
+                        inputClass="col-xs-12"
+                        valueKey="id"
                         onChange={this.onChange}
                         value={model.commentSortDirection ? model.commentSortDirection : 'ASC'}
                         formsy={false}
@@ -201,7 +196,6 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
 }
 
 export class AssignedToGroupInput extends React.PureComponent<AssignmentOptionsInputProps, any> {
-
     getHelpTip() {
         return ISSUES_LIST_GROUP_ASSIGN_TIP;
     }
@@ -216,12 +210,18 @@ export class AssignedToGroupInput extends React.PureComponent<AssignmentOptionsI
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={4}>
-                    <DomainFieldLabel label="Populate ‘Assigned To’ Field from" helpTipBody={this.getHelpTip} required={false} />
+                    <DomainFieldLabel
+                        label="Populate ‘Assigned To’ Field from"
+                        helpTipBody={this.getHelpTip}
+                        required={false}
+                    />
                 </Col>
                 <Col xs={9} lg={8}>
-                    {!coreGroups ? <LoadingSpinner/>
-                        : <SelectInput
-                            name={'assignedToGroup'}
+                    {!coreGroups ? (
+                        <LoadingSpinner />
+                    ) : (
+                        <SelectInput
+                            name="assignedToGroup"
                             options={coreGroups.toArray()}
                             placeholder="All Project Users"
                             inputClass="col-xs-12"
@@ -234,7 +234,7 @@ export class AssignedToGroupInput extends React.PureComponent<AssignmentOptionsI
                             multiple={false}
                             required={false}
                         />
-                    }
+                    )}
                 </Col>
             </Row>
         );
@@ -242,7 +242,6 @@ export class AssignedToGroupInput extends React.PureComponent<AssignmentOptionsI
 }
 
 export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOptionsInputProps, any> {
-
     getHelpTip() {
         return ISSUES_LIST_USER_ASSIGN_TIP;
     }
@@ -252,7 +251,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
     };
 
     getFilteredCoreUsers = (groupId: any, coreUsers: List<UserGroup>) => {
-        let filteredCoreUser = coreUsers.filter(coreUser => {
+        const filteredCoreUser = coreUsers.filter(coreUser => {
             return coreUser.groupId === groupId;
         });
         return filteredCoreUser.toArray().length > 0 ? filteredCoreUser.toArray() : undefined;
@@ -267,9 +266,11 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
                     <DomainFieldLabel label="Default User Assignment" helpTipBody={this.getHelpTip} required={false} />
                 </Col>
                 <Col xs={9} lg={8}>
-                    {!coreUsers ? <LoadingSpinner/>
-                        : <SelectInput
-                            name={'assignedToUser'}
+                    {!coreUsers ? (
+                        <LoadingSpinner />
+                    ) : (
+                        <SelectInput
+                            name="assignedToUser"
                             options={this.getFilteredCoreUsers(model.assignedToGroup, coreUsers)}
                             placeholder="Unassigned"
                             inputClass="col-xs-12"
@@ -282,7 +283,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
                             multiple={false}
                             required={false}
                         />
-                    }
+                    )}
                 </Col>
             </Row>
         );

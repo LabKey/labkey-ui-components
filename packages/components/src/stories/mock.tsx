@@ -118,7 +118,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     core: {
         users: usersQueryInfo,
         core_temp_240: getQueryDetailsPrincipalsJson,
-        members: getMembersJson
+        members: getMembersJson,
     },
     exp: {
         samplesetheatmap: sampleSetHeatMapQueryInfo,
@@ -238,8 +238,7 @@ export function initMocks() {
         let responseBody;
         if (body.indexOf('"core"') > -1 && body.indexOf('FROM Principals') > -1) {
             responseBody = getPrincipalsJson;
-        }
-        else if (body.indexOf('"core"') > -1 && body.indexOf('FROM Members') > -1) {
+        } else if (body.indexOf('"core"') > -1 && body.indexOf('FROM Members') > -1) {
             responseBody = getMembersJson;
         }
 

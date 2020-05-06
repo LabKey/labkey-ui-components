@@ -31,7 +31,7 @@ export class Principal extends Record({
         displayName = type === 'u' && displayName ? name + ' (' + displayName + ')' : name;
 
         if (type === 'g') {
-            displayName = (null === container ? ("Site: " + name) : name);
+            displayName = container === null ? 'Site: ' + name : name;
         }
 
         return new Principal({ userId, name, type, displayName });

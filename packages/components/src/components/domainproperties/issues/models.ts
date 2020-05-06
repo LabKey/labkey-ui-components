@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Draft, immerable, produce} from 'immer';
-import { DomainDesign } from '../models';
+import { Draft, immerable, produce } from 'immer';
+
 import { Record } from 'immutable';
+
+import { DomainDesign } from '../models';
 
 export class IssuesListDefModel {
     [immerable] = true;
@@ -25,15 +27,15 @@ export class IssuesListDefModel {
     readonly entityId?: string;
     readonly domainId: number;
     readonly issueDefName: string;
-    readonly singularItemName: string = "Issue";
-    readonly pluralItemName: string = "Issues";
-    readonly commentSortDirection: string = "ASC";
+    readonly singularItemName: string = 'Issue';
+    readonly pluralItemName: string = 'Issues';
+    readonly commentSortDirection: string = 'ASC';
     readonly assignedToGroup: number;
     readonly assignedToUser: number;
     readonly domainKindName: string;
 
-    constructor(issuesListDefModel : IssuesListDefModel) {
-        Object.assign(this, issuesListDefModel)
+    constructor(issuesListDefModel: IssuesListDefModel) {
+        Object.assign(this, issuesListDefModel);
     }
 
     static create(raw: any, defaultSettings = null): IssuesListDefModel {

@@ -80,7 +80,6 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
 
         saveDomain(model.domain, model.domainKindName, model.getOptions(), model.issueDefName)
             .then(response => {
-
                 this.setState(
                     produce((draft: Draft<State>) => {
                         draft.model.exception = undefined;
@@ -90,8 +89,9 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                         setSubmitting(false, () => {
                             const { model } = this.state;
                             this.props.onComplete(model);
-                    })
-                });
+                        });
+                    }
+                );
             })
             .catch(response => {
                 const exception = resolveErrorMessage(response);

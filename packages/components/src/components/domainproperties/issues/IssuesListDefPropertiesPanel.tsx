@@ -4,17 +4,20 @@ import { Col, Form, Row } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
+import produce from 'immer';
+
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,
 } from '../DomainPropertiesPanelCollapse';
 
+import { HelpTopicURL } from '../HelpTopicURL';
+
+import { DEFINE_ISSUES_LIST_TOPIC } from '../../../util/helpLinks';
+
 import { AssignmentOptions, BasicPropertiesFields } from './IssuesListDefPropertiesPanelFormElements';
 import { IssuesListDefModel } from './models';
-import produce from "immer";
-import { HelpTopicURL } from "../HelpTopicURL";
-import { DEFINE_ISSUES_LIST_TOPIC } from "../../../util/helpLinks";
 
 const PROPERTIES_HEADER_ID = 'issues-properties-hdr';
 
@@ -39,7 +42,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
 
         this.state = produce(
             {
-                isValid: true
+                isValid: true,
             },
             () => {}
         );
@@ -73,7 +76,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
 
     onChange = (identifier: string, value: any, clearingField?: string): void => {
         const { model } = this.props;
-        const newModel = produce(model, (draft: IssuesListDefModel) =>{
+        const newModel = produce(model, (draft: IssuesListDefModel) => {
             draft[identifier] = value;
             if (clearingField) {
                 draft[clearingField] = undefined;
@@ -85,8 +88,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
     onSelectChange = (name, value) => {
         if (name === 'assignedToGroup') {
             this.onChange(name, value, 'assignedToUser');
-        }
-        else {
+        } else {
             this.onChange(name, value);
         }
     };
@@ -109,8 +111,12 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                     </Col>
                 </Row>
                 <Form>
-                    <BasicPropertiesFields model={model} onInputChange={this.onInputChange} onSelect={this.onSelectChange} />
-                    <AssignmentOptions model={model} onSelect={this.onSelectChange}/>
+                    <BasicPropertiesFields
+                        model={model}
+                        onInputChange={this.onInputChange}
+                        onSelect={this.onSelectChange}
+                    />
+                    <AssignmentOptions model={model} onSelect={this.onSelectChange} />
                 </Form>
             </BasePropertiesPanel>
         );

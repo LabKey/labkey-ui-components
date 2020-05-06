@@ -8,7 +8,7 @@ import { Filter, Security } from '@labkey/api';
 
 import { ISelectRowsResult, selectRows } from '../../query/api';
 
-import {Principal, SecurityPolicy, SecurityRole, UserGroup} from './models';
+import { Principal, SecurityPolicy, SecurityRole, UserGroup } from './models';
 
 export function processGetRolesResponse(response: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -27,7 +27,6 @@ export function getRolesByUniqueName(roles: List<SecurityRole>): Map<string, Sec
 }
 
 function processPrincipalsResponse(data: ISelectRowsResult, resolve, isGroup: boolean) {
-
     const models = fromJS(data.models[data.key]);
     let principals = List<Principal>();
 
@@ -39,8 +38,7 @@ function processPrincipalsResponse(data: ISelectRowsResult, resolve, isGroup: bo
 
     if (isGroup) {
         resolve(principals.filter(principal => principal.type === 'g'));
-    }
-    else {
+    } else {
         resolve(principals);
     }
 }
@@ -85,7 +83,7 @@ export function getCoreUsersInGroups(): Promise<List<UserGroup>> {
         selectRows({
             saveInSession: true, // needed so that we can call getQueryDetails
             schemaName: 'core',
-            sql: "SELECT m.UserId, m.GroupId, p.Name FROM Members m LEFT JOIN Principals p ON p.UserId = m.UserId",
+            sql: 'SELECT m.UserId, m.GroupId, p.Name FROM Members m LEFT JOIN Principals p ON p.UserId = m.UserId',
             columns: 'UserId,GroupId,Name',
         })
             .then((data: ISelectRowsResult) => {

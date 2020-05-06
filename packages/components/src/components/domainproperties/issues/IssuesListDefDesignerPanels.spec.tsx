@@ -1,16 +1,18 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import {IssuesListDefModel} from './models';
-import {IssuesListDefDesignerPanels} from "./IssuesListDefDesignerPanels";
-import {mount} from "enzyme";
+import { mount } from 'enzyme';
 
-import DomainForm from "../DomainForm";
-import {IssuesListDefPropertiesPanel} from "./IssuesListDefPropertiesPanel";
-import {Alert} from "../../..";
-import {PROPERTIES_PANEL_ERROR_MSG} from "../constants";
+import DomainForm from '../DomainForm';
 
-const emptyNewModel = IssuesListDefModel.create(null, {issueDefName: 'Issues List For Jest'});
+import { Alert } from '../../..';
+import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
+
+import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
+import { IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
+import { IssuesListDefModel } from './models';
+
+const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
 
 const BASE_PROPS = {
     onComplete: jest.fn(),

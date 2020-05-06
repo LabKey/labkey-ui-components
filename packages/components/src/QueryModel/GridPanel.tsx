@@ -1,8 +1,7 @@
 import React, { ComponentType, PureComponent, ReactNode } from 'react';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
-// TODO: open PR to export ISelectDistinctOptions from api-js
-import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
+import { Query } from '@labkey/api';
 
 import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner, QueryColumn, QueryInfo, QuerySort } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
@@ -179,7 +178,7 @@ export class GridPanel extends PureComponent<Props, State> {
     }
 
     // Needed by OmniBox.
-    getSelectDistinctOptions = (column: string): ISelectDistinctOptions => {
+    getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions => {
         const { model } = this.props;
         return {
             column,

@@ -26,8 +26,6 @@ import { Action, ActionOption, ActionValue, ActionValueCollection } from './acti
 import { Option } from './Option';
 import { Value, valueClassName } from './Value';
 import { parseColumns, resolveFieldKey } from './utils';
-// TODO: open PR to export ISelectDistinctOptions from api-js
-import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
 
 export enum ChangeType {
     add = 'add',
@@ -53,7 +51,7 @@ interface OmniBoxProps {
     // If all is false it getColumns should return display columns. This prop is a method due to the implementation of
     // QueryGridModel, it is the only way to guarantee we are always getting the most current columns.
     getColumns: (all?: boolean) => List<QueryColumn>;
-    getSelectDistinctOptions: (column: string) => ISelectDistinctOptions;
+    getSelectDistinctOptions: (column: string) => Query.SelectDistinctOptions;
     inputProps?: {
         className?: string;
     };

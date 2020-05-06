@@ -7,8 +7,7 @@ import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 import { fromJS, List } from 'immutable';
-// TODO: open PR to export ISelectDistinctOptions from api-js
-import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
+import { Query } from '@labkey/api';
 
 
 import { SearchAction } from '../components/omnibox/actions/Search';
@@ -76,7 +75,7 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
         });
     }
 
-    getSelectDistinctOptions = (column: string): ISelectDistinctOptions => {
+    getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions => {
         const model = this.state.model;
         return {
             column,

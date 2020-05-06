@@ -15,6 +15,7 @@
  */
 import React from 'reactn';
 import { List, Map } from 'immutable';
+import { Query } from '@labkey/api';
 
 
 import { getLocation, Location, replaceParameters } from '../../util/URL';
@@ -25,8 +26,6 @@ import { SearchAction } from '../omnibox/actions/Search';
 import { SortAction } from '../omnibox/actions/Sort';
 import { ViewAction } from '../omnibox/actions/View';
 import { QueryColumn, QueryGridModel } from '../base/models/model';
-// TODO: open PR to export ISelectDistinctOptions from api-js
-import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
 import { QueryInfo } from '../..';
 
 /**
@@ -221,7 +220,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         return this.getQueryModel().queryInfo;
     };
 
-    getSelectDistinctOptions = (column: string): ISelectDistinctOptions => {
+    getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions => {
         const model = this.getQueryModel();
         return {
             column,

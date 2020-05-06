@@ -1,10 +1,12 @@
 import React, { ComponentType, PureComponent } from 'react';
+import { Filter } from '@labkey/api';
 import { Draft, produce } from 'immer';
 
-import { LoadingState, resolveErrorMessage, SchemaQuery } from '..';
+import { LoadingState, QuerySort, resolveErrorMessage, SchemaQuery } from '..';
 
 import { QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
+import { filterArraysEqual, sortArraysEqual } from './utils';
 
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
@@ -17,13 +19,15 @@ export interface Actions {
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
     loadCharts: (id: string, includeSampleComparison: boolean) => void;
-    setOffset: (id: string, offset: number) => void;
-    setMaxRows: (id: string, maxRows: number) => void;
-    setView: (id: string, viewName: string, loadSelections?: boolean) => void;
-    setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
     selectAllRows: (id: string) => void;
     selectRow: (id: string, checked, row: { [key: string]: any }) => void;
     selectPage: (id: string, checked) => void;
+    setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
+    setMaxRows: (id: string, maxRows: number) => void;
+    setOffset: (id: string, offset: number) => void;
+    setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
+    setSorts: (id: string, sorts: QuerySort[]) => void;
+    setView: (id: string, viewName: string, loadSelections?: boolean) => void;
 }
 
 export interface RequiresModelAndActions {
@@ -117,13 +121,15 @@ export function withQueryModels<Props>(
                 loadFirstPage: this.loadFirstPage,
                 loadLastPage: this.loadLastPage,
                 loadCharts: this.loadCharts,
-                setOffset: this.setOffset,
-                setMaxRows: this.setMaxRows,
-                setView: this.setView,
-                setSchemaQuery: this.setSchemaQuery,
                 selectAllRows: this.selectAllRows,
                 selectRow: this.selectRow,
                 selectPage: this.selectPage,
+                setFilters: this.setFilters,
+                setOffset: this.setOffset,
+                setMaxRows: this.setMaxRows,
+                setSchemaQuery: this.setSchemaQuery,
+                setSorts: this.setSorts,
+                setView: this.setView,
             };
         }
 
@@ -548,7 +554,7 @@ export function withQueryModels<Props>(
                         resetSelectionState(model);
                     }
                 }),
-                () => this.maybeLoad(id, false, shouldLoad, loadSelections)
+                () => this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections)
             );
         };
 
@@ -568,7 +574,36 @@ export function withQueryModels<Props>(
                         resetSelectionState(model);
                     }
                 }),
-                () => this.maybeLoad(id, shouldLoad, shouldLoad, loadSelections)
+                () => this.maybeLoad(id, shouldLoad, shouldLoad, shouldLoad && loadSelections)
+            );
+        };
+
+        setFilters = (id: string, filters: Filter.IFilter[], loadSelections = false): void => {
+            let shouldLoad = false;
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    if (!filterArraysEqual(model.filterArray, filters)) {
+                        shouldLoad = true;
+                        model.filterArray = filters;
+                    }
+                }),
+                // When filters change we need to reload selections.
+                () => this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections)
+            );
+        };
+
+        setSorts = (id: string, sorts: QuerySort[]): void => {
+            let shouldLoad = false;
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    if (!sortArraysEqual(model.sorts, sorts)) {
+                        shouldLoad = true;
+                        model.sorts = sorts;
+                    }
+                }),
+                () => this.maybeLoad(id, false, shouldLoad)
             );
         };
 

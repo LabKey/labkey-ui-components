@@ -51,12 +51,14 @@ export const makeTestActions = (): Actions => {
         loadFirstPage: jest.fn(),
         loadLastPage: jest.fn(),
         loadCharts: jest.fn(),
-        setOffset: jest.fn(),
-        setMaxRows: jest.fn(),
-        setView: jest.fn(),
-        setSchemaQuery: jest.fn(),
         selectAllRows: jest.fn(),
         selectRow: jest.fn(),
         selectPage: jest.fn(),
+        setFilters: jest.fn(),
+        setMaxRows: jest.fn(),
+        setOffset: jest.fn(),
+        setSchemaQuery: jest.fn(),
+        setSorts: jest.fn(),
+        setView: jest.fn(),
     };
 };

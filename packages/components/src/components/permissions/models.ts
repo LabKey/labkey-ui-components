@@ -25,9 +25,14 @@ export class Principal extends Record({
         const userId = row.getIn(['UserId', 'value']);
         const type = row.getIn(['Type', 'value']);
         const name = row.getIn(['Name', 'value']);
+        const container = row.getIn(['Container', 'value']);
 
         let displayName = row.getIn(['DisplayName', 'value']);
         displayName = type === 'u' && displayName ? name + ' (' + displayName + ')' : name;
+
+        if (type === 'g') {
+            displayName = container === null ? 'Site: ' + name : name;
+        }
 
         return new Principal({ userId, name, type, displayName });
     }
@@ -47,6 +52,30 @@ export class Principal extends Record({
                 .sortBy(principal => principal.displayName)
                 .toList()
         );
+    }
+}
+
+export class UserGroup extends Record({
+    userId: undefined,
+    userName: undefined,
+    groupId: undefined,
+    groupName: undefined,
+}) {
+    userId: number;
+    userName: string;
+    groupId: string;
+    groupName: string;
+
+    constructor(values?: { [key: string]: any }) {
+        super(values);
+    }
+
+    static createFromSelectRow(row: Map<string, Map<string, any>>): UserGroup {
+        const userId = row.getIn(['UserId', 'value']);
+        const userName = row.getIn(['UserId', 'displayValue']);
+        const groupId = row.getIn(['GroupId', 'value']);
+        const groupName = row.getIn(['GroupId', 'displayValue']);
+        return new UserGroup({ userId, userName, groupId, groupName });
     }
 }
 

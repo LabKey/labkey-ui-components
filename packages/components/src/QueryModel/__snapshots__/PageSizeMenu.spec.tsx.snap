@@ -1,43 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewSelector Render 1`] = `null`;
-
-exports[`ViewSelector Render 2`] = `
+exports[`PageSizeMenu pageSizes 1`] = `
 <div
-  className="view-selector"
->
-  <div
-    className="dropdown disabled btn-group"
-  >
-    <button
-      aria-expanded={false}
-      aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
-      disabled={true}
-      id="view-selector-drop-model"
-      onClick={[Function]}
-      onKeyDown={[Function]}
-      role="button"
-      type="button"
-    >
-      Grid Views
-       
-      <span
-        className="caret"
-      />
-    </button>
-    <ul
-      aria-labelledby="view-selector-drop-model"
-      className="dropdown-menu dropdown-menu-right"
-      role="menu"
-    />
-  </div>
-</div>
-`;
-
-exports[`ViewSelector Render 3`] = `
-<div
-  className="view-selector"
+  className="page-size-menu"
 >
   <div
     className="dropdown btn-group"
@@ -47,195 +12,31 @@ exports[`ViewSelector Render 3`] = `
       aria-haspopup={true}
       className="dropdown-toggle btn btn-default"
       disabled={false}
-      id="view-selector-drop-model"
+      id="page-size-drop-model"
       onClick={[Function]}
       onKeyDown={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
       role="button"
       type="button"
     >
-      Grid Views
+      20
        
       <span
         className="caret"
       />
     </button>
     <ul
-      aria-labelledby="view-selector-drop-model"
+      aria-labelledby="page-size-drop-model"
       className="dropdown-menu dropdown-menu-right"
       role="menu"
     >
-      <li
-        className="active"
-        role="presentation"
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="menuitem"
-          tabIndex="-1"
-        >
-          Default
-        </a>
-      </li>
       <li
         className="dropdown-header"
         onKeyDown={[Function]}
         role="heading"
       >
-        All Saved Views
-      </li>
-      <li
-        className=""
-        role="presentation"
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="menuitem"
-          tabIndex="-1"
-        >
-          No Extra Column
-        </a>
-      </li>
-      <li
-        className=""
-        role="presentation"
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="menuitem"
-          tabIndex="-1"
-        >
-          No Mixtures or Extra
-        </a>
-      </li>
-    </ul>
-  </div>
-</div>
-`;
-
-exports[`ViewSelector Render 4`] = `
-<div
-  className="view-selector"
->
-  <div
-    className="dropdown btn-group"
-  >
-    <button
-      aria-expanded={false}
-      aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
-      disabled={false}
-      id="view-selector-drop-model"
-      onClick={[Function]}
-      onKeyDown={[Function]}
-      role="button"
-      type="button"
-    >
-      Grid Views
-       
-      <span
-        className="caret"
-      />
-    </button>
-    <ul
-      aria-labelledby="view-selector-drop-model"
-      className="dropdown-menu dropdown-menu-right"
-      role="menu"
-    >
-      <li
-        className="active"
-        role="presentation"
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="menuitem"
-          tabIndex="-1"
-        >
-          Default
-        </a>
-      </li>
-      <li
-        className="dropdown-header"
-        onKeyDown={[Function]}
-        role="heading"
-      >
-        My Saved Views
-      </li>
-      <li
-        className=""
-        role="presentation"
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="menuitem"
-          tabIndex="-1"
-        >
-          No Extra Column
-        </a>
-      </li>
-    </ul>
-  </div>
-</div>
-`;
-
-exports[`ViewSelector Render 5`] = `
-<div
-  className="view-selector"
->
-  <div
-    className="dropdown btn-group"
-  >
-    <button
-      aria-expanded={false}
-      aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
-      disabled={false}
-      id="view-selector-drop-model"
-      onClick={[Function]}
-      onKeyDown={[Function]}
-      role="button"
-      type="button"
-    >
-      Grid Views
-       
-      <span
-        className="caret"
-      />
-    </button>
-    <ul
-      aria-labelledby="view-selector-drop-model"
-      className="dropdown-menu dropdown-menu-right"
-      role="menu"
-    >
-      <li
-        className=""
-        role="presentation"
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="menuitem"
-          tabIndex="-1"
-        >
-          Default
-        </a>
-      </li>
-      <li
-        className="dropdown-header"
-        onKeyDown={[Function]}
-        role="heading"
-      >
-        My Saved Views
+        Page Size
       </li>
       <li
         className="active"
@@ -248,10 +49,181 @@ exports[`ViewSelector Render 5`] = `
           role="menuitem"
           tabIndex="-1"
         >
-          No Extra Column
+          20
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          40
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          100
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          250
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          400
         </a>
       </li>
     </ul>
   </div>
 </div>
 `;
+
+exports[`PageSizeMenu pageSizes 2`] = `
+<div
+  className="page-size-menu"
+>
+  <div
+    className="dropdown btn-group"
+  >
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="dropdown-toggle btn btn-default"
+      disabled={false}
+      id="page-size-drop-model"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      role="button"
+      type="button"
+    >
+      20
+       
+      <span
+        className="caret"
+      />
+    </button>
+    <ul
+      aria-labelledby="page-size-drop-model"
+      className="dropdown-menu dropdown-menu-right"
+      role="menu"
+    >
+      <li
+        className="dropdown-header"
+        onKeyDown={[Function]}
+        role="heading"
+      >
+        Page Size
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          1
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          2
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          3
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          4
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          5
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`PageSizeMenu pageSizes 3`] = `null`;

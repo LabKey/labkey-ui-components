@@ -26,6 +26,7 @@ import { Action, ActionOption, ActionValue, ActionValueCollection } from './acti
 import { Option } from './Option';
 import { Value, valueClassName } from './Value';
 import { parseColumns, resolveFieldKey } from './utils';
+// TODO: open PR to export ISelectDistinctOptions from api-js
 import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
 
 export enum ChangeType {

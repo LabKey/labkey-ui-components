@@ -25,6 +25,7 @@ import { SearchAction } from '../omnibox/actions/Search';
 import { SortAction } from '../omnibox/actions/Sort';
 import { ViewAction } from '../omnibox/actions/View';
 import { QueryColumn, QueryGridModel } from '../base/models/model';
+// TODO: open PR to export ISelectDistinctOptions from api-js
 import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
 import { QueryInfo } from '../..';
 

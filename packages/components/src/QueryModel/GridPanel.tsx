@@ -1,6 +1,8 @@
 import React, { ComponentType, PureComponent, ReactNode } from 'react';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
+// TODO: open PR to export ISelectDistinctOptions from api-js
+import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
 
 import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner, QueryColumn, QueryInfo, QuerySort } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
@@ -13,7 +15,6 @@ import { ViewSelector } from './ViewSelector';
 import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
-import { ISelectDistinctOptions } from '@labkey/api/dist/labkey/query/SelectDistinctRows';
 import { Action, ActionValue } from '../components/omnibox/actions/Action';
 import { FilterAction } from '../components/omnibox/actions/Filter';
 import { SearchAction } from '../components/omnibox/actions/Search';
@@ -328,7 +329,8 @@ export class GridPanel extends PureComponent<Props, State> {
     };
 
     /**
-     * Handler called when the user clicks a sort action from a column dropdown menu.
+     * Handler called when the user clicks a sort action from a column dropdown menu. Creates an OmniBox style change
+     * event and triggers handleSortChange.
      * @param column: QueryColumn
      * @param direction: '+' or '-'
      */

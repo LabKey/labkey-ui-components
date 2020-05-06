@@ -839,7 +839,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                         appPropertiesOnly={appPropertiesOnly}
                                                         showFilePropertyType={showFilePropertyType}
                                                         successBsStyle={successBsStyle}
-                                                        domainFormDisplayOptions={domainFormDisplayOptions}
+                                                        domainFormDisplayOptions={{
+                                                            ...domainFormDisplayOptions,
+                                                            isDragDisabled:
+                                                                filtered || domainFormDisplayOptions.isDragDisabled,
+                                                        }}
                                                     />
                                                 );
                                             })}

@@ -24,7 +24,7 @@ export class PageSizeMenu extends PureComponent<PageSizeMenuProps> {
     };
 
     render() {
-        const { model, actions, pageSizes } = this.props;
+        const { model, pageSizes } = this.props;
         const { id, rowsError, maxRows, isLoading, rowCount } = model;
         const disabled = rowsError !== undefined || isLoading;
         const show = rowCount > pageSizes[0];
@@ -36,9 +36,9 @@ export class PageSizeMenu extends PureComponent<PageSizeMenuProps> {
 
         return (
             show && (
-                <div className="page-size-selector">
+                <div className="page-size-menu">
                     <Tip caption="Page Size" trigger={['hover']}>
-                        <DropdownButton id={`page-size-drop-${model.id}`} pullRight title={maxRows} disabled={disabled}>
+                        <DropdownButton id={`page-size-drop-${id}`} pullRight title={maxRows} disabled={disabled}>
                             <MenuItem header>Page Size</MenuItem>
 
                             {menuItems}
